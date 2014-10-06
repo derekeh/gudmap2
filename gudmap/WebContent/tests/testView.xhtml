@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Test File
+	</ui:define>
+	
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+		<h:dataTable value="#{ugview.getView()}" var="u"
+    			styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row"
+    	>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				Forename
+    			</f:facet>
+    				#{u.forename}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				Group
+				</f:facet>
+    				#{u.group}
+    		</h:column>
+ 		</h:dataTable>
+	    
+	    
+	</ui:define>
+	
+</ui:composition>
+</html>

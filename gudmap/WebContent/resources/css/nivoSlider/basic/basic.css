@@ -1,0 +1,120 @@
+/*========================================*/
+/*=== DMXzone Basic Nivo Slider Styles ===*/
+/*========================================*/
+
+.theme-basic .nivoSlider {
+	background: #202834 url(loading.gif) no-repeat 50% 50%;
+
+	-webkit-box-shadow: 0 0 10px #333;
+	box-shadow: 0 0 10px #333;
+}
+
+.theme-basic .nivoSlider img {
+	display: none;
+}
+
+.theme-basic .nivoSlider a {
+	border: 0;
+	display: block;
+}
+
+.theme-basic .nivo-controlNav {
+	text-align: center;
+	padding: 20px 0;
+}
+
+.theme-basic .nivo-controlNav a {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	background: url(bullets.png) no-repeat;
+	text-indent: -9999px;
+	border: 0;
+	margin: 0 2px;
+}
+
+*:first-child+html .theme-basic .nivo-controlNav a {
+	/*ie7 hack */
+	text-indent:0;
+	line-height:0;
+	font-size:0;
+	overflow:hidden
+}
+
+.theme-basic .nivo-controlNav a.active {
+	background-position: -10px 0;
+}
+
+.theme-basic .nivo-directionNav a {
+	display: block;
+	width: 32px;
+	height: 34px;
+	background: url(arrows.png) no-repeat;
+	text-indent: -9999px;
+	border: 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	opacity: 0;
+	-webkit-transition: opacity 200ms ease-in-out;
+	-moz-transition: opacity 200ms ease-in-out;
+	-o-transition: opacity 200ms ease-in-out;
+	-ms-transition: opacity 200ms ease-in-out;
+	transition: opacity 200ms ease-in-out;
+
+}
+
+.theme-basic:hover .nivo-directionNav a {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+
+.theme-basic a.nivo-nextNav {
+	background-position: -32px 0;
+	right: 10px;
+}
+
+.theme-basic a.nivo-prevNav {
+	left: 10px;
+}
+
+.theme-basic .nivo-controlNav.nivo-thumbs-enabled {
+	width: 100%;
+}
+
+.theme-basic .nivo-controlNav.nivo-thumbs-enabled a {
+	width: auto;
+	height: auto;
+	background: none;
+	margin: 5px;
+	border: 1px solid transparent;
+	-webkit-box-shadow: 0 0 3px #333;
+	box-shadow: 0 0 3px #333;
+}
+
+.theme-basic .nivo-controlNav.nivo-thumbs-enabled a.active {
+	border-color: #f00;
+}
+
+.theme-basic .nivo-controlNav.nivo-thumbs-enabled a:hover {
+	border-color: #000;
+}
+
+.theme-basic .nivo-controlNav.nivo-thumbs-enabled img {
+	display: block;
+}
+
+.theme-basic .nivo-caption a {
+	color: #fff;
+}
+
+.theme-basic .nivo-caption h4 {
+	padding: 0;
+	margin: 0 0 5px 0;
+	color: #fff;
+}
+
+.theme-basic .nivo-caption p {
+	padding: 0;
+	color: #ccc;
+}

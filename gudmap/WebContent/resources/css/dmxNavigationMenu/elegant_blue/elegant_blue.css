@@ -1,0 +1,120 @@
+/* elegant_blue */
+
+.dmxNavigationMenu.elegant_blue {
+    background-color: #69c;
+	background-image: url('gradient1.png');
+	background-position: top;
+	background-repeat: repeat-x;
+	border: 1px solid;
+	border-color: #69c #369 #369 #69c;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 0 10px;
+}
+
+.dmxNavigationMenu.elegant_blue * {
+	color: #fff;
+}
+
+.dmxNavigationMenu.elegant_blue h3 {
+    margin: 3px 10px 3px 0;
+	font-size: 14px;
+}
+
+.dmxNavigationMenu.elegant_blue li {
+	background-color: #69c;
+	background-image: url('gradient1.png');
+	background-position: top;
+	background-repeat: repeat-x;
+	border: 1px solid;
+	border-color: #69c #369 #369 #69c;
+}
+
+.dmxNavigationMenu.elegant_blue ul.mega li {
+	background: none;
+	border: none;
+}
+
+.dmxNavigationMenu.elegant_blue li.separator {
+	border: none;
+	margin: 0 3px;
+	border-left: 1px solid #69c;
+	border-right: 1px solid #369;
+	height: 3px;
+}
+
+.dmxNavigationMenu.elegant_blue ul.mega {
+	background-color: #69c;
+	background-image: url('gradient1.png');
+	background-position: top;
+	background-repeat: repeat-x;
+	border: 1px solid;
+	border-color: #69c #369 #369 #69c;
+}
+
+.dmxNavigationMenu.elegant_blue ul.sub {
+	background-color: transparent;
+	border: none;
+}
+
+.dmxNavigationMenu.elegant_blue li a.selected,
+.dmxNavigationMenu.elegant_blue li a:hover,
+.dmxNavigationMenu.elegant_blue li a.hover {
+	background-color: #8be;
+	background-image: url('gradient3.png') !important;
+	background-position: top;
+	background-repeat: repeat-x;
+}
+
+.dmxNavigationMenu.elegant_blue span.sub_down {
+	background-image: url('down-trans.png');
+}
+
+.dmxNavigationMenu.elegant_blue span.sub_right {
+	background-image: url('right-trans.png');
+}
+
+.dmxNavigationMenu.elegant_blue span.sub_up {
+	background-image: url('up-trans.png');
+}
+
+.dmxNavigationMenu.elegant_blue span.sub_left {
+	background-image: url('left-trans.png');
+}
+
+.dmxNavigationMenu.elegant_blue .dmxSearchForm .textfield {
+	float: left;
+	height: 16px;
+	padding: 2px;
+	border-top: 1px solid #369;
+	border-left: 1px solid #369;
+	border-right: 1px solid #036;
+	border-bottom: 1px solid #036;
+	font-family: Arial;
+	font-size: 11px;
+}
+
+.dmxNavigationMenu.elegant_blue .dmxSearchForm .button {
+	float: left;
+	height: 22px;
+	border-top: 1px solid #369;
+	border-left: 1px solid #369;
+	border-right: 1px solid #036;
+	border-bottom: 1px solid #036;
+	background-color: #369;
+	background-image: url('gradient2.png');
+	background-position: top;
+	background-repeat: repeat-x;
+	font-family: Arial;
+	font-size: 11px;
+	text-shadow: 0 0 5px #333;
+	font-weight: bold;
+	color: #fff;
+}
+
+.dmxNavigationMenu.elegant_blue .dmxSearchForm .button:hover,
+.dmxNavigationMenu.elegant_blue .dmxSearchForm .button.hover {
+	background-color: #69c;
+	background-image: url('gradient3.png') !important;
+}

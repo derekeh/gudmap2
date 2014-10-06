@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<div class="gd_header">
+    <div id="gd_logo">
+          	<h:outputLink value="#{appRoot}/pages/index.jsf">
+          		<h:graphicImage library="images/header" name="gudmap_logo.png" alt="GUDMAP" width="334" height="56" id="gudmap_logo"/>
+          	</h:outputLink>
+    
+<!--       	<a href="#"><h:graphicImage library="images/header" name="gudmap_logo.png" alt="GUDMAP" width="334" height="56" id="gudmap_logo"/></a> 
+ -->    </div>
+    <div id="gd_stripe_strip">
+          <div id="gd_login" class="gd_webfont_header">
+          <h:panelGrid columns="2" columnClasses="gd_cellTextRight,gd_cellTextLeft">
+            <h:graphicImage library="images/header" name="login_icon.png" id="gd_login_icon" />
+            <h:outputText value=" Login"></h:outputText>
+          </h:panelGrid>
+    	  </div>
+          <div id="gd_quicksearch"  class="gd_webfont_header">
+          <h:form>
+          <h:panelGrid columns="5" columnClasses="gd_cellTextRight,gd_cellTextLeft,gd_cellTextLeft,gd_cellTextLeft,gd_cellTextLeft">
+			  <h:outputLabel for="il_search_item" value="Search "></h:outputLabel>
+			  <h:inputText id="il_search_item" required="true"></h:inputText>
+			  <h:outputLabel for="il_search_value" value="for "></h:outputLabel>
+			  <h:inputText id="il_search_value" required="true"></h:inputText>
+			  <h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt=""></h:graphicImage>
+			</h:panelGrid>
+			</h:form>
+          </div>
+    </div>
+    <div class="gd_clearfloat"></div>
+    <div id="gd_feedback"  class="gd_webfont_header">
+    	<h:panelGrid columns="2" columnClassses="gd_cellTextRight,gd_cellTextLeft">
+    		<h:graphicImage library="images/header" name="feedback_icon.png" id="gd_feedback_icon" />
+            <h:outputText value=" Feedback"></h:outputText>
+         </h:panelGrid>  
+    		<!-- <table>
+    		<tr>
+            	<td><h:graphicImage library="images/header" name="feedback_icon.png" id="gd_feedback_icon" /> </td>
+            	<td>Feedback </td>
+           </tr>
+           </table>   -->   
+    </div> 
+    <div id="gd_logotext"  class="gd_webfont_header">
+      The GenitoUrinary Resource
+    </div>
+    
+   <div id="gd_bigmenu">
+    <nav style="margin-left:20px;">
+      <div class="dmxNavigationMenu" id="navmenu1" style="width:350px">
+		  <ul class="menu horizontal">
+		    <li title="About"><a href="javascript:void(0);">About </a></li>
+		    <li title="Help"><a href="javascript:void(0);">Help</a></li>
+		    <li title="More..."><a href="javascript:void(0);" class="expandable">More...<span class="sub_down"></span></a>
+		      <ul class="mega cols-3">
+		        <li title="About GUDMAP"><span class="heading">About GUDMAP</span>
+		          <ul class="heading">
+		            <li title="Goals"><a href="javascript:void(0);">Goals</a></li>
+		            <li title="Projects"><a href="javascript:void(0);">Projects</a></li>
+		            <li title="Publications"><a href="javascript:void(0);">Publications</a></li>
+		            <li title="Contacts"><a href="javascript:void(0);">Contacts</a></li>
+		            <li title="Positions"><a href="javascript:void(0);">Positions</a></li>
+		            <li title="Funding"><a href="javascript:void(0);">Funding</a></li>
+		            <li title="Events"><a href="javascript:void(0);">Events</a></li>
+		            <li title="Links"><a href="javascript:void(0);">Links</a></li>
+		            <li title="Message Board"><a href="javascript:void(0);">Message Board</a></li>
+		            <li title="Citing Gudmap"><a href="javascript:void(0);">Citing Gudmap</a></li>
+		          </ul>
+		        </li>
+		        <li title="Gene Expression"><span class="heading">Gene Expression</span>
+		          <ul class="heading">
+		            <li title="Search GUDMAP"><a href="javascript:void(0);">Search GUDMAP</a></li>
+		            <li title="Expression Database"><a href="db.html">Expression Database</a></li>
+<!-- 					<li title="Expression Database"><a href="#{appRoot}/pages/test.jsf">Expression Database</a></li> -->
+		            <li title="Tissue Summaries"><a href="http://www.gudmap.org">Tissue Summaries</a></li>
+		            <li title="ISH Quality Control"><a href="javascript:void(0);">ISH Quality Control</a></li>
+		            <li title="Analysis"><a href="javascript:void(0);">Analysis</a></li>
+		            <li title="Data Source"><a href="javascript:void(0);">Data Source</a></li>
+		            <li title="Collections"><a href="javascript:void(0);">Collections</a></li>
+		          </ul>
+		        </li>
+		        <li title="Resources"><span class="heading">Resources</span>
+		          <ul class="heading">
+		            <li title="Submission Archive"><a href="javascript:void(0);">Submission Archive</a></li>
+		            <li title="Project Protocols"><a href="javascript:void(0);">Project Protocols</a></li>
+		            <li title="Mice Cell Lines"><a href="javascript:void(0);">Mice Cell Lines</a></li>
+		            <li title="3D Atlas"><a href="javascript:void(0);">3D Atlas</a></li>
+		            <li title="Ontology"><a href="javascript:void(0);">Ontology</a></li>
+		            <li title="Schematics"><a href="javascript:void(0);">Schematics</a></li>
+		            <li title="Biomart"><a href="javascript:void(0);">Biomart</a></li>
+		            <li title="UQ Gudmap - Probe Design"><a href="javascript:void(0);">UQ Gudmap - Probe Design</a></li>
+		            <li title="Web Stats"><a href="javascript:void(0);">Web Stats</a></li>
+		            <li title="Internal"><a href="javascript:void(0);">Internal</a></li>
+		          </ul>
+		        </li>
+		        <li title="Tutorials"><span class="heading">Tutorials</span>
+		          <ul class="heading">
+		            <li title="Overview"><a href="javascript:void(0);">Overview</a></li>
+		            <li title="Urinary Development"><a href="javascript:void(0);">Urinary Development</a></li>
+		            <li title="Reproductive Development"><a href="javascript:void(0);">Reproductive Development</a></li>
+		          </ul>
+		        </li>
+		        <li title="Disease"><span class="heading">Disease</span>
+		          <ul class="heading">
+		            <li title="GUDMAP Disease Resource"><a href="javascript:void(0);">GUDMAP Disease Resource</a></li>
+		          </ul>
+		        </li>
+		        <li title="Help"><span class="heading">Help</span>
+		          <ul class="heading">
+		            <li title="Using Database"><a href="javascript:void(0);">Using Database</a></li>
+		            <li title="Website"><a href="javascript:void(0);">Website</a></li>
+		            <li title="Glossary"><a href="javascript:void(0);">Glossary</a></li>
+		            <li title="System Requirements"><a href="javascript:void(0);">System Requirements</a></li>
+		          </ul>
+		        </li>
+		      </ul>
+		    </li>
+		  </ul>
+  		  <div style="height:0;font-size:0;clear:both;"></div>
+		</div>
+		<script type="text/javascript">
+		  // <![CDATA[
+		 jQuery(document).ready(
+		   function()
+		     {
+		       jQuery("#navmenu1").dmxNavigationMenu(
+		         {"width": 350, "mainShowDuration": "normal", "mainShowEasing": "swing", "mainHideDuration": "normal", "mainHideEasing": "swing", "subShowDuration": "slow", "subShowEasing": "swing", "subHideDuration": "slow", "subHideEasing": "swing", "useMenuBarSearch": false, "keyboard": true, "menuWidth": 175}
+		       );
+		     }
+		 );
+		  // ]]>
+		</script>
+    </nav>  
+   </div><!--end g_bigmenu -->
+    
+ </div><!-- end #gd_header -->
+</ui:composition>

@@ -1,0 +1,50 @@
+@charset "UTF-8";
+/* CSS Document */
+.dmxNavigationMenu {
+  background-color:#c2d5dc;
+}
+
+.dmxNavigationMenu li a.selected, .dmxNavigationMenu li a:hover{
+  background-color:transparent;
+  color:#ffffff;
+}
+
+/* .dmxNavigationMenu li a.visited, .dmxNavigationMenu li a:visited
+ {
+	color:#436482;
+} */
+
+
+.menu li a {
+	
+	font-family: droid-sans, molengo, "Futura Condensed Medium", "Century Gothic", sans-serif;
+	font-style: normal;
+	font-size:20px;
+	font-stretch:expanded;
+	font-weight: 400;
+	color: #436482;
+	padding: 0 20px 0 0;
+}
+
+.mega li a {
+	font-size:12px;
+	padding-top:7px;
+	padding-left:7px;
+}
+
+
+
+/* .mega li a.selected, .mega li a:hover {
+  background-color:#355b7b;
+  color:#ffffff;
+} */
+.mega li a:hover {
+  background-color:#355b7b;
+  color:#ffffff;
+}
+
+/* .mega li a.visited, .mega li a:visited
+ {
+	color:#436482;
+	background-color:#ebebeb;
+} */

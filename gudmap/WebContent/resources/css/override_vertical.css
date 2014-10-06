@@ -1,0 +1,20 @@
+@charset "UTF-8";
+/* CSS Document */
+/*REMOVE , #navmenu2.dmxNavigationMenu li a.hover so that color is removed onmouseout */
+#navmenu2.dmxNavigationMenu li a.selected, #navmenu2.dmxNavigationMenu li a:hover{
+  background-color:#ebebeb;
+}
+ 
+#navmenu2.dmxNavigationMenu {
+  background-color:white;
+}
+
+/***************/
+
+
+.menu li a {
+	color: #436482;
+	padding-bottom:5px;
+	padding-top:5px;
+	/*border-left:#6FAEC4 solid 4px;*/
+}

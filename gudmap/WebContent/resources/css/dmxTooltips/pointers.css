@@ -1,0 +1,19 @@
+/* Bottom pointers ------------------------------------------------ */
+.dmxtooltiptable .b .top         {width:28px; height:25px; margin:auto;            }
+.dmxtooltiptable .b .topleft     {width:28px; height:25px; margin:auto auto auto 0;}
+.dmxtooltiptable .b .topright    {width:28px; height:25px; margin:auto 0 auto auto;}
+
+/* Top pointers ---------------------------------------------------- */
+.dmxtooltiptable .t .bottom      {width:28px; height:26px; margin:auto;            }
+.dmxtooltiptable .t .bottomleft  {width:28px; height:26px; margin:auto auto auto 0;}
+.dmxtooltiptable .t .bottomright {width:28px; height:26px; margin:auto 0 auto auto;}
+
+/* Right pointers -------------------------------------------------- */
+.dmxtooltiptable .r .left        {width:22px; height:25px;}
+.dmxtooltiptable .r .leftbottom  {width:22px; height:25px;}
+.dmxtooltiptable .r .lefttop     {width:22px; height:25px;}
+
+/* Left pointers --------------------------------------------------- */
+.dmxtooltiptable .l .right       {width:23px; height:25px;}
+.dmxtooltiptable .l .rightbottom {width:23px; height:25px;}
+.dmxtooltiptable .l .righttop    {width:23px; height:25px;}

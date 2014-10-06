@@ -1,0 +1,29 @@
+.bluebevel .tl {background:url(tl.png) bottom right no-repeat;}
+.bluebevel .t  {background:url(t.png)  bottom left  repeat-x; }
+.bluebevel .tr {background:url(tr.png) bottom left  no-repeat;}
+.bluebevel .l  {background:url(l.png)  top    right repeat-y; }
+.bluebevel .r  {background:url(r.png)  top    left  repeat-y; }
+.bluebevel .bl {background:url(bl.png) top    right no-repeat;}
+.bluebevel .b  {background:url(b.png)  top    left  repeat-x; }
+.bluebevel .br {background:url(br.png) top    left  no-repeat;}
+.bluebevel .c  {background:#D0E1FF;}
+
+/* Bottom pointers ------------------------------------------------ */
+.bluebevel .b .top         {background:url(pointer_b.png)  top center no-repeat;}
+.bluebevel .b .topleft     {background:url(pointer_bl.png) top left   no-repeat;}
+.bluebevel .b .topright    {background:url(pointer_br.png) top right  no-repeat;}
+
+/* Top pointers ---------------------------------------------------- */
+.bluebevel .t .bottom      {background:url(pointer_t.png)  bottom center no-repeat;}
+.bluebevel .t .bottomleft  {background:url(pointer_tl.png) bottom left   no-repeat;}
+.bluebevel .t .bottomright {background:url(pointer_tr.png) bottom right  no-repeat;}
+
+/* Right pointers -------------------------------------------------- */
+.bluebevel .r .left        {background:url(pointer_r.png)  left   center no-repeat;}
+.bluebevel .r .leftbottom  {background:url(pointer_rb.png) bottom left   no-repeat;}
+.bluebevel .r .lefttop     {background:url(pointer_rt.png) top    left   no-repeat;}
+
+/* Left pointers --------------------------------------------------- */
+.bluebevel .l .right       {background:url(pointer_l.png)  right  center no-repeat;}
+.bluebevel .l .rightbottom {background:url(pointer_lb.png) bottom right  no-repeat;}
+.bluebevel .l .righttop    {background:url(pointer_lt.png) top    right  no-repeat;}

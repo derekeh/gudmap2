@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Test File
+	</ui:define>
+	
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+		<h:outputStylesheet library="css" name="nivo-slider.css" />
+		<h:outputStylesheet library="css/nivoSlider/light" name="light.css" />
+		<h:outputScript library="scripts" name="jquery.nivo.slider.pack.js"></h:outputScript>
+	    
+	    <h1>Introduction</h1>
+    
+    <div id="gd_slideshow_home"><h2>Publications</h2>
+      <div class="dmxNivoSlider slider-wrapper theme-light" style="width:300px;margin:0px auto 0px auto;">
+		<div id="slider1" class="nivoSlider"><a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:10716" target="_self"><h:graphicImage id="img_10716" url="/resources/images/gudmap/use/10716.jpg" alt="" title="#img_10716_caption" data-thumb="/resources/images/gudmap/use/thumbs/10716.jpg" /></a>
+		<a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:9536" target="_self"><h:graphicImage id="img_15" url="/resources/images/gudmap/use/15.jpg" alt="" title="#img_15_caption" data-thumb="/resources/images/gudmap/use/thumbs/15.jpg" /></a>
+		<a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:5791" target="_self"><h:graphicImage id="img_5791" url="/resources/images/gudmap/use/5791.jpg" alt="" title="#img_5791_caption" data-thumb="/resources/images/gudmap/use/thumbs/5791.jpg" /></a>
+		<a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:8200" target="_self"><h:graphicImage id="img_8200" url="/resources/images/gudmap/use/8200.jpg" alt="" title="#img_8200_caption" data-thumb="/resources/images/gudmap/use/thumbs/8200.jpg" /></a>
+		<a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:8822" target="_self"><h:graphicImage id="img_8822" url="/resources/images/gudmap/use/8822.jpg" alt="" title="#img_8822_caption" data-thumb="/resources/images/gudmap/use/thumbs/8822.jpg" /></a>
+		<a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:9536" target="_self"><h:graphicImage id="img_9536" url="/resources/images/gudmap/use/9536.jpg" alt="" title="#img_9536_caption" data-thumb="/resources/images/gudmap/use/thumbs/9536.jpg" /></a>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19000842" target="_self"><h:graphicImage id="img_brunskill" url="/resources/images/gudmap/use/brunskill.jpg" alt="" title="#img_brunskill_caption" data-thumb="/resources/images/gudmap/use/thumbs/brunskill.jpg" /></a>
+		<a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:14140" target="_self"><h:graphicImage id="img_Chad" url="/resources/images/gudmap/use/Chad.jpg" alt="" title="#img_Chad_caption" data-thumb="/resources/images/gudmap/use/thumbs/Chad.jpg" /></a>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/21761471" target="_self"><h:graphicImage id="img_Georgas_DevDyn" url="/resources/images/gudmap/use/Georgas_DevDyn.jpg" alt="" title="#img_Georgas_DevDyn_caption" data-thumb="/resources/images/gudmap/use/thumbs/Georgas_DevDyn.jpg" /></a>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19501082" target="_self"><h:graphicImage id="img_georgas_et_al" url="/resources/images/gudmap/use/georgas_et_al.jpg" alt="" title="#img_georgas_et_al_caption" data-thumb="/resources/images/gudmap/use/thumbs/georgas_et_al.jpg" /></a>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/18287559" target="_self"><h:graphicImage id="img_mcmahon" url="/resources/images/gudmap/use/mcmahon.jpg" alt="" title="#img_mcmahon_caption" data-thumb="/resources/images/gudmap/use/thumbs/mcmahon.jpg" /></a>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19591821" target="_self"><h:graphicImage id="img_mugford_et_al" url="/resources/images/gudmap/use/mugford_et_al.jpg" alt="" title="#img_mugford_et_al_caption" data-thumb="/resources/images/gudmap/use/thumbs/mugford_et_al.jpg" /></a>
+		<a href="http://www.gudmap.org/gudmap/pages/ish_submission.html?id=GUDMAP:14340" target="_self"><h:graphicImage id="img_Sox10" url="/resources/images/gudmap/use/Sox10.jpg" alt="" title="#img_Sox10_caption" data-thumb="/resources/images/gudmap/use/thumbs/Sox10.jpg" /></a>
+		</div>  
+	  <div id="img_10716_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Southard-Smith group</h4>
+	    <p>Gene expression: Sox10</p>
+	  </div>
+	  <div id="img_15_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Melissa Little group</h4>
+	    <p>Gene Expression: Dppa5a</p>
+	  </div>
+	  <div id="img_5791_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Andrew McMahon group</h4>
+	    <p>Gene Expression: Gata3</p>
+	  </div>
+	  <div id="img_8200_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Melissa Little group</h4>
+	    <p>Gene Expression: Wt1</p>
+	  </div>
+	  <div id="img_8822_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Kevin Gaido group</h4>
+	    <p>Gene expression: Dhh</p>
+	  </div>
+	  <div id="img_9536_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Melissa Little group</h4>
+	    <p>Gene expression: Dppa5a</p>
+	  </div>
+	  <div id="img_brunskill_caption" class="nivo-html-caption">
+	    <h4>Brunskill et al</h4>
+	    <p>Developmental Cell, 2008 Nov; 15(5):781-791</p>
+	  </div>
+	  <div id="img_Chad_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Chad Mezina group</h4>
+	    <p>Gene expression: Mif</p>
+	  </div>
+	  <div id="img_Georgas_DevDyn_caption" class="nivo-html-caption">
+	    <h4>Georgas et al</h4>
+	    <p>Dev Dyn. 2011 Aug; 240(8):spcone. doi:10.102/dvdy.22697</p>
+	  </div>
+	  <div id="img_georgas_et_al_caption" class="nivo-html-caption">
+	    <h4>Georgas et al</h4>
+	    <p>Dev Biol. 2009 Aug15;332(2):273-286</p>
+	  </div>
+	  <div id="img_mcmahon_caption" class="nivo-html-caption">
+	    <h4>McMahon et al</h4>
+	    <p>J Am Soc Nephrol.2008 Apr;19(4):667-71</p>
+	  </div>
+	  <div id="img_mugford_et_al_caption" class="nivo-html-caption">
+	    <h4>Mugford et al</h4>
+	    <p>Dev Biol. 2009 Sep 15;333(2):312-23. Epub 2009 Jul 8</p>
+	  </div>
+	  <div id="img_Sox10_caption" class="nivo-html-caption">
+	    <h4>Image courtesy of Chad Vezina group</h4>
+	    <p>Gene expression: Sox10</p>
+	  </div>
+	</div><!-- END dmxNivoSlider -->
+	<script type="text/javascript">
+	  // <![CDATA[
+	 jQuery(document).ready(
+	   function()
+	     {
+	       jQuery("#slider1").nivoSlider(
+	         {"design": "light", "effect": "fade", "pauseTime": 9000, "randomStart": true}
+	       );
+	     }
+	 );
+	  // ]]>
+	</script>
+	<p><a href="http://www.gudmap.org/About/Usage.html">Image Use Policy</a></p>
+  </div><!-- end gd_slideshow_home-->
+    
+    <div id="gd_dbstats">
+    <h2>Database Statistics</h2>
+    	<table width="98%" border="0">
+  <tr>
+    <th align="left" scope="col">Assay Type</th>
+    <th align="left" scope="col">Entries</th>
+    <th align="left" scope="col">Genes</th>
+  </tr>
+  <tr>
+    <td>All In Situ Hybridisation (ISH)</td>
+    <td><a href="#">10758</a></td>
+    <td>3692</td>
+  </tr>
+  <tr>
+    <td>Wholemount ISH (WISH)</td>
+    <td><a href="#">7288</a></td>
+    <td>2896</td>
+  </tr>
+  <tr>
+    <td>Section ISH (SISH)</td>
+    <td><a href="#">3406</a></td>
+    <td>1436</td>
+  </tr>
+  <tr>
+    <td>OPT ISH</td>
+    <td><a href="#">64</a></td>
+    <td>32</td>
+  </tr>
+  <tr>
+    <td>Immunohistochemistry (IHC)</td>
+    <td><a href="#">326</a></td>
+    <td>20</td>
+  </tr>
+  <tr>
+    <td>Transgenic Reporters</td>
+    <td><a href="#">41</a></td>
+    <td>28</td>
+  </tr>
+  <tr>
+    <td>Microarray</td>
+    <td><a href="#">461</a></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#">More...</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+    </div>
+    <!--<p><img id="gd_dbstats" src="../images/tests/dbstats_placeholder.png"  alt=""/></p>-->
+   
+    <p><strong>The GenitoUrinary Development Molecular Anatomy Project</strong> (GUDMAP) is a consortium of laboratories working to provide the scientific and medical community with tools to facilitate research. The key components are:</p>
+    <div class="gd_list">
+    <ul>
+      <li>a molecular atlas of gene expression for the developing organs of the GenitoUrinary (GU) tract</li>
+      <li>a high resolution molecular anatomy that highlights development of the GU system</li>
+      <li>mouse strains to facilitate developmental and functional studies within the GU system</li>
+      <li>tutorials describing GU organogenesis</li>
+      <li>rapid access to primary data via the GUDMAP database</li>
+    </ul>
+    </div>
+    <p>&nbsp;      </p>
+    <p>The GUDMAP tools, web site and database are a public resource funded by the National Institutes of Health, USA.</p>
+	    
+	    
+	</ui:define>
+</ui:composition>
+</html>

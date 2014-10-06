@@ -1,0 +1,234 @@
+.dmxNavigationMenu {
+	position: relative;
+    background-color: #eee;
+	min-height: 1%;
+}
+
+.dmxNavigationMenu * {
+	font-family: Arial;
+	font-size: 12px;
+	color: #333;
+}
+
+.dmxNavigationMenu h3 {
+    float: left;
+    margin: 5px;
+}
+
+.dmxNavigationMenu form.dmxSearchForm {
+	/*float: right;
+    margin: 5px;*/
+	position: absolute;
+	right: 5px;
+	bottom: 2px;
+}
+
+.dmxNavigationMenu .vertical form.dmxSearchForm {
+	position: relative;
+}
+
+.dmxNavigationMenu.contextMenu {
+	z-index: 10000;
+}
+
+.dmxNavigationMenu.contextMenu h3 {
+    display: none;
+}
+
+.dmxNavigationMenu.contextMenu form.dmxSearchForm {
+    display: none;
+}
+
+.dmxNavigationMenu ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dmxNavigationMenu li {
+	display: block;
+	position: relative;
+	white-space: nowrap;
+	zoom: 1;
+}
+
+.dmxNavigationMenu li span.label {
+	display: block;
+	padding: 5px;
+	font-weight: bold;
+}
+
+.dmxNavigationMenu li span.heading {
+	display: block;
+	padding: 5px;
+	font-weight: bold;
+}
+
+.dmxNavigationMenu li.separator {
+	background-color: #ccc;
+	border-bottom: 1px solid #fff;
+	border-right: 1px solid #fff;
+	height: 1px;
+	margin: 3px 5px;
+	font-size: 0;
+	line-height: 0;
+	text-indent: -10000px;
+}
+
+.dmxNavigationMenu ul.horizontal > li.separator {
+	width: 1px;
+	margin: 3px 5px;
+}
+
+
+.dmxNavigationMenu li:hover > ul {
+	display: block;
+}
+
+.dmxNavigationMenu ul.vertical {
+	clear: both;
+}
+
+.dmxNavigationMenu ul.horizontal {
+	float: left;
+}
+
+.dmxNavigationMenu ul.horizontal > li {
+	display: -moz-inline-stack;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	vertical-align: bottom;
+	float:left;
+}
+
+.dmxNavigationMenu ul.mega,
+.dmxNavigationMenu ul.sub {
+	position: absolute;
+	top: 0;
+	left: 97%;
+	display: none;
+	background-color: #eee;
+	border: 1px solid #999;
+	width: 150px;
+	z-index: 99;
+}
+
+.dmxNavigationMenu ul.sub_left ul.mega,
+.dmxNavigationMenu ul.sub_left ul.sub {
+	left: auto;
+	right: 97%;
+}
+
+.dmxNavigationMenu ul.mega > li {
+	float: left;
+}
+
+.dmxNavigationMenu ul.horizontal > li > ul.mega,
+.dmxNavigationMenu ul.horizontal > li > ul.sub {
+	top: 100%;
+	left: 0;
+}
+
+.dmxNavigationMenu ul.main_up > li > ul.mega,
+.dmxNavigationMenu ul.main_up > li > ul.sub {
+	top: auto;
+	bottom: 100%;
+}
+
+.dmxNavigationMenu ul.main_up ul.mega,
+.dmxNavigationMenu ul.main_up ul.sub {
+	top: auto;
+	bottom: 0;
+}
+
+.dmxNavigationMenu li a {
+	display: block;
+	padding: 5px;
+	text-decoration: none;
+	overflow: hidden;
+	outline: none;
+	zoom: 1;
+}
+
+.dmxNavigationMenu ul.horizontal > li > a {
+	*display: inline;
+}
+
+.dmxNavigationMenu li a.icon-top {
+	line-height: normal !important;
+	text-align: center;
+}
+
+.dmxNavigationMenu a.expandable {
+	padding-right: 16px !important;
+}
+
+.dmxNavigationMenu ul.sub_left ul a.expandable {
+	padding-left: 16px !important;
+}
+
+.dmxNavigationMenu ul.vertical.sub_left > li > a.expandable {
+	padding-left: 16px !important;
+}
+
+/*DEREK REMOVE ,.dmxNavigationMenu li a.hover SO THAT COLOR RETURNS ON MOUSEOUT*/
+.dmxNavigationMenu li a.selected,
+.dmxNavigationMenu li a:hover {
+	background: #09c;
+	color: #fff;
+}
+
+
+
+
+.dmxNavigationMenu li a img {
+	position: relative;
+	border: none;
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+.dmxNavigationMenu li a.icon-top img {
+	display: block;
+	margin: 0 auto;
+}
+
+.dmxNavigationMenu span.sub_down,
+.dmxNavigationMenu span.sub_right,
+.dmxNavigationMenu span.sub_up,
+.dmxNavigationMenu span.sub_left {
+	display: block;
+	position: absolute;
+	width: 16px;
+	height: 100%;
+	top: 0;
+	right: 0;
+	background-image: url('right-trans.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.dmxNavigationMenu span.sub_down {
+	background-image: url('down-trans.png');
+}
+
+.dmxNavigationMenu span.sub_up {
+	background-image: url('up-trans.png');
+}
+
+.dmxNavigationMenu span.sub_left {
+	background-image: url('left-trans.png');
+	right: auto;
+	left: 0;
+}
+
+*:first-child+html .dmxNavigationMenu li a.icon-top img,
+* html .dmxNavigationMenu li a.icon-top img {
+	margin: 0;
+}
+
+.dmxNavigationMenu li a span {
+	display: none;
+}

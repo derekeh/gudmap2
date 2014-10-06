@@ -1,0 +1,96 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#db_querybrowse_left {
+	min-height: 252px;
+	min-width: 250px;
+	float: left;
+	/*background-color: #D7E8D5;*/
+}
+
+#db_querybrowse2_left {
+	min-height: 252px;
+	min-width: 250px;
+	float: left;
+	margin-top:50px;
+	/*background-color: #D7E8D5;*/
+}
+
+#db_browsequery_left {
+	min-height: 252px;
+	min-width: 250px;
+	float: left;
+	/*background-color:#F3ECCA;*/
+}
+
+
+
+#db_organstats_right {
+	background-color: #D0DFE5;
+	min-width: 250px;
+	min-height: 252px;
+	float: right;
+	font-size: 90%;
+	border-bottom-left-radius: 8px;
+}
+
+.db_cellborder_topleft {
+	border-top-color: #6FAEC4;
+	border-top-style: solid;
+	border-left-color: #6FAEC4;
+	border-left-style: solid;
+	
+}
+
+.db_cellborder_top {
+	border-top-color: #6FAEC4;
+	border-top-style: solid;
+}
+
+.db_cellborder_left {
+	border-left-color: #6FAEC4;
+	border-left-style: solid;
+}
+
+.db_cell_object_padding {
+	padding:0 8px;	
+}
+
+#db_organsystem {
+}
+
+#db_updates {
+	border-top: 1px solid #347982;
+	border-bottom: 1px solid #347982;
+}
+
+#db_homestats {
+	
+}
+
+.db_organimage {
+	border-radius: 8px;	
+}
+
+.db_order-table{   
+	border-collapse:collapse;
+}
+
+.db_order-table-header{
+	text-align:center;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:16px;
+}
+
+.db_order-table-odd-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #FFFFFFF;
+	border-top:1px solid #BBBBBB;
+}
+
+.db_order-table-even-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-top:1px solid #BBBBBB;
+}

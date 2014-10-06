@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<aside>
+	<article>
+	  
+	  <!-- <h:form id="gd_solrflyout"> -->
+	  <h:form>
+	  	<div class="gd_solrmenu #{viewSolrSearch.showCloseButton ? 'gd_solrmenuexpand' : 'gd_solrmenucollapse'}">
+	  	  <h:panelGroup  class="gd_close_search" rendered="#{viewSolrSearch.showCloseButton}">
+		  	  <h:commandLink action="#{viewSolrSearch.toggle}">
+		  	  	<h:graphicImage library="images/resources" name="close.png" width="20" height="20" alt=""/>
+		  	  	<f:ajax execute="@form" render="@form" />
+		  	  </h:commandLink>
+	  	  </h:panelGroup>
+	      <h:panelGroup class="gd_expand_search" rendered="#{viewSolrSearch.showOpenButton}">
+	      <h:commandLink action="#{viewSolrSearch.toggle}">
+	      	<h:graphicImage library="images/resources" name="expand_search_arrow.png" width="25" height="250" alt="" />	      	
+	      	<f:ajax execute="@form" render="@form" />
+	      </h:commandLink>
+	      </h:panelGroup>
+	      
+	      <h:outputText class="gd_solr_text" value="Bernie's Amazing Solr" rendered="#{viewSolrSearch.showSolrText}"> </h:outputText>
+	      
+	      <h:panelGrid columns="2" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form" rendered="#{viewSolrSearch.showSolrInput}">
+	      	<h:inputText id="gd_solr_textfield" value="" required="true" placeholder="Enter Text"></h:inputText>
+	        <h:commandButton id="gd_solr_button" type="submit" value="Search" action="solr_result"></h:commandButton>
+	      </h:panelGrid>
+	      <!-- <form id="form2" name="form2" method="post">
+	        <input name="gd_solr_textfield" type="text" id="gd_solr_textfield" placeholder="Enter Text" autocomplete="off" size="30" maxlength="100"></input>
+	        <input name="gd_solr_button" type="submit" id="gd_solr_button" value="Search"></input>
+	      </form> -->
+	     
+	      <h:graphicImage library="images/tests" name="solr_tree.png" alt="" class="gd_solr_image" rendered="#{viewSolrSearch.showSolrTree}"/> 
+	   </div><!-- end gd_solrmenu -->
+	  </h:form>
+	  
+	</article>
+	</aside>
+</ui:composition>

@@ -1,0 +1,666 @@
+<!doctype html>
+<html><!-- InstanceBegin template="/Templates/gudmap100.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta charset="UTF-8">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>expression database</title>
+<!-- InstanceEndEditable -->
+<link href="../styles/gudmap100.css" rel="stylesheet" type="text/css">
+<link href="../styles/gudmap_db.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="../styles/dmxNavigationMenu.css" />
+<script type="text/javascript" src="../ScriptLibrary/jquery-latest.pack.js"></script>
+<script type="text/javascript" src="../ScriptLibrary/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="../ScriptLibrary/dmxNavigationMenu.js"></script>
+<!--[if lt IE 7]><script type="text/javascript" src="../styles/IE7.js"></script><![endif]-->
+<link rel="stylesheet" type="text/css" href="../styles/dmxNavigationMenu/elegant_blue/elegant_blue.css" />
+
+<link href="/styles/overrides.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../ScriptLibrary/gudmap100.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<script type="text/javascript" src="../ScriptLibrary/dmxTooltips.js"></script>
+<script type="text/javascript">
+function applyDMXTooltip(trigger) {//v1.5
+	if (arguments.length < 3 || !arguments[2]) return true; // ignore empty tooltips
+  window.stylesFolderName = 'styles';
+	var arg = {};
+	var options = ['contentType', 'dataProvider','showEffect','easing','showAt',
+  'showDirection', 'showDuration','showDelay','closeEvent','styleTheme',
+	'showCloseBtn','onshow','onhide','mouseOffsetX','mouseOffsetY','x','y','w','h'];
+  for (var i = 0; i < options.length && i < arguments.length-1; i++) {
+		arg[options[i]] = arguments[i + 1];
+	}
+	showTooltip(trigger, arg);
+}
+</script>
+<link rel="stylesheet" type="text/css" href="../styles/override_vertical.css" />
+<!-- InstanceEndEditable -->
+<!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
+<script>var __adobewebfontsappname__="dreamweaver"</script>
+<script src="http://use.edgefonts.net/droid-sans:n4:default;molengo:n4:default.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<!--[if lt IE 7]><script type="text/javascript" src="styles/IE7.js"></script><![endif]-->
+
+
+<!-- InstanceParam name="id" type="text" value="searchInit()" -->
+</head>
+
+<body onLoad="searchInit()">
+
+<div class="gd_container">
+  <div class="gd_header">
+    <div id="gd_logo">
+      	<a href="#"><img src="../images/header/gudmap_logo.png" alt="GUDMAP" name="GUDMAP" width="334" height="56" id="gudmap_logo"/></a> 
+      </div>
+    <div id="gd_stripe_strip">
+          <div id="gd_login" class="gd_webfont_header">
+          	<table>
+            <tr>
+           	<td><img id="gd_login_icon" src="../images/header/login_icon.png" /></td>
+              <td> Login</td>
+            </tr>
+           </table>
+          </div>
+          <div id="gd_quicksearch"  class="gd_webfont_header">
+          	<form><table  border="0">
+  <tr>
+    <td>Search</td>
+    <td><input type="text"></td>
+    <td>for</td>
+    <td><input type="text"></td>
+    <td><img src="../images/header/mag_glass.png" width="26" height="26" alt=""/></td>
+  </tr>
+</table>
+</form>
+          </div>
+    </div>
+      <div class="gd_clearfloat"></div>
+      <div id="gd_feedback"  class="gd_webfont_header">
+    		<table><tr>
+            	<td><img id="gd_feedback_icon" src="../images/header/feedback_icon.png" /> </td>
+            <td>Feedback </td>
+           </tr></table>     
+      </div> 
+      <div id="gd_logotext"  class="gd_webfont_header">
+      The GenitoUrinary Resource
+      </div>
+      
+    <div id="gd_bigmenu">
+    <nav style="margin-left:20px;">
+      <div class="dmxNavigationMenu" id="navmenu1" style="width:350px">
+  <ul class="menu horizontal">
+    <li title="About"><a href="javascript:void(0);">About </a></li>
+    <li title="Help"><a href="javascript:void(0);">Help</a></li>
+    <li title="More..."><a href="javascript:void(0);" class="expandable">More...<span class="sub_down"></span></a>
+      <ul class="mega cols-3">
+        <li title="About GUDMAP"><span class="heading">About GUDMAP</span>
+          <ul class="heading">
+            <li title="Goals"><a href="javascript:void(0);">Goals</a></li>
+            <li title="Projects"><a href="javascript:void(0);">Projects</a></li>
+            <li title="Publications"><a href="javascript:void(0);">Publications</a></li>
+            <li title="Contacts"><a href="javascript:void(0);">Contacts</a></li>
+            <li title="Positions"><a href="javascript:void(0);">Positions</a></li>
+            <li title="Funding"><a href="javascript:void(0);">Funding</a></li>
+            <li title="Events"><a href="javascript:void(0);">Events</a></li>
+            <li title="Links"><a href="javascript:void(0);">Links</a></li>
+            <li title="Message Board"><a href="javascript:void(0);">Message Board</a></li>
+            <li title="Citing Gudmap"><a href="javascript:void(0);">Citing Gudmap</a></li>
+          </ul>
+        </li>
+        <li title="Gene Expression"><span class="heading">Gene Expression</span>
+          <ul class="heading">
+            <li title="Search GUDMAP"><a href="javascript:void(0);">Search GUDMAP</a></li>
+            <li title="Expression Database"><a href="db.html">Expression Database</a></li>
+            <li title="Tissue Summaries"><a href="javascript:void(0);">Tissue Summaries</a></li>
+            <li title="ISH Quality Control"><a href="javascript:void(0);">ISH Quality Control</a></li>
+            <li title="Analysis"><a href="javascript:void(0);">Analysis</a></li>
+            <li title="Data Source"><a href="javascript:void(0);">Data Source</a></li>
+            <li title="Collections"><a href="javascript:void(0);">Collections</a></li>
+          </ul>
+        </li>
+        <li title="Resources"><span class="heading">Resources</span>
+          <ul class="heading">
+            <li title="Submission Archive"><a href="javascript:void(0);">Submission Archive</a></li>
+            <li title="Project Protocols"><a href="javascript:void(0);">Project Protocols</a></li>
+            <li title="Mice Cell Lines"><a href="javascript:void(0);">Mice Cell Lines</a></li>
+            <li title="3D Atlas"><a href="javascript:void(0);">3D Atlas</a></li>
+            <li title="Ontology"><a href="javascript:void(0);">Ontology</a></li>
+            <li title="Schematics"><a href="javascript:void(0);">Schematics</a></li>
+            <li title="Biomart"><a href="javascript:void(0);">Biomart</a></li>
+            <li title="UQ Gudmap - Probe Design"><a href="javascript:void(0);">UQ Gudmap - Probe Design</a></li>
+            <li title="Web Stats"><a href="javascript:void(0);">Web Stats</a></li>
+            <li title="Internal"><a href="javascript:void(0);">Internal</a></li>
+          </ul>
+        </li>
+        <li title="Tutorials"><span class="heading">Tutorials</span>
+          <ul class="heading">
+            <li title="Overview"><a href="javascript:void(0);">Overview</a></li>
+            <li title="Urinary Development"><a href="javascript:void(0);">Urinary Development</a></li>
+            <li title="Reproductive Development"><a href="javascript:void(0);">Reproductive Development</a></li>
+          </ul>
+        </li>
+        <li title="Disease"><span class="heading">Disease</span>
+          <ul class="heading">
+            <li title="GUDMAP Disease Resource"><a href="javascript:void(0);">GUDMAP Disease Resource</a></li>
+          </ul>
+        </li>
+        <li title="Help"><span class="heading">Help</span>
+          <ul class="heading">
+            <li title="Using Database"><a href="javascript:void(0);">Using Database</a></li>
+            <li title="Website"><a href="javascript:void(0);">Website</a></li>
+            <li title="Glossary"><a href="javascript:void(0);">Glossary</a></li>
+            <li title="System Requirements"><a href="javascript:void(0);">System Requirements</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <div style="height:0;font-size:0;clear:both;"></div>
+</div>
+<script type="text/javascript">
+  // <![CDATA[
+ jQuery(document).ready(
+   function()
+     {
+       jQuery("#navmenu1").dmxNavigationMenu(
+         {"width": 350, "mainShowDuration": "normal", "mainShowEasing": "swing", "mainHideDuration": "normal", "mainHideEasing": "swing", "subShowDuration": "slow", "subShowEasing": "swing", "subHideDuration": "slow", "subHideEasing": "swing", "useMenuBarSearch": false, "keyboard": true, "menuWidth": 175}
+       );
+     }
+ );
+  // ]]>
+</script>
+    </nav>  
+    </div><!--end g_bigmenu -->
+      
+  
+      
+  <!-- end .header --></div>
+  <!-- InstanceBeginEditable name="edit_content" -->
+  <div class="gd_content">
+  <!--OPTIONAL SLIDE IN SEARCH MENU -->
+ <!-- <div id="gd_solrmenu">
+  <div id="gd_close_search" onClick="MM_callJS('toggle()')"><img src="../images/resources/close.png" width="20" height="20" alt=""/></div>
+      <div id="gd_expand_search" onClick="MM_callJS('toggle()')"><img src="../images/resources/expand_search_arrow.png" width="25" height="250" alt=""/></div>
+      
+      <p id="gd_solr_text">Bernie's Amazing Solr </p>
+      <div id="gd_solr_form">
+      <form id="form2" name="form2" method="post">
+        <input name="gd_solr_textfield" type="text" id="gd_solr_textfield" placeholder="Enter Text" autocomplete="off" size="30" maxlength="100">
+        <input name="gd_solr_button" type="submit" id="gd_solr_button" value="Search">
+      </form>
+      </div>
+      <p>&nbsp;</p>
+    <img id="gd_solr_image" src="../images/tests/solr_tree.png" alt=""/> 
+    </div>-->
+    
+    <div id="gd_edit_area">
+    <h1>Expression Database</h1>
+    
+    <div id="db_querybrowse_left">
+    <form>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>&nbsp;</td>
+    <td><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>
+    <td class="db_cellborder_topleft"><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>
+    <td><img src="../images/dbhome/n_gene.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_gene_info" onClick="applyDMXTooltip(this,'','Search for genes with expression data in the database. This search addresses all in situ, and micro-array expression data. \\nType gene symbol or gene name or synonym (see MGI). Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. More....\\n\\nChoose the output format from the options dialogue.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td class="db_cell_object_padding"><input type="text" name="gene_input" id="gene_input" ></td>
+    <td class="db_cell_object_padding"><img src="../images/dbhome/n_options.png" width="80" height="19" alt=""/></td>
+    <td class="db_cell_object_padding"><input type="image" name="db_gene_go" id="db_gene_go" src="../images/dbhome/n_go.png"></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_anatomy.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_anatomy_info" onClick="applyDMXTooltip(this,'','Search for genes annotated with expression present, uncertain or not detected in a structure. This search addresses annotated in situ expression data and microarray data. \\nType exact name of structure or exact synonym or EMAP anatomy ID. Find anatomy terms with predictive text or search anatomy tree then return to enter text. More....\\n\\nFor Boolean searches (genes expressed in X and/or/not Y) go here','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td class="db_cell_object_padding"><input type="text" name="anatomy_input" id="anatomy_input"></td>
+    <td>&nbsp;</td>
+    <td class="db_cell_object_padding"><input type="image" name="db_anatomy_go" id="db_anatomy_go" src="../images/dbhome/n_go.png"></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><img src="../images/dbhome/n_query.png" width="69" height="24" alt=""/></td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_booleanAnatomy.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_boolean_info" onClick="applyDMXTooltip(this,'','Search for genes expressed in structure X and/or/not in structure Y. Click \\nBoolean Anatomy for this search page where there is additional help.More....','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_accessionID.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_accession_info" onClick="applyDMXTooltip(this,'','Search for database entries related to an accession number from the following databases: GUDMAP, ENSEMBL, MGI Gene ID. List IDs separated by \';\'. Lists are treated as A OR B. Example, ENSMUSG00000050846; gudmap:8328. This search addresses all in situ data but will include microarrays for GUDMAP IDs. More....','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td class="db_cell_object_padding"><input type="text" name="accession_input" id="accession_input"></td>
+    <td>&nbsp;</td>
+    <td class="db_cell_object_padding"><input type="image" name="db_accession_go" id="db_accession_go" src="../images/dbhome/n_go.png"></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_geneFunction.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_genefunction_info" onClick="applyDMXTooltip(this,'','Type a Search for genes and probes annotated with a Gene Ontology (GO) Molecular Function, Biological Process, or Subcellular Location term. This search addresses all in situ data in GUDMAP. \\nType exact GO term or ID. The search accepts GO terms for Molecular Function, Biological Process, or Subcellular Location. Find GO terms using predictive text then copy to the query box. List terms separated by semi colon (;), Lists are treated as A OR B. More.... or select an option...','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td class="db_cell_object_padding"><input type="text" name="genefunction_input" id="genefunction_input"></td>
+    <td class="db_cell_object_padding"><img src="../images/dbhome/n_options.png" width="80" height="19" alt=""/></td>
+    <td class="db_cell_object_padding"><input type="image" name="db_genefunction_go" id="db_genefunction_go" src="../images/dbhome/n_go.png"></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td><img src="../images/dbhome/n_disease.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</form>
+    </div>
+    
+    <div id="db_organstats_right">
+    <h2>Database Statistics</h2>
+   <table width="98%" border="0" id="db_homestats">
+  <tr>
+    <th align="left" scope="col">Assay Type</th>
+    <th align="left" scope="col">Entries</th>
+    <th align="left" scope="col">Genes</th>
+  </tr>
+  <tr>
+    <td>All In Situ Hybridisation (ISH)</td>
+    <td><a href="#">10758</a></td>
+    <td>3692</td>
+  </tr>
+  <tr>
+    <td>Wholemount ISH (WISH)</td>
+    <td><a href="#">7288</a></td>
+    <td>2896</td>
+  </tr>
+  <tr>
+    <td>Section ISH (SISH)</td>
+    <td><a href="#">3406</a></td>
+    <td>1436</td>
+  </tr>
+  <tr>
+    <td>OPT ISH</td>
+    <td><a href="#">64</a></td>
+    <td>32</td>
+  </tr>
+  <tr>
+    <td>Immunohistochemistry (IHC)</td>
+    <td><a href="#">326</a></td>
+    <td>20</td>
+  </tr>
+  <tr>
+    <td>Transgenic Reporters</td>
+    <td><a href="#">41</a></td>
+    <td>28</td>
+  </tr>
+  <tr>
+    <td>Microarray</td>
+    <td><a href="#">461</a></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="#">More...</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+       <br />
+       
+  <table width="98%" border="0" id="db_updates">
+  <tr>
+    <td width="58%"><strong>Last Editorial Update:</strong></td>
+    <td width="42%"> 17-Sep-2014</td>
+  </tr>
+  <tr>
+    <td><strong>Last Software Update:</strong></td>
+    <td>09-Sep-2014<br>
+(V 5.5.12)</td>
+  </tr>
+</table>
+        <br />
+        
+        <h2>Focus by Organ/System</h2>
+ <table width="98%" border="0" id="db_organsystem">
+  <tr>
+    <td><img src="../images/dbhome/nocutaway/Metanephros_d.png" width="100" height="99" alt="" class="db_organimage"/></td>
+    <td>Metanephros</td>
+  </tr>
+  <tr>
+    <td><img src="../images/dbhome/nocutaway/LUT_d.png" width="100" height="99" alt="" class="db_organimage"/></td>
+    <td>Lower urinary tract</td>
+  </tr>
+  <tr>
+    <td><img src="../images/dbhome/nocutaway/Early_UGS_d.png" width="100" height="99" alt="" class="db_organimage"/></td>
+    <td>Early reproductive system</td>
+  </tr>
+  <tr>
+    <td><img src="../images/dbhome/nocutaway/Male_d.png" width="100" height="99" alt="" class="db_organimage"/></td>
+    <td>Male reproductive system</td>
+  </tr>
+  <tr>
+    <td><img src="../images/dbhome/nocutaway/Female_d.png" width="100" height="99" alt="" class="db_organimage"/></td>
+    <td>Female reproductive system</td>
+  </tr>
+</table>
+    </div>
+  <!--  <div class="gd_clearfloat"></div>-->
+    <p>&nbsp;</p>
+    
+    
+    <div id="db_querybrowse2_left">
+    <form>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="db_cellborder_topleft">&nbsp;</td>
+          <td><img src="../images/dbhome/n_series.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="db_cellborder_left">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="db_cellborder_topleft">&nbsp;</td>
+          <td><img src="../images/dbhome/n_sample.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="db_cellborder_left">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+    <td>&nbsp;</td>
+    <td><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>
+    <td class="db_cellborder_topleft"><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>
+    <td class="db_cellborder_top"><img src="../images/dbhome/nocutaway/n_array.png" width="130" height="24" alt=""/></td>
+    <td class="db_cellborder_top"><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>
+    <td class="db_cellborder_top"><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>
+    <td><img src="../images/dbhome/n_platform.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td class="db_cellborder_top"><img src="../images/dbhome/nocutaway/n_seq.png" width="130" height="24" alt=""/></td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td ><img src="../images/dbhome/n_series.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><img src="../images/dbhome/n_browse.png" width="69" height="24" alt=""/></td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_theilerStage.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_boolean_info" onClick="applyDMXTooltip(this,'','Search for genes expressed in structure X and/or/not in structure Y. Click \\nBoolean Anatomy for this search page where there is additional help.More....','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td><img src="../images/dbhome/n_sample.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_gene.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_accession_info" onClick="applyDMXTooltip(this,'','Search for database entries related to an accession number from the following databases: GUDMAP, ENSEMBL, MGI Gene ID. List IDs separated by \';\'. Lists are treated as A OR B. Example, ENSMUSG00000050846; gudmap:8328. This search addresses all in situ data but will include microarrays for GUDMAP IDs. More....','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td ><img src="../images/dbhome/n_wish.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td class="db_cellborder_top"><img src="../images/dbhome/nocutaway/n_inSitu.png" width="130" height="24" alt=""/></td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_sish.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td><img src="../images/dbhome/transgenic.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_topleft">&nbsp;</td>
+    <td><img src="../images/dbhome/n_opt.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_left">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="db_cellborder_top">&nbsp;</td>
+    <td><img src="../images/dbhome/n_ihc.png" width="130" height="24" alt=""/><a href="#" style="cursor:help;"><img src="../images/dbhome/n_information.png" alt="" width="22" height="24" id="db_disease_info" onClick="applyDMXTooltip(this,'','A link to the GUDMAP Disease Resource. The resource contains a searchable database of associations between genes, genitourinary disease and renal/urinary &amp; reproductive phenotypes.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"/></a></td>
+  </tr>
+      </table>
+</form>
+    </div>
+    
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    
+   <div style="clear:left;"></div>
+   
+   <!-- <div class="gd_clearfloat"></div>-->
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+   
+    <!--FLY IN MENU -->
+     <div id="db_browsequery_left">
+   <table  width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td><img src="../images/dbhome/n_browse_ext2.png" width="109" height="24" alt=""/></td>
+<!--<td><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>
+<td><img src="../images/resources/20spacer.png" width="20" height="5" alt=""/></td>-->
+<td>
+<div id="navmenu2" class="dmxNavigationMenu" style="width:155px;float:left">
+  <ul class="menu vertical">
+  
+    <li title=""><a href="javascript:void(0);" class="expandable"><img src="../images/dbhome/nocutaway/n_array.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
+      <ul class="sub">
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_series.png" border="0" width="130" height="24" alt=" " /> </a><div id="array_series_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Series returns a list of all the microarray experiments (series) in GUDMAP. From there you can go to individual experiments and then to individual samples. More.... \n The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the Submission Archive. To see Analyses of Microarray Gene Lists click here. ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+        <li title=" "><a href="javascript:void(0);"><img src="../images/dbhome/n_sample.png" border="0" width="130" height="24" alt=" " /> </a><div id="array_sample_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample. More... &lt;br /&gt; The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the Submission Archive. To see Analyses of Microarray Gene Lists click here. ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_platform.png" border="0" width="130" height="24" alt=" " /> </a><div id="array_platform_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Platform lists all microarray platforms (chips) used in GUDMAP ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+      </ul>
+    </li>
+    
+    <li title=""><a href="javascript:void(0);" class="expandable"><img src="../images/dbhome/nocutaway/n_seq.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
+      <ul class="sub">
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_series.png" border="0" width="130" height="24" alt=" " /> </a><div id="seq_series_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sequence Series returns a list of all the Sequence series in GUDMAP. From there you can link to individual series and then to individual samples. More.... ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_sample.png" border="0" width="130" height="24" alt=" " /> </a><div id="seq_sample_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sequence Sample returns a list of all Sequence samples. From there, click GUDMAP Entry ID to view data for each sample. More.... ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+      </ul>
+    </li>
+    
+    <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_theilerStage.png" border="0" width="130" height="24" alt=" " /></a><div id="theiler_info" style="float:right;margin-top:-29px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','Theiler Stage returns a list of GUDMAP database entries organized by developmental (Theiler) stage. Theiler Stages are described here; see also Tutorial on genitourinary development.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+    
+    <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_gene.png" border="0" width="130" height="24" alt=" " /></a><div id="browsegene_info" style="float:right;margin-top:-30px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','Browse>Gene returns a list of all genes for which there is in situ gene expression data in the database. ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div> </li>
+    
+    <li title=""><a href="javascript:void(0);" class="expandable"><img src="../images/dbhome/nocutaway/n_inSitu.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
+      <ul class="sub">
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_wish.png" border="0" width="130" height="24" alt=" " /> </a><div id="wish_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','WISH returns a list of Wholemount In situ Hybridisation data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_sish.png" border="0" width="130" height="24" alt=" " /> </a><div id="sish_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','SISH returns a list of Section In situ Hybridisation data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_opt.png" border="0" width="130" height="24" alt=" " /> </a><div id="opt_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','OPT returns a list of Optical Projection Tomography data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+        <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/n_ihc.png" border="0" width="130" height="24" alt=" " /> </a><div id="ihc_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','IHC returns a list of Immunohistochemistry data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+      </ul>
+    </li>
+    
+    <li title=""><a href="javascript:void(0);"><img src="../images/dbhome/transgenic.png" border="0" width="130" height="24" alt=" " /> </a> <div id="transgenic_info" style="float:right;margin-top:-29px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','an html &lt;a href=&quot;http://www.statetheta.com&quot;&gt;link&lt;/a&gt;','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><img src="../images/dbhome/n_information.png" /></div></li>
+    
+  </ul>
+  <div style="height:0;font-size:0;clear:both;"></div>
+</div>
+<script type="text/javascript">
+  // <![CDATA[
+ jQuery(document).ready(
+   function()
+     {
+       jQuery("#navmenu2").dmxNavigationMenu(
+         {"width": 155, "mainShowEffect": "slide", "mainShowDuration": "slow", "mainShowEasing": "swing", "mainHideEffect": "slide", "mainHideDuration": "slow", "mainHideEasing": "swing", "subShowEffect": "fade", "subShowDuration": "slow", "subShowEasing": "swing", "subHideEffect": "fade", "subHideDuration": "slow", "subHideEasing": "swing", "menuOrientation": "vertical", "useMenuBarSearch": false, "keyboard": true, "menuAlign": "left"}
+       );
+     }
+ );
+  // ]]>
+</script></td>
+</tr>
+</table>
+    </div>
+    
+    <div class="gd_clearfloat"></div>
+    
+    <p>Link to <a href="http://www.gudmap.org">GUDMAP</a></p>
+    <h2>Header 2</h2>
+    <p>Nunc sed leo et lectus congue pharetra non id mauris. Etiam pellentesque nisi eu ex gravida pellentesque. Maecenas suscipit nisi ac consequat tincidunt. Vivamus ultricies tristique turpis luctus interdum. Nullam sit amet finibus orci. Aliquam semper sem erat, ut auctor neque gravida vitae. Vivamus pulvinar commodo massa, convallis consequat tortor viverra et. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+    <h3>Header 3</h3>
+    <p><em>Curabitur sodales pellentesque lacus et tempus. Morbi eget convallis dui, ac dignissim ante. Nunc a nisi eu massa maximus ullamcorper et in erat. Nulla facilisi. Fusce sodales eu nisl at aliquam. Duis varius egestas enim vitae bibendum. Vestibulum egestas purus nec ex malesuada, et pellentesque metus finibus.</em></p>
+    </div><!-- end .gd_editarea -->
+   
+  </div> <!-- end .gd_content -->
+  <!-- InstanceEndEditable -->
+  <div class="gd_footer">
+    <form id="form1" name="form1" method="post">
+      <table width="98%" border="0">
+        <tr>
+          <td align="left"><input type="button" name="button" id="button" value="GUDMAP Contacts"></td>
+          <td align="right"><input type="text" name="textfield" id="textfield"></td>
+          <td><input type="submit" name="submit" id="submit" value="Search GUDMAP with Google"></td>
+          <td align="right"><input type="button" name="button2" id="button2" value="Citing GUDMAP"></td>
+        </tr>
+      </table>
+    </form>
+    <div id="gd_disclaimer">
+    <p>Disclaimer: Please note that the development of the GUDMAP website is an on-going process. Whilst we make every effort to ensure the quality of the information on these pages, the content cannot always be guaranteed to be accurate or complete. In addition, at certain times, some functions may be restricted.</p>
+    </div>
+    <table width="98%" border="0" align="center">
+      <tr>
+        <td align="center"><img class="gd_footerimage" src="../images/footer/dknet.jpg" width="97" height="39" alt=""/></td>
+        <td align="center"><img class="gd_footerimage" src="../images/footer/NIH_NICHD_Master_Logo_2Color.jpg" width="250" height="38" alt=""/></td>
+        <td align="center"><img class="gd_footerimage" src="../images/footer/NIH_Master_Logo_With_Tag_2Color.jpg" width="250" height="39" alt=""/></td>
+        <td align="center"><img class="gd_footerimage" src="../images/footer/niddk.jpg" width="176" height="39" alt=""/></td>
+        <td align="center"><img class="gd_footerimage" src="../images/footer/dhhs_logo_black.jpg" width="40" height="40" alt=""/></td>
+      </tr>
+    </table>
+  
+    <!-- end .gd_footer --></div>
+  <!-- end .gd_container --></div>
+</body>
+<!-- InstanceEnd --></html>

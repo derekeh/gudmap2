@@ -1,0 +1,41 @@
+.dmxtooltip {
+	position:absolute !important;
+	display:block;
+	padding:0;
+	zoom:1.0;
+	visibility:hidden;
+	z-index:100;
+}
+.dmxtooltip .dmxtooltipcontent {
+	z-index:2;
+	top:0;
+	left:0;
+	width:100%;
+	text-align:center;
+}
+.dmxtooltiptable { margin: 0; }
+.dmxtooltiptable .tl {width :22px; height:23px; font-size:12px;}
+.dmxtooltiptable .t  {             height:23px; font-size:12px;}
+.dmxtooltiptable .tr {width :23px; height:23px; font-size:12px;position:relative;}
+.dmxtooltiptable .l  {width :22px;              font-size:12px;}
+.dmxtooltiptable .r  {width :23px;              font-size:12px;}
+.dmxtooltiptable .bl {width :22px; height:26px; font-size:12px;}
+.dmxtooltiptable .b  {             height:26px; font-size:12px;}
+.dmxtooltiptable .br {width :23px; height:26px; font-size:12px;}
+.dmxtooltip .tr a {
+	display:block;
+	/*margin:auto auto -1px -1px;*/
+	outline:none;
+}
+* html .dmxtooltip .ieclosebtn {
+  text-decoration:none;
+	display:block;
+	position:absolute;
+	z-index:1000000;
+  outline:none;
+	top:14px;
+	right:14px;
+	width:9px;
+	height:9px;
+  filter:alpha(opacity=100);
+}
