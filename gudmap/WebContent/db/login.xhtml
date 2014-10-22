@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Login
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<!-- <ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define> -->
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	    <h1>Login</h1>	
+	    <!-- all other content in here --> 
+	  <h:form>
+	      <h:panelGrid columns="2" columnClasses="gd_rightAlign,gd_leftAlign">
+	        <h:outputText value="Username:"></h:outputText>
+	        <h:inputText label="First Name"
+	                     value="#{loginBean.username}"
+	                     required="true">
+	        	<f:validateLength minimum="6" maximum="12"></f:validateLength>
+	        </h:inputText>
+	        <h:outputText value="Password:"></h:outputText>
+	        <h:inputSecret label="Last Name"
+	                     value="#{loginBean.password}"
+	                     required="true">
+	          <f:validateLength minimum="6" maximum="12"></f:validateLength>
+	        </h:inputSecret>
+	        <h:panelGroup></h:panelGroup>
+	        <h:commandButton action="#{loginBean.login()}" value="Login"></h:commandButton>
+	      </h:panelGrid>
+      </h:form>    
+	</ui:define>
+</ui:composition>
+</html>

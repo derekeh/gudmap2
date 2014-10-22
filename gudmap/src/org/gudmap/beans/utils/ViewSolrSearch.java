@@ -4,7 +4,6 @@ import javax.inject.Named;
 
 @Named
 @RequestScoped
-
 public class ViewSolrSearch {
 	
 	private boolean showCloseButton=false;

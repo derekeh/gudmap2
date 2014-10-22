@@ -10,13 +10,13 @@
 	  <h:form>
 	  	<div class="gd_solrmenu #{viewSolrSearch.showCloseButton ? 'gd_solrmenuexpand' : 'gd_solrmenucollapse'}">
 	  	  <h:panelGroup  class="gd_close_search" rendered="#{viewSolrSearch.showCloseButton}">
-		  	  <h:commandLink action="#{viewSolrSearch.toggle}">
+		  	  <h:commandLink action="#{viewSolrSearch.toggle()}">
 		  	  	<h:graphicImage library="images/resources" name="close.png" width="20" height="20" alt=""/>
 		  	  	<f:ajax execute="@form" render="@form" />
 		  	  </h:commandLink>
 	  	  </h:panelGroup>
 	      <h:panelGroup class="gd_expand_search" rendered="#{viewSolrSearch.showOpenButton}">
-	      <h:commandLink action="#{viewSolrSearch.toggle}">
+	      <h:commandLink action="#{viewSolrSearch.toggle()}">
 	      	<h:graphicImage library="images/resources" name="expand_search_arrow.png" width="25" height="250" alt="" />	      	
 	      	<f:ajax execute="@form" render="@form" />
 	      </h:commandLink>

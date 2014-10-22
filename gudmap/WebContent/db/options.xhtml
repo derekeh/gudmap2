@@ -9,17 +9,29 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    my page title
+	    Options
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
-	<ui:define name="solr">
+	<!-- <ui:define name="solr">
 		<ui:include src="/snippets/g_solrFly.xhtml"/>
-	</ui:define>
+	</ui:define> -->
 	
 	<ui:define name="content">
+	<f:metadata>
+		<f:event listener="#{authenticator.check(e)}" type="preRenderView" />
+	</f:metadata>
 	<!-- can use relative links on html tags -->
-	    <h1>my page header</h1>	
-	    <!-- all other content in here -->     
+	    <h1>Options</h1>
+	    <p>You can only view the content of this page if you are logged in.</p>	
+	    <!-- all other content in here --> 
+	  <h:panelGrid columns="1" columnClasses="gd_leftAlign" rendered="#{not empty loginBean.username}">
+	        <h:outputLink value="#">
+            	<h:outputText value="View Collections"></h:outputText>
+            </h:outputLink>
+            <h:outputLink value="#">
+            	<h:outputText value="Submit Data"></h:outputText>
+            </h:outputLink>
+	  </h:panelGrid>   
 	</ui:define>
 </ui:composition>
 </html>

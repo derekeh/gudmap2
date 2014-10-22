@@ -4,7 +4,7 @@
 	
 <div class="gd_header">
     <div id="gd_logo">
-          	<h:outputLink value="#{appRoot}/pages/index.jsf">
+          	<h:outputLink value="#{appRoot}/index.jsf">
           		<h:graphicImage library="images/header" name="gudmap_logo.png" alt="GUDMAP" width="334" height="56" id="gudmap_logo"/>
           	</h:outputLink>
     
@@ -12,9 +12,18 @@
  -->    </div>
     <div id="gd_stripe_strip">
           <div id="gd_login" class="gd_webfont_header">
-          <h:panelGrid columns="2" columnClasses="gd_cellTextRight,gd_cellTextLeft">
+          <h:panelGrid columns="3" columnClasses="gd_cellTextRight,gd_cellTextLeft">
             <h:graphicImage library="images/header" name="login_icon.png" id="gd_login_icon" />
-            <h:outputText value=" Login"></h:outputText>
+            <h:outputLink value="#{appRoot}/db/login.jsf"  rendered="#{empty loginBean.username}">
+            	<h:outputText value=" Login" rendered="#{empty loginBean.username}"></h:outputText>
+            </h:outputLink>
+            <h:form   rendered="#{not empty loginBean.username}">
+            	<h:commandLink value=" Logout #{loginBean.username}" action="#{loginBean.logout()}"  rendered="#{not empty loginBean.username}"></h:commandLink>
+            </h:form>
+            <h:panelGroup rendered="#{empty loginBean.username}"></h:panelGroup>
+            <h:outputLink value="#{appRoot}/db/options.jsf"  rendered="#{not empty loginBean.username}">
+            	<h:outputText value="&#160;&#160;/&#160;&#160; Options" rendered="#{not empty loginBean.username}"></h:outputText>
+            </h:outputLink>
           </h:panelGrid>
     	  </div>
           <div id="gd_quicksearch"  class="gd_webfont_header">

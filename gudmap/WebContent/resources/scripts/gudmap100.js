@@ -61,5 +61,20 @@ function searchInit() {
         }
     }
 function MM_callJS(jsStr) { //v2.0
-  return eval(jsStr)
+  return eval(jsStr);
 }
+
+/*function applyDMXTooltip(trigger) {//v1.5
+//	alert('found tooltip function');
+	if (arguments.length < 3 || !arguments[2]) return true; // ignore empty tooltips
+  window.stylesFolderName = '/styles';
+//  alert(window.stylesFolderName);
+	var arg = {};
+	var options = ['contentType', 'dataProvider','showEffect','easing','showAt',
+  'showDirection', 'showDuration','showDelay','closeEvent','styleTheme',
+	'showCloseBtn','onshow','onhide','mouseOffsetX','mouseOffsetY','x','y','w','h'];
+  for (var i = 0; i < options.length && i < arguments.length-1; i++) {
+		arg[options[i]] = arguments[i + 1];
+	}
+	showTooltip(trigger, arg);
+}*/

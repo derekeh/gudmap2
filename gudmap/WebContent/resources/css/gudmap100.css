@@ -68,7 +68,7 @@ input[type="text"], textarea {
 #gd_stripe_strip {
 	width:100%;
 	min-height:56px;
-	background:url(../images/header/stripe.png) left repeat-x;
+	background:url(/gudmap/resources/images/header/stripe.png) left repeat-x;
 }
 
 .gd_webfont_header {
@@ -79,9 +79,9 @@ input[type="text"], textarea {
 }
 
 #gd_login {
-	width:150px;
+	width:250px;
 	float:left;
-	color:#436482;
+	color:#D0DFE5;
 	padding-top:6px;
 	padding-left:30px;
 	font-size:15px;
@@ -103,7 +103,7 @@ input[type="text"], textarea {
 }
 
 #gd_quicksearch {
-	color:#436482;
+	color:#D0DFE5;
 	padding-top:4px;
 	font-size:15px;
 	float:right;
@@ -215,6 +215,7 @@ input[type="text"], textarea {
 	-o-transition: all 1s ease-in 0s;
 	transition: all 1s ease-in 0s;*/
 	border-bottom-right-radius: 8px;
+	z-index:99999;
 }
 
 .gd_solarmenuexpand {
@@ -287,7 +288,28 @@ input[type="text"], textarea {
 
 .gd_celltextleft {
 	text-align:left;
+	padding:0;
+	margin:0;
+	vertical-align:top;
 }
+
+.gd_cellcollapseleft {
+	padding:0;
+	margin:0;
+	border-left-color: #6FAEC4;
+	border-left-style: solid;
+	vertical-align:top;
+}
+
+.gd_cellcollapsetop {
+	padding-left:1px;
+	padding-right:1px;
+	margin:0;
+	border-top-color: #6FAEC4;
+	border-top-style: solid;
+	width:100%;
+}
+
 
 .gd_celltextright {
 	text-align: right;
@@ -295,4 +317,40 @@ input[type="text"], textarea {
 
 .gd_celltextjustify {
 	text-align: justify;
+}
+
+.gd_citing_gudmap {
+	color: #6C6C6C;
+	background-image: -webkit-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(171,171,171,1.00) 100%);
+	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(171,171,171,1.00) 100%);
+	padding-top: 3px;
+	padding-right: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+	border-radius: 5px;
+	font-size: 12px;
+}
+
+.gd_citing_gudmap a {
+	color: #6C6C6C;
+	underline:none;
+}
+
+.gd_citing_gudmap a:visited {
+	color: #6C6C6C;
+}
+
+.gd_citing_gudmap a:hover, .gd_citing_gudmap a:active {
+	color:#347982;
+}
+.gd_gudmap_contacts {
+	margin-left:20px;
+}
+
+.gd_leftAlign {
+  text-align: left;
+}
+
+.gd_rightAlign {
+  text-align: right;
 }

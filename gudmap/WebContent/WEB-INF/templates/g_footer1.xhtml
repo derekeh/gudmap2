@@ -5,10 +5,12 @@
 	<footer>
 	  <div class="gd_footer">	
 	      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextcenter,gd_celltextright" styleClass="gd_table98center">
-	        <h:form><h:commandButton id="il_footer_contacts" type="submit" value="GUDMAP Contacts" action="test"></h:commandButton></h:form>
-	        <h:form><h:inputText id="il_footer_input" value="" required="true"></h:inputText>
-	        <h:commandButton id="il_footer_search" type="submit" value="Search GUDMAP with Google" action="index"></h:commandButton></h:form>
-	        <h:form><h:commandButton id="il_footer_citing" type="submit" value="Citing GUDMAP" action="index"></h:commandButton></h:form>
+	        <span class="gd_citing_gudmap gd_gudmap_contacts"><a href="#">Gudmap Contacts</a></span>
+	        <h:form>
+	        	<h:inputText id="il_footer_input" value="" required="true"></h:inputText>
+	        	<h:commandButton id="il_footer_search" type="submit" value="Search GUDMAP with Google" action="index"></h:commandButton>
+	        </h:form>
+	        <span class="gd_citing_gudmap"><a href="#">Citing Gudmap</a></span>
 	      </h:panelGrid>
 	    <div id="gd_disclaimer">
 	    <p>Disclaimer: Please note that the development of the GUDMAP website is an on-going process. Whilst we make every effort to ensure the quality of the information on these pages, the content cannot always be guaranteed to be accurate or complete. In addition, at certain times, some functions may be restricted.</p>

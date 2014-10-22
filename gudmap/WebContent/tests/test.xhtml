@@ -24,8 +24,10 @@
 	    <img src="#{appRoot}/resources/images/header/gudmap_logo.png" />
 	    <img src="../resources/images/dbhome/n_options.png" />
 	    <h2>Here is a database connection retrieving users</h2>
-	    
+	    <p>Username:</p>
 	    <h:outputText value="#{userbean.username}"></h:outputText>
+	    <p>Test Query</p>
+	    <h:outputText value="#{userbean.testQuery}"></h:outputText>
 	    
 	    <h:dataTable value="#{userbean.getUserList()}" var="u"
     			styleClass="db_order-table"
@@ -33,6 +35,13 @@
     			rowClasses="db_order-table-odd-row,db_order-table-even-row"
     		>
  
+    		<h:column>
+    			<f:facet name="header">
+    				Oid
+    			</f:facet>
+    				#{u.oid}
+    		</h:column>
+    		
     		<h:column>
     			<f:facet name="header">
     				Forename

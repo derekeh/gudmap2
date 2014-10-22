@@ -25,6 +25,10 @@
   <!--[if lt IE 7]><h:outputScript library="scripts" name="IE7.js"></h:outputScript><![endif]-->
   
   <ui:param name="appRoot" value="#{request.contextPath}" />
+  <ui:param name="focusGroup" value="none" />
+  <ui:param name="geneQueryOption" value="summary" />
+  <ui:param name="geneFunctionQueryOption" value="details" />
+  <ui:param name="isloggedin" value="false" />
   
 </h:head>
 
@@ -49,7 +53,7 @@
 <h:messages></h:messages>
 	<div class="gd_content">
 		<ui:insert name="solr">
-				<p>Solr Search</p>
+				<!-- snippets/g_solrFly if required to show -->
 		</ui:insert>
 	<section>
 		<div id="gd_edit_area">

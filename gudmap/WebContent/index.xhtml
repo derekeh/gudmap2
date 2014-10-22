@@ -108,53 +108,91 @@
     
     <div id="gd_dbstats">
     <h2>Database Statistics</h2>
-    	<table width="98%" border="0">
-  <tr>
-    <th align="left" scope="col">Assay Type</th>
-    <th align="left" scope="col">Entries</th>
-    <th align="left" scope="col">Genes</th>
-  </tr>
-  <tr>
-    <td>All In Situ Hybridisation (ISH)</td>
-    <td><a href="#">10758</a></td>
-    <td>3692</td>
-  </tr>
-  <tr>
-    <td>Wholemount ISH (WISH)</td>
-    <td><a href="#">7288</a></td>
-    <td>2896</td>
-  </tr>
-  <tr>
-    <td>Section ISH (SISH)</td>
-    <td><a href="#">3406</a></td>
-    <td>1436</td>
-  </tr>
-  <tr>
-    <td>OPT ISH</td>
-    <td><a href="#">64</a></td>
-    <td>32</td>
-  </tr>
-  <tr>
-    <td>Immunohistochemistry (IHC)</td>
-    <td><a href="#">326</a></td>
-    <td>20</td>
-  </tr>
-  <tr>
-    <td>Transgenic Reporters</td>
-    <td><a href="#">41</a></td>
-    <td>28</td>
-  </tr>
-  <tr>
-    <td>Microarray</td>
-    <td><a href="#">461</a></td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td><a href="#">More...</a></td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
+    	<table border="0" width="98%">
+          <tr>
+            <th align="left" scope="col">Assay Type</th>
+            <th align="left" scope="col">Entries</th>
+            <th align="left" scope="col">Genes</th>
+          </tr>
+          <tr>
+            <td>All In Situ Hybridisation (ISH)</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getIshTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td><h:outputText value="#{summaryBean.getIshGeneTotal()}"></h:outputText></td>
+            
+          </tr>
+          <tr>
+            <td>Wholemount ISH (WISH)</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getWishTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td><h:outputText value="#{summaryBean.getWishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Section ISH (SISH)</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getSishTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td><h:outputText value="#{summaryBean.getSishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>OPT ISH</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getOptTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td><h:outputText value="#{summaryBean.getOptGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Immunohistochemistry (IHC)</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getIhcTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td><h:outputText value="#{summaryBean.getIhcGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Transgenic Reporters</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getTgTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td><h:outputText value="#{summaryBean.getTgGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Microarray</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getMicroarrayTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>Sequence</td>
+            <td>
+            	<h:outputLink value="#">
+            		<h:outputText value="#{summaryBean.getSequenceTotal()}"></h:outputText>
+            	</h:outputLink>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td><a href="#">More...</a></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
     </div>
     <!--<p><img id="gd_dbstats" src="../images/tests/dbstats_placeholder.png"  alt=""/></p>-->
    

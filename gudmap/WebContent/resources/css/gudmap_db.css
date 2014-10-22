@@ -27,11 +27,15 @@
 
 #db_organstats_right {
 	background-color: #D0DFE5;
-	min-width: 250px;
+	width: 340px;
 	min-height: 252px;
 	float: right;
 	font-size: 90%;
 	border-bottom-left-radius: 8px;
+	border-top-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px;
+	margin-right:7px;
 }
 
 .db_cellborder_topleft {
@@ -68,6 +72,19 @@
 	
 }
 
+#db_homestats a {
+	color:#c2d5dc;
+	text-decoration: none;
+}
+
+#db_homestats a:visited {
+	color:#c2d5dc;	
+}
+#db_homestats a:hover, #db_homestats a:active, #db_homestats a:focus { 
+	text-decoration: underline;
+	color:#6ABCE6;
+}
+
 .db_organimage {
 	border-radius: 8px;	
 }
@@ -93,4 +110,13 @@
 	text-align:center;
 	background:none repeat scroll 0 0 #F9F9F9;
 	border-top:1px solid #BBBBBB;
+}
+
+.db_tooltip{
+	margin:8px;
+	padding:8px;
+	border:1px solid blue;
+	background-color:yellow;
+	position: absolute;
+	z-index: 2;
 }
