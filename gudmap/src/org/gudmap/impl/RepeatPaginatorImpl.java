@@ -20,7 +20,8 @@ public class RepeatPaginatorImpl implements RepeatPaginatorAbs{
     public RepeatPaginatorImpl(List<?> model) {
         this.origModel = model;
         this.records = DEFAULT_RECORDS_NUMBER;
-        this.pageIndex = DEFAULT_PAGE_INDEX;        
+        this.pageIndex = DEFAULT_PAGE_INDEX; 
+        this.gotopage = DEFAULT_PAGE_INDEX;
         this.recordsTotal = model.size();
 
         if (records > 0) {

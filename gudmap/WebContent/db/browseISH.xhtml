@@ -161,9 +161,10 @@
         <h:commandButton value="last &gt;&gt;" action="#{insituTableBean.paginator.lastpage}">
         	<f:ajax execute="@form" render="@form" />
         </h:commandButton>
-        <h:outputText value="Goto page:"></h:outputText>
-       <h:inputText value="#{insituTableBean.paginator.gotopage}"><f:ajax render="@form" event="valueChange"/></h:inputText>
-        <h:inputHidden value="#{insituTableBean.paginator.pageIndex}"/>
+        <h:outputText value="&#160;&#160;Goto page:"></h:outputText>
+        <h:inputText value="#{insituTableBean.paginator.gotopage}"><f:ajax render="@form" event="valueChange" /></h:inputText>	
+        <h:inputHidden value="#{insituTableBean.paginator.pageIndex}"/>	
+        
     	</h:form>  
 	</ui:define>
 </ui:composition>

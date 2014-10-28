@@ -120,3 +120,12 @@
 	position: absolute;
 	z-index: 2;
 }
+
+.db_pagenum {
+		padding:0 5px;
+		background-color:#EBEBEB;
+		margin-right:2px;
+}
+ .db_navborder {
+ 	border:1px solid #c2d5dc;
+ }

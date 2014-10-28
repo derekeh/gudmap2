@@ -2,7 +2,6 @@ package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ public class InsituTableBean implements Serializable {
 	private List<InsituTableBeanModel> datalist;
 	private Map<String,String> totalslist;
 	private RepeatPaginator paginator;
-	//private int pageindex=1;
 	
 	public InsituTableBean(){
 		assembler = new InsituTableBeanAssembler();
@@ -27,6 +25,7 @@ public class InsituTableBean implements Serializable {
 		totalslist=assembler.getTotals();
 		paginator = new RepeatPaginator(datalist);
 	}
+	
 	
 	public List<InsituTableBeanModel> getDatalist() {
 		return datalist;
