@@ -27,7 +27,7 @@ public class InsituTableBeanAssembler {
 	private ResultSet result;
 	private InsituTableBeanModel ishmodel;
 	
-	public void insituTableBeanAssembler() {
+	public  InsituTableBeanAssembler() {
 		
 	}
 	

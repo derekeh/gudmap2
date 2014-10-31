@@ -24,14 +24,11 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
 
     public InsituTablePageBean() {
     	super(20,10,"SUB_OID",true);
-        /*assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM);
-        dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending);
-        setTotalslist(assembler.getTotals());*/
-    	init();
+        init();
     }
     
     public void init() {
-    	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM);
+    	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,"ISH");
         setTotalslist(assembler.getTotals());
         totalRows = assembler.count();
     }

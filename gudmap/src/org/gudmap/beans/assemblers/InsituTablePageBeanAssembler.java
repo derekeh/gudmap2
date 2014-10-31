@@ -27,8 +27,9 @@ public class InsituTablePageBeanAssembler {
 	private ResultSet result;
 	private InsituTableBeanModel ishmodel;
 	private String paramSQL;
+	private String assayType;
 	
-	public  InsituTablePageBeanAssembler(String paramSQL) {
+	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -36,6 +37,7 @@ public class InsituTablePageBeanAssembler {
 			e.printStackTrace();
 		}
 		this.paramSQL=paramSQL;
+		this.assayType=assayType;
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending){
@@ -47,8 +49,9 @@ public class InsituTablePageBeanAssembler {
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, firstRow);
-			ps.setInt(2, rowCount);
+			ps.setString(1, assayType);
+			ps.setInt(2, firstRow);
+			ps.setInt(3, rowCount);
 			result =  ps.executeQuery();
 			
 			while(result.next()){
@@ -85,7 +88,7 @@ public class InsituTablePageBeanAssembler {
 		{
 				con = ds.getConnection();
 				ps = con.prepareStatement(QueryTotals.ReturnQuery("ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION")); 
-				ps.setString(1, "ISH");
+				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
@@ -110,7 +113,7 @@ public class InsituTablePageBeanAssembler {
 			{
 				con = ds.getConnection();
 				ps = con.prepareStatement(QueryTotals.ReturnQuery(queries[i])); 
-				ps.setString(1, "ISH");
+				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
