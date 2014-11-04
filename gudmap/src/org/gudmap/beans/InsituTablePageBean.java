@@ -3,7 +3,11 @@ package org.gudmap.beans;
 
 import java.io.Serializable;
 
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.beans.assemblers.InsituTablePageBeanAssembler;
@@ -14,28 +18,41 @@ import org.gudmap.queries.generic.GenericQueries;
 @SessionScoped
 public class InsituTablePageBean extends PagerImpl implements Serializable  {
 	
-	 private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     // Data.
 	private InsituTablePageBeanAssembler assembler;
+    private String whereclause = " WHERE ";
     
-    
+    @Inject
+   	private ParamBean paramBean;
+   	
     // Constructors -------------------------------------------------------------------------------
 
     public InsituTablePageBean() {
-    	super(20,10,"SUB_OID",true);
-        init();
+    	super(20,10,"SUB_OID",true);   	
+        setup();
     }
     
-    public void init() {
-    	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,"ISH");
+	public void setParamBean(ParamBean paramBean){
+		this.paramBean=paramBean;
+	}
+	
+    
+    public void setup() {
+    	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,"ISH",whereclause);
         setTotalslist(assembler.getTotals());
         totalRows = assembler.count();
     }
     
+    @PostConstruct
+    public void setRemoteWhereclause(){
+    	paramBean.setWhereclause(whereclause);
+    }
+    
     @Override
     public void loadDataList() {
-    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending);
+    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause());
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -51,6 +68,10 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
         }
     }
     
-    
+    public String refresh(){
+    	loadDataList();
+    	return "browseInsituTablePage";
+    	
+    }
    
 }

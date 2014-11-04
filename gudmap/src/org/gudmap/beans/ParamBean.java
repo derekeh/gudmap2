@@ -4,10 +4,14 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.gudmap.beans.assemblers.ParamBeanAssembler;
 
 @Named(value="paramBean")
 @SessionScoped
@@ -16,6 +20,7 @@ public class ParamBean implements Serializable {
 	private String focusGroup="none";
 	private boolean isLoggedIn=false;
 	private String assayType="ISH";
+	/*columns*/
 	private boolean oidcol=true;
 	private boolean genecol=true;
 	private boolean gudmapaccessioncol=true;
@@ -27,11 +32,30 @@ public class ParamBean implements Serializable {
 	private boolean imagescol=true;
 	private String[] insitucols;
 	private Map<String,Boolean> resultmap;
+	/*filter*/
+	private String genevalues;
+	private String[] sourcevalues;
+	private Date fromdatevalues;
+	private Date todatevalues;
+	private String todatemysql;
+	private String fromdatemysql;
+	private String[] assaytypeinsituvalues;
+	private String probenamevalues;
+	private String theilerstagefromvalues;
+	private String theilerstagetovalues;
+	private String sexvalues;
+	private String specimentypevalues;	
+	private ParamBeanAssembler assembler;
+	private String whereclause=" WHERE ";
+	
+	SimpleDateFormat sdf;
 	
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
 		insitucols= new String[]{"oid","gene","gudmapaccession","source","submissiondate","assaytype","probename","embryostage","images"};
 		resultmap=new HashMap<String,Boolean>();
+		assembler = new ParamBeanAssembler();
+		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
 	
 	public void setFocusGroup(String focusGroup){
@@ -148,6 +172,7 @@ public class ParamBean implements Serializable {
 		return insitucols;
 	}
 	
+	
 	private static Map<String,Object> insitucolmap;
 	static{
 		insitucolmap = new LinkedHashMap<String,Object>();
@@ -170,6 +195,146 @@ public class ParamBean implements Serializable {
 		return Arrays.toString(insitucols);
 	}
 	
+	/*************************FILTER*******************************/
+	
+	public Map<String,String> getSourcelist(){
+		return assembler.getSourcelist(); 
+	}
+	
+	public Map<String,String> getAssaytypeinsitulist(){
+		return assembler.getAssaytypeinsitulist();
+	}
+	
+	public Map<String,String> getTheilerstagelist(){
+		return assembler.getTheilerstagelist();
+	}
+	
+	public Map<String,String> getSexlist(){
+		return assembler.getSexlist();
+	}
+	
+	public Map<String,String> getSpecimentypelist(){
+		return assembler.getSpecimentypelist();
+	}
+
+	
+	public void setSourcevalues(String[] sourcevalues){
+		this.sourcevalues=sourcevalues;
+	}
+	public String[] getSourcevalues(){
+		return sourcevalues;
+	}
+	
+	public String getSourcevaluesInString() {
+		return Arrays.toString(sourcevalues);
+	}
+	
+	public void setFromdatevalues(Date fromdatevalues){
+		if(fromdatevalues!=null)
+		{
+			this.fromdatevalues=fromdatevalues;
+			fromdatemysql = sdf.format(fromdatevalues);
+		}
+	}
+	
+	public Date getFromdatevalues(){
+		return fromdatevalues;
+	}
+	
+	public String getFromdatemysql() {
+		return fromdatemysql;
+	}
+	
+	public void setTodatevalues(Date todatevalues){
+		if(todatevalues!=null)
+		{
+			this.todatevalues=todatevalues;
+			todatemysql = sdf.format(todatevalues);
+		}
+	}
+	
+	public Date getTodatevalues(){
+		return todatevalues;
+	}
+	
+	public String getTodatemysql() {
+		return todatemysql;
+	}
+	
+	public void setAssaytypeinsituvalues(String[] assaytypeinsituvalues){
+		this.assaytypeinsituvalues=assaytypeinsituvalues;
+	}
+	public String[] getAssaytypeinsituvalues(){
+		return assaytypeinsituvalues;
+	}
+	
+	public String getAssaytypeinsituvaluesInString() {
+		return Arrays.toString(assaytypeinsituvalues);
+	}
+	
+	public void setTheilerstagefromvalues(String theilerstagefromvalues){
+		this.theilerstagefromvalues=theilerstagefromvalues;
+	}
+	public String getTheilerstagefromvalues(){
+		return theilerstagefromvalues;
+	}
+	
+	public void setTheilerstagetovalues(String theilerstagetovalues){
+		this.theilerstagetovalues=theilerstagetovalues;
+	}
+	
+	public String getTheilerstagetovalues(){
+		return theilerstagetovalues;
+	}
+	
+	public void setSexvalues(String sexvalues){
+		this.sexvalues=sexvalues;
+	}
+	
+	public String getSexvalues(){
+		return sexvalues;
+	}
+	
+	public void setSpecimentypevalues(String specimentypevalues){
+		this.specimentypevalues=specimentypevalues;
+	}
+	public String getSpecimentypevalues(){
+		return specimentypevalues;
+	}
+	
+	public void setGenevalues(String genevalues){
+		this.genevalues=genevalues;
+		if(!genevalues.equals(""))
+			whereclause+="RPR_SYMBOL = '"+genevalues+"' AND ";
+	}
+	
+	public String getGenevalues(){
+		return genevalues;
+	}
+	
+	public void setProbenamevalues(String probenamevalues){
+		this.probenamevalues=probenamevalues;
+	}
+	
+	public String getProbenamevalues(){
+		return probenamevalues;
+	}
+	
+	/*****************today*******************/
+	public Date getMaxDate() {
+	    // wherever you want the date to come from
+	    return new Date();
+	 }
+	
+	/****************where clause**************/
+	
+	public void setWhereclause(String whereclause){
+		this.whereclause=whereclause;
+	}
+	
+	public String getWhereclause(){
+		return whereclause;
+	}
 	
 	
 

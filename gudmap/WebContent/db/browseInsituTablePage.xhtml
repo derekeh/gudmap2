@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -21,6 +20,12 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 	<h:form>
+		<h:panelGrid columns="2">
+			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
+		</h:panelGrid>
+	</h:form>
+	<h:form>
 	<pr:dialog header="Column Selection" widgetVar="dialog1" width="350" style="position:absolute;left:-100px;" >  
 	 <h:panelGrid columns="2">
     	<h:selectManyCheckbox layout="pageDirection" value="#{paramBean.insitucols}">
@@ -33,8 +38,74 @@
 	    <h:commandButton value="Reset" type="reset" />
    	</h:panelGrid>
 	</pr:dialog> 
-	<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+
 	</h:form>
+	
+	<h:form id="filterform">
+		<pr:dialog header="Filter Results" widgetVar="dialog2" width="650" style="position:absolute;left:-300px;"  >  
+		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+		 	<h:outputText value="Gene:"></h:outputText>
+		 	<h:inputText value="#{paramBean.genevalues}"></h:inputText>
+		 	
+		 	<h:outputText value="Source:"></h:outputText>
+		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
+		 		<f:selectItems value="#{paramBean.sourcelist}" />
+		 	</h:selectManyListbox>
+		 	
+		 	<h:outputText value="Submission Date: "></h:outputText>
+		 	<h:panelGroup>
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" value="#{paramBean.fromdatevalues}"></pr:calendar>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy"  value="#{paramBean.todatevalues}"></pr:calendar>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+		 	
+		 	<h:outputText value="Assay Type: "></h:outputText>
+		 	<h:selectManyListbox value="#{paramBean.assaytypeinsituvalues}">
+		 		<f:selectItems value="#{paramBean.assaytypeinsitulist}" />
+		 	</h:selectManyListbox>
+	   		
+	   		<h:outputText value="Probe Name:"></h:outputText>
+	   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
+	   		
+	   		<h:outputText value="Theiler Stage: "></h:outputText>
+	    	<h:panelGroup>
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
+		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 			</h:selectOneMenu>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagetovalues}">
+		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 			</h:selectOneMenu>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+	   		
+	   		<h:outputText value="Sex:"></h:outputText>
+	   		<h:selectOneRadio value="#{paramBean.sexvalues}">
+	   			<f:selectItems value="#{paramBean.sexlist}" />
+	   		</h:selectOneRadio>
+	   		
+	   		<h:outputText value="Specimen Type:"></h:outputText>
+	   		<h:selectOneRadio value="#{paramBean.specimentypevalues}">
+	   			<f:selectItems value="#{paramBean.specimentypelist}" />
+	   		</h:selectOneRadio>
+	   		
+	   		
+	   		<h:commandButton value="Submit" action="#{insituTablePageBean.refresh()}">
+	   			<ui:remove><f:ajax execute="@form" render=":form1" ></f:ajax> </ui:remove>
+	   		</h:commandButton>
+	   		
+	   		<ui:remove><h:commandButton value="Submit" action="result"></h:commandButton></ui:remove>
+		    <h:commandButton value="Reset" type="reset" />
+	   	</h:panelGrid>
+		</pr:dialog> 
+		
+	</h:form>
+	
 	
     
 	    <h1>Browse ISH</h1>		    

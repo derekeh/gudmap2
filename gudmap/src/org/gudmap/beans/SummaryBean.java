@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -30,9 +31,10 @@ public class SummaryBean implements Serializable {
 	private SummaryBeanAssembler dbsummary;
 	private List<SummaryBeanModel> datalist;
 	
+	
 	public SummaryBean() {
 		dbsummary  = new SummaryBeanAssembler();
-		datalist = dbsummary.getData();
+		datalist = dbsummary.getData();		
 	}
 	
 /*	@PostConstruct

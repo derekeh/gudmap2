@@ -28,8 +28,9 @@ public class InsituTablePageBeanAssembler {
 	private InsituTableBeanModel ishmodel;
 	private String paramSQL;
 	private String assayType;
+	private String whereclause;
 	
-	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
+	public  InsituTablePageBeanAssembler(String paramSQL,String assayType, String whereclause) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -38,12 +39,13 @@ public class InsituTablePageBeanAssembler {
 		}
 		this.paramSQL=paramSQL;
 		this.assayType=assayType;
+		this.whereclause=whereclause;
 	}
 	
-	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending){
+	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause){
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		//String sql = String.format(GenericQueries.BROWSE_ISH_PARAM, sortField, sortDirection);
-		String sql = String.format(paramSQL, sortField, sortDirection);
+		String sql = String.format(paramSQL, whereclause, sortField, sortDirection);
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
@@ -128,5 +130,7 @@ public class InsituTablePageBeanAssembler {
 		return totals;
 	}
 	
-
+	public void setAssayType(String assayType){
+		this.assayType=assayType;
+	}
 }
