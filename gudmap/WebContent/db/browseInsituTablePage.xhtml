@@ -56,9 +56,9 @@
 		 	<h:panelGroup>
 		 		<h:panelGrid columns="4">
 		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" value="#{paramBean.fromdatevalues}"></pr:calendar>
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.fromdatevalues}"></pr:calendar>
 		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy"  value="#{paramBean.todatevalues}"></pr:calendar>
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.todatevalues}"></pr:calendar>
 		 		</h:panelGrid>
 		 	</h:panelGroup>
 		 	
@@ -99,8 +99,12 @@
 	   			<ui:remove><f:ajax execute="@form" render=":form1" ></f:ajax> </ui:remove>
 	   		</h:commandButton>
 	   		
-	   		<ui:remove><h:commandButton value="Submit" action="result"></h:commandButton></ui:remove>
+	   		<ui:remove>
+	   			<h:commandButton value="Submit" action="result"></h:commandButton>
+	   			<h:commandButton value="Reset" action="#{paramBean.resetValues()}" />
+	   		</ui:remove>
 		    <h:commandButton value="Reset" type="reset" />
+		    
 	   	</h:panelGrid>
 		</pr:dialog> 
 		

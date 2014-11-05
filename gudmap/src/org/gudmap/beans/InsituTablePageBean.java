@@ -70,6 +70,7 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     
     public String refresh(){
     	loadDataList();
+    	paramBean.resetValues();
     	return "browseInsituTablePage";
     	
     }

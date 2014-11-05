@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.gudmap.beans.assemblers.ParamBeanAssembler;
+import org.gudmap.beans.utils.Utils;
 
 @Named(value="paramBean")
 @SessionScoped
@@ -47,6 +48,7 @@ public class ParamBean implements Serializable {
 	private String specimentypevalues;	
 	private ParamBeanAssembler assembler;
 	private String whereclause=" WHERE ";
+	private String tempfromvalues;
 	
 	SimpleDateFormat sdf;
 	
@@ -220,6 +222,13 @@ public class ParamBean implements Serializable {
 	
 	public void setSourcevalues(String[] sourcevalues){
 		this.sourcevalues=sourcevalues;
+		if(sourcevalues.length>0){
+			String str="";
+			for(int i=0;i<sourcevalues.length;i++){
+				str+="'"+sourcevalues[i]+"',";
+			}
+			whereclause+="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+		}
 	}
 	public String[] getSourcevalues(){
 		return sourcevalues;
@@ -230,10 +239,11 @@ public class ParamBean implements Serializable {
 	}
 	
 	public void setFromdatevalues(Date fromdatevalues){
-		if(fromdatevalues!=null)
+		if(fromdatevalues!=null && !fromdatevalues.equals(""))
 		{
 			this.fromdatevalues=fromdatevalues;
 			fromdatemysql = sdf.format(fromdatevalues);
+			tempfromvalues="SUB_SUB_DATE BETWEEN '"+fromdatemysql+"' AND '";
 		}
 	}
 	
@@ -246,10 +256,14 @@ public class ParamBean implements Serializable {
 	}
 	
 	public void setTodatevalues(Date todatevalues){
-		if(todatevalues!=null)
+		if(todatevalues!=null && !todatevalues.equals(""))
 		{
 			this.todatevalues=todatevalues;
 			todatemysql = sdf.format(todatevalues);
+			if(getFromdatevalues()!=null && !getFromdatevalues().equals("")){
+				tempfromvalues+=todatemysql+"'";
+				whereclause+=tempfromvalues+" AND ";
+			}
 		}
 	}
 	
@@ -289,6 +303,8 @@ public class ParamBean implements Serializable {
 	
 	public void setSexvalues(String sexvalues){
 		this.sexvalues=sexvalues;
+		if(!sexvalues.equals(""))
+			whereclause+="SPN_SEX = '"+sexvalues+"' AND ";
 	}
 	
 	public String getSexvalues(){
@@ -297,7 +313,10 @@ public class ParamBean implements Serializable {
 	
 	public void setSpecimentypevalues(String specimentypevalues){
 		this.specimentypevalues=specimentypevalues;
+		if(!specimentypevalues.equals(""))
+			whereclause+="SPN_ASSAY_TYPE = '"+specimentypevalues+"' AND ";
 	}
+	
 	public String getSpecimentypevalues(){
 		return specimentypevalues;
 	}
@@ -314,6 +333,8 @@ public class ParamBean implements Serializable {
 	
 	public void setProbenamevalues(String probenamevalues){
 		this.probenamevalues=probenamevalues;
+		if(!probenamevalues.equals(""))
+			whereclause+="RPR_JAX_ACC = '"+probenamevalues+"' AND ";
 	}
 	
 	public String getProbenamevalues(){
@@ -335,7 +356,25 @@ public class ParamBean implements Serializable {
 	public String getWhereclause(){
 		return whereclause;
 	}
+	 
+	/******************reset*******************/
 	
+	public void resetValues(){
+		fromdatevalues=null;
+		todatevalues=null;
+		setSourcevalues(new String[0]);
+		todatemysql="";
+		fromdatemysql="";
+		setAssaytypeinsituvalues(new String[0]);
+		setProbenamevalues("");
+		setTheilerstagefromvalues("");
+		setTheilerstagetovalues("");
+		setSexvalues("");
+		setSpecimentypevalues("");
+		tempfromvalues="";
+		setWhereclause(" WHERE ");
+	}
+
 	
 
 }
