@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    Browse ISH Data
+	    ISH Data Results
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -28,15 +28,20 @@
 	<h:form>
 	<pr:dialog header="Column Selection" widgetVar="dialog1" width="350" style="position:absolute;left:-100px;" >  
 	 <h:panelGrid columns="2">
-    	<h:selectManyCheckbox layout="pageDirection" value="#{paramBean.insitucols}">
+    	<h:selectManyCheckbox binding="#{il_insitucheckbox}" id="il_insitucheckbox" layout="pageDirection" value="#{paramBean.insitucols}">
    			<f:selectItems value="#{paramBean.insitucolmap}" />
-   		</h:selectManyCheckbox> 
+   			<f:validator validatorId="insituCheckboxColumnsValidator" />
+   			<f:attribute name="checkboxType" value="insitu"></f:attribute>
+   			<f:ajax execute="il_insitucheckbox" render="checkboxmessage il_columnSubmit"></f:ajax> 
+   		</h:selectManyCheckbox>
+   		
    		<h:panelGroup></h:panelGroup>
-   		<h:commandButton value="Submit" action="browseInsituTablePage">
+   		<h:commandButton id="il_columnSubmit" value="Submit" action="browseInsituTablePage" disabled="#{not il_insitucheckbox.valid}">
    			<f:ajax execute="@form" render=":form1" ></f:ajax>
    		</h:commandButton>
 	    <h:commandButton value="Reset" type="reset" />
    	</h:panelGrid>
+   	<h:message id="checkboxmessage" for="il_insitucheckbox" /> 
 	</pr:dialog> 
 
 	</h:form>
@@ -44,6 +49,7 @@
 	<h:form id="filterform">
 		<pr:dialog header="Filter Results" widgetVar="dialog2" width="650" style="position:absolute;left:-300px;"  >  
 		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+		 
 		 	<h:outputText value="Gene:"></h:outputText>
 		 	<h:inputText value="#{paramBean.genevalues}"></h:inputText>
 		 	
@@ -62,10 +68,12 @@
 		 		</h:panelGrid>
 		 	</h:panelGroup>
 		 	
+		 	<ui:remove>
 		 	<h:outputText value="Assay Type: "></h:outputText>
 		 	<h:selectManyListbox value="#{paramBean.assaytypeinsituvalues}">
 		 		<f:selectItems value="#{paramBean.assaytypeinsitulist}" />
 		 	</h:selectManyListbox>
+	   		</ui:remove>
 	   		
 	   		<h:outputText value="Probe Name:"></h:outputText>
 	   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
@@ -96,13 +104,14 @@
 	   		
 	   		
 	   		<h:commandButton value="Submit" action="#{insituTablePageBean.refresh()}">
-	   			<ui:remove><f:ajax execute="@form" render=":form1" ></f:ajax> </ui:remove>
+	   			<f:ajax execute="@form" render=":form1" ></f:ajax> 
 	   		</h:commandButton>
 	   		
-	   		<ui:remove>
-	   			<h:commandButton value="Submit" action="result"></h:commandButton>
-	   			<h:commandButton value="Reset" action="#{paramBean.resetValues()}" />
+	   		
+	   		<h:commandButton value="Test" action="result"></h:commandButton>
+	   		<ui:remove><h:commandButton value="Reset" action="#{paramBean.resetValues()}" />
 	   		</ui:remove>
+	   		
 		    <h:commandButton value="Reset" type="reset" />
 		    
 	   	</h:panelGrid>
@@ -112,7 +121,7 @@
 	
 	
     
-	    <h1>Browse ISH</h1>		    
+	    <h1>ISH Data Results</h1>		    
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
 	     <h:dataTable value="#{insituTablePageBean.dataList}" var="u"
@@ -188,7 +197,7 @@
     				#{u.stage}
     		</h:column>
     		
-<!--     		<h:column>
+    		<h:column rendered="#{paramBean.agecol == true}">
     			<f:facet name="header">
     				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_AGE")}) <br />
     				Age
@@ -196,7 +205,7 @@
     				#{u.age}
     		</h:column>
     		
-    		<h:column>
+    		<h:column rendered="#{paramBean.sexcol == true}">
     			<f:facet name="header">
     				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SEX")}) <br />
     				Sex
@@ -204,7 +213,7 @@
     				#{u.sex}
     		</h:column>
     		
-    		<h:column>
+    		<h:column rendered="#{paramBean.genotypecol == true}">
     			<f:facet name="header">
     				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_GENEOTYPE")}) <br />
     				Genotype
@@ -212,7 +221,7 @@
     				#{u.genotype}
     		</h:column>
     		
-    		<h:column>
+    		<h:column rendered="#{paramBean.tissuecol == true}">
     			<f:facet name="header">
     				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_TISSUE")}) <br />
     				Tissue
@@ -220,7 +229,7 @@
     				#{u.tissue}
     		</h:column>
     		
-    		<h:column>
+    		<h:column rendered="#{paramBean.expressioncol == true}">
     			<f:facet name="header">
     				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_EXPRESSION")}) <br />
     				Expression
@@ -228,13 +237,13 @@
     				#{u.expression}
     		</h:column>
     		
-    		<h:column>
+    		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
     				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SPECIMEN_TYPE")}) <br />
     				Specimen Type
 				</f:facet>
     				#{u.specimen}
-    		</h:column> -->
+    		</h:column>
     		
     		<h:column rendered="#{paramBean.imagescol == true}">
     			<f:facet name="header">

@@ -8,5 +8,15 @@ public class Utils {
 	    }
 	    return str;
 	}
+	//remove where from whereclause 7 chars
+	public static String removeWhere(String whereclause, String wherestring) {
+		String str=whereclause;
+	    if (str.length() > 0 && str.startsWith(wherestring)) {
+	      str = " AND " + whereclause.substring(7);
+	      str=str.substring(0,str.lastIndexOf("AND"));
+	      
+	    }
+	    return str;
+	}
 
 }

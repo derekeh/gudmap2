@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.gudmap.beans.utils.Utils;
 import org.gudmap.globals.Globals;
+import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.models.InsituTableBeanModel;
 
@@ -43,6 +45,7 @@ public class InsituTablePageBeanAssembler {
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause){
+		this.whereclause=whereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		//String sql = String.format(GenericQueries.BROWSE_ISH_PARAM, sortField, sortDirection);
 		String sql = String.format(paramSQL, whereclause, sortField, sortDirection);
@@ -85,11 +88,14 @@ public class InsituTablePageBeanAssembler {
 	}
 	
 	public int count() {
-		int count=0;		
+		int count=0;
+		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
 		try
 		{
 				con = ds.getConnection();
-				ps = con.prepareStatement(QueryTotals.ReturnQuery("ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION")); 
+				/*ps = con.prepareStatement(" AND "+ String.format(QueryTotals.ReturnQuery("ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION"),totalwhere)); */
+				//String tempstr=String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,totalwhere);
+				ps = con.prepareStatement(String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,totalwhere)); 
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
@@ -110,11 +116,13 @@ public class InsituTablePageBeanAssembler {
 				"ASSAY_TYPE_TOTAL_PROBE_NAME","ASSAY_TYPE_TOTAL_EMBRYO_STAGE","ASSAY_TYPE_TOTAL_AGE","ASSAY_TYPE_TOTAL_SEX","ASSAY_TYPE_TOTAL_GENOTYPE",
 				"ASSAY_TYPE_TOTAL_TISSUE","ASSAY_TYPE_TOTAL_EXPRESSION","ASSAY_TYPE_TOTAL_SPECIMEN_TYPE","ASSAY_TYPE_TOTAL_IMAGES"};
 		
+		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
 		for(int i=0;i<queries.length;i++) {
 			try
 			{
 				con = ds.getConnection();
-				ps = con.prepareStatement(QueryTotals.ReturnQuery(queries[i])); 
+				/*ps = con.prepareStatement(QueryTotals.ReturnQuery(queries[i]));*/ 
+				ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere));
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				

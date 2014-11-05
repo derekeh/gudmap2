@@ -54,6 +54,8 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     public void loadDataList() {
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause());
         // Set currentPage, totalPages and pages.
+    	setTotalslist(assembler.getTotals());
+    	totalRows = assembler.count();
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
         int pagesLength = Math.min(pageRange, totalPages);

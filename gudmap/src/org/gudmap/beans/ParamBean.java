@@ -30,6 +30,12 @@ public class ParamBean implements Serializable {
 	private boolean assaytypecol=true;
 	private boolean probenamecol=true;
 	private boolean embryostagecol=true;
+	private boolean agecol=false;
+	private boolean sexcol=false;
+	private boolean genotypecol=false;
+	private boolean tissuecol=false;
+	private boolean expressioncol=false;
+	private boolean specimentypecol=false;
 	private boolean imagescol=true;
 	private String[] insitucols;
 	private Map<String,Boolean> resultmap;
@@ -49,6 +55,7 @@ public class ParamBean implements Serializable {
 	private ParamBeanAssembler assembler;
 	private String whereclause=" WHERE ";
 	private String tempfromvalues;
+	private String temptheilervalues;
 	
 	SimpleDateFormat sdf;
 	
@@ -145,6 +152,54 @@ public class ParamBean implements Serializable {
 		return embryostagecol;
 	}
 	
+	public void setAgecol(boolean agecol){
+		this.agecol=agecol;
+	}
+	
+	public boolean getAgecol(){
+		return agecol;
+	}
+	
+	public void setSexcol(boolean sexcol){
+		this.sexcol=sexcol;
+	}
+	
+	public boolean getSexcol(){
+		return sexcol;
+	}
+	
+	public void setGenotypecol(boolean genotypecol){
+		this.genotypecol=genotypecol;
+	}
+	
+	public boolean getGenotypecol(){
+		return genotypecol;
+	}
+	
+	public void setTissuecol(boolean tissuecol){
+		this.tissuecol=tissuecol;
+	}
+	
+	public boolean getTissuecol(){
+		return tissuecol;
+	}
+	
+	public void setExpressioncol(boolean expressioncol){
+		this.expressioncol=expressioncol;
+	}
+	
+	public boolean getExpressioncol(){
+		return expressioncol;
+	}
+	
+	public void setSecimentypecol(boolean specimentypecol){
+		this.specimentypecol=specimentypecol;
+	}
+	
+	public boolean getSpecimentypecol(){
+		return specimentypecol;
+	}
+	
 	public void setImagescol(boolean imagescol){
 		this.imagescol=imagescol;
 	}
@@ -167,8 +222,15 @@ public class ParamBean implements Serializable {
 		assaytypecol=resultmap.containsKey("assaytype");
 		probenamecol=resultmap.containsKey("probename");
 		embryostagecol=resultmap.containsKey("embryostage");
+		agecol=resultmap.containsKey("age");
+		sexcol=resultmap.containsKey("sex");
+		genotypecol=resultmap.containsKey("genotype");
+		tissuecol=resultmap.containsKey("tissue");
+		expressioncol=resultmap.containsKey("expression");
+		specimentypecol=resultmap.containsKey("specimentype");
 		imagescol=resultmap.containsKey("images");
 	}
+	
 	
 	public String[] getInsitucols(){
 		return insitucols;
@@ -186,6 +248,12 @@ public class ParamBean implements Serializable {
 		insitucolmap.put("Assay Type", "assaytype");
 		insitucolmap.put("Probe Name", "probename");
 		insitucolmap.put("Theiler Stage", "embryostage");
+		insitucolmap.put("Age", "age");
+		insitucolmap.put("Sex", "sex");
+		insitucolmap.put("Genotype", "genotype");
+		insitucolmap.put("Tissue", "tissue");
+		insitucolmap.put("Expression", "expression");
+		insitucolmap.put("Specimen Type", "specimentype");
 		insitucolmap.put("Images", "images");
 	}
  
@@ -198,6 +266,8 @@ public class ParamBean implements Serializable {
 	}
 	
 	/*************************FILTER*******************************/
+	
+	/*************************populate filter*******************/
 	
 	public Map<String,String> getSourcelist(){
 		return assembler.getSourcelist(); 
@@ -219,15 +289,21 @@ public class ParamBean implements Serializable {
 		return assembler.getSpecimentypelist();
 	}
 
+/*******************************
+ * getters and setters for filter outcomes 
+ * CHECK FOR NULL VALUE WHEN THE COMPONENT IN FILTER VIEW MIGHT BE COMMENTED OUT
+ * ************************/
 	
 	public void setSourcevalues(String[] sourcevalues){
 		this.sourcevalues=sourcevalues;
-		if(sourcevalues.length>0){
-			String str="";
-			for(int i=0;i<sourcevalues.length;i++){
-				str+="'"+sourcevalues[i]+"',";
+		if(sourcevalues!=null){
+			if(sourcevalues.length>0){
+				String str="";
+				for(int i=0;i<sourcevalues.length;i++){
+					str+="'"+sourcevalues[i]+"',";
+				}
+				whereclause+="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
 			}
-			whereclause+="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
 		}
 	}
 	public String[] getSourcevalues(){
@@ -277,6 +353,16 @@ public class ParamBean implements Serializable {
 	
 	public void setAssaytypeinsituvalues(String[] assaytypeinsituvalues){
 		this.assaytypeinsituvalues=assaytypeinsituvalues;
+		if(assaytypeinsituvalues!=null){
+			if(assaytypeinsituvalues.length>0){
+				String str="";
+				for(int i=0;i<assaytypeinsituvalues.length;i++){
+					str+="'"+assaytypeinsituvalues[i]+"',";
+				}
+				whereclause+="SUB_ASSAY_TYPE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+			}
+		}
+		
 	}
 	public String[] getAssaytypeinsituvalues(){
 		return assaytypeinsituvalues;
@@ -288,6 +374,11 @@ public class ParamBean implements Serializable {
 	
 	public void setTheilerstagefromvalues(String theilerstagefromvalues){
 		this.theilerstagefromvalues=theilerstagefromvalues;
+		if(theilerstagefromvalues!=null){
+			if(!theilerstagefromvalues.equals("ALL")){
+				temptheilervalues="SUB_EMBRYO_STG BETWEEN "+theilerstagefromvalues+" AND ";
+			}
+		}
 	}
 	public String getTheilerstagefromvalues(){
 		return theilerstagefromvalues;
@@ -295,6 +386,12 @@ public class ParamBean implements Serializable {
 	
 	public void setTheilerstagetovalues(String theilerstagetovalues){
 		this.theilerstagetovalues=theilerstagetovalues;
+		if(theilerstagetovalues!=null){
+			if(getTheilerstagefromvalues()!=null && !getTheilerstagefromvalues().equals("") && !getTheilerstagefromvalues().equals("ALL") && !theilerstagetovalues.equals("ALL")){
+				temptheilervalues+=theilerstagetovalues;
+				whereclause+=temptheilervalues+" AND ";
+			}
+		}
 	}
 	
 	public String getTheilerstagetovalues(){
@@ -304,7 +401,7 @@ public class ParamBean implements Serializable {
 	public void setSexvalues(String sexvalues){
 		this.sexvalues=sexvalues;
 		if(!sexvalues.equals(""))
-			whereclause+="SPN_SEX = '"+sexvalues+"' AND ";
+				whereclause+="SPN_SEX = '"+sexvalues+"' AND ";
 	}
 	
 	public String getSexvalues(){
