@@ -48,6 +48,7 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,"ISH",whereclause);
         setTotalslist(assembler.getTotals());
         totalRows = assembler.count();
+        selectedItems = new ArrayList<String>(); 
     }
     
     @PostConstruct
@@ -84,7 +85,7 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     
     public String checkboxSelections() { 
     	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
-    	selectedItems = new ArrayList<String>(); 
+    	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
     		if (((InsituTableBeanModel) dataList.get(i)).getSelected()) { 
     			selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getOid()); 
