@@ -4,7 +4,8 @@ import java.util.List;
 
 public class InsituTableBeanModel {
 private String oid,gene,gudmap_accession,source,submission_date,assay_type,probe_name,stage,age,sex,genotype,tissue,expression,specimen,image=null;
-private List<String> totals=null;;
+private List<String> totals=null;
+private boolean selected;
 
 	public void setOid(String oid){
 		this.oid=oid;
@@ -105,5 +106,12 @@ private List<String> totals=null;;
 		return totals;
 	}
 	
+	public void setSelected(boolean selected){
+		this.selected=selected;
+	}
+	
+	public boolean getSelected() {
+		return selected;
+	}
 
 }

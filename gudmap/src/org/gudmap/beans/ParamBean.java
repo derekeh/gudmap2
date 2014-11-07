@@ -1,6 +1,7 @@
 package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import org.gudmap.beans.utils.Utils;
 @SessionScoped
 public class ParamBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String focusGroup="none";
+	private String focusGroup="reset";
 	private boolean isLoggedIn=false;
 	private String assayType="ISH";
 	/*columns*/
@@ -56,6 +57,8 @@ public class ParamBean implements Serializable {
 	private String whereclause=" WHERE ";
 	private String tempfromvalues;
 	private String temptheilervalues;
+	
+	private boolean[]checkboxes;
 	
 	SimpleDateFormat sdf;
 	
@@ -472,6 +475,21 @@ public class ParamBean implements Serializable {
 		setWhereclause(" WHERE ");
 	}
 
+	/*******************focus groups****************/
+	public void focusGroup(ActionEvent event){
+		String focusFieldAttribute = (String) event.getComponent().getAttributes().get("focusField");
+			this.setFocusGroup(focusFieldAttribute);
+	}
 	
-
+	/********************checkboxes******************/
+	
+	public void setCheckboxes(boolean[]checkboxes){
+		this.checkboxes=checkboxes;
+	}
+	
+	public boolean[] getCheckboxes(){
+		return checkboxes;
+	}
+	
+	
 }

@@ -67,7 +67,7 @@ public class PagerImpl implements PagerAbs {
         loadDataList(); // Load requested page.
     }
 	
-	
+	//override this method in your bean that extends this
     public void loadDataList() {
     	//dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending);
         // Set currentPage, totalPages and pages.

@@ -232,7 +232,7 @@
           <tr>
             <td>All In Situ Hybridisation (ISH)</td>
             <td>
-            	<h:outputLink value="browseISH.jsf">
+            	<h:outputLink value="browseInsituTablePage.jsf">
             		<h:outputText value="#{summaryBean.getIshTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
@@ -325,10 +325,15 @@
       </div>
       <h2>Focus by Organ/System</h2>
       <div>
-        <table border="0" id="db_organsystem">
+      	<h:form>
+        <table  id="db_organsystem">
           <tr>
             <td><h:graphicImage library="images/dbhome" name="Metanephros_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
-            <td>Metanephros</td>
+            <td>
+            	<h:commandLink value="Metanephros" actionListener="#{paramBean.focusGroup}">
+                         <f:attribute name="focusField" value="metanephros" />
+                 </h:commandLink>
+            </td>
           </tr>
           <tr>
             <td><h:graphicImage library="images/dbhome" name="LUT_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
@@ -346,7 +351,15 @@
             <td><h:graphicImage library="images/dbhome" name="Female_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
             <td>Female reproductive system</td>
           </tr>
+          <tr p:colspan="2">
+          	<td>
+          		<h:commandButton id="il_resetFocus" value="Reset Focus Group" actionListener="#{paramBean.focusGroup}">
+                    <f:attribute name="focusField" value="reset" />
+                </h:commandButton>
+          	</td>
+          </tr>
         </table>
+        </h:form>
       </div>
     </div><!-- end accordion 1 -->
 

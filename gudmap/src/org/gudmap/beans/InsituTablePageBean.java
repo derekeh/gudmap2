@@ -2,16 +2,19 @@ package org.gudmap.beans;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedProperty;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.beans.assemblers.InsituTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
+import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.generic.GenericQueries;
 
 @Named
@@ -23,6 +26,8 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     // Data.
 	private InsituTablePageBeanAssembler assembler;
     private String whereclause = " WHERE ";
+    private List<String> selectedItems;
+    private boolean areAllChecked;
     
     @Inject
    	private ParamBean paramBean;
@@ -75,6 +80,32 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     	paramBean.resetValues();
     	return "browseInsituTablePage";
     	
+    }
+    
+    public String checkboxSelections() { 
+    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
+    	selectedItems = new ArrayList<String>(); 
+    	for (int i=0;i<dataList.size();i++) { 
+    		if (((InsituTableBeanModel) dataList.get(i)).getSelected()) { 
+    			selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getOid()); 
+    		} 
+    	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
+    	return "result";
+    }
+    
+    public void checkAll() { 
+    	areAllChecked=(areAllChecked)?false:true;
+    	for (int i=0;i<dataList.size();i++) { 
+    		((InsituTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
+    	} 
+    }
+    
+    public String getSelectedItemstoString(){
+    	String str="";
+    	for(String s : selectedItems){
+    		str+=s + ", ";
+    	}
+    	return str;
     }
    
 }

@@ -77,6 +77,7 @@ public class InsituTablePageBeanAssembler {
 				ishmodel.setSpecimen(result.getString("specimen"));
 				ishmodel.setImage(result.getString("image"));
 				
+				ishmodel.setSelected(false);
 				list.add(ishmodel);
 			}
 		}
