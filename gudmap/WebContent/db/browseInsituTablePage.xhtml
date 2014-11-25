@@ -121,7 +121,7 @@
 	
 	
     
-	    <h1>ISH Data Results</h1>		    
+	    <h1>ISH Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>		    
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
 	     <h:dataTable value="#{insituTablePageBean.dataList}" var="u"

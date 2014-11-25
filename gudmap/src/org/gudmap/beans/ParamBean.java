@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.gudmap.beans.assemblers.ParamBeanAssembler;
 import org.gudmap.beans.utils.Utils;
+import org.gudmap.queries.generic.GenericQueries;
 
 @Named(value="paramBean")
 @SessionScoped
@@ -472,24 +473,53 @@ public class ParamBean implements Serializable {
 		setSexvalues("");
 		setSpecimentypevalues("");
 		tempfromvalues="";
-		setWhereclause(" WHERE ");
+		//setWhereclause(" WHERE ");
+		setWhereclause(GenericQueries.WHERE_CLAUSE);
 	}
 
 	/*******************focus groups****************/
-	public void focusGroup(ActionEvent event){
+	public void focusGroupAction(ActionEvent event){
 		String focusFieldAttribute = (String) event.getComponent().getAttributes().get("focusField");
 			this.setFocusGroup(focusFieldAttribute);
 	}
 	
+	public String getFocusGroupWhereclause(){
+		String RET="";
+		if(focusGroup.equals("reset"))
+			RET="";
+		else if(focusGroup.equals("Metanephros"))
+			RET =  GenericQueries.FOCUS_METANEPHROS;
+		else if(focusGroup.equals("Lower urinary tract"))
+			RET =  GenericQueries.FOCUS_URINARY;
+		else if(focusGroup.equals("Early reproductive system"))
+			RET =  GenericQueries.FOCUS_EARLY_REPRO;
+		else if(focusGroup.equals("Male reproductive system"))
+			RET =  GenericQueries.FOCUS_MALE_REPRO;
+		else if(focusGroup.equals("Female reproductive system"))
+			RET =  GenericQueries.FOCUS_FEMALE_REPRO;
+		
+		return RET;
+	}
+	
+	public String getExpressionJoin() {
+		String RET="";
+		if(focusGroup.equals("reset"))
+			RET="";
+		else
+			RET =  GenericQueries.EXPRESSION_JOIN;
+		
+		return RET;
+	}
+	
 	/********************checkboxes******************/
 	
-	public void setCheckboxes(boolean[]checkboxes){
+	/*public void setCheckboxes(boolean[]checkboxes){
 		this.checkboxes=checkboxes;
 	}
 	
 	public boolean[] getCheckboxes(){
 		return checkboxes;
-	}
+	}*/
 	
 	
 }

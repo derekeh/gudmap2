@@ -129,3 +129,11 @@
  .db_navborder {
  	border:1px solid #c2d5dc;
  }
+ 
+ .db_focusborder {
+ 	border:3px solid red;
+ }
+ 
+  .db_nofocusborder {
+ 	border:1px solid green;
+ }

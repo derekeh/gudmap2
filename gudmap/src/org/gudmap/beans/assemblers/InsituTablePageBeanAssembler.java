@@ -31,8 +31,10 @@ public class InsituTablePageBeanAssembler {
 	private String paramSQL;
 	private String assayType;
 	private String whereclause;
+	private String focusGroupWhereclause;
+	private String expressionJoin;
 	
-	public  InsituTablePageBeanAssembler(String paramSQL,String assayType, String whereclause) {
+	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -41,14 +43,20 @@ public class InsituTablePageBeanAssembler {
 		}
 		this.paramSQL=paramSQL;
 		this.assayType=assayType;
-		this.whereclause=whereclause;
+		//this.whereclause=whereclause;
 	}
 	
-	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause){
+	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
+											String focusGroupWhereclause, String expressionJoin){
 		this.whereclause=whereclause;
+		this.focusGroupWhereclause=focusGroupWhereclause;
+		this.expressionJoin=expressionJoin;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
-		//String sql = String.format(GenericQueries.BROWSE_ISH_PARAM, sortField, sortDirection);
-		String sql = String.format(paramSQL, whereclause, sortField, sortDirection);
+		String sql = String.format(paramSQL, expressionJoin, whereclause, focusGroupWhereclause, sortField, sortDirection);
+		if(!expressionJoin.equals(""))
+			sql=sql.replace("FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID", "");
+		 // FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID
+		//String sql = String.format(paramSQL, whereclause, sortField, sortDirection);
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
@@ -96,7 +104,7 @@ public class InsituTablePageBeanAssembler {
 				con = ds.getConnection();
 				/*ps = con.prepareStatement(" AND "+ String.format(QueryTotals.ReturnQuery("ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION"),totalwhere)); */
 				//String tempstr=String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,totalwhere);
-				ps = con.prepareStatement(String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,totalwhere)); 
+				ps = con.prepareStatement(String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause)); 
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
@@ -122,8 +130,11 @@ public class InsituTablePageBeanAssembler {
 			try
 			{
 				con = ds.getConnection();
-				/*ps = con.prepareStatement(QueryTotals.ReturnQuery(queries[i]));*/ 
-				ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere));
+				//ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere));
+				if(queries[i].equals("ASSAY_TYPE_TOTAL_TISSUE") || queries[i].equals("ASSAY_TYPE_TOTAL_EXPRESSION"))
+					ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause));
+				else
+					ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),expressionJoin,totalwhere,focusGroupWhereclause));
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				

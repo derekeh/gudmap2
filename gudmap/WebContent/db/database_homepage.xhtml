@@ -16,8 +16,9 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
 	<!-- can use relative links on html tags -->
-	    <h1>Expression Database</h1>	
+	    <h:form id="h1form"><h1>Expression Database<h:outputText id="il_focustext" value="&#160; &gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>
 	    <!-- all other content in here --> 	
 	    <h:outputScript library="scripts" name="jquery-ui-1.9.2.accordion.custom.min.js"></h:outputScript>  
 	    <!-- <h:outputStylesheet library="css" name="jquery.ui.core.min.css" />
@@ -221,8 +222,10 @@
 <div id="db_organstats_right">
     
     <div id="Accordion1">
+    
       <h2>Database Statistics</h2>
       <div>
+      <h:form id="formstats">
          <table border="0" id="db_homestats">
           <tr>
             <th align="left" scope="col">Assay Type</th>
@@ -232,63 +235,61 @@
           <tr>
             <td>All In Situ Hybridisation (ISH)</td>
             <td>
-            	<h:outputLink value="browseInsituTablePage.jsf">
-            		<h:outputText value="#{summaryBean.getIshTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{volatileSummaryBean.getIshTotal()}" action="#{insituTablePageBean.refresh()}"></h:commandLink>
             </td>
-            <td><h:outputText value="#{summaryBean.getIshGeneTotal()}"></h:outputText></td>
+            <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
             
           </tr>
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
             	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getWishTotal()}"></h:outputText>
+            		<h:outputText value="#{volatileSummaryBean.getWishTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
-            <td><h:outputText value="#{summaryBean.getWishGeneTotal()}"></h:outputText></td>
+            <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Section ISH (SISH)</td>
             <td>
             	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getSishTotal()}"></h:outputText>
+            		<h:outputText value="#{volatileSummaryBean.getSishTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
-            <td><h:outputText value="#{summaryBean.getSishGeneTotal()}"></h:outputText></td>
+            <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>OPT ISH</td>
             <td>
             	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getOptTotal()}"></h:outputText>
+            		<h:outputText value="#{volatileSummaryBean.getOptTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
-            <td><h:outputText value="#{summaryBean.getOptGeneTotal()}"></h:outputText></td>
+            <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Immunohistochemistry (IHC)</td>
             <td>
             	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getIhcTotal()}"></h:outputText>
+            		<h:outputText value="#{volatileSummaryBean.getIhcTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
-            <td><h:outputText value="#{summaryBean.getIhcGeneTotal()}"></h:outputText></td>
+            <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Transgenic Reporters</td>
             <td>
             	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getTgTotal()}"></h:outputText>
+            		<h:outputText value="#{volatileSummaryBean.getTgTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
-            <td><h:outputText value="#{summaryBean.getTgGeneTotal()}"></h:outputText></td>
+            <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Microarray</td>
             <td>
             	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getMicroarrayTotal()}"></h:outputText>
+            		<h:outputText value="#{volatileSummaryBean.getMicroarrayTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
             <td></td>
@@ -297,7 +298,7 @@
             <td>Sequence</td>
             <td>
             	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getSequenceTotal()}"></h:outputText>
+            		<h:outputText value="#{volatileSummaryBean.getSequenceTotal()}"></h:outputText>
             	</h:outputLink>
             </td>
             <td></td>
@@ -308,6 +309,7 @@
             <td></td>
           </tr>
         </table>
+        </h:form>
       </div>
       <h2>Updates</h2>
       <div>
@@ -325,36 +327,60 @@
       </div>
       <h2>Focus by Organ/System</h2>
       <div>
-      	<h:form>
+      	<h:form id="focusForm">
         <table  id="db_organsystem">
           <tr>
-            <td><h:graphicImage library="images/dbhome" name="Metanephros_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
+            <td><h:graphicImage library="images/dbhome" name="Metanephros_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Metanephros' ? 'db_focusborder' : ''}"></h:graphicImage></td>
             <td>
-            	<h:commandLink value="Metanephros" actionListener="#{paramBean.focusGroup}">
-                         <f:attribute name="focusField" value="metanephros" />
+            	<h:commandLink id="il_metanephros" value="Metanephros">
+                         <f:setPropertyActionListener id="metaproperty" target="#{paramBean.focusGroup}" value="Metanephros" />
+                         <f:setPropertyActionListener id="metaproperty2" target="#{volatileSummaryBean.focusGroup}" value="Metanephros" /> 
+                         <f:ajax execute="@this il_metanephros" render=":formstats :h1form @form" />
                  </h:commandLink>
+                 
             </td>
           </tr>
           <tr>
-            <td><h:graphicImage library="images/dbhome" name="LUT_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
-            <td>Lower urinary tract</td>
+            <td><h:graphicImage library="images/dbhome" name="LUT_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Lower urinary tract' ? 'db_focusborder' : ''}"></h:graphicImage></td>
+            <td>
+				<h:commandLink value="Lower urinary tract">
+                         <f:setPropertyActionListener id="lutproperty" target="#{paramBean.focusGroup}" value="Lower urinary tract" />
+                         <f:setPropertyActionListener id="lutproperty2" target="#{volatileSummaryBean.focusGroup}" value="Lower urinary tract" /> 
+                 </h:commandLink>
+			</td>
           </tr>
           <tr>
-            <td><h:graphicImage library="images/dbhome" name="Early_UGS_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
-            <td>Early reproductive system</td>
+            <td><h:graphicImage library="images/dbhome" name="Early_UGS_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Early reproductive system' ? 'db_focusborder' : ''}"></h:graphicImage></td>
+            <td>
+				<h:commandLink value="Early reproductive system">
+                         <f:setPropertyActionListener id="ersproperty" target="#{paramBean.focusGroup}" value="Early reproductive system" />
+                         <f:setPropertyActionListener id="ersproperty2" target="#{volatileSummaryBean.focusGroup}" value="Early reproductive system" /> 
+                 </h:commandLink>
+			</td>
           </tr>
           <tr>
-            <td><h:graphicImage library="images/dbhome" name="Male_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
-            <td>Male reproductive system</td>
+            <td><h:graphicImage library="images/dbhome" name="Male_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Male reproductive system' ? 'db_focusborder' : ''}"></h:graphicImage></td>
+            <td>
+				<h:commandLink value="Male reproductive system">
+                         <f:setPropertyActionListener id="mrsproperty" target="#{paramBean.focusGroup}" value="Male reproductive system" />
+                         <f:setPropertyActionListener id="mrsproperty2" target="#{volatileSummaryBean.focusGroup}" value="Male reproductive system" /> 
+                 </h:commandLink>
+			</td>
           </tr>
           <tr>
-            <td><h:graphicImage library="images/dbhome" name="Female_d.png" width="100" height="99" alt="" class="db_organimage"></h:graphicImage></td>
-            <td>Female reproductive system</td>
+            <td><h:graphicImage library="images/dbhome" name="Female_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Female reproductive system' ? 'db_focusborder' : ''}"></h:graphicImage></td>
+            <td>
+				<h:commandLink value="Female reproductive system" actionListener="#{paramBean.focusGroupAction}">
+                         <f:setPropertyActionListener id="frsproperty" target="#{paramBean.focusGroup}" value="Female reproductive system" />
+                         <f:setPropertyActionListener id="frsproperty2" target="#{volatileSummaryBean.focusGroup}" value="Female reproductive system" /> 
+                 </h:commandLink>
+			</td>
           </tr>
           <tr p:colspan="2">
           	<td>
-          		<h:commandButton id="il_resetFocus" value="Reset Focus Group" actionListener="#{paramBean.focusGroup}">
-                    <f:attribute name="focusField" value="reset" />
+          		<h:commandButton id="il_resetFocus" value="Reset Focus Group">
+                    <f:setPropertyActionListener id="resetproperty" target="#{paramBean.focusGroup}" value="reset" />
+                    <f:setPropertyActionListener id="resetproperty2" target="#{volatileSummaryBean.focusGroup}" value="reset" />
                 </h:commandButton>
           	</td>
           </tr>

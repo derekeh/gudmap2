@@ -25,7 +25,8 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
 
     // Data.
 	private InsituTablePageBeanAssembler assembler;
-    private String whereclause = " WHERE ";
+    //private String whereclause = " WHERE ";
+    private String whereclause = GenericQueries.WHERE_CLAUSE;
     private List<String> selectedItems;
     private boolean areAllChecked;
     
@@ -45,9 +46,9 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
 	
     
     public void setup() {
-    	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,"ISH",whereclause);
-        setTotalslist(assembler.getTotals());
-        totalRows = assembler.count();
+    	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,"ISH");
+        /*setTotalslist(assembler.getTotals());
+        totalRows = assembler.count();*/
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -58,7 +59,8 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
-    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause());
+    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin());
         // Set currentPage, totalPages and pages.
     	setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();

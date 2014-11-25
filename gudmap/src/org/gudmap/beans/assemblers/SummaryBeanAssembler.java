@@ -13,11 +13,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.gudmap.models.SummaryBeanModel;
+import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.globals.Globals;
-/* TRIED TO CALL THIS AS @ManagedProperty FROMSUMMARY BEAN BUT DIDN'T WORK. 
- * INSTEAD MAKE IT A SINGLETON SO IT ONLY GETS CALLED ONCE WITHIN THE APP 
- * making it a singleton makes contact with the database but doesn't run the query again. 
+/* 
  * Leaving it just as a class, the queries are only run once because it  populates the bean on that first run and the bean <SummaryBean> is session scoped
  * */
 public class SummaryBeanAssembler {
@@ -26,6 +25,9 @@ public class SummaryBeanAssembler {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
+	private String focusGroup="";
+	private String focusGroupWhereclause="";
+	private boolean isFocusGroup;
 	
 	public SummaryBeanAssembler() {
 		
@@ -58,7 +60,8 @@ public class SummaryBeanAssembler {
 	}
 
 	private int getISHTotals(){
-		String queryString=QueryTotals.ReturnQuery("ISH_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("ISH_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("ISH_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("ISH_TOTAL");
 		int counter=0;
 		try
 		{
@@ -77,7 +80,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getWISHTotals(){
-		String queryString=QueryTotals.ReturnQuery("WISH_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("WISH_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("WISH_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("WISH_TOTAL");
 		int counter=0;
 		try
 		{
@@ -95,7 +99,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getSISHTotals(){
-		String queryString=QueryTotals.ReturnQuery("SISH_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("SISH_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("SISH_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("SISH_TOTAL");
 		int counter=0;
 		try
 		{
@@ -113,7 +118,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getOPTTotals(){
-		String queryString=QueryTotals.ReturnQuery("OPT_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("OPT_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("OPT_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("OPT_TOTAL");
 		int counter=0;
 		try
 		{
@@ -131,7 +137,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getIHCTotals(){
-		String queryString=QueryTotals.ReturnQuery("IHC_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("IHC_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("IHC_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("IHC_TOTAL");
 		int counter=0;
 		try
 		{
@@ -149,7 +156,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getTGTotals(){
-		String queryString=QueryTotals.ReturnQuery("TG_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("TG_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("TG_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("TG_TOTAL");
 		int counter=0;
 		try
 		{
@@ -167,7 +175,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getMicroarrayTotals(){
-		String queryString=QueryTotals.ReturnQuery("MICROARRAY_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("MICROARRAY_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("MICROARRAY_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("MICROARRAY_TOTAL");
 		int counter=0;
 		try
 		{
@@ -185,7 +194,10 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getSequenceTotals(){
-		String queryString=QueryTotals.ReturnQuery("SEQUENCE_TOTAL");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("SEQUENCE_VOLATILE_TOTAL"),focusGroupWhereclause):QueryTotals.ReturnQuery("SEQUENCE_TOTAL");
+		//String queryString=QueryTotals.ReturnQuery("SEQUENCE_TOTAL");
+		if(isFocusGroup)
+			queryString=queryString.replace("EXP_COMPONENT_ID", "IST_COMPONENT");
 		int counter=0;
 		try
 		{
@@ -203,7 +215,8 @@ public class SummaryBeanAssembler {
 	}
 	//
 	private int getISHGeneTotals(){
-		String queryString=QueryTotals.ReturnQuery("ISH_TOTAL_GENES");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("ISH_VOLATILE_TOTAL_GENES"),focusGroupWhereclause):QueryTotals.ReturnQuery("ISH_TOTAL_GENES");
+		//String queryString=QueryTotals.ReturnQuery("ISH_TOTAL_GENES");
 		int counter=0;
 		try
 		{
@@ -222,7 +235,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getWISHGeneTotals(){
-		String queryString=QueryTotals.ReturnQuery("WISH_TOTAL_GENES");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("WISH_VOLATILE_TOTAL_GENES"),focusGroupWhereclause):QueryTotals.ReturnQuery("WISH_TOTAL_GENES");
+		//String queryString=QueryTotals.ReturnQuery("WISH_TOTAL_GENES");
 		int counter=0;
 		try
 		{
@@ -240,7 +254,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getSISHGeneTotals(){
-		String queryString=QueryTotals.ReturnQuery("SISH_TOTAL_GENES");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("SISH_VOLATILE_TOTAL_GENES"),focusGroupWhereclause):QueryTotals.ReturnQuery("SISH_TOTAL_GENES");
+		//String queryString=QueryTotals.ReturnQuery("SISH_TOTAL_GENES");
 		int counter=0;
 		try
 		{
@@ -258,7 +273,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getOPTGeneTotals(){
-		String queryString=QueryTotals.ReturnQuery("OPT_TOTAL_GENES");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("OPT_VOLATILE_TOTAL_GENES"),focusGroupWhereclause):QueryTotals.ReturnQuery("OPT_TOTAL_GENES");
+		//String queryString=QueryTotals.ReturnQuery("OPT_TOTAL_GENES");
 		int counter=0;
 		try
 		{
@@ -276,7 +292,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getIHCGeneTotals(){
-		String queryString=QueryTotals.ReturnQuery("IHC_TOTAL_GENES");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("IHC_VOLATILE_TOTAL_GENES"),focusGroupWhereclause):QueryTotals.ReturnQuery("IHC_TOTAL_GENES");
+		//String queryString=QueryTotals.ReturnQuery("IHC_TOTAL_GENES");
 		int counter=0;
 		try
 		{
@@ -294,7 +311,8 @@ public class SummaryBeanAssembler {
 	}
 	
 	private int getTGGeneTotals(){
-		String queryString=QueryTotals.ReturnQuery("TG_TOTAL_GENES");
+		String queryString=(isFocusGroup)?String.format(QueryTotals.ReturnQuery("TG_VOLATILE_TOTAL_GENES"),focusGroupWhereclause):QueryTotals.ReturnQuery("TG_TOTAL_GENES");
+		//String queryString=QueryTotals.ReturnQuery("TG_TOTAL_GENES");
 		int counter=0;
 		try
 		{
@@ -309,6 +327,46 @@ public class SummaryBeanAssembler {
 		    Globals.closeQuietly(con, ps, result);
 		}
 		return counter;	
+	}
+	
+	public void setFocusGroup(String focusGroup){
+		
+		if(focusGroup.equals("reset"))
+		{
+			this.focusGroup="";
+			this.focusGroupWhereclause="";
+			isFocusGroup=false;
+		}
+		else if(focusGroup.equals("Metanephros"))
+		{
+			this.focusGroupWhereclause =  GenericQueries.FOCUS_METANEPHROS;
+			this.focusGroup=focusGroup;
+			isFocusGroup=true;
+		}
+		else if(focusGroup.equals("Lower urinary tract"))
+		{
+			this.focusGroupWhereclause =  GenericQueries.FOCUS_URINARY;
+			this.focusGroup=focusGroup;
+			isFocusGroup=true;
+		}
+		else if(focusGroup.equals("Early reproductive system"))
+		{
+			this.focusGroupWhereclause =  GenericQueries.FOCUS_EARLY_REPRO;
+			this.focusGroup=focusGroup;
+			isFocusGroup=true;
+		}
+		else if(focusGroup.equals("Male reproductive system"))
+		{
+			this.focusGroupWhereclause =  GenericQueries.FOCUS_MALE_REPRO;
+			this.focusGroup=focusGroup;
+			isFocusGroup=true;
+		}
+		else if(focusGroup.equals("Female reproductive system"))
+		{
+			this.focusGroupWhereclause =  GenericQueries.FOCUS_FEMALE_REPRO;
+			this.focusGroup=focusGroup;
+			isFocusGroup=true;
+		}
 	}
 	
 	

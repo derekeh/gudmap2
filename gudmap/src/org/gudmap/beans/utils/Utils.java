@@ -8,7 +8,7 @@ public class Utils {
 	    }
 	    return str;
 	}
-	//remove where from whereclause 7 chars
+	//remove WHERE from whereclause (7 chars) and replace with AND and remove last AND
 	public static String removeWhere(String whereclause, String wherestring) {
 		String str=whereclause;
 	    if (str.length() > 0 && str.startsWith(wherestring)) {

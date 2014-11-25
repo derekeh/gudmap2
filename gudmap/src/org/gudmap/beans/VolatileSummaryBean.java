@@ -1,6 +1,8 @@
 package org.gudmap.beans;
 
-import javax.enterprise.context.SessionScoped;
+
+import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import java.io.Serializable;
@@ -9,18 +11,38 @@ import java.util.List;
 import org.gudmap.beans.assemblers.SummaryBeanAssembler;
 import org.gudmap.models.SummaryBeanModel;
 
-@Named
-@SessionScoped
-public class SummaryBean implements Serializable {
-	
+@Named(value="volatileSummaryBean")
+@ViewScoped
+public class VolatileSummaryBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private SummaryBeanAssembler dbsummary;
 	private List<SummaryBeanModel> datalist;
+	private String focusGroup="reset";
 	
 	
-	public SummaryBean() {
+	public VolatileSummaryBean() {
 		dbsummary  = new SummaryBeanAssembler();
 		datalist = dbsummary.getData();		
+	}
+	
+	/*public void setFocusField(String focusField){
+		this.focusField=focusField;
+	}*/
+	
+	/*public String focusGroupAction(String focusGroup){
+		dbsummary.setFocusGroup(focusGroup);
+		datalist = dbsummary.getData();
+		return null;
+	}*/
+	
+	public void setFocusGroup(String focusGroup){
+		this.focusGroup=focusGroup;
+		dbsummary.setFocusGroup(focusGroup);
+		datalist = dbsummary.getData();
+	}
+	
+	public String getFocusGroup(){
+		return focusGroup;
 	}
 	
 	public int getIshTotal() {
