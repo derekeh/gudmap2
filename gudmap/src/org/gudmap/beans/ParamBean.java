@@ -24,7 +24,7 @@ public class ParamBean implements Serializable {
 	private boolean isLoggedIn=false;
 	private String assayType="ISH";
 	/*columns*/
-	private boolean oidcol=true;
+	private boolean oidcol=false;
 	private boolean genecol=true;
 	private boolean gudmapaccessioncol=true;
 	private boolean sourcecol=true;
@@ -32,7 +32,7 @@ public class ParamBean implements Serializable {
 	private boolean assaytypecol=true;
 	private boolean probenamecol=true;
 	private boolean embryostagecol=true;
-	private boolean agecol=false;
+	private boolean agecol=true;
 	private boolean sexcol=false;
 	private boolean genotypecol=false;
 	private boolean tissuecol=false;
@@ -40,7 +40,9 @@ public class ParamBean implements Serializable {
 	private boolean specimentypecol=false;
 	private boolean imagescol=true;
 	private String[] insitucols;
+	private String[] tgcols;
 	private Map<String,Boolean> resultmap;
+	private Map<String,Boolean> tgresultmap;
 	/*filter*/
 	private String genevalues;
 	private String[] sourcevalues;
@@ -65,8 +67,10 @@ public class ParamBean implements Serializable {
 	
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
-		insitucols= new String[]{"oid","gene","gudmapaccession","source","submissiondate","assaytype","probename","embryostage","images"};
+		insitucols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","probename","embryostage","age","images"};
+		tgcols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","embryostage","age","genotype","images"};
 		resultmap=new HashMap<String,Boolean>();
+		tgresultmap=new HashMap<String,Boolean>();
 		assembler = new ParamBeanAssembler();
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
@@ -218,7 +222,7 @@ public class ParamBean implements Serializable {
 		for(int i=0;i<insitucols.length;i++){
 			resultmap.put(insitucols[i], true);	
 		}
-		oidcol=resultmap.containsKey("oid");
+		oidcol=false;
 		genecol=resultmap.containsKey("gene");
 		gudmapaccessioncol=resultmap.containsKey("gudmapaccession");
 		sourcecol=resultmap.containsKey("source");
@@ -244,7 +248,7 @@ public class ParamBean implements Serializable {
 	private static Map<String,Object> insitucolmap;
 	static{
 		insitucolmap = new LinkedHashMap<String,Object>();
-		insitucolmap.put("Oid", "oid"); //label, value
+		//insitucolmap.put("Oid", "oid"); //label, value
 		insitucolmap.put("Gene", "gene");
 		insitucolmap.put("Gudmap Accession", "gudmapaccession");
 		insitucolmap.put("Source", "source");
@@ -267,6 +271,58 @@ public class ParamBean implements Serializable {
  
 	public String getInsitucolsInString() {
 		return Arrays.toString(insitucols);
+	}
+	
+	public void setTgcols(String[]tgcols){
+		this.tgcols=tgcols;
+		tgresultmap.clear();
+		for(int i=0;i<tgcols.length;i++){
+			tgresultmap.put(tgcols[i], true);	
+		}
+		oidcol=false;
+		genecol=tgresultmap.containsKey("gene");
+		gudmapaccessioncol=tgresultmap.containsKey("gudmapaccession");
+		sourcecol=tgresultmap.containsKey("source");
+		submissiondatecol=tgresultmap.containsKey("submissiondate");
+		assaytypecol=tgresultmap.containsKey("assaytype");
+		//probenamecol=tgresultmap.containsKey("probename");
+		embryostagecol=tgresultmap.containsKey("embryostage");
+		agecol=tgresultmap.containsKey("age");
+		sexcol=tgresultmap.containsKey("sex");
+		genotypecol=tgresultmap.containsKey("genotype");
+		tissuecol=tgresultmap.containsKey("tissue");
+		expressioncol=tgresultmap.containsKey("expression");
+		specimentypecol=tgresultmap.containsKey("specimentype");
+		imagescol=tgresultmap.containsKey("images");
+	}
+	
+	
+	public String[] getTgcols(){
+		return tgcols;
+	}
+	
+	private static Map<String,Object> tgcolmap;
+	static{
+		tgcolmap = new LinkedHashMap<String,Object>();
+		//tgcolmap.put("Oid", "oid"); //label, value
+		tgcolmap.put("Gene", "gene");
+		tgcolmap.put("Gudmap Accession", "gudmapaccession");
+		tgcolmap.put("Source", "source");
+		tgcolmap.put("Submission Date", "submissiondate");
+		tgcolmap.put("Assay Type", "assaytype");
+		//tgcolmap.put("Probe Name", "probename");
+		tgcolmap.put("Theiler Stage", "embryostage");
+		tgcolmap.put("Age", "age");
+		tgcolmap.put("Sex", "sex");
+		tgcolmap.put("Genotype", "genotype");
+		tgcolmap.put("Tissue", "tissue");
+		tgcolmap.put("Expression", "expression");
+		tgcolmap.put("Specimen Type", "specimentype");
+		tgcolmap.put("Images", "images");
+	}
+ 
+	public Map<String,Object> getTgcolmap() {
+		return tgcolmap;
 	}
 	
 	/*************************FILTER*******************************/

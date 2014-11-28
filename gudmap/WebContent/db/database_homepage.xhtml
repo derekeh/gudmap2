@@ -8,7 +8,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    my page title
+	    Gudmap Expression Database
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -243,45 +243,35 @@
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{volatileSummaryBean.getWishTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{volatileSummaryBean.getWishTotal()}" action="#{wishTablePageBean.refresh()}"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Section ISH (SISH)</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{volatileSummaryBean.getSishTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{volatileSummaryBean.getSishTotal()}" action="#{sishTablePageBean.refresh()}"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>OPT ISH</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{volatileSummaryBean.getOptTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{volatileSummaryBean.getOptTotal()}" action="#{optTablePageBean.refresh()}"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Immunohistochemistry (IHC)</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{volatileSummaryBean.getIhcTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{volatileSummaryBean.getIhcTotal()}" action="#{ihcTablePageBean.refresh()}"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Transgenic Reporters</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{volatileSummaryBean.getTgTotal()}"></h:outputText>
-            	</h:outputLink>
+            		<h:commandLink value="#{volatileSummaryBean.getTgTotal()}" action="#{tgTablePageBean.refresh()}"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
           </tr>

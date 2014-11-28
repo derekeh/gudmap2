@@ -33,6 +33,7 @@ public class InsituTablePageBeanAssembler {
 	private String whereclause;
 	private String focusGroupWhereclause;
 	private String expressionJoin;
+	private String specimenWhereclause;
 	
 	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
 		try {
@@ -43,20 +44,25 @@ public class InsituTablePageBeanAssembler {
 		}
 		this.paramSQL=paramSQL;
 		this.assayType=assayType;
+		
 		//this.whereclause=whereclause;
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
-											String focusGroupWhereclause, String expressionJoin){
+											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause){
 		this.whereclause=whereclause;
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		this.expressionJoin=expressionJoin;
+		this.specimenWhereclause=specimenWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
+		
+		if(assayType.equals("TG"))
+			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");
+		
 		String sql = String.format(paramSQL, expressionJoin, whereclause, focusGroupWhereclause, sortField, sortDirection);
 		if(!expressionJoin.equals(""))
 			sql=sql.replace("FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID", "");
-		 // FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID
-		//String sql = String.format(paramSQL, whereclause, sortField, sortDirection);
+		sql=sql.replace("SUB_DB_STATUS_FK = 4  AND", "SUB_DB_STATUS_FK = 4  AND"+specimenWhereclause);
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
@@ -99,12 +105,15 @@ public class InsituTablePageBeanAssembler {
 	public int count() {
 		int count=0;
 		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
+		if(assayType.equals("TG"))
+			totalwhere = totalwhere.replace("RPR_SYMBOL", "ALE_GENE");
+		String sql = String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause);
+		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
 		try
 		{
 				con = ds.getConnection();
-				/*ps = con.prepareStatement(" AND "+ String.format(QueryTotals.ReturnQuery("ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION"),totalwhere)); */
-				//String tempstr=String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,totalwhere);
-				ps = con.prepareStatement(String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause)); 
+				//ps = con.prepareStatement(String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause));
+				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
@@ -121,20 +130,37 @@ public class InsituTablePageBeanAssembler {
 	
 	public Map<String,String>  getTotals() {
 		Map<String,String> totals = new HashMap<String,String>();
-		String[]queries={"ASSAY_TYPE_TOTAL_GENE","ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION","ASSAY_TYPE_TOTAL_SOURCE","ASSAY_TYPE_TOTAL_SUBMISSION_DATE","ASSAY_TYPE_TOTAL_ASSAY_TYPE",
+		/*String[]IshColTotals={"ASSAY_TYPE_TOTAL_GENE","ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION","ASSAY_TYPE_TOTAL_SOURCE","ASSAY_TYPE_TOTAL_SUBMISSION_DATE","ASSAY_TYPE_TOTAL_ASSAY_TYPE",
 				"ASSAY_TYPE_TOTAL_PROBE_NAME","ASSAY_TYPE_TOTAL_EMBRYO_STAGE","ASSAY_TYPE_TOTAL_AGE","ASSAY_TYPE_TOTAL_SEX","ASSAY_TYPE_TOTAL_GENOTYPE",
 				"ASSAY_TYPE_TOTAL_TISSUE","ASSAY_TYPE_TOTAL_EXPRESSION","ASSAY_TYPE_TOTAL_SPECIMEN_TYPE","ASSAY_TYPE_TOTAL_IMAGES"};
 		
+		String[]TgColTotals={"TG_TYPE_TOTAL_GENE","TG_TYPE_TOTAL_GUDMAP_ACCESSION","TG_TYPE_TOTAL_SOURCE","TG_TYPE_TOTAL_SUBMISSION_DATE","TG_TYPE_TOTAL_ASSAY_TYPE",
+				"TG_TYPE_TOTAL_PROBE_NAME","TG_TYPE_TOTAL_EMBRYO_STAGE","TG_TYPE_TOTAL_AGE","TG_TYPE_TOTAL_SEX","TG_TYPE_TOTAL_GENOTYPE",
+				"TG_TYPE_TOTAL_TISSUE","TG_TYPE_TOTAL_EXPRESSION","TG_TYPE_TOTAL_SPECIMEN_TYPE","TG_TYPE_TOTAL_IMAGES"};*/
+		
+		String [] queries=(assayType.equals("TG")?Globals.TgColTotals:Globals.IshColTotals);
+		
 		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
+		if(assayType.equals("TG"))
+			totalwhere = totalwhere.replace("RPR_SYMBOL", "ALE_GENE");
+		String sql="";
 		for(int i=0;i<queries.length;i++) {
 			try
 			{
 				con = ds.getConnection();
-				//ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere));
-				if(queries[i].equals("ASSAY_TYPE_TOTAL_TISSUE") || queries[i].equals("ASSAY_TYPE_TOTAL_EXPRESSION"))
-					ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause));
-				else
-					ps = con.prepareStatement(String.format(QueryTotals.ReturnQuery(queries[i]),expressionJoin,totalwhere,focusGroupWhereclause));
+				if(queries[i].equals("ASSAY_TYPE_TOTAL_TISSUE") || queries[i].equals("ASSAY_TYPE_TOTAL_EXPRESSION") || queries[i].equals("TG_TYPE_TOTAL_EXPRESSION")){
+					sql= String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause);
+					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
+					//ps = con.prepareStatement(sql);
+				}
+				else if(queries[i].equals("TG_TYPE_TOTAL_PROBE_NAME"))
+					sql = QueryTotals.ReturnQuery(queries[i]);
+				else {
+					sql=String.format(QueryTotals.ReturnQuery(queries[i]),expressionJoin,totalwhere,focusGroupWhereclause);
+					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
+					//ps = con.prepareStatement(sql);
+				}
+				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				

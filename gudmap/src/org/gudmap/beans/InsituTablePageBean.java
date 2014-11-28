@@ -24,31 +24,45 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
     // Data.
-	private InsituTablePageBeanAssembler assembler;
-    //private String whereclause = " WHERE ";
+	protected InsituTablePageBeanAssembler assembler;
     private String whereclause = GenericQueries.WHERE_CLAUSE;
-    private List<String> selectedItems;
+    private String specimenWhereclause="";
+    protected List<String> selectedItems;
     private boolean areAllChecked;
     
     @Inject
-   	private ParamBean paramBean;
+   	protected ParamBean paramBean;
    	
     // Constructors -------------------------------------------------------------------------------
 
     public InsituTablePageBean() {
     	super(20,10,"SUB_OID",true);   	
-        setup();
+        setup("ISH","");
     }
     
+	public InsituTablePageBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
+		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
+	}
+
 	public void setParamBean(ParamBean paramBean){
 		this.paramBean=paramBean;
 	}
 	
     
-    public void setup() {
-    	assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,"ISH");
-        /*setTotalslist(assembler.getTotals());
-        totalRows = assembler.count();*/
+    public void setup(String assayType,String specimen_assay) {
+    	//TODO find the generic query to use (and/or specimen assay types) based on assay type
+    	
+    	if(specimen_assay.equals("WISH"))
+    		specimenWhereclause=GenericQueries.WHERE_WISH;
+    	else if(specimen_assay.equals("SISH"))
+    		specimenWhereclause = GenericQueries.WHERE_SISH;
+    	else if(specimen_assay.equals("OPT"))
+    		specimenWhereclause = GenericQueries.WHERE_OPT;
+    	
+    	if(assayType.equals("TG"))
+    		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
+    	else
+    		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -60,7 +74,7 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin());
+    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
         // Set currentPage, totalPages and pages.
     	setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();
