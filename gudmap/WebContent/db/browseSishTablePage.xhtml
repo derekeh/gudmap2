@@ -162,7 +162,10 @@
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    				(#{sishTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION")}) <br />
+    			(<h:commandLink value="#{sishTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{sishTablePageBean.sort}">
+    					<f:attribute name="sortField" value="SUB_OID" />
+                    </h:commandLink> )
+    				<br />
     				Gudmap Accession
 				</f:facet>
     				#{u.gudmap_accession}
@@ -170,7 +173,10 @@
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    				(#{sishTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SOURCE")}) <br />
+    			(<h:commandLink value="#{sishTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SOURCE')}" actionListener="#{sishTablePageBean.sort}">
+    					<f:attribute name="sortField" value="PER_SURNAME" />
+                    </h:commandLink> )
+    				 <br />
     				Source
 				</f:facet>
     				#{u.source}
@@ -202,7 +208,10 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    				(#{sishTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_EMBRYO_STAGE")}) <br />
+    			(<h:commandLink value="#{sishTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{sishTablePageBean.sort}">
+    					<f:attribute name="sortField" value="SUB_EMBRYO_STG" />
+                    </h:commandLink> )
+    				 <br />
     				Theiler Stage
 				</f:facet>
     				#{u.stage}

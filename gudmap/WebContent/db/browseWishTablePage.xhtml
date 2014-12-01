@@ -20,6 +20,8 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 	<h:form>
+	#{paramBean.setGenotypecol(false)}
+	#{paramBean.setProbenamecol(true)}
 		<h:panelGrid columns="2">
 			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
@@ -160,7 +162,10 @@
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    				(#{wishTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION")}) <br />
+    			(<h:commandLink value="#{wishTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{wishTablePageBean.sort}">
+    					<f:attribute name="sortField" value="SUB_OID" />
+                    </h:commandLink> )
+    				<br />
     				Gudmap Accession
 				</f:facet>
     				#{u.gudmap_accession}
@@ -168,7 +173,10 @@
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    				(#{wishTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SOURCE")}) <br />
+    			(<h:commandLink value="#{wishTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SOURCE')}" actionListener="#{wishTablePageBean.sort}">
+    					<f:attribute name="sortField" value="PER_SURNAME" />
+                    </h:commandLink> )
+    				 <br />
     				Source
 				</f:facet>
     				#{u.source}
@@ -200,7 +208,10 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    				(#{wishTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_EMBRYO_STAGE")}) <br />
+    			(<h:commandLink value="#{wishTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{wishTablePageBean.sort}">
+    					<f:attribute name="sortField" value="SUB_EMBRYO_STG" />
+                    </h:commandLink> )
+    				 <br />
     				Theiler Stage
 				</f:facet>
     				#{u.stage}
