@@ -1,4 +1,4 @@
-package org.gudmap.beans.assemblers;
+package org.gudmap.assemblers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

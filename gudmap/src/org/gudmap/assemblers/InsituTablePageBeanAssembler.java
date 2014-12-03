@@ -1,4 +1,4 @@
-package org.gudmap.beans.assemblers;
+package org.gudmap.assemblers;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.gudmap.beans.utils.Utils;
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.totals.QueryTotals;
+import org.gudmap.utils.Utils;
 import org.gudmap.models.InsituTableBeanModel;
 
 public class InsituTablePageBeanAssembler {

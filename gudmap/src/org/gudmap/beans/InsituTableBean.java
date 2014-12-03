@@ -2,13 +2,14 @@ package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.gudmap.beans.assemblers.InsituTableBeanAssembler;
+import org.gudmap.assemblers.InsituTableBeanAssembler;
 import org.gudmap.models.InsituTableBeanModel;
-import org.gudmap.beans.utils.RepeatPaginator;
+import org.gudmap.utils.RepeatPaginator;
 
 @Named
 @SessionScoped

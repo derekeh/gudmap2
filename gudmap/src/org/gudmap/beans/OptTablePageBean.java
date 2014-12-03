@@ -12,7 +12,7 @@ import javax.faces.event.ActionListener;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.gudmap.beans.assemblers.InsituTablePageBeanAssembler;
+import org.gudmap.assemblers.InsituTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.generic.GenericQueries;

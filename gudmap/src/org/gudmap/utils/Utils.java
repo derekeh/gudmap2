@@ -1,4 +1,6 @@
-package org.gudmap.beans.utils;
+package org.gudmap.utils;
+
+import java.util.ResourceBundle;
 
 public class Utils {
 	//remove last character from string
@@ -17,6 +19,21 @@ public class Utils {
 	      
 	    }
 	    return str;
+	}
+	
+	public static String netTrim(String input) {
+		String ret = input;
+		if (null != ret) {
+			  ret = ret.trim();
+			  if (ret.equals(""))
+				ret = null;
+		}
+			
+		return ret;
+	}
+	
+	public static ResourceBundle getConfigBundle() {
+		return ResourceBundle.getBundle("org.gudmap.bundles.config");
 	}
 
 }

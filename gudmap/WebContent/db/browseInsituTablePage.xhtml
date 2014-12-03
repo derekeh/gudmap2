@@ -214,7 +214,8 @@
     				 <br />
     				Theiler Stage
 				</f:facet>
-    				#{u.stage}
+				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.agecol == true}">

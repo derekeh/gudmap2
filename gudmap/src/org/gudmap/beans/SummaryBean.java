@@ -6,7 +6,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-import org.gudmap.beans.assemblers.SummaryBeanAssembler;
+import org.gudmap.assemblers.SummaryBeanAssembler;
 import org.gudmap.models.SummaryBeanModel;
 
 @Named

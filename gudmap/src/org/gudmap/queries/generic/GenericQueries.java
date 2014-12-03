@@ -13,6 +13,8 @@ public class GenericQueries {
 	   public final static String WHERE_WISH = " SPN_ASSAY_TYPE = 'wholemount' AND ";
 	   public final static String WHERE_SISH = " SPN_ASSAY_TYPE = 'section' AND ";
 	   public final static String WHERE_OPT = " SPN_ASSAY_TYPE = 'opt-wholemount' AND ";
+	   public final static String THEILER_URL_1 = "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts";
+	   public final static String THEILER_URL_2 = "definition.html";
 	
 	   public final static String ISH_BROWSE_ALL_TABLES = " FROM ISH_SUBMISSION " +
 	             "JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK " +

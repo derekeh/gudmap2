@@ -1,4 +1,4 @@
-package org.gudmap.beans.utils;
+package org.gudmap.utils;
 
 import java.util.List;
 

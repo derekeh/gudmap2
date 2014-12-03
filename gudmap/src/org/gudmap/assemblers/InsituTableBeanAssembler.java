@@ -1,4 +1,4 @@
-package org.gudmap.beans.assemblers;
+package org.gudmap.assemblers;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

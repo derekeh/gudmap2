@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.gudmap.beans.assemblers.ParamBeanAssembler;
-import org.gudmap.beans.utils.Utils;
+import org.gudmap.assemblers.ParamBeanAssembler;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.utils.Utils;
 
 @Named(value="paramBean")
 @SessionScoped
