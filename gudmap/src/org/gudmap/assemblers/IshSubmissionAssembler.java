@@ -1,15 +1,5 @@
 package org.gudmap.assemblers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import java.util.ArrayList;
 
 
@@ -27,9 +17,10 @@ import org.gudmap.models.submission.SpecimenModel;
 import org.gudmap.models.submission.ImageDetailModel;
 import org.gudmap.models.submission.AlleleModel;
 import org.gudmap.models.submission.SubmissionModel;
-import org.gudmap.models.submission.StatusNoteModel;
+//import org.gudmap.models.submission.StatusNoteModel;
 import org.gudmap.models.submission.IshSubmissionModel;
-import org.gudmap.queries.submission.*;
+import org.gudmap.models.submission.ImageInfoModel;
+//import org.gudmap.queries.submission.*;
 import org.gudmap.dao.IshSubmissionDao;
 import org.gudmap.dao.AnatomyDao;
 
@@ -37,7 +28,7 @@ import org.gudmap.dao.AnatomyDao;
 
 public class IshSubmissionAssembler {
     
-	private boolean debug = false;
+	//private boolean debug = false;
 	IshSubmissionDao ishSubmissionDao=null;
 	AnatomyDao anatomyDao = null;
     
@@ -46,8 +37,8 @@ public class IshSubmissionAssembler {
 		anatomyDao = new AnatomyDao();
 	}
 	
-	public IshSubmissionModel getData(String oid, boolean isEditor, 
-			boolean displayAnnotationAsTree, /*UserBean userBean,*/ boolean onlyRetrieveTree) {
+	public IshSubmissionModel getData(String oid, /*boolean isEditor, */
+			boolean displayAnnotationAsTree /*, UserBean userBean, boolean onlyRetrieveTree*/) {
 		if (oid == null) {
 			return null;			
 		}
@@ -84,10 +75,10 @@ public class IshSubmissionAssembler {
 		ishSubmissionModel.setEuregeneId(submissionModel.getEuregeneId());
 		ishSubmissionModel.setResultNotes(submissionModel.getResultNotes());
 			
-		if(onlyRetrieveTree) {
+		/*if(onlyRetrieveTree) {
 			return ishSubmissionModel;
-		}
-		
+		}*/
+				
 		ProbeModel probeModel = null;
 		AntibodyModel antibodyModel = null;
 		if (assayType.indexOf("ISH") >= 0 || assayType.indexOf("TG") >= 0) {
@@ -96,37 +87,38 @@ public class IshSubmissionAssembler {
 		else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
 			antibodyModel = ishSubmissionDao.findAntibodyBySubmissionId(oid);
 		}
-		/*	
-			// get specimen info
-		SpecimenModel specimenModel = ishDAO.findSpecimenBySubmissionId(oid);
+			
+		// get specimen info
+		SpecimenModel specimenModel = ishSubmissionDao.findSpecimenBySubmissionId(oid);
 	
-			// get allel info
-		AlleleModel[] alleleModel = ishDAO.findAlleleBySubmissionId(oid);
+		// get allel info
+		AlleleModel[] alleleModel = ishSubmissionDao.findAlleleBySubmissionId(oid);
 			
 		// get original image info
-		ArrayList images = ishDAO.findImageBySubmissionId(oid);
+		ArrayList<ImageInfoModel> images = ishSubmissionDao.findImageBySubmissionId(oid);
+		
 		//get wlz image
-		ImageDetailModel imageDetailModel = ishDAO.findWlzImageDetailBySubmissionId(oid);
+		ImageDetailModel imageDetailModel = ishSubmissionDao.findWlzImageDetailBySubmissionId(oid);
 			
-			// get author info
-		String author = ishDAO.findAuthorBySubmissionId(oid);
+		// get author info
+		String author = ishSubmissionDao.findAuthorBySubmissionId(oid);
 			
-			// get pi info
-		PersonModel[] pi = ishDAO.findPIsBySubmissionId(oid);
+		// get pi info
+		PersonModel[] pi = ishSubmissionDao.findPIsBySubmissionId(oid);
 			
-			// get submitter info
-		PersonModel submitter = ishDAO.findSubmitterBySubmissionId(oid);
+		// get submitter info
+		PersonModel submitter = ishSubmissionDao.findSubmitterBySubmissionId(oid);
 			
-			// get publication info
-		ArrayList publication = ishDAO.findPublicationBySubmissionId(oid);
+		// get publication info
+		ArrayList<String[]> publication = ishSubmissionDao.findPublicationBySubmissionId(oid);
 			
-			// get acknowledgement 
-		String[] acknowledgement = ishDAO.findAcknowledgementBySubmissionId(oid);
+		// get acknowledgement 
+		String[] acknowledgement = ishSubmissionDao.findAcknowledgementBySubmissionId(oid);
 	
-		ArrayList linkedSubmissionsRaw = ishDAO.findLinkedSubmissionBySubmissionId(oid);
+		ArrayList<String[]> linkedSubmissionsRaw = ishSubmissionDao.findLinkedSubmissionBySubmissionId(oid);
 			
-			// format the linked submission raw data into appropriate data structure
-		ArrayList linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
+		// format the linked submission raw data into appropriate data structure
+		ArrayList<Object> linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
 			
 	    if (assayType.indexOf("ISH") >=0) {
 	    		ishSubmissionModel.setProbeModel(probeModel);
@@ -147,143 +139,12 @@ public class IshSubmissionAssembler {
 	    ishSubmissionModel.setAcknowledgements(acknowledgement);
 	    ishSubmissionModel.setLinkedSubmissions(linkedSubmission);
 	    
-	    String tissue = ishDAO.findTissueBySubmissionId(oid);
-	    ishSubmissionModel.setTissue(tissue);*/
+	    String tissue = ishSubmissionDao.findTissueBySubmissionId(oid);
+	    ishSubmissionModel.setTissue(tissue);
 
 	    return ishSubmissionModel;
 	}
 		
-
-	
-	/**
-	 * Linked Submissions(ArrayList)-- resource (e.g. GUDMAP)
-	 *                              -- submissions(ArrayList)-- serial no
-	 *                                                       -- link type (e.g. control) 
-	 *                                                       -- oid(ArrayList)-- accId1, ..., accIdN
-	 *                              -- URL
-	 * 
-	 * @param linkedSubmissionsRaw
-	 * @return an array list of LS, within every element of this array list, it's an 3-unit object array,
-	 *         the first element is resource string, the second element is an array list of LS type and
-	 *         accession ids, the third one is URL string;
-	 *         The first element of the array list of LS type and accesion ids is the serial no,
-	 *         the second element is the type string,
-	 *         the third element is an array list of accession ids.
-	 *         
-	 */
-	private ArrayList formatLinkedSubmissionDataBackup(ArrayList linkedSubmissionsRaw) {
-    	
-		if (linkedSubmissionsRaw == null || linkedSubmissionsRaw.isEmpty()) {
-			return null;
-		}
-		
-		int len = linkedSubmissionsRaw.size();
-
-		// go through the linked submission list raw data and assemble them into desired data structure
-		ArrayList<Object> result = new ArrayList<Object>();
-		
-        // linked submissions from one resource
-		ArrayList<Object> linkedSubmission = null;
-		
-        // list of linked submission type and accession ids
-		ArrayList<Object> typeAndAccessionIDsList = null;
-		
-		// linked submission type and accession ids
-		ArrayList<Object> typeAndAccessionIDs = null;
-		
-		ArrayList<String> accessionIDs = null;
-		String tempResource = null;
-		String tempSubmissiontype = null;
-//		int typeAndAccessionIDSerialNo = 1; // used for display purpose
-		
-		for (int i=0;i<len;i++) {
-    		
-			// get the data
-			String resource = ((String[])linkedSubmissionsRaw.get(i))[0];
-    		String submissionType = ((String[])linkedSubmissionsRaw.get(i))[1];
-    		String oid = ((String[])linkedSubmissionsRaw.get(i))[2];
-    		String url = ((String[])linkedSubmissionsRaw.get(i))[3];
-    		
-    		// assemble
-    		if (i == 0) { // first row
-    			linkedSubmission = new ArrayList<Object>();
-        		linkedSubmission.add(0, resource);
-        		linkedSubmission.add(1, url);
-        		
-        		tempResource = resource;
-        		tempSubmissiontype = submissionType;
-        		
-        		typeAndAccessionIDsList = new ArrayList<Object>();
-        		
-        		typeAndAccessionIDs = new ArrayList<Object>();
-        		typeAndAccessionIDs.add(0, Integer.toString(1));
-        		typeAndAccessionIDs.add(1, submissionType);
-        		
-        		accessionIDs = new ArrayList<String>();
-        		accessionIDs.add(oid);
-        		
-    		} else { // if it's not the first row, compare the resource, type, and assemble the LS accordingly
-    			
-    			if (resource.equals(tempResource)) {
-    				if (submissionType.equals(tempSubmissiontype)) {
-    					accessionIDs.add(oid);
-    				} else {
-    					typeAndAccessionIDs.add(2, accessionIDs);
-    					typeAndAccessionIDsList.add(typeAndAccessionIDs);
-    					
-    					typeAndAccessionIDs = new ArrayList<Object>();
-    					int serialNo = typeAndAccessionIDsList.size() + 1;
-    	        		typeAndAccessionIDs.add(0, Integer.toString(serialNo));
-    	        		typeAndAccessionIDs.add(1, submissionType);
-    					tempSubmissiontype = submissionType;
-
-    					accessionIDs = new ArrayList<String>();
-    					accessionIDs.add(oid);
-    				}
-    				
-    			} else { // not the same resource
-    				
-    				// add the accession id, type, into LS data structure (ArrayList)
-					typeAndAccessionIDs.add(2, accessionIDs);
-					typeAndAccessionIDsList.add(typeAndAccessionIDs);
-					linkedSubmission.add(1, typeAndAccessionIDsList);
-    				
-					// convert the data structure for display
-					Object[] linkedSubmissionObj = 
-    					(Object[])linkedSubmission.toArray(new Object[linkedSubmission.size()]);
-    				result.add(linkedSubmissionObj);
-    				
-        			linkedSubmission = new ArrayList<Object>();
-            		linkedSubmission.add(0, resource);
-            		linkedSubmission.add(1, url);
-            		
-            		tempResource = resource;
-            		tempSubmissiontype = submissionType;
-            		
-            		typeAndAccessionIDsList = new ArrayList<Object>();
-            		
-            		typeAndAccessionIDs = new ArrayList<Object>();
-	        		typeAndAccessionIDs.add(0, Integer.toString(1));
-	        		typeAndAccessionIDs.add(1, submissionType);
-            		
-            		accessionIDs = new ArrayList<String>();
-            		accessionIDs.add(oid);
-    			}
-    			
-    			// put the last row of data into the result data structure
-    			if (i == len-1) {
-    				typeAndAccessionIDs.add(2, accessionIDs);
-    				typeAndAccessionIDsList.add(typeAndAccessionIDs);
-    				linkedSubmission.add(1, typeAndAccessionIDsList);
-    				Object[] linkedSubmissionObj = 
-    					(Object[])linkedSubmission.toArray(new Object[linkedSubmission.size()]);
-    				result.add(linkedSubmissionObj);
-    			}
-    		}
-    		
-		} // end of going through the linked submission list raw data
-		return result;
-    }
 	
 	/**
 	 * Linked Submissions(ArrayList)-- resource (e.g. GUDMAP)
@@ -299,7 +160,7 @@ public class IshSubmissionAssembler {
 	 *         the second element is an array list of link types.
 	 *         
 	 */
-	public ArrayList formatLinkedSubmissionData(ArrayList linkedSubmissionsRaw) {
+	public ArrayList<Object> formatLinkedSubmissionData(ArrayList<String[]> linkedSubmissionsRaw) {
     	
 		if (linkedSubmissionsRaw == null || linkedSubmissionsRaw.isEmpty()) {
 			return null;

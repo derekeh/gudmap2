@@ -14,7 +14,7 @@ public class IshSubmissionModel extends SubmissionModel{
 	    
 	    protected ArrayList<?> annotationTree;
 	    
-	    protected ArrayList<String[]> linkedSubmissions;
+	    protected ArrayList<Object> linkedSubmissions;
 	    protected LinkedSubmissionsModel linkedSubmissionsModel;
 	    
 	    protected ExpressionDetailModel [] expressionDetailModel;
@@ -84,11 +84,11 @@ public class IshSubmissionModel extends SubmissionModel{
 	        this.linkedPublications = linkedPublications;
 	    }
 	    
-	    public ArrayList<String[]> getLinkedSubmissions() {
+	    public ArrayList<Object> getLinkedSubmissions() {
 	        return linkedSubmissions;
 	    }
 
-	    public void setLinkedSubmissions(ArrayList<String[]> linkedSubmissions) {
+	    public void setLinkedSubmissions(ArrayList<Object> linkedSubmissions) {
 	        this.linkedSubmissions = linkedSubmissions;
 	    }
 	    

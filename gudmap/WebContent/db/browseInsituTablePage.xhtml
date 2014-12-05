@@ -168,7 +168,10 @@
     				<br />
     				Gudmap Accession
 				</f:facet>
-    				#{u.gudmap_accession}
+    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+					<f:setPropertyActionListener id="oidproperty" target="#{ishSubmissionBean.oid}" value="#{u.oid}" />
+				</h:commandLink>
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">

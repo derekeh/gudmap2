@@ -1,10 +1,10 @@
 package org.gudmap.dao;
 
 import org.gudmap.globals.Globals;
-import org.gudmap.models.submission.ExpressionDetailModel;
-import org.gudmap.models.submission.ExpressionPatternModel;
-import org.gudmap.models.submission.GeneModel;
-import org.gudmap.models.submission.IshBrowseSubmissionModel;
+//import org.gudmap.models.submission.ExpressionDetailModel;
+//import org.gudmap.models.submission.ExpressionPatternModel;
+//import org.gudmap.models.submission.GeneModel;
+//import org.gudmap.models.submission.IshBrowseSubmissionModel;
 import org.gudmap.models.submission.AntibodyModel;
 import org.gudmap.models.submission.AlleleModel;
 import org.gudmap.models.submission.ImageInfoModel;
@@ -13,18 +13,12 @@ import org.gudmap.models.submission.PersonModel;
 import org.gudmap.models.submission.ProbeModel;
 import org.gudmap.models.submission.SpecimenModel;
 import org.gudmap.models.submission.SubmissionModel;
-import org.gudmap.models.submission.StatusNoteModel;
+//import org.gudmap.models.submission.StatusNoteModel;
 import org.gudmap.queries.submission.*;
 import org.gudmap.utils.Utils;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.ResourceBundle;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.sql.*;
-import java.text.DateFormat;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -440,5 +434,533 @@ public class IshSubmissionDao {
         return antibodyModel;
 	    
     }// end findAntibodyBySubmissionId
+    
+    public SpecimenModel findSpecimenBySubmissionId(String oid) {
+        if (oid == null) {
+		    return null;
+        }
+        SpecimenModel specimenModel = null;
+        String queryString = IshSubmissionQueries.SPECIMEN_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+					specimenModel = new SpecimenModel();
+					specimenModel.setGenotype(result.getString(1));
+					specimenModel.setAssayType(result.getString(2));
+					specimenModel.setFixMethod(result.getString(3));
+					specimenModel.setEmbedding(result.getString(4));
+					specimenModel.setStrain(result.getString(5));
+					specimenModel.setStageFormat(result.getString(6));
+					specimenModel.setOtherStageValue(result.getString(7));
+					specimenModel.setPhase(result.getString(11));
+					specimenModel.setSex(result.getString(9));
+					specimenModel.setSpecies(result.getString(12));
+				
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        queryString = IshSubmissionQueries.SPECIMEN_NOTE_BY_OID;
+        List<String> notes = new ArrayList<String>();
+        String str = null;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first() && specimenModel!=null) {
+				result.beforeFirst();
+                while (result.next()) {
+                    str = Utils.netTrim(result.getString(1));
+				    if (null != str)
+					notes.add(str);
+                }
+		
+				if (0 == notes.size())
+				    specimenModel.setNotes(null);
+				else
+				    specimenModel.setNotes((String[])notes.toArray(new String[0]));
+            }
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return specimenModel;
+        
+	    
+    }// end findSpecimenBySubmissionId
+    
+    public AlleleModel[] findAlleleBySubmissionId(String oid) {
+        if (oid == null) {
+		    return null;
+        }
+        String queryString = IshSubmissionQueries.ALLELE_BY_OID;
+        ArrayList<AlleleModel> alleleList = new ArrayList<AlleleModel>();
+	 	String str = null;
+	 	AlleleModel alleleModel=null;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			
+		 	if (result.first()) {
+		 	    result.beforeFirst();
+		 	    while (result.next()) {
+			 		alleleModel = new AlleleModel();
+			 		str = Utils.netTrim(result.getString(1));
+					alleleModel.setGeneSymbol(str);
+			
+			 		str = Utils.netTrim(result.getString(2));
+					alleleModel.setGeneId(str);
+			
+			 		str = Utils.netTrim(result.getString(3));
+					alleleModel.setAlleleId(str);
+					
+					// name first, then lab name
+			 		str = Utils.netTrim(result.getString(5));
+					if (null == str)
+					    str = Utils.netTrim(result.getString(4));
+					alleleModel.setAlleleName(str);
+			
+			 		str = Utils.netTrim(result.getString(7));
+					alleleModel.setType(str);
+			
+			 		str = Utils.netTrim(result.getString(8));
+					alleleModel.setAlleleFirstChrom(str);
+			
+			 		str = Utils.netTrim(result.getString(9));
+					alleleModel.setAlleleSecondChrom(str);
+			
+			 		str = Utils.netTrim(result.getString(10));
+					alleleModel.setReporter(str);
+			
+			 		str = Utils.netTrim(result.getString(11));
+					alleleModel.setVisMethod(str);
+			
+					str = Utils.netTrim(result.getString(12));
+					alleleModel.setNotes(str);
+			
+			 		alleleList.add(alleleModel);
+		 	    }
+			}
+			if (debug)
+			    System.out.println("number of allele = "+alleleList.size());
+		
+			if (0 == alleleList.size())
+			    return null;
+
+	     	
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return (AlleleModel[])alleleList.toArray(new AlleleModel[0]);
+        
+    }// end findAlleleBySubmissionId
+    
+    public ArrayList<ImageInfoModel> findImageBySubmissionId(String oid) {
+        if (oid == null) {
+		    return null;
+        }
+        ArrayList<ImageInfoModel> imageInfoList = null;
+        String queryString = IshSubmissionQueries.IMAGE_INFO_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+	            result.beforeFirst();
+	            int serialNo = 1;
+	            imageInfoList = new ArrayList<ImageInfoModel>();
+			    //int dotPosition = 0;
+			   // String fileExtension = null;
+			    String str = null;
+			    ImageInfoModel imageInfoModel = null;
+
+	            while (result.next()) {
+	            	imageInfoModel = new ImageInfoModel();
+					str = Utils.netTrim(result.getString(1));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setAccessionId(str);
+					str = Utils.netTrim(result.getString(2));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setFilePath(str);
+					str = Utils.netTrim(result.getString(3));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setNote(str);
+					str = Utils.netTrim(result.getString(4));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setSpecimenType(str);
+					str = Utils.netTrim(result.getString(5));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setClickFilePath(str);
+				
+					imageInfoModel.setSerialNo(""+serialNo);
+	                serialNo++;
+	                imageInfoList.add(imageInfoModel);
+	            }	            
+	        }			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return imageInfoList;
+    }// end findImageBySubmissionId
+    
+    public ImageDetailModel findWlzImageDetailBySubmissionId(String oid) {
+        ImageDetailModel imageDetailModel = null;
+        String queryString = IshSubmissionQueries.IMAGE_DETAIL_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+		    	imageDetailModel = new ImageDetailModel();
+		    	imageDetailModel.setAccessionId(result.getString(1));
+		    	imageDetailModel.setGeneSymbol(result.getString(2));
+		    	imageDetailModel.setGeneName(result.getString(3));
+		    	imageDetailModel.setStage(result.getString(4));
+		    	imageDetailModel.setSpecimenType(result.getString(7));
+		    	imageDetailModel.setFilePath(result.getString(8));
+		    	imageDetailModel.setClickFilePath(result.getString(9));
+            }
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        return imageDetailModel;
+    	
+    }//end findWlzImageDetailBySubmissionId
+    
+    public String findAuthorBySubmissionId(String oid) {
+        if (oid == null) {
+		    return null;
+	    }
+        String authorInfo = null;
+        String queryString = IshSubmissionQueries.AUTHOR_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+	            while (result.next()) {
+	            	authorInfo += result.getString(1) + " ";
+	            }	            
+	        }			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+      //GROUP_CONCAT RETURNS NULL STRING IF NO NON NULL VALUES FOUND.
+        //IF USE GROUP BY IN SQL THEN WILL LOSE THE SEPARATOR OF THE CONCAT SO...
+        if(authorInfo.equalsIgnoreCase("null "))
+        	return null;
+        else
+        	return authorInfo.trim();        
+      
+    }// end findAuthorBySubmissionId
+    
+    public PersonModel[] findPIsBySubmissionId(String oid) {
+    	if (oid == null) {
+    		return null;
+    	}
+        PersonModel[] personModelArray = null;
+        ArrayList<PersonModel> personList = null;
+        String queryString = IshSubmissionQueries.PIS_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			
+	        if (result.first()) {
+	        	result.beforeFirst();
+	        	personList = new ArrayList<PersonModel>();
+			    while (result.next()) {
+		                PersonModel personModel = new PersonModel();
+		                personModel.setName(result.getString(1));
+		                personModel.setLab(result.getString(2));
+		                personModel.setAddress(result.getString(3));
+		                personModel.setAddress2(result.getString(4));
+		                personModel.setEmail(result.getString(5));
+		                personModel.setCity(result.getString(6));
+		                personModel.setPostcode(result.getString(7));
+		                personModel.setCountry(result.getString(8));
+		                personModel.setPhone(result.getString(9));
+		                personModel.setFax(result.getString(10));
+		                personModel.setId(result.getString(11));
+		                personList.add(personModel);
+			    }
+	        }		
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        if (personList != null) {
+        	personModelArray = personList.toArray(new PersonModel[0]);
+ 
+        }
+        if(null == personModelArray || 0 == personModelArray.length) {
+        	queryString = IshSubmissionQueries.PI_BY_OID;
+        	personModelArray = new PersonModel[1];
+        	PersonModel personModel = new PersonModel();
+        	try
+     		{
+     			con = ds.getConnection();
+     			ps = con.prepareStatement(queryString); 
+     			ps.setString(1, oid);
+     			result =  ps.executeQuery();
+     			
+     			if (result.first()) {
+     	            personModel.setName(result.getString(1));
+     	            personModel.setLab(result.getString(2));
+     	            personModel.setAddress(result.getString(3));
+     	            personModel.setAddress2(result.getString(4));
+     	            personModel.setEmail(result.getString(5));
+     	            personModel.setCity(result.getString(6));
+     	            personModel.setPostcode(result.getString(7));
+     	            personModel.setCountry(result.getString(8));
+     	            personModel.setPhone(result.getString(9));
+     	            personModel.setFax(result.getString(10));
+     	            personModel.setId(result.getString(11));
+     	        } else {
+     	            personModel.setName("n/a");
+     	            personModel.setLab("");
+     	            personModel.setAddress("");
+     	            personModel.setAddress2("");
+     	            personModel.setEmail("");
+     	            personModel.setCity("");
+     	            personModel.setPostcode("");
+     	            personModel.setCountry("");
+     	            personModel.setPhone("");
+     	            personModel.setFax("");
+     	            personModel.setId("");
+     	        }
+     			personModelArray[0] = personModel;
+     		}
+     		catch(SQLException sqle){sqle.printStackTrace();}
+     		finally {
+     		    Globals.closeQuietly(con, ps, result);
+     		}
+        	if(null == personModelArray[0])
+        		personModelArray = null;
+        }
+        
+       
+	    return personModelArray;
+	    
+    }//end findPIsBySubmissionId
+    
+    public PersonModel findSubmitterBySubmissionId(String oid) {
+        if (oid == null) {
+		    return null;
+        }
+        PersonModel personModel = new PersonModel();
+        String queryString = IshSubmissionQueries.SUBMITTER_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+ 	            personModel.setName(result.getString(1));
+ 	            personModel.setLab(result.getString(2));
+ 	            personModel.setAddress(result.getString(3));
+ 	            personModel.setAddress2(result.getString(4));
+ 	            personModel.setEmail(result.getString(5));
+ 	            personModel.setCity(result.getString(6));
+ 	            personModel.setPostcode(result.getString(7));
+ 	            personModel.setCountry(result.getString(8));
+ 	            personModel.setPhone(result.getString(9));
+ 	            personModel.setFax(result.getString(10));
+ 	            personModel.setId(result.getString(11));
+ 	        } else {
+ 	            personModel.setName("n/a");
+ 	            personModel.setLab("");
+ 	            personModel.setAddress("");
+ 	            personModel.setAddress2("");
+ 	            personModel.setEmail("");
+ 	            personModel.setCity("");
+ 	            personModel.setPostcode("");
+ 	            personModel.setCountry("");
+ 	            personModel.setPhone("");
+ 	            personModel.setFax("");
+ 	            personModel.setId("");
+ 	        }			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		} 
+        
+        return personModel;      
+    } // end findSubmitterBySubmissionId
+    
+    public ArrayList<String[]> findPublicationBySubmissionId(String oid) {
+        if (oid == null) {
+		    return null;
+        }
+        ArrayList<String[]> publicationList = null;
+        String queryString = IshSubmissionQueries.LINKED_PUBLICATIONS_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			ResultSetMetaData resultSetData = result.getMetaData();
+			int columnCount = resultSetData.getColumnCount();
+			
+			if (result.first()) {
+				
+				//need to reset cursor as 'if' move it on a place
+				result.beforeFirst();
+				
+				//create ArrayList to store each row of results in
+				publicationList = new ArrayList<String[]>();
+				int i = 0;
+				String[] columns = null;
+				String str = null;
+				while (result.next()) {
+					columns = new String[columnCount];
+					for (i = 0; i < columnCount; i++) {
+						str = result.getString(i + 1);
+						if (null == str)
+						    str = "";
+						else {
+						    str = str.trim();
+						    if (str.equalsIgnoreCase("null"))
+							str = "";
+						}
+
+						columns[i] = str;
+					}
+					publicationList.add(columns);
+				}	
+			}
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        return publicationList;
+
+    }// end findPublicationBySubmissionId
+    
+    public String[] findAcknowledgementBySubmissionId(String oid) {
+        String[] AcknowledgementArray = null;
+        String queryString = IshSubmissionQueries.ACKNOWLEDGEMENTS_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			AcknowledgementArray = Utils.formatResultSetToStringArray(result);			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        return AcknowledgementArray;
+	    
+    } // end findAcknowledgementBySubmissionId
+    
+    public ArrayList<String[]> findLinkedSubmissionBySubmissionId(String oid) {
+        ArrayList<String[]> linkedSubmissionList = null;
+        String queryString = IshSubmissionQueries.ACCESSION_BY_OID;
+        String accessionID = "";
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if(result.first())
+				accessionID = result.getString(1);
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        queryString = IshSubmissionQueries.LINKED_SUBMISSIONS_BY_OID;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, accessionID);
+			ps.setString(2, oid);
+			result =  ps.executeQuery();
+			linkedSubmissionList = Utils.formatResultSetToArrayList(result);
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        return linkedSubmissionList;
+
+    } //end findLinkedSubmissionBySubmissionId
+    
+    public String findTissueBySubmissionId(String oid)
+    {
+		String tissue = null;
+		String queryString = IshSubmissionQueries.TISSUE_BY_OID;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+                tissue = result.getString(1);
+				while (result.next()) {
+					tissue += "," + result.getString(1);
+				}
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		return tissue;
+    } //end findTissueBySubmissionId
     
 }

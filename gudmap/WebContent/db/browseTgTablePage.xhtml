@@ -170,7 +170,9 @@
     				<br />
     				Gudmap Accession
 				</f:facet>
-    				#{u.gudmap_accession}
+    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+					<f:setPropertyActionListener id="oidproperty" target="#{ishSubmissionBean.oid}" value="#{u.oid}" />
+				</h:commandLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
@@ -218,7 +220,7 @@
     				 <br />
     				Theiler Stage
 				</f:facet>
-    				#{u.stage}
+    			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.agecol == true}">

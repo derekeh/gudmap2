@@ -10,7 +10,7 @@ public class SubmissionModel {
     protected PersonModel submitter;
     protected String stage;
     protected String authors;
-    protected ArrayList originalImages;
+    protected ArrayList<ImageInfoModel> originalImages;
     protected int publicFlag;
     protected String assayType;
     protected String archiveId;
@@ -47,7 +47,7 @@ public class SubmissionModel {
     }
     
     public SubmissionModel(String accID, SpecimenModel specimenModel, PersonModel[] pis, PersonModel submitter, 
-    		String stage, String authors, ArrayList originalImages) {
+    		String stage, String authors, ArrayList<ImageInfoModel> originalImages) {
     	this.accID = accID;
     	this.specimenModel = specimenModel;
     	this.principalInvestigators = pis;
@@ -161,7 +161,7 @@ public class SubmissionModel {
 		return ret;
     }
 
-    public ArrayList getOriginalImages() {
+    public ArrayList<ImageInfoModel> getOriginalImages() {
         return originalImages;
         
     	/*
@@ -193,7 +193,7 @@ public class SubmissionModel {
 
     }
 
-    public void setOriginalImages(ArrayList originalImages) {
+    public void setOriginalImages(ArrayList<ImageInfoModel> originalImages) {
         this.originalImages = originalImages;
     }
     
