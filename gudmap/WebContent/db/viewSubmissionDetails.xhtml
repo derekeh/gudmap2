@@ -5,11 +5,13 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    my page title
+	    GUDMAP Submission Detail
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -18,10 +20,200 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	    <h1>Submission Details</h1>	
+	
+	<pr:dialog header="Wholemount" widgetVar="wholemount_dialog" width="600" style="position:absolute;left:-100px;" >  
+	 <h:panelGrid columns="1">
+    	<h:outputText styleClass="db_table_header" value="WISH expression data Interpretion"></h:outputText>
+     	<h:outputText styleClass="db_table_text" value="There are several technical limitations to the whole-mount in situ hybridization (WISH) approach that may 
+     												effect accurate scoring of a gene's detailed expression pattern leading to either false negative or positive scores. 
+     												These limitations should be borne in mind when reviewing this data. For example, strong superficial reaction 
+     												within a tissue may obscure internal expression domains resulting in false negative or false positive 
+     												assignments particularly where a gene is expressed broadly within superficial cell populations."></h:outputText>
+
+		<h:outputText styleClass="db_table_text" value="Further, low-level ubiquitous expression is difficult to distinguish from background activity inherent 
+													in the methodology after long periods of detection (typically greater than 24 hours)."></h:outputText>
+
+		<h:outputText styleClass="db_table_text" value="Finally, trapping of probe in luminal compartments (for example the ureter) may lead to erroneous signals in 
+													these structures (typically greater than 24 hours). The scoring attempts to be as accurate as possible within the 
+													boundaries of the technical limits of WISH. Other approaches such as section in situ hybridization (SISH) can 
+													overcome some of these limitations and are an important complement to WISH."></h:outputText>
+   	 </h:panelGrid>
+	</pr:dialog> 
+	
+	
+	    <h1>Submission Details for: 
+	    	<h:outputText value="GUDMAP:#{ishSubmissionBean.oid}"></h:outputText>    	
+	    </h1>	
 	    <!-- all other content in here -->  
-	    <h3>The oid of the entry is: </h3>
-	    <h:outputText value="#{ishSubmissionBean.oid}"></h:outputText>   
+		#{ishSubmissionBean.returnResults()}
+		
+		<pr:dialog id="labDialog" header="Lab Details" widgetVar="lab_dialog" width="600" style="position:absolute;left:-200px;" > 
+		
+			<t:dataList id="peopleDataList" var="peopleInfo" value="#{personBean.people}" rowCountVar="count" rowIndexVar="index" 
+				rendered="#{personBean.people != null}">
+		
+				<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+					<h:outputText value="Name"></h:outputText>
+					<h:outputText value="#{peopleInfo.name}"></h:outputText>
+					
+					<h:outputText value="Institution"></h:outputText>
+					<h:outputText value="#{peopleInfo.lab}"></h:outputText>
+					
+					<h:outputText value="Address"></h:outputText>
+					<h:outputText value="#{peopleInfo.fullAddress}"></h:outputText>
+					
+					<h:outputText value="Tel"></h:outputText>
+					<h:outputText value="#{peopleInfo.phone}"></h:outputText>
+					
+					<h:outputText value="Email"></h:outputText>
+					<h:outputLink value="mailto:#{peopleInfo.email}">
+						<h:outputText value="#{peopleInfo.email}"></h:outputText>
+					</h:outputLink>
+					
+				</h:panelGrid>
+				
+			</t:dataList>
+		</pr:dialog>
+		
+	    <h:form id="db_submission_detail_form">
+	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+	    		<h:graphicImage library="images/display" name="GUDMAP_Logo_50.png" styleClass="db_icon" height="50" rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'GUDMAP'}"/>
+	    		<h:graphicImage library="images/display" name="button_euregene2.png" styleClass="db_icon" height="50" rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'EUREGENE'}"/>
+	    		<h:panelGroup>
+	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+	    			    <h:outputText value="EuregeneID: "  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.euregeneId}" />
+	    				<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.euregeneId}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.euregeneId}"/>
+	    			
+	    				 <h:outputText value="Gene: "></h:outputText>
+	    				 <h:panelGroup>
+							<h:outputLink value="viewGeneStrip.jsf">
+								<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.geneSymbol}" />
+								<f:param name="gene" value="#{ishSubmissionBean.ishSubmissionModel.geneSymbol}" />
+							</h:outputLink>
+	    				 	<h:outputText value=", #{ishSubmissionBean.ishSubmissionModel.geneName}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.geneName}"></h:outputText>
+	    				 </h:panelGroup>
+	    				 
+	    				 <h:outputText value="Stage: "></h:outputText>
+	    				 <h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ishSubmissionBean.ishSubmissionModel.stage}definition.html" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}">
+							<h:outputText value="Theiler Stage #{ishSubmissionBean.ishSubmissionModel.stage}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}"/>
+						</h:outputLink>
+						<h:outputText value="Carnegie Stage #{ishSubmissionBean.ishSubmissionModel.stage}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Homo sapiens'}"/>
+	    				 
+	    				 <h:outputText value="Tissue: "></h:outputText>
+	    				 <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.tissue}"></h:outputText> 
+	    				 
+	    				 <h:outputText value="Species: "></h:outputText>
+	    				 <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species}"></h:outputText> 
+	    				 
+	    				 <h:outputText value="Assay Type: "></h:outputText>
+	    				 <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.assayType}  #{ishSubmissionBean.ishSubmissionModel.specimenModel.assayType}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.assayType != 'unspecified' }"></h:outputText> 
+	    				 <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.assayType}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.assayType == 'unspecified' }"/> 
+	    			</h:panelGrid>
+	    		</h:panelGroup>
+	    	</h:panelGrid>
+	    	
+	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+	    		<h:outputText value="Images" />
+				<h:dataTable  columnClasses="db_inner_image_detail_left,db_inner_detail_right" value="#{ishSubmissionBean.ishSubmissionModel.originalImages}" var="image">
+				        <h:column>
+							<h:outputLink value="#" target="_blank"
+							                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+								<h:graphicImage value="#{image.filePath}"/>
+							</h:outputLink>
+				        </h:column>
+				        <h:column>
+							<h:outputText value="#{image.note}"/>
+				        </h:column>
+				</h:dataTable>
+				
+				<h:panelGroup></h:panelGroup>
+				<h:panelGroup rendered="#{null != ishSubmissionBean.ishSubmissionModel.imageDetailModel}">
+						<h:outputText  value="View 3D opt image:&#160;&#160;&#160; "></h:outputText>
+						<h:outputLink value="#{ishSubmissionBean.ishSubmissionModel.imageDetailModel.clickFilePath}">
+							<h:graphicImage library="images/display" name="opt_logo.png" height="30" width="30"/>
+						</h:outputLink>			
+				</h:panelGroup>
+				
+				<h:panelGroup></h:panelGroup>
+				<h:outputLink value="#{ishSubmissionBean.ishSubmissionModel.imageDetailModel.filePath}" rendered="#{null != ishSubmissionBean.ishSubmissionModel.imageDetailModel}">
+						<h:outputText value="Download 3D images in woolz format "></h:outputText>
+				</h:outputLink>
+				
+	    	</h:panelGrid>
+	    	
+	    	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.resultNotes}">
+				<h:outputText value="Results Notes" />
+				<h:dataTable columnClasses="db_inner_detail_right" value="#{ishSubmissionBean.ishSubmissionModel.resultNotes}" var="note">
+					<h:column>
+						<h:outputText value="#{note}"/>
+					</h:column>
+				</h:dataTable>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'GUDMAP' and ishSubmissionBean.ishSubmissionModel.assayType == 'ISH' and ishSubmissionBean.ishSubmissionModel.specimenModel.assayType == 'wholemount'}">
+				<h:outputText value="Disclaimer" />
+				<h:panelGroup>
+					<h:outputText value="Whole-mount in situ hybridization is subject to technical limitations that may influence accuracy of the data " />
+					<pr:commandButton id="showdialog" value="Read more..." onclick="PF('wholemount_dialog').show();" type="button">
+						
+					</pr:commandButton>
+				</h:panelGroup>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'EUREGENE'}">
+				<h:outputText value="IMPORTANT NOTE ABOUT EUREGENE ANNOTATIONS" />
+				<h:outputText value="Annotations within this entry are currently under review by the GUDMAP editorial office and Kylie Georgas (Little Lab, University of Queensland). 
+									In due course the annotations will be changed to reflect this review process. Original EuReGene annotations will continue to be available from www.gudmap.org/euregene/" />			
+			</h:panelGrid>
+			
+			<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+	    		<h:outputText value="Submitters"></h:outputText>
+	    		<h:panelGroup>
+	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+	    			    <h:outputText value="Principal Investigator(s) : "/>
+	    				<t:dataList id="piDataList" var="piInfo" value="#{ishSubmissionBean.ishSubmissionModel.principalInvestigators}" >
+							<h:outputLink  title="#{piInfo.fullAddress}"  value="javascript:showLabDetails(#{piInfo.id})">
+							      <h:outputText value="#{piInfo.name}, " />
+							</h:outputLink>
+							<h:outputText title="#{piInfo.fullAddress}"  value="#{piInfo.displayAddress}" /><br/>
+				        </t:dataList>
+				        
+				        <h:outputText value="Contributors:" />
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.authors}" />
+						
+						<ui:remove>
+						<h:outputText value="Submitted By:" />
+						<h:panelGroup>
+	                            <pr:commandLink id="showsubmitterdialog" value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, " update=":peopleDataList"  oncomplete="PF('lab_dialog').show();">
+	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{ishSubmissionBean.ishSubmissionModel.submitter.id}" />
+	                            </pr:commandLink>
+						       
+						       <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
+						</h:panelGroup>
+						</ui:remove>
+						
+						<h:outputText value="Submitted By:" />
+						<h:panelGroup>
+	                            <h:outputLink title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}" value="javascript:showLabDetails(#{ishSubmissionBean.ishSubmissionModel.submitter.id})">
+						             <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, " />
+						       </h:outputLink>
+						       <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
+						</h:panelGroup>
+						
+						<h:outputText rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="Archive/Batch ID:" />
+						<h:outputLink rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="http://www.gudmap.org/Submission_Archive/index.html##{ishSubmissionBean.ishSubmissionModel.archiveId}" >
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.archiveId}" />
+						</h:outputLink>
+						
+						<h:outputText value="Submission ID:" />
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.labId}" />
+	    			
+	    			</h:panelGrid>
+	    		</h:panelGroup>
+	    	</h:panelGrid>
+	    	
+	    
+	    </h:form>
 	</ui:define>
 </ui:composition>
 </html>

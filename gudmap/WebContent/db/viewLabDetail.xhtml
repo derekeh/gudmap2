@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<h:head>
+	  <title>Lab Details</title>
+	  <h:outputStylesheet library="css" name="gudmap_db.css"></h:outputStylesheet>
+	</h:head>
+ 
+    <h:body>
+ 
+    	<t:dataList id="peopleDataList" var="peopleInfo" value="#{personBean.people}" rowCountVar="count" rowIndexVar="index" 
+				rendered="#{personBean.people != null}">
+				
+				<h:panelGrid columns="2" rowClasses="db_stripe,db_nostripe" columnClasses="db_outer_detail_left,db_outer_detail_right" border="0" cellspacing="0" cellpadding="0">
+					<h:outputText value="Name:" />
+					<h:outputText value="#{peopleInfo.name}" />
+					
+					<h:outputText value="Institution:" />
+					<h:outputText value="#{peopleInfo.lab}" />
+					
+					<h:outputText value="Address:" />
+					<h:panelGrid columns="1" border="0">
+						<h:outputText styleClass="datatext" value="#{peopleInfo.address}" />
+						<h:outputText styleClass="datatext" value="#{peopleInfo.city} #{peopleInfo.postcode}" />
+						<h:outputText styleClass="datatext" value="#{peopleInfo.country}" />
+					</h:panelGrid>
+					
+					<h:outputText value="Tel:" />
+					<h:outputText value="#{peopleInfo.phone}" />
+					
+					<h:outputText value="Email:" />
+	                <h:outputLink value="mailto:#{peopleInfo.email}">
+					          <h:outputText value="#{peopleInfo.email}" />
+	               </h:outputLink>
+				</h:panelGrid>
+				
+		</t:dataList>
+		<h:panelGrid columns="1" >
+			<h:commandButton value="Close" onclick="self.close()" />
+		</h:panelGrid>
+   </h:body>
+ 
+</html>

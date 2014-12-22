@@ -52,12 +52,12 @@ public class IshSubmissionAssembler {
 		ArrayList<String> annotationTree = null;
 		ExpressionDetailModel [] expressionDetailModel = null;
 			
-		if(displayAnnotationAsTree) {
+		/*if(displayAnnotationAsTree) {
 				annotationTree = anatomyDao.findAnnotationTreeBySubmissionId(oid);
 		}
 		else {
 			expressionDetailModel = anatomyDao.findAnnotatedListBySubmissionIds(oid);
-		}		
+		}*/		
 			
 		String assayType = submissionModel.getAssayType();
 		
@@ -75,7 +75,8 @@ public class IshSubmissionAssembler {
 		ishSubmissionModel.setEuregeneId(submissionModel.getEuregeneId());
 		ishSubmissionModel.setResultNotes(submissionModel.getResultNotes());
 			
-		/*if(onlyRetrieveTree) {
+		/* DONT USE THIS ANYMORE - FOR PREVIOUS EDITING 
+		 * if(onlyRetrieveTree) {
 			return ishSubmissionModel;
 		}*/
 				
@@ -87,28 +88,29 @@ public class IshSubmissionAssembler {
 		else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
 			antibodyModel = ishSubmissionDao.findAntibodyBySubmissionId(oid);
 		}
-			
+		
 		// get specimen info
 		SpecimenModel specimenModel = ishSubmissionDao.findSpecimenBySubmissionId(oid);
-	
-		// get allel info
-		AlleleModel[] alleleModel = ishSubmissionDao.findAlleleBySubmissionId(oid);
-			
+		
 		// get original image info
 		ArrayList<ImageInfoModel> images = ishSubmissionDao.findImageBySubmissionId(oid);
 		
 		//get wlz image
 		ImageDetailModel imageDetailModel = ishSubmissionDao.findWlzImageDetailBySubmissionId(oid);
-			
+		
 		// get author info
 		String author = ishSubmissionDao.findAuthorBySubmissionId(oid);
-			
-		// get pi info
+					
+				// get pi info
 		PersonModel[] pi = ishSubmissionDao.findPIsBySubmissionId(oid);
-			
-		// get submitter info
+					
+				// get submitter info
 		PersonModel submitter = ishSubmissionDao.findSubmitterBySubmissionId(oid);
-			
+		
+		/*	
+		// get allel info
+		AlleleModel[] alleleModel = ishSubmissionDao.findAlleleBySubmissionId(oid);
+		
 		// get publication info
 		ArrayList<String[]> publication = ishSubmissionDao.findPublicationBySubmissionId(oid);
 			
@@ -119,7 +121,9 @@ public class IshSubmissionAssembler {
 			
 		// format the linked submission raw data into appropriate data structure
 		ArrayList<Object> linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
-			
+		
+			*/
+		
 	    if (assayType.indexOf("ISH") >=0) {
 	    		ishSubmissionModel.setProbeModel(probeModel);
 	    } else if (assayType.indexOf("IHC") >=0) {
@@ -127,18 +131,19 @@ public class IshSubmissionAssembler {
 	    } else if (assayType.indexOf("TG") >=0) {
 	    	ishSubmissionModel.setProbeModel(probeModel);
 	    }
-			
+		
 	    ishSubmissionModel.setSpecimenModel(specimenModel);
-	    ishSubmissionModel.setAlleleModel(alleleModel);
 	    ishSubmissionModel.setOriginalImages(images);
 	    ishSubmissionModel.setImageDetailModel(imageDetailModel);
 	    ishSubmissionModel.setAuthors(author);
 	    ishSubmissionModel.setPrincipalInvestigators(pi);
 	    ishSubmissionModel.setSubmitter(submitter);	
+	    /*	    
+	    ishSubmissionModel.setAlleleModel(alleleModel);	
 	    ishSubmissionModel.setLinkedPublications(publication);
 	    ishSubmissionModel.setAcknowledgements(acknowledgement);
 	    ishSubmissionModel.setLinkedSubmissions(linkedSubmission);
-	    
+	 */   
 	    String tissue = ishSubmissionDao.findTissueBySubmissionId(oid);
 	    ishSubmissionModel.setTissue(tissue);
 

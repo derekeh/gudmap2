@@ -25,7 +25,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class IshSubmissionDao {
+public class SubmissionSpecificsDao {
 	
 	private boolean debug = false;
 	private DataSource ds;
@@ -33,7 +33,7 @@ public class IshSubmissionDao {
 	private PreparedStatement ps;
 	private ResultSet result;
 	
-	public IshSubmissionDao() {
+	public SubmissionSpecificsDao() {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -789,53 +789,6 @@ public class IshSubmissionDao {
         }
         PersonModel personModel = new PersonModel();
         String queryString = IshSubmissionQueries.SUBMITTER_BY_OID;
-        try
-		{
-			con = ds.getConnection();
-			ps = con.prepareStatement(queryString); 
-			ps.setString(1, oid);
-			result =  ps.executeQuery();
-			if (result.first()) {
- 	            personModel.setName(result.getString(1));
- 	            personModel.setLab(result.getString(2));
- 	            personModel.setAddress(result.getString(3));
- 	            personModel.setAddress2(result.getString(4));
- 	            personModel.setEmail(result.getString(5));
- 	            personModel.setCity(result.getString(6));
- 	            personModel.setPostcode(result.getString(7));
- 	            personModel.setCountry(result.getString(8));
- 	            personModel.setPhone(result.getString(9));
- 	            personModel.setFax(result.getString(10));
- 	            personModel.setId(result.getString(11));
- 	        } else {
- 	            personModel.setName("n/a");
- 	            personModel.setLab("");
- 	            personModel.setAddress("");
- 	            personModel.setAddress2("");
- 	            personModel.setEmail("");
- 	            personModel.setCity("");
- 	            personModel.setPostcode("");
- 	            personModel.setCountry("");
- 	            personModel.setPhone("");
- 	            personModel.setFax("");
- 	            personModel.setId("");
- 	        }			
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		} 
-        
-        return personModel;      
-    } // end findSubmitterBySubmissionId
-    
-    
-    public PersonModel findPersonByPersonId(String oid) {
-        if (oid == null) {
-		    return null;
-        }
-        PersonModel personModel = new PersonModel();
-        String queryString = IshSubmissionQueries.PERSON_BY_PER_OID;
         try
 		{
 			con = ds.getConnection();

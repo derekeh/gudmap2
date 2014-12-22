@@ -2,11 +2,12 @@ package org.gudmap.beans;
 
 import java.io.Serializable;
 
+//import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
+//import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.gudmap.models.submission.IshSubmissionModel;
-import org.gudmap.models.submission.AntibodyModel;
 import org.gudmap.assemblers.IshSubmissionAssembler;
 
 @Named
@@ -41,7 +42,7 @@ public class IshSubmissionBean implements Serializable {
         if (ishSubmissionModel != null){
             // initialise probe/antibodyModel sequence info
             String assayType = ishSubmissionModel.getAssayType();
-            this.setOid(oid);
+            //this.setOid(oid);
            
 	        if (assayType.indexOf("ISH") >=0 && null != ishSubmissionModel.getProbeModel()) { // ISH data
 	            	if (ishSubmissionModel.getProbeModel().getSeqStatus() != null && !ishSubmissionModel.getProbeModel().getSeqStatus().equals("Unsequenced.")) {
@@ -61,27 +62,25 @@ public class IshSubmissionBean implements Serializable {
 	                    }   
 	                }
 	         } 
-	         else if (assayType.indexOf("IHC") >= 0) { // IHC data
-	            	AntibodyModel antibodyModel = ishSubmissionModel.getAntibodyModel();
-	            	if (antibodyModel.getSeqStatus() != null && !antibodyModel.getSeqStatus().equals("Unsequenced.")) {
-	            		renderPrbSeqInfo = true;
-	            		if (antibodyModel.getSeqStartLocation() == 0 || antibodyModel.getSeqEndLocation() == 0) {
-	            			antibodyModel.setSeqInfo("Accession number for part sequence: ");
-	            		}else {
-	            			antibodyModel.setSeqInfo("Specific sequence recognized: aa " + antibodyModel.getSeqStartLocation() +
-	            					" - " + antibodyModel.getSeqEndLocation() + " of ");
-	            		}
-	            		if (antibodyModel.getUrl() != null && antibodyModel.getUrl() != "") {
-	            			renderPrbNameURL = true;
-	            		}
-	            	}
-	          } 
-	          
-          
-            
-            if (ishSubmissionModel.getAnnotationTree() != null || ishSubmissionModel.getExpressionDetailModel() != null){
-                expressionMapped = true;
+	         else if (assayType.indexOf("IHC") >= 0 && null != ishSubmissionModel.getAntibodyModel()) { // IHC data
+            	if (ishSubmissionModel.getAntibodyModel().getSeqStatus() != null && !ishSubmissionModel.getAntibodyModel().getSeqStatus().equals("Unsequenced.")) {
+            		renderPrbSeqInfo = true;
+            		if (ishSubmissionModel.getAntibodyModel().getSeqStartLocation() == 0 || ishSubmissionModel.getAntibodyModel().getSeqEndLocation() == 0) {
+            			ishSubmissionModel.getAntibodyModel().setSeqInfo("Accession number for part sequence: ");
+            		}else {
+            			ishSubmissionModel.getAntibodyModel().setSeqInfo("Specific sequence recognized: aa " + ishSubmissionModel.getAntibodyModel().getSeqStartLocation() +
+            					" - " + ishSubmissionModel.getAntibodyModel().getSeqEndLocation() + " of ");
+            		}
+            		if (ishSubmissionModel.getAntibodyModel().getUrl() != null && ishSubmissionModel.getAntibodyModel().getUrl() != "") {
+            			renderPrbNameURL = true;
+            		}
+            	}
             }
+	        
+	        //TODO UNCOMMENT
+            /*if (ishSubmissionModel.getAnnotationTree() != null || ishSubmissionModel.getExpressionDetailModel() != null){
+                expressionMapped = true;
+            }*/
         }
     } // end returnResults
     
@@ -147,6 +146,8 @@ public class IshSubmissionBean implements Serializable {
         	return "Hide annotation under groups";
     }
     
-    
+    public IshSubmissionModel getIshSubmissionModel () {
+    	return ishSubmissionModel;
+    }
 
 }

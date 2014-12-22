@@ -403,10 +403,14 @@ public class SubmissionModel {
     	return euregeneId;
     }
     
-    public void setEuregeneId(String input) {
+   /* public void setEuregeneId(String input) {
     	euregeneId = input;
     	if (null == euregeneId)
     		euregeneId = "";
+    }*/
+    
+    public void setEuregeneId(String euregeneId) {
+    	this.euregeneId = euregeneId;
     }
 
     public String[] getResultNotes() {
