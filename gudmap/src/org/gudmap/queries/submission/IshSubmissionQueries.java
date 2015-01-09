@@ -51,7 +51,7 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 	  "CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " + 
 	  "WHEN 'MGI:' THEN CONCAT(GENE_URL.URL_URL, RPR_LOCUS_TAG) " + 
 	  "ELSE /* non MGI */ '' END, /* 22 */" +
-	  "RPR_CLONE_NAME_2, PRB_LAB_ID /* 23-24 */" +
+	  "RPR_CLONE_NAME_2, PRB_LAB_ID, SUB_ASSAY_TYPE /* 23-25 */" +
 	  "FROM ISH_PROBE " + 
 	  "JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID AND SUB_OID = ? " +
 	  "JOIN REF_URL GENBANK_URL ON GENBANK_URL.URL_OID = 4 " + 
@@ -67,12 +67,12 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 	  "END";
 	
 	
-	//PROBE NOTE
+	//PROBE NOTE by oid
 	
 	public static String PROBE_NOTE_BY_OID = "SELECT PNT_VALUE FROM ISH_PROBE_NOTE, ISH_SUBMISSION WHERE PNT_SUBMISSION_FK = SUB_OID AND SUB_IS_PUBLIC=1 AND SUB_OID = ? ORDER BY PNT_SEQ";
 	
 	
-	//MAPROBE NOTE
+	//MAPROBE NOTE  BY OID
 	
 	public static String MAPROBE_NOTE_BY_OID = "SELECT RPN_NOTES FROM REF_PRB_NOTES, ISH_SUBMISSION, ISH_PROBE, REF_PROBE " +
 	"WHERE SUB_OID = ? " +
@@ -81,6 +81,61 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 	"AND RPN_PROBE_FK = RPR_OID " +
 	"AND RPN_ISDELETED = 0 " +
 	"ORDER BY RPN_OID DESC";
+	
+	//final static String name237 = "PROBE_NOTE_BY_MAPROBE_ID";
+	//PROBE NOTE BY MAPROBE ID
+	public static String PROBE_NOTE_BY_MAPROBE_ID = "SELECT PNT_SUBMISSION_FK,PNT_VALUE FROM ISH_PROBE_NOTE, ISH_PROBE WHERE PNT_SUBMISSION_FK = PRB_SUBMISSION_FK AND PRB_MAPROBE = ? ORDER BY PNT_SEQ";
+	
+	//final static String name238 = "MAPROBE_NOTE";
+	//MAPROBE NOTE BY MAPROBE ID
+	public static String MAPROBE_NOTE_BY_MAPROBE_ID = "SELECT RPN_NOTES FROM REF_PRB_NOTES, REF_PROBE WHERE RPR_OID = ? AND RPN_PROBE_FK = RPR_OID AND RPN_ISDELETED = 0 ORDER BY RPN_OID DESC";
+	
+	//PROBE BY MAPROBE ID
+	  public static String MAPROBE_BY_PROBE_ID = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, RPR_LOCUS_TAG, "+  
+	                                 "PRB_SOURCE, PRB_STRAIN, PRB_TISSUE, PRB_PROBE_TYPE, "+
+	                                 "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
+	                                 "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), "+
+	                                 "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END), "+
+	                                 "CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
+	                                 "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
+	                                 "RPR_CLONE_NAME_2, PRB_LAB_ID, SUB_ASSAY_TYPE  "+ 
+	                                 "FROM REF_PROBE "+
+	                                 "JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID "+
+	                                 "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK "+
+	                                 "JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = "+
+	                                 "CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " + 
+	                                 "WHEN 'MGI:'     THEN  'jax_gene' " + 
+	                                 "WHEN 'maprobe:' THEN 'maprobe_probe' " + 
+	                                 "ELSE '-1' /* unrecognised prefix, get NULL record */ " + 
+	                                 "END " +
+	                                 "JOIN REF_URL GENBANK_URL ON GENBANK_URL.URL_TYPE = 'genbank_sequence' "+
+	                                 "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC "+
+	                                 "WHERE RPR_JAX_ACC = ? "+
+	                                 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
+
+	  final static String name239 = "MAPROBE_DETAILS_EXTRA this is comibined into above";
+	  final static String query239 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, RPR_LOCUS_TAG, "+  
+	                                 "PRB_SOURCE, PRB_STRAIN, PRB_TISSUE, PRB_PROBE_TYPE, "+
+	                                 "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
+	                                 "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), "+
+	                                 "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END), "+
+	                                 "CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
+	                                 "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
+	                                 "RPR_CLONE_NAME_2, PRB_LAB_ID "+ 
+	                                 "FROM REF_PROBE "+
+	                                 "JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID "+
+	                                 "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK "+
+	                                 "JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = "+
+	                                 "CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " + 
+	                                 "WHEN 'MGI:'     THEN  'jax_gene' " + 
+	                                 "WHEN 'maprobe:' THEN 'maprobe_probe' " + 
+	                                 "ELSE '-1' /* unrecognised prefix, get NULL record */ " + 
+	                                 "END " +
+	                                 "JOIN REF_URL GENBANK_URL ON GENBANK_URL.URL_TYPE = 'genbank_sequence' "+
+	                                 "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC "+
+	                                 "WHERE RPR_JAX_ACC = ? "+
+	                                 "AND  PRB_MAPROBE = ? "+
+	                                 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	
 	
 	//FULL  PROBE SEQUENCE
@@ -355,8 +410,43 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
     public static String PATTERN_LOCATIONS = "SELECT DISTINCT LCN_LOCATION, LCN_PATTERN_FK, LCN_OID FROM ISH_LOCATION WHERE LCN_PATTERN_FK = ?";
     
     public static String COMPONENT_NAME_FROM_ATN_PUBLIC_ID = "SELECT ANO_COMPONENT_NAME FROM ANA_NODE, ANA_TIMED_NODE WHERE ANO_OID = ATN_NODE_FK AND ATN_PUBLIC_ID = ?";
+    
+    //LIST OF SUBMISSIONS WITH GENE SYMBOL
+    public static String GENE_RELATED_SUBMISSIONS_ISH = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE,  " + 
+                                  "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
+                                  "ELSE 'without annotation' " + 
+                                  "END, " +
+                                  "CASE WHEN (SPN_SEX = 'unknown') THEN 'unknown sex' " + 
+                                  "ELSE SPN_SEX " + 
+                                  "END, " +
+                                  "RPR_JAX_ACC, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '), " + 
+                                  "CASE WHEN (LOCATE(';',GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ')) > 0) THEN " + 
+                                  "CONCAT(SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '),'; ',1),'...') " +
+                                  "ELSE GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') " +
+                                  "END, " + 
+                                  "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
+                            		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
+                             		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
+                             		"ELSE 'probe.html' END, " +
+                            		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
+                                  "FROM ISH_SUBMISSION " + 
+                                  "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
+                                  "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
+                                  "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
+                                  "JOIN REF_STAGE " +
+                                  "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
+                                  "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
+                                  "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+                                  "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
+                                  "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +
+                                  "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
+                                  "WHERE RPR_SYMBOL = ? " + 
+                                  "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
+                                  "AND SUB_ASSAY_TYPE = ? " +
+                                  "GROUP BY SUB_OID " +
+                                  "ORDER BY CONCAT(STG_PREFIX, SUB_EMBRYO_STG), natural_sort(SUB_ACCESSION_ID)";
 
-
+    
 
 
 

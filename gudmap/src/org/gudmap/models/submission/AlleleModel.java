@@ -2,7 +2,7 @@ package org.gudmap.models.submission;
 
 public class AlleleModel {
 	
-	private boolean debug = false;
+	//private boolean debug = false;
     private String title;
     private String geneSymbol;
     private String geneId;
@@ -106,7 +106,7 @@ public class AlleleModel {
     }
 
     public void setReporter(String reporter) {
-        reporter = reporter;
+        this.reporter = reporter;
     }
 
     public String getVisMethod() {

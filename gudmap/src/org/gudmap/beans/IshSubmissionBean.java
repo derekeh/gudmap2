@@ -2,8 +2,10 @@ package org.gudmap.beans;
 
 import java.io.Serializable;
 
+
 //import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 //import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -31,8 +33,13 @@ public class IshSubmissionBean implements Serializable {
     private boolean expressionMapped;
     private String oid;
     private boolean displayAsTree=true;
+    private boolean isTransgenic=false;
     
     public IshSubmissionBean() {
+    	FacesContext facesContext = FacesContext.getCurrentInstance();
+		String accId = facesContext.getExternalContext().getRequestParameterMap().get("accId");
+		if(accId!=null && accId!="")
+			oid=accId.substring(accId.indexOf(":")+1);
     	ishSubmissionAssembler = new IshSubmissionAssembler();
     }
     
@@ -76,6 +83,12 @@ public class IshSubmissionBean implements Serializable {
             		}
             	}
             }
+	        else if (assayType.indexOf("TG") >= 0) { // transgenic data
+	            	isTransgenic=true;
+	        }
+	        else { // other assay type
+	            	
+	        }
 	        
 	        //TODO UNCOMMENT
             /*if (ishSubmissionModel.getAnnotationTree() != null || ishSubmissionModel.getExpressionDetailModel() != null){
@@ -148,6 +161,14 @@ public class IshSubmissionBean implements Serializable {
     
     public IshSubmissionModel getIshSubmissionModel () {
     	return ishSubmissionModel;
+    }
+    
+    public void setIsTransgenic(boolean isTransgenic){
+    	this.isTransgenic=isTransgenic;
+    }
+    
+    public boolean getIsTransgenic(){
+    	return isTransgenic;
     }
 
 }

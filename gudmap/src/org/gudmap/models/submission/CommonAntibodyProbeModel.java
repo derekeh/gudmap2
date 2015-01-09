@@ -12,6 +12,7 @@ public class CommonAntibodyProbeModel {
 	protected String type;
 	protected String notes;
 	protected String maprobeID;
+	protected String assayType;
 	protected ArrayList <String[]>ishSubmissions; 
 	protected ArrayList<String[]> ishFilteredSubmissions; 
     
@@ -55,6 +56,14 @@ public class CommonAntibodyProbeModel {
 
     public void setMaprobeID(String maprobeID) {
         this.maprobeID = maprobeID;
+    }
+    
+    public void setAssayType(String assayType){
+    	this.assayType=assayType;
+    }
+    
+    public String getAssayType() {
+    	return assayType;
     }
 
     public void setNotes(String notes) {

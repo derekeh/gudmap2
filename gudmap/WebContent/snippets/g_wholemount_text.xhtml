@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<pr:dialog header="Wholemount" widgetVar="wholemount_dialog" width="600" style="position:absolute;left:-100px;" >  
+	 <h:panelGrid columns="1">
+    	<h:outputText styleClass="db_table_header" value="WISH expression data Interpretion"></h:outputText>
+     	<h:outputText styleClass="db_table_text" value="There are several technical limitations to the whole-mount in situ hybridization (WISH) approach that may 
+     												effect accurate scoring of a gene's detailed expression pattern leading to either false negative or positive scores. 
+     												These limitations should be borne in mind when reviewing this data. For example, strong superficial reaction 
+     												within a tissue may obscure internal expression domains resulting in false negative or false positive 
+     												assignments particularly where a gene is expressed broadly within superficial cell populations."></h:outputText>
+
+		<h:outputText styleClass="db_table_text" value="Further, low-level ubiquitous expression is difficult to distinguish from background activity inherent 
+													in the methodology after long periods of detection (typically greater than 24 hours)."></h:outputText>
+
+		<h:outputText styleClass="db_table_text" value="Finally, trapping of probe in luminal compartments (for example the ureter) may lead to erroneous signals in 
+													these structures (typically greater than 24 hours). The scoring attempts to be as accurate as possible within the 
+													boundaries of the technical limits of WISH. Other approaches such as section in situ hybridization (SISH) can 
+													overcome some of these limitations and are an important complement to WISH."></h:outputText>
+   	 </h:panelGrid>
+	</pr:dialog> 
+	
+</ui:composition>

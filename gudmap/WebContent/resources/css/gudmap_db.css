@@ -176,6 +176,18 @@
  	vertical-align:top;
  }
  
+ .db_inner_inner_title {
+ 	color:darkred;
+ }
+
+ .db_bold {
+   font-weight:bold;
+ }
+ 
+ .db_30_width {
+ 	min-width:30px;
+ }
+ 
  .db_panel_grid_width {
  	width:95%;
  	margin-bottom:15px;
@@ -193,4 +205,14 @@
  }
  
  .db_table_text {
+ }
+ 
+ .db_sequence {
+ 	font-family: Courier;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
  }

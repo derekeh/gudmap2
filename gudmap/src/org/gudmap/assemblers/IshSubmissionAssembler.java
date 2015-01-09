@@ -83,7 +83,8 @@ public class IshSubmissionAssembler {
 		ProbeModel probeModel = null;
 		AntibodyModel antibodyModel = null;
 		if (assayType.indexOf("ISH") >= 0 || assayType.indexOf("TG") >= 0) {
-			probeModel = ishSubmissionDao.findProbeBySubmissionId(oid);
+			//probeModel = ishSubmissionDao.findProbeBySubmissionId(oid);
+			probeModel = ishSubmissionDao.findProbeBySubmissionId(oid,null,true);
 		}
 		else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
 			antibodyModel = ishSubmissionDao.findAntibodyBySubmissionId(oid);
@@ -107,22 +108,20 @@ public class IshSubmissionAssembler {
 				// get submitter info
 		PersonModel submitter = ishSubmissionDao.findSubmitterBySubmissionId(oid);
 		
-		/*	
-		// get allel info
+			
+		// get allele info
 		AlleleModel[] alleleModel = ishSubmissionDao.findAlleleBySubmissionId(oid);
 		
 		// get publication info
-		ArrayList<String[]> publication = ishSubmissionDao.findPublicationBySubmissionId(oid);
-			
-		// get acknowledgement 
-		String[] acknowledgement = ishSubmissionDao.findAcknowledgementBySubmissionId(oid);
-	
+		ArrayList<String[]> publications = ishSubmissionDao.findPublicationBySubmissionId(oid);
+		
 		ArrayList<String[]> linkedSubmissionsRaw = ishSubmissionDao.findLinkedSubmissionBySubmissionId(oid);
-			
+		
 		// format the linked submission raw data into appropriate data structure
 		ArrayList<Object> linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
-		
-			*/
+			
+		// get acknowledgement 
+		String[] acknowledgements = ishSubmissionDao.findAcknowledgementBySubmissionId(oid);
 		
 	    if (assayType.indexOf("ISH") >=0) {
 	    		ishSubmissionModel.setProbeModel(probeModel);
@@ -138,12 +137,11 @@ public class IshSubmissionAssembler {
 	    ishSubmissionModel.setAuthors(author);
 	    ishSubmissionModel.setPrincipalInvestigators(pi);
 	    ishSubmissionModel.setSubmitter(submitter);	
-	    /*	    
-	    ishSubmissionModel.setAlleleModel(alleleModel);	
-	    ishSubmissionModel.setLinkedPublications(publication);
-	    ishSubmissionModel.setAcknowledgements(acknowledgement);
+	    ishSubmissionModel.setAlleleModel(alleleModel);
+	    ishSubmissionModel.setLinkedPublications(publications);
 	    ishSubmissionModel.setLinkedSubmissions(linkedSubmission);
-	 */   
+	   	ishSubmissionModel.setAcknowledgements(acknowledgements);
+	   
 	    String tissue = ishSubmissionDao.findTissueBySubmissionId(oid);
 	    ishSubmissionModel.setTissue(tissue);
 

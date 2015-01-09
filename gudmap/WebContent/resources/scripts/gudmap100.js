@@ -72,6 +72,14 @@ function showLabDetails(id) {
 	  w.focus();
 }
 
+/**
+ * function to open a popup window for a Sequence details
+ */
+function showSequenceDetails(id) {
+	  var w = window.open('viewSequenceDetail.jsf?id='+ id,'seqdetailPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');
+	  w.focus();
+}
+
 /*function applyDMXTooltip(trigger) {//v1.5
 //	alert('found tooltip function');
 	if (arguments.length < 3 || !arguments[2]) return true; // ignore empty tooltips

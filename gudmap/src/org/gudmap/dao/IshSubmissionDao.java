@@ -135,7 +135,7 @@ public class IshSubmissionDao {
         return submissionModel;       
     } //end findSubmissionById
     
-    public ProbeModel findProbeBySubmissionId(String oid) {
+/*    public ProbeModel findProbeBySubmissionId(String oid) {
     	
         if (oid == null) {
         	return null;
@@ -265,7 +265,8 @@ public class IshSubmissionDao {
         queryString = IshSubmissionQueries.FULL_SEQUENCE_BY_OID;
         try
 		{
-        	ArrayList <String>seqs = null;
+        	//ArrayList <String>seqs = null;
+        	String[] seqs = null;
 			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
 			ps.setString(1, oid);
@@ -279,17 +280,22 @@ public class IshSubmissionDao {
                 String origin = null;
                 int count;                
                 if(null != fullSeq) {               
-				    seqs = new ArrayList<String>();
+				   // seqs = new ArrayList<String>();
 				    origin = fullSeq.trim();
 				    count = origin.length() / 60;
+				    seqs = new String[count+1];
 				    for(int i = 0; i < count; i++) {
-				    	seqs.add(origin.substring(i*60, i*60+60));
+				    	//seqs.add(origin.substring(i*60, i*60+60));
+				    	seqs[i]=origin.substring(i*60, i*60+60);
 				    }
 	                int remainder = origin.length() / 60;
 		    
 	                if (remainder > 0) {
-	                	seqs.add(origin.substring(count*60));
-	                }               	
+	                	//seqs.add(origin.substring(count*60));
+	                	seqs[count]=origin.substring(count*60);
+	                } 
+	                else
+	                	seqs[count]="";
                 }     	
                 probeModel.setFullSequence(seqs);
             }
@@ -304,7 +310,353 @@ public class IshSubmissionDao {
         return probeModel;
 	    
     }// findProbeBySubmissionId
+*/    
     
+    public ProbeModel findProbeBySubmissionId(String oid, String id2, boolean isSubOid) {
+    	
+    	boolean getExtra=false;
+        if (oid == null) {
+        	return null;
+        }
+        
+		if (!isSubOid) {
+			if(id2 == null || id2 == ""){;}
+		    else {getExtra=true;}
+		}
+        ProbeModel probeModel = null;
+        String queryString = (isSubOid)?IshSubmissionQueries.PROBE_BY_OID:IshSubmissionQueries.MAPROBE_BY_PROBE_ID;
+        if(getExtra)
+        	queryString=queryString.replace("WHERE RPR_JAX_ACC = ?", "WHERE RPR_JAX_ACC = ? AND  PRB_MAPROBE = ?");
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			if(getExtra)
+				ps.setString(2, id2);
+			result =  ps.executeQuery();
+			if (result!= null && result.first()) {
+	            probeModel = new ProbeModel();
+	            probeModel.setGeneSymbol(result.getString(1));
+	            probeModel.setGeneName(result.getString(2));
+	            String probeName = result.getString(3);
+	            probeModel.setProbeName(probeName);
+	            probeModel.setGeneID(result.getString(4));
+	            probeModel.setSource(result.getString(5));
+	            probeModel.setStrain(result.getString(6));
+	            probeModel.setTissue(result.getString(7));
+	            probeModel.setType(result.getString(8));
+	            probeModel.setGeneType(result.getString(9));
+	            probeModel.setLabelProduct(result.getString(10));
+	            probeModel.setVisMethod(result.getString(11));
+	            probeModel.setCloneName(result.getString(12));
+	            probeModel.setGenbankID(result.getString(13));
+	            probeModel.setMaprobeID(result.getString(14));
+	            probeModel.setProbeNameURL(result.getString(15));
+	            probeModel.setGenbankURL(result.getString(16));
+	            probeModel.setSeqStatus(result.getString(17));
+	            probeModel.setSeq5Loc(result.getString(18));
+	            probeModel.setSeq3Loc(result.getString(19));
+		    
+			    String str = null;
+		            str = Utils.netTrim(result.getString(20));
+			    if (null == str)
+			    	probeModel.setSeq5Primer(null);
+			    else
+			    	probeModel.setSeq5Primer(str.toUpperCase());
+			    
+	            str = Utils.netTrim(result.getString(21));
+			    if (null == str)
+			    	probeModel.setSeq3Primer(null);
+			    else
+			    	probeModel.setSeq3Primer(str.toUpperCase());
+			    
+			    probeModel.setGeneIdUrl(result.getString(22));	    
+			    probeModel.setAdditionalCloneName(result.getString(23));
+			    probeModel.setLabProbeId(result.getString(24));
+			    probeModel.setAssayType(result.getString(25));
+	        }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        queryString = (isSubOid)?IshSubmissionQueries.PROBE_NOTE_BY_OID:IshSubmissionQueries.PROBE_NOTE_BY_MAPROBE_ID;;
+        try
+		{
+        	String str="";
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			if(isSubOid)
+				ps.setString(1, oid);
+			else
+				ps.setString(1, id2.replace("maprobe:", ""));
+			result =  ps.executeQuery();
+			if (result!= null && result.first() && probeModel!=null) {
+				result.beforeFirst();
+                String notes = new String("");
+                while (result.next()) {
+                    str = Utils.netTrim(result.getString(1));
+                    if (null != str)
+                    notes += str + " ";
+                }
+                probeModel.setNotes(notes.trim());
+            }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        queryString = (isSubOid)?IshSubmissionQueries.MAPROBE_NOTE_BY_OID:IshSubmissionQueries.MAPROBE_NOTE_BY_MAPROBE_ID;;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString);
+			if(isSubOid)
+				ps.setString(1, oid);
+			else
+				ps.setString(1, id2.replace("maprobe:", ""));
+			result =  ps.executeQuery();
+			if (result!= null && result.first() && probeModel!=null) {
+				ArrayList<String> maprobeNotes = new ArrayList<String>();
+				result.beforeFirst();
+                String notes = null;
+                String[] separatedNote = null;
+                while (result.next()) {
+				    notes = Utils.netTrim(result.getString(1));
+				    if (null != notes) {
+						notes = notes.replaceAll("\\s", " ").trim();
+						if (notes.equals(""))
+						    notes = null;
+				    }
+				    if (null != notes) {
+                        separatedNote = notes.split("\\|");
+                    	if(null != separatedNote && separatedNote.length > 1) {
+						    for(int i = 0; i < separatedNote.length; i++) {
+						    	maprobeNotes.add(separatedNote[i]);
+						    }
+                    	} 
+                    	else {
+						    maprobeNotes.add(notes);
+                    	}
+                    }
+                }
+                if (maprobeNotes.size() == 0) {
+            		probeModel.setMaprobeNotes(null);
+                } else {
+                    probeModel.setMaprobeNotes(maprobeNotes);
+                }
+            }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        if(isSubOid)
+        {
+	        queryString = IshSubmissionQueries.FULL_SEQUENCE_BY_OID;
+	        try
+			{
+	        	//ArrayList <String>seqs = null;
+	        	String[] seqs = null;
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, oid);
+				result =  ps.executeQuery();
+				if (result!= null && result.first() && probeModel!=null) {
+					result.beforeFirst();
+	            	String fullSeq = new String();
+	                while (result.next()) {
+					    fullSeq += result.getString(1);
+	                }
+	                String origin = null;
+	                int count;                
+	                if(null != fullSeq) {               
+					   // seqs = new ArrayList<String>();
+					    origin = fullSeq.trim();
+					    count = origin.length() / 60;
+					    seqs = new String[count+1];
+					    for(int i = 0; i < count; i++) {
+					    	//seqs.add(origin.substring(i*60, i*60+60));
+					    	seqs[i]=origin.substring(i*60, i*60+60);
+					    }
+		                int remainder = origin.length() / 60;
+			    
+		                if (remainder > 0) {
+		                	//seqs.add(origin.substring(count*60));
+		                	seqs[count]=origin.substring(count*60);
+		                } 
+		                else
+		                	seqs[count]="";
+	                }     	
+	                probeModel.setFullSequence(seqs);
+	            }
+				else
+					probeModel.setFullSequence(null);
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+        }
+        
+        return probeModel;
+	    
+    }// findProbeBySubmissionId
+    
+/*public ProbeModel findMaProbeByProbeId(String probeId, String maprobeId){
+    	
+    	if(probeId == null){
+		    return null;
+    	}
+    	boolean getExtra=false;
+    	ProbeModel probeModel = null;
+    	String queryString = IshSubmissionQueries.MAPROBE_BY_PROBE_ID;
+    	if (maprobeId == null || maprobeId == ""){
+    		
+    	}
+    	else
+    	{
+    		getExtra=true;
+    		queryString=queryString.replace("WHERE RPR_JAX_ACC = ?", "WHERE RPR_JAX_ACC = ? AND  PRB_MAPROBE = ?");
+    	}
+    	try
+		{
+        	con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, probeId);
+			if(getExtra)
+				ps.setString(2, maprobeId);
+			result =  ps.executeQuery();
+			if (result!= null && result.first()) {
+	            probeModel = new ProbeModel();
+	            
+			}
+		}
+    	catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	queryString = IshSubmissionQueries.PROBE_NOTE_BY_MAPROBE_ID;
+    	
+    	try
+		{
+        	con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, maprobeId.replace("maprobe:", ""));
+			result =  ps.executeQuery();
+			if (result!= null && result.first()) {
+	            
+			}
+		}
+    	catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	queryString = IshSubmissionQueries.MAPROBE_NOTE_BY_MAPROBE_ID;
+    	
+    	try
+		{
+        	con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, maprobeId.replace("maprobe:", ""));
+			result =  ps.executeQuery();
+			if (result!= null && result.first()) {
+	            
+			}
+		}
+    	catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	return probeModel;
+    	
+    	
+    	/////////////////////////////////////////////
+	
+    	PreparedStatement prepStmtProbe = null;
+    	ResultSet resSetProbe = null;
+    	ParamQuery parQProbe = null;
+    	if (maprobeId == null || maprobeId == ""){
+    		parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS");
+    	}
+    	else{
+    		parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS_EXTRA");	    
+    	}
+	
+    	if (debug) 
+    		System.out.println("MySQLISHDAOImp.findMaProbeByProbeId sql = "+parQProbe.getQuerySQL());
+
+        PreparedStatement prepStmtProbeNote = null;
+        ResultSet resSetProbeNote = null;
+        ParamQuery parQProbeNote = DBQuery.getParamQuery("MAPROBE_PRBNOTE");
+	
+    	//Bernie 28/06/2011 Mantis 558 Task5 added to query to get notes
+        PreparedStatement prepStmtMaprobeNote = null;
+        ResultSet resSetMaprobeNote = null;
+        ParamQuery parQMaprobeNote = DBQuery.getParamQuery("MAPROBE_NOTE");
+	
+        try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+	    
+            conn.setAutoCommit(false);
+	    
+            parQProbe.setPrepStat(conn);
+		    prepStmtProbe = parQProbe.getPrepStat();
+		    prepStmtProbe.setString(1, probeId);
+		    if (maprobeId == null || maprobeId == ""){
+		    }
+		    else{
+		    	prepStmtProbe.setString(2, maprobeId);
+	    
+	            // probe note -- Mantis 558 Task5
+	            parQProbeNote.setPrepStat(conn);
+	            prepStmtProbeNote = parQProbeNote.getPrepStat();
+	            prepStmtProbeNote.setString(1, maprobeId.replace("maprobe:", ""));
+			    if (debug)
+			    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbeNote = "+ prepStmtProbeNote);
+	            resSetProbeNote = prepStmtProbeNote.executeQuery();
+		    
+	            // curator note -- Mantis 558 Task5
+	            parQMaprobeNote.setPrepStat(conn);
+	            prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
+	            prepStmtMaprobeNote.setString(1, maprobeId.replace("maprobe:", ""));
+			    if (debug)
+			    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtMaprobeNote = "+ prepStmtMaprobeNote);
+	            resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
+		    }
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbe = "+ prepStmtProbe);
+		    resSetProbe = prepStmtProbe.executeQuery();
+	    
+            conn.commit();
+            conn.setAutoCommit(true);
+	    
+            probeModel = this.formatProbeResultSet(resSetProbe, resSetProbeNote, resSetMaprobeNote, null);
+        	return probeModel;
+	    
+    	}
+    	catch(SQLException e){
+    		System.out.println("MySQLISHDAOImp.findMaProbeByProbeId FAILED");
+    		e.printStackTrace();
+        	return null;
+    	}
+    	finally {
+            DBHelper.closePreparedStatement(prepStmtProbe);
+            DBHelper.closePreparedStatement(prepStmtProbeNote);
+            DBHelper.closePreparedStatement(prepStmtMaprobeNote); 
+            DBHelper.closeResultSet(resSetProbe);
+            DBHelper.closeResultSet(resSetProbeNote);
+            DBHelper.closeResultSet(resSetMaprobeNote);
+    	}
+    }//findMaProbeByProbeId
+*/    
     public AntibodyModel findAntibodyBySubmissionId(String oid) {
     	
         AntibodyModel antibodyModel = null;
@@ -685,7 +1037,8 @@ public class IshSubmissionDao {
         if(authorInfo.equalsIgnoreCase("null "))
         	return null;
         else
-        	return authorInfo.trim();        
+        	return authorInfo.trim().replace("null", "");        
+        
       
     }// end findAuthorBySubmissionId
     
@@ -1013,5 +1366,33 @@ public class IshSubmissionDao {
 		
 		return tissue;
     } //end findTissueBySubmissionId
+    
+    public ArrayList<String[]> findRelatedSubmissionBySymbol(String symbol, String assayType) {
+  		if (symbol == null || symbol.equals("")) {
+  		    return null;
+  		}
+  		ArrayList<String[]> relatedSubmissionISH=null;
+  		String queryString = IshSubmissionQueries.GENE_RELATED_SUBMISSIONS_ISH;
+  		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, symbol);
+			ps.setString(2, assayType);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+				relatedSubmissionISH = Utils.formatResultSetToArrayList(result);
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return relatedSubmissionISH; 
+                	    
+       
+      }
     
 }

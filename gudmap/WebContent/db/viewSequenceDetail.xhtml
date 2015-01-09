@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<h:head>
+	  <title>Sequence Details</title>
+	  <h:outputStylesheet library="css" name="gudmap_db.css"></h:outputStylesheet>
+	</h:head>
+ 
+    <h:body>
+ 
+		<h:panelGrid columns="1">
+		      <h:outputText styleClass="plaintext" value="Template Sequence for #{ishSubmissionBean.ishSubmissionModel.probeModel.probeName}:" />
+		      <t:dataList id="sequences" styleClass="db_sequence"
+		               var="sequence"
+		               value="#{ishSubmissionBean.ishSubmissionModel.probeModel.fullSequence}"
+		               layout="simple" rowCountVar="count" rowIndexVar="index"
+		               rendered="#{ishSubmissionBean.ishSubmissionModel.probeModel.fullSequence != null}">
+		        <h:outputText styleClass="db_sequence" value="#{sequence}" />
+		      </t:dataList>
+	    </h:panelGrid>
+	    <br/>
+	    <h:panelGrid columns="1" >
+				<h:commandButton value="Close" onclick="self.close()" />
+		</h:panelGrid>
+   </h:body>
+ 
+</html>

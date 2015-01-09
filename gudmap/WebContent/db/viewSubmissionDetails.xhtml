@@ -21,24 +21,7 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 	
-	<pr:dialog header="Wholemount" widgetVar="wholemount_dialog" width="600" style="position:absolute;left:-100px;" >  
-	 <h:panelGrid columns="1">
-    	<h:outputText styleClass="db_table_header" value="WISH expression data Interpretion"></h:outputText>
-     	<h:outputText styleClass="db_table_text" value="There are several technical limitations to the whole-mount in situ hybridization (WISH) approach that may 
-     												effect accurate scoring of a gene's detailed expression pattern leading to either false negative or positive scores. 
-     												These limitations should be borne in mind when reviewing this data. For example, strong superficial reaction 
-     												within a tissue may obscure internal expression domains resulting in false negative or false positive 
-     												assignments particularly where a gene is expressed broadly within superficial cell populations."></h:outputText>
-
-		<h:outputText styleClass="db_table_text" value="Further, low-level ubiquitous expression is difficult to distinguish from background activity inherent 
-													in the methodology after long periods of detection (typically greater than 24 hours)."></h:outputText>
-
-		<h:outputText styleClass="db_table_text" value="Finally, trapping of probe in luminal compartments (for example the ureter) may lead to erroneous signals in 
-													these structures (typically greater than 24 hours). The scoring attempts to be as accurate as possible within the 
-													boundaries of the technical limits of WISH. Other approaches such as section in situ hybridization (SISH) can 
-													overcome some of these limitations and are an important complement to WISH."></h:outputText>
-   	 </h:panelGrid>
-	</pr:dialog> 
+	<ui:include src="/snippets/g_wholemount_text.xhtml"></ui:include>
 	
 	
 	    <h1>Submission Details for: 
@@ -74,6 +57,10 @@
 				
 			</t:dataList>
 		</pr:dialog>
+		
+		<ui:include src="/snippets/g_fullSequence.xhtml"></ui:include>
+		
+
 		
 	    <h:form id="db_submission_detail_form">
 	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
@@ -211,6 +198,429 @@
 	    			</h:panelGrid>
 	    		</h:panelGroup>
 	    	</h:panelGrid>
+	    	
+	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.ishSubmissionModel.assayType == 'IHC' || ishSubmissionBean.ishSubmissionModel.assayType == 'OPT'}">
+			<h:outputText value="Antibody"  />
+			<h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+					
+					<h:outputText value="Protein:" />
+					<h:panelGrid columns="1" border="0">
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Symbol: " />
+							<h:outputLink  value="viewGeneStrip.jsf">
+								<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.geneSymbol}" />
+								<f:param name="gene" value="#{ishSubmissionBean.ishSubmissionModel.geneSymbol}" />
+							</h:outputLink>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText  styleClass="db_inner_inner_title"  value="Name: " />
+							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.geneName} " />
+							<h:outputLink  value="http://www.informatics.jax.org/accession/#{ishSubmissionBean.ishSubmissionModel.antibodyModel.locusTag}">
+								<h:outputText value=" (#{ishSubmissionBean.ishSubmissionModel.antibodyModel.locusTag})" />
+							</h:outputLink>
+						</h:panelGroup>
+					</h:panelGrid>
+				
+					<h:outputText rendered="#{ishSubmissionBean.ishSubmissionModel.project != 'EUREGENE'}" value="Name:" />
+					<h:panelGroup rendered="#{ishSubmissionBean.ishSubmissionModel.project != 'EUREGENE'}">
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.name}" />
+					</h:panelGroup>
+			
+					<h:outputText value="Accession ID:" rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'GUDMAP'}" />
+						<h:panelGroup rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'GUDMAP'}">
+							<h:outputLink  value="http://www.informatics.jax.org/accession/#{ishSubmissionBean.ishSubmissionModel.antibodyModel.accessionId}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.accessionId}">
+								<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.accessionId} " />
+							</h:outputLink>	
+							<h:outputText value="No MGI ID " rendered="#{empty ishSubmissionBean.ishSubmissionModel.antibodyModel.accessionId}"/>
+
+ 							<h:outputLink  value="viewAntibody.jsf" target="_blank">
+								<f:param name="antibody" value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.maprobeID}" />
+								<h:outputText value=" (#{ishSubmissionBean.ishSubmissionModel.antibodyModel.maprobeID})" />
+							</h:outputLink>
+ 
+  						</h:panelGroup>
+			
+					<h:outputText value="Epitope (Uniprot ID):"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.uniprotId}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.uniprotId}"/>
+					<h:outputText value="unknown" rendered="#{empty ishSubmissionBean.ishSubmissionModel.antibodyModel.uniprotId}"/>
+					<h:outputText value="Amino-terminus (start):" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.seqStartLocation > 0 and ishSubmissionBean.ishSubmissionModel.antibodyModel.seqEndLocation > 0}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.seqStartLocation}" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.seqStartLocation > 0 and ishSubmissionBean.ishSubmissionModel.antibodyModel.seqEndLocation > 0}"/>
+					<h:outputText value="Carboxy-terminus (end):" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.seqStartLocation > 0 and ishSubmissionBean.ishSubmissionModel.antibodyModel.seqEndLocation > 0}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.seqEndLocation}" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.seqStartLocation > 0 and ishSubmissionBean.ishSubmissionModel.antibodyModel.seqEndLocation > 0}"/>
+			
+					<h:panelGroup/>
+					<h:panelGroup/>
+			
+					<h:outputText value="Supplier: " />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.supplier}" />
+			
+					<h:outputText value="Catalogue Number: " />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.catalogueNumber}" />
+			
+					<h:outputText value="Lot Number: " />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.lotNumber}" />
+			
+					<h:panelGroup/>
+					<h:panelGroup/>
+			
+					<h:outputText value="Type: " />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.type}" />
+			
+					<h:outputText value="Host: " />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.host}"/>
+					
+					<h:outputText value="Purification Method: "/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.purificationMethod}" />
+
+					<h:panelGroup/>
+					<h:panelGroup/>
+					
+					<h:outputText value="Immunoglobulin Isotype:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.immunoglobulinIsotype}" />
+					
+					<h:outputText value="Variant Detected:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.detectedVariantValue}" />
+					
+					<h:outputText value="Species Specificity:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.speciesSpecificity}" />
+					
+					<h:outputText value="Detection System:" />
+					<h:panelGrid columns="1" border="0">
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title"  value="Direct Label: " />
+							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.directLabel}"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title"  value="Secondary Antibody: " />
+							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.secondaryAntibody}"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title"  value="Signal Detection Method: " />
+							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.signalDetectionMethod}"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title"  value="Detection Notes: " />
+							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.detectionNotes}"/>
+						</h:panelGroup>
+					</h:panelGrid>
+			
+					<h:panelGroup/>
+					<h:panelGroup/>
+			
+
+					<h:outputText  value="Dilution:" />
+					<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.dilution}" />
+
+					<h:outputText  value="Notes:" />
+					<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.notes}" />
+								  
+					<h:outputText  value="Lab Antibody ID:" />
+					<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.labProbeId}" />
+				</h:panelGrid>
+			
+		 </h:panelGrid>
+		 
+		 
+		  <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.ishSubmissionModel.assayType == 'ISH' || ishSubmissionBean.ishSubmissionModel.assayType == 'ISH (sense probe)'}">
+		        <h:outputText value="Probe"  />
+			
+				<h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+				
+					<h:outputText value="Gene:" />
+					<h:panelGrid columns="1" border="0">
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Symbol: " />
+							<h:outputLink  value="viewGeneStrip.jsf">
+								<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.geneSymbol}" />
+								<f:param name="gene" value="#{ishSubmissionBean.ishSubmissionModel.geneSymbol}" />
+							</h:outputLink>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Name: " />
+							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.geneName} " />
+							<h:outputText  value="(" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" />
+							<h:outputLink  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" >
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneID}" />
+							</h:outputLink>
+							<h:outputText  value=")" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" />
+						</h:panelGroup>
+					</h:panelGrid>
+									
+					<h:outputText  value="Probe ID:" />
+					<h:panelGroup>
+						<h:outputLink  rendered="#{ishSubmissionBean.renderPrbNameURL}" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.probeNameURL}" target="_blank">
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.probeName}" />
+						</h:outputLink>
+						<h:outputLink  rendered="#{!ishSubmissionBean.renderPrbNameURL and ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID != ishSubmissionBean.ishSubmissionModel.probeModel.probeName}" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.probeNameURL}">
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.probeName}" />
+						</h:outputLink>	
+					    <h:outputText value="No MGI ID " rendered="#{!ishSubmissionBean.renderPrbNameURL and ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID == ishSubmissionBean.ishSubmissionModel.probeModel.probeName}"/>
+						<h:outputLink  rendered="#{!ishSubmissionBean.renderPrbNameURL and ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID == ishSubmissionBean.ishSubmissionModel.probeModel.probeName}" value="viewMaProbeDetails.jsf" target="_blank">
+							<f:param name="probe" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.probeName}" />
+							<f:param name="maprobe" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID}" />
+							<h:outputText value=" (#{ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID})" />
+						</h:outputLink>	
+
+						<h:outputLink  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID and ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID != ishSubmissionBean.ishSubmissionModel.probeModel.probeName}" value="viewMaProbeDetails.jsf" target="_blank">
+							<f:param name="probe" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.probeName}" />
+							<f:param name="maprobe" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID}" />
+							<h:outputText value=" (#{ishSubmissionBean.ishSubmissionModel.probeModel.maprobeID})" />
+						</h:outputLink>
+					</h:panelGroup>
+					
+					<h:outputText value="Name of cDNA:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.cloneName}" />
+					
+					<h:outputText value="Additional Name of cDNA:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.additionalCloneName}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.additionalCloneName}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.additionalCloneName}" />
+					
+					<h:outputText value="Sequence ID:" />
+					<h:panelGrid  rowClasses="text-top" columns="1" border="0" >
+						<h:panelGroup>
+							<h:outputLink target="_blank"  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.genbankURL}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.genbankID}" >
+								<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.genbankID}" />
+							</h:outputLink>
+							<h:outputText  value="unknown" rendered="#{empty ishSubmissionBean.ishSubmissionModel.probeModel.genbankID}" />
+						</h:panelGroup>
+					</h:panelGrid>
+					
+					<h:outputText  value="5' primer sequence:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq5Primer and ishSubmissionBean.renderPrbSeqInfo}"/>
+					<h:outputText styleClass="db_sequence" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.seq5Primer}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq5Primer and ishSubmissionBean.renderPrbSeqInfo}" />
+					
+					<h:outputText  value="3' primer sequence:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq3Primer and ishSubmissionBean.renderPrbSeqInfo}"/>
+					<h:outputText styleClass="db_sequence" value="#{ishSubmissionBean.ishSubmissionModel.probeModel.seq3Primer}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq3Primer and ishSubmissionBean.renderPrbSeqInfo}" />
+					
+					<h:outputText  value="5' primer location:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq5Loc and ishSubmissionBean.ishSubmissionModel.probeModel.seq5Loc != 'n/a' and ishSubmissionBean.renderPrbSeqInfo}" />
+					<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.seq5Loc}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq5Loc and ishSubmissionBean.ishSubmissionModel.probeModel.seq5Loc != 'n/a' and ishSubmissionBean.renderPrbSeqInfo}"/>
+					
+					<h:outputText  value="3' primer location:"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc and ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc != 'n/a' and ishSubmissionBean.renderPrbSeqInfo}" />
+					<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc and ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc != 'n/a' and ishSubmissionBean.renderPrbSeqInfo}" />
+					
+					<h:outputText value="Template Sequence:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.fullSequence}"/>
+					<h:outputLink  value="#" onclick="PF('seq_dialog').show();"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.fullSequence}">
+						<h:outputText value="(Click to see sequence.)" />
+					</h:outputLink>
+					
+					<h:outputText value="Origin of Clone used to make the Probe:" />
+					<h:panelGrid columns="1" border="0">
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Strain: " />
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.strain}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Tissue: " />
+							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.tissue} " />
+						</h:panelGroup>
+					</h:panelGrid>
+		
+					
+					<h:outputText value="Probe Type:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.type}" />
+					
+					<h:outputText value="Type:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneType}" />
+					
+					<h:outputText value="Labelled with:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.labelProduct}" />
+					
+					<h:outputText value="Visualisation method:" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.visMethod}" />
+					
+					<h:outputText value="Lab Probe ID:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.labProbeId}" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.labProbeId}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.labProbeId}" />
+					
+					<h:outputText styleClass="plaintext,text-top" value="Probe Notes:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.notes}" />
+					<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.notes}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.notes}" />
+
+					<h:outputText value="Curator Notes:" rendered="#{null != ishSubmissionBean.ishSubmissionModel.probeModel.maprobeNotes}" />
+					<h:dataTable value="#{ishSubmissionBean.ishSubmissionModel.probeModel.maprobeNotes}" var="maprobeNote" rendered="#{null != ishSubmissionBean.ishSubmissionModel.probeModel.maprobeNotes}">
+						<h:column>
+							<h:outputText  value="#{maprobeNote}" />
+						</h:column>
+					</h:dataTable>
+				</h:panelGrid>
+			
+       	  </h:panelGrid>
+       	  
+       	  <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+			<h:outputText value="Specimen" />
+			<h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+				<h:outputText value="Stage:" />
+				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ishSubmissionBean.ishSubmissionModel.stage}definition.html" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}">
+					<h:outputText value="TS#{ishSubmissionBean.ishSubmissionModel.stage}" />
+				</h:outputLink>
+				
+				<h:outputText value="CS#{ishSubmissionBean.ishSubmissionModel.stage}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species != 'Mus musculus'}"/>
+				<h:outputText rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.otherStage}" value="Other Staging System:" />
+				<h:outputText rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.otherStage}" value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.otherStage}" />
+
+				<h:outputText value="Tissue:" />
+				<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.tissue}" />
+					
+				<h:outputText value="Strain:" />
+				<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.strain}" />
+
+				<h:outputText value="Genotype:" />
+				<h:outputText value="wild type" rendered="#{null == ishSubmissionBean.ishSubmissionModel.alleleModel}"/>
+			    <t:dataTable id="alleleContentTable" value="#{ishSubmissionBean.ishSubmissionModel.alleleModel}" var="allele"  style="margin-left:-5px;"  
+			                			 rendered="#{null != ishSubmissionBean.ishSubmissionModel.alleleModel}">
+				    <t:column>
+				       <h:panelGrid columns="3" columnClasses="db_bold, db_30_width, db_inner_detail_right">
+							<h:outputText value="#{allele.title}" styleClass="db_inner_inner_title"/>
+							<h:panelGroup></h:panelGroup>
+							<h:panelGroup></h:panelGroup>
+		
+							<h:outputText value="Gene" />
+							<h:panelGroup></h:panelGroup>
+							<h:outputLink value="viewGeneStrip.jsf">
+								<h:outputText value="#{allele.geneSymbol}" />
+								<f:param name="gene" value="#{allele.geneSymbol}" />
+							</h:outputLink>
+		
+							<h:outputText value="MGI ID"  rendered="#{not empty allele.alleleId}"/>
+							<h:panelGroup rendered="#{not empty allele.alleleId}"/>
+							<h:outputText rendered="#{empty allele.alleleIdUrl and not empty allele.alleleId}" value="#{allele.alleleId}" escape="false"/>
+							<h:outputLink rendered="#{not empty allele.alleleIdUrl and not empty allele.alleleId}"  value="#{allele.alleleIdUrl}" target="gmerg_external2">
+								<h:outputText value="#{allele.alleleId}" />
+							</h:outputLink>
+		
+							<h:outputText value="MGI Symbol or lab name"/>
+							<h:panelGroup></h:panelGroup>
+							<h:outputText value="#{allele.alleleName}" escape="false" />
+		
+							<h:outputText value="Type"/>
+							<h:panelGroup></h:panelGroup>
+							<h:outputText value="#{allele.type}"/>
+					
+							<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
+							<h:panelGroup rendered="#{not empty allele.alleleFirstChrom}" />
+							<h:outputText value="#{allele.alleleFirstChrom}" escape="false" rendered="#{not empty allele.alleleFirstChrom}" />
+											
+							<h:outputText value="Allele Second Chromatid"  rendered="#{not empty allele.alleleSecondChrom}"/>
+							<h:panelGroup rendered="#{not empty allele.alleleSecondChrom}"/>
+							<h:outputText value="#{allele.alleleSecondChrom}"  escape="false" rendered="#{not empty allele.alleleSecondChrom}" />
+							
+							<h:outputText value="Notes:" rendered="#{not empty allele.notes}" />
+							<h:panelGroup rendered="#{not empty allele.notes}"/>
+							<h:outputText value="#{allele.notes}" rendered="#{not empty allele.notes}" escape="false" />
+				       </h:panelGrid>
+				    </t:column>
+			     </t:dataTable>
+					
+			    <h:outputText value="Sex:" />
+				<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.sex}" />
+					
+				<h:outputText value="Specimen Preparation:"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.fixMethod || not empty ishSubmissionBean.ishSubmissionModel.specimenModel.embedding}" />
+				<h:panelGrid columns="2" columnClasses="db_inner_detail_right" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.fixMethod || not empty ishSubmissionBean.ishSubmissionModel.specimenModel.embedding}" >
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.assayType}"/>
+					<h:panelGrid columns="3">
+					    <h:panelGrid  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.fixMethod}" />
+						<h:outputText value="Fixation Method:" styleClass="db_inner_inner_title"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.fixMethod}" />
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.fixMethod}"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.fixMethod}" />
+
+					    <h:panelGrid rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.embedding}" />
+						<h:outputText value="Embedding:" styleClass="db_inner_inner_title" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.embedding}" />
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.embedding}"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.embedding}" />
+					</h:panelGrid>
+				</h:panelGrid>
+				
+				<h:outputText value="Experiment Notes:" rendered="#{null != ishSubmissionBean.ishSubmissionModel.specimenModel.notes}"/>
+				<h:dataTable value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.notes}" var="note" rendered="#{null != ishSubmissionBean.ishSubmissionModel.specimenModel.notes}">
+               		<h:column>
+					<h:outputText value="#{note}" />
+                    </h:column>
+			    </h:dataTable>
+			 </h:panelGrid>  
+		</h:panelGrid>  
+		
+		<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.isTransgenic}">
+			<h:outputText value="Transgene Visualisation" />
+			<h:panelGrid  columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+				<h:outputText value="Reporter:" />
+				<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.alleleModel[0].reporter}" />
+				<h:panelGroup>
+					<h:outputText value="Direct method for " /><br />
+					<h:outputText value="visualising reporter:" />
+				</h:panelGroup>
+				<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.alleleModel[0].visMethod}" />
+		               </h:panelGrid>
+		</h:panelGrid>
+		
+		<h:panelGrid   columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.linkedPublications}">
+			<h:outputText value="Linked Publications" />
+			<h:panelGrid  columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0" >
+				<h:dataTable  value="#{ishSubmissionBean.ishSubmissionModel.linkedPublications}" var="pub">
+					<h:column>
+                        <h:outputText value="#{pub[0]}" /> <br />
+                        <h:outputText styleClass="db_bold" value="#{pub[2]}" /><br />
+                        <h:outputText style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
+						<h:outputText value="#{pub[1]}, " />
+						<h:outputText styleClass="db_bold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
+						<h:outputText styleClass="db_bold" value="(#{pub[5]})" rendered="#{not empty pub[5]}"/>
+						<h:outputText styleClass="db_bold" value="&#160;:&#160;#{pub[6]}" rendered="#{not empty pub[6]}"/><br />
+                        <h:outputText style="font-style:italic" value="#{pub[7]}:&#160;" rendered="#{not empty pub[7]}" />
+                        <h:outputText styleClass="db_bold" value="#{pub[8]}" rendered="#{not empty pub[8]}"/><br />
+					</h:column>
+				</h:dataTable>
+			</h:panelGrid>
+		</h:panelGrid>
+		
+		<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{null != ishSubmissionBean.ishSubmissionModel.linkedSubmissions}">
+			<h:outputText value="Linked Submissions" />
+			<h:panelGrid   columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+				<h:dataTable value="#{ishSubmissionBean.ishSubmissionModel.linkedSubmissions}" var="link">
+					<h:column>
+						<h:panelGrid columns="1">
+							<h:panelGroup>
+								<h:outputText styleClass="db_bold" value="Database: " />
+								<h:outputText styleClass="db_bold" value="#{link[0]}" />
+							</h:panelGroup>
+					
+							<h:dataTable styleClass="browseTable" rowClasses="db_order-table-odd-row,db_order-table-even-row" headerClass="align-top-stripey"
+							               bgcolor="white" cellpadding="5" value="#{link[1]}" var="accessionIDAndTypes">
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Accession ID" styleClass="db_bold" />
+									</f:facet>
+									<h:outputLink styleClass="plaintext" id="submissionID" value="viewSubmissionDetails.jsf">
+										<f:param name="id" value="#{accessionIDAndTypes[0]}" />
+									 	<h:outputText value="#{accessionIDAndTypes[0]}"/>
+					 				</h:outputLink>
+					 			</h:column>
+								<h:column>
+									<f:facet name="header">
+					   					<h:outputText value="Link Type(s)" styleClass="db_bold" />
+									</f:facet>
+									<t:dataList id="linkTypes" styleClass="plaintext" rowIndexVar="index"
+					                		    var="linkType" value="#{accessionIDAndTypes[1]}" layout="simple" rowCountVar="count" >
+					 					<h:outputText styleClass="plaintext" value="#{linkType}&#160;" />
+										
+									</t:dataList>
+								</h:column>
+							</h:dataTable>
+					 
+							<h:panelGroup rendered="#{not empty link[2]}">  
+								<h:outputText styleClass="plaintext" value="URL: " />
+								<h:outputLink styleClass="plaintext" value="http://www.gudmap.org">
+									<h:outputText styleClass="datatext" value="#{link[2]}" />
+								</h:outputLink>
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:column>
+				</h:dataTable>
+			</h:panelGrid>
+		</h:panelGrid>
+		
+		<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{null != ishSubmissionBean.ishSubmissionModel.acknowledgements}">
+			<h:outputText value="Acknowledgements" />
+			<h:panelGrid   columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+				<h:dataTable value="#{ishSubmissionBean.ishSubmissionModel.acknowledgements}" var="ack">
+					<h:column>
+						<h:outputText value = "#{ack}"/>
+					</h:column>
+				</h:dataTable>
+			</h:panelGrid>
+		</h:panelGrid>
 	    	
 	    
 	    </h:form>

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP Probe Detail
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h1>MaProbe Detail</h1>
+	<h:form>
+	 <h:outputText value="There are no probes in the database with the supplied probe id." rendered="#{maProbeBean.probeModel == null}" />
+	
+	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{maProbeBean.probeModel != null}">
+		        <h:outputText value="Probe"  />
+			
+				<h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+								
+					<h:outputText  value="Probe ID:" />
+					<h:panelGroup>
+						<h:outputText value="No MGI ID (#{maProbeBean.probeModel.probeName})" rendered="#{maProbeBean.probeModel.probeName == maProbeBean.probeModel.maprobeID}"/>
+					    <h:outputLink styleClass="plaintextbold" value="#{maProbeBean.probeModel.probeNameURL}" rendered="#{maProbeBean.probeModel.probeNameURL != null and maProbeBean.probeModel.probeNameURL != ''}">
+				        	<h:outputText value="#{maProbeBean.probeModel.probeName}" rendered="#{maProbeBean.probeModel.probeName != maProbeBean.probeModel.maprobeID}"/>
+				        </h:outputLink> 
+				        <h:outputText styleClass="plaintextbold" value="#{maProbeBean.probeModel.probeName}" rendered="#{maProbeBean.probeModel.probeNameURL == null || maProbeBean.probeModel.probeNameURL == ''}" />
+				        <h:outputText styleClass="plaintext" value=" (#{maProbeBean.probeModel.maprobeID})" rendered="#{maProbeBean.probeModel.probeName != maProbeBean.probeModel.maprobeID}" />
+			        </h:panelGroup>
+					
+					<h:outputText value="Name of cDNA:" />
+					<h:outputText value="#{maProbeBean.probeModel.cloneName}" />
+					
+					<h:outputText value="Additional Name of cDNA:" rendered="#{not empty maProbeBean.probeModel.additionalCloneName}"/>
+					<h:outputText value="#{maProbeBean.probeModel.additionalCloneName}" rendered="#{not empty maProbeBean.probeModel.additionalCloneName}" />
+					
+					<h:outputText value="Sequence ID:" />
+					<h:panelGrid  rowClasses="text-top" columns="1" border="0" >
+						<h:panelGroup>
+							<h:outputLink target="_blank"  value="#{maProbeBean.probeModel.genbankURL}" rendered="#{not empty maProbeBean.probeModel.genbankID}" >
+								<h:outputText  value="#{maProbeBean.probeModel.genbankID}" />
+							</h:outputLink>
+							<h:outputText  value="unknown" rendered="#{empty maProbeBean.probeModel.genbankID}" />
+						</h:panelGroup>
+					</h:panelGrid>
+					
+					<h:outputText value="Gene:" />
+					<h:panelGrid columns="1" border="0">
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Symbol: " />
+							<h:outputLink  value="viewGeneStrip.jsf">
+								<h:outputText value="#{maProbeBean.probeModel.geneSymbol}" />
+								<f:param name="gene" value="#{maProbeBean.probeModel.geneSymbol}" />
+							</h:outputLink>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Name: " />
+							<h:outputText  value="#{maProbeBean.probeModel.geneName} " />
+							<h:outputText  value="(" rendered="#{not empty maProbeBean.probeModel.geneIdUrl}" />
+							<h:outputLink  value="#{maProbeBean.probeModel.geneIdUrl}" >
+							<h:outputText value="#{maProbeBean.probeModel.geneID}" />
+							</h:outputLink>
+							<h:outputText  value=")" rendered="#{not empty maProbeBean.probeModel.geneIdUrl}" />
+						</h:panelGroup>
+					</h:panelGrid>
+					
+					<h:outputText  value="5' primer sequence:" rendered="#{maProbeBean.probeModel.seq5Primer != '' and maProbeBean.probeModel.seq5Primer != null }"/>
+					<h:outputText styleClass="db_sequence" value="#{maProbeBean.probeModel.seq5Primer}" rendered="#{maProbeBean.probeModel.seq5Primer != '' and maProbeBean.probeModel.seq5Primer != null }" />
+					
+					<h:outputText  value="3' primer sequence:" rendered="#{maProbeBean.probeModel.seq3Primer != '' and maProbeBean.probeModel.seq5Primer != null }"/>
+					<h:outputText styleClass="db_sequence" value="#{maProbeBean.probeModel.seq3Primer}" rendered="#{maProbeBean.probeModel.seq3Primer != '' and maProbeBean.probeModel.seq5Primer != null }" />
+					
+					<h:outputText  value="5' primer location:" rendered="#{maProbeBean.probeModel.seq5Loc != '' and maProbeBean.probeModel.seq5Loc != null }" />
+					<h:outputText  value="#{maProbeBean.probeModel.seq5Loc}" rendered="#{maProbeBean.probeModel.seq5Loc != '' and maProbeBean.probeModel.seq5Loc != null }"/>
+					
+					<h:outputText  value="3' primer location:"  rendered="#{maProbeBean.probeModel.seq3Loc != '' and maProbeBean.probeModel.seq3Loc != null }" />
+					<h:outputText  value="#{maProbeBean.probeModel.seq3Loc}" rendered="#{maProbeBean.probeModel.seq3Loc != '' and maProbeBean.probeModel.seq3Loc != null }" />
+					
+					<ui:remove>
+					<h:outputText value="Template Sequence:" rendered="#{not empty maProbeBean.probeModel.fullSequence}"/>
+					<h:outputLink  value="#" onclick="PF('seq_dialog').show();"  rendered="#{not empty maProbeBean.probeModel.fullSequence}">
+						<h:outputText value="(Click to see sequence.)" />
+					</h:outputLink>
+					</ui:remove>
+					
+					<h:outputText value="Origin of Clone used to make the Probe:" />
+					<h:panelGrid columns="1" border="0">
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Strain: " />
+							<h:outputText value="#{maProbeBean.probeModel.strain}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="db_inner_inner_title" value="Tissue: " />
+							<h:outputText  value="#{maProbeBean.probeModel.tissue} " />
+						</h:panelGroup>
+					</h:panelGrid>
+		
+					
+					<h:outputText value="Probe Type:" />
+					<h:outputText value="#{maProbeBean.probeModel.type}" />
+					
+					<h:outputText value="Type:" />
+					<h:outputText value="#{maProbeBean.probeModel.geneType}" />
+					
+					<h:outputText value="Labelled with:" />
+					<h:outputText value="#{maProbeBean.probeModel.labelProduct}" />
+					
+					<h:outputText value="Visualisation method:" />
+					<h:outputText value="#{maProbeBean.probeModel.visMethod}" />
+					
+					<h:outputText value="Lab Probe ID:" rendered="#{not empty maProbeBean.probeModel.labProbeId}" />
+					<h:outputText value="#{maProbeBean.probeModel.labProbeId}" rendered="#{not empty maProbeBean.probeModel.labProbeId}" />
+					
+					<h:outputText styleClass="plaintext,text-top" value="Probe Notes:" rendered="#{not empty maProbeBean.probeModel.notes}" />
+					<h:outputText  value="#{maProbeBean.probeModel.notes}" rendered="#{not empty maProbeBean.probeModel.notes}" />
+
+					<h:outputText value="Curator Notes:" rendered="#{null != maProbeBean.probeModel.maprobeNotes}" />
+					<h:dataTable value="#{maProbeBean.probeModel.maprobeNotes}" var="maprobeNote" rendered="#{null != maProbeBean.probeModel.maprobeNotes}">
+						<h:column>
+							<h:outputText  value="#{maprobeNote}" />
+						</h:column>
+					</h:dataTable>
+					
+					<h:outputText value="#{maProbeBean.probeModel.assayType} Data" />
+					<h:dataTable cellspacing="5" value="#{maProbeBean.probeModel.ishFilteredSubmissions}" var="sub">
+						<h:column>
+						<f:facet name="header">
+							Accession ID
+						</f:facet>
+						<h:outputLink value="viewSubmissionDetails.jsf">
+								<f:param value="#{sub[0]}" name="accId" />
+								<h:outputText value="#{sub[0]}" />
+						</h:outputLink>	
+									
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Stage
+						</f:facet>
+							<h:outputText value="#{sub[2]}" />
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Sex
+						</f:facet>
+							<h:outputText value="#{sub[5]}" />
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Tissue
+						</f:facet>
+							<h:outputText value="#{sub[8]}"  />
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Specimen Assay Type
+						</f:facet>
+							<h:outputText value="#{sub[3]}"  />
+						</h:column>
+					</h:dataTable>	
+					
+				</h:panelGrid>			
+       	  </h:panelGrid>
+      </h:form> 	  
+	
+	</ui:define>
+</ui:composition>
+</html>

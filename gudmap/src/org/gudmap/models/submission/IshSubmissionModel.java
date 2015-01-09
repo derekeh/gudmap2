@@ -7,15 +7,12 @@ public class IshSubmissionModel extends SubmissionModel{
 		protected ProbeModel probeModel;
 		
 	    protected ArrayList<String[]> linkedPublications;
-	    protected PublicationsModel publicationsModel;
 	    
 	    protected String[] acknowledgements;
-	    protected AcknowledgementsModel [] acknowledgementsModel;
 	    
 	    protected ArrayList<?> annotationTree;
 	    
 	    protected ArrayList<Object> linkedSubmissions;
-	    protected LinkedSubmissionsModel linkedSubmissionsModel;
 	    
 	    protected ExpressionDetailModel [] expressionDetailModel;
 	    protected AntibodyModel antibodyModel;

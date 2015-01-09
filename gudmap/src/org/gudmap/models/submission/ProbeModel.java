@@ -22,19 +22,20 @@ public class ProbeModel extends CommonAntibodyProbeModel {
     private String seq3Loc;
     private String seq5Primer;
     private String seq3Primer;
-    private ArrayList maprobeNotes;
+    private ArrayList<String> maprobeNotes;
     private String probeNameSource; // specify where the probe name come from
-    private ArrayList fullSequence;
+    //private ArrayList fullSequence;
+    private String[] fullSequence;
     private String labProbeId; 
 
 
     private String maprobeNoteString;
 
-    public ArrayList getFullSequence() {
+    public String[] getFullSequence() {
     	return fullSequence;
 	}
 
-    public void setFullSequence(ArrayList fullSequence) {
+    public void setFullSequence(String[] fullSequence) {
     	this.fullSequence = fullSequence;
     }
     
@@ -211,11 +212,11 @@ public class ProbeModel extends CommonAntibodyProbeModel {
         	seq3Primer = value;
     }
     
-    public ArrayList getMaprobeNotes() {
+    public ArrayList<String> getMaprobeNotes() {
     	return maprobeNotes;
     }
     
-    public void setMaprobeNotes(ArrayList maprobeNotes) {
+    public void setMaprobeNotes(ArrayList<String> maprobeNotes) {
     	this.maprobeNotes = maprobeNotes;
     }
     
