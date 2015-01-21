@@ -67,7 +67,7 @@ function MM_callJS(jsStr) { //v2.0
 /**
  * function to open a popup window for a Lab details
  */
-function showLabDetails(id) {
+function showLaboratoryDetails(id) {
 	  var w = window.open('viewLabDetail.jsf?personId='+ id,'labdetailPopup','resizable=1,toolbar=0,scrollbars=1,width=500,height=350');
 	  w.focus();
 }
@@ -75,10 +75,25 @@ function showLabDetails(id) {
 /**
  * function to open a popup window for a Sequence details
  */
-function showSequenceDetails(id) {
+/*function showSequenceDetails(id) {
 	  var w = window.open('viewSequenceDetail.jsf?id='+ id,'seqdetailPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');
 	  w.focus();
+}*/
+
+/*function showExpressionInfo(oid, emapID, row) {
+	  var w = window.open('viewExpressionDetail.jsf?id='+oid+'&componentId='+emapID,'expressionPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=400');
+	  w.focus();
+}*/
+
+function showExpressionInformation(oid, componentId, row) {
+	  var w = window.open('viewExpressionDetailPU.jsf?oid='+oid+'&componentId='+componentId,'expressionPopup','resizable=1,toolbar=0,scrollbars=1,width=860,height=560');
+	  w.focus();
 }
+
+/*function showExpressionInformation() {
+	  var w = window.open('viewExpressionDetail.jsf','expressionPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=400');
+	  w.focus();
+}*/
 
 /*function applyDMXTooltip(trigger) {//v1.5
 //	alert('found tooltip function');

@@ -21,6 +21,10 @@ public class IshSubmissionModel extends SubmissionModel{
 	     *	          clickFilePath is the iip viewer url
 	    */
 	    protected ImageDetailModel imageDetailModel = null;
+	    
+	    protected String annotationTreeExpressions;
+	    protected String annotationTreePatterns;
+	    protected String annotationTreeExpressionNotes;
 
 
 	    public IshSubmissionModel() {
@@ -136,7 +140,29 @@ public class IshSubmissionModel extends SubmissionModel{
 	    
 	    public void setImageDetailModel(ImageDetailModel imageDetailModel) {
 	    	this.imageDetailModel = imageDetailModel;
-	    }    
+	    } 
+	    
+	    
+	    public String getAnnotationTreeExpressions() {
+	    	return annotationTreeExpressions;
+	    }
+	    public void setAnnotationTreeExpressions (String annotationTreeExpressions) {
+	    	this.annotationTreeExpressions = annotationTreeExpressions;
+	    }
+	    
+	    public String getAnnotationTreePatterns() {
+	    	return annotationTreePatterns;
+	    }
+	    public void setAnnotationTreePatterns(String annotationTreePatterns) {
+	    	this.annotationTreePatterns = annotationTreePatterns;
+	    }
+	    
+	    public String getAnnotationTreeExpressionNotes() {
+	    	return annotationTreeExpressionNotes;
+	    }
+	    public void setAnnotationTreeExpressionNotes (String annotationTreeExpressionNotes) {
+	    	this.annotationTreeExpressionNotes = annotationTreeExpressionNotes;
+	    }
 	
 
 }

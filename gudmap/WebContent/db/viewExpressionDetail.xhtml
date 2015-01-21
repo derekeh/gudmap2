@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP Expression Detail
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	    <h1>The Expression Detail Page</h1>	
+	    <!-- all other content in here --> 
+		<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+	        <h:outputText value="Stage" />
+	        <h:panelGroup>
+	        <h:outputText value="#{componentExpressionBean.expressionDetailModel.stage}" />
+	        </h:panelGroup>
+	        
+	       <h:panelGroup></h:panelGroup>
+	       <h:panelGroup></h:panelGroup>
+	        
+	        <h:outputText value="Component:" />
+	        <h:panelGroup>
+	          <h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+	            <h:outputText  value="Name:" />
+	            <h:outputText  value="#{componentExpressionBean.expressionDetailModel.componentName}" />
+	            <h:outputText  value="ID:" />
+	            <h:outputText  value="#{componentExpressionBean.expressionDetailModel.componentId}" />
+	            <h:outputText  value="Main Path:" />
+	            <h:dataTable style="vertical-align:bottom" value="#{componentExpressionBean.expressionDetailModel.componentDescription}" var="u">
+	            <h:column>
+	              <h:outputText  value="#{u}" />
+	            </h:column>
+	            </h:dataTable>
+	            
+	          </h:panelGrid>
+	        </h:panelGroup>
+	        
+	        <h:panelGroup></h:panelGroup>
+	       <h:panelGroup></h:panelGroup>
+	        
+	        <h:outputText value="Expression:" />
+	        <h:panelGroup>
+	          <h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+	            <h:outputText  value="Strength:" />
+	            <h:panelGroup>
+	              <h:outputText  value="#{componentExpressionBean.expressionDetailModel.primaryStrength}" />
+	              <h:outputText  value=", #{componentExpressionBean.expressionDetailModel.secondaryStrength}" rendered="#{ExpressionDetailBean.hasSecondaryStrength}" />
+	            </h:panelGroup>
+	          </h:panelGrid>  
+	          <h:dataTable rendered="#{componentExpressionBean.hasPatterns}" 
+	                       bgcolor="white" cellpadding="5" rowClasses="db_order-table-odd-row,db_order-table-even-row" headerClass="db_table_header"
+	                       value="#{componentExpressionBean.expressionDetailModel.pattern}" var="p">
+	            <h:column>
+	              <f:facet name="header">
+	                <h:outputText value="Pattern" />
+	              </f:facet>
+	              <h:outputText  value="#{p.pattern}"  />
+	            </h:column>
+	            <h:column>
+	              <f:facet name="header">
+	                <h:outputText value="Location(s)" />
+	              </f:facet>
+	              <h:outputText  value="#{p.locations}" />
+	            </h:column>              
+	          </h:dataTable>
+	          <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
+	            <h:column>
+	              <h:outputText  value="#{p.pattern}"  />
+	            </h:column>
+	          </h:panelGrid>
+	          <h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+	            <h:outputText  value="Note:" />
+	            <h:outputText  value="#{componentExpressionBean.expressionDetailModel.expressionNote}" />
+	          </h:panelGrid>
+	          
+	        </h:panelGroup>
+	        
+	        <h:panelGroup></h:panelGroup>
+	       <h:panelGroup></h:panelGroup>
+	        
+	        <h:outputText value="Density:" />
+	        <h:panelGroup>
+	          <h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+	            <h:outputText  value="Rel. to Total:" />
+	            <h:outputText  value="#{componentExpressionBean.expressionDetailModel.densityRelativeToTotal}" />
+	            <h:outputText  value="Rel. to P0/Adult:" />
+	            <h:outputText  value="#{componentExpressionBean.expressionDetailModel.densityChange}"/>
+	             <h:outputText  value="Note:" />
+	            <h:outputText  value="#{componentExpressionBean.expressionDetailModel.densityNote}" />
+	            
+	          </h:panelGrid>
+	        </h:panelGroup>
+        
+      </h:panelGrid>
+      
+      <br/>
+      <h:form id="expressionDetailForm">
+        <h:commandButton value="Close" onclick="self.close()" type="button" />
+      </h:form> 
+	</ui:define>
+</ui:composition>
+</html>

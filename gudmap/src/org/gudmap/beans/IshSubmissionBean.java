@@ -3,14 +3,22 @@ package org.gudmap.beans;
 import java.io.Serializable;
 
 
+
+
+
+
+//import javax.annotation.PostConstruct;
 //import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+//import javax.inject.Inject;
 //import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.gudmap.models.submission.IshSubmissionModel;
 import org.gudmap.assemblers.IshSubmissionAssembler;
+//import org.gudmap.utils.CookieOperations;
+//import org.gudmap.utils.FacesUtil;
 
 @Named
 @RequestScoped
@@ -22,28 +30,43 @@ public class IshSubmissionBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private IshSubmissionModel ishSubmissionModel;
     private IshSubmissionAssembler ishSubmissionAssembler;
-    // protected String submissionID;
-    //protected String id;
-    //private boolean renderPage;
-   // private String displayOfAnnoGps;
-    private boolean displayOfAnnotationGroups;
-   // private String annotationDisplayType;
     private boolean renderPrbSeqInfo;
     private boolean renderPrbNameURL;
     private boolean expressionMapped;
+    protected String id;
     private String oid;
-    private boolean displayAsTree=true;
+    private String accId;
+    //private boolean displayAsTree=false;
     private boolean isTransgenic=false;
+    protected String annotatedTreeExpressions;
+    protected String annotatedTreePatterns;
+    protected String annotatedTreeExpressionNotes;
+    
+    /*@Inject
+   	protected SessionBean sessionBean;*/
     
     public IshSubmissionBean() {
     	FacesContext facesContext = FacesContext.getCurrentInstance();
-		String accId = facesContext.getExternalContext().getRequestParameterMap().get("accId");
+    	//View submission Details link from viewMaProbeDetails
+		accId = facesContext.getExternalContext().getRequestParameterMap().get("accId");
 		if(accId!=null && accId!="")
 			oid=accId.substring(accId.indexOf(":")+1);
-    	ishSubmissionAssembler = new IshSubmissionAssembler();
+		
+    	ishSubmissionAssembler = new IshSubmissionAssembler();	
     }
     
-    public void returnResults() {
+   /* public void setSessionBean(SessionBean sessionBean){
+		this.sessionBean=sessionBean;
+	}
+    
+     @PostConstruct
+    public void getRemoteDisplayTree(){
+    	this.displayAsTree=sessionBean.getDisplayAsTree();
+    }*/
+    
+    public void returnResults(boolean displayAsTree) {
+    	//this.displayAsTree=displayAsTree;
+    	
     	ishSubmissionModel = ishSubmissionAssembler.getData(oid, displayAsTree);
     	 //if submission is not null, perform post-processing
         if (ishSubmissionModel != null){
@@ -91,11 +114,13 @@ public class IshSubmissionBean implements Serializable {
 	        }
 	        
 	        //TODO UNCOMMENT
-            /*if (ishSubmissionModel.getAnnotationTree() != null || ishSubmissionModel.getExpressionDetailModel() != null){
+            if (ishSubmissionModel.getAnnotationTree() != null || ishSubmissionModel.getExpressionDetailModel() != null){
                 expressionMapped = true;
-            }*/
+            }
         }
     } // end returnResults
+    
+  
     
     public void setOid(String oid) {
     	this.oid=oid;
@@ -103,14 +128,6 @@ public class IshSubmissionBean implements Serializable {
     
     public String getOid() {
     	return oid;
-    }
-    
-    public void setDisplayAsTree(boolean displayAsTree) {
-    	this.displayAsTree = displayAsTree;
-    }
-    
-    public boolean getDisplayAsTree() {
-    	return displayAsTree;
     }
     
     public void setRenderPrbSeqInfo(boolean renderPrbSeqInfo) {
@@ -137,27 +154,6 @@ public class IshSubmissionBean implements Serializable {
     	return expressionMapped;
     }
     
-    public void setDisplayOfAnnotationGroups(boolean displayOfAnnotationGroups) {
-    	this.displayOfAnnotationGroups = displayOfAnnotationGroups;
-    }
-    
-    public boolean getDisplayOfAnnotationGroups() {
-    	return displayOfAnnotationGroups;
-    }
-    
-    public String getAnnotationDisplayLinkTxt() {
-        if (!displayAsTree)
-            return "View annotated components as a list";
-        else
-            return "View annotated components as a tree";
-    }
-    
-    public String getDisplayOfAnnotatedGpsTxt() {
-        if (!displayOfAnnotationGroups )
-        	return "Show annotation under groups";
-        else
-        	return "Hide annotation under groups";
-    }
     
     public IshSubmissionModel getIshSubmissionModel () {
     	return ishSubmissionModel;
@@ -169,6 +165,31 @@ public class IshSubmissionBean implements Serializable {
     
     public boolean getIsTransgenic(){
     	return isTransgenic;
+    }
+    
+    
+    public String getAnnotationTreeExpressions(){
+        return annotatedTreeExpressions;
+    }
+    
+    public void setAnnotationTreeExpressions(String expressions){
+    	annotatedTreeExpressions = expressions;
+    }
+    
+    public String getAnnotationTreeExpressionNotes(){
+        return annotatedTreeExpressionNotes;
+    }
+    
+    public void setAnnotationTreeExpressionNotes(String notes){
+    	annotatedTreeExpressionNotes = notes;
+    }
+
+    public String getAnnotationTreePatterns(){
+        return annotatedTreePatterns;
+    }
+    
+    public void setAnnotationTreePatterns(String patterns){
+    	annotatedTreePatterns = patterns;
     }
 
 }

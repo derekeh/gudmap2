@@ -179,6 +179,21 @@
  .db_inner_inner_title {
  	color:darkred;
  }
+ 
+ .db_expression_detail_left {
+ 	text-align:left;
+ 	width:30px;
+ 	background-color:#EBEBEB;
+ }
+ 
+ 
+ .db_expression_detail_right {
+ 	text-align:left;
+ 	font-weight:normal;
+ 	background-color:#EBEBEB;
+ 	color:darkblue;
+ 	width:100%;
+ }
 
  .db_bold {
    font-weight:bold;
@@ -202,6 +217,8 @@
  }
  
  .db_table_header {
+   color:#FFFFFF;
+   background-color:#476885;
  }
  
  .db_table_text {

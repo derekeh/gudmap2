@@ -1395,4 +1395,28 @@ public class IshSubmissionDao {
        
       }
     
+    public String findStageByOid(String oid) {
+        String stage = null;
+        String queryString=IshSubmissionQueries.STAGE_BY_OID;
+        
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				stage = "TS" + result.getString(2);
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+       
+        return stage;
+                  
+    }
+    
 }

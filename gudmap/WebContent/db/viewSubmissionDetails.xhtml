@@ -20,6 +20,14 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+	<h:outputScript library="scripts" name="ftiens4.js" target="head"></h:outputScript>
+	<h:outputScript library="scripts" name="ua.js" target="head"></h:outputScript>
+	
+	<h:outputStylesheet library="css" name="my_jstree_style.css"  />
+	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1/_lib" name="jquery.cookie.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1/_lib" name="jquery.hotkeys.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1" name="jquery.jstree.js"></h:outputScript>
 	
 	<ui:include src="/snippets/g_wholemount_text.xhtml"></ui:include>
 	
@@ -28,7 +36,258 @@
 	    	<h:outputText value="GUDMAP:#{ishSubmissionBean.oid}"></h:outputText>    	
 	    </h1>	
 	    <!-- all other content in here -->  
-		#{ishSubmissionBean.returnResults()}
+	   
+		#{ishSubmissionBean.returnResults(sessionBean.displayAsTree)}
+		
+<script type="text/javascript">
+//<![CDATA[
+
+jQuery(document).ready(function(){
+	
+	var showAnnotationInfoTooltip = function(event) {
+		jQuery('div.db_tooltip').remove();
+		jQuery('<div class="db_tooltip">Clicking on these buttons allows you to alter the display format of the annotations. Subsequent visits to this page will use your last selected format options.</div>')
+		   .appendTo('body');
+		changeTooltipPosition(event);
+	};
+	
+	
+	var showHintTooltip = function(event) {
+	var type='hello derek';
+	jQuery('div.db_tooltip').remove();
+	jQuery('<div class="db_tooltip">Information about dropping hints</div>')
+		 .appendTo('body');
+	changeTooltipPosition(event);
+	}; 
+	
+	var changeTooltipPosition = function(event) {
+		var tooltipX = event.pageX + 8;
+		var tooltipY = event.pageY + 8;
+		$('div.db_tooltip').css({top: tooltipY, left: tooltipX});
+	};
+	var hideTooltip = function() {
+		jQuery('div.db_tooltip').remove();
+	};
+
+	
+	jQuery("#il_tree_span").bind({
+		mousemove : changeTooltipPosition,
+		mouseenter : showAnnotationInfoTooltip,
+		mouseleave: hideTooltip
+	});
+	
+    jQuery("#demo2_view").jstree({
+        "themes": {
+          "theme": "default",
+          "line": false,
+          "dots" : false,
+          "icons": true,
+		  "url" : "../resources/scripts/jstree_pre1.0_fix_1/themes/anatomytree/style.css"
+        },
+        "ui" : {
+          "select_limit" : -1,
+          "select_multiple_modifier" : "ctrl",
+          "select_range_modifier" :"shift",
+          //selected_parent_open
+          "selected_parent_close" : "select_parent"
+        },
+        "json_data" : {
+          "progressive_render" : false,
+          "selected_parent_open": true,
+          "ajax" : {
+          	"url" : "../resources/scripts/annotation_tree_json/TS" + "${ishSubmissionBean.ishSubmissionModel.stage}" + ".json"
+          }
+        },
+
+        "plugins" : [ "themes", "json_data", "ui", "crrm" ]
+
+    })
+    
+      .bind({"loaded.jstree": function(e, data) {
+          	  enhanceTree(e, data);
+            }
+      })
+      .on("loaded.jstree", function (e, data) {
+      	jQuery(this).on("select_node.jstree", function (e, data) {
+           //document.location = "viewExpressionDetail.jsf?componentId="+data.rslt.obj.attr("ATN_PUBLIC_ID");
+           //document.location = "viewExpressionDetail.jsf?oid="+"${ishSubmissionBean.ishSubmissionModel.oid}" +"&componentId="+data.rslt.obj.attr("ATN_PUBLIC_ID");
+           javascript:showExpressionInformation("${ishSubmissionBean.ishSubmissionModel.oid}",data.rslt.obj.attr("ATN_PUBLIC_ID"));
+    	});
+	  });
+
+}); 
+
+function enhanceTree(event, data) {
+//    	alert("enhanceTree");
+
+    	var exp_from_db = new Array();
+    	exp_from_db = findExpressions();
+//    	alert("exp_from_db test = " + exp_from_db[0]);
+    	var pattern_from_db = new Array();
+    	pattern_from_db = findPatterns();
+//    	alert("pattern_from_db test = " + pattern_from_db[0]);
+    	var expnote_from_db = new Array();
+    	expnote_from_db = findExpressionNotes(exp_from_db);
+//    	alert("expnote_from_db test = " + expnote_from_db[0]);
+
+		var min_depth = 20;//min_depth is a global variable
+//		alert("exp_from_db.length = " + exp_from_db.length);
+        if (exp_from_db.length == 0){  
+	        jQuery("#demo2_view").jstree("open_node", "#0--0");
+	        jQuery("#demo2_view").jstree("open_node", "#1--0");
+	        jQuery("#demo2_view").jstree("open_node", "#2--0");
+        }
+        else{
+
+			for (var i = 0; i < exp_from_db.length; i++) {
+		
+	            var node_name1 = String(exp_from_db[i][0]);
+	            var node_name= node_name1.replace(" ","");
+
+				jQuery("#demo2_view").find(jQuery("li[name='"+node_name+"']")).each(function (k, v) {
+					
+//					alert("v =" +jQuery(v).attr('name'));
+
+					data.inst.select_node(v);
+					data.inst.deselect_node(v);
+
+
+		            if(parseInt(jQuery(v).attr('APO_DEPTH')) < min_depth) {
+		                min_depth = jQuery(v).attr('APO_DEPTH');
+		            
+		            }
+//		            alert("min_depth = "+ min_depth);				
+		        
+		            var node_strength = exp_from_db[i][1];
+		            var node_add_strength = exp_from_db[i][2];
+
+		            
+		            var selected_class;
+//		            alert("node_strength = "+ node_strength);
+		            if (node_strength == "present" && node_add_strength == ""){
+		              selected_class = "jstree-icon4";
+		            }
+		            else if (node_strength == "present" && node_add_strength == "strong")  {
+		              selected_class = "jstree-icon3";
+		            }
+		            else if (node_strength == "present" && node_add_strength == "moderate")  {
+		              selected_class = "jstree-icon2";
+		            }
+		            else if (node_strength == "present" && node_add_strength == "weak")  {
+		              selected_class = "jstree-icon5";
+		            }
+		            else if (node_strength == "uncertain" && node_add_strength == "")  {
+		              selected_class = "jstree-icon6";
+		            }
+		            else if (node_strength == "not detected" && node_add_strength == "")  {
+		              selected_class = "jstree-icon7";
+		            }
+		            else if (exp_node == "not_examined")  {
+		              selected_class = "jstree-icon";
+		            }
+		            
+		            jQuery("li[name='"+node_name+"'] > ins").attr("class",selected_class);// set class to display new icon
+		            jQuery("li[name='"+node_name+"'] > a ins").attr("class",selected_class);// set class to display new icon
+		        });
+
+		        for (p = 0; p < pattern_from_db.length; p++) {
+		        	var pattern_name = String(pattern_from_db[p][0]).replace(" ","");
+		        	if (node_name == pattern_name){
+//		        		alert("pattern icon");
+		                if (pattern_from_db[p][1] == "graded"){
+		                    selected_class = "pattern-icon1";
+		                  }
+		                  else if (pattern_from_db[p][1] == "regional")  {
+		                    selected_class = "pattern-icon2";
+		                  }
+		                  else if (pattern_from_db[p][1] == "spotted")  {
+		                    selected_class = "pattern-icon3";
+		                  }
+		                  else if (pattern_from_db[p][1] == "ubiquitous")  {
+		                    selected_class = "pattern-icon4";
+		                  }
+		                  else if (pattern_from_db[p][1] == "restricted")  {
+		                    selected_class = "pattern-icon5";
+		                  }
+		                  else if (pattern_from_db[p][1] == "single cell")  {
+		                    selected_class = "pattern-icon6";
+		                  }
+		                
+						  jQuery("li[name='"+node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + selected_class + '">&nbsp;</ins></a>');		            	
+		            }// end if node_name	        	
+		        }// end for p loop
+		        
+		        for (n = 0; n < expnote_from_db.length; n++) {
+		        	var note_name = String(expnote_from_db[n][0]).replace(" ","");
+		        	if (node_name == note_name){
+//		        		alert("note-icon1");
+		                selected_class = "note-icon1";
+		                jQuery('li[name="'+node_name+'"] > a') .after('<a title=\''+ expnote_from_db[n][1] + '\' ><ins class="' + selected_class + '">&nbsp;</ins></a>');
+		               // jQuery('li[name="'+node_name+'"] > a') .after('<a onmouseover="tooltip.show(\''+ expnote_from_db[n][1] + '\')"  onmouseout="tooltip.hide();" ><ins class="' + selected_class + '">&nbsp;</ins></a>');
+		            }		        	
+		        }// end for n loop
+								
+            }// end of for i loop
+        }// end of else              
+};
+
+function findExpressions(exp_from_db){
+//	alert("findExpressions");
+	
+	var expressions=String("${ishSubmissionBean.ishSubmissionModel.annotationTreeExpressions}");
+//	alert(expressions);
+	var temparray = expressions.split("|");
+	var count = temparray.length;
+	var expressions_array = new Array(count-1);
+	for(var i = 0; i < count-1; i++){
+		expressions_array[i] = new Array(3);
+		expressions_array[i] = temparray[i].replace(":","").split(",");
+	}
+
+	for(var i = 0; i < count-1; i++){
+//		alert(expressions_array[i]);
+	}
+	
+	return expressions_array;	
+}
+
+function findPatterns(){
+//	alert("findPatterns");
+	
+	var patterns=String("${ishSubmissionBean.ishSubmissionModel.annotationTreePatterns}");
+//	alert(patterns);
+	var temparray = patterns.split("|");
+	var count = temparray.length;
+	var pattern_array = new Array(count-1);
+	for(var i = 0; i < count-1; i++){
+		pattern_array[i] = new Array(2);
+		pattern_array[i] = temparray[i].replace(":","").split(",");
+	}
+
+	for(var i = 0; i < count-1; i++){
+//		alert(pattern_array[i]);
+	}
+	
+	return pattern_array;	
+}
+
+function findExpressionNotes(){
+//	alert("findExpressionNotes");
+	
+	var notes=String("${ishSubmissionBean.ishSubmissionModel.annotationTreeExpressionNotes}");
+//	alert(notes);
+	var temparray = notes.split("|");
+	var count = temparray.length;
+	var notes_array = new Array(count-1);
+	for(var i = 0; i < count-1; i++){
+		notes_array[i] = new Array(2);
+		notes_array[i] = temparray[i].replace(":","").split(",");
+	}
+
+	return notes_array;	
+}
+//]]>
+</script>
 		
 		<pr:dialog id="labDialog" header="Lab Details" widgetVar="lab_dialog" width="600" style="position:absolute;left:-200px;" > 
 		
@@ -159,7 +418,7 @@
 	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
 	    			    <h:outputText value="Principal Investigator(s) : "/>
 	    				<t:dataList id="piDataList" var="piInfo" value="#{ishSubmissionBean.ishSubmissionModel.principalInvestigators}" >
-							<h:outputLink  title="#{piInfo.fullAddress}"  value="javascript:showLabDetails(#{piInfo.id})">
+							<h:outputLink  title="#{piInfo.fullAddress}"  value="javascript:showLaboratoryDetails(#{piInfo.id})">
 							      <h:outputText value="#{piInfo.name}, " />
 							</h:outputLink>
 							<h:outputText title="#{piInfo.fullAddress}"  value="#{piInfo.displayAddress}" /><br/>
@@ -181,7 +440,7 @@
 						
 						<h:outputText value="Submitted By:" />
 						<h:panelGroup>
-	                            <h:outputLink title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}" value="javascript:showLabDetails(#{ishSubmissionBean.ishSubmissionModel.submitter.id})">
+	                            <h:outputLink title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}" value="javascript:showLaboratoryDetails(#{ishSubmissionBean.ishSubmissionModel.submitter.id})">
 						             <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, " />
 						       </h:outputLink>
 						       <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
@@ -198,6 +457,204 @@
 	    			</h:panelGrid>
 	    		</h:panelGroup>
 	    	</h:panelGrid>
+	    	
+	    	
+	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+			<h:panelGroup>
+				<h:outputText value="Expression Mapping &lt;br/&gt;&lt;br/&gt;" escape="false"/>
+				<h:outputText value="Expression Strengths Key:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
+				<h:panelGrid columns="2"  columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
+					<h:graphicImage library="images/tree" name="DetectedRoundPlus20x20.gif" styleClass="db_icon" />
+					<h:outputText value="Present (unspecified strength)" styleClass="plaintext" />
+			
+					<h:graphicImage library="images/tree" name="StrongRoundPlus20x20.gif" styleClass="db_icon" />
+					<h:outputText value="Present (strong)" styleClass="plaintext" />
+			
+					<h:graphicImage library="images/tree" name="ModerateRoundPlus20x20.gif" styleClass="db_icon" />
+					<h:outputText value="Present (moderate)" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="WeakRoundPlus20x20.gif" styleClass="db_icon" />
+					<h:outputText value="Present (weak)" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="PossibleRound20x20.gif" styleClass="db_icon" />
+					<h:outputText value="Uncertain" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="NotDetectedRoundMinus20x20.gif" styleClass="db_icon" />
+					<h:outputText value="Not Detected" styleClass="plaintext" />
+				</h:panelGrid>
+					
+				<h:outputText value="Expression Patterns Key:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
+				<h:panelGrid columns="2" columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
+					<h:graphicImage library="images/tree" name="HomogeneousRound20x20.png" styleClass="db_icon" />
+					<h:outputText value="Homogeneous" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="GradedRound20x20.png" styleClass="db_icon" />
+					<h:outputText value="Graded" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="RegionalRound20x20.png" styleClass="db_icon" />
+					<h:outputText value="Regional" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="SpottedRound20x20.png" styleClass="db_icon" />
+					<h:outputText value="Spotted" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="UbiquitousRound20x20.png" styleClass="db_icon" />
+					<h:outputText value="Ubiquitous" styleClass="plaintext" />
+
+					<h:graphicImage library="images/tree" name="RestrictedRound20x20.png" styleClass="db_icon" />
+					<h:outputText value="Restricted" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="SingleCellRound20x20.png" styleClass="db_icon" />
+					<h:outputText value="Single cell" styleClass="plaintext" />			
+				</h:panelGrid>
+
+				<h:outputText value="Nerve Density: &lt;br/&gt;&lt;br/&gt;" escape="false" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
+				<h:outputText value="Relative to Total:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
+				<h:panelGrid columns="2" columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
+					
+					<h:graphicImage library="images/tree" name="max_high.png" styleClass="db_icon" />
+					<h:outputText value="Maximum" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="mod_medium.png" styleClass="db_icon" />
+					<h:outputText value="Moderate" styleClass="plaintext" />
+
+					<h:graphicImage library="images/tree" name="min_low.png" styleClass="db_icon" />
+					<h:outputText value="Low" styleClass="plaintext" />
+						
+				</h:panelGrid>
+				<br />
+				<h:outputText value="Relative to P0/Adult:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
+				<h:panelGrid columns="2"  columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
+
+					<h:graphicImage library="images/tree" name="inc_large.png" styleClass="db_icon" />
+					<h:outputText value="Increase, large" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="inc_small.png" styleClass="db_icon" />
+					<h:outputText value="Increase, small" styleClass="plaintext" />
+
+					<h:graphicImage library="images/tree" name="dec_large.png" styleClass="db_icon" />
+					<h:outputText value="Decrease, large" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="dec_small.png" styleClass="db_icon" />
+					<h:outputText value="Decrease, small" styleClass="plaintext" />
+					
+					<h:graphicImage library="images/tree" name="note.gif" styleClass="db_icon" />
+					<h:outputText value="Contains note" styleClass="plaintext" />
+				</h:panelGrid>
+			</h:panelGroup>
+			
+			
+			
+			
+			<h:panelGroup>
+				<h:outputText value="No Expression Mapping Data Available" styleClass="datatext" rendered="#{!ishSubmissionBean.expressionMapped}" />
+				
+				<h:panelGrid columns="3" columnClasses="table-stripey" bgcolor="white" cellspacing="2" cellpadding="4">
+					<h:commandLink value="#{sessionBean.annotationDisplayText}" action="#{sessionBean.getSubmissionView()}" styleClass="plaintext">
+						<f:setPropertyActionListener id="annoDisplayproperty" target="#{sessionBean.displayAsTree}" value="#{!sessionBean.displayAsTree}" />
+						<f:param name="accId" value="#{ishSubmissionBean.ishSubmissionModel.accID}"/>
+					</h:commandLink>
+					<h:commandLink value="#{sessionBean.annotationGroupsText}" rendered="#{sessionBean.displayAsTree}" styleClass="plaintext" >
+						<f:setPropertyActionListener id="annoGroupsproperty" target="#{sessionBean.displayAnnotationGroups}" value="#{!sessionBean.displayAnnotationGroups}" />
+						<f:param name="accId" value="#{ishSubmissionBean.ishSubmissionModel.accID}"/>
+						
+					</h:commandLink>
+					<h:link style="cursor:help;">
+			    		<span id="il_tree_span">
+			    			<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" id="il_annotation_info"></h:graphicImage>
+			    		</span>
+		    		</h:link>
+					
+				</h:panelGrid>
+				<ui:remove>
+				<h:inputHidden value="#{ishSubmissionBean.ishSubmissionModel.accID}" />
+				</ui:remove>
+				<h:panelGroup rendered="#{ishSubmissionBean.expressionMapped and !sessionBean.displayAsTree}">
+					<h:outputText value="ACCESSION ID: #{ishSubmissionBean.ishSubmissionModel.accID}"/>
+					<h:dataTable cellpadding="2" width="100%" styleClass="db_order-table" headerClass="db_order-table-header" rowClasses="db_order-table-odd-row,db_order-table-even-row" 
+								 value="#{ishSubmissionBean.ishSubmissionModel.expressionDetailModel}" var="exp" >
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="ComponentID" styleClass="plaintextbold"/>
+							</f:facet>
+							<h:outputLink styleClass="datatext" value="javascript:showExpressionInformation('#{ishSubmissionBean.ishSubmissionModel.oid}','#{exp.componentId}','0')">
+								<h:outputText value="#{exp.componentId}" />
+							</h:outputLink>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Component " styleClass="plaintextbold"/>
+							</f:facet>
+							<h:outputLink styleClass="datatext" value="javascript:showExpressionInformation('#{ishSubmissionBean.ishSubmissionModel.oid}','#{exp.componentId}','0')">
+								<h:outputText value="#{exp.componentName}" />
+								<h:graphicImage library="images/tree" name="note.gif" rendered="#{exp.noteExists}" styleClass="db_icon" />
+							</h:outputLink>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Expression" styleClass="plaintextbold"/>
+							</f:facet>
+							<h:panelGrid columns="2">
+								<h:graphicImage library="images/tree" name="#{exp.expressionImage}" styleClass="db_icon" alt="" />
+								<h:panelGroup>
+									<h:outputText value="#{exp.primaryStrength} " styleClass="datatext" />
+									<h:outputText rendered="#{exp.secondaryStrength != ' ' and exp.secondaryStrength != ''}" value="(#{exp.secondaryStrength})" styleClass="datatext" />
+									<h:outputText rendered="#{exp.secondaryStrength == ' ' || exp.secondaryStrength == ''}" value="(unspecified)" styleClass="datatext" />
+								</h:panelGroup>
+							</h:panelGrid>
+						</h:column>
+						<h:column rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'GUDMAP'}">
+							<f:facet name="header">
+								<h:outputText value="Patterns/Locations" styleClass="plaintextbold"/>
+							</f:facet>
+							<h:dataTable border="0" cellspacing="0" cellpadding="2" columnClasses="text-top" value="#{exp.pattern}" var="pattern" rendered="#{not empty exp.pattern}">
+								<h:column>
+									<h:panelGrid columns="2">
+										<h:graphicImage  library="images/tree" name="#{pattern.patternImage}" styleClass="db_icon" alt="" />
+										<h:panelGrid columns="2" columnClasses="text-top">
+											<h:outputText value="#{pattern.pattern}" styleClass="datatext"/>
+											<h:outputText value="#{pattern.locations}" styleClass="datatext"/>
+										</h:panelGrid>
+									</h:panelGrid>
+								</h:column>
+							</h:dataTable>
+						</h:column>
+						<h:column rendered="#{ishSubmissionBean.ishSubmissionModel.project == 'EUREGENE'}">
+							<f:facet name="header">
+								<h:outputText value="Pattern" styleClass="plaintextbold"/>
+							</f:facet>
+							<h:dataTable border="0" cellspacing="0" cellpadding="2" columnClasses="text-top" value="#{exp.pattern}" var="pattern" rendered="#{not empty exp.pattern}">
+								<h:column>
+									<h:panelGrid columns="2">
+										<h:graphicImage   library="images/tree" name="#{pattern.patternImage}" styleClass="db_icon" alt="" />
+										<h:outputText value="#{pattern.pattern}" styleClass="datatext"/>
+									</h:panelGrid>
+								</h:column>
+							</h:dataTable>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Densities" styleClass="plaintextbold"/>
+							</f:facet>
+							<h:panelGrid columns="2">
+									<h:graphicImage   library="images/tree" name="#{exp.densityImageRelativeToTotal}" styleClass="db_icon" alt="" rendered="#{exp.densityImageRelativeToTotal != null}"/>
+									<h:outputText value="Rel to Total: #{exp.densityRelativeToTotal}" styleClass="datatext" rendered="#{exp.densityImageRelativeToTotal != null}"/>
+									<h:graphicImage   library="images/tree" name="#{exp.densityImageRelativeToAge}" styleClass="db_icon" alt="" rendered="#{exp.densityImageRelativeToAge != null}"/>
+									<h:outputText value="Rel to P0/Adult: #{exp.densityChange}" styleClass="datatext" rendered="#{exp.densityImageRelativeToAge != null}"/>
+							</h:panelGrid>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
+					 <div id="demo2_view" class="demo" style="overflow: auto; align: left; min-height: 540px; background-color:#green; color:red;">hello derek</div>
+						
+					<h:panelGroup>
+						<h:outputText styleClass="plaintextbold" value="G " />
+						<h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
+					</h:panelGroup>	
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGrid>
+	    	
 	    	
 	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.ishSubmissionModel.assayType == 'IHC' || ishSubmissionBean.ishSubmissionModel.assayType == 'OPT'}">
 			<h:outputText value="Antibody"  />
@@ -397,7 +854,7 @@
 					<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc and ishSubmissionBean.ishSubmissionModel.probeModel.seq3Loc != 'n/a' and ishSubmissionBean.renderPrbSeqInfo}" />
 					
 					<h:outputText value="Template Sequence:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.fullSequence}"/>
-					<h:outputLink  value="#" onclick="PF('seq_dialog').show();"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.fullSequence}">
+					<h:outputLink  value="#" onclick="PF('seq_dialog').show();return false;"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.fullSequence}">
 						<h:outputText value="(Click to see sequence.)" />
 					</h:outputLink>
 					
@@ -624,6 +1081,50 @@
 	    	
 	    
 	    </h:form>
+	    
+<!-- <script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+	   
+		var showDiseaseTooltip = function(event) {
+			$('div.db_tooltip').remove();
+			$('<div class="db_tooltip">Information about Disease searches</div>')
+			   .appendTo('body');
+			changeTooltipPosition(event);
+		};
+		
+		
+		var showHintTooltip = function(event) {
+		var type='hello derek';
+		$('div.db_tooltip').remove();
+		$('<div class="db_tooltip">Information about dropping hints</div>')
+			 .appendTo('body');
+		changeTooltipPosition(event);
+		}; 
+		
+		var changeTooltipPosition = function(event) {
+			var tooltipX = event.pageX + 8;
+			var tooltipY = event.pageY + 8;
+			$('div.db_tooltip').css({top: tooltipY, left: tooltipX});
+		};
+		var hideTooltip = function() {
+			$('div.db_tooltip').remove();
+		};
+	
+		
+		$("#il_tree_span").bind({
+			mousemove : changeTooltipPosition,
+			mouseenter : showDiseaseTooltip,
+			mouseleave: hideTooltip
+		});
+		 
+   });
+   
+   
+//]]>
+</script> -->		   
+	    
+	    
 	</ui:define>
 </ui:composition>
 </html>

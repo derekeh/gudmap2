@@ -15,8 +15,9 @@ import javax.faces.context.FacesContext;
 import org.gudmap.globals.Globals;
 import org.gudmap.models.submission.ExpressionDetailModel;
 import org.gudmap.models.submission.ExpressionPatternModel;
-import org.gudmap.models.submission.IshBrowseSubmissionModel;
-import org.gudmap.models.submission.SubmissionModel;
+import org.gudmap.queries.anatomy.AnatomyQueries;
+//import org.gudmap.models.submission.IshBrowseSubmissionModel;
+//import org.gudmap.models.submission.SubmissionModel;
 import org.gudmap.queries.submission.IshSubmissionQueries;
 import org.gudmap.utils.Utils;
 
@@ -35,6 +36,114 @@ public class AnatomyDao {
 			e.printStackTrace();
 		}	
 	}
+	
+	public String findAnnotationTreeExpressions(String oid) {
+		if (oid == null) {
+			return null;
+		}
+		
+		//query to find out if the submission has any entries in the expression table of the db
+		String treeExpressions = null;
+		
+		String queryString=AnatomyQueries.ANNOT_TREE_EXPRESSIONS;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			String RET = null;
+			if (result.first()) {
+				result.beforeFirst();
+				RET = new String("");
+				while (result.next()) {
+					RET += result.getString(1) + "," + result.getString(2) + "," + result.getString(3) + "| ";
+				}
+				treeExpressions = RET;
+			}
+			
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        return treeExpressions;
+		
+	}
+	
+	 public String findAnnotationTreePatterns(String oid) {
+			if (oid == null) {
+				return null;
+			}
+			
+			String treePatterns = null;
+			
+			String queryString=AnatomyQueries.ANNOT_TREE_PATTERNS;
+	        try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, oid);
+				result =  ps.executeQuery();
+				String RET = null;
+				if (result.first()) {
+					result.beforeFirst();
+					RET = new String("");
+					while (result.next()) {
+						RET += result.getString(1) + "," + result.getString(2) + "| ";
+					}
+					treePatterns = RET;
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+	        
+	        return treePatterns;
+			
+		}
+	 
+	 public String findAnnotationTreeExpressionNotes(String oid) {
+			if (oid == null) {
+				return null;
+			}
+			
+			String treeExpressionNotes = null;
+			
+			String queryString=AnatomyQueries.ANNOT_TREE_EXPRESSION_NOTES;
+	        try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, oid);
+				result =  ps.executeQuery();
+				String RET = null;
+				if (result.first()) {
+					result.beforeFirst();
+					RET = new String("");
+					while (result.next()) {
+						RET += result.getString(1) + "," + result.getString(2) + "| ";
+					}
+					treeExpressionNotes = RET;
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+	        
+	        return treeExpressionNotes;
+			
+		} 
+	
+	////////////////////////OLD TREE ///////////////////////////
 	
 	 /**
      * @param submissionAccessionId
@@ -70,7 +179,7 @@ public class AnatomyDao {
 		    Globals.closeQuietly(con, ps, result);
 		}
         
-        queryString = IshSubmissionQueries.TREE_ANNOTATIONS;
+        queryString = AnatomyQueries.TREE_ANNOTATIONS;
         
         try
 		{
@@ -124,7 +233,7 @@ public class AnatomyDao {
     		    Globals.closeQuietly(con, ps, result);
     		}
          }
-        queryString = IshSubmissionQueries.TREE_CONTENT;
+        queryString = AnatomyQueries.TREE_CONTENT;
         try
 		{
 			con = ds.getConnection();
@@ -355,7 +464,7 @@ public class AnatomyDao {
     
     String getPatternsForAnnotatedComponent(String expressionOID){
     	
-    	String queryString = IshSubmissionQueries.EXPRESSION_PATTERNS;
+    	String queryString = AnatomyQueries.EXPRESSION_PATTERNS;
     	StringBuffer patterns = new StringBuffer("");
     	Connection connection=null;
     	PreparedStatement pstmt=null;
@@ -396,13 +505,9 @@ public class AnatomyDao {
      */
     public ExpressionDetailModel [] findAnnotatedListBySubmissionIds(String oid) {
     	
-    	String queryString=IshSubmissionQueries.TREE_ANNOTATIONS;
+    	String queryString=AnatomyQueries.TREE_ANNOTATIONS;
     	//array of annotated components for this submission
         ExpressionDetailModel [] expressionDetailModel = null;
-        /*ResultSet resSet = null;
-        PreparedStatement prepStmt = null;
-        PreparedStatement patternStmt = null;
-        ResultSet patternSet = null;*/
         Connection locationConnection = null;
         PreparedStatement locationStatement = null;
         ResultSet locationResultSet = null;
@@ -412,6 +517,10 @@ public class AnatomyDao {
         Connection patternConnection=null;
     	PreparedStatement patternStatement=null;
     	ResultSet patternResultSet=null;
+    	
+    	String locationQuery = AnatomyQueries.PATTERN_LOCATIONS;
+    	String annotationQuery = AnatomyQueries.EXPRESSION_PATTERNS;
+    	String componentQuery = AnatomyQueries.COMPONENT_NAME_FROM_ATN_PUBLIC_ID;
 	   
         if (oid == null) {
 			return null;
@@ -432,7 +541,7 @@ public class AnatomyDao {
 		    Globals.closeQuietly(con, ps, result);
 		}
        
-       queryString=IshSubmissionQueries.ANNOTATED_LIST_BY_OID;
+       queryString=AnatomyQueries.ANNOTATED_LIST_BY_OID;
        try
 		{
 			con = ds.getConnection();
@@ -449,7 +558,7 @@ public class AnatomyDao {
             result.beforeFirst();
             int index = 0;
             String str = null;
-            String imgPath = "/images/tree/";
+            //String imgPath = "/images/tree/";
             
             while(result.next()){
                 
@@ -470,22 +579,22 @@ public class AnatomyDao {
 					if(str.trim().equalsIgnoreCase("present")){
 					    str = Utils.netTrim(result.getString(5));
 					    if(str == null){
-						expressionDetailModel[index].setExpressionImage(imgPath+"DetectedRoundPlus20x20.gif");
+						expressionDetailModel[index].setExpressionImage("DetectedRoundPlus20x20.gif");
 					    } else if(str.equals("strong")){
-						expressionDetailModel[index].setExpressionImage(imgPath+"StrongRoundPlus20x20.gif");
+						expressionDetailModel[index].setExpressionImage("StrongRoundPlus20x20.gif");
 					    } else if(str.equals("moderate")){
-						expressionDetailModel[index].setExpressionImage(imgPath+"ModerateRoundPlus20x20.gif");
+						expressionDetailModel[index].setExpressionImage("ModerateRoundPlus20x20.gif");
 					    } else if(str.equals("weak")){
-						expressionDetailModel[index].setExpressionImage(imgPath+"WeakRoundPlus20x20.gif");
+						expressionDetailModel[index].setExpressionImage("WeakRoundPlus20x20.gif");
 					    }
 					} else if(str.equalsIgnoreCase("not detected")){
-					    expressionDetailModel[index].setExpressionImage(imgPath+"NotDetectedRoundMinus20x20.gif");
+					    expressionDetailModel[index].setExpressionImage("NotDetectedRoundMinus20x20.gif");
 					} else if(str.equalsIgnoreCase("uncertain") || str.equalsIgnoreCase("possible")){
-					    expressionDetailModel[index].setExpressionImage(imgPath+"PossibleRound20x20.gif");
+					    expressionDetailModel[index].setExpressionImage("PossibleRound20x20.gif");
 					}
 	            }
 	                    
-                String annotationQuery = IshSubmissionQueries.EXPRESSION_PATTERNS;
+                //String annotationQuery = IshSubmissionQueries.EXPRESSION_PATTERNS;
                 try
         		{
         			patternConnection = ds.getConnection();
@@ -513,32 +622,32 @@ public class AnatomyDao {
                             patterns[index2].setPattern(str);
                             if (null != str) {
                                 if(str.indexOf("homogeneous") >= 0){
-                                    patterns[index2].setPatternImage(imgPath + "HomogeneousRound20x20.png");
+                                    patterns[index2].setPatternImage("HomogeneousRound20x20.png");
                                 }
                                 else if(str.indexOf("spotted") >= 0){
-                                    patterns[index2].setPatternImage(imgPath + "SpottedRound20x20.png");
+                                    patterns[index2].setPatternImage("SpottedRound20x20.png");
                                 }
                                 else if(str.indexOf("regional") >= 0){
-                                    patterns[index2].setPatternImage(imgPath + "RegionalRound20x20.png");
+                                    patterns[index2].setPatternImage("RegionalRound20x20.png");
                                 }
                                 else if(str.indexOf("graded") >= 0){
-                                    patterns[index2].setPatternImage(imgPath + "GradedRound20x20.png");
+                                    patterns[index2].setPatternImage("GradedRound20x20.png");
                                 }
                                 else if(str.indexOf("ubiquitous") >= 0) {
-                                    patterns[index2].setPatternImage(imgPath + "UbiquitousRound20x20.png");
+                                    patterns[index2].setPatternImage("UbiquitousRound20x20.png");
                                 }
                                 else if(str.indexOf("other") >= 0) {
-                                    patterns[index2].setPatternImage(imgPath + "OtherRound20x20.png");
+                                    patterns[index2].setPatternImage("OtherRound20x20.png");
                                 }
                                 else if(str.indexOf("single cell") >= 0) {
-                                    patterns[index2].setPatternImage(imgPath + "SingleCellRound20x20.png");
+                                    patterns[index2].setPatternImage("SingleCellRound20x20.png");
                                 }
                                 else if(str.indexOf("restricted") >= 0) {
-                                    patterns[index2].setPatternImage(imgPath + "RestrictedRound20x20.png");
+                                    patterns[index2].setPatternImage("RestrictedRound20x20.png");
                                 }
                             }
                             
-                            String locationQuery = IshSubmissionQueries.PATTERN_LOCATIONS;
+                            //String locationQuery = IshSubmissionQueries.PATTERN_LOCATIONS;
                             StringBuffer locations = null;
                             try
                             {
@@ -550,7 +659,7 @@ public class AnatomyDao {
                     			if(locationResultSet.first()){
                     				locationResultSet.beforeFirst();
                                     
-                                    //all loations will be stored in a String (comma separated)
+                                    //all locations will be stored in a String (comma separated)
                                     locations = new StringBuffer("");
         							String adjacentTxt = "adjacent to ";
         							String atnPubIdVal = null;
@@ -572,7 +681,7 @@ public class AnatomyDao {
                                             
                                             /*need to get the anatomy prefix and attach it to the id obtained previously
                                             then query the database to get the mane of the component*/
-                                            String componentQuery = IshSubmissionQueries.COMPONENT_NAME_FROM_ATN_PUBLIC_ID;
+                                            //String componentQuery = IshSubmissionQueries.COMPONENT_NAME_FROM_ATN_PUBLIC_ID;
                                             try
                                     		{
                                     			componentConnection = ds.getConnection();
@@ -628,11 +737,11 @@ public class AnatomyDao {
                 str = Utils.netTrim(result.getString(8));                    
 			    if (null != str) {
 					if(str.trim().equalsIgnoreCase("high")){
-						expressionDetailModel[index].setDensityImageRelativeToTotal(imgPath+"max_high.gif");
+						expressionDetailModel[index].setDensityImageRelativeToTotal("max_high.gif");
 					} else if(str.equalsIgnoreCase("medium")){
-					    expressionDetailModel[index].setDensityImageRelativeToTotal(imgPath+"mod_medium.gif");
+					    expressionDetailModel[index].setDensityImageRelativeToTotal("mod_medium.gif");
 					} else if(str.equalsIgnoreCase("low")){
-					    expressionDetailModel[index].setDensityImageRelativeToTotal(imgPath+"min_low.gif");
+					    expressionDetailModel[index].setDensityImageRelativeToTotal("min_low.gif");
 					}
 	            }
                 
@@ -641,16 +750,16 @@ public class AnatomyDao {
 					if(str.trim().equalsIgnoreCase("increased")){
 					    str = Utils.netTrim(result.getString(11));
 					    if(str.equalsIgnoreCase("small")){
-					    	expressionDetailModel[index].setDensityImageRelativeToAge(imgPath+"inc_small.gif");
+					    	expressionDetailModel[index].setDensityImageRelativeToAge("inc_small.gif");
 					    } else if(str.equalsIgnoreCase("large")){
-					    	expressionDetailModel[index].setDensityImageRelativeToAge(imgPath+"inc_large.gif");
+					    	expressionDetailModel[index].setDensityImageRelativeToAge("inc_large.gif");
 					    }
 					} else if(str.equalsIgnoreCase("decreased")){
 					    str = Utils.netTrim(result.getString(11));
 					    if(str.equalsIgnoreCase("small")){
-					    	expressionDetailModel[index].setDensityImageRelativeToAge(imgPath+"dec_small.gif");
+					    	expressionDetailModel[index].setDensityImageRelativeToAge("dec_small.gif");
 					    } else if(str.equalsIgnoreCase("large")){
-					    	expressionDetailModel[index].setDensityImageRelativeToAge(imgPath+"dec_large.gif");
+					    	expressionDetailModel[index].setDensityImageRelativeToAge("dec_large.gif");
 					    }
 					}
 	            }
@@ -665,5 +774,318 @@ public class AnatomyDao {
        
        return expressionDetailModel;
     }//end  findAnnotatedListBySubmissionIds
+    
+    public ExpressionDetailModel findExpressionDetailBySubmissionIdAndComponentId(String oid,
+            String componentId) {
+		ExpressionDetailModel expressionDetailModel = null;
+		String str = null;
+		String [] components = null;
+		ArrayList<String> componentList = null;
+		String queryString=AnatomyQueries.COMPONENT_EXPRESSION_DETAIL;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			ps.setString(2, componentId);
+			result =  ps.executeQuery();
+			if (result.first()){
+				expressionDetailModel=new ExpressionDetailModel();
+				expressionDetailModel.setComponentId(result.getString(1));
+				expressionDetailModel.setComponentName(result.getString(2));
+			    str = Utils.netTrim(result.getString(3));
+			    if (null == str) {
+			    	expressionDetailModel.setComponentDescription(null);
+			    } else {
+				
+					components = str.split("\\.");
+					componentList = Utils.reformatComponentFullPath(components);
+					expressionDetailModel.setComponentDescription(componentList);
+			    }
+			    expressionDetailModel.setPrimaryStrength(result.getString(4));
+			    expressionDetailModel.setSecondaryStrength(result.getString(5));
+			    expressionDetailModel.setExpressionId(result.getInt(6));
+			    expressionDetailModel.setStage("TS" + result.getString(7));
+			    expressionDetailModel.setSubmissionDbStatus(result.getInt(9));
+	        }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		if (expressionDetailModel == null) {
+			return null;
+		}
+		queryString = AnatomyQueries.COMPONENT_EXPRESSION_NOTE;
+		String expressionNote = null;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			ps.setString(2, componentId);
+			result =  ps.executeQuery();
+			if (result.first()){
+				expressionNote = Utils.formatResultSetToString(result);
+				expressionDetailModel.setExpressionNote(expressionNote);
+	        }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		
+		/////////////////////////
+		
+		queryString = AnatomyQueries.COMPONENT_DENSITY_NOTE;
+		String densityNote=null;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			ps.setString(2, componentId);
+			result =  ps.executeQuery();
+			if (result.first()){
+				densityNote = Utils.formatResultSetToString(result);
+				expressionDetailModel.setDensityNote(densityNote);
+	        }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		queryString = AnatomyQueries.COMPONENT_DENSITY_DETAIL;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			ps.setString(2, componentId);
+			result =  ps.executeQuery();
+			if (result.first()){
+				
+				expressionDetailModel.setDensityRelativeToTotal(result.getString(1));
+				expressionDetailModel.setDensityDirectionalChange(result.getString(2));
+				expressionDetailModel.setDensityMagnitudeChange(result.getString(3));
+	        }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		
+		return expressionDetailModel;
+		
+		
+		}
+    
+    public ExpressionPatternModel[] findComponentPatternsAndLocations(String expression_oid) {
+    	ExpressionPatternModel[] expressionPatternModel=null;
+    	Connection locationConnection = null;
+        PreparedStatement locationStatement = null;
+        ResultSet locationResultSet = null;
+        Connection componentConnection = null;
+        PreparedStatement componentStatement = null;
+        ResultSet componentResultSet = null;
+    	
+    	if (expression_oid == null) {
+		    //            throw new NullPointerException("id parameter or componentId parameter");
+		    return null;
+        }
+    	
+    	String queryString = AnatomyQueries.EXPRESSION_PATTERNS;
+    	String locationQuery = AnatomyQueries.PATTERN_LOCATIONS;
+    	String componentQuery = AnatomyQueries.COMPONENT_NAME_FROM_ATN_PUBLIC_ID;
+    	
+    	try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, expression_oid);
+			result =  ps.executeQuery();
+			if (result.first()){
+				
+				//need to get number of rows to determine size of array
+				result.last();
+                int numPatterns = result.getRow();
+		
+                //set size of patterns array based on num rows
+                expressionPatternModel = new ExpressionPatternModel[numPatterns];
+		
+                //return the result set to the start
+                result.beforeFirst();
+		
+                //integer to put data into the correct element in the pattern array object
+                int index = 0;
+		
+                //need to fill each item in array with correct data
+                while (result.next()) {
+		    
+                	expressionPatternModel[index] = new ExpressionPatternModel();
+                	expressionPatternModel[index].setPattern(result.getString(2));
+                	
+                	try
+            		{
+            			locationConnection = ds.getConnection();
+            			locationStatement = locationConnection.prepareStatement(locationQuery); 
+            			locationStatement.setString(1, result.getString(1));
+            			locationResultSet =  locationStatement.executeQuery();
+            			
+            			StringBuffer locations = null;
+    				    String str = null;
+    				    String atnPubIdVal = null;
+    				    String anatIdPrefix = Utils.getConfigBundle().getString("anatomy_id_prefix");
+            			
+    				    if (locationResultSet.first()){
+                            locations = new StringBuffer("");
+                            locationResultSet.beforeFirst();
+    						String adjacentTxt = "adjacent to ";
+                            while (locationResultSet.next()) {
+                                //if the location string begins with 'adjacent to ', further query is required
+                                str = Utils.netTrim(locationResultSet.getString(1));
+                                if(null != str && str.indexOf(adjacentTxt) >= 0) {
+                                    //the components public id is a substring of the location string 
+                                    atnPubIdVal = str.substring(adjacentTxt.length());
+    				
+                                    /*need to get the anatomy prefix and attach it to the id obtained previously
+    				  					then query the database to get the mane of the component*/
+                                    try
+                            		{
+                            			componentConnection = ds.getConnection();
+                            			componentStatement = componentConnection.prepareStatement(componentQuery); 
+                            			componentStatement.setString(1,anatIdPrefix+atnPubIdVal);
+                            			componentResultSet =  componentStatement.executeQuery();
+                            			if (componentResultSet.first()){
+                            				
+                            				locations.append(adjacentTxt+ componentResultSet.getString(1));
+                            	        }
+                            		}
+                            		catch(SQLException sqle){sqle.printStackTrace();}
+                            		finally {
+                            		    Globals.closeQuietly(componentConnection, componentStatement, componentResultSet);
+                            		}
+                                   
+                                }
+                                else {
+                                    locations.append(locationResultSet.getString(1));
+                                }
+    			    
+                                if(!locationResultSet.isLast()){
+                                    locations.append(", ");
+                                }
+                            }
+                            if(locations != null){
+                            	expressionPatternModel[index].setLocations(locations.toString());
+                            }
+                        }
+
+            		}
+            		catch(SQLException sqle){sqle.printStackTrace();}
+            		finally {
+            		    Globals.closeQuietly(locationConnection, locationStatement, locationResultSet);
+            		}
+                	
+                    index++;
+                }
+	        }
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	return expressionPatternModel;
+    	
+    }
+    
+    public ArrayList<Object> findComponentDetailByComponentId(String componentId) {
+        ArrayList<Object> componentDetail = null;
+        String queryString=AnatomyQueries.COMPONENT_DETAIL_FROM_ATN_PUBLIC_ID;
+        String [] components = null;
+		ArrayList<String> componentList = null;
+		String str = null;
+        
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, componentId);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				componentDetail = new ArrayList<Object>();
+                componentDetail.add(result.getString(1));
+                componentDetail.add(result.getString(2));
+                str = Utils.netTrim(result.getString(3));
+				if (null != str) {
+		                components = str.split("\\.");
+		                componentList = Utils.reformatComponentFullPath(components);
+		                componentDetail.add(componentList);
+				}
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+               
+       return componentDetail;
+       
+    }
+    
+    public boolean hasParentNode(String componentId, String stageName,
+            String oid) {
+    	
+    	String queryString=AnatomyQueries.PARENT_NODES;
+        boolean hasParents=false;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, componentId);
+			ps.setString(2, stageName);
+			ps.setString(3, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				hasParents=true;
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return hasParents;
+    }
+    
+    public boolean hasChildenNode(String componentId, String stageName,
+            String oid) {
+    	String queryString=AnatomyQueries.CHILD_NODES;
+        boolean hasChildren=false;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, componentId);
+			ps.setString(2, stageName);
+			ps.setString(3, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				hasChildren=true;
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return hasChildren;
+		
+	}
+   
 
 }

@@ -50,18 +50,32 @@ public class IshSubmissionAssembler {
 		}
 			
 		ArrayList<String> annotationTree = null;
+		String annotatedTreeExpressions = null;
+		String annotatedTreePatterns = null;
+		String annotatedTreeExpressionNotes = null;
 		ExpressionDetailModel [] expressionDetailModel = null;
 			
-		/*if(displayAnnotationAsTree) {
+		if(displayAnnotationAsTree) {
 				annotationTree = anatomyDao.findAnnotationTreeBySubmissionId(oid);
+				annotatedTreeExpressions = anatomyDao.findAnnotationTreeExpressions(oid);
+				annotatedTreePatterns = anatomyDao.findAnnotationTreePatterns(oid);
+				annotatedTreeExpressionNotes = anatomyDao.findAnnotationTreeExpressionNotes(oid);
 		}
 		else {
 			expressionDetailModel = anatomyDao.findAnnotatedListBySubmissionIds(oid);
-		}*/		
+		}	
+		
+			/*annotationTree = anatomyDao.findAnnotationTreeBySubmissionId(oid);
+			annotatedTreeExpressions = anatomyDao.findAnnotationTreeExpressions(oid);
+			annotatedTreePatterns = anatomyDao.findAnnotationTreePatterns(oid);
+			annotatedTreeExpressionNotes = anatomyDao.findAnnotationTreeExpressionNotes(oid);
+			expressionDetailModel = anatomyDao.findAnnotatedListBySubmissionIds(oid);*/
+	
 			
 		String assayType = submissionModel.getAssayType();
 		
 		IshSubmissionModel ishSubmissionModel = new IshSubmissionModel();
+		ishSubmissionModel.setOid(submissionModel.getOid());
 		ishSubmissionModel.setAccID(submissionModel.getAccID());
 		ishSubmissionModel.setPublicFlag(submissionModel.getPublicFlag());
 		ishSubmissionModel.setDeletedFlag(submissionModel.getDeletedFlag());
@@ -74,6 +88,9 @@ public class IshSubmissionAssembler {
 		ishSubmissionModel.setProject(submissionModel.getProject());
 		ishSubmissionModel.setEuregeneId(submissionModel.getEuregeneId());
 		ishSubmissionModel.setResultNotes(submissionModel.getResultNotes());
+		ishSubmissionModel.setAnnotationTreeExpressions(annotatedTreeExpressions);
+		ishSubmissionModel.setAnnotationTreePatterns(annotatedTreePatterns);
+		ishSubmissionModel.setAnnotationTreeExpressionNotes(annotatedTreeExpressionNotes);
 			
 		/* DONT USE THIS ANYMORE - FOR PREVIOUS EDITING 
 		 * if(onlyRetrieveTree) {

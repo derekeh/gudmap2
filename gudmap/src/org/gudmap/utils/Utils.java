@@ -94,4 +94,47 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 		return null;
 	}
 
+	public static String formatResultSetToString(ResultSet resSet) throws SQLException {
+		
+		String result = null;
+		if (resSet.first()) {
+			resSet.beforeFirst();
+			result = new String("");
+			while (resSet.next()) {
+				result += resSet.getString(1) + " ";
+			}
+			return result;
+		}
+		return null;
+	}
+
+	public static int stringArraySearch(String[] a, String value, boolean ignoreCase) {
+	if (a == null || value == null)
+	    return -1;
+	
+	for(int i=0; i<a.length; i++)
+	    if (ignoreCase) {
+		if (value.equalsIgnoreCase(a[i]))
+		    return i;
+	    }
+	    else
+		if (value.equals(a[i]))
+		    return i;
+	return -1;
+	}
+	
+	public static ArrayList<String> reformatComponentFullPath(String [] components) {
+        ArrayList<String> componentList = new ArrayList<String>();
+        for(int i=0;i< components.length;i++){
+            StringBuffer component = new StringBuffer("");
+            for(int j=0;j<i;j++){
+                component.append(". . ");
+            }
+            component.append(components[i]);
+	    //            System.out.println(components[i]);
+            componentList.add(component.toString());
+        }
+        return componentList;
+    }
+
 }
