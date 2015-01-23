@@ -109,7 +109,6 @@ jQuery(document).ready(function(){
       })
       .on("loaded.jstree", function (e, data) {
       	jQuery(this).on("select_node.jstree", function (e, data) {
-           //document.location = "viewExpressionDetail.jsf?componentId="+data.rslt.obj.attr("ATN_PUBLIC_ID");
            //document.location = "viewExpressionDetail.jsf?oid="+"${ishSubmissionBean.ishSubmissionModel.oid}" +"&componentId="+data.rslt.obj.attr("ATN_PUBLIC_ID");
            javascript:showExpressionInformation("${ishSubmissionBean.ishSubmissionModel.oid}",data.rslt.obj.attr("ATN_PUBLIC_ID"));
     	});
@@ -289,33 +288,7 @@ function findExpressionNotes(){
 //]]>
 </script>
 		
-		<pr:dialog id="labDialog" header="Lab Details" widgetVar="lab_dialog" width="600" style="position:absolute;left:-200px;" > 
-		
-			<t:dataList id="peopleDataList" var="peopleInfo" value="#{personBean.people}" rowCountVar="count" rowIndexVar="index" 
-				rendered="#{personBean.people != null}">
-		
-				<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
-					<h:outputText value="Name"></h:outputText>
-					<h:outputText value="#{peopleInfo.name}"></h:outputText>
-					
-					<h:outputText value="Institution"></h:outputText>
-					<h:outputText value="#{peopleInfo.lab}"></h:outputText>
-					
-					<h:outputText value="Address"></h:outputText>
-					<h:outputText value="#{peopleInfo.fullAddress}"></h:outputText>
-					
-					<h:outputText value="Tel"></h:outputText>
-					<h:outputText value="#{peopleInfo.phone}"></h:outputText>
-					
-					<h:outputText value="Email"></h:outputText>
-					<h:outputLink value="mailto:#{peopleInfo.email}">
-						<h:outputText value="#{peopleInfo.email}"></h:outputText>
-					</h:outputLink>
-					
-				</h:panelGrid>
-				
-			</t:dataList>
-		</pr:dialog>
+		<ui:include src="/snippets/g_personDetails.xhtml"></ui:include>
 		
 		<ui:include src="/snippets/g_fullSequence.xhtml"></ui:include>
 		
@@ -418,32 +391,24 @@ function findExpressionNotes(){
 	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
 	    			    <h:outputText value="Principal Investigator(s) : "/>
 	    				<t:dataList id="piDataList" var="piInfo" value="#{ishSubmissionBean.ishSubmissionModel.principalInvestigators}" >
-							<h:outputLink  title="#{piInfo.fullAddress}"  value="javascript:showLaboratoryDetails(#{piInfo.id})">
-							      <h:outputText value="#{piInfo.name}, " />
-							</h:outputLink>
+							<h:commandLink id="lastbutton2" value="#{piInfo.name}, "  onclick="PF('lab_dialog').show();">
+	                            	<f:setPropertyActionListener id="piproperty" target="#{personBean.id}" value="#{piInfo.id}" />     	
+				                    <f:ajax execute="lastbutton2" render=":dialogform" />
+				                </h:commandLink>
 							<h:outputText title="#{piInfo.fullAddress}"  value="#{piInfo.displayAddress}" /><br/>
 				        </t:dataList>
 				        
 				        <h:outputText value="Contributors:" />
 						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.authors}" />
 						
-						<ui:remove>
-						<h:outputText value="Submitted By:" />
-						<h:panelGroup>
-	                            <pr:commandLink id="showsubmitterdialog" value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, " update=":peopleDataList"  oncomplete="PF('lab_dialog').show();">
-	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{ishSubmissionBean.ishSubmissionModel.submitter.id}" />
-	                            </pr:commandLink>
-						       
-						       <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
-						</h:panelGroup>
-						</ui:remove>
 						
 						<h:outputText value="Submitted By:" />
 						<h:panelGroup>
-	                            <h:outputLink title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}" value="javascript:showLaboratoryDetails(#{ishSubmissionBean.ishSubmissionModel.submitter.id})">
-						             <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, " />
-						       </h:outputLink>
-						       <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
+	                            <h:commandLink id="lastbutton" value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, "  onclick="PF('lab_dialog').show();">
+	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{ishSubmissionBean.ishSubmissionModel.submitter.id}" />     	
+				                    <f:ajax execute="lastbutton" render=":dialogform" />
+				                </h:commandLink>
+				                <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
 						</h:panelGroup>
 						
 						<h:outputText rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="Archive/Batch ID:" />
@@ -1040,7 +1005,7 @@ function findExpressionNotes(){
 										<h:outputText value="Accession ID" styleClass="db_bold" />
 									</f:facet>
 									<h:outputLink styleClass="plaintext" id="submissionID" value="viewSubmissionDetails.jsf">
-										<f:param name="id" value="#{accessionIDAndTypes[0]}" />
+										<f:param name="accId" value="#{accessionIDAndTypes[0]}" />
 									 	<h:outputText value="#{accessionIDAndTypes[0]}"/>
 					 				</h:outputLink>
 					 			</h:column>

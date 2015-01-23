@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui"
+	xmlns:t="http://myfaces.apache.org/tomahawk" >
+	
+			<pr:dialog id="labDialog" header="Lab Details" widgetVar="lab_dialog" width="600" style="position:absolute;left:-200px;" > 
+			<h1>Person Details</h1>
+			<h:form id="dialogform">
+			<t:dataList id="peopleDataList" var="p" value="#{personBean.people}" rowCountVar="count" rowIndexVar="index" 
+				rendered="#{personBean.people != null}">
+		
+				<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+					<h:outputText value="Name"></h:outputText>
+					<h:outputText value="#{p.name}"></h:outputText>
+					
+					<h:outputText value="Institution"></h:outputText>
+					<h:outputText value="#{p.lab}"></h:outputText>
+					
+					<h:outputText value="Address"></h:outputText>
+					<h:outputText value="#{p.fullAddress}"></h:outputText>
+					
+					<h:outputText value="Tel"></h:outputText>
+					<h:outputText value="#{p.phone}"></h:outputText>
+					
+					<h:outputText value="Email"></h:outputText>
+					<h:outputLink value="mailto:#{p.email}">
+						<h:outputText value="#{p.email}"></h:outputText>
+					</h:outputLink>
+					
+				</h:panelGrid>
+				
+			</t:dataList>
+			</h:form>
+		</pr:dialog>
+</ui:composition>

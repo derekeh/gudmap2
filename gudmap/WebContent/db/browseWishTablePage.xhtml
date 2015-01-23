@@ -169,7 +169,10 @@
     				Gudmap Accession
 				</f:facet>
     			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
-					<f:setPropertyActionListener id="oidproperty" target="#{ishSubmissionBean.oid}" value="#{u.oid}" />
+    				<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+    				<ui:remove>
+					<!-- <f:setPropertyActionListener id="oidproperty" target="#{ishSubmissionBean.oid}" value="#{u.oid}" /> -->
+					</ui:remove>
 				</h:commandLink>
     		</h:column>
     		

@@ -7,12 +7,15 @@ import java.io.Serializable;
 
 
 
+
+
 //import javax.annotation.PostConstruct;
 //import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 //import javax.inject.Inject;
-//import javax.faces.view.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.gudmap.models.submission.IshSubmissionModel;
@@ -21,7 +24,9 @@ import org.gudmap.assemblers.IshSubmissionAssembler;
 //import org.gudmap.utils.FacesUtil;
 
 @Named
-@RequestScoped
+//@SessionScoped
+//@RequestScoped
+@ViewScoped
 public class IshSubmissionBean implements Serializable {
 	
 	/**
@@ -41,6 +46,7 @@ public class IshSubmissionBean implements Serializable {
     protected String annotatedTreeExpressions;
     protected String annotatedTreePatterns;
     protected String annotatedTreeExpressionNotes;
+    private String newid="8";
     
     /*@Inject
    	protected SessionBean sessionBean;*/
@@ -190,6 +196,14 @@ public class IshSubmissionBean implements Serializable {
     
     public void setAnnotationTreePatterns(String patterns){
     	annotatedTreePatterns = patterns;
+    }
+    
+    public void setNewid(String newid){
+    	this.newid=newid;
+    }
+    
+    public String getNewid() {
+    	return newid;
     }
 
 }

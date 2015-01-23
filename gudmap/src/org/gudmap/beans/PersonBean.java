@@ -1,10 +1,13 @@
 package org.gudmap.beans;
 
 
+import java.io.Serializable;
+
 import javax.faces.context.FacesContext;
 import javax.faces.bean.ViewScoped;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import org.gudmap.models.submission.PersonModel;
@@ -12,10 +15,12 @@ import org.gudmap.assemblers.PersonAssembler;
 
 
 @Named
-@RequestScoped
-public class PersonBean  {
+//@RequestScoped
+@SessionScoped
+public class PersonBean implements Serializable {
 	
-    private PersonModel[] people;
+    private static final long serialVersionUID = 1L;
+	private PersonModel[] people;
     private PersonAssembler personAssembler;
     private String id;
     private String personId;
@@ -24,7 +29,7 @@ public class PersonBean  {
     	
     	personAssembler = new PersonAssembler();
     	
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		/*FacesContext facesContext = FacesContext.getCurrentInstance();
         this.id = facesContext.getExternalContext().getRequestParameterMap().get("id");
 		
 		
@@ -43,7 +48,7 @@ public class PersonBean  {
 				people = new PersonModel[1];
 				people[0] = person;
 		    }
-		}
+		}*/
     }
     
 /*    @PostConstruct
@@ -69,9 +74,9 @@ public class PersonBean  {
 		}
     }*/
     
-    public PersonModel[] getPeople() {
+/*    public PersonModel[] getPeople() {
     	
-    	/*personAssembler = new PersonAssembler();
+    	personAssembler = new PersonAssembler();
     	
     	if (null != id)
 		    people = personAssembler.getPeopleBySubmissionId(id);
@@ -88,7 +93,28 @@ public class PersonBean  {
 				people = new PersonModel[1];
 				people[0] = person;
 		    }
-		}*/
+		}
+    	return people;
+    }*/
+    
+    public PersonModel[] getPeople() {
+    	
+    	
+    	/*if (null != id)
+		    people = personAssembler.getPeopleBySubmissionId(id);
+		
+		if (null == people || 0 == people.length) {
+		    id = personId;
+		    PersonModel person = null;
+		    if (null != id)*/
+		    PersonModel	person = personAssembler.getPersonById(id);
+		    
+		    if (person!=null)
+		    {
+				people = new PersonModel[1];
+				people[0] = person;
+		    }
+		
     	return people;
     }
     

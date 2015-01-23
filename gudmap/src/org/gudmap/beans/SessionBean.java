@@ -15,6 +15,7 @@ public class SessionBean implements Serializable {
 	private String annotationDisplayText="View annotated components as a listt";
 	private String annotationGroupsText="Show annotation under groups";
 	private boolean displayAnnotationGroups=false;
+	private String viewSubmissionId="";
 	
 	public SessionBean() {
 		
@@ -55,6 +56,13 @@ public class SessionBean implements Serializable {
 	 public String getSubmissionView() {
 		 return "viewSubmissionDetails";
 	 }
-	
+	 
+	 public void setViewSubmissionId(String viewSubmissionId ) {
+		 this.viewSubmissionId=viewSubmissionId;
+	 }
+
+	 public String getViewSubmissionId() {
+		 return viewSubmissionId;
+	 }
 
 }
