@@ -95,7 +95,8 @@ jQuery(document).ready(function(){
           "progressive_render" : false,
           "selected_parent_open": true,
           "ajax" : {
-          	"url" : "../resources/scripts/annotation_tree_json/TS" + "${ishSubmissionBean.ishSubmissionModel.stage}" + ".json"
+          	"url" : "../resources/scripts/annotation_tree_json/TS" + "${ishSubmissionBean.ishSubmissionModel.stage}" + ".json",
+          	"data": function (n) { return { id: n.attr ? n.attr("id") : 0} }, 
           }
         },
 
@@ -107,14 +108,27 @@ jQuery(document).ready(function(){
           	  enhanceTree(e, data);
             }
       })
-      .on("loaded.jstree", function (e, data) {
-      	jQuery(this).on("select_node.jstree", function (e, data) {
-           //document.location = "viewExpressionDetail.jsf?oid="+"${ishSubmissionBean.ishSubmissionModel.oid}" +"&componentId="+data.rslt.obj.attr("ATN_PUBLIC_ID");
-           javascript:showExpressionInformation("${ishSubmissionBean.ishSubmissionModel.oid}",data.rslt.obj.attr("ATN_PUBLIC_ID"));
-    	});
-	  });
+        .delegate("a", "click", function(e, data) {
+        var node = jQuery.jstree._focused().get_selected();
+        //alert('delegate');
+        clickLink(node);
+    }); 
+      
+      
+
 
 }); 
+
+function clickLink(node){
+	  
+	// unable to pass the myval value to the bean in order to use dialog. Use popup window instead. not so nice
+	 /* var myval=node.attr("name");
+    alert(myval);
+     "#{componentExpressionBean.newValues(ishSubmissionBean.ishSubmissionModel.oid,myval)}";
+  	 PF('expression_dialog').show(); */ 
+  	 
+  	javascript:showExpressionInformation("${ishSubmissionBean.ishSubmissionModel.oid}",node.attr("ATN_PUBLIC_ID"));
+}
 
 function enhanceTree(event, data) {
 //    	alert("enhanceTree");
@@ -292,6 +306,9 @@ function findExpressionNotes(){
 		
 		<ui:include src="/snippets/g_fullSequence.xhtml"></ui:include>
 		
+		<ui:remove><!-- <ui:include src="/snippets/g_expressionDetails.xhtml"></ui:include> --></ui:remove>
+		
+		
 
 		
 	    <h:form id="db_submission_detail_form">
@@ -337,7 +354,7 @@ function findExpressionNotes(){
 				        <h:column>
 							<h:outputLink value="#" target="_blank"
 							                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-								<h:graphicImage value="#{image.filePath}"/>
+								<h:graphicImage value="#{image.filePath}" styleClass="db_thumb_height"/>
 							</h:outputLink>
 				        </h:column>
 				        <h:column>
@@ -429,81 +446,81 @@ function findExpressionNotes(){
 				<h:outputText value="Expression Mapping &lt;br/&gt;&lt;br/&gt;" escape="false"/>
 				<h:outputText value="Expression Strengths Key:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:panelGrid columns="2"  columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
-					<h:graphicImage library="images/tree" name="DetectedRoundPlus20x20.gif" styleClass="db_icon" />
-					<h:outputText value="Present (unspecified strength)" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="DetectedRoundPlus20x20.gif" styleClass="db_expression_icon" />
+					<h:outputText value="Present (unspecified strength)"  />
 			
-					<h:graphicImage library="images/tree" name="StrongRoundPlus20x20.gif" styleClass="db_icon" />
-					<h:outputText value="Present (strong)" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="StrongRoundPlus20x20.gif" styleClass="db_expression_icon" />
+					<h:outputText value="Present (strong)"  />
 			
-					<h:graphicImage library="images/tree" name="ModerateRoundPlus20x20.gif" styleClass="db_icon" />
-					<h:outputText value="Present (moderate)" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="ModerateRoundPlus20x20.gif" styleClass="db_expression_icon" />
+					<h:outputText value="Present (moderate)"  />
 					
-					<h:graphicImage library="images/tree" name="WeakRoundPlus20x20.gif" styleClass="db_icon" />
-					<h:outputText value="Present (weak)" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="WeakRoundPlus20x20.gif" styleClass="db_expression_icon" />
+					<h:outputText value="Present (weak)"  />
 					
-					<h:graphicImage library="images/tree" name="PossibleRound20x20.gif" styleClass="db_icon" />
-					<h:outputText value="Uncertain" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="PossibleRound20x20.gif" styleClass="db_expression_icon" />
+					<h:outputText value="Uncertain"  />
 					
-					<h:graphicImage library="images/tree" name="NotDetectedRoundMinus20x20.gif" styleClass="db_icon" />
-					<h:outputText value="Not Detected" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="NotDetectedRoundMinus20x20.gif" styleClass="db_expression_icon" />
+					<h:outputText value="Not Detected"  />
 				</h:panelGrid>
 					
 				<h:outputText value="Expression Patterns Key:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
-				<h:panelGrid columns="2" columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
-					<h:graphicImage library="images/tree" name="HomogeneousRound20x20.png" styleClass="db_icon" />
-					<h:outputText value="Homogeneous" styleClass="plaintext" />
+				<h:panelGrid columns="2"  columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
+					<h:graphicImage library="images/tree" name="HomogeneousRound20x20.png" styleClass="db_expression_icon" />
+					<h:outputText value="Homogeneous"  />
 					
-					<h:graphicImage library="images/tree" name="GradedRound20x20.png" styleClass="db_icon" />
-					<h:outputText value="Graded" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="GradedRound20x20.png" styleClass="db_expression_icon" />
+					<h:outputText value="Graded"  />
 					
-					<h:graphicImage library="images/tree" name="RegionalRound20x20.png" styleClass="db_icon" />
-					<h:outputText value="Regional" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="RegionalRound20x20.png" styleClass="db_expression_icon" />
+					<h:outputText value="Regional"  />
 					
-					<h:graphicImage library="images/tree" name="SpottedRound20x20.png" styleClass="db_icon" />
-					<h:outputText value="Spotted" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="SpottedRound20x20.png" styleClass="db_expression_icon" />
+					<h:outputText value="Spotted"  />
 					
-					<h:graphicImage library="images/tree" name="UbiquitousRound20x20.png" styleClass="db_icon" />
-					<h:outputText value="Ubiquitous" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="UbiquitousRound20x20.png" styleClass="db_expression_icon" />
+					<h:outputText value="Ubiquitous"  />
 
-					<h:graphicImage library="images/tree" name="RestrictedRound20x20.png" styleClass="db_icon" />
-					<h:outputText value="Restricted" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="RestrictedRound20x20.png" styleClass="db_expression_icon" />
+					<h:outputText value="Restricted"  />
 					
-					<h:graphicImage library="images/tree" name="SingleCellRound20x20.png" styleClass="db_icon" />
-					<h:outputText value="Single cell" styleClass="plaintext" />			
+					<h:graphicImage library="images/tree" name="SingleCellRound20x20.png" styleClass="db_expression_icon" />
+					<h:outputText value="Single cell"  />			
 				</h:panelGrid>
 
 				<h:outputText value="Nerve Density: &lt;br/&gt;&lt;br/&gt;" escape="false" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:outputText value="Relative to Total:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:panelGrid columns="2" columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
 					
-					<h:graphicImage library="images/tree" name="max_high.png" styleClass="db_icon" />
-					<h:outputText value="Maximum" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="max_high.png" styleClass="db_expression_icon" />
+					<h:outputText value="Maximum"  />
 					
-					<h:graphicImage library="images/tree" name="mod_medium.png" styleClass="db_icon" />
-					<h:outputText value="Moderate" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="mod_medium.png" styleClass="db_expression_icon" />
+					<h:outputText value="Moderate"  />
 
-					<h:graphicImage library="images/tree" name="min_low.png" styleClass="db_icon" />
-					<h:outputText value="Low" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="min_low.png" styleClass="db_expression_icon" />
+					<h:outputText value="Low"  />
 						
 				</h:panelGrid>
 				<br />
 				<h:outputText value="Relative to P0/Adult:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:panelGrid columns="2"  columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
 
-					<h:graphicImage library="images/tree" name="inc_large.png" styleClass="db_icon" />
-					<h:outputText value="Increase, large" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="inc_large.png" styleClass="db_expression_icon" />
+					<h:outputText value="Increase, large"  />
 					
-					<h:graphicImage library="images/tree" name="inc_small.png" styleClass="db_icon" />
-					<h:outputText value="Increase, small" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="inc_small.png" styleClass="db_expression_icon" />
+					<h:outputText value="Increase, small"  />
 
-					<h:graphicImage library="images/tree" name="dec_large.png" styleClass="db_icon" />
-					<h:outputText value="Decrease, large" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="dec_large.png" styleClass="db_expression_icon" />
+					<h:outputText value="Decrease, large"  />
 					
-					<h:graphicImage library="images/tree" name="dec_small.png" styleClass="db_icon" />
-					<h:outputText value="Decrease, small" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="dec_small.png" styleClass="db_expression_icon" />
+					<h:outputText value="Decrease, small"  />
 					
-					<h:graphicImage library="images/tree" name="note.gif" styleClass="db_icon" />
-					<h:outputText value="Contains note" styleClass="plaintext" />
+					<h:graphicImage library="images/tree" name="note.gif" styleClass="db_expression_icon" />
+					<h:outputText value="Contains note"  />
 				</h:panelGrid>
 			</h:panelGroup>
 			
@@ -655,7 +672,7 @@ function findExpressionNotes(){
 							</h:outputLink>	
 							<h:outputText value="No MGI ID " rendered="#{empty ishSubmissionBean.ishSubmissionModel.antibodyModel.accessionId}"/>
 
- 							<h:outputLink  value="viewAntibody.jsf" target="_blank">
+ 							<h:outputLink  value="viewAntibodyDetails.jsf" target="_blank">
 								<f:param name="antibody" value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.maprobeID}" />
 								<h:outputText value=" (#{ishSubmissionBean.ishSubmissionModel.antibodyModel.maprobeID})" />
 							</h:outputLink>

@@ -104,7 +104,7 @@ public class IshSubmissionAssembler {
 			probeModel = ishSubmissionDao.findProbeBySubmissionId(oid,null,true);
 		}
 		else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
-			antibodyModel = ishSubmissionDao.findAntibodyBySubmissionId(oid);
+			antibodyModel = ishSubmissionDao.findAntibodyBySubmissionId(oid,true);
 		}
 		
 		// get specimen info

@@ -1,6 +1,6 @@
 package org.gudmap.models.submission;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class AntibodyModel extends CommonAntibodyProbeModel{
 	

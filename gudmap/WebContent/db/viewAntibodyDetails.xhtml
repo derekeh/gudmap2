@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Antibody Details
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	    <h1>Antibody Detail Page</h1>	
+	    <!-- all other content in here --> 
+	 <h:outputText value="There are no antibodies in the database with the supplied probe id."  rendered="#{antibodyBean.antibodyModel == null}" />
+      <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{antibodyBean.antibodyModel != null}">
+        <h:outputText value="Accession ID" />
+        <h:panelGroup>
+	        <h:outputLink  value="http://www.informatics.jax.org/accession/#{antibodyBean.antibodyModel.accessionId}" >
+	        <h:outputText value="#{antibodyBean.antibodyModel.accessionId}" />
+	        </h:outputLink>
+	        <h:outputText  value="No MGI ID" rendered="#{antibodyBean.antibodyModel.accessionId == null || antibodyBean.antibodyModel.accessionId == ''}" />
+	        <h:outputText  value=" (#{antibodyBean.antibodyModel.maprobeID})" />
+        </h:panelGroup>
+        
+        <h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>
+        
+        <h:outputText value="Name " />
+        <h:outputText  value="#{antibodyBean.antibodyModel.name}" />
+
+
+        <h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>
+        
+        <h:outputText value="Gene" />
+        <h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+          <h:outputText value="Symbol:" />
+          <h:outputLink value="viewGeneStrip.jsf" >
+            <f:param name="gene" value="#{antibodyBean.antibodyModel.geneSymbol}" />
+            <h:outputText value="#{antibodyBean.antibodyModel.geneSymbol}" />
+          </h:outputLink>
+          
+          <h:outputText value="Name:" />
+          <h:panelGroup>
+            <h:outputText  value="#{antibodyBean.antibodyModel.geneName}" />
+            <h:outputLink  value="http://www.informatics.jax.org/accession/#{antibodyBean.antibodyModel.locusTag}" target="_gudmap">
+              <h:outputText value="(#{antibodyBean.antibodyModel.locusTag})" />
+            </h:outputLink>
+          </h:panelGroup>
+          
+       </h:panelGrid>
+        
+        <h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>
+        
+        <h:outputText value="Epitope (Uniprot ID)" />
+        <h:outputText  value="#{antibodyBean.antibodyModel.uniprotId}" />
+        
+		<h:panelGroup></h:panelGroup> 
+		<h:panelGroup></h:panelGroup>     
+	 </h:panelGrid>
+
+      <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{antibodyBean.antibodyModel.seqStartLocation &gt; 0}">        
+        <h:outputText value="Amino-terminus(start)" />
+        <h:outputText  value="#{antibodyBean.antibodyModel.seqStartLocation}"/>
+		<h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>      
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{antibodyBean.antibodyModel.seqEndLocation &gt; 0}">        
+        <h:outputText value="Carboxy-terminus(end)" />
+        <h:outputText  value="#{antibodyBean.antibodyModel.seqEndLocation}" />
+		<h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>      
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">                
+        <h:outputText value="Antibody Type" />
+        <h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+          <h:outputText value="Type:" />
+          <h:outputText value="#{antibodyBean.antibodyModel.type}" />
+          
+          <h:outputText value="Immunoglobulin Isotype:" />
+          <h:outputText value="#{antibodyBean.antibodyModel.immunoglobulinIsotype}" />
+        </h:panelGrid>
+
+
+        <h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>
+        
+        <h:outputText value="Probe Type" />
+        <h:outputText  value="antibody" />
+                
+        <h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>
+        
+		<h:outputText value="#{antibodyBean.antibodyModel.assayType} Data" />
+		
+		<h:dataTable cellspacing="5" value="#{antibodyBean.antibodyModel.ishSubmissions}" var="sub">
+			<h:column>
+						<f:facet name="header">
+							Accession ID
+						</f:facet>
+						<h:outputLink value="viewSubmissionDetails.jsf">
+								<f:param value="#{sub[0]}" name="accId" />
+								<h:outputText value="#{sub[0]}" />
+						</h:outputLink>	
+									
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Stage
+						</f:facet>
+							<h:outputText value="#{sub[2]}" />
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Sex
+						</f:facet>
+							<h:outputText value="#{sub[5]}" />
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Tissue
+						</f:facet>
+							<h:outputText value="#{sub[8]}"  />
+						</h:column>
+						<h:column>
+						<f:facet name="header">
+							Specimen Assay Type
+						</f:facet>
+							<h:outputText value="#{sub[3]}"  />
+						</h:column>
+		</h:dataTable>
+				
+		<h:panelGroup></h:panelGroup>
+        <h:panelGroup></h:panelGroup>
+        
+               
+      </h:panelGrid>
+	     
+	</ui:define>
+</ui:composition>
+</html>

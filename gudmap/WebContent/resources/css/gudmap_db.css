@@ -233,3 +233,11 @@
 	color: #22316C;
 	text-decoration: none;
  }
+ 
+ .db_expression_icon {
+ 	padding:2px 5px 0 0;
+ }
+ 
+ .db_thumb_height {
+ 	max-height:50px;
+ }

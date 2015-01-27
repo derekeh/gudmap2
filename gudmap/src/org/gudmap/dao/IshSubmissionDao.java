@@ -506,158 +506,143 @@ public class IshSubmissionDao {
 	    
     }// findProbeBySubmissionId
     
-/*public ProbeModel findMaProbeByProbeId(String probeId, String maprobeId){
+ public AntibodyModel findAntibodyBySubmissionId(String oid, boolean isSubOid) {
     	
-    	if(probeId == null){
-		    return null;
-    	}
-    	boolean getExtra=false;
-    	ProbeModel probeModel = null;
-    	String queryString = IshSubmissionQueries.MAPROBE_BY_PROBE_ID;
-    	if (maprobeId == null || maprobeId == ""){
-    		
-    	}
-    	else
-    	{
-    		getExtra=true;
-    		queryString=queryString.replace("WHERE RPR_JAX_ACC = ?", "WHERE RPR_JAX_ACC = ? AND  PRB_MAPROBE = ?");
-    	}
-    	try
+        AntibodyModel antibodyModel = null;
+        
+        
+        
+        String queryString = (isSubOid)?IshSubmissionQueries.ANTIBODY_BY_OID:IshSubmissionQueries.ANTIBODY_BY_MAPROBE_ID;
+        try
 		{
-        	con = ds.getConnection();
+			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, probeId);
-			if(getExtra)
-				ps.setString(2, maprobeId);
+			ps.setString(1, oid);
 			result =  ps.executeQuery();
-			if (result!= null && result.first()) {
-	            probeModel = new ProbeModel();
-	            
-			}
+			if (result.first()) {
+			    antibodyModel = new AntibodyModel();
+			    // set properties
+			    antibodyModel.setMaprobeID(result.getString(1));
+			    antibodyModel.setName(result.getString(2));
+			    antibodyModel.setAccessionId(result.getString(3));
+			    antibodyModel.setGeneSymbol(result.getString(4));
+			    antibodyModel.setGeneName(result.getString(5));
+			    antibodyModel.setLocusTag(result.getString(6));
+			    antibodyModel.setUniprotId(result.getString(7));
+			    antibodyModel.setseqStartLocation(result.getInt(8));
+			    antibodyModel.setSeqEndLocation(result.getInt(9));
+			    
+			    String antibodyType = result.getString(10);
+			    antibodyModel.setType(antibodyType);
+			    // obtain host based on antibodyModel type
+			    if (antibodyType.trim().equalsIgnoreCase("monoclonal")) {
+					String productionMethod = result.getString(11);
+					String cloneId = result.getString(12);
+					if (cloneId == null)
+					    antibodyModel.setHost(productionMethod);
+					else
+					    antibodyModel.setHost(productionMethod + " " +cloneId);
+			    } else { // antibodyModel type = polyclonal
+			    	antibodyModel.setHost(result.getString(13));
+			    }
+			    
+			    antibodyModel.setPurificationMethod(result.getString(14));
+			    antibodyModel.setImmunoglobulinIsotype(result.getString(15));
+			    antibodyModel.setChainType(result.getString(16));
+			    antibodyModel.setDirectLabel(result.getString(17));
+			    antibodyModel.setDetectionNotes(result.getString(18));
+			    antibodyModel.setDilution(result.getString(19));
+			    antibodyModel.setLabProbeId(result.getString(20));
+			    
+			    // supplier
+			    antibodyModel.setSupplier(result.getString(21));
+			    antibodyModel.setCatalogueNumber(result.getString(22));
+			    antibodyModel.setLotNumber(result.getString(23));
+			    
+			    antibodyModel.setSecondaryAntibody(result.getString(24));
+			    antibodyModel.setSignalDetectionMethod(result.getString(25));
+			    antibodyModel.setAssayType(result.getString(26));
+	        }
 		}
-    	catch(SQLException sqle){sqle.printStackTrace();}
+		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
-    	
-    	queryString = IshSubmissionQueries.PROBE_NOTE_BY_MAPROBE_ID;
-    	
-    	try
+        
+        queryString = IshSubmissionQueries.PROBE_NOTE_BY_OID;
+        try
 		{
-        	con = ds.getConnection();
+			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, maprobeId.replace("maprobe:", ""));
+			ps.setString(1, oid);
 			result =  ps.executeQuery();
-			if (result!= null && result.first()) {
-	            
-			}
+			if (result != null && result.first() && antibodyModel != null) {
+				antibodyModel.setNotes(result.getString(1));
+	        }
 		}
-    	catch(SQLException sqle){sqle.printStackTrace();}
+		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
-    	
-    	queryString = IshSubmissionQueries.MAPROBE_NOTE_BY_MAPROBE_ID;
-    	
-    	try
+        
+        queryString = IshSubmissionQueries.ANTIBODY_SPECIES_SPECIFICITY_BY_OID;
+        String speciesSpecificities = null;
+        try
 		{
-        	con = ds.getConnection();
+			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, maprobeId.replace("maprobe:", ""));
+			ps.setString(1, oid);
 			result =  ps.executeQuery();
-			if (result!= null && result.first()) {
-	            
-			}
+			if (result != null && result.first() && antibodyModel != null) {
+				result.beforeFirst();
+				speciesSpecificities = new String("");
+				while (result.next()) {
+				    speciesSpecificities += result.getString(2) + ", ";
+				}
+				// remove trailing ',' character
+				speciesSpecificities = speciesSpecificities.substring(0, speciesSpecificities.length()-2);
+				
+				antibodyModel.setSpeciesSpecificity(speciesSpecificities);
+	        }
+			
 		}
-    	catch(SQLException sqle){sqle.printStackTrace();}
+		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
-    	
-    	return probeModel;
-    	
-    	
-    	/////////////////////////////////////////////
-	
-    	PreparedStatement prepStmtProbe = null;
-    	ResultSet resSetProbe = null;
-    	ParamQuery parQProbe = null;
-    	if (maprobeId == null || maprobeId == ""){
-    		parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS");
-    	}
-    	else{
-    		parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS_EXTRA");	    
-    	}
-	
-    	if (debug) 
-    		System.out.println("MySQLISHDAOImp.findMaProbeByProbeId sql = "+parQProbe.getQuerySQL());
-
-        PreparedStatement prepStmtProbeNote = null;
-        ResultSet resSetProbeNote = null;
-        ParamQuery parQProbeNote = DBQuery.getParamQuery("MAPROBE_PRBNOTE");
-	
-    	//Bernie 28/06/2011 Mantis 558 Task5 added to query to get notes
-        PreparedStatement prepStmtMaprobeNote = null;
-        ResultSet resSetMaprobeNote = null;
-        ParamQuery parQMaprobeNote = DBQuery.getParamQuery("MAPROBE_NOTE");
-	
-        try {
-		    // if disconnected from db, re-connected
-		    conn = DBHelper.reconnect2DB(conn);
+        
+        queryString = IshSubmissionQueries.ANTIBODY_VARIANTS_BY_OID;
+        String antibodyVariants = null;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, oid);
+			result =  ps.executeQuery();
+			if (result != null && result.first() && antibodyModel != null) {
+				result.beforeFirst();
+				antibodyVariants = new String("");
+				while (result.next()) {
+				    antibodyVariants += result.getString(2) + ", ";
+				}
+				// remove trailing ',' character
+				antibodyVariants = antibodyVariants.substring(0, antibodyVariants.length()-2);
+				
+				antibodyModel.setDetectedVariantValue(antibodyVariants);
+	        }
+			 
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
+        return antibodyModel;
 	    
-            conn.setAutoCommit(false);
-	    
-            parQProbe.setPrepStat(conn);
-		    prepStmtProbe = parQProbe.getPrepStat();
-		    prepStmtProbe.setString(1, probeId);
-		    if (maprobeId == null || maprobeId == ""){
-		    }
-		    else{
-		    	prepStmtProbe.setString(2, maprobeId);
-	    
-	            // probe note -- Mantis 558 Task5
-	            parQProbeNote.setPrepStat(conn);
-	            prepStmtProbeNote = parQProbeNote.getPrepStat();
-	            prepStmtProbeNote.setString(1, maprobeId.replace("maprobe:", ""));
-			    if (debug)
-			    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbeNote = "+ prepStmtProbeNote);
-	            resSetProbeNote = prepStmtProbeNote.executeQuery();
-		    
-	            // curator note -- Mantis 558 Task5
-	            parQMaprobeNote.setPrepStat(conn);
-	            prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
-	            prepStmtMaprobeNote.setString(1, maprobeId.replace("maprobe:", ""));
-			    if (debug)
-			    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtMaprobeNote = "+ prepStmtMaprobeNote);
-	            resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
-		    }
-		    if (debug)
-		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbe = "+ prepStmtProbe);
-		    resSetProbe = prepStmtProbe.executeQuery();
-	    
-            conn.commit();
-            conn.setAutoCommit(true);
-	    
-            probeModel = this.formatProbeResultSet(resSetProbe, resSetProbeNote, resSetMaprobeNote, null);
-        	return probeModel;
-	    
-    	}
-    	catch(SQLException e){
-    		System.out.println("MySQLISHDAOImp.findMaProbeByProbeId FAILED");
-    		e.printStackTrace();
-        	return null;
-    	}
-    	finally {
-            DBHelper.closePreparedStatement(prepStmtProbe);
-            DBHelper.closePreparedStatement(prepStmtProbeNote);
-            DBHelper.closePreparedStatement(prepStmtMaprobeNote); 
-            DBHelper.closeResultSet(resSetProbe);
-            DBHelper.closeResultSet(resSetProbeNote);
-            DBHelper.closeResultSet(resSetMaprobeNote);
-    	}
-    }//findMaProbeByProbeId
-*/    
-    public AntibodyModel findAntibodyBySubmissionId(String oid) {
+    }// end findAntibodyBySubmissionId
+    
+    
+   /* public AntibodyModel findAntibodyBySubmissionId(String oid) {
     	
         AntibodyModel antibodyModel = null;
         
@@ -790,7 +775,7 @@ public class IshSubmissionDao {
         return antibodyModel;
 	    
     }// end findAntibodyBySubmissionId
-    
+*/    
     public SpecimenModel findSpecimenBySubmissionId(String oid) {
         if (oid == null) {
 		    return null;

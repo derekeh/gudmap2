@@ -1,6 +1,9 @@
 package org.gudmap.beans;
 
+//import java.io.Serializable;
+
 import javax.enterprise.context.RequestScoped;
+//import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -9,7 +12,9 @@ import org.gudmap.assemblers.ComponentExpressionAssembler;
 
 @Named
 @RequestScoped
-public class ComponentExpressionBean {
+//@SessionScoped
+public class ComponentExpressionBean { //implements Serializable {
+	//private static final long serialVersionUID = 1L;
 	private String oid;
 	private String componentId;
 	private boolean hasSecondaryStrength;
@@ -23,7 +28,8 @@ public class ComponentExpressionBean {
 		this.componentId = facesContext.getExternalContext().getRequestParameterMap().get("componentId");
 		
 		componentExpressionAssembler = new ComponentExpressionAssembler();
-        hasSecondaryStrength = false;
+        
+		hasSecondaryStrength = false;
         hasPatterns = false;
         
         expressionDetailModel = componentExpressionAssembler.getData(oid, componentId);
@@ -37,7 +43,22 @@ public class ComponentExpressionBean {
         }
 	}
 	
+	
     public ExpressionDetailModel getExpressionDetailModel() {
+    	
+    	/*hasSecondaryStrength = false;
+        hasPatterns = false;
+        
+        expressionDetailModel = componentExpressionAssembler.getData(oid, componentId);
+        if(expressionDetailModel != null){
+            if(expressionDetailModel.getSecondaryStrength() != null && !expressionDetailModel.getSecondaryStrength().equals("")) {
+                hasSecondaryStrength = true;
+            }
+            if(expressionDetailModel.getPattern() != null){
+                hasPatterns = true;
+            }
+        }*/
+        
         return expressionDetailModel;
     }
     
@@ -51,6 +72,27 @@ public class ComponentExpressionBean {
     
     public boolean getHasPatterns() {
         return hasPatterns;
+    }
+    
+    public void setOid(String oid) {
+    	this.oid=oid;
+    }
+    
+    public String getOid() {
+    	return oid;
+    }
+    
+    public void setComponentId(String componentId) {
+    	this.componentId=componentId;
+    }
+    
+    public String getComponentId() {
+    	return componentId;
+    }
+    
+    public void newValues(String id, String compid) {
+    	this.oid=id;
+    	this.componentId=compid.replace("EMAP", "EMAP:");
     }
 
 }
