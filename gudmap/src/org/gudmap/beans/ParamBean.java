@@ -529,8 +529,13 @@ public class ParamBean implements Serializable {
 		setSexvalues("");
 		setSpecimentypevalues("");
 		tempfromvalues="";
-		//setWhereclause(" WHERE ");
+		//setWhereclause(GenericQueries.WHERE_CLAUSE);
+	}
+	
+	public void resetAll() {
+		resetValues();
 		setWhereclause(GenericQueries.WHERE_CLAUSE);
+		//focusGroup="reset";
 	}
 
 	/*******************focus groups****************/

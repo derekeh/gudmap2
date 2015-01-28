@@ -119,8 +119,12 @@ public class IshSubmissionBean implements Serializable {
 	            	
 	        }
 	        
-	        //TODO UNCOMMENT
-            if (ishSubmissionModel.getAnnotationTree() != null || ishSubmissionModel.getExpressionDetailModel() != null){
+	      //This is for the old tree. Don't need anymore check for expressions with getAnnotationTreeExpressions instead
+            /*if (ishSubmissionModel.getAnnotationTree() != null || ishSubmissionModel.getExpressionDetailModel() != null){
+                expressionMapped = true;
+            }*/
+	        
+	        if (ishSubmissionModel.getAnnotationTreeExpressions() != null || ishSubmissionModel.getExpressionDetailModel() != null){
                 expressionMapped = true;
             }
         }

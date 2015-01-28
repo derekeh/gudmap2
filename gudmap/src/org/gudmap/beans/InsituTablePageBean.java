@@ -99,6 +99,14 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     	
     }
     
+    public String resetAll() {
+		paramBean.resetAll();
+		//must return to homepage to reset focus group. Can't refresh div on other page
+		//paramBean.setFocusGroup("reset");
+		loadDataList();
+		return "browseInsituTablePage";
+	}
+    
     public String checkboxSelections() { 
     	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
     	selectedItems.clear();

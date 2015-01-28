@@ -39,5 +39,15 @@ public class IhcTablePageBean extends InsituTablePageBean implements Serializabl
     	return "browseIhcTablePage";
     }
     
+    @Override
+    public String resetAll() {
+		paramBean.resetValues();
+		paramBean.setWhereclause(GenericQueries.WHERE_CLAUSE);
+		//must return to homepage to reset focus group. Can't refresh div on other page
+		//paramBean.setFocusGroup("reset");
+		loadDataList();
+		return "browseIhcTablePage";
+	}
+    
    
 }

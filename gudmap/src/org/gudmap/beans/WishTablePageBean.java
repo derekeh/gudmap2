@@ -39,5 +39,14 @@ public class WishTablePageBean extends InsituTablePageBean implements Serializab
     	return "browseWishTablePage";
     }
     
+    @Override
+    public String resetAll() {
+		paramBean.resetValues();
+		paramBean.setWhereclause(GenericQueries.WHERE_CLAUSE);
+		//must return to homepage to reset focus group. Can't refresh div on other page
+		//paramBean.setFocusGroup("reset");
+		loadDataList();
+		return "browseWishTablePage";
+	}
    
 }

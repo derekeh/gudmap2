@@ -12,7 +12,7 @@ public class SessionBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private boolean displayAsTree=true;
-	private String annotationDisplayText="View annotated components as a listt";
+	private String annotationDisplayText="View annotated components as a list";
 	private String annotationGroupsText="Show annotation under groups";
 	private boolean displayAnnotationGroups=false;
 	private String viewSubmissionId="";
@@ -24,9 +24,9 @@ public class SessionBean implements Serializable {
 	public void setDisplayAsTree(boolean displayAsTree) {
 		this.displayAsTree=displayAsTree;
 		if(displayAsTree)
-			annotationDisplayText="View annotated components as a listt";
+			annotationDisplayText="View annotated components as a list";
 		else
-			annotationDisplayText="View annotated components as a treee";
+			annotationDisplayText="View annotated components as a tree";
 	}
 	
 	public boolean getDisplayAsTree() {
@@ -44,9 +44,9 @@ public class SessionBean implements Serializable {
 	public void setDisplayAnnotationGroups(boolean displayAnnotationGroups) {
 		 this.displayAnnotationGroups=displayAnnotationGroups;
 	    	if (displayAnnotationGroups)
-	    		annotationGroupsText =  "Hide annotation under groupss";
+	    		annotationGroupsText =  "Hide annotation under groups";
 	        else
-	        	annotationGroupsText =  "Show annotation under groupss";
+	        	annotationGroupsText =  "Show annotation under groups";
 	 }
 	 
 	 public boolean getDisplayAnnotationGroups () {

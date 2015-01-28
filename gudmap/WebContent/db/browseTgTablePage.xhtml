@@ -48,8 +48,8 @@
 	
 	</h:form>
 	
-	<h:form id="filterform">
 		<pr:dialog header="Filter Results" widgetVar="dialog2" width="650" style="position:absolute;left:-300px;"  >  
+		<h:form id="filterform">
 		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
 		 
 		 	<h:outputText value="Gene:"></h:outputText>
@@ -107,25 +107,29 @@
 	   		</h:selectOneRadio>
 	   		
 	   		
-	   		<h:commandButton value="Submit" action="#{tgTablePageBean.refresh()}">
+	   		
+	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{tgTablePageBean.refresh()}">
 	   			<f:ajax execute="@form" render=":form1" ></f:ajax> 
 	   		</h:commandButton>
-	   		
-	   		
-	   		<h:commandButton value="Test" action="result"></h:commandButton>
-	   		<ui:remove><h:commandButton value="Reset" action="#{paramBean.resetValues()}" />
-	   		</ui:remove>
-	   		
-		    <h:commandButton value="Reset" type="reset" />
-		    
 	   	</h:panelGrid>
-		</pr:dialog> 
-		
-	</h:form>
+	   </h:form>
+	   
+	   <h:form>	
+	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+	   	
+	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
+	   		
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{tgTablePageBean.resetAll()}">
+	   			<f:ajax execute="@this il_filter_reset" render=":filterform :form1 :focusform" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>	
+	  </h:form>    
+	   	
+	</pr:dialog> 
 	
 	
     
-	    <h1>TG Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>		    
+	    <h:form id="focusform"><h1>TG Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>    
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
 	     <h:dataTable value="#{tgTablePageBean.dataList}" var="u"

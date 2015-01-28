@@ -48,15 +48,16 @@ public class IshSubmissionAssembler {
 		if(submissionModel == null){
 				return null;
 		}
-			
-		ArrayList<String> annotationTree = null;
+		//This is for the old tree. Don't need anymore	
+		//ArrayList<String> annotationTree = null;
 		String annotatedTreeExpressions = null;
 		String annotatedTreePatterns = null;
 		String annotatedTreeExpressionNotes = null;
 		ExpressionDetailModel [] expressionDetailModel = null;
 			
 		if(displayAnnotationAsTree) {
-				annotationTree = anatomyDao.findAnnotationTreeBySubmissionId(oid);
+				//This is for the old tree. Don't need anymore
+				//annotationTree = anatomyDao.findAnnotationTreeBySubmissionId(oid);
 				annotatedTreeExpressions = anatomyDao.findAnnotationTreeExpressions(oid);
 				annotatedTreePatterns = anatomyDao.findAnnotationTreePatterns(oid);
 				annotatedTreeExpressionNotes = anatomyDao.findAnnotationTreeExpressionNotes(oid);
@@ -64,14 +65,7 @@ public class IshSubmissionAssembler {
 		else {
 			expressionDetailModel = anatomyDao.findAnnotatedListBySubmissionIds(oid);
 		}	
-		
-			/*annotationTree = anatomyDao.findAnnotationTreeBySubmissionId(oid);
-			annotatedTreeExpressions = anatomyDao.findAnnotationTreeExpressions(oid);
-			annotatedTreePatterns = anatomyDao.findAnnotationTreePatterns(oid);
-			annotatedTreeExpressionNotes = anatomyDao.findAnnotationTreeExpressionNotes(oid);
-			expressionDetailModel = anatomyDao.findAnnotatedListBySubmissionIds(oid);*/
-	
-			
+					
 		String assayType = submissionModel.getAssayType();
 		
 		IshSubmissionModel ishSubmissionModel = new IshSubmissionModel();
@@ -82,7 +76,8 @@ public class IshSubmissionAssembler {
 		ishSubmissionModel.setStage(submissionModel.getStage());
 		ishSubmissionModel.setAssayType(assayType);
 		ishSubmissionModel.setArchiveId(submissionModel.getArchiveId());
-		ishSubmissionModel.setAnnotationTree(annotationTree);
+		//This is for the old tree. Don't need anymore
+		//ishSubmissionModel.setAnnotationTree(annotationTree);
 		ishSubmissionModel.setExpressionDetailModel(expressionDetailModel);
 		ishSubmissionModel.setLabId(submissionModel.getLabId());
 		ishSubmissionModel.setProject(submissionModel.getProject());
@@ -100,7 +95,6 @@ public class IshSubmissionAssembler {
 		ProbeModel probeModel = null;
 		AntibodyModel antibodyModel = null;
 		if (assayType.indexOf("ISH") >= 0 || assayType.indexOf("TG") >= 0) {
-			//probeModel = ishSubmissionDao.findProbeBySubmissionId(oid);
 			probeModel = ishSubmissionDao.findProbeBySubmissionId(oid,null,true);
 		}
 		else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC

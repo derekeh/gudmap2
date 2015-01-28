@@ -333,7 +333,7 @@
           <tr>
             <td><h:graphicImage library="images/dbhome" name="LUT_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Lower urinary tract' ? 'db_focusborder' : ''}"></h:graphicImage></td>
             <td>
-				<h:commandLink value="Lower urinary tract">
+				<h:commandLink id="il_lut" value="Lower urinary tract">
                          <f:setPropertyActionListener id="lutproperty" target="#{paramBean.focusGroup}" value="Lower urinary tract" />
                          <f:setPropertyActionListener id="lutproperty2" target="#{volatileSummaryBean.focusGroup}" value="Lower urinary tract" /> 
                  </h:commandLink>
@@ -342,7 +342,7 @@
           <tr>
             <td><h:graphicImage library="images/dbhome" name="Early_UGS_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Early reproductive system' ? 'db_focusborder' : ''}"></h:graphicImage></td>
             <td>
-				<h:commandLink value="Early reproductive system">
+				<h:commandLink id="il_ers" value="Early reproductive system">
                          <f:setPropertyActionListener id="ersproperty" target="#{paramBean.focusGroup}" value="Early reproductive system" />
                          <f:setPropertyActionListener id="ersproperty2" target="#{volatileSummaryBean.focusGroup}" value="Early reproductive system" /> 
                  </h:commandLink>
@@ -351,7 +351,7 @@
           <tr>
             <td><h:graphicImage library="images/dbhome" name="Male_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Male reproductive system' ? 'db_focusborder' : ''}"></h:graphicImage></td>
             <td>
-				<h:commandLink value="Male reproductive system">
+				<h:commandLink id="il_mrs" value="Male reproductive system">
                          <f:setPropertyActionListener id="mrsproperty" target="#{paramBean.focusGroup}" value="Male reproductive system" />
                          <f:setPropertyActionListener id="mrsproperty2" target="#{volatileSummaryBean.focusGroup}" value="Male reproductive system" /> 
                  </h:commandLink>
@@ -360,7 +360,7 @@
           <tr>
             <td><h:graphicImage library="images/dbhome" name="Female_d.png" width="100" height="99" alt="" class="db_organimage #{paramBean.focusGroup=='Female reproductive system' ? 'db_focusborder' : ''}"></h:graphicImage></td>
             <td>
-				<h:commandLink value="Female reproductive system" actionListener="#{paramBean.focusGroupAction}">
+				<h:commandLink id="il_frs" value="Female reproductive system" actionListener="#{paramBean.focusGroupAction}">
                          <f:setPropertyActionListener id="frsproperty" target="#{paramBean.focusGroup}" value="Female reproductive system" />
                          <f:setPropertyActionListener id="frsproperty2" target="#{volatileSummaryBean.focusGroup}" value="Female reproductive system" /> 
                  </h:commandLink>

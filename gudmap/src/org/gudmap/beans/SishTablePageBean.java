@@ -39,5 +39,10 @@ public class SishTablePageBean extends InsituTablePageBean implements Serializab
     	return "browseSishTablePage";
     }
     
-   
+    @Override
+    public String resetAll() {
+		paramBean.resetAll();
+		loadDataList();
+		return "browseSishTablePage";
+	}
 }
