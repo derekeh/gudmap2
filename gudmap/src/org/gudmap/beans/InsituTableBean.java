@@ -11,6 +11,12 @@ import org.gudmap.assemblers.InsituTableBeanAssembler;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.utils.RepeatPaginator;
 
+/*
+ * This Bean invokes a paginator which takes in and processes the whole model. EG. All the subsequent work is done  client side on the model with no return to the DB server.
+ * This is not the preferred option at present.
+ * We XXXTablePageBean.java which extends PagerImpl.java so that a definite number of records are retrieved per request.
+ */
+
 @Named
 @SessionScoped
 public class InsituTableBean implements Serializable {

@@ -136,5 +136,297 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
         }
         return componentList;
     }
+	
+	//////////////
+	
+	/*public static String checkAccessionInput(String accessionInput)
+    {
+	// check Numeric
+        if (accessionInput.matches("(?i)[0-9]+$")) {
+	    String gudmap = "GUDMAP:" + accessionInput;
+	    String maprobe = "maprobe:" + accessionInput;
+	    String mgi = "MGI:" + accessionInput;
+	    String mtf = "MTF#" + accessionInput;
+	    String ensmusg = "ENSMUSG" + accessionInput;
+	    
+	      String tub = "TUB" + accessionInput;
+	      String msr = "MSR" + accessionInput;
+	      String gpl = "GPL" + accessionInput;
+	      String gse = "GSE" + accessionInput;
+	      String gsm = "GSM" + accessionInput;
+	      String ensmust = "ENSMUST" + accessionInput;
+	      String ensmusp = "ENSMUSP" + accessionInput;
+	    
+	    return gudmap + "; " + maprobe + "; " + mgi  + "; " + ensmusg + "; " + mtf ;
+	}
+	
+	// check GUDMAP
+        if (accessionInput.matches("(?i)^gudmap:[0-9]+$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^gudmap[\\W]*[\\w]*[0-9]+$"))
+	    return "GUDMAP:" + getDigits(accessionInput, true);
+	
+        // check TUB
+        if (accessionInput.matches("(?i)^tub[0-9]{3,3}[1-9]$"))
+	    return accessionInput;
+        if (accessionInput.matches("(?i)^tub[\\W]*[\\w]*[0-9]{3,3}[1-9]$"))
+	    return "TUB" + getDigits(accessionInput, true);
+	
+        // check MSR
+        if (accessionInput.matches("(?i)^msr[0-9]{3,3}[1-9]$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^msr[\\W]*[\\w]*[0-9]{3,3}[1-9]$"))
+	    return "MSR" + getDigits(accessionInput, true);
+	
+        // check maprobe
+        if (accessionInput.matches("(?i)^maprobe:[1-9]{4,4}$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^maprobe[\\W]*[\\w]*[1-9]{4,4}$"))
+	    return "maprobe:" + getDigits(accessionInput, true);
+	
+        // check GEO - GPL
+        if (accessionInput.matches("(?i)^gpl[1-9][0-9]*$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^gpl[\\W]*[1-9][0-9]*$"))
+	    return "GPL" + getDigits(accessionInput, false);
+	
+        // check GEO - GSE
+        if (accessionInput.matches("(?i)^gse[1-9][0-9]*$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^gse[\\W]*[1-9][0-9]*$"))
+	    return "GSE" + getDigits(accessionInput, false);
+	
+        // check GEO - GSM
+        if (accessionInput.matches("(?i)^gsm[1-9][0-9]*$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^gsm[\\W]*[1-9][0-9]*$"))
+	    return "GSM" + getDigits(accessionInput, false);
+	
+        // check MGI
+        if (accessionInput.matches("(?i)^mgi:[1-9][1-9]*$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^mgi[\\W]*[1-9][0-9]*$"))
+	    return "MGI:" + getDigits(accessionInput, false);
+	
+        // check MTF
+        if (accessionInput.matches("(?i)^mtf#[1-9][0-9]*$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^mtf[\\W]*[1-9][0-9]*$"))
+	    return "MTF#" + getDigits(accessionInput, false);
+	
+        // check ENSEMBLE
+        if (accessionInput.matches("(?i)^ensmus[gtp][0-9]{11,11}$"))
+	    return accessionInput;
+	
+        if (accessionInput.matches("(?i)^ensmus[gtp][\\W]*[0-9]+$"))
+	    return getEnsemble(accessionInput);
+	
+	return accessionInput;
+    }*/
+	
+	public static String checkAccessionInput(String accessionInput)
+    {
+	// check Numeric
+        if (accessionInput.matches("(?i)[0-9]+$")) {
+		    String gudmap = "GUDMAP:" + accessionInput;
+		    String maprobe = "maprobe:" + accessionInput;
+		    String mgi = "MGI:" + accessionInput;
+		    String mtf = "MTF#" + accessionInput;
+		    String ensmusg = "ENSMUSG" + accessionInput;
+		    /*
+		      String tub = "TUB" + accessionInput;
+		      String msr = "MSR" + accessionInput;
+		      String gpl = "GPL" + accessionInput;
+		      String gse = "GSE" + accessionInput;
+		      String gsm = "GSM" + accessionInput;
+		      String ensmust = "ENSMUST" + accessionInput;
+		      String ensmusp = "ENSMUSP" + accessionInput;
+		    */
+		    return "'"+gudmap + "','"+maprobe + "','"+mgi + "','"+ensmusg + "','"+mtf+"'" ;
+        }
+	
+	// check GUDMAP
+        if (accessionInput.matches("(?i)^gudmap:[0-9]+$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^gudmap[\\W]*[\\w]*[0-9]+$"))
+	    return "'GUDMAP:" + getDigits(accessionInput, true)+"'";
+	
+        // check TUB
+        if (accessionInput.matches("(?i)^tub[0-9]{3,3}[1-9]$"))
+	    return "'"+accessionInput+"'";
+        if (accessionInput.matches("(?i)^tub[\\W]*[\\w]*[0-9]{3,3}[1-9]$"))
+	    return "'TUB" + getDigits(accessionInput, true)+"'";
+	
+        // check MSR
+        if (accessionInput.matches("(?i)^msr[0-9]{3,3}[1-9]$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^msr[\\W]*[\\w]*[0-9]{3,3}[1-9]$"))
+	    return "'MSR" + getDigits(accessionInput, true)+"'";
+	
+        // check maprobe
+        if (accessionInput.matches("(?i)^maprobe:[1-9]{4,4}$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^maprobe[\\W]*[\\w]*[1-9]{4,4}$"))
+	    return "'maprobe:" + getDigits(accessionInput, true)+"'";
+	
+        // check GEO - GPL
+        if (accessionInput.matches("(?i)^gpl[1-9][0-9]*$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^gpl[\\W]*[1-9][0-9]*$"))
+	    return "'GPL" + getDigits(accessionInput, false)+"'";
+	
+        // check GEO - GSE
+        if (accessionInput.matches("(?i)^gse[1-9][0-9]*$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^gse[\\W]*[1-9][0-9]*$"))
+	    return "'GSE" + getDigits(accessionInput, false)+"'";
+	
+        // check GEO - GSM
+        if (accessionInput.matches("(?i)^gsm[1-9][0-9]*$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^gsm[\\W]*[1-9][0-9]*$"))
+	    return "'GSM" + getDigits(accessionInput, false)+"'";
+	
+        // check MGI
+        if (accessionInput.matches("(?i)^mgi:[1-9][1-9]*$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^mgi[\\W]*[1-9][0-9]*$"))
+	    return "'MGI:" + getDigits(accessionInput, false)+"'";
+	
+        // check MTF
+        if (accessionInput.matches("(?i)^mtf#[1-9][0-9]*$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^mtf[\\W]*[1-9][0-9]*$"))
+	    return "'MTF#" + getDigits(accessionInput, false)+"'";
+	
+        // check ENSEMBLE
+        if (accessionInput.matches("(?i)^ensmus[gtp][0-9]{11,11}$"))
+	    return "'"+accessionInput+"'";
+	
+        if (accessionInput.matches("(?i)^ensmus[gtp][\\W]*[0-9]+$"))
+	    return "'"+getEnsemble(accessionInput)+"'";
+	
+	return "'"+accessionInput+"'";
+    }
+    
+    public static String getDigits(String str, Boolean allowLeadingZeros)
+    {
+        String digits = "";
+        Boolean digitFound = false;
+	
+        for (int i=0; i < str.length(); i++)
+	    {
+		if (Character.isDigit(str.charAt(i)))
+		    {
+			if (!allowLeadingZeros)
+			    {
+				if (str.charAt(i) != '0')
+				    digitFound = true;
+			    }
+			
+			if (allowLeadingZeros || digitFound)
+			    {
+				digits += str.charAt(i);
+			    }
+		    }
+	    }
+        return digits;
+    }
+    
+    public static String getEnsemble(String ensembleString)
+    {
+        String digits = "";
+	
+        // extract the digit part of the string 'str'
+        for (int i=0; i < ensembleString.length(); i++)
+	    {
+		if (Character.isDigit(ensembleString.charAt(i)))
+		    {
+			digits += ensembleString.charAt(i);
+		    }
+	    }
+	
+        if (digits.length() == 0)
+            return ensembleString;
+	
+        // pad the string with leading zeros if required
+        if (digits.length() < 11)
+	    {
+		digits = padZero(digits);
+	    }
+	
+        // rebuild the ensemble string
+        if (ensembleString.matches("(?i)^ensmusg[\\p{Print}]*"))
+            return "ensmusg" + digits;
+	
+        else if (ensembleString.matches("(?i)^ensmust[\\p{Print}]*"))
+            return "ensmust" + digits;
+	
+        else if (ensembleString.matches("(?i)^ensmusp[\\p{Print}]*"))
+            return "ensmusp" + digits;
+	
+        else return ensembleString;
+    }
+    
+   /* public static String getEnsemble(String ensembleString)
+    {
+        String digits = "";
+	
+        // extract the digit part of the string 'str'
+        for (int i=0; i < ensembleString.length(); i++)
+	    {
+		if (Character.isDigit(ensembleString.charAt(i)))
+		    {
+			digits += ensembleString.charAt(i);
+		    }
+	    }
+	
+        if (digits.length() == 0)
+            return ensembleString;
+	
+        // pad the string with leading zeros if required
+        if (digits.length() < 11)
+	    {
+		digits = padZero(digits);
+	    }
+	
+        // rebuild the ensemble string
+        if (ensembleString.matches("(?i)^ensmusg[\\p{Print}]*"))
+            return "ensmusg" + digits;
+	
+        else if (ensembleString.matches("(?i)^ensmust[\\p{Print}]*"))
+            return "ensmust" + digits;
+	
+        else if (ensembleString.matches("(?i)^ensmusp[\\p{Print}]*"))
+            return "ensmusp" + digits;
+	
+        else return ensembleString;
+    }*/
+    
+    public static String padZero(String str)
+    {
+        if (str.length() < 11)
+        {
+            String newStr = "0" + str;
+            return padZero(newStr);
+        }
+        return str;
+    }
 
 }

@@ -4,7 +4,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
@@ -29,9 +30,30 @@
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.accordion.min.css" />
 		<h:outputStylesheet library="css" name="override_vertical.css" /> 
 		
+		<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='il_dbhomepage:geneInput')
+				                	document.getElementById('il_dbhomepage:go1').click();
+								else if(inField.id=='il_dbhomepage:anatomy')
+				                	document.getElementById('il_dbhomepage:go2').click();
+								else if(inField.id=='il_dbhomepage:accession_input')
+				                	document.getElementById('il_dbhomepage:il_accession_go').click();
+								else if(inField.id=='il_dbhomepage:geneFn')
+				                	document.getElementById('il_dbhomepage:go5').click();
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		//]]>
+		</script>
+
+		
    <div id="db_querybrowse_left">  
-    <h:form id="il_dbhomepage">
     
+      <h:form id="il_dbhomepage">
       <h:panelGrid columns="7" columnClasses="gd_celltextleft,gd_celltextleft,gd_cellcollapseleft,gd_celltextleft,gd_celltextleft,gd_celltextleft,gd_celltextleft" border="0" cellpadding="0" cellspacing="0">
 	
 	    <h:panelGroup></h:panelGroup>
@@ -47,6 +69,8 @@
 	    		</h:link>
 	    	</h:panelGrid>
 	    </h:panelGroup>
+	    
+	  
 	    <h:panelGroup class="db_cell_object_padding">
 	    	<h:inputText id="gene_input"></h:inputText>
 	    </h:panelGroup> 
@@ -58,6 +82,7 @@
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
+	   
 
     	<h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
@@ -81,6 +106,8 @@
 	    		</h:link>
 	    	</h:panelGrid>
 	    </h:panelGroup> 
+	    
+	   
 	    <h:panelGroup class="db_cell_object_padding">
 	    	<h:inputText id="anatomy_input"></h:inputText>
 	    </h:panelGroup>
@@ -144,12 +171,14 @@
 	    		</h:link>
 	    	</h:panelGrid>
 	    </h:panelGroup>
+	    
+	    
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:inputText id="accession_input"></h:inputText>
+	    	<h:inputText id="accession_input" value="#{accessionTablePageBean.accessionInput}"  onkeypress="handleInput(this,event)"></h:inputText>
 	    </h:panelGroup> 
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink action="#{solr_result}">
+	    	<h:commandLink id="il_accession_go" action="#{accessionTablePageBean.processAccession}">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
@@ -176,6 +205,8 @@
 	    		</h:link>
 	    	</h:panelGrid>
 	    </h:panelGroup>
+	    
+	   
 	    <h:panelGroup class="db_cell_object_padding">
 	    	<h:inputText id="genefunction_input"></h:inputText>
 	    </h:panelGroup> 
@@ -215,7 +246,7 @@
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup> 
 	</h:panelGrid>
-</h:form>
+  </h:form>
 </div> <!-- End query_browse_left -->
 
 

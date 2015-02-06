@@ -1,8 +1,11 @@
 package org.gudmap.beans;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 
@@ -61,8 +64,6 @@ public class SessionBean implements Serializable {
 		 this.viewSubmissionId=viewSubmissionId;
 	 }
 
-	 public String getViewSubmissionId() {
-		 return viewSubmissionId;
-	 }
+	 
 
 }

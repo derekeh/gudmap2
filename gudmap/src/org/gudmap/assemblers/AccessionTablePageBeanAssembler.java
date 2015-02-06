@@ -20,7 +20,7 @@ import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.InsituTableBeanModel;
 
-public class InsituTablePageBeanAssembler {
+public class AccessionTablePageBeanAssembler {
 	
 	
 	private DataSource ds;
@@ -34,8 +34,10 @@ public class InsituTablePageBeanAssembler {
 	private String focusGroupWhereclause;
 	private String expressionJoin;
 	private String specimenWhereclause;
+	private String accessionTotals;
+	private String input;
 	
-	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
+	public  AccessionTablePageBeanAssembler(String paramSQL) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -43,55 +45,62 @@ public class InsituTablePageBeanAssembler {
 			e.printStackTrace();
 		}
 		this.paramSQL=paramSQL;
-		this.assayType=assayType;
 		
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
-											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause){
+											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input){
 		this.whereclause=whereclause;
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		this.expressionJoin=expressionJoin;
 		this.specimenWhereclause=specimenWhereclause;
+		this.input=input;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
+		String ishSearch="'GUDMAP:21339', 'maprobe:21339', 'MGI:21339', 'ENSMUSG21339', 'MTF#21339'";
 		
-		if(assayType.equals("TG"))
-			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");
+		String sql = String.format(paramSQL, input,input,input,input,input,input,input);
 		
-		String sql = String.format(paramSQL, expressionJoin, whereclause, focusGroupWhereclause, sortField, sortDirection);
+		/*if(assayType.equals("TG"))
+			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");*/
+		
+		/*String sql = String.format(paramSQL, expressionJoin, whereclause, focusGroupWhereclause, sortField, sortDirection);
 		if(!expressionJoin.equals(""))
 			sql=sql.replace("FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID", "");
-		sql=sql.replace("SUB_DB_STATUS_FK = 4  AND", "SUB_DB_STATUS_FK = 4  AND"+specimenWhereclause);
+		sql=sql.replace("SUB_DB_STATUS_FK = 4  AND", "SUB_DB_STATUS_FK = 4  AND"+specimenWhereclause);*/
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setString(1, assayType);
-			ps.setInt(2, firstRow);
-			ps.setInt(3, rowCount);
+			ps.setInt(1, firstRow);
+			ps.setInt(2, rowCount);
 			result =  ps.executeQuery();
 			
+			//group_concat returning no value will return a null row so don't get those!
 			while(result.next()){
-				ishmodel=new InsituTableBeanModel();
-				ishmodel.setOid(result.getString("oid"));
-				ishmodel.setGene(result.getString("gene"));
-				ishmodel.setGudmap_accession(result.getString("gudmap_accession"));
-				ishmodel.setSource(result.getString("source"));
-				ishmodel.setSubmission_date(result.getString("submission_date"));
-				ishmodel.setAssay_type(result.getString("assay_type"));
-				ishmodel.setProbe_name(result.getString("probe_name"));
-				ishmodel.setStage(result.getString("stage"));
-				ishmodel.setAge(result.getString("age"));
-				ishmodel.setSex(result.getString("sex"));
-				ishmodel.setGenotype(result.getString("genotype"));
-				ishmodel.setTissue(result.getString("tissue"));
-				ishmodel.setExpression(result.getString("expression"));
-				ishmodel.setSpecimen(result.getString("specimen"));
-				ishmodel.setImage(result.getString("image"));
-				
-				ishmodel.setSelected(false);
-				list.add(ishmodel);
+				//while(result.next() && result.getString(1)!=null){
+				if(result.getString(1)!=null)
+				{
+					ishmodel=new InsituTableBeanModel();
+					ishmodel.setOid(result.getString("oid"));
+					ishmodel.setGene(result.getString("gene"));
+					ishmodel.setGudmap_accession(result.getString("gudmap_accession"));
+					ishmodel.setSource(result.getString("source"));
+					ishmodel.setSubmission_date(result.getString("submission_date"));
+					ishmodel.setAssay_type(result.getString("assay_type"));
+					ishmodel.setProbe_name(result.getString("probe_name"));
+					ishmodel.setStage(result.getString("stage"));
+					ishmodel.setAge(result.getString("age"));
+					ishmodel.setSex(result.getString("sex"));
+					ishmodel.setGenotype(result.getString("genotype"));
+					ishmodel.setTissue(result.getString("tissue"));
+					ishmodel.setExpression(result.getString("expression"));
+					ishmodel.setSpecimen(result.getString("specimen"));
+					ishmodel.setImage(result.getString("image"));
+					
+					ishmodel.setSelected(false);
+					list.add(ishmodel);
+				}
 			}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
@@ -102,27 +111,71 @@ public class InsituTablePageBeanAssembler {
 	}
 	
 	public int count() {
+		accessionTotals="Totals returned: Insitu (";
 		int count=0;
-		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
+		int insitucount=0; int microarraycount=0; int sequencecount=0;
+		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
 		if(assayType.equals("TG"))
 			totalwhere = totalwhere.replace("RPR_SYMBOL", "ALE_GENE");
 		String sql = String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause);
-		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
+		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);*/
+		String queryString=GenericQueries.ISH_ACCESSION_TOTAL;
+		String sql = String.format(queryString, input,input,input,input,input);
 		try
 		{
 				con = ds.getConnection();
 				ps = con.prepareStatement(sql);
-				ps.setString(1, assayType);
+				//ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
+					insitucount=result.getInt(1);
 					count=result.getInt(1);
 				}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 			    Globals.closeQuietly(con, ps, result);
-		}		
+		}
+		accessionTotals+=(insitucount+")  Microarray(");
+		queryString=GenericQueries.MICROARRAY_ACCESSION_TOTAL;
+		sql = String.format(queryString, input);
+		try
+		{
+				con = ds.getConnection();
+				ps = con.prepareStatement(sql);
+				//ps.setString(1, assayType);
+				result =  ps.executeQuery();
+				
+				while(result.next()){
+					microarraycount=result.getInt(1);
+					count=count+result.getInt(1);
+				}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+			    Globals.closeQuietly(con, ps, result);
+		}
+		accessionTotals+=(microarraycount+")  Sequence(");
+		queryString=GenericQueries.SEQUENCE_ACCESSION_TOTAL;
+		sql = String.format(queryString, input);
+		try
+		{
+				con = ds.getConnection();
+				ps = con.prepareStatement(sql);
+				//ps.setString(1, assayType);
+				result =  ps.executeQuery();
+				
+				while(result.next()){
+					sequencecount=result.getInt(1);
+					count=count+result.getInt(1);
+				}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+			    Globals.closeQuietly(con, ps, result);
+		}
+		accessionTotals+=(sequencecount+")");
 		return count;
 	}
 	
@@ -168,5 +221,9 @@ public class InsituTablePageBeanAssembler {
 	
 	public void setAssayType(String assayType){
 		this.assayType=assayType;
+	}
+	
+	public String getAccessionTotals() {
+		return accessionTotals;
 	}
 }

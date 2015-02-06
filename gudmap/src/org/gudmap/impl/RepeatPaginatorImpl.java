@@ -3,7 +3,11 @@ package org.gudmap.impl;
 import java.util.List;
 
 import org.gudmap.abstracts.RepeatPaginatorAbs;
-
+/*
+ * This paginator takes in and processes the whole model. EG. All the subsequent work is done  client side on the model with no return to the DB server.
+ * This is not the preferred option at present.
+ * We use PagerImpl.java so that a definite number of records are retrieved per request.
+ */
 public class RepeatPaginatorImpl implements RepeatPaginatorAbs{
 
     protected static final int DEFAULT_RECORDS_NUMBER = 20;
