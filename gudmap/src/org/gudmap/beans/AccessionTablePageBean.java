@@ -40,7 +40,7 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public AccessionTablePageBean() {
-    	super(20,10,"SUB_OID",true);   	
+    	super(20,10,"gene",true);   	
         //setup("ISH","");
         setup();
     }
@@ -70,7 +70,8 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,accessionInputQuery);
+    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,accessionInputQuery,
+    									paramBean.getFocusGroupSpWhereclause());
         // Set currentPage, totalPages and pages.
     	//setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();
@@ -150,15 +151,17 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     		String[] accessionList = accessionInput.split("\\;");
     		String parsedString = "";
     		String parsedQuery = "";
+    		String tmpStr = "";
     		for (int i=0; i<accessionList.length; i++)
     		{
     			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
-    			//parsedString += Utils.checkAccessionInput(accessionList[i].trim()) + ";";
+    			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
+    			parsedString += tmpStr;
+    			tmpStr="";
     		}
-    		this.accessionInput = parsedQuery.substring(0,parsedQuery.length()-1);  
     		this.accessionInputQuery = parsedQuery.substring(0,parsedQuery.length()-1); 
-    		//this.accessionInputQuery = parsedQuery;
-    		this.accessionInput=parsedQuery.replace("'","");
+    		this.accessionInput=parsedString.replace("'","");
+    		
     	}    	
     }
     

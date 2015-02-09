@@ -544,6 +544,7 @@ public class ParamBean implements Serializable {
 			this.setFocusGroup(focusFieldAttribute);
 	}
 	
+	//focus group for ish gets anatomy ID from ISH_EXPRESSION
 	public String getFocusGroupWhereclause(){
 		String RET="";
 		if(focusGroup.equals("reset"))
@@ -558,6 +559,25 @@ public class ParamBean implements Serializable {
 			RET =  GenericQueries.FOCUS_MALE_REPRO;
 		else if(focusGroup.equals("Female reproductive system"))
 			RET =  GenericQueries.FOCUS_FEMALE_REPRO;
+		
+		return RET;
+	}
+	
+	//focus group for non-ish gets anatomy ID from ISH_SP_TISSUE
+	public String getFocusGroupSpWhereclause(){
+		String RET="";
+		if(focusGroup.equals("reset"))
+			RET="";
+		else if(focusGroup.equals("Metanephros"))
+			RET =  GenericQueries.FOCUS_METANEPHROS_SP;
+		else if(focusGroup.equals("Lower urinary tract"))
+			RET =  GenericQueries.FOCUS_URINARY_SP;
+		else if(focusGroup.equals("Early reproductive system"))
+			RET =  GenericQueries.FOCUS_EARLY_REPRO_SP;
+		else if(focusGroup.equals("Male reproductive system"))
+			RET =  GenericQueries.FOCUS_MALE_REPRO_SP;
+		else if(focusGroup.equals("Female reproductive system"))
+			RET =  GenericQueries.FOCUS_FEMALE_REPRO_SP;
 		
 		return RET;
 	}

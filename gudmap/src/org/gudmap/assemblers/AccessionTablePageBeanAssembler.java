@@ -36,6 +36,7 @@ public class AccessionTablePageBeanAssembler {
 	private String specimenWhereclause;
 	private String accessionTotals;
 	private String input;
+	private String focusGroupSpWhereclause;
 	
 	public  AccessionTablePageBeanAssembler(String paramSQL) {
 		try {
@@ -49,24 +50,20 @@ public class AccessionTablePageBeanAssembler {
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
-											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input){
+											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input,
+											String focusGroupSpWhereclause){
 		this.whereclause=whereclause;
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		this.expressionJoin=expressionJoin;
 		this.specimenWhereclause=specimenWhereclause;
 		this.input=input;
+		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
-		String ishSearch="'GUDMAP:21339', 'maprobe:21339', 'MGI:21339', 'ENSMUSG21339', 'MTF#21339'";
 		
-		String sql = String.format(paramSQL, input,input,input,input,input,input,input);
+		String sql = String.format(paramSQL, expressionJoin,whereclause,input,input,input,input,input,
+									focusGroupWhereclause,whereclause,input,focusGroupSpWhereclause,whereclause,input,
+									focusGroupSpWhereclause,sortField, sortDirection);
 		
-		/*if(assayType.equals("TG"))
-			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");*/
-		
-		/*String sql = String.format(paramSQL, expressionJoin, whereclause, focusGroupWhereclause, sortField, sortDirection);
-		if(!expressionJoin.equals(""))
-			sql=sql.replace("FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID", "");
-		sql=sql.replace("SUB_DB_STATUS_FK = 4  AND", "SUB_DB_STATUS_FK = 4  AND"+specimenWhereclause);*/
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
@@ -114,18 +111,12 @@ public class AccessionTablePageBeanAssembler {
 		accessionTotals="Totals returned: Insitu (";
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
-		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
-		if(assayType.equals("TG"))
-			totalwhere = totalwhere.replace("RPR_SYMBOL", "ALE_GENE");
-		String sql = String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause);
-		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);*/
 		String queryString=GenericQueries.ISH_ACCESSION_TOTAL;
-		String sql = String.format(queryString, input,input,input,input,input);
+		String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
 		try
 		{
 				con = ds.getConnection();
 				ps = con.prepareStatement(sql);
-				//ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
@@ -139,7 +130,7 @@ public class AccessionTablePageBeanAssembler {
 		}
 		accessionTotals+=(insitucount+")  Microarray(");
 		queryString=GenericQueries.MICROARRAY_ACCESSION_TOTAL;
-		sql = String.format(queryString, input);
+		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
 		{
 				con = ds.getConnection();
@@ -158,7 +149,7 @@ public class AccessionTablePageBeanAssembler {
 		}
 		accessionTotals+=(microarraycount+")  Sequence(");
 		queryString=GenericQueries.SEQUENCE_ACCESSION_TOTAL;
-		sql = String.format(queryString, input);
+		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
 		{
 				con = ds.getConnection();
