@@ -98,6 +98,7 @@
 	background:none repeat scroll 0 0 #E5E5E5;
 	border-bottom:1px solid #BBBBBB;
 	padding:16px;
+	vertical-align:top;
 }
 
 .db_order-table-odd-row{
@@ -241,3 +242,58 @@
  .db_thumb_height {
  	max-height:50px;
  }
+ 
+ /***************************** ISH expression bars *******************************/
+div.exprGraph {
+	border:0px solid #E3E3E3;
+	width:110px;
+	margin:auto;
+	padding:2px 0;
+}
+
+table.exprGraphTable {
+	border:0px solid #C3C3C3;
+	border-collapse:collapse;
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+td.exprGraphCell {
+	height:22px;
+	margin:0px;
+	padding:0px;
+	vertical-align:bottom;
+}
+
+div.exprGraphBarSpacer {
+	background-color:#C3DBC3;
+	border:1px dotted #969696;
+	font-size:0pt;
+	margin:0px;
+	padding:0px;
+	width:8px;
+	visibility:hidden;
+}
+
+div.exprGraphBar {
+	border:1px solid #969696;
+	cursor:pointer;
+	font-size:0pt;
+	margin:0px;
+	padding:0px;
+	width:8px;
+}
+
+div.zeroExprGraphBar {
+	border-bottom:1px solid black;
+	font-size:0pt;
+	margin:0 0 -1px 0;
+	padding:0px;
+	width:8px;
+	height:0px;
+}
+
+div:hover.exprGraphBar {
+	border:1px solid #000000;
+}

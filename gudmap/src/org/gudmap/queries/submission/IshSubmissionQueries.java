@@ -112,30 +112,6 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 	                                 "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC "+
 	                                 "WHERE RPR_JAX_ACC = ? "+
 	                                 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
-
-	  final static String name239 = "MAPROBE_DETAILS_EXTRA this is comibined into above";
-	  final static String query239 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, RPR_LOCUS_TAG, "+  
-	                                 "PRB_SOURCE, PRB_STRAIN, PRB_TISSUE, PRB_PROBE_TYPE, "+
-	                                 "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
-	                                 "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), "+
-	                                 "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END), "+
-	                                 "CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
-	                                 "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
-	                                 "RPR_CLONE_NAME_2, PRB_LAB_ID "+ 
-	                                 "FROM REF_PROBE "+
-	                                 "JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID "+
-	                                 "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK "+
-	                                 "JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = "+
-	                                 "CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " + 
-	                                 "WHEN 'MGI:'     THEN  'jax_gene' " + 
-	                                 "WHEN 'maprobe:' THEN 'maprobe_probe' " + 
-	                                 "ELSE '-1' /* unrecognised prefix, get NULL record */ " + 
-	                                 "END " +
-	                                 "JOIN REF_URL GENBANK_URL ON GENBANK_URL.URL_TYPE = 'genbank_sequence' "+
-	                                 "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC "+
-	                                 "WHERE RPR_JAX_ACC = ? "+
-	                                 "AND  PRB_MAPROBE = ? "+
-	                                 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	
 	
 	//FULL  PROBE SEQUENCE
@@ -237,6 +213,13 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 							"IMG_SUBMISSION_FK = SUB_OID  JOIN ISH_SPECIMEN ON SPN_SUBMISSION_FK= SUB_OID JOIN REF_URL I ON I.URL_OID = IMG_URL_FK " +
 							"JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 " +
 							"AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_ORDER ";
+	
+	public static String IMAGE_INFO_BY_ACCESSION_ID = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME), INT_VALUE, SPN_ASSAY_TYPE, " +
+							"CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  " +
+							"IMG_SUBMISSION_FK = SUB_OID  JOIN ISH_SPECIMEN ON SPN_SUBMISSION_FK= SUB_OID JOIN REF_URL I ON I.URL_OID = IMG_URL_FK " +
+							"JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 " +
+							"AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_ORDER ";
+
 	
 	/////////////////////////////////////////////////////////////IMAGE DETAIL WLZ////////////////////////////
 	

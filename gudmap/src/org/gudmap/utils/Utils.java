@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.gudmap.models.submission.ImageInfoModel;
+
 public class Utils {
 	//remove last character from string
 	public static String removeLastChar(String str, char lastchar) {
@@ -107,6 +109,43 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 		}
 		return null;
 	}
+	
+	 public static ArrayList <ImageInfoModel> formatImageResultSet(ResultSet resSetImage) throws SQLException {
+	        if (resSetImage.first()) {
+	            resSetImage.beforeFirst();
+	            int serialNo = 1;
+	            ArrayList <ImageInfoModel> results = new  ArrayList<ImageInfoModel>();
+			    //int dotPosition = 0;
+			    //String fileExtension = null;
+			    String str = null;
+			    ImageInfoModel imageInfoModel = null;
+
+	            while (resSetImage.next()) {
+	            	imageInfoModel = new ImageInfoModel();
+					str = Utils.netTrim(resSetImage.getString(1));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setAccessionId(str);
+					str = Utils.netTrim(resSetImage.getString(2));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setFilePath(str);
+					str = Utils.netTrim(resSetImage.getString(3));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setNote(str);
+					str = Utils.netTrim(resSetImage.getString(4));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setSpecimenType(str);
+					str = Utils.netTrim(resSetImage.getString(5));
+					if (null != str && !str.equals("")) 
+						imageInfoModel.setClickFilePath(str);
+				
+					imageInfoModel.setSerialNo(""+serialNo);
+	                serialNo++;
+	                results.add(imageInfoModel);
+	            }
+	            return results;
+	        }
+	        return null;
+	    }
 
 	public static int stringArraySearch(String[] a, String value, boolean ignoreCase) {
 	if (a == null || value == null)

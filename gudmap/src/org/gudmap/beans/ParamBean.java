@@ -39,6 +39,13 @@ public class ParamBean implements Serializable {
 	private boolean expressioncol=false;
 	private boolean specimentypecol=false;
 	private boolean imagescol=true;
+	/*genestrip cols*/
+	private boolean synonymcol=true;
+	private boolean omimcol=true;
+	private boolean rnaseqcol=true;
+	private boolean ishexpressioncol=true;
+	private boolean arrayexpressioncol=false;
+	/*column structures*/
 	private String[] insitucols;
 	private String[] tgcols;
 	private Map<String,Boolean> resultmap;
@@ -214,6 +221,45 @@ public class ParamBean implements Serializable {
 	
 	public boolean getImagescol(){
 		return imagescol;
+	}
+	
+	public void setSynonymcol(boolean synonymcol ) {
+		this.synonymcol=synonymcol;
+	}
+	
+	public boolean getSynonymcol() {
+		return synonymcol;
+	}
+	
+	public void setOmimcol(boolean omimcol ) {
+		this.omimcol=omimcol;
+	}
+	
+	public boolean getOmimcol() {
+		return omimcol;
+	}
+	
+	public void setRnaseqcol(boolean rnaseqcol ) {
+		this.rnaseqcol=rnaseqcol;
+	}
+	
+	public boolean getRnaseqcol() {
+		return rnaseqcol;
+	}
+	public void setIshexpressioncol(boolean ishexpressioncol ) {
+		this.ishexpressioncol=ishexpressioncol;
+	}
+	
+	public boolean getIshexpressioncol() {
+		return ishexpressioncol;
+	}
+	
+	public void setArrayexpressioncol(boolean arrayexpressioncol ) {
+		this.arrayexpressioncol=arrayexpressioncol;
+	}
+	
+	public boolean getArrayexpressioncol() {
+		return arrayexpressioncol;
 	}
 	
 	public void setInsitucols(String[]insitucols){

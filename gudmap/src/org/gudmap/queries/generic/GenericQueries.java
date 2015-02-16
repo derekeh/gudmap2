@@ -2,6 +2,7 @@ package org.gudmap.queries.generic;
 
 public class GenericQueries {
 	
+	   public final static String UNION_CLAUSE = " UNION ";   
 	   public final static String WHERE_CLAUSE = " WHERE ";
 	   public final static String FOCUS_RESET = "reset";
 	   public final static String EXPRESSION_JOIN = " JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK ";
