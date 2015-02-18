@@ -180,6 +180,9 @@ public class GenericQueries {
 			   "ON IST_SUBMISSION_FK=SUB_OID " +
 			   "%s  SUB_ACCESSION_ID  IN (%s)   AND SUB_ASSAY_TYPE = 'NextGen' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 %s"; 
 	   
+       public final static String EQUIVALENT_DPC_STAGE_FOR_THEILER_STAGE = "SELECT STG_DPC_PREFIX, STG_DPC_VALUE FROM REF_STAGE WHERE STG_VALUE = ?";
+       
+	   
 	   
 	   
 }

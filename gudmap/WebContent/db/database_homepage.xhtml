@@ -18,6 +18,59 @@
 	
 	<ui:define name="content">
 	
+	<pr:dialog header="Gene Search Options" widgetVar="dialog2" width="650" style="position:absolute;left:-300px;" modal="true" > 
+		<h:form id="filterform"> 
+		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+		 
+		 	<h:outputText value="Display Result As:"></h:outputText>
+	   		<h:selectOneRadio value="#{paramBean.geneoptionvalues}">
+	   			<f:selectItems value="#{paramBean.geneoptionlist}" />
+	   		</h:selectOneRadio>
+	   		
+	   		<h:outputText value="Theiler Stage: "></h:outputText>
+	    	<h:panelGroup>
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
+		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 			</h:selectOneMenu>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagetovalues}">
+		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 			</h:selectOneMenu>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+	   		
+	   		<h:panelGroup>
+	   			<h:outputText value="Upload a "/>
+	   			<h:outputLink   value="http://gudmap.org/gudmap/pages/batch_query.html">
+	   				<h:outputText value="Batch Query " style="color:darkblue;text-decoration:underline;"></h:outputText>
+	   			</h:outputLink>
+	   			<h:outputText value="file."/><br />
+	   			<h:outputText value="Max 100 gene symbols" />
+	   		</h:panelGroup>
+	   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
+	   		
+	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{paramBean.resetGeneSearchValues()}" onclick="PF('dialog2').hide();">
+	   			<f:ajax execute="@form" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>
+	   </h:form>
+	   
+	   <h:form>	
+	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+	   	
+	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
+	   		
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{ihcTablePageBean.resetAll()}">
+	   			<f:ajax execute="@this il_filter_reset" render=":filterform :il_dbhomepage" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>	
+	  </h:form>    
+	   	
+	</pr:dialog> 
+	
+	
 	<!-- can use relative links on html tags -->
 	    <h:form id="h1form"><h1>Expression Database<h:outputText id="il_focustext" value="&#160; &gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>
 	    <!-- all other content in here --> 	
@@ -36,8 +89,8 @@
 						function handleInput (inField, e) {
 							//alert(e.keyCode);
 							if (e.keyCode === 13) {
-								if(inField.id=='il_dbhomepage:geneInput')
-				                	document.getElementById('il_dbhomepage:go1').click();
+								if(inField.id=='il_dbhomepage:gene_input')
+				                	document.getElementById('il_dbhomepage:il_gene_go').click();
 								else if(inField.id=='il_dbhomepage:anatomy')
 				                	document.getElementById('il_dbhomepage:go2').click();
 								else if(inField.id=='il_dbhomepage:accession_input')
@@ -72,13 +125,14 @@
 	    
 	  
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:inputText id="gene_input"></h:inputText>
+	    	<h:inputText id="gene_input" value="#{sessionBean.tempParam}"  onkeypress="handleInput(this,event);"></h:inputText>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:graphicImage library="images/dbhome" name="n_options.png" width="80" height="19" alt=""></h:graphicImage>
+	    	
+	    	<pr:commandButton id="showdialog2" value="Options" onclick="PF('dialog2').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
 	    </h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink action="#{solr_result}">
+	    	<h:commandLink id="il_gene_go" action="viewGeneStrip">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>

@@ -26,6 +26,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>theilerstagelist;
 	private Map<String,String>sexlist;
 	private Map<String,String>specimentypelist;
+	private Map<String,String>geneoptionlist;
 	
 	public ParamBeanAssembler() {
 		try {
@@ -126,6 +127,14 @@ public class ParamBeanAssembler {
 		    Globals.closeQuietly(con, ps, result);
 		}
 		return specimentypelist;
+	}
+	
+	public Map<String,String> getGeneoptionlist() {
+		geneoptionlist = new LinkedHashMap<String,String>();
+		geneoptionlist.put("Expression Summaries", "Expression Summaries");
+		geneoptionlist.put("GUDMAP Entries", "GUDMAP Entries");
+		
+		return geneoptionlist;
 	}
 	
 	

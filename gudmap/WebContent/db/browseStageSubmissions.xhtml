@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Submissions by Stage
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	    <h1>Submissions by Stage for Gene: #{stageBean.geneSymbol}</h1>	
+	    <!-- all other content in here -->  
+	    <h:form id="stageBrowseForm">
+		<h:dataTable styleClass="db_order-table"
+    				 headerClass="db_order-table-header"
+    				 rowClasses="db_order-table-odd-row,db_order-table-even-row" 
+		             value="#{stageBean.tableData}" var="submission">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText styleClass="plaintextbold" value="Theiler Stage" />
+				</f:facet>
+
+				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{submission[4]}definition.html" styleClass="plaintext">
+					<h:outputText styleClass="plaintext" value="#{submission[0]}"/>
+				</h:outputLink>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:outputText styleClass="plaintextbold" value="Alternate Staging" />
+				</f:facet>
+				<h:outputText styleClass="plaintext" value="#{submission[1]}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">              
+					<h:outputText styleClass="plaintextbold" value="Number of In situ Submissions" />
+				</f:facet>
+				<h:outputLink value="focus_insitu_browse.html?stage=#{submission[4]}&amp;gene=#{sessionBean.inputParam}" styleClass="plaintext" rendered="#{submission[2]!='0'}">  
+					<h:outputText value="#{submission[2]}" />
+				</h:outputLink>
+				<h:outputText styleClass="plaintext" value="#{submission[2]}" rendered="#{submission[2]=='0'}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:outputText styleClass="plaintextbold" value="Number of Microarray Submissions" />
+				</f:facet>
+				<h:outputLink value="focus_mic_browse.html?stage=#{submission[4]}&amp;gene=#{sessionBean.inputParam}" styleClass="plaintext" rendered="#{submission[3]!='0'}">  
+					<h:outputText value="#{submission[3]}" />
+				</h:outputLink>
+				<h:outputText styleClass="plaintext" value="#{submission[3]}" rendered="#{submission[3]=='0'}"/>
+			</h:column>
+			
+		</h:dataTable>
+	</h:form>  
+	</ui:define>
+</ui:composition>
+</html>

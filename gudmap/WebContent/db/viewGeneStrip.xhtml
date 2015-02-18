@@ -5,7 +5,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui" >
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
@@ -20,6 +21,35 @@
 	<!-- can use relative links on html tags -->
 		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	    <!-- all other content in here -->  
+	    <h:form>
+			<h:panelGrid columns="2">
+					<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+			</h:panelGrid>
+		</h:form>
+		
+		<h:form>
+			<pr:dialog header="Column Selection" widgetVar="dialog1" width="350" style="position:absolute;left:-100px;" >  
+			 <h:panelGrid columns="2">
+		    	<h:selectManyCheckbox binding="#{il_genestripcheckbox}" id="il_genestripcheckbox" layout="pageDirection" value="#{paramBean.genestripcols}">
+		   			<f:selectItems value="#{paramBean.genestripcolmap}" />
+		   			<f:validator validatorId="genestripCheckboxColumnsValidator" />
+		   			<f:attribute name="checkboxType" value="genestrip"></f:attribute>
+		   			<f:ajax execute="il_genestripcheckbox" render="checkboxmessage il_columnSubmit"></f:ajax> 
+		   		</h:selectManyCheckbox>
+		   		
+		   		<h:panelGroup></h:panelGroup>
+		   		<h:commandButton id="il_columnSubmit" value="Submit" action="viewGeneStrip" disabled="#{not il_genestripcheckbox.valid}">
+		   		    <f:param name="input" value="#{sessionBean.inputParam}"></f:param>
+		   			<f:ajax execute="@form" render=":form1" ></f:ajax>
+		   		</h:commandButton>
+			    <h:commandButton value="Reset" type="reset" />
+		   	</h:panelGrid>
+		   	<h:message id="checkboxmessage" for="il_genestripcheckbox" /> 
+		</pr:dialog> 
+
+	   </h:form>
+	    
+	    
 	    <h:form id="focusform"><h1>Gene Query Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
@@ -67,14 +97,18 @@
     			<f:facet name="header">
     				Disease
 				</f:facet>
+				<h:outputLink value="http://www.gudmap.org/gudmap_dis/Gene_Result.jsp?gene=#{u.geneSymbol}&amp;gene_text=#{u.geneSymbol}">
     				OMIM(#{u.omimCount})
+    			</h:outputLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
     				Theiler Stage
 				</f:facet>
-    			#{u.stageRange}
+				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}">
+    				#{u.stageRange}
+    			</h:outputLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.ishexpressioncol == true}">

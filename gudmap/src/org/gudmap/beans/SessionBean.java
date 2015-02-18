@@ -19,10 +19,12 @@ public class SessionBean implements Serializable {
 	private String annotationGroupsText="Show annotation under groups";
 	private boolean displayAnnotationGroups=false;
 	private String viewSubmissionId="";
-	
+	private String inputParam="";
+	private String tempParam="";
 	public SessionBean() {
 		
 	}
+	
 	
 	public void setDisplayAsTree(boolean displayAsTree) {
 		this.displayAsTree=displayAsTree;
@@ -63,6 +65,23 @@ public class SessionBean implements Serializable {
 	 public void setViewSubmissionId(String viewSubmissionId ) {
 		 this.viewSubmissionId=viewSubmissionId;
 	 }
+	 
+	 public void setInputParam(String inputParam){
+		 this.inputParam=inputParam;
+	 }
+	 
+	 public String getInputParam() {
+		 return inputParam;
+	 }
+	 
+	 public void setTempParam(String tempParam){
+		 this.tempParam=tempParam;
+	 }
+	 
+	 public String getTempParam(){
+		 return tempParam;
+	 }
+	
 
 	 
 

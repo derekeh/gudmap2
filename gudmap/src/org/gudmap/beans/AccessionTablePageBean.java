@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
+//import javax.faces.event.ActionEvent;
+//import javax.faces.event.ActionListener;
 import javax.inject.Inject;
 import javax.inject.Named;
 

@@ -44,12 +44,14 @@ public class ParamBean implements Serializable {
 	private boolean omimcol=true;
 	private boolean rnaseqcol=true;
 	private boolean ishexpressioncol=true;
-	private boolean arrayexpressioncol=false;
+	private boolean arrayexpressioncol=true;
 	/*column structures*/
 	private String[] insitucols;
 	private String[] tgcols;
+	private String[] genestripcols;
 	private Map<String,Boolean> resultmap;
 	private Map<String,Boolean> tgresultmap;
+	private Map<String,Boolean> genestripresultmap;
 	/*filter*/
 	private String genevalues;
 	private String[] sourcevalues;
@@ -72,12 +74,17 @@ public class ParamBean implements Serializable {
 	
 	SimpleDateFormat sdf;
 	
+	/*gene search options*/
+	private String geneoptionvalues="Expression Summaries";
+		
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
 		insitucols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","probename","embryostage","age","images"};
 		tgcols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","embryostage","age","genotype","images"};
+		genestripcols= new String[]{"gene","synonym","omim","stagerange","expressionprofile","images","microarrayprofile","rnaseq"};
 		resultmap=new HashMap<String,Boolean>();
 		tgresultmap=new HashMap<String,Boolean>();
+		genestripresultmap=new HashMap<String,Boolean>();
 		assembler = new ParamBeanAssembler();
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
@@ -371,6 +378,47 @@ public class ParamBean implements Serializable {
 		return tgcolmap;
 	}
 	
+	public void setGenestripcols(String[]genestripcols){
+		this.genestripcols=genestripcols;
+		genestripresultmap.clear();
+		for(int i=0;i<genestripcols.length;i++){
+			genestripresultmap.put(genestripcols[i], true);	
+		}
+		oidcol=false;
+		genecol=genestripresultmap.containsKey("gene");
+		synonymcol=genestripresultmap.containsKey("synonym");
+		omimcol=genestripresultmap.containsKey("omim");
+		embryostagecol=genestripresultmap.containsKey("stagerange");
+		ishexpressioncol=genestripresultmap.containsKey("expressionprofile");
+		imagescol=genestripresultmap.containsKey("images");
+		arrayexpressioncol=genestripresultmap.containsKey("microarrayprofile");
+		rnaseqcol=genestripresultmap.containsKey("rnaseq");
+	}
+	
+	
+	public String[] getGenestripcols(){
+		return genestripcols;
+	}
+	
+	
+	private static Map<String,Object> genestripcolmap;
+	static{
+		genestripcolmap = new LinkedHashMap<String,Object>();
+		//insitucolmap.put("Oid", "oid"); //label, value
+		genestripcolmap.put("Gene", "gene");
+		genestripcolmap.put("Synonyms", "synonym");
+		genestripcolmap.put("Disease", "omim");
+		genestripcolmap.put("Theiler Stage", "stagerange");
+		genestripcolmap.put("Expression Profile", "expressionprofile");
+		genestripcolmap.put("Expression Images", "images");
+		genestripcolmap.put("Microarray Expression Profile", "microarrayprofile");
+		genestripcolmap.put("RNA-SEQ", "rnaseq");
+	}
+ 
+	public Map<String,Object> getGenestripcolmap() {
+		return genestripcolmap;
+	}
+	
 	/*************************FILTER*******************************/
 	
 	/*************************populate filter*******************/
@@ -393,6 +441,11 @@ public class ParamBean implements Serializable {
 	
 	public Map<String,String> getSpecimentypelist(){
 		return assembler.getSpecimentypelist();
+	}
+	
+	/**gene search options***/
+	public Map<String,String> getGeneoptionlist(){
+		return assembler.getGeneoptionlist();
 	}
 
 /*******************************
@@ -544,6 +597,15 @@ public class ParamBean implements Serializable {
 		return probenamevalues;
 	}
 	
+	/*****gene search options**********/
+	public void setGeneoptionvalues(String geneoptionvalues){
+		this.geneoptionvalues = geneoptionvalues;
+	}
+	
+	public String getGeneoptionvalues() {
+		return geneoptionvalues;
+	}
+	
 	/*****************today*******************/
 	public Date getMaxDate() {
 	    // wherever you want the date to come from
@@ -576,6 +638,13 @@ public class ParamBean implements Serializable {
 		setSpecimentypevalues("");
 		tempfromvalues="";
 		//setWhereclause(GenericQueries.WHERE_CLAUSE);
+	}
+	
+	public String resetGeneSearchValues() {
+		setTheilerstagefromvalues("");
+		setTheilerstagetovalues("");
+		//setGeneoptionvalues("Expression Summaries");
+		return "database_homepage";
 	}
 	
 	public void resetAll() {
@@ -638,7 +707,7 @@ public class ParamBean implements Serializable {
 		return RET;
 	}
 	
-	/********************checkboxes******************/
+	/**********TODO **********checkboxes keep this code ******************/
 	
 	/*public void setCheckboxes(boolean[]checkboxes){
 		this.checkboxes=checkboxes;
@@ -647,6 +716,7 @@ public class ParamBean implements Serializable {
 	public boolean[] getCheckboxes(){
 		return checkboxes;
 	}*/
+	
 	
 	
 }
