@@ -16,7 +16,6 @@ import org.gudmap.assemblers.GeneStripBeanAssembler;
 
 @Named
 @RequestScoped
-//@ViewScoped
 //@SessionScoped
 public class GeneStripBean implements Serializable {
 	
@@ -65,7 +64,7 @@ public class GeneStripBean implements Serializable {
     public void setup() {
         // check input string to decide wildcard value
        	
-       	if (inputString != null) {
+       	if (inputString != null && !inputString.equals("")) {
        		inputString = inputString.trim();
        		int stringLen = inputString.length();
        		String lastChar = inputString.trim().substring(stringLen-1, stringLen);

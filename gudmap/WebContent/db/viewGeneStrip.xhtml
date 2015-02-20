@@ -18,6 +18,7 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	#{sessionBean.init()}
 	<!-- can use relative links on html tags -->
 		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	    <!-- all other content in here -->  

@@ -82,6 +82,9 @@ public class SessionBean implements Serializable {
 		 return tempParam;
 	 }
 	
+	 public void init() {
+	 //dummy to initialise bean from view
+	 }
 
 	 
 

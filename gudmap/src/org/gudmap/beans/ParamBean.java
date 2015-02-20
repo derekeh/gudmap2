@@ -647,6 +647,20 @@ public class ParamBean implements Serializable {
 		return "database_homepage";
 	}
 	
+	public String resetAllGeneSearchValues() {
+		String RET=resetGeneSearchValues();
+		setGeneoptionvalues("Expression Summaries");
+		setWhereclause(GenericQueries.WHERE_CLAUSE);
+		return RET;
+	}
+	
+	public String geneSearchRedirect() {
+		 if(getGeneoptionvalues().equals("Expression Summaries"))
+			 return "viewGeneStrip";
+		 else
+			 return "browseGeneListTablePage";
+	 }
+	
 	public void resetAll() {
 		resetValues();
 		setWhereclause(GenericQueries.WHERE_CLAUSE);

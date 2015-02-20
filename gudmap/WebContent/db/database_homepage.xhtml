@@ -41,6 +41,18 @@
 		 		</h:panelGrid>
 		 	</h:panelGroup>
 	   		
+	   		
+	   		
+	   		<h:commandButton id="il_filter_submit" value="Save" action="#{paramBean.resetGeneSearchValues()}" onclick="PF('dialog2').hide();">
+	   			<f:ajax execute="@form" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>
+	   </h:form>
+	   <hr />
+	   
+	   <h:form id="inputForm" enctype="multipart/form-data">
+	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+	   	
 	   		<h:panelGroup>
 	   			<h:outputText value="Upload a "/>
 	   			<h:outputLink   value="http://gudmap.org/gudmap/pages/batch_query.html">
@@ -49,20 +61,30 @@
 	   			<h:outputText value="file."/><br />
 	   			<h:outputText value="Max 100 gene symbols" />
 	   		</h:panelGroup>
-	   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
+	   		<h:inputFile id="file"
+		         label="file"
+		         value="#{inputBean.part}"
+		         required="true"
+		         requiredMessage="File not selected !!">
+		    	 <f:validator validatorId="FileUploadValidator" />
+			</h:inputFile>
+			
+			<h:message style="color: red" for="file" />
+			<h:panelGroup></h:panelGroup>
 	   		
-	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{paramBean.resetGeneSearchValues()}" onclick="PF('dialog2').hide();">
-	   			<f:ajax execute="@form" ></f:ajax> 
-	   		</h:commandButton>
-	   	</h:panelGrid>
-	   </h:form>
+	   		<h:commandButton id="il_filter_upload" value="Upload" action="#{inputBean.uploadFile}" onclick="PF('dialog2').hide();"></h:commandButton>
+	   		<h:outputText value="#{inputBean.statusMessage}" rendered="#{not empty inputBean.statusMessage}" />
+	   	</h:panelGrid>	
+	  </h:form>  
+	  
+	   <hr />
 	   
 	   <h:form>	
 	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
 	   	
 	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
 	   		
-	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{ihcTablePageBean.resetAll()}">
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{paramBean.resetAllGeneSearchValues()}">
 	   			<f:ajax execute="@this il_filter_reset" render=":filterform :il_dbhomepage" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>	
@@ -132,7 +154,7 @@
 	    	<pr:commandButton id="showdialog2" value="Options" onclick="PF('dialog2').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
 	    </h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_gene_go" action="viewGeneStrip">
+	    	<h:commandLink id="il_gene_go" action="#{paramBean.geneSearchRedirect}">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
