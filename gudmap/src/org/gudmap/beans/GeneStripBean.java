@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ViewScoped;
+//import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,7 +20,7 @@ public class GeneStripBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String oid;
-    private String geneSymbol;
+    private String geneSymbol="";
     private String inputString="";
     private String wildcard = "equals";
     private GeneStripBeanAssembler geneStripBeanAssembler;
@@ -34,8 +33,10 @@ public class GeneStripBean implements Serializable {
     
     public GeneStripBean() {
     	FacesContext facesContext = FacesContext.getCurrentInstance();
-        this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
-        this.inputString = facesContext.getExternalContext().getRequestParameterMap().get("input");
+    	if(facesContext.getExternalContext().getRequestParameterMap().get("gene")!=null)
+    		this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
+        if(facesContext.getExternalContext().getRequestParameterMap().get("input")!=null)
+        	this.inputString = facesContext.getExternalContext().getRequestParameterMap().get("input");
         
         geneStripBeanAssembler = new GeneStripBeanAssembler();       
         //setup();
@@ -45,14 +46,23 @@ public class GeneStripBean implements Serializable {
     public void setSessionBean(SessionBean sessionBean){
 		this.sessionBean=sessionBean;
 	}
+    
+    public SessionBean getSessionBean() {
+    	return sessionBean;
+    }
     //if the parameters are not passed in via the url then they are passed in from sessionBean.getTempParam
     //in a view (viewGeneStrip) which has this as Request scoped backing bean are unable to set the <f:param value to sessionBean.tempParam
     @PostConstruct
 	 public void setInputParams(){
     	if(inputString==null || inputString.equals(""))
-        	inputString=sessionBean.getTempParam();
-		 sessionBean.setInputParam(inputString);
-		 setup();
+    	{
+    		if(geneSymbol==null || geneSymbol.equals(""))
+    			inputString=getSessionBean().getTempParam();
+    		else
+    			inputString=geneSymbol;
+    	}
+    	getSessionBean().setInputParam(inputString);
+		setup();
 	 }
     
 	 /*@PostConstruct

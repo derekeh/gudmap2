@@ -17,10 +17,405 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	<!-- can use relative links on html tags -->
 	    <h1>Gene Details </h1>	
 	    <!-- all other content in here -->  
-	    <h:outputText value="Gene Symbol: #{geneStripBean.geneSymbol}"></h:outputText>   
+	    <h:outputText value="There is no available data on the selected gene.1" styleClass="plaintext" rendered="#{geneDetailsBean.geneModel == null}" />
+		<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel != null}">
+			<h:outputText value="Symbol" />
+			<h:outputText styleClass="plaintextbold" value="#{geneDetailsBean.geneModel.symbol}" />
+			
+			<h:panelGroup></h:panelGroup>
+			<h:panelGroup></h:panelGroup>
+			
+			<h:outputText value="Name" />
+			<h:outputText styleClass="datatext" value="#{geneDetailsBean.geneModel.name}" />
+			
+			<h:panelGroup></h:panelGroup>
+			<h:panelGroup></h:panelGroup>
+
+			<h:outputText value="Synonyms" />
+			<h:outputText styleClass="datatext" value="#{geneDetailsBean.geneModel.synonyms}" />
+			
+			<h:panelGroup></h:panelGroup>
+			<h:panelGroup></h:panelGroup>
+			
+			<h:outputText value="Chromosome"/>
+			<h:panelGrid  columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+				<h:outputText value="Chromosome:" />
+				<h:outputText value="#{geneDetailsBean.geneModel.xsomeName}" />
+				<h:outputText value="Start:" />
+				<h:outputText value="#{geneDetailsBean.geneModel.xsomeStart}" />
+				<h:outputText value="End:" />
+				<h:outputText value="#{geneDetailsBean.geneModel.xsomeEnd}" />
+				<h:outputText value="Genome Build:" />
+				<h:outputText value="#{geneDetailsBean.geneModel.genomeBuild}" />
+			</h:panelGrid>
+		</h:panelGrid> 
+
+		<h:form id="form1"> 
+	     <h:dataTable value="#{geneStripBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    		
+ 			<h:column >
+    			<f:facet name="header">
+    				<ui:remove><h:commandButton value="Check" action="#{geneStripBean.checkboxSelections()}"></h:commandButton></ui:remove>
+    				<h:commandButton id="checkall" value="Check" action="#{geneStripBean.checkAll}">
+    					<f:ajax execute="@this checkall" render="@form" />
+					</h:commandButton>
+    			</f:facet>
+    				<h:selectBooleanCheckbox id="cb_#{u.geneSymbol}" value="#{u.selected}"></h:selectBooleanCheckbox>
+    		</h:column>
+ 			
+    		<!-- <h:column rendered="#{paramBean.oidcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="oid" actionListener="#{geneStripBean.sort}">
+                         <f:attribute name="sortField" value="SUB_OID" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.oid}
+    		</h:column> -->
+    		
+    		<h:column rendered="#{paramBean.genecol == true}">
+    			<f:facet name="header">
+    				Gene 
+    			</f:facet>
+    			<h:outputLink value="viewGeneDetails.jsf?gene=#{u.geneSymbol}">
+    				#{u.geneSymbol}
+    			</h:outputLink>
+    		</h:column>
+ 
+    		<h:column rendered="#{paramBean.synonymcol == true}">
+    			<f:facet name="header">
+    				Synonyms
+				</f:facet>
+				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.omimcol == true}">
+    			<f:facet name="header">
+    				Disease
+				</f:facet>
+				<h:outputLink value="http://www.gudmap.org/gudmap_dis/Gene_Result.jsp?gene=#{u.geneSymbol}&amp;gene_text=#{u.geneSymbol}">
+    				OMIM(#{u.omimCount})
+    			</h:outputLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.embryostagecol == true}">
+    			<f:facet name="header">
+    				Theiler Stage
+				</f:facet>
+				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}">
+    				#{u.stageRange}
+    			</h:outputLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.ishexpressioncol == true}">
+    			<f:facet name="header">
+    				Expression Profile
+    				<div id="chartTableHeaders" style='text-align:center'></div>
+    				<script type='text/javascript'>prepareGraphTableHeaders(1, 2, "ASC");</script>
+				</f:facet>
+				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.imagescol == true}">
+    			<f:facet name="header">
+    				Expression Images
+				</f:facet>
+    				<img src="#{u.imageUrl}"  height="40"/>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.arrayexpressioncol == true}">
+    			<f:facet name="header">
+    				Microarray Expression Profile
+				</f:facet>
+    				To Do
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.rnaseqcol == true}">
+    			<f:facet name="header">
+    				RNA-SEQ
+				</f:facet>
+				<h:outputLink title="Click to see RNA-SEQ data on UCSC genome browser for #{u.geneSymbol}" 
+					value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&amp;hubUrl=http://www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&amp;position=#{u.geneSymbol}">
+					<h:outputText value="View on UCSC"></h:outputText>
+				</h:outputLink>
+				<br />
+				<h:outputLink title="Open IGV in Java Web Start to see GUDMAP sequencing data for #{u.geneSymbol}"
+					value="http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://www.gudmap.org/Gudmap/ngsData/gudmap_igv_seq_genes.xml&amp;locus=#{u.geneSymbol}">
+					<h:outputText value="View on IGV"></h:outputText>
+				</h:outputLink>
+				
+    		</h:column>
+ 
+    	</h:dataTable>
+      </h:form>  
+      
+      <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel != null and geneDetailsBean.geneModel.assocProbes != null}">
+		<h:outputText value="Probes Linked to Gene" />
+		<h:dataTable value="#{geneDetailsBean.geneModel.assocProbes}" var="probe">
+			<h:column>
+				<h:outputLink styleClass="datatext" value="#{probe[3]}" rendered="#{probe[3] != 'viewMaProbeDetails.jsf' and not empty probe[1]}">
+					<h:outputText value="#{probe[1]}"/>
+				</h:outputLink>
+				<h:outputLink styleClass="datatext" value="#{probe[3]}" rendered="#{probe[3] == 'viewMaProbeDetails.jsf'}">
+					<f:param name="probe" value="#{probe[1]}" />
+					<f:param name="maprobe" value="#{probe[2]}" />
+					<h:outputText value="#{probe[2]}"/>
+				</h:outputLink>
+			</h:column>
+			<h:column  rendered="#{probe[3] != 'viewMaProbeDetails.jsf'}">
+				<h:outputLink styleClass="datatext" value="viewMaProbeDetails.jsf">
+					<f:param name="probe" value="#{probe[1]}" />
+					<f:param name="maprobe" value="#{probe[2]}" />
+					<h:outputText value="(#{probe[2]})"/>
+				</h:outputLink>
+			</h:column>			
+		</h:dataTable>
+	</h:panelGrid>
+	
+	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel != null}">
+		<h:outputText value="Links" />
+		<h:panelGrid   columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+			<h:outputText value="MGI:"/>
+			<h:outputLink styleClass="plaintext" value="#{geneDetailsBean.geneModel.mgiURL}" rendered="#{!GeneInfoBean.xenbaseEntryExists}" target="_blank">
+				<h:outputText value="#{geneDetailsBean.geneModel.mgiAccID}" />
+			</h:outputLink>
+
+			<h:outputText value="Ensembl:" />
+			<h:outputLink styleClass="plaintext" value="#{geneDetailsBean.geneModel.ensemblURL}" target="_blank">
+				<h:outputText value="#{geneDetailsBean.geneModel.ensemblID}" />
+			</h:outputLink>
+
+			<h:outputText value="UCSC:" />
+			<h:outputLink styleClass="plaintext" value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&amp;hubUrl=http%3A//www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&amp;position=#{geneDetailsBean.geneModel.symbol}" target="_blank">
+				<h:outputText value="View sequencing data for this gene in UCSC Genome Browser" />
+			</h:outputLink>
+			
+			<h:outputText value="OMIM:" />
+			<h:outputLink styleClass="plaintext" value="#{geneDetailsBean.geneModel.omimURL}" target="_blank">
+				<h:outputText value="Search OMIM" />
+			</h:outputLink>
+			
+			<h:outputText value="Entrez:" />
+			<h:outputLink styleClass="plaintext" value="#{geneDetailsBean.geneModel.entrezURL}" target="_blank">
+				<h:outputText rendered="#{GeneInfoBean.entrezIdExists}" value="#{geneDetailsBean.geneModel.entrezID}" />
+				<h:outputText rendered="#{!GeneInfoBean.entrezIdExists}" value="Search entrez" />
+			</h:outputLink>
+			
+			<h:outputText value="Genecards:"/>
+			<h:outputLink styleClass="plaintext" value="#{geneDetailsBean.geneModel.geneCardURL}" target="_blank">
+				<h:outputText value="Search GeneCards" />
+			</h:outputLink>
+			
+			<h:outputText value="GO:" />
+			<h:outputLink styleClass="plaintext" value="#{geneDetailsBean.geneModel.goURL}"  target="_blank">
+				<h:outputText value="MGI GO Annotations" />
+			</h:outputLink>
+		</h:panelGrid>
+	</h:panelGrid>
+	
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.iuphar_db_URL != null || GeneDetailsBean.geneModel.iuphar_guide_URL != null}">
+		<h:outputText value="Translational Links" />
+		<h:panelGrid   columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right">
+			<h:outputText  rendered="#{GeneDetailsBean.geneModel.iuphar_db_URL != null}" value="IUPHAR-DB:" />
+			<h:outputLink  rendered="#{GeneDetailsBean.geneModel.iuphar_db_URL != null}" styleClass="plaintext"  value="#{GeneDetailsBean.geneModel.iuphar_db_URL}" target="_blank">
+				<h:outputText value="View pharmacological information for #{GeneDetailsBean.geneModel.symbol}" />
+			</h:outputLink>
+			<h:outputText  rendered="#{GeneDetailsBean.geneModel.iuphar_guide_URL != null}" value="Guide to PHARMACOLOGY:" />
+			<h:outputLink  rendered="#{GeneDetailsBean.geneModel.iuphar_guide_URL != null}" styleClass="plaintext" value="#{GeneDetailsBean.geneModel.iuphar_guide_URL}" target="_blank">
+				<h:outputText value="View pharmacological information for #{GeneDetailsBean.geneModel.symbol}" />
+			</h:outputLink>
+		</h:panelGrid>
+	</h:panelGrid>
+	
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel.ishSubmissions == null}">
+		  <h:outputText value="ISH Data" />
+		  <h:outputText value="no data" />
+	</h:panelGrid>	
+	
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel.ishSubmissions != null}">
+		   <h:outputText value="ISH Data" />
+		   <h:dataTable cellspacing="5" value="#{geneDetailsBean.geneModel.ishSubmissions}" var="sub">
+			<h:column>
+				<f:facet name="header">
+					Accession ID
+				</f:facet>
+				<h:outputLink styleClass="datatext" value="#{sub[1]}">
+					<f:param value="#{sub[0]}" name="accId" />
+					<h:outputText value="#{sub[0]}" />
+				</h:outputLink>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Stage
+				</f:facet>
+				<h:outputText value="#{sub[2]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Sex
+				</f:facet>
+				<h:outputText value="#{sub[5]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Tissue
+				</f:facet>
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+							Specimen Assay Type
+				</f:facet>
+				<h:outputText value="#{sub[3]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					MGI Accession
+				</f:facet>
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'viewMaProbeDetails.jsf'}">
+					<h:outputText value="#{sub[6]}" />
+				</h:outputLink>				
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] == 'viewMaProbeDetails.jsf'}">
+					<f:param name="probe" value="#{sub[6]}" />
+					<h:outputText value="#{sub[6]}" />
+				</h:outputLink>				
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					MA Probe
+				</f:facet>
+				<h:outputLink styleClass="datatext" value="viewMaProbeDetails.jsf">
+					<f:param name="probe" value="#{sub[6]}" />
+					<f:param name="maprobe" value="#{sub[9]}" />
+					<h:outputText value=" (#{sub[9]})" rendered="#{sub[9] != ''}"/>
+				</h:outputLink>
+			</h:column>
+		</h:dataTable>
+	</h:panelGrid>
+	
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.ihcSubmissions == null}">
+		 <h:outputText value="IHC Data" />
+		 <h:outputText value="no data" />	
+	</h:panelGrid>
+	
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.ihcSubmissions != null}">
+		 <h:outputText value="IHC Data" />
+		    <h:dataTable cellspacing="5" value="#{GeneDetailsBean.geneModel.ihcSubmissions}" var="sub">
+			<h:column>
+				<f:facet name="header">
+					Accession ID
+				</f:facet>
+				<h:outputLink styleClass="datatext" value="#{sub[1]}">
+					<f:param value="#{sub[0]}" name="accId" />
+					<h:outputText value="#{sub[0]}" />
+				</h:outputLink>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Stage
+				</f:facet>
+				<h:outputText value="#{sub[2]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Sex
+				</f:facet>
+				<h:outputText value="#{sub[5]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Tissue
+				</f:facet>
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+							Specimen Assay Type
+				</f:facet>
+				<h:outputText value="#{sub[3]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					MGI Accession
+				</f:facet>
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'viewMaProbeDetails.jsf'}">
+					<h:outputText value="#{sub[6]}" />
+				</h:outputLink>				
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] == 'viewMaProbeDetails.jsf'}">
+					<f:param name="probe" value="#{sub[6]}" />
+					<h:outputText value="#{sub[6]}" />
+				</h:outputLink>				
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					MA Probe
+				</f:facet>
+				<h:outputLink styleClass="datatext" value="viewMaProbeDetails.jsf">
+					<f:param name="probe" value="#{sub[6]}" />
+					<f:param name="maprobe" value="#{sub[9]}" />
+					<h:outputText value=" (#{sub[9]})" rendered="#{sub[9] != ''}"/>
+				</h:outputLink>
+			</h:column>
+		</h:dataTable>
+	</h:panelGrid>
+
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.tgSubmissions == null}">
+		        <h:outputText value="Transgenic Data" />
+		        <h:outputText value="no data" />
+	</h:panelGrid>
+
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.tgSubmissions != null}">
+		        <h:outputText value="Transgenic Data" />
+		        <h:dataTable cellspacing="5" value="#{GeneDetailsBean.geneModel.tgSubmissions}" var="sub">
+			<h:column>
+				<f:facet name="header">
+					Accession ID
+				</f:facet>
+				<h:outputLink styleClass="datatext" value="#{sub[1]}">
+					<f:param value="#{sub[0]}" name="accId" />
+					<h:outputText value="#{sub[0]}" />
+				</h:outputLink>			
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Stage
+				</f:facet>
+				<h:outputText value="#{sub[2]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Sex
+				</f:facet>
+				<h:outputText value="#{sub[5]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Tissue
+				</f:facet>
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+							Specimen Assay Type
+				</f:facet>
+				<h:outputText value="#{sub[3]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+							Allele
+				</f:facet>
+				<h:outputText value="#{sub[11]}" styleClass="datatext" />
+			</h:column>
+		</h:dataTable>
+	</h:panelGrid>
+
+
 	</ui:define>
 </ui:composition>
 </html>

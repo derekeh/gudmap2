@@ -112,6 +112,7 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 	                                 "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC "+
 	                                 "WHERE RPR_JAX_ACC = ? "+
 	                                 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
+	  
 	
 	
 	//FULL  PROBE SEQUENCE
@@ -338,7 +339,7 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 	public static String STAGE_BY_OID = "SELECT SUB_OID, SUB_EMBRYO_STG FROM ISH_SUBMISSION WHERE SUB_OID = ?";
 	  
     //LIST OF SUBMISSIONS WITH GENE SYMBOL
-    public static String GENE_RELATED_SUBMISSIONS_ISH = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE,  " + 
+    public static String GENE_RELATED_SUBMISSIONS_ISH = "SELECT DISTINCT SUB_ACCESSION_ID, 'viewSubmissionDetails.jsf', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE,  " + 
                                   "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
                                   "ELSE 'without annotation' " + 
                                   "END, " +
@@ -353,7 +354,7 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
                                   "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
                             		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
                              		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
-                             		"ELSE 'probe.html' END, " +
+                             		"ELSE 'viewMaProbeDetails.jsf' END, " +
                             		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
                                   "FROM ISH_SUBMISSION " + 
                                   "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 

@@ -50,10 +50,7 @@ public class InputBean implements Serializable {
 		// Extract file name from content-disposition header of file part
 		String fileName = getFileName(part);
 		sessionBean.setTempParam(processMyFile(fileName,part));
-		
-		//System.out.println("***** fileName: " + fileName);
-		 
-		//String basePath = "C:" + File.separator + "temp" + File.separator;
+				 
 		String basePath = "/export/data0/documents/geneuploads/";
 		File outputFilePath = new File(basePath + fileName);
 		 
@@ -86,44 +83,6 @@ public class InputBean implements Serializable {
 		return paramBean.geneSearchRedirect();    // return to same page
 	}
 	
-/*	public String uploadFile() throws IOException {
-	 
-		// Extract file name from content-disposition header of file part
-		String fileName = getFileName(part);
-		//System.out.println("***** fileName: " + fileName);
-		 
-		//String basePath = "C:" + File.separator + "temp" + File.separator;
-		String basePath = "/export/data0/documents/geneuploads/";
-		File outputFilePath = new File(basePath + fileName);
-		 
-		// Copy uploaded file to destination path
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
-		try {
-			inputStream = part.getInputStream();
-			outputStream = new FileOutputStream(outputFilePath);
-			 
-			int read = 0;
-			final byte[] bytes = new byte[1024];
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-			 
-			statusMessage = "File upload successfull !!";
-			} catch (IOException e) {
-			e.printStackTrace();
-			statusMessage = "File upload failed !!";
-		} 
-		finally {
-				if (outputStream != null) {
-				outputStream.close();
-				}
-				if (inputStream != null) {
-				inputStream.close();
-				}
-			}
-		return null;    // return to same page
-	}*/
 	 
 	public Part getPart() {
 		return part;
@@ -164,9 +123,6 @@ public class InputBean implements Serializable {
 	    String uploadedGenes = "";
 	    String tempname = myFile.getName();
 		try {   
-			/*if (myFile.getName().indexOf("csv") == -1 && myFile.getName().indexOf("CSV") == -1 &&
-					myFile.getName().indexOf("txt") == -1 && myFile.getName().indexOf("TXT") == -1 )  
-				return null;*/
 			if (filename.indexOf("csv") == -1 && filename.indexOf("CSV") == -1 &&
 					filename.indexOf("txt") == -1 && filename.indexOf("TXT") == -1 )  
 				return null;

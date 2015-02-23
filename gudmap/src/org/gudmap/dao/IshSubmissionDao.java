@@ -1,10 +1,6 @@
 package org.gudmap.dao;
 
 import org.gudmap.globals.Globals;
-//import org.gudmap.models.submission.ExpressionDetailModel;
-//import org.gudmap.models.submission.ExpressionPatternModel;
-//import org.gudmap.models.submission.GeneModel;
-//import org.gudmap.models.submission.IshBrowseSubmissionModel;
 import org.gudmap.models.submission.AntibodyModel;
 import org.gudmap.models.submission.AlleleModel;
 import org.gudmap.models.submission.ImageInfoModel;
@@ -13,7 +9,6 @@ import org.gudmap.models.submission.PersonModel;
 import org.gudmap.models.submission.ProbeModel;
 import org.gudmap.models.submission.SpecimenModel;
 import org.gudmap.models.submission.SubmissionModel;
-//import org.gudmap.models.submission.StatusNoteModel;
 import org.gudmap.queries.submission.*;
 import org.gudmap.utils.Utils;
 import java.util.List;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GeneModel {
 	
-	 private String symbol = null;
+	    private String symbol = null;
 	    private String name = null;
 	    private String synonyms = null;
 	    private String xsomeStart = null;
@@ -21,10 +21,10 @@ public class GeneModel {
 	    private String entrezID = null;
 	    private String refSeqID = null;
 	    private String refSeqURL = null;
-	    private ArrayList ishSubmissions;
-	    private ArrayList ihcSubmissions;
-	    private ArrayList tgSubmissions;
-	    private ArrayList maProbes;
+	    private ArrayList<String[]> ishSubmissions;
+	    private ArrayList<String[]>  ihcSubmissions;
+	    private ArrayList<String[]>  tgSubmissions;
+	    private ArrayList<String[]> maProbes;
 	    private ArrayList arraySubmissions;
 	    private ArrayList ontologyTerms;
 	    private String geneCardURL = null;
@@ -219,43 +219,43 @@ public class GeneModel {
 	        return omimURL;
 	    }
 
-	    public void setIshSubmissions(ArrayList values) {
+	    public void setIshSubmissions(ArrayList<String[]>  values) {
 	        ishSubmissions = values;
 		if (null != ishSubmissions && 0 == ishSubmissions.size())
 		    ishSubmissions = null;
 	    }
 
-	    public ArrayList getIshSubmissions() { 	  	
+	    public ArrayList<String[]>  getIshSubmissions() { 	  	
 	        return ishSubmissions;
 	    }
 
-	    public void setIhcSubmissions(ArrayList values) {
+	    public void setIhcSubmissions(ArrayList<String[]>  values) {
 	    	ihcSubmissions = values;
 		if (null != ihcSubmissions && 0 == ihcSubmissions.size())
 		    ishSubmissions = null;
 	    }
 
-	    public ArrayList getIhcSubmissions() { 	  	
+	    public ArrayList<String[]> getIhcSubmissions() { 	  	
 	        return ihcSubmissions;
 	    }
 	    
-	    public void setTgSubmissions(ArrayList values) {
+	    public void setTgSubmissions(ArrayList<String[]> values) {
 	    	tgSubmissions = values;
 		if (null != tgSubmissions && 0 == tgSubmissions.size())
 		    ishSubmissions = null;
 	    }
 
-	    public ArrayList getTgSubmissions() { 	  	
+	    public ArrayList<String[]>  getTgSubmissions() { 	  	
 	        return tgSubmissions;
 	    }
 	    
-	    public void setAssocProbes(ArrayList values) {
+	    public void setAssocProbes(ArrayList<String[]> values) {
 	        maProbes = values;
 		if (null != maProbes && 0 == maProbes.size())
 		    maProbes = null;
 	    }
 
-	    public ArrayList getAssocProbes() {
+	    public ArrayList<String[]> getAssocProbes() {
 	        return maProbes;
 	    }
 
