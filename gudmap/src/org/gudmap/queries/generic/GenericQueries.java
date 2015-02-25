@@ -160,8 +160,8 @@ public class GenericQueries {
 				"LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID %s SUB_ASSAY_TYPE = 'NextGen' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4   " +
 				"AND SUB_ACCESSION_ID  IN (%s) %s  ) " +
 				
-				"order by gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x  " +
-				"GROUP BY x.gudmap_accession  order by %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex LIMIT ? , ?";
+				"ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x  " +
+				"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex LIMIT ? , ?";
 	   
 	   public final static String ISH_ACCESSION_TOTAL = "SELECT COUNT(DISTINCT SUB_OID) TOTAL_INSITU FROM ISH_SUBMISSION %s JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK " +
 			   "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +

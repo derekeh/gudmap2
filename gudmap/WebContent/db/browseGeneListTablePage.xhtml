@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    Accession ID Results
+	    Gene Query Results As List
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -38,7 +38,7 @@
    		</h:selectManyCheckbox>
    		
    		<h:panelGroup></h:panelGroup>
-   		<h:commandButton id="il_columnSubmit" value="Submit" action="browseAccessionTablePage" disabled="#{not il_insitucheckbox.valid}">
+   		<h:commandButton id="il_columnSubmit" value="Submit" action="browseGeneListTablePage" disabled="#{not il_insitucheckbox.valid}">
    			<f:ajax execute="@form" render=":form1" ></f:ajax>
    		</h:commandButton>
 	    <h:commandButton value="Reset" type="reset" />
@@ -112,7 +112,7 @@
 		   		</h:selectOneRadio>
 	   		</ui:remove>
 	   		
-	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{accessionTablePageBean.refresh()}">
+	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{geneListTablePageBean.refresh()}">
 	   			<f:ajax execute="@form" render=":form1" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>
@@ -123,7 +123,7 @@
 	   	
 	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
 	   		
-	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{accessionTablePageBean.resetAll()}">
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{geneListTablePageBean.resetAll()}">
 	   			<f:ajax execute="@this il_filter_reset" render=":filterform :form1 :focusform" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>	
@@ -133,20 +133,20 @@
 	
 	
         
-	    <h:form id="focusform"><h1>Accession ID Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
-	     <h:outputText value="#{accessionTablePageBean.accessionInput}"></h:outputText>
+	    <h:form id="focusform"><h1>Gene List Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	     <h:outputText value="#{geneListTablePageBean.accessionInput}"></h:outputText>
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
-	     <h:dataTable value="#{accessionTablePageBean.dataList}" var="u"
+	     <h:dataTable value="#{geneListTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
     			
-    		<f:facet name="header">#{accessionTablePageBean.accessionTotals}</f:facet>
+    		<f:facet name="header">#{geneListTablePageBean.accessionTotals}</f:facet>
  			<h:column >
     			<f:facet name="header">
-    				<ui:remove><h:commandButton value="Check" action="#{accessionTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
-    				<h:commandButton id="checkall" value="Check" action="#{accessionTablePageBean.checkAll}">
+    				<ui:remove><h:commandButton value="Check" action="#{geneListTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
+    				<h:commandButton id="checkall" value="Check" action="#{geneListTablePageBean.checkAll}">
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
     			</f:facet>
@@ -155,7 +155,7 @@
  			
     		<!-- <h:column rendered="#{paramBean.oidcol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="oid" actionListener="#{accessionTablePageBean.sort}">
+    				<h:commandLink value="oid" actionListener="#{geneListTablePageBean.sort}">
                          <f:attribute name="sortField" value="SUB_OID" />
                     </h:commandLink>
     			</f:facet>
@@ -164,18 +164,18 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Gene" actionListener="#{accessionTablePageBean.sort}">
+    				<h:commandLink value="Gene" actionListener="#{geneListTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.gene" />
                     </h:commandLink> 
     			</f:facet>
-    			<h:commandLink value="#{u.gene}"  action="viewGeneStrip">
+    			<h:commandLink value="#{u.gene}"  action="viewGeneDetails">
 					<f:param name="gene" value="#{u.gene}"></f:param>
 				</h:commandLink>
     		</h:column>
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    			<h:commandLink value="Gudmap Accession" actionListener="#{accessionTablePageBean.sort}">
+    			<h:commandLink value="Gudmap Accession" actionListener="#{geneListTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.gudmap_accession" />
                     </h:commandLink> 
 				</f:facet>
@@ -187,7 +187,7 @@
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    			<h:commandLink value="Source" actionListener="#{accessionTablePageBean.sort}">
+    			<h:commandLink value="Source" actionListener="#{geneListTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.source" />
                     </h:commandLink>
 				</f:facet>
@@ -203,7 +203,7 @@
     		
     		<h:column rendered="#{paramBean.assaytypecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Assay Type" actionListener="#{accessionTablePageBean.sort}">
+    				<h:commandLink value="Assay Type" actionListener="#{geneListTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.assay_type" />
                     </h:commandLink> 
 				</f:facet>
@@ -219,7 +219,7 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    			<h:commandLink value="Theiler Stage" actionListener="#{accessionTablePageBean.sort}">
+    			<h:commandLink value="Theiler Stage" actionListener="#{geneListTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.stage" />
                     </h:commandLink>
 				</f:facet>
@@ -281,40 +281,40 @@
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
-                <h:commandButton id="firstbutton" value="first" action="#{accessionTablePageBean.pageFirst}"
-                    disabled="#{accessionTablePageBean.firstRow == 0}" >
+                <h:commandButton id="firstbutton" value="first" action="#{geneListTablePageBean.pageFirst}"
+                    disabled="#{geneListTablePageBean.firstRow == 0}" >
                     <f:ajax execute="@this firstbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="prevbutton" value="prev" action="#{accessionTablePageBean.pagePrevious}"
-                    disabled="#{accessionTablePageBean.firstRow == 0}" >
+                <h:commandButton id="prevbutton" value="prev" action="#{geneListTablePageBean.pagePrevious}"
+                    disabled="#{geneListTablePageBean.firstRow == 0}" >
                     <f:ajax execute="@this prevbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="nextbutton" value="next" action="#{accessionTablePageBean.pageNext}"
-                    disabled="#{accessionTablePageBean.firstRow + accessionTablePageBean.rowsPerPage >= accessionTablePageBean.totalRows}" >
+                <h:commandButton id="nextbutton" value="next" action="#{geneListTablePageBean.pageNext}"
+                    disabled="#{geneListTablePageBean.firstRow + geneListTablePageBean.rowsPerPage >= geneListTablePageBean.totalRows}" >
                     <f:ajax execute="@this nextbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="lastbutton" value="last" action="#{accessionTablePageBean.pageLast}"
-                    disabled="#{accessionTablePageBean.firstRow + accessionTablePageBean.rowsPerPage >= accessionTablePageBean.totalRows}" >
+                <h:commandButton id="lastbutton" value="last" action="#{geneListTablePageBean.pageLast}"
+                    disabled="#{geneListTablePageBean.firstRow + geneListTablePageBean.rowsPerPage >= geneListTablePageBean.totalRows}" >
                     <f:ajax execute="@this lastbutton" render="@form" />
                 </h:commandButton>
-                <h:outputText value="Page #{accessionTablePageBean.currentPage} / #{accessionTablePageBean.totalPages}" />
+                <h:outputText value="Page #{geneListTablePageBean.currentPage} / #{geneListTablePageBean.totalPages}" />
                </h:panelGrid>
 			</h:panelGroup>
 			
 			
 			<h:panelGroup>
-                <t:dataList value="#{accessionTablePageBean.pages}" var="page">
-                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{accessionTablePageBean.page}"
-                        rendered="#{page != accessionTablePageBean.currentPage}" />
+                <t:dataList value="#{geneListTablePageBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{geneListTablePageBean.page}"
+                        rendered="#{page != geneListTablePageBean.currentPage}" />
                     <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-                        rendered="#{page == accessionTablePageBean.currentPage}" />
+                        rendered="#{page == geneListTablePageBean.currentPage}" />
                 </t:dataList>
            </h:panelGroup>
            <h:panelGroup>
 				<h:panelGrid columns="4">
 	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
-	                <h:inputText id="rowsPerPage" value="#{accessionTablePageBean.rowsPerPage}" size="3" maxlength="3" />
-	                <h:commandButton id="setrowsbutton" value="Set" action="#{accessionTablePageBean.pageFirst}" >
+	                <h:inputText id="rowsPerPage" value="#{geneListTablePageBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{geneListTablePageBean.pageFirst}" >
 	                	<f:ajax execute="@form" render="@form" />
 	                </h:commandButton>               
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
@@ -324,7 +324,7 @@
 		</h:form> 
 		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
-			<h:inputText id="gotopage" value="#{accessionTablePageBean.gotopage}" />
+			<h:inputText id="gotopage" value="#{geneListTablePageBean.gotopage}" />
 		</h:form> 
 	
 		

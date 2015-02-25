@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.Serializable;
@@ -76,6 +77,7 @@ public class ParamBean implements Serializable {
 	
 	/*gene search options*/
 	private String geneoptionvalues="Expression Summaries";
+	
 		
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
@@ -658,7 +660,9 @@ public class ParamBean implements Serializable {
 		 if(getGeneoptionvalues().equals("Expression Summaries"))
 			 return "viewGeneStrip";
 		 else
+		 {
 			 return "browseGeneListTablePage";
+		 }
 	 }
 	
 	public void resetAll() {
