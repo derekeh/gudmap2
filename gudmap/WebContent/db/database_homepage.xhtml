@@ -43,7 +43,7 @@
 	   		
 	   		
 	   		
-	   		<h:commandButton id="il_filter_submit" value="Save" action="#{paramBean.resetGeneSearchValues()}" onclick="PF('dialog2').hide();">
+	   		<h:commandButton id="il_filter_submit" value="Save" action="#{paramBean.resetGeneSearchValues()}"  onclick="PF('dialog2').hide();">
 	   			<f:ajax execute="@form" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>
@@ -111,13 +111,13 @@
 						function handleInput (inField, e) {
 							//alert(e.keyCode);
 							if (e.keyCode === 13) {
-								if(inField.id=='il_dbhomepage:gene_input')
+								if(inField.id=='il_dbhomepage:gene_input_input')
 				                	document.getElementById('il_dbhomepage:il_gene_go').click();
-								else if(inField.id=='il_dbhomepage:anatomy')
+								else if(inField.id=='il_dbhomepage:anatomy_input_input')
 				                	document.getElementById('il_dbhomepage:go2').click();
 								else if(inField.id=='il_dbhomepage:accession_input')
 				                	document.getElementById('il_dbhomepage:il_accession_go').click();
-								else if(inField.id=='il_dbhomepage:geneFn')
+								else if(inField.id=='il_dbhomepage:genefunction_input_input')
 				                	document.getElementById('il_dbhomepage:go5').click();
 				            }
 				            return false;//so that mainForm is not called
@@ -147,7 +147,8 @@
 	    
 	  
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:inputText id="gene_input" value="#{sessionBean.tempParam}"  onkeypress="handleInput(this,event);"></h:inputText>
+	    	<pr:autoComplete  id="gene_input" value="#{sessionBean.tempParam}" completeMethod="#{autocomplete.completeGene}"
+	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
 	    	
@@ -185,7 +186,8 @@
 	    
 	   
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:inputText id="anatomy_input"></h:inputText>
+	    	 <pr:autoComplete  id="anatomy_input" value="#{sessionBean.anatomyParam}" completeMethod="#{autocomplete.completeAnatomy}"
+	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
@@ -250,7 +252,8 @@
 	    
 	    
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:inputText id="accession_input" value="#{accessionTablePageBean.accessionInput}"  onkeypress="handleInput(this,event)"></h:inputText>
+	    	
+	    	<pr:inputText id="accession_input" value="#{accessionTablePageBean.accessionInput}"  onkeypress="handleInput(this,event)" style="position:relative;"></pr:inputText>
 	    </h:panelGroup> 
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
@@ -287,7 +290,8 @@
 	    	<h:inputText id="genefunction_input"></h:inputText>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:graphicImage library="images/dbhome" name="n_options.png" width="80" height="19" alt=""></h:graphicImage>
+	    	
+	    	<pr:commandButton id="showdialog3" value="Options" onclick="PF('dialog2').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
 	    </h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
 	    	<h:commandLink action="#{solr_result}">
