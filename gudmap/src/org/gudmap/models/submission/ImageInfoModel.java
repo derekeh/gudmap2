@@ -12,19 +12,7 @@ public class ImageInfoModel {
 	protected String assayType;
 	protected String unique_image;
 
-	public void print() {
-		System.out.println(" accessionId = "+ accessionId);
-		System.out.println(" stage = "+stage);
-		System.out.println(" specimenType = "+ specimenType);
-		System.out.println(" filePath = "+filePath);
-		System.out.println(" clickFilePath = "+ clickFilePath);
-		System.out.println(" serialNo = "+serialNo);
-		System.out.println(" note = "+note);
-		System.out.println(" assayType = "+assayType);
-		System.out.println(" unique_image = "+unique_image);
-	}
-
-    public String getAccessionId() {
+	public String getAccessionId() {
     	return accessionId;
     }
     

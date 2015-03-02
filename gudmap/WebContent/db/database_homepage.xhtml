@@ -24,11 +24,12 @@
 		 
 		 	<h:outputText value="Display Result As:"></h:outputText>
 	   		<h:selectOneRadio value="#{paramBean.geneoptionvalues}">
-	   			<f:selectItems value="#{paramBean.geneoptionlist}" />
+	   			<f:selectItems value="#{paramBean.geneoptionlist}"></f:selectItems>
+	   			<f:ajax render="@form" />
 	   		</h:selectOneRadio>
 	   		
-	   		<h:outputText value="Theiler Stage: "></h:outputText>
-	    	<h:panelGroup>
+	   		<h:outputText value="Theiler Stage: "  rendered="#{paramBean.geneoptionvalues != 'Expression Summaries'}"></h:outputText>
+	    	<h:panelGroup rendered="#{paramBean.geneoptionvalues != 'Expression Summaries'}">
 		 		<h:panelGrid columns="4">
 		 			<h:outputText value="From:"></h:outputText>
 		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
@@ -147,7 +148,7 @@
 	    
 	  
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<pr:autoComplete  id="gene_input" value="#{sessionBean.tempParam}" completeMethod="#{autocomplete.completeGene}"
+	    	<pr:autoComplete  id="gene_input" value="#{sessionBean.tempParam}" completeMethod="#{autocompleteBean.completeGene}"
 	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
@@ -186,7 +187,7 @@
 	    
 	   
 	    <h:panelGroup class="db_cell_object_padding">
-	    	 <pr:autoComplete  id="anatomy_input" value="#{sessionBean.anatomyParam}" completeMethod="#{autocomplete.completeAnatomy}"
+	    	 <pr:autoComplete  id="anatomy_input" value="#{sessionBean.anatomyParam}" completeMethod="#{autocompleteBean.completeAnatomy}"
 	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
@@ -287,7 +288,8 @@
 	    
 	   
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:inputText id="genefunction_input"></h:inputText>
+	    	<pr:autoComplete  id="genefunction_input" value="#{sessionBean.geneFunctionParam}" completeMethod="#{autocompleteBean.completeGeneFunction}"
+	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
 	    	

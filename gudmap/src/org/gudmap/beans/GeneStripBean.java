@@ -25,7 +25,7 @@ public class GeneStripBean implements Serializable {
     private String wildcard = "equals";
     private GeneStripBeanAssembler geneStripBeanAssembler;
     private ArrayList<GeneStripModel> dataList;
-    private String tempParam="";
+   // private String tempParam="";
     String str;
     
     @Inject
@@ -123,11 +123,11 @@ public class GeneStripBean implements Serializable {
     public void checkAll(){}
 	public void checkboxSelections(){}
 	
-	public void setTempParam(String tempParam) {
+	/*public void setTempParam(String tempParam) {
 		this.tempParam=tempParam;
 	}
     
 	public String getTempParam(){
 		return tempParam;
-	}
+	}*/
 }

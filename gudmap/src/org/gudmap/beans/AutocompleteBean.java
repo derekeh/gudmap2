@@ -20,7 +20,7 @@ import org.gudmap.queries.generic.AutocompleteQueries;
 
 @Named
 @RequestScoped
-public class Autocomplete {
+public class AutocompleteBean {
 	
 	ArrayList<String> geneList=null;
 	private String geneInput="";
@@ -29,7 +29,7 @@ public class Autocomplete {
 	private PreparedStatement ps;
 	private ResultSet result;
 	
-	public Autocomplete() {
+	public AutocompleteBean() {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -96,6 +96,14 @@ public class Autocomplete {
 		ArrayList<String> matches = new ArrayList<String>();
 		matches.add("Derek");
 		matches.add("Houghton");
+		
+		return matches;
+	}
+	
+	public ArrayList<String> completeGeneFunction(String input) {
+		ArrayList<String> matches = new ArrayList<String>();
+		matches.add("Gudmap");
+		matches.add("Project");
 		
 		return matches;
 	}

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    my page title
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	    <h1>my page header</h1>	
+	    <!-- all other content in here -->   
+	      <pr:dataTable  id="row" value="#{imageMatrixBean.imageInfoModelArray}" var="row">
+			    <pr:columns  columnIndexVar="index" var="columnNames" value="#{imageMatrixBean.imageMatrixHeaders}">
+				    <f:facet name="header">
+				    	<h:outputText value="#{columnNames}"/>
+				    </f:facet>
+				   			        	
+				            <h:outputText value="#{row[index].accessionId}"/>
+				            <br />
+				            <h:outputText value="#{row[index].stage}"/>				            
+
+			    </pr:columns>
+		</pr:dataTable> 
+		 
+		<ui:remove>
+		 <!-- <pr:dataTable  id="row" value="#{imageMatrixBean.imageInfoModelArray}" var="row">
+			    <pr:column>
+				    <f:facet name="header">Stage</f:facet>
+				    <pr:dataTable id="col" value="#{row}" var="col">
+				        <pr:column>				        	
+				            <h:outputText value="#{col.accessionId}"/>
+				            <br />
+				            <h:outputText value="#{col.stage}"/>				            
+				        </pr:column>
+				    </pr:dataTable>
+			    </pr:column>
+		</pr:dataTable>  -->
+		</ui:remove>
+	</ui:define>
+</ui:composition>
+</html>

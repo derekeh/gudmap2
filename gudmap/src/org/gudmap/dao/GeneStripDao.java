@@ -747,5 +747,99 @@ public class GeneStripDao {
 //			System.out.println("Nothing found!!!");
 			return null;
 		}
+	    
+	    //IMAGE MATRIX
+	    public ArrayList<String> retrieveImageIdsByGeneSymbol(String symbol) {
+	    	if (symbol == null || symbol.equals("")) {
+				return null;
+			}
+	    	String queryString = GeneStripQueries.INSITU_SUBMISSION_IMAGE_ID_BY_GENE_SYMBOL;
+	    	ArrayList<String> imageList=null;
+	    	try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString);
+				ps.setString(1, symbol);
+				result =  ps.executeQuery();
+				if (result.first()) {
+					imageList = new ArrayList<String>();
+		        	result.beforeFirst();
+		        	while (result.next()) {
+		        		String imageId = result.getString(1);
+		        		imageList.add(imageId);
+		        	}					
+				}				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+	    	return imageList;
+	    	
+	    }
+	    
+	    public ArrayList <ImageInfoModel>getInsituSubmissionImagesByImageId(ArrayList<String> imageIds) {
+	    	
+			if (imageIds == null || imageIds.size() == 0) {
+				return null;				
+			}
+			ArrayList<ImageInfoModel> imageInfoList = null;
+			String queryString = GeneStripQueries.INSITU_SUBMISSION_IMAGES_BY_IMAGE_ID;
+	        int len = imageIds.size();
+	    	String whereClause = "FILENAME) IN";
+			String imageIdWhereClause = "FILENAME) IN ('" + imageIds.get(0).toString() + "'";
+			
+			for (int i=1;i<len;i++) {
+			    imageIdWhereClause += ", '" + imageIds.get(i).toString()+"'";
+			}
+			imageIdWhereClause += ") ";
+		
+	        queryString = queryString.replace(whereClause, imageIdWhereClause);
+	        try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString);
+				result =  ps.executeQuery();
+				if (result.first()) {
+					result.beforeFirst();
+				    imageInfoList = new ArrayList<ImageInfoModel>();
+				    // get the submission id for the first record
+				    String tempSubmissionId = null;
+				    int serialNo = 0;
+				    String submissionId = null;
+				    ImageInfoModel imageInfoModel = null;
+				    while (result.next()) {
+						submissionId = null;
+						imageInfoModel = new ImageInfoModel();
+			
+					    submissionId = result.getString(1);
+					    imageInfoModel.setAccessionId(submissionId);
+					    imageInfoModel.setStage("TS"+result.getString(2));
+					    imageInfoModel.setSpecimenType(result.getString(3));
+					    imageInfoModel.setFilePath(result.getString(4));
+					    imageInfoModel.setClickFilePath(result.getString(5));
+					    imageInfoModel.setUniqueImage(result.getString(6));//DEREK
+			
+						if (tempSubmissionId == null || !submissionId.equals(tempSubmissionId)) { // its first record or a new submission
+						    tempSubmissionId = submissionId;
+						    serialNo = 1;
+						    imageInfoModel.setSerialNo(""+serialNo);
+						} else {
+						    serialNo++;
+						    imageInfoModel.setSerialNo(Integer.toString(serialNo));
+						} 
+						// put the image detail object into the result
+						imageInfoList.add(imageInfoModel);
+				    }					
+				}				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+	        
+	        return imageInfoList;
+	        
+		}
 
 }
