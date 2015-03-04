@@ -9,8 +9,9 @@
 	xmlns:pr="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	
 	<ui:define name="title">
-	    my page title
+	    Image Matrix
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -18,36 +19,43 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	<style>
+		.gd_container {max-width:3000px;}
+	</style>
 	<!-- can use relative links on html tags -->
-	    <h1>my page header</h1>	
-	    <!-- all other content in here -->   
-	      <pr:dataTable  id="row" value="#{imageMatrixBean.imageInfoModelArray}" var="row">
+		#{imageMatrixBean.setup()}
+	    <h1>Image Matrix</h1>	
+	    <!-- all other content in here -->  
+	    <h:form>
+	    
+	      <pr:dataTable  id="row" value="#{imageMatrixBean.imageInfoModelArray}" var="row" draggableColumns="true" paginator="true" rows="10"
+		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                 rowsPerPageTemplate="10,50,100">
+                  
 			    <pr:columns  columnIndexVar="index" var="columnNames" value="#{imageMatrixBean.imageMatrixHeaders}">
 				    <f:facet name="header">
-				    	<h:outputText value="#{columnNames}"/>
+				    	<h:outputText value="#{columnNames}"/>  <!-- rendered="#{columnNames == 'TS23'}" --> 
 				    </f:facet>
-				   			        	
-				            <h:outputText value="#{row[index].accessionId}"/>
+				    	<h:panelGroup> <!-- rendered="#{columnNames == 'TS23'}" -->
+				    		<h:outputLink value="viewSubmissionDetails.jsf" >    	
+				            	<h:outputText value="#{row[index].accessionId}"/>
+				            	<f:param name="accId" value="#{row[index].accessionId}" />
+				            </h:outputLink>  
 				            <br />
-				            <h:outputText value="#{row[index].stage}"/>				            
-
+				            <h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{row[index].stage.toLowerCase()}definition.html">
+				            	<h:outputText value="#{row[index].stage}"/>	
+				            </h:outputLink>
+				            <br />
+				            <h:outputLink value="#{row[index].clickFilePath}">
+				            	<img src="#{row[index].filePath}" />
+				            </h:outputLink>	
+				            <br />
+				            <h:selectBooleanCheckbox id="cb_#{row[index].oid}" value="#{row[index].selected}" rendered="#{row[index] != null}" ></h:selectBooleanCheckbox>	            
+						</h:panelGroup>
 			    </pr:columns>
 		</pr:dataTable> 
-		 
-		<ui:remove>
-		 <!-- <pr:dataTable  id="row" value="#{imageMatrixBean.imageInfoModelArray}" var="row">
-			    <pr:column>
-				    <f:facet name="header">Stage</f:facet>
-				    <pr:dataTable id="col" value="#{row}" var="col">
-				        <pr:column>				        	
-				            <h:outputText value="#{col.accessionId}"/>
-				            <br />
-				            <h:outputText value="#{col.stage}"/>				            
-				        </pr:column>
-				    </pr:dataTable>
-			    </pr:column>
-		</pr:dataTable>  -->
-		</ui:remove>
+	  </h:form>
+		
 	</ui:define>
 </ui:composition>
 </html>

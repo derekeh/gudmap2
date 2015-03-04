@@ -2,6 +2,7 @@ package org.gudmap.models.submission;
 
 public class ImageInfoModel {
 	
+	protected String oid;
 	protected String accessionId;
 	protected String stage; // theiler stage
 	protected String specimenType;
@@ -11,6 +12,15 @@ public class ImageInfoModel {
 	protected String note;
 	protected String assayType;
 	protected String unique_image;
+	protected boolean selected=false;
+	
+	public String getOid() {
+		return oid;
+	}
+	
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
 
 	public String getAccessionId() {
     	return accessionId;
@@ -53,7 +63,7 @@ public class ImageInfoModel {
 	      }
 
 	      if (null == clickFilePath || clickFilePath.endsWith("tif")) {
-	    	  String ret = org.gudmap.globals.Globals.applicationRoot +"db/zoom_viewer.html?id="+accessionId;
+	    	  String ret = org.gudmap.globals.Globals.applicationRoot +"db/zoom_viewer.jsf?id="+accessionId;
 			  if (null == serialNo)
 			      ret += "&serialNo=1";
 			  else
@@ -104,10 +114,17 @@ public class ImageInfoModel {
   		return unique_image;
       }
 
-        public void setUniqueImage(String unique_image) {
+      public void setUniqueImage(String unique_image) {
         	this.unique_image = unique_image;
   	  }
-
+        
+      public void setSelected(boolean selected){
+    	  this.selected = selected;
+      }
+      
+      public boolean getSelected() {
+    	  return selected;
+      }
 	  
 
 }

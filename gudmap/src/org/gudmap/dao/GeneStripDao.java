@@ -819,6 +819,7 @@ public class GeneStripDao {
 					    imageInfoModel.setFilePath(result.getString(4));
 					    imageInfoModel.setClickFilePath(result.getString(5));
 					    imageInfoModel.setUniqueImage(result.getString(6));//DEREK
+					    imageInfoModel.setOid(result.getString(7));
 			
 						if (tempSubmissionId == null || !submissionId.equals(tempSubmissionId)) { // its first record or a new submission
 						    tempSubmissionId = submissionId;
@@ -828,6 +829,8 @@ public class GeneStripDao {
 						    serialNo++;
 						    imageInfoModel.setSerialNo(Integer.toString(serialNo));
 						} 
+						
+						imageInfoModel.setSelected(false);
 						// put the image detail object into the result
 						imageInfoList.add(imageInfoModel);
 				    }					

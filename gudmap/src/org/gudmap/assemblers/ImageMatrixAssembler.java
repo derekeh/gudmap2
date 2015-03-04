@@ -9,7 +9,9 @@ public class ImageMatrixAssembler {
 	
 	private ArrayList<String> imageIdList;
 	private GeneStripDao geneStripDao;
-	private ArrayList<ArrayList> imageInfoList = null;
+	private ArrayList<Object> imageInfoList = null;
+	//private ArrayList<ArrayList> imageInfoList = null;
+	private ArrayList<String> stages = null;
 	
 	public ImageMatrixAssembler() {
 		
@@ -18,14 +20,11 @@ public class ImageMatrixAssembler {
 	public ImageMatrixAssembler(String geneSymbol){
 		geneStripDao = new GeneStripDao();
 		imageIdList = geneStripDao.retrieveImageIdsByGeneSymbol(geneSymbol);
+		stages = new ArrayList<String>();
 	}
 	
 	 public void getData() {
-			/*if (imageData != null && !isAnyParameterChenged()) {
-			    return imageData;
-			}*/
 			ArrayList<ImageInfoModel>rawImageInfo = null;
-			//ArrayList<ArrayList> imageInfoList = null;
 			// if imageId is not null, get data by image id; or get data by gene
 			if (imageIdList != null && imageIdList.size() > 0) {
 			    rawImageInfo = geneStripDao.getInsituSubmissionImagesByImageId(imageIdList);
@@ -35,14 +34,12 @@ public class ImageMatrixAssembler {
 			if (rawImageInfo != null && rawImageInfo.size() != 0) {
 			    imageInfoList = reconstructInsituSubmissionImageInfo(rawImageInfo);
 			}
-			
-			//return imageInfoList;
 	}
 	 
-	 private ArrayList<ArrayList> reconstructInsituSubmissionImageInfo(ArrayList<ImageInfoModel> rawImageInfo) {
+	 private ArrayList<Object> reconstructInsituSubmissionImageInfo(ArrayList<ImageInfoModel> rawImageInfo) {
 			if (rawImageInfo != null) {
 			    int numberOfImages = rawImageInfo.size();
-			    ArrayList<ArrayList> imageResultList = new ArrayList<ArrayList>();
+			    ArrayList<Object> imageResultList = new ArrayList<Object>();
 			    int step = 0;
 			    String tempStage = null;
 			    ImageInfoModel imageInfoModel = null;
@@ -54,7 +51,7 @@ public class ImageMatrixAssembler {
 					// different ArrayList objects and then put them together into
 					// the final result ArrayList
 					for (int j=i;j<numberOfImages;j++) {
-						imageInfoModel = (ImageInfoModel)rawImageInfo.get(j);
+						imageInfoModel = rawImageInfo.get(j);
 					    stage = imageInfoModel.getStage();
 					    step++;
 					    if (tempStage == null) { // first image of the stage
@@ -83,6 +80,40 @@ public class ImageMatrixAssembler {
 			return null;
 	 }
 	 
+	/* public ImageInfoModel[][] retrieveData() {
+			
+		 	getData();
+			
+			if (imageInfoList == null || imageInfoList.size() == 0) {
+			    return null;
+			}
+			int dataLength = getDataLength();
+			int numRows = dataLength;
+			int numCols = retrieveStages().size();
+			
+			ImageInfoModel[][] dataItems = new ImageInfoModel[numRows][numCols];
+			ArrayList imagesOfGivenStage =null;
+			int iNumber = -1;
+			ImageInfoModel imageInfoItem = null;
+			for (int i=0; i<numRows; i++)  
+			    for (int j=0, col=0; j<imageInfoList.size(); j++) {
+				
+					imagesOfGivenStage = (ArrayList)imageInfoList.get(j);
+					iNumber = imagesOfGivenStage.size();
+					imageInfoItem = null;
+					if (i >= iNumber)
+					    dataItems[i][col] = null; //using null can use EL in rendered statement for checkbox
+						//dataItems[i][col] = new ImageInfoModel();
+					else {
+					    imageInfoItem = (ImageInfoModel)imagesOfGivenStage.get(i);
+					    dataItems[i][col] = imageInfoItem;
+					}
+					col++;
+			    }
+			
+			return dataItems; 
+	    }*/
+	 
 	 public ImageInfoModel[][] retrieveData() {
 			
 		 	getData();
@@ -91,45 +122,25 @@ public class ImageMatrixAssembler {
 			    return null;
 			}
 			int dataLength = getDataLength();
-			//int numRows = Math.min(num, dataLength-offset);
 			int numRows = dataLength;
-			int numCols = getStages().size();
-			int offset=0;
+			int numCols = retrieveStages().size();
 			
 			ImageInfoModel[][] dataItems = new ImageInfoModel[numRows][numCols];
-			ArrayList imagesOfGivenStage =null;
+			ArrayList<ImageInfoModel> imagesOfGivenStage =null;
 			int iNumber = -1;
 			ImageInfoModel imageInfoItem = null;
-			int idx = 0;
-			String submissionId = null;
-			String stage = null;
-			String serialNumber = null;
-		    String uniqueImage = null;//DEREK
-			
 			for (int i=0; i<numRows; i++)  
 			    for (int j=0, col=0; j<imageInfoList.size(); j++) {
 				
-					imagesOfGivenStage = (ArrayList)imageInfoList.get(j);
+					imagesOfGivenStage = (ArrayList<ImageInfoModel>)imageInfoList.get(j);
 					iNumber = imagesOfGivenStage.size();
 					imageInfoItem = null;
-					idx = i+offset;
-					if (idx >= iNumber)
-					    dataItems[i][col] = new ImageInfoModel();
+					if (i >= iNumber)
+					    dataItems[i][col] = null; //using null can use EL in rendered statement for checkbox
+						//dataItems[i][col] = new ImageInfoModel();
 					else {
-					    imageInfoItem = (ImageInfoModel)imagesOfGivenStage.get(i+offset);
-					   /* submissionId = imageInfoItem.getAccessionId();
-					    stage = imageInfoItem.getStage();
-					    serialNumber = imageInfoItem.getSerialNo();
-					    uniqueImage = imageInfoItem.getUniqeImage();//derek
-			
-					    ArrayList<DataItem> complexValue = new ArrayList<DataItem>();
-					    complexValue.add(new DataItem(submissionId, -1)); 	// Type=-1 means that the item will not display
-					    complexValue.add(new DataItem(submissionId, submissionId, "ish_submission.html?id="+submissionId, 10)); // submission id
-					    complexValue.add(new DataItem(stage,"", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+stage.toLowerCase()+"definition.html", 3));  // stage
-					    DataItem zoomViewerItem = new DataItem(imageInfoItem.getFilePath(), "Click to open in the zoom viewer", imageInfoItem.getClickFilePath(), 14);
-					    complexValue.add(zoomViewerItem);  // zoom viewer
-					    complexValue.add(new DataItem(uniqueImage, -1));//DEREK
-*/					    dataItems[i][col] = imageInfoItem;
+					    imageInfoItem = imagesOfGivenStage.get(i);
+					    dataItems[i][col] = imageInfoItem;
 					}
 					col++;
 			    }
@@ -139,10 +150,9 @@ public class ImageMatrixAssembler {
 	 
 	  private int getDataLength() {
 			int dataLength = 0;
-			int len = imageInfoList.size();
 			int imageNumbers = 0;
 			for (Object list: imageInfoList) {
-			    imageNumbers = ((ArrayList)list).size();
+			    imageNumbers = ((ArrayList<?>)list).size();
 			    if (imageNumbers > dataLength) {
 			    	dataLength = imageNumbers;
 			    }
@@ -150,18 +160,20 @@ public class ImageMatrixAssembler {
 			return dataLength;
 	 }
 	  
-	  public ArrayList<String> getStages() {
-			ArrayList<String> stages = new ArrayList<String>();
-			//imageData = getData();
+	  public ArrayList<String> retrieveStages() {
+			//stages is global so can be referenced from bean
 			if (imageInfoList==null)
 			    return stages;
-			int len = imageInfoList.size();
 			String stage = null;
 			for(Object imagesForGivenStage : imageInfoList) {
-			    stage = ((ImageInfoModel)((ArrayList)imagesForGivenStage).get(0)).getStage();
+			    stage = ((ImageInfoModel)((ArrayList<?>)imagesForGivenStage).get(0)).getStage();
 			    stages.add(stage);
 			}
 			return stages;
 	    }
+	  
+	  public ArrayList<String> getStages() {
+		  return stages;
+	  }
 
 }
