@@ -5,11 +5,13 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.ImageMatrixAssembler;
@@ -17,6 +19,7 @@ import org.gudmap.models.submission.ImageInfoModel;
 
 @Named
 @SessionScoped
+//@RequestScoped
 public class ImageMatrixBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -27,19 +30,42 @@ public class ImageMatrixBean implements Serializable{
 	//private String[] imageMatrixHeaders = {"TS17","TS20","TS21","TS23","TS25","TS27","TS28"};
 	private List<String> selectedItems;
     private boolean areAllChecked;
+    
+   /* @Inject
+   	protected SessionBean sessionBean;*/
 	
 	public ImageMatrixBean() {
 		//use this if request bean. 
 		/*FacesContext facesContext = FacesContext.getCurrentInstance();
-		this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
+		if(facesContext.getExternalContext().getRequestParameterMap().get("gene")!=null)
+    		this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
 		imageMatrixAssembler = new ImageMatrixAssembler(geneSymbol);
 		setup();*/
 	}
+	
+	/*public void setSessionBean(SessionBean sessionBean){
+		this.sessionBean=sessionBean;
+	}
+    
+    public SessionBean getSessionBean() {
+    	return sessionBean;
+    }*/
+    
+   /* @PostConstruct
+	 public void setInputParams(){
+    	if(geneSymbol==null || geneSymbol.equals(""))
+    		geneSymbol=getSessionBean().getGeneParam();
+    	//imageMatrixAssembler = new ImageMatrixAssembler(geneSymbol);
+		//setup();
+	 }*/
 		
 	public void setup() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
 		imageMatrixAssembler = new ImageMatrixAssembler(geneSymbol);
+		
+		/*if(geneSymbol==null || geneSymbol.equals(""))
+    		geneSymbol=getSessionBean().getGeneParam();*/
 		
 		imageInfoModelArray=imageMatrixAssembler.retrieveData();
 	}

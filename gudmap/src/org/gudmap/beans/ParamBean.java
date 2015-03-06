@@ -627,6 +627,7 @@ public class ParamBean implements Serializable {
 	/******************reset*******************/
 	
 	public void resetValues(){
+		genevalues="";
 		fromdatevalues=null;
 		todatevalues=null;
 		setSourcevalues(new String[0]);
@@ -639,12 +640,15 @@ public class ParamBean implements Serializable {
 		setSexvalues("");
 		setSpecimentypevalues("");
 		tempfromvalues="";
-		//setWhereclause(GenericQueries.WHERE_CLAUSE);
+		//TODO THIS WAS COMMENTED OUT FOR A REASON, BUT IF IT IS THEN CAN'T APPLY THE FILTER MORE THAN ONCE ON AN INPUT VALUE???
+		//IN ORDER TO PRESERVE THE WHERE CLAUSE FOR USE ON MULTIPLE PAGES MAYBE
+		setWhereclause(GenericQueries.WHERE_CLAUSE);
 	}
-	
+	//DONT RESET THE THEILER STAGES HERE BECAUSE THEY ARE SET IN THE OPTIONS AND PRESERVED FOR USE IN THE SUBSEQUENT FILTER
 	public String resetGeneSearchValues() {
-		setTheilerstagefromvalues("");
-		setTheilerstagetovalues("");
+		
+		//setTheilerstagefromvalues("");
+		//setTheilerstagetovalues("");
 		//setGeneoptionvalues("Expression Summaries");
 		return "database_homepage";
 	}

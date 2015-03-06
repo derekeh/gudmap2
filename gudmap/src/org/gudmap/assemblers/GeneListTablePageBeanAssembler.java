@@ -32,6 +32,7 @@ public class GeneListTablePageBeanAssembler {
 	private String paramSQL;
 	private String assayType;
 	private String whereclause;
+	private String arrayWhereclause;
 	private String focusGroupWhereclause;
 	private String expressionJoin;
 	private String specimenWhereclause;
@@ -54,6 +55,8 @@ public class GeneListTablePageBeanAssembler {
 											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input,
 											String focusGroupSpWhereclause){
 		this.whereclause=whereclause;
+		arrayWhereclause=whereclause.replace("SUB_EMBRYO_STG", "MBC_SUB_EMBRYO_STG");
+		arrayWhereclause=arrayWhereclause.replace("SUB_SOURCE", "MBC_SUB_SOURCE");
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		this.expressionJoin=expressionJoin;
 		this.specimenWhereclause=specimenWhereclause;
@@ -63,7 +66,7 @@ public class GeneListTablePageBeanAssembler {
 		
 		String sql = String.format(paramSQL, expressionJoin,
 									whereclause,input,focusGroupWhereclause,
-									whereclause,input,focusGroupSpWhereclause,
+									arrayWhereclause,input,focusGroupSpWhereclause,
 									sortField, sortDirection);
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
@@ -132,7 +135,7 @@ public class GeneListTablePageBeanAssembler {
 		}
 		accessionTotals+=(insitucount+")  Microarray(");
 		queryString=GeneListQueries.MICROARRAY_GENELIST_TOTAL;
-		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
+		sql = String.format(queryString, arrayWhereclause,input,focusGroupSpWhereclause);
 		try
 		{
 				con = ds.getConnection();

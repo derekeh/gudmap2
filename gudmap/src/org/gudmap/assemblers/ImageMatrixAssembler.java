@@ -12,6 +12,7 @@ public class ImageMatrixAssembler {
 	private ArrayList<Object> imageInfoList = null;
 	//private ArrayList<ArrayList> imageInfoList = null;
 	private ArrayList<String> stages = null;
+	//private String geneSymbol;
 	
 	public ImageMatrixAssembler() {
 		

@@ -34,7 +34,7 @@ public class GeneListTablePageBean extends PagerImpl implements Serializable  {
     private boolean areAllChecked;
     private String accessionTotals;
     private  String accessionInput;
-    private  String accessionInputQuery;
+    protected  String accessionInputQuery;
     
     @Inject
    	protected ParamBean paramBean;
@@ -80,15 +80,16 @@ public class GeneListTablePageBean extends PagerImpl implements Serializable  {
     
     @PostConstruct
     public void setRemoteWhereclause(){
-    	paramBean.setWhereclause(whereclause);
+    	//DONT RESET THE WHERECLAUSE HERE BECAUSE IT IS SET IN THE OPTIONS
+    	//paramBean.setWhereclause(whereclause);
     }
     
     @Override
     public void loadDataList() {
-    	setAccessionInput(sessionBean.getTempParam());
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,accessionInputQuery,
-    									paramBean.getFocusGroupSpWhereclause());
+				paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,accessionInputQuery,
+				paramBean.getFocusGroupSpWhereclause());
+    	
         // Set currentPage, totalPages and pages.
     	//setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();
@@ -182,30 +183,6 @@ public class GeneListTablePageBean extends PagerImpl implements Serializable  {
     	}    	
     }
     
-/*    public static void setAccessionInput(String inputStr){
-    	// check for empty string
-    	if (inputStr == "")
-    	{
-    		accessionInput = inputStr;
-    	}
-    	else
-    	{    						
-    		String[] accessionList = accessionInput.split("\\;");
-    		String parsedString = "";
-    		String parsedQuery = "";
-    		String tmpStr = "";
-    		for (int i=0; i<accessionList.length; i++)
-    		{
-    			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
-    			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
-    			parsedString += tmpStr;
-    			tmpStr="";
-    		}
-    		accessionInputQuery = parsedQuery.substring(0,parsedQuery.length()-1); 
-    		accessionInput=parsedString.replace("'","");
-    		
-    	}    	
-    }*/
     
     public String getAccessionInput(){
     	return accessionInput;

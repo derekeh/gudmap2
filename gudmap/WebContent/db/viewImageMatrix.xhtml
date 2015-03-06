@@ -19,19 +19,21 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	<f:metadata>
+		<f:viewParam name="gene" value="sessionBean.geneParam" />
+	</f:metadata>
 	<style>
 		.gd_container {max-width:3000px;}
 	</style>
+	
 	<!-- can use relative links on html tags -->
-		#{imageMatrixBean.setup()}
 	    <h1>Image Matrix</h1>	
 	    <!-- all other content in here -->  
 	    <h:form>
-	    
+	    #{imageMatrixBean.setup()}
 	      <pr:dataTable  id="row" value="#{imageMatrixBean.imageInfoModelArray}" var="row" draggableColumns="true" paginator="true" rows="10"
 		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                  rowsPerPageTemplate="10,50,100">
-                  
 			    <pr:columns  columnIndexVar="index" var="columnNames" value="#{imageMatrixBean.imageMatrixHeaders}">
 				    <f:facet name="header">
 				    	<h:outputText value="#{columnNames}"/>  <!-- rendered="#{columnNames == 'TS23'}" --> 

@@ -19,6 +19,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+	
 	<h:form>
 	#{paramBean.setGenotypecol(false)}
 	#{paramBean.setProbenamecol(true)}
@@ -130,10 +131,10 @@
 	  </h:form>    
 	   	
 	</pr:dialog> 
-	
-	
-        
+	 
 	    <h:form id="focusform"><h1>Gene List Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	     #{geneListTablePageBean.setAccessionInput(sessionBean.getTempParam())}
+	     #{geneListTablePageBean.loadDataList()}
 	     <h:outputText value="#{geneListTablePageBean.accessionInput}"></h:outputText>
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
