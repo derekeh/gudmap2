@@ -154,4 +154,46 @@ public class AnatomyQueries {
 		     "LEFT JOIN ISH_DENSITY ON DEN_EXPRESSION_FK = EXP_OID "+
 		     "ORDER BY ANO_COMPONENT_NAME";
 		
+		public static String COMPONENT_IDS_BY_NAME = "SELECT DISTINCT ATN_PUBLIC_ID FROM ANA_NODE, ANA_TIMED_NODE WHERE ANO_OID = ATN_NODE_FK AND ANO_COMPONENT_NAME = ?" +
+    			" UNION SELECT DISTINCT ATN_PUBLIC_ID FROM ANA_NODE, ANA_TIMED_NODE, ANA_SYNONYM WHERE SYN_OBJECT_FK = ANO_OID AND ANO_OID = ATN_NODE_FK AND SYN_SYNONYM = ?" +
+    			"  UNION SELECT DISTINCT ATN_PUBLIC_ID FROM ANA_NODE, ANA_TIMED_NODE WHERE ATN_NODE_FK = ANO_OID AND ATN_PUBLIC_ID = ?" +
+    			" UNION SELECT DISTINCT ATN_PUBLIC_ID FROM ANA_NODE, ANA_TIMED_NODE WHERE ATN_NODE_FK = ANO_OID AND ANO_PUBLIC_ID = ?";
+		
+		public static String ISHSelectForAnatomy =  "(select distinct QIC_RPR_SYMBOL col1, "+
+				"QIC_ANO_COMPONENT_NAME col2, "+
+		        "QIC_EXP_STRENGTH col3,"+
+				"QIC_SUB_SOURCE col4,"+
+				"QIC_SUB_SUB_DATE col5,"+
+				"QIC_SUB_EMBRYO_STG col6,"+
+				"QIC_SPN_ASSAY_TYPE col7,"+
+				"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
+				"QIC_SUB_THUMBNAIL col9,"+
+				"QIC_SUB_ACCESSION_ID col10,"+
+				"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15," +
+				"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 " +
+				"FROM QSC_ISH_CACHE ";
+		
+		public static String getComponentRelations(int numberOfComponents, String col1, String col2) {
+		    	
+		    	StringBuffer componentRealtionsQ = new StringBuffer("SELECT DISTINCT "+col1 + 
+		    			" FROM ANA_TIMED_NODE DESCEND_ATN " +
+		    			"JOIN ANAD_RELATIONSHIP_TRANSITIVE " +
+		    			"ON DESCEND_ATN.ATN_NODE_FK = RTR_DESCENDENT_FK " +
+		    			"JOIN ANA_TIMED_NODE ANCES_ATN " +
+		    			"ON ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
+		    			"WHERE ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
+		    			"AND "+col2+" IN (");
+		    	
+		    	for(int i=0;i<numberOfComponents;i++){
+		        	if(i == numberOfComponents-1){
+		        		componentRealtionsQ.append("?)");
+		        	}
+		        	else {
+		        		componentRealtionsQ.append("?, ");
+		        	}
+		        }
+		    	
+		    	return componentRealtionsQ.toString();
+		    }
+		
 }

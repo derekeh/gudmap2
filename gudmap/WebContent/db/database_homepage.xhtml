@@ -115,7 +115,7 @@
 								if(inField.id=='il_dbhomepage:gene_input_input')
 				                	document.getElementById('il_dbhomepage:il_gene_go').click();
 								else if(inField.id=='il_dbhomepage:anatomy_input_input')
-				                	document.getElementById('il_dbhomepage:go2').click();
+				                	document.getElementById('il_dbhomepage:il_anatomy_go').click();
 								else if(inField.id=='il_dbhomepage:accession_input')
 				                	document.getElementById('il_dbhomepage:il_accession_go').click();
 								else if(inField.id=='il_dbhomepage:genefunction_input_input')
@@ -187,12 +187,12 @@
 	    
 	   
 	    <h:panelGroup class="db_cell_object_padding">
-	    	 <pr:autoComplete  id="anatomy_input" value="#{sessionBean.anatomyParam}" completeMethod="#{autocompleteBean.completeAnatomy}"
+	    	 <pr:autoComplete  id="anatomy_input" value="#{anatomyTablePageBean.userInput}" completeMethod="#{autocompleteBean.completeAnatomy}"
 	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink action="#{solr_result}">
+	    	<h:commandLink id="il_anatomy_go" action="#{anatomyTablePageBean.prepareTable}">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>

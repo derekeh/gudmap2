@@ -35,16 +35,13 @@ public class TgTablePageBean extends InsituTablePageBean implements Serializable
     @Override
     public String refresh(){
     	loadDataList();
-    	paramBean.resetValues();
+    	//paramBean.resetValues();
     	return "browseTgTablePage";
     }
     
     @Override
     public String resetAll() {
-		paramBean.resetValues();
-		paramBean.setWhereclause(GenericQueries.WHERE_CLAUSE);
-		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
+		paramBean.resetAll();
 		loadDataList();
 		return "browseTgTablePage";
 	}

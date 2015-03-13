@@ -467,5 +467,56 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
         }
         return str;
     }
+    
+    public static String normaliseApostrophe(String inputString) {
+    	return inputString.replaceAll("\'", "\\"+"\\\'");
+    }
+    
+    public static String createSqlInputFromResult(String[] input) {
+	    String output = "";
+	    if(null != input) {
+			for(int i = 0; i < input.length; i++) {
+				output += "'"+input[i] + "',";
+			}
+			if(input.length >= 1) {
+				output = output.substring(0, output.length()-1);
+			}
+	    }
+	    return output;
+    }
+    
+    public static String[] processInputString(String input){
+    	String RET[] = null;
+        	// check for empty string
+        	if (input==null || input == "")
+        	{
+        		return RET;
+        	}
+        	else
+        	{    
+        		RET = new String[2];
+        		String[] accessionList = input.split("\\;");
+        		String parsedString = "";
+        		String parsedQuery = "";
+        		String tmpStr = "";
+        		for (int i=0; i<accessionList.length; i++)
+        		{
+        			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
+        			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
+        			parsedString += tmpStr;
+        			tmpStr="";
+        		}
+        		//userInputQuery
+        		RET[0]= parsedQuery.substring(0,parsedQuery.length()-1);
+        		//userInput
+        		RET[1]= parsedString.replace("'","");
+        		
+        		/*this.accessionInputQuery = parsedQuery.substring(0,parsedQuery.length()-1); 
+        		this.accessionInput=parsedString.replace("'","");*/
+        		
+        	} 
+        	return RET;
+
+    }
 
 }

@@ -64,7 +64,7 @@ public class ParamBean implements Serializable {
 	private String probenamevalues;
 	private String theilerstagefromvalues;
 	private String theilerstagetovalues;
-	private String sexvalues;
+	private String sexvalues="ALL";
 	private String specimentypevalues;	
 	private ParamBeanAssembler assembler;
 	private String whereclause=" WHERE ";
@@ -454,7 +454,7 @@ public class ParamBean implements Serializable {
  * getters and setters for filter outcomes 
  * CHECK FOR NULL VALUE WHEN THE COMPONENT IN FILTER VIEW MIGHT BE COMMENTED OUT
  * ************************/
-	
+	private String sourcevalueclause="";
 	public void setSourcevalues(String[] sourcevalues){
 		this.sourcevalues=sourcevalues;
 		if(sourcevalues!=null){
@@ -463,7 +463,8 @@ public class ParamBean implements Serializable {
 				for(int i=0;i<sourcevalues.length;i++){
 					str+="'"+sourcevalues[i]+"',";
 				}
-				whereclause+="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+				//whereclause+="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+				sourcevalueclause="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
 			}
 		}
 	}
@@ -492,6 +493,7 @@ public class ParamBean implements Serializable {
 		return fromdatemysql;
 	}
 	
+	private String datevalueclause="";
 	public void setTodatevalues(Date todatevalues){
 		if(todatevalues!=null && !todatevalues.equals(""))
 		{
@@ -499,7 +501,8 @@ public class ParamBean implements Serializable {
 			todatemysql = sdf.format(todatevalues);
 			if(getFromdatevalues()!=null && !getFromdatevalues().equals("")){
 				tempfromvalues+=todatemysql+"'";
-				whereclause+=tempfromvalues+" AND ";
+				//whereclause+=tempfromvalues+" AND ";
+				datevalueclause=tempfromvalues+" AND ";
 			}
 		}
 	}
@@ -512,6 +515,7 @@ public class ParamBean implements Serializable {
 		return todatemysql;
 	}
 	
+	private String assaytypevalueclause="";
 	public void setAssaytypeinsituvalues(String[] assaytypeinsituvalues){
 		this.assaytypeinsituvalues=assaytypeinsituvalues;
 		if(assaytypeinsituvalues!=null){
@@ -520,7 +524,8 @@ public class ParamBean implements Serializable {
 				for(int i=0;i<assaytypeinsituvalues.length;i++){
 					str+="'"+assaytypeinsituvalues[i]+"',";
 				}
-				whereclause+="SUB_ASSAY_TYPE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+				//whereclause+="SUB_ASSAY_TYPE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+				assaytypevalueclause="SUB_ASSAY_TYPE IN ("+Utils.removeLastChar(str, ',')+") AND ";
 			}
 		}
 		
@@ -532,12 +537,15 @@ public class ParamBean implements Serializable {
 	public String getAssaytypeinsituvaluesInString() {
 		return Arrays.toString(assaytypeinsituvalues);
 	}
-	
+	private String theilerstagevalueclause="";
 	public void setTheilerstagefromvalues(String theilerstagefromvalues){
 		this.theilerstagefromvalues=theilerstagefromvalues;
 		if(theilerstagefromvalues!=null){
 			if(!theilerstagefromvalues.equals("ALL")){
 				temptheilervalues="SUB_EMBRYO_STG BETWEEN "+theilerstagefromvalues+" AND ";
+			}
+			if(theilerstagefromvalues.equals("ALL")){
+				theilerstagevalueclause="";
 			}
 		}
 	}
@@ -545,13 +553,19 @@ public class ParamBean implements Serializable {
 		return theilerstagefromvalues;
 	}
 	
+	
 	public void setTheilerstagetovalues(String theilerstagetovalues){
 		this.theilerstagetovalues=theilerstagetovalues;
 		if(theilerstagetovalues!=null){
 			if(getTheilerstagefromvalues()!=null && !getTheilerstagefromvalues().equals("") && !getTheilerstagefromvalues().equals("ALL") && !theilerstagetovalues.equals("ALL")){
 				temptheilervalues+=theilerstagetovalues;
-				whereclause+=temptheilervalues+" AND ";
+				//whereclause+=temptheilervalues+" AND ";
+				theilerstagevalueclause=temptheilervalues+" AND ";
 			}
+			if(theilerstagetovalues.equals("ALL")){
+				theilerstagevalueclause="";
+			}
+			
 		}
 	}
 	
@@ -559,40 +573,50 @@ public class ParamBean implements Serializable {
 		return theilerstagetovalues;
 	}
 	
+	private String sexvalueclause="";
 	public void setSexvalues(String sexvalues){
 		this.sexvalues=sexvalues;
 		if(!sexvalues.equals(""))
-				whereclause+="SPN_SEX = '"+sexvalues+"' AND ";
+				//whereclause+="SPN_SEX = '"+sexvalues+"' AND ";
+				sexvalueclause="SPN_SEX = '"+sexvalues+"' AND ";
+		if(sexvalues.equals("ALL"))
+			sexvalueclause="";	
 	}
 	
 	public String getSexvalues(){
 		return sexvalues;
 	}
 	
+	private String specimentypevalueclause="";
 	public void setSpecimentypevalues(String specimentypevalues){
 		this.specimentypevalues=specimentypevalues;
 		if(!specimentypevalues.equals(""))
-			whereclause+="SPN_ASSAY_TYPE = '"+specimentypevalues+"' AND ";
+			//whereclause+="SPN_ASSAY_TYPE = '"+specimentypevalues+"' AND ";
+			specimentypevalueclause="SPN_ASSAY_TYPE = '"+specimentypevalues+"' AND ";
 	}
 	
 	public String getSpecimentypevalues(){
 		return specimentypevalues;
 	}
 	
+	private String genevalueclause="";
 	public void setGenevalues(String genevalues){
 		this.genevalues=genevalues;
 		if(!genevalues.equals(""))
-			whereclause+="RPR_SYMBOL = '"+genevalues+"' AND ";
+			//whereclause+="RPR_SYMBOL = '"+genevalues+"' AND ";
+			genevalueclause="RPR_SYMBOL = '"+genevalues+"' AND ";
 	}
 	
 	public String getGenevalues(){
 		return genevalues;
 	}
 	
+	private String probenamevalueclause="";
 	public void setProbenamevalues(String probenamevalues){
 		this.probenamevalues=probenamevalues;
 		if(!probenamevalues.equals(""))
-			whereclause+="RPR_JAX_ACC = '"+probenamevalues+"' AND ";
+			//whereclause+="RPR_JAX_ACC = '"+probenamevalues+"' AND ";
+			probenamevalueclause="RPR_JAX_ACC = '"+probenamevalues+"' AND ";
 	}
 	
 	public String getProbenamevalues(){
@@ -621,12 +645,15 @@ public class ParamBean implements Serializable {
 	}
 	
 	public String getWhereclause(){
+		whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+theilerstagevalueclause+sexvalueclause+specimentypevalueclause+
+				genevalueclause+probenamevalueclause;
 		return whereclause;
 	}
 	 
 	/******************reset*******************/
 	
 	public void resetValues(){
+		//reset the parameterized values
 		genevalues="";
 		fromdatevalues=null;
 		todatevalues=null;
@@ -637,13 +664,17 @@ public class ParamBean implements Serializable {
 		setProbenamevalues("");
 		setTheilerstagefromvalues("");
 		setTheilerstagetovalues("");
-		setSexvalues("");
+		setSexvalues("ALL");
 		setSpecimentypevalues("");
 		tempfromvalues="";
-		//TODO THIS WAS COMMENTED OUT FOR A REASON, BUT IF IT IS THEN CAN'T APPLY THE FILTER MORE THAN ONCE ON AN INPUT VALUE???
-		//IN ORDER TO PRESERVE THE WHERE CLAUSE FOR USE ON MULTIPLE PAGES MAYBE
-		//NOOOOO ITS SO THAT THE PAGING WORKS!!!
+		//DON'T RESET THE WHERECLAUSE HERE OTHERWISE THE PAGING WONT WORK!!!
 		//setWhereclause(GenericQueries.WHERE_CLAUSE);
+	}
+	
+	public void resetClauses() {
+		sourcevalueclause="";
+		datevalueclause="";assaytypevalueclause="";theilerstagevalueclause="";sexvalueclause="";specimentypevalueclause="";
+		genevalueclause="";probenamevalueclause="";
 	}
 	//DONT RESET THE THEILER STAGES HERE BECAUSE THEY ARE SET IN THE OPTIONS AND PRESERVED FOR USE IN THE SUBSEQUENT FILTER
 	public String resetGeneSearchValues() {
@@ -672,6 +703,7 @@ public class ParamBean implements Serializable {
 	
 	public void resetAll() {
 		resetValues();
+		resetClauses();
 		setWhereclause(GenericQueries.WHERE_CLAUSE);
 		//focusGroup="reset";
 	}

@@ -35,14 +35,16 @@ public class IhcTablePageBean extends InsituTablePageBean implements Serializabl
     @Override
     public String refresh(){
     	loadDataList();
-    	paramBean.resetValues();
+    	//paramBean.resetValues();
     	return "browseIhcTablePage";
     }
     
     @Override
     public String resetAll() {
-		paramBean.resetValues();
-		paramBean.setWhereclause(GenericQueries.WHERE_CLAUSE);
+		//paramBean.resetValues();
+		//paramBean.setWhereclause(GenericQueries.WHERE_CLAUSE);
+		paramBean.resetAll();
+    	
 		//must return to homepage to reset focus group. Can't refresh div on other page
 		//paramBean.setFocusGroup("reset");
 		loadDataList();

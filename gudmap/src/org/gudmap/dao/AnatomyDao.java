@@ -770,6 +770,81 @@ public class AnatomyDao {
 		return hasChildren;
 		
 	}
+    
+    public String [] getTimedComponentIdsFromInput(String input) {
+    	String queryString = AnatomyQueries.COMPONENT_IDS_BY_NAME;
+    	String [] componentSet=null;
+    	try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, input);
+			ps.setString(2, input);
+			ps.setString(3, input);
+			ps.setString(4, input);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.last();
+				componentSet = new String [result.getRow()];
+				result.beforeFirst();
+				int index = 0;
+				while(result.next()){
+				    componentSet[index] = result.getString(1);
+				    index++;
+				}
+            }						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	return componentSet;
+		
+    }
+    
+    public String [] getTransitiveRelations(String [] input, String relationType){
+    	
+    	//string to contain sql
+    	String queryString;
+    	String[] componentSet=null;
+    	//check whether you want to find ancestor or desendent - sql dependent on this clause
+    	if(relationType.equalsIgnoreCase("ancestor")) { 
+    		queryString = AnatomyQueries.getComponentRelations(input.length, "ANCES_ATN.ATN_PUBLIC_ID", "DESCEND_ATN.ATN_PUBLIC_ID");
+    	}
+    	//must be descendent
+    	else {
+    		queryString = AnatomyQueries.getComponentRelations(input.length, "DESCEND_ATN.ATN_PUBLIC_ID","ANCES_ATN.ATN_PUBLIC_ID");
+    	}
+    	
+    	try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			for(int i=0;i<input.length;i++){
+		    	ps.setString(i+1, input[i]);
+		    }
+			result =  ps.executeQuery();
+			if(result.first()){
+				result.last();
+				int i = result.getRow();
+				result.beforeFirst();
+				componentSet = new String[i];
+				i = 0;
+				//add each result row to array
+				while(result.next()) {
+					componentSet[i] = result.getString(1);
+				    i++;
+				}
+		    }						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	return componentSet;
+	
+    }
    
 
 }

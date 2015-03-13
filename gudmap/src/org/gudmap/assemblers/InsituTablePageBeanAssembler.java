@@ -104,6 +104,7 @@ public class InsituTablePageBeanAssembler {
 	public int count() {
 		int count=0;
 		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
+		//String totalwhere=(whereclause.trim().equals("WHERE"))?"":Utils.removeWhere(whereclause, " WHERE ");
 		if(assayType.equals("TG"))
 			totalwhere = totalwhere.replace("RPR_SYMBOL", "ALE_GENE");
 		String sql = String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause);

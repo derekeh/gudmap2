@@ -1,6 +1,10 @@
 package org.gudmap.queries.generic;
 
+import java.util.ResourceBundle;
+
 public class AutocompleteQueries {
+	
+	public static ResourceBundle bundle = ResourceBundle.getBundle("org.gudmap.bundles.config");
 	
 	public static String GENE_SYMBOLS_AND_SYNONYMS = "(SELECT DISTINCT RPR_SYMBOL GENE FROM REF_PROBE " +
 			"JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID " +
@@ -36,4 +40,8 @@ public class AutocompleteQueries {
 			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
 			"AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC' OR SUB_ASSAY_TYPE = 'TG') ORDER BY NATURAL_SORT(GENE) ";
 
+	public static String ANNATOMY_TERMS = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
+			"JOIN ANAD_PART_OF_PERSPECTIVE ON ANO_OID = POP_NODE_FK " +
+			"WHERE POP_PERSPECTIVE_FK = '" + bundle.getString("perspective") + "' " +
+			"ORDER BY ANO_COMPONENT_NAME";
 }

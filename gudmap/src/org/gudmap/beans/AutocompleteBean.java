@@ -23,6 +23,7 @@ import org.gudmap.queries.generic.AutocompleteQueries;
 public class AutocompleteBean {
 	
 	ArrayList<String> geneList=null;
+	ArrayList<String> anatomyList=null;
 	private String geneInput="";
 	private DataSource ds;
 	private Connection con;
@@ -38,6 +39,7 @@ public class AutocompleteBean {
 		}
 		
 		populateGeneList();
+		populateAnatomyList();
 	}
 	
 	public void setGeneList(ArrayList<String> geneList) {
@@ -60,6 +62,29 @@ public class AutocompleteBean {
 				geneList = new ArrayList<String>();
 				while (result.next()) {
 					geneList.add(result.getString(1));
+				}
+			}
+			
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+	}
+	
+	public void populateAnatomyList() {
+		String queryString=AutocompleteQueries.ANNATOMY_TERMS;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+				anatomyList = new ArrayList<String>();
+				while (result.next()) {
+					anatomyList.add(result.getString(1));
 				}
 			}
 			
@@ -94,8 +119,13 @@ public class AutocompleteBean {
 	
 	public ArrayList<String> completeAnatomy(String input) {
 		ArrayList<String> matches = new ArrayList<String>();
-		matches.add("Derek");
-		matches.add("Houghton");
+		Iterator<String> iterator = anatomyList.iterator();
+		String str="";
+		while(iterator.hasNext()){
+			str = iterator.next().toString();
+			if(str.toUpperCase().startsWith(input.toUpperCase()))
+				matches.add(str);
+		}
 		
 		return matches;
 	}

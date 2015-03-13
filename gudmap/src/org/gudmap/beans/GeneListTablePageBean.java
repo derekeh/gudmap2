@@ -110,15 +110,13 @@ public class GeneListTablePageBean extends PagerImpl implements Serializable  {
     
     public String refresh(){
     	loadDataList();
-    	paramBean.resetValues();
+    	//paramBean.resetValues();
     	return "browseGeneListTablePage";
     	
     }
     
     public String resetAll() {
 		paramBean.resetAll();
-		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
 		return "browseGeneListTablePage";
 	}

@@ -101,6 +101,7 @@ public class ParamBeanAssembler {
 			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			sexlist.put("ALL","ALL");
 			while(result.next())
 				sexlist.put(result.getString(1), result.getString(1));
 		}

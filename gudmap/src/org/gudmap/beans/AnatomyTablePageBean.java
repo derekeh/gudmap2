@@ -7,40 +7,45 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
+//import javax.faces.event.ActionEvent;
+//import javax.faces.event.ActionListener;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.gudmap.assemblers.InsituTablePageBeanAssembler;
+import org.gudmap.assemblers.AnatomyTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.utils.Utils;
 
 @Named
 @SessionScoped
-public class InsituTablePageBean extends PagerImpl implements Serializable  {
+public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
 
     // Data.
-	protected InsituTablePageBeanAssembler assembler;
-    //private String whereclause = GenericQueries.WHERE_CLAUSE;
+	protected AnatomyTablePageBeanAssembler assembler;
+    private String whereclause = GenericQueries.WHERE_CLAUSE;
     private String specimenWhereclause="";
     protected List<String> selectedItems;
     private boolean areAllChecked;
+    private String queryTotals;
+    private String userInput;
+    private String userInputQuery;
     
     @Inject
    	protected ParamBean paramBean;
    	
     // Constructors -------------------------------------------------------------------------------
 
-    public InsituTablePageBean() {
-    	super(20,10,"SUB_OID",true);   	
-        setup("ISH","");
+    public AnatomyTablePageBean() {
+    	super(20,10,"gene",true);   	
+        //setup("ISH","");
+        setup();
     }
     
-	public InsituTablePageBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
+	public AnatomyTablePageBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
 		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
 	}
 
@@ -49,34 +54,26 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
 	}
 	
     
-    public void setup(String assayType,String specimen_assay) {
+    public void setup() {
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
     	
-    	if(specimen_assay.equals("WISH"))
-    		specimenWhereclause=GenericQueries.WHERE_WISH;
-    	else if(specimen_assay.equals("SISH"))
-    		specimenWhereclause = GenericQueries.WHERE_SISH;
-    	else if(specimen_assay.equals("OPT"))
-    		specimenWhereclause = GenericQueries.WHERE_OPT;
+    	assembler=new AnatomyTablePageBeanAssembler(GenericQueries.BROWSE_ACCESSION_PARAM);
     	
-    	if(assayType.equals("TG"))
-    		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
-    	else
-    		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
         selectedItems = new ArrayList<String>(); 
     }
     
-    /*@PostConstruct
+    @PostConstruct
     public void setRemoteWhereclause(){
     	paramBean.setWhereclause(whereclause);
-    }*/
+    }
     
     @Override
     public void loadDataList() {
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
+    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+    									paramBean.getFocusGroupSpWhereclause());
         // Set currentPage, totalPages and pages.
-    	setTotalslist(assembler.getTotals());
+    	//setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -90,20 +87,20 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
+        this.queryTotals=assembler.getQueryTotals();
     }
     
     public String refresh(){
     	loadDataList();
     	//paramBean.resetValues();
-    	return "browseInsituTablePage";
+    	return "browseAnatomyTablePage";
+    	
     }
     
     public String resetAll() {
 		paramBean.resetAll();
-		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
-		return "browseInsituTablePage";
+		return "browseAnatomyTablePage";
 	}
     
     public String checkboxSelections() { 
@@ -130,6 +127,54 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     		str+=s + ", ";
     	}
     	return str;
+    }
+    
+    public String getQueryTotals() {
+		return queryTotals;
+	}
+    
+    public String prepareTable() {
+    	loadDataList();
+    	return "browseAnatomyTablePage";
+    }
+    
+    public void setUserInput(String input){
+    	String processedValues[] = Utils.processInputString(input);
+    	this.userInputQuery = processedValues[0];
+    	this.userInput = processedValues[1];
+    }
+    
+/*    public void setAccessionInput(String accessionInput){
+    	// check for empty string
+    	if (accessionInput == "")
+    	{
+    		this.accessionInput = accessionInput;
+    	}
+    	else
+    	{    						
+    		String[] accessionList = accessionInput.split("\\;");
+    		String parsedString = "";
+    		String parsedQuery = "";
+    		String tmpStr = "";
+    		for (int i=0; i<accessionList.length; i++)
+    		{
+    			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
+    			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
+    			parsedString += tmpStr;
+    			tmpStr="";
+    		}
+    		this.accessionInputQuery = parsedQuery.substring(0,parsedQuery.length()-1); 
+    		this.accessionInput=parsedString.replace("'","");
+    		
+    	}    	
+    }*/
+    
+    public String getUserInput(){
+    	return userInput;
+    }
+    
+    public String getUserInputQuery() {
+    	return userInputQuery;
     }
    
 }

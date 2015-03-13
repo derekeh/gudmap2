@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    ISH Data Results
+	    Anatomy Results
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -38,7 +38,7 @@
    		</h:selectManyCheckbox>
    		
    		<h:panelGroup></h:panelGroup>
-   		<h:commandButton id="il_columnSubmit" value="Submit" action="browseInsituTablePage" disabled="#{not il_insitucheckbox.valid}">
+   		<h:commandButton id="il_columnSubmit" value="Submit" action="browseAccessionTablePage" disabled="#{not il_insitucheckbox.valid}">
    			<f:ajax execute="@form" render=":form1" ></f:ajax>
    		</h:commandButton>
 	    <h:commandButton value="Reset" type="reset" />
@@ -48,12 +48,14 @@
 
 	</h:form>
 	
-		<pr:dialog header="Filter Results" widgetVar="dialog2" width="750" style="position:absolute;left:-300px;"  > 
+		<pr:dialog header="Filter Results" widgetVar="dialog2" width="700" style="position:absolute;left:-300px;"  > 
 		<h:form id="filterform"> 
 		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
 		 
+		 <ui:remove>
 		 	<h:outputText value="Gene:"></h:outputText>
 		 	<h:inputText value="#{paramBean.genevalues}"></h:inputText>
+		 </ui:remove>
 		 	
 		 	<h:outputText value="Source:"></h:outputText>
 		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
@@ -77,8 +79,10 @@
 		 	</h:selectManyListbox>
 	   		</ui:remove>
 	   		
-	   		<h:outputText value="Probe Name:"></h:outputText>
-	   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
+	   		<ui:remove>
+		   		<h:outputText value="Probe Name:"></h:outputText>
+		   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
+	   		</ui:remove>
 	   		
 	   		<h:outputText value="Theiler Stage: "></h:outputText>
 	    	<h:panelGroup>
@@ -94,18 +98,21 @@
 		 		</h:panelGrid>
 		 	</h:panelGroup>
 	   		
+	   		<ui:remove>
 	   		<h:outputText value="Sex:"></h:outputText>
 	   		<h:selectOneRadio value="#{paramBean.sexvalues}">
 	   			<f:selectItems value="#{paramBean.sexlist}" />
 	   		</h:selectOneRadio>
+	   		</ui:remove>
 	   		
-	   		<h:outputText value="Specimen Type:"></h:outputText>
-	   		<h:selectOneRadio value="#{paramBean.specimentypevalues}">
-	   			<f:selectItems value="#{paramBean.specimentypelist}" />
-	   		</h:selectOneRadio>
+	   		<ui:remove>
+		   		<h:outputText value="Specimen Type:"></h:outputText>
+		   		<h:selectOneRadio value="#{paramBean.specimentypevalues}">
+		   			<f:selectItems value="#{paramBean.specimentypelist}" />
+		   		</h:selectOneRadio>
+	   		</ui:remove>
 	   		
-	   		
-	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{insituTablePageBean.refresh()}">
+	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{accessionTablePageBean.refresh()}">
 	   			<f:ajax execute="@form" render=":form1" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>
@@ -116,7 +123,7 @@
 	   	
 	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
 	   		
-	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{insituTablePageBean.resetAll()}">
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{accessionTablePageBean.resetAll()}">
 	   			<f:ajax execute="@this il_filter_reset" render=":filterform :form1 :focusform" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>	
@@ -125,19 +132,21 @@
 	</pr:dialog> 
 	
 	
-    
-	    <h:form id="focusform"><h1>ISH Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+        
+	    <h:form id="focusform"><h1>Anatomy Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	     <h:outputText value="#{anatomyTablePageBean.userInput}"></h:outputText>
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
-	     <h:dataTable value="#{insituTablePageBean.dataList}" var="u"
+	     <h:dataTable value="#{accessionTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
-    		
+    			
+    		<f:facet name="header">#{accessionTablePageBean.accessionTotals}</f:facet>
  			<h:column >
     			<f:facet name="header">
-    				<ui:remove><h:commandButton value="Check" action="#{insituTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
-    				<h:commandButton id="checkall" value="Check" action="#{insituTablePageBean.checkAll}">
+    				<ui:remove><h:commandButton value="Check" action="#{accessionTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
+    				<h:commandButton id="checkall" value="Check" action="#{accessionTablePageBean.checkAll}">
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
     			</f:facet>
@@ -146,7 +155,7 @@
  			
     		<!-- <h:column rendered="#{paramBean.oidcol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="oid" actionListener="#{insituTablePageBean.sort}">
+    				<h:commandLink value="oid" actionListener="#{accessionTablePageBean.sort}">
                          <f:attribute name="sortField" value="SUB_OID" />
                     </h:commandLink>
     			</f:facet>
@@ -155,21 +164,20 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				(<h:commandLink value="#{insituTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GENE')}" actionListener="#{insituTablePageBean.sort}">
-    					<f:attribute name="sortField" value="RPR_SYMBOL" />
-                    </h:commandLink> ) <br />
-    				Gene 
+    				<h:commandLink value="Gene" actionListener="#{accessionTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.gene" />
+                    </h:commandLink> 
     			</f:facet>
-    				#{u.gene}
+    			<h:commandLink value="#{u.gene}"  action="viewGeneStrip">
+					<f:param name="gene" value="#{u.gene}"></f:param>
+				</h:commandLink>
     		</h:column>
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{insituTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{insituTablePageBean.sort}">
-    					<f:attribute name="sortField" value="SUB_OID" />
-                    </h:commandLink> )
-    				<br />
-    				Gudmap Accession
+    			<h:commandLink value="Gudmap Accession" actionListener="#{accessionTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.gudmap_accession" />
+                    </h:commandLink> 
 				</f:facet>
     			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
@@ -179,18 +187,15 @@
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{insituTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SOURCE')}" actionListener="#{insituTablePageBean.sort}">
-    					<f:attribute name="sortField" value="PER_SURNAME" />
-                    </h:commandLink> )
-    				 <br />
-    				Source
+    			<h:commandLink value="Source" actionListener="#{accessionTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.source" />
+                    </h:commandLink>
 				</f:facet>
     				#{u.source}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.submissiondatecol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SUBMISSION_DATE")}) <br />
     				Submission Date
 				</f:facet>
     				#{u.submission_date}
@@ -198,15 +203,15 @@
     		
     		<h:column rendered="#{paramBean.assaytypecol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_ASSAY_TYPE")}) <br />
-    				Assay Type
+    				<h:commandLink value="Assay Type" actionListener="#{accessionTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.assay_type" />
+                    </h:commandLink> 
 				</f:facet>
     				#{u.assay_type}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.probenamecol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_PROBE_NAME")}) <br />
     				Probe Name
 				</f:facet>
     				#{u.probe_name}
@@ -214,11 +219,9 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{insituTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{insituTablePageBean.sort}">
-    					<f:attribute name="sortField" value="SUB_EMBRYO_STG" />
-                    </h:commandLink> )
-    				 <br />
-    				Theiler Stage
+    			<h:commandLink value="Theiler Stage" actionListener="#{accessionTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.stage" />
+                    </h:commandLink>
 				</f:facet>
 				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
     				
@@ -226,7 +229,6 @@
     		
     		<h:column rendered="#{paramBean.agecol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_AGE")}) <br />
     				Age
 				</f:facet>
     				#{u.age}
@@ -234,7 +236,6 @@
     		
     		<h:column rendered="#{paramBean.sexcol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SEX")}) <br />
     				Sex
 				</f:facet>
     				#{u.sex}
@@ -242,7 +243,6 @@
     		
     		<h:column rendered="#{paramBean.genotypecol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_GENOTYPE")}) <br />
     				Genotype
 				</f:facet>
     				#{u.genotype}
@@ -250,7 +250,6 @@
     		
     		<h:column rendered="#{paramBean.tissuecol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_TISSUE")}) <br />
     				Tissue
 				</f:facet>
     				#{u.tissue}
@@ -258,7 +257,6 @@
     		
     		<h:column rendered="#{paramBean.expressioncol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_EXPRESSION")}) <br />
     				Expression
 				</f:facet>
     				#{u.expression}
@@ -266,7 +264,6 @@
     		
     		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SPECIMEN_TYPE")}) <br />
     				Specimen Type
 				</f:facet>
     				#{u.specimen}
@@ -274,7 +271,6 @@
     		
     		<h:column rendered="#{paramBean.imagescol == true}">
     			<f:facet name="header">
-    				(#{insituTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_IMAGES")}) <br />
     				Images
 				</f:facet>
     				<img src="#{u.image}" height="40" />
@@ -285,40 +281,40 @@
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
-                <h:commandButton id="firstbutton" value="first" action="#{insituTablePageBean.pageFirst}"
-                    disabled="#{insituTablePageBean.firstRow == 0}" >
+                <h:commandButton id="firstbutton" value="first" action="#{accessionTablePageBean.pageFirst}"
+                    disabled="#{accessionTablePageBean.firstRow == 0}" >
                     <f:ajax execute="@this firstbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="prevbutton" value="prev" action="#{insituTablePageBean.pagePrevious}"
-                    disabled="#{insituTablePageBean.firstRow == 0}" >
+                <h:commandButton id="prevbutton" value="prev" action="#{accessionTablePageBean.pagePrevious}"
+                    disabled="#{accessionTablePageBean.firstRow == 0}" >
                     <f:ajax execute="@this prevbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="nextbutton" value="next" action="#{insituTablePageBean.pageNext}"
-                    disabled="#{insituTablePageBean.firstRow + insituTablePageBean.rowsPerPage >= insituTablePageBean.totalRows}" >
+                <h:commandButton id="nextbutton" value="next" action="#{accessionTablePageBean.pageNext}"
+                    disabled="#{accessionTablePageBean.firstRow + accessionTablePageBean.rowsPerPage >= accessionTablePageBean.totalRows}" >
                     <f:ajax execute="@this nextbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="lastbutton" value="last" action="#{insituTablePageBean.pageLast}"
-                    disabled="#{insituTablePageBean.firstRow + insituTablePageBean.rowsPerPage >= insituTablePageBean.totalRows}" >
+                <h:commandButton id="lastbutton" value="last" action="#{accessionTablePageBean.pageLast}"
+                    disabled="#{accessionTablePageBean.firstRow + accessionTablePageBean.rowsPerPage >= accessionTablePageBean.totalRows}" >
                     <f:ajax execute="@this lastbutton" render="@form" />
                 </h:commandButton>
-                <h:outputText value="Page #{insituTablePageBean.currentPage} / #{insituTablePageBean.totalPages}" />
+                <h:outputText value="Page #{accessionTablePageBean.currentPage} / #{accessionTablePageBean.totalPages}" />
                </h:panelGrid>
 			</h:panelGroup>
 			
 			
 			<h:panelGroup>
-                <t:dataList value="#{insituTablePageBean.pages}" var="page">
-                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{insituTablePageBean.page}"
-                        rendered="#{page != insituTablePageBean.currentPage}" />
+                <t:dataList value="#{accessionTablePageBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{accessionTablePageBean.page}"
+                        rendered="#{page != accessionTablePageBean.currentPage}" />
                     <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-                        rendered="#{page == insituTablePageBean.currentPage}" />
+                        rendered="#{page == accessionTablePageBean.currentPage}" />
                 </t:dataList>
            </h:panelGroup>
            <h:panelGroup>
 				<h:panelGrid columns="4">
 	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
-	                <h:inputText id="rowsPerPage" value="#{insituTablePageBean.rowsPerPage}" size="3" maxlength="3" />
-	                <h:commandButton id="setrowsbutton" value="Set" action="#{insituTablePageBean.pageFirst}" >
+	                <h:inputText id="rowsPerPage" value="#{accessionTablePageBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{accessionTablePageBean.pageFirst}" >
 	                	<f:ajax execute="@form" render="@form" />
 	                </h:commandButton>               
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
@@ -328,7 +324,7 @@
 		</h:form> 
 		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
-			<h:inputText id="gotopage" value="#{insituTablePageBean.gotopage}" />
+			<h:inputText id="gotopage" value="#{accessionTablePageBean.gotopage}" />
 		</h:form> 
 	
 		

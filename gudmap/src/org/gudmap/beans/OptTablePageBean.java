@@ -35,16 +35,13 @@ public class OptTablePageBean extends InsituTablePageBean implements Serializabl
     @Override
     public String refresh(){
     	loadDataList();
-    	paramBean.resetValues();
+    	//paramBean.resetValues();
     	return "browseOptTablePage";
     }
     
     @Override
     public String resetAll() {
-		paramBean.resetValues();
-		paramBean.setWhereclause(GenericQueries.WHERE_CLAUSE);
-		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
+		paramBean.resetAll();
 		loadDataList();
 		return "browseOptTablePage";
 	}

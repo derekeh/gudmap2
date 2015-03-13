@@ -92,15 +92,13 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     
     public String refresh(){
     	loadDataList();
-    	paramBean.resetValues();
+    	//paramBean.resetValues();
     	return "browseAccessionTablePage";
     	
     }
     
     public String resetAll() {
 		paramBean.resetAll();
-		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
 		return "browseAccessionTablePage";
 	}
