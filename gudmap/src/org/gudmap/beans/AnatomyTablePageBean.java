@@ -15,6 +15,7 @@ import javax.inject.Named;
 import org.gudmap.assemblers.AnatomyTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
+import org.gudmap.queries.anatomy.AnatomyQueries;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.utils.Utils;
 
@@ -31,7 +32,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     protected List<String> selectedItems;
     private boolean areAllChecked;
     private String queryTotals;
-    private String userInput;
+    private String userInput="";
     private String userInputQuery;
     
     @Inject
@@ -57,7 +58,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     public void setup() {
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
     	
-    	assembler=new AnatomyTablePageBeanAssembler(GenericQueries.BROWSE_ACCESSION_PARAM);
+    	assembler=new AnatomyTablePageBeanAssembler(AnatomyQueries.BROWSE_ANATOMY_PARAM);
     	
         selectedItems = new ArrayList<String>(); 
     }
@@ -69,6 +70,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
+    	assembler.init(userInputQuery.replace("'", ""));
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
     									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
     									paramBean.getFocusGroupSpWhereclause());
@@ -139,9 +141,13 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     }
     
     public void setUserInput(String input){
-    	String processedValues[] = Utils.processInputString(input);
-    	this.userInputQuery = processedValues[0];
-    	this.userInput = processedValues[1];
+    	if(input==null || input.equals(""))
+    		this.userInput="";
+    	else {
+	    	String processedValues[] = Utils.processInputString(input);
+	    	this.userInputQuery = processedValues[0];
+	    	this.userInput = processedValues[1];
+    	}
     }
     
 /*    public void setAccessionInput(String accessionInput){

@@ -125,7 +125,9 @@
     			<f:facet name="header">
     				Expression Images
 				</f:facet>
+				<h:outputLink value="viewImageMatrix.jsf?gene=#{u.geneSymbol}">
     				<img src="#{u.imageUrl}"  height="40"/>
+    			</h:outputLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.arrayexpressioncol == true}">

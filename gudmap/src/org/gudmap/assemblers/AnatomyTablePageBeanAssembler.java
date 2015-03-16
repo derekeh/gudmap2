@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.gudmap.dao.AnatomyDao;
 import org.gudmap.globals.Globals;
+import org.gudmap.queries.anatomy.AnatomyQueries;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
@@ -38,6 +39,9 @@ public class AnatomyTablePageBeanAssembler {
 	private String queryTotals;
 	private String input;
 	private String focusGroupSpWhereclause;
+	private String timedComponentsQueryString="";
+	private String descendentComponentsQueryString="";
+	private String ancestorComponentsQueryString="";
 	private AnatomyDao anatomyDao;
 	
 	public  AnatomyTablePageBeanAssembler(String paramSQL) {
@@ -52,20 +56,25 @@ public class AnatomyTablePageBeanAssembler {
 		
 	}
 	//TODO this is the order of events. Still to Work through their implemenation
-	public void init() {
+	public void init(String input) {
 		String [] descendentComponents = null;
 		String [] ancestorComponents = null;
 		String transitiveRelations=null;
 		//input is the input from the anatomy text input autocomplete on databaseHomepage. (only takes one string at present) - can use
 		String [] timedComponentsArray = anatomyDao.getTimedComponentIdsFromInput(Utils.normaliseApostrophe(input));
+		//get exact expression
 		if(transitiveRelations != null && transitiveRelations.equals("0")) {
 			descendentComponents = timedComponentsArray;
 			ancestorComponents = timedComponentsArray;
-		} else {
+		} 
+		//get inferred expression
+		else {
 			descendentComponents = anatomyDao.getTransitiveRelations(timedComponentsArray, "descendent");
 			ancestorComponents = anatomyDao.getTransitiveRelations(timedComponentsArray, "ancestor");
 		}
-		
+		timedComponentsQueryString=Utils.createSqlInputFromResult(timedComponentsArray);
+		descendentComponentsQueryString=Utils.createSqlInputFromResult(descendentComponents);
+		ancestorComponentsQueryString=Utils.createSqlInputFromResult(ancestorComponents);
 		
 	}
 	
@@ -80,9 +89,13 @@ public class AnatomyTablePageBeanAssembler {
 		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, expressionJoin,whereclause,input,input,input,input,input,
+		/*String sql = String.format(paramSQL, expressionJoin,whereclause,input,input,input,input,input,
 									focusGroupWhereclause,whereclause,input,focusGroupSpWhereclause,whereclause,input,
-									focusGroupSpWhereclause,sortField, sortDirection);
+									focusGroupSpWhereclause,sortField, sortDirection);*/
+		String sql = String.format(paramSQL,timedComponentsQueryString,descendentComponentsQueryString,
+									timedComponentsQueryString,ancestorComponentsQueryString,
+									timedComponentsQueryString,
+									timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
@@ -131,8 +144,11 @@ public class AnatomyTablePageBeanAssembler {
 		queryTotals="Totals returned: Insitu (";
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
-		String queryString=GenericQueries.ISH_ACCESSION_TOTAL;
-		String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
+		String queryString=AnatomyQueries.TOTAL_ISH_ANATOMY;
+		//String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
+		String sql = String.format(queryString, timedComponentsQueryString,descendentComponentsQueryString,
+				timedComponentsQueryString,ancestorComponentsQueryString,
+				timedComponentsQueryString);
 		try
 		{
 				con = ds.getConnection();
@@ -149,8 +165,10 @@ public class AnatomyTablePageBeanAssembler {
 			    Globals.closeQuietly(con, ps, result);
 		}
 		queryTotals+=(insitucount+")  Microarray(");
-		queryString=GenericQueries.MICROARRAY_ACCESSION_TOTAL;
-		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
+		queryString=AnatomyQueries.TOTAL_MICROARRAY_ANATOMY;
+		sql = String.format(queryString, timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
+		//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
+		
 		try
 		{
 				con = ds.getConnection();
@@ -168,13 +186,14 @@ public class AnatomyTablePageBeanAssembler {
 			    Globals.closeQuietly(con, ps, result);
 		}
 		queryTotals+=(microarraycount+")  Sequence(");
-		queryString=GenericQueries.SEQUENCE_ACCESSION_TOTAL;
-		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
+		queryString=AnatomyQueries.TOTAL_SEQUENCE_ANATOMY;
+		//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
+		//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
+		sql = queryString;
 		try
 		{
 				con = ds.getConnection();
 				ps = con.prepareStatement(sql);
-				//ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){

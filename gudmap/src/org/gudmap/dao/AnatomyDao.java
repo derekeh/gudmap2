@@ -805,7 +805,7 @@ public class AnatomyDao {
     public String [] getTransitiveRelations(String [] input, String relationType){
     	
     	//string to contain sql
-    	String queryString;
+    	String queryString="";
     	String[] componentSet=null;
     	//check whether you want to find ancestor or desendent - sql dependent on this clause
     	if(relationType.equalsIgnoreCase("ancestor")) { 
