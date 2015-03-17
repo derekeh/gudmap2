@@ -235,7 +235,7 @@ public class AnatomyQueries {
 			"WHERE  " +
 			"(QMC_ATN_PUBLIC_ID in (%s,%s,%s)))  " +
 			"ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x " +
-			"GROUP BY x.gudmap_accession  ORDER BY x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
+			"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
 		
 		/*public static String TOTAL_ISH_DESCENDENT="SELECT COUNT(DISTINCT QIC_SUB_ACCESSION_ID) total_ish_descendent FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON " +
 				"IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT LEFT JOIN " +

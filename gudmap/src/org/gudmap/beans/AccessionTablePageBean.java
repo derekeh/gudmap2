@@ -30,9 +30,9 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     private String specimenWhereclause="";
     protected List<String> selectedItems;
     private boolean areAllChecked;
-    private String accessionTotals;
-    private String accessionInput;
-    private String accessionInputQuery;
+    private String queryTotals;
+    private String userInput="";
+    private String userInputQuery;
     
     @Inject
    	protected ParamBean paramBean;
@@ -40,7 +40,7 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public AccessionTablePageBean() {
-    	super(20,10,"gene",true);   	
+    	super(20,10,"x.assay_type",true);   	
         //setup("ISH","");
         setup();
     }
@@ -70,7 +70,7 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,accessionInputQuery,
+    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
     									paramBean.getFocusGroupSpWhereclause());
         // Set currentPage, totalPages and pages.
     	//setTotalslist(assembler.getTotals());
@@ -87,7 +87,7 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
-        this.accessionTotals=assembler.getAccessionTotals();
+        this.queryTotals=assembler.getQueryTotals();
     }
     
     public String refresh(){
@@ -129,46 +129,32 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     	return str;
     }
     
-    public String getAccessionTotals() {
-		return accessionTotals;
+    public String getQueryTotals() {
+		return queryTotals;
 	}
     
-    public String processAccession() {
+    public String prepareTable() {
     	loadDataList();
     	return "browseAccessionTablePage";
     }
     
-    public void setAccessionInput(String accessionInput){
-    	// check for empty string
-    	if (accessionInput == "")
-    	{
-    		this.accessionInput = accessionInput;
+    public void setUserInput(String input){
+    	if(input==null || input.equals(""))
+    		this.userInput="";
+    	else {
+	    	String processedValues[] = Utils.processInputString(input);
+	    	this.userInputQuery = processedValues[0];
+	    	this.userInput = processedValues[1];
     	}
-    	else
-    	{    						
-    		String[] accessionList = accessionInput.split("\\;");
-    		String parsedString = "";
-    		String parsedQuery = "";
-    		String tmpStr = "";
-    		for (int i=0; i<accessionList.length; i++)
-    		{
-    			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
-    			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
-    			parsedString += tmpStr;
-    			tmpStr="";
-    		}
-    		this.accessionInputQuery = parsedQuery.substring(0,parsedQuery.length()-1); 
-    		this.accessionInput=parsedString.replace("'","");
-    		
-    	}    	
     }
     
-    public String getAccessionInput(){
-    	return accessionInput;
+    
+    public String getUserInput(){
+    	return userInput;
     }
     
-    public String getAccessionInputQuery() {
-    	return accessionInputQuery;
+    public String getUserInputQuery() {
+    	return userInputQuery;
     }
    
 }

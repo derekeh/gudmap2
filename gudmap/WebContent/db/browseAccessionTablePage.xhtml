@@ -134,7 +134,7 @@
 	
         
 	    <h:form id="focusform"><h1>Accession ID Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
-	     <h:outputText value="#{accessionTablePageBean.accessionInput}"></h:outputText>
+	     <h:outputText value="#{accessionTablePageBean.userInput}"></h:outputText>
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
 	     <h:dataTable value="#{accessionTablePageBean.dataList}" var="u"
@@ -142,7 +142,7 @@
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
     			
-    		<f:facet name="header">#{accessionTablePageBean.accessionTotals}</f:facet>
+    		<f:facet name="header">#{accessionTablePageBean.queryTotals}</f:facet>
  			<h:column >
     			<f:facet name="header">
     				<ui:remove><h:commandButton value="Check" action="#{accessionTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>

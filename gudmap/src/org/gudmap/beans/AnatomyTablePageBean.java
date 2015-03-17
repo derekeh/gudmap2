@@ -41,7 +41,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public AnatomyTablePageBean() {
-    	super(20,10,"gene",true);   	
+    	super(20,10,"x.assay_type",true);   	
         //setup("ISH","");
         setup();
     }
@@ -74,7 +74,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
     									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
     									paramBean.getFocusGroupSpWhereclause());
-        // Set currentPage, totalPages and pages.
+        // Set currentPage, totalPages, columntotals and pages.
     	//setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
@@ -150,30 +150,6 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     	}
     }
     
-/*    public void setAccessionInput(String accessionInput){
-    	// check for empty string
-    	if (accessionInput == "")
-    	{
-    		this.accessionInput = accessionInput;
-    	}
-    	else
-    	{    						
-    		String[] accessionList = accessionInput.split("\\;");
-    		String parsedString = "";
-    		String parsedQuery = "";
-    		String tmpStr = "";
-    		for (int i=0; i<accessionList.length; i++)
-    		{
-    			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
-    			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
-    			parsedString += tmpStr;
-    			tmpStr="";
-    		}
-    		this.accessionInputQuery = parsedQuery.substring(0,parsedQuery.length()-1); 
-    		this.accessionInput=parsedString.replace("'","");
-    		
-    	}    	
-    }*/
     
     public String getUserInput(){
     	return userInput;

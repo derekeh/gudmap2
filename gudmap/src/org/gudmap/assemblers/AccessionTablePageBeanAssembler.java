@@ -34,7 +34,7 @@ public class AccessionTablePageBeanAssembler {
 	private String focusGroupWhereclause;
 	private String expressionJoin;
 	private String specimenWhereclause;
-	private String accessionTotals;
+	private String queryTotals;
 	private String input;
 	private String focusGroupSpWhereclause;
 	
@@ -108,7 +108,7 @@ public class AccessionTablePageBeanAssembler {
 	}
 	
 	public int count() {
-		accessionTotals="Totals returned: Insitu (";
+		queryTotals="Totals returned: Insitu (";
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
 		String queryString=GenericQueries.ISH_ACCESSION_TOTAL;
@@ -128,7 +128,7 @@ public class AccessionTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		accessionTotals+=(insitucount+")  Microarray(");
+		queryTotals+=(insitucount+")  Microarray(");
 		queryString=GenericQueries.MICROARRAY_ACCESSION_TOTAL;
 		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
@@ -147,7 +147,7 @@ public class AccessionTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		accessionTotals+=(microarraycount+")  Sequence(");
+		queryTotals+=(microarraycount+")  Sequence(");
 		queryString=GenericQueries.SEQUENCE_ACCESSION_TOTAL;
 		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
@@ -166,7 +166,7 @@ public class AccessionTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		accessionTotals+=(sequencecount+")");
+		queryTotals+=(sequencecount+")");
 		return count;
 	}
 	
@@ -214,7 +214,7 @@ public class AccessionTablePageBeanAssembler {
 		this.assayType=assayType;
 	}
 	
-	public String getAccessionTotals() {
-		return accessionTotals;
+	public String getQueryTotals() {
+		return queryTotals;
 	}
 }

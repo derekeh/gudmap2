@@ -36,7 +36,7 @@ public class GeneListTablePageBeanAssembler {
 	private String focusGroupWhereclause;
 	private String expressionJoin;
 	private String specimenWhereclause;
-	private String accessionTotals;
+	private String queryTotals;
 	private String input;
 	private String focusGroupSpWhereclause;
 	
@@ -113,7 +113,7 @@ public class GeneListTablePageBeanAssembler {
 	}
 	
 	public int count() {
-		accessionTotals="Totals returned: Insitu (";
+		queryTotals="Totals returned: Insitu (";
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
 		String queryString=GeneListQueries.ISH_GENELIST_TOTAL;
@@ -133,7 +133,7 @@ public class GeneListTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		accessionTotals+=(insitucount+")  Microarray(");
+		queryTotals+=(insitucount+")  Microarray(");
 		queryString=GeneListQueries.MICROARRAY_GENELIST_TOTAL;
 		sql = String.format(queryString, arrayWhereclause,input,focusGroupSpWhereclause);
 		try
@@ -152,7 +152,7 @@ public class GeneListTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		accessionTotals+=(microarraycount+")  Sequence(");
+		queryTotals+=(microarraycount+")  Sequence(");
 		queryString=GeneListQueries.SEQUENCE_GENELIST_TOTAL;
 		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
@@ -171,7 +171,7 @@ public class GeneListTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		accessionTotals+=(sequencecount+")");
+		queryTotals+=(sequencecount+")");
 		return count;
 	}
 	
@@ -219,7 +219,7 @@ public class GeneListTablePageBeanAssembler {
 		this.assayType=assayType;
 	}
 	
-	public String getAccessionTotals() {
-		return accessionTotals;
+	public String getQueryTotals() {
+		return queryTotals;
 	}
 }

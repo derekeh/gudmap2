@@ -133,9 +133,9 @@
 	</pr:dialog> 
 	 
 	    <h:form id="focusform"><h1>Gene List Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
-	     #{geneListTablePageBean.setAccessionInput(sessionBean.getTempParam())}
+	     #{geneListTablePageBean.setUserInput(sessionBean.getTempParam())}
 	     #{geneListTablePageBean.loadDataList()}
-	     <h:outputText value="#{geneListTablePageBean.accessionInput}"></h:outputText>
+	     <h:outputText value="#{geneListTablePageBean.userInput}"></h:outputText>
 	     <!-- all other content in here --> 
 	    <h:form id="form1"> 
 	     <h:dataTable value="#{geneListTablePageBean.dataList}" var="u"
@@ -143,7 +143,7 @@
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
     			
-    		<f:facet name="header">#{geneListTablePageBean.accessionTotals}</f:facet>
+    		<f:facet name="header">#{geneListTablePageBean.queryTotals}</f:facet>
  			<h:column >
     			<f:facet name="header">
     				<ui:remove><h:commandButton value="Check" action="#{geneListTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
@@ -177,7 +177,7 @@
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
     			<h:commandLink value="Gudmap Accession" actionListener="#{geneListTablePageBean.sort}">
-    					<f:attribute name="sortField" value="x.gudmap_accession" />
+    					<f:attribute name="sortField" value="natural_sort(x.oid)" />
                     </h:commandLink> 
 				</f:facet>
     			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">

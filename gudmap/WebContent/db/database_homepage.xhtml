@@ -254,11 +254,11 @@
 	    
 	    <h:panelGroup class="db_cell_object_padding">
 	    	
-	    	<pr:inputText id="accession_input" value="#{accessionTablePageBean.accessionInput}"  onkeypress="handleInput(this,event)" style="position:relative;"></pr:inputText>
+	    	<pr:inputText id="accession_input" value="#{accessionTablePageBean.userInput}"  onkeypress="handleInput(this,event)" style="position:relative;"></pr:inputText>
 	    </h:panelGroup> 
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_accession_go" action="#{accessionTablePageBean.processAccession}">
+	    	<h:commandLink id="il_accession_go" action="#{accessionTablePageBean.prepareTable}">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>

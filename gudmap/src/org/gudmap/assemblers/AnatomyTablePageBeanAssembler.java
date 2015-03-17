@@ -95,7 +95,7 @@ public class AnatomyTablePageBeanAssembler {
 		String sql = String.format(paramSQL,timedComponentsQueryString,descendentComponentsQueryString,
 									timedComponentsQueryString,ancestorComponentsQueryString,
 									timedComponentsQueryString,
-									timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
+									timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,sortField, sortDirection);
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
@@ -108,7 +108,6 @@ public class AnatomyTablePageBeanAssembler {
 			
 			//group_concat returning no value will return a null row so don't get those!
 			while(result.next()){
-				//while(result.next() && result.getString(1)!=null){
 				if(result.getString(1)!=null)
 				{
 					ishmodel=new InsituTableBeanModel();
