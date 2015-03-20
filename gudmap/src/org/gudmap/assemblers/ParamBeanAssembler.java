@@ -23,6 +23,7 @@ public class ParamBeanAssembler {
 	private ResultSet result;
 	private Map<String,String>sourcelist;
 	private Map<String,String>assaytypeinsitulist;
+	private Map<String,String>allassaytypelist;
 	private Map<String,String>theilerstagelist;
 	private Map<String,String>sexlist;
 	private Map<String,String>specimentypelist;
@@ -72,6 +73,24 @@ public class ParamBeanAssembler {
 		    Globals.closeQuietly(con, ps, result);
 		}
 		return assaytypeinsitulist;
+	}
+	
+	public Map<String,String> getAllassaytypelist() {
+		allassaytypelist = new LinkedHashMap<String,String>();
+		String queryString=GenericQueries.ALL_ASSAY_TYPES;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next())
+				allassaytypelist.put(result.getString(1), result.getString(1));
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return allassaytypelist;
 	}
 	
 	public Map<String,String> getTheilerstagelist() {

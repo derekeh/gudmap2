@@ -58,8 +58,8 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     public void setup() {
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
     	
-    	assembler=new AnatomyTablePageBeanAssembler(AnatomyQueries.BROWSE_ANATOMY_PARAM);
-    	
+    	//assembler=new AnatomyTablePageBeanAssembler(AnatomyQueries.BROWSE_ANATOMY_PARAM);
+    	assembler=new AnatomyTablePageBeanAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -73,7 +73,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     	assembler.init(userInputQuery.replace("'", ""));
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
     									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
-    									paramBean.getFocusGroupSpWhereclause());
+    									paramBean.getFocusGroupSpWhereclause(),paramBean.getCachewhereclause(),paramBean.getArraycachewhereclause());
         // Set currentPage, totalPages, columntotals and pages.
     	//setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();

@@ -65,9 +65,14 @@ public class ParamBean implements Serializable {
 	private String theilerstagefromvalues;
 	private String theilerstagetovalues;
 	private String sexvalues="ALL";
-	private String specimentypevalues;	
+	private String specimentypevalues;
+	
 	private ParamBeanAssembler assembler;
 	private String whereclause=" WHERE ";
+	private String cachewhereclause=" WHERE ";
+	private String cacheprefix="QIC_";
+	private String arraycachewhereclause=" WHERE ";
+	private String arraycacheprefix="QMC_";
 	private String tempfromvalues;
 	private String temptheilervalues;
 	
@@ -433,6 +438,10 @@ public class ParamBean implements Serializable {
 		return assembler.getAssaytypeinsitulist();
 	}
 	
+	public Map<String,String> getAllassaytypelist(){
+		return assembler.getAllassaytypelist();
+	}
+	
 	public Map<String,String> getTheilerstagelist(){
 		return assembler.getTheilerstagelist();
 	}
@@ -455,6 +464,7 @@ public class ParamBean implements Serializable {
  * CHECK FOR NULL VALUE WHEN THE COMPONENT IN FILTER VIEW MIGHT BE COMMENTED OUT
  * ************************/
 	private String sourcevalueclause="";
+	private String cachesourcevalueclause="";
 	public void setSourcevalues(String[] sourcevalues){
 		this.sourcevalues=sourcevalues;
 		if(sourcevalues!=null){
@@ -465,6 +475,7 @@ public class ParamBean implements Serializable {
 				}
 				//whereclause+="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
 				sourcevalueclause="SUB_SOURCE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+				cachesourcevalueclause=cacheprefix+sourcevalueclause;
 			}
 		}
 	}
@@ -494,6 +505,7 @@ public class ParamBean implements Serializable {
 	}
 	
 	private String datevalueclause="";
+	private String cachedatevalueclause="";
 	public void setTodatevalues(Date todatevalues){
 		if(todatevalues!=null && !todatevalues.equals(""))
 		{
@@ -503,6 +515,7 @@ public class ParamBean implements Serializable {
 				tempfromvalues+=todatemysql+"'";
 				//whereclause+=tempfromvalues+" AND ";
 				datevalueclause=tempfromvalues+" AND ";
+				cachedatevalueclause=cacheprefix+datevalueclause;
 			}
 		}
 	}
@@ -516,6 +529,7 @@ public class ParamBean implements Serializable {
 	}
 	
 	private String assaytypevalueclause="";
+	private String cacheassaytypevalueclause="";
 	public void setAssaytypeinsituvalues(String[] assaytypeinsituvalues){
 		this.assaytypeinsituvalues=assaytypeinsituvalues;
 		if(assaytypeinsituvalues!=null){
@@ -526,6 +540,7 @@ public class ParamBean implements Serializable {
 				}
 				//whereclause+="SUB_ASSAY_TYPE IN ("+Utils.removeLastChar(str, ',')+") AND ";
 				assaytypevalueclause="SUB_ASSAY_TYPE IN ("+Utils.removeLastChar(str, ',')+") AND ";
+				cacheassaytypevalueclause=cacheprefix+assaytypevalueclause;
 			}
 		}
 		
@@ -537,7 +552,13 @@ public class ParamBean implements Serializable {
 	public String getAssaytypeinsituvaluesInString() {
 		return Arrays.toString(assaytypeinsituvalues);
 	}
+	//used to remove this from the mic cache query
+	public String getCacheassaytypevalueclause() {
+		return cacheassaytypevalueclause;
+	}
+	
 	private String theilerstagevalueclause="";
+	private String cachetheilerstagevalueclause="";
 	public void setTheilerstagefromvalues(String theilerstagefromvalues){
 		this.theilerstagefromvalues=theilerstagefromvalues;
 		if(theilerstagefromvalues!=null){
@@ -546,6 +567,7 @@ public class ParamBean implements Serializable {
 			}
 			if(theilerstagefromvalues.equals("ALL")){
 				theilerstagevalueclause="";
+				cachetheilerstagevalueclause="";
 			}
 		}
 	}
@@ -561,9 +583,11 @@ public class ParamBean implements Serializable {
 				temptheilervalues+=theilerstagetovalues;
 				//whereclause+=temptheilervalues+" AND ";
 				theilerstagevalueclause=temptheilervalues+" AND ";
+				cachetheilerstagevalueclause=cacheprefix+theilerstagevalueclause;
 			}
 			if(theilerstagetovalues.equals("ALL")){
 				theilerstagevalueclause="";
+				cachetheilerstagevalueclause="";
 			}
 			
 		}
@@ -574,13 +598,18 @@ public class ParamBean implements Serializable {
 	}
 	
 	private String sexvalueclause="";
+	private String cachesexvalueclause="";
 	public void setSexvalues(String sexvalues){
 		this.sexvalues=sexvalues;
-		if(!sexvalues.equals(""))
+		if(!sexvalues.equals("")) {
 				//whereclause+="SPN_SEX = '"+sexvalues+"' AND ";
 				sexvalueclause="SPN_SEX = '"+sexvalues+"' AND ";
-		if(sexvalues.equals("ALL"))
+				cachesexvalueclause=cacheprefix+sexvalueclause;
+		}
+		if(sexvalues.equals("ALL")) {
 			sexvalueclause="";	
+			cachesexvalueclause="";
+		}
 	}
 	
 	public String getSexvalues(){
@@ -588,11 +617,14 @@ public class ParamBean implements Serializable {
 	}
 	
 	private String specimentypevalueclause="";
+	private String cachespecimentypevalueclause="";
 	public void setSpecimentypevalues(String specimentypevalues){
 		this.specimentypevalues=specimentypevalues;
-		if(!specimentypevalues.equals(""))
+		if(!specimentypevalues.equals("")) {
 			//whereclause+="SPN_ASSAY_TYPE = '"+specimentypevalues+"' AND ";
 			specimentypevalueclause="SPN_ASSAY_TYPE = '"+specimentypevalues+"' AND ";
+			cachespecimentypevalueclause=cacheprefix+specimentypevalueclause;
+		}
 	}
 	
 	public String getSpecimentypevalues(){
@@ -600,23 +632,35 @@ public class ParamBean implements Serializable {
 	}
 	
 	private String genevalueclause="";
+	private String cachegenevalueclause="";
+	
 	public void setGenevalues(String genevalues){
 		this.genevalues=genevalues;
-		if(!genevalues.equals(""))
+		if(!genevalues.equals("")) {
 			//whereclause+="RPR_SYMBOL = '"+genevalues+"' AND ";
 			genevalueclause="RPR_SYMBOL = '"+genevalues+"' AND ";
+			cachegenevalueclause=cacheprefix+genevalueclause;
+		}
 	}
-	
+
 	public String getGenevalues(){
 		return genevalues;
 	}
 	
+	//used to remove this from the mic cache query
+		public String getCachegenevalueclause() {
+			return cachegenevalueclause;
+		}
+	
 	private String probenamevalueclause="";
+	private String cacheprobenamevalueclause="";
 	public void setProbenamevalues(String probenamevalues){
 		this.probenamevalues=probenamevalues;
-		if(!probenamevalues.equals(""))
+		if(!probenamevalues.equals("")) {
 			//whereclause+="RPR_JAX_ACC = '"+probenamevalues+"' AND ";
 			probenamevalueclause="RPR_JAX_ACC = '"+probenamevalues+"' AND ";
+			cacheprobenamevalueclause=cacheprefix+probenamevalueclause;
+		}
 	}
 	
 	public String getProbenamevalues(){
@@ -649,7 +693,28 @@ public class ParamBean implements Serializable {
 				genevalueclause+probenamevalueclause;
 		return whereclause;
 	}
-	 
+	
+	public void setCachewhereclause(String cachewhereclause){
+		this.cachewhereclause=cachewhereclause;
+	}
+	
+	public String getCachewhereclause(){
+		cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+
+				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cacheprobenamevalueclause;
+		return cachewhereclause;
+	}
+	
+	public void setarrayCachewhereclause(String arraycachewhereclause){
+		this.arraycachewhereclause=arraycachewhereclause;
+	}
+	//array cache table does not have all the columns of the insitu cache. The column prefix is Replaced in the assembler
+	public String getArraycachewhereclause(){
+		arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cachetheilerstagevalueclause+
+				cachesexvalueclause+cachespecimentypevalueclause;
+		arraycachewhereclause=arraycachewhereclause.replace("QIC", "QMC");
+		return arraycachewhereclause;
+	}
+		 
 	/******************reset*******************/
 	
 	public void resetValues(){
@@ -675,6 +740,9 @@ public class ParamBean implements Serializable {
 		sourcevalueclause="";
 		datevalueclause="";assaytypevalueclause="";theilerstagevalueclause="";sexvalueclause="";specimentypevalueclause="";
 		genevalueclause="";probenamevalueclause="";
+		cachesourcevalueclause="";
+		cachedatevalueclause="";cacheassaytypevalueclause="";cachetheilerstagevalueclause="";cachesexvalueclause="";cachespecimentypevalueclause="";
+		cachegenevalueclause="";cacheprobenamevalueclause="";
 	}
 	//DONT RESET THE THEILER STAGES HERE BECAUSE THEY ARE SET IN THE OPTIONS AND PRESERVED FOR USE IN THE SUBSEQUENT FILTER
 	public String resetGeneSearchValues() {
@@ -705,6 +773,8 @@ public class ParamBean implements Serializable {
 		resetValues();
 		resetClauses();
 		setWhereclause(GenericQueries.WHERE_CLAUSE);
+		setCachewhereclause(GenericQueries.WHERE_CLAUSE);
+		setarrayCachewhereclause(GenericQueries.WHERE_CLAUSE);
 		//focusGroup="reset";
 	}
 

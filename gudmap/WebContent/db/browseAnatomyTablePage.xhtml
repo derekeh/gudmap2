@@ -52,10 +52,10 @@
 		<h:form id="filterform"> 
 		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
 		 
-		 <ui:remove>
+		 
 		 	<h:outputText value="Gene:"></h:outputText>
 		 	<h:inputText value="#{paramBean.genevalues}"></h:inputText>
-		 </ui:remove>
+		 
 		 	
 		 	<h:outputText value="Source:"></h:outputText>
 		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
@@ -72,12 +72,12 @@
 		 		</h:panelGrid>
 		 	</h:panelGroup>
 		 	
-		 	<ui:remove>
+		 	
 		 	<h:outputText value="Assay Type: "></h:outputText>
 		 	<h:selectManyListbox value="#{paramBean.assaytypeinsituvalues}">
-		 		<f:selectItems value="#{paramBean.assaytypeinsitulist}" />
+		 		<f:selectItems value="#{paramBean.allassaytypelist}" />
 		 	</h:selectManyListbox>
-	   		</ui:remove>
+	   		
 	   		
 	   		<ui:remove>
 		   		<h:outputText value="Probe Name:"></h:outputText>
@@ -98,12 +98,12 @@
 		 		</h:panelGrid>
 		 	</h:panelGroup>
 	   		
-	   		<ui:remove>
+	   		
 	   		<h:outputText value="Sex:"></h:outputText>
 	   		<h:selectOneRadio value="#{paramBean.sexvalues}">
 	   			<f:selectItems value="#{paramBean.sexlist}" />
 	   		</h:selectOneRadio>
-	   		</ui:remove>
+	   		
 	   		
 	   		<ui:remove>
 		   		<h:outputText value="Specimen Type:"></h:outputText>
@@ -303,12 +303,12 @@
 			
 			
 			<h:panelGroup>
-                <t:dataList value="#{anatomyTablePageBean.pages}" var="page">
+                <pr:dataList value="#{anatomyTablePageBean.pages}" var="page" type="none" itemStyleClass="display:inline;">
                     <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{anatomyTablePageBean.page}"
                         rendered="#{page != anatomyTablePageBean.currentPage}" />
                     <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
                         rendered="#{page == anatomyTablePageBean.currentPage}" />
-                </t:dataList>
+                </pr:dataList>
            </h:panelGroup>
            <h:panelGroup>
 				<h:panelGrid columns="4">

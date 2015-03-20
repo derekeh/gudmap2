@@ -34,24 +34,29 @@ public class AnatomyTablePageBeanAssembler {
 	private String assayType;
 	private String whereclause;
 	private String focusGroupWhereclause;
-	private String expressionJoin;
 	private String specimenWhereclause;
-	private String queryTotals;
-	private String input;
 	private String focusGroupSpWhereclause;
+	private String cachewhereclause;
+	private String arraycachewhereclause;
+	private String expressionJoin;	
+	private String queryTotals;
+	private String input;	
 	private String timedComponentsQueryString="";
 	private String descendentComponentsQueryString="";
 	private String ancestorComponentsQueryString="";
 	private AnatomyDao anatomyDao;
 	
-	public  AnatomyTablePageBeanAssembler(String paramSQL) {
+	private boolean ish_present=false;
+	private boolean array_present=false;
+	
+	public  AnatomyTablePageBeanAssembler(/*String paramSQL*/) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-		this.paramSQL=paramSQL;
+		//this.paramSQL=paramSQL;
 		anatomyDao = new AnatomyDao();
 		
 	}
@@ -80,22 +85,45 @@ public class AnatomyTablePageBeanAssembler {
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
 											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input,
-											String focusGroupSpWhereclause){
+											String focusGroupSpWhereclause, String cachewhereclause, String arraycachewhereclause){
 		this.whereclause=whereclause;
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		this.expressionJoin=expressionJoin;
 		this.specimenWhereclause=specimenWhereclause;
 		this.input=input;
 		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
+		this.cachewhereclause=cachewhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
+		
+		this.arraycachewhereclause = arraycachewhereclause;
+		
+		//assemble unions based on assaytype in filter
+		assembleParamSQL(cachewhereclause);
 		
 		/*String sql = String.format(paramSQL, expressionJoin,whereclause,input,input,input,input,input,
 									focusGroupWhereclause,whereclause,input,focusGroupSpWhereclause,whereclause,input,
 									focusGroupSpWhereclause,sortField, sortDirection);*/
-		String sql = String.format(paramSQL,timedComponentsQueryString,descendentComponentsQueryString,
-									timedComponentsQueryString,ancestorComponentsQueryString,
-									timedComponentsQueryString,
-									timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,sortField, sortDirection);
+		String sql="";
+		//different substitutions to query string based on assaytype in filter
+		if(ish_present && array_present) {
+			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
+									cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
+									cachewhereclause,timedComponentsQueryString,
+									arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
+									sortField, sortDirection);
+		}
+		
+		if(ish_present && !array_present){
+			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
+					cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
+					cachewhereclause,timedComponentsQueryString,
+					sortField, sortDirection);
+		}
+		
+		if(!ish_present && array_present){
+			sql = String.format(paramSQL,arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
+					sortField, sortDirection);
+		}
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
@@ -143,46 +171,52 @@ public class AnatomyTablePageBeanAssembler {
 		queryTotals="Totals returned: Insitu (";
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
+		String sql="";
 		String queryString=AnatomyQueries.TOTAL_ISH_ANATOMY;
-		//String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
-		String sql = String.format(queryString, timedComponentsQueryString,descendentComponentsQueryString,
-				timedComponentsQueryString,ancestorComponentsQueryString,
-				timedComponentsQueryString);
-		try
-		{
-				con = ds.getConnection();
-				ps = con.prepareStatement(sql);
-				result =  ps.executeQuery();
-				
-				while(result.next()){
-					insitucount=result.getInt(1);
-					count=result.getInt(1);
-				}
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-			    Globals.closeQuietly(con, ps, result);
+		if(ish_present){
+			//String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
+			sql = String.format(queryString, cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
+					cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
+					cachewhereclause,timedComponentsQueryString);
+			
+			try
+			{
+					con = ds.getConnection();
+					ps = con.prepareStatement(sql);
+					result =  ps.executeQuery();
+					
+					while(result.next()){
+						insitucount=result.getInt(1);
+						count=result.getInt(1);
+					}
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+				    Globals.closeQuietly(con, ps, result);
+			}
 		}
 		queryTotals+=(insitucount+")  Microarray(");
 		queryString=AnatomyQueries.TOTAL_MICROARRAY_ANATOMY;
-		sql = String.format(queryString, timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
-		//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
-		
-		try
-		{
-				con = ds.getConnection();
-				ps = con.prepareStatement(sql);
-				//ps.setString(1, assayType);
-				result =  ps.executeQuery();
-				
-				while(result.next()){
-					microarraycount=result.getInt(1);
-					count=count+result.getInt(1);
-				}
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-			    Globals.closeQuietly(con, ps, result);
+		if(array_present){
+			sql = String.format(queryString, arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
+			//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
+			
+			try
+			{
+					con = ds.getConnection();
+					ps = con.prepareStatement(sql);
+					//ps.setString(1, assayType);
+					result =  ps.executeQuery();
+					
+					while(result.next()){
+						microarraycount=result.getInt(1);
+						count=count+result.getInt(1);
+					}
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+				    Globals.closeQuietly(con, ps, result);
+			}
 		}
 		queryTotals+=(microarraycount+")  Sequence(");
 		queryString=AnatomyQueries.TOTAL_SEQUENCE_ANATOMY;
@@ -254,5 +288,34 @@ public class AnatomyTablePageBeanAssembler {
 	
 	public String getQueryTotals() {
 		return queryTotals;
+	}
+	
+	public void assembleParamSQL(String cachewhereclause) {
+		//String partParamSQL= AnatomyQueries.BROWSE_ANATOMY_HEADER_PARAM;
+		String partParamSQL= AnatomyQueries.BROWSE_ANATOMY_HEADER_PARAM;
+		ish_present=false;
+		array_present=false;
+		if(cachewhereclause.contains("SUB_ASSAY_TYPE")){
+			
+			if(cachewhereclause.contains("'ISH'") || cachewhereclause.contains("'IHC'") || cachewhereclause.contains("'TG'") ) {
+				ish_present=true;
+				partParamSQL+=AnatomyQueries.BROWSE_ANATOMY_ISH_PARAM;
+			}
+			
+			if(cachewhereclause.contains("Microarray") || cachewhereclause.contains("NextGen")) {
+				array_present=true;
+				partParamSQL+=(ish_present)?(" UNION " +AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM):AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM;
+			}
+			
+		}
+		else {
+			ish_present=true;
+			array_present=true;
+			partParamSQL+=(AnatomyQueries.BROWSE_ANATOMY_ISH_PARAM + " UNION " + AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM);
+		}
+		
+		
+		partParamSQL+=AnatomyQueries.BROWSE_ANATOMY_FOOTER_PARAM;
+		paramSQL=partParamSQL;	
 	}
 }
