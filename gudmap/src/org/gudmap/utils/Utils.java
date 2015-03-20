@@ -518,5 +518,17 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
         	return RET;
 
     }
+    
+    public static String filterNoiseCharacters(String targetString) {
+    	final String[][] specialChars = {	{"<", "("}, 
+    										{">", ")"}
+    									};
+    	if (targetString == null || targetString.equals("")) 
+    		return targetString;
+    	String result = targetString;
+       	for (int i=0; i< specialChars.length; i++)
+       		result = result.replaceAll(specialChars[i][0], specialChars[i][1]);
+       	return result;
+   	}
 
 }

@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.anatomy.AnatomyQueries;
 import org.gudmap.queries.generic.AutocompleteQueries;
+import org.gudmap.utils.Utils;
 
 @Named
 @RequestScoped
@@ -24,6 +25,7 @@ public class AutocompleteBean {
 	
 	ArrayList<String> geneList=null;
 	ArrayList<String> anatomyList=null;
+	ArrayList<String> geneFunctionList=null;
 	private String geneInput="";
 	private DataSource ds;
 	private Connection con;
@@ -40,6 +42,7 @@ public class AutocompleteBean {
 		
 		populateGeneList();
 		populateAnatomyList();
+		populateGeneFunctionList();
 	}
 	
 	public void setGeneList(ArrayList<String> geneList) {
@@ -96,6 +99,31 @@ public class AutocompleteBean {
 		}
 	}
 	
+	public void populateGeneFunctionList() {
+		String queryString=AutocompleteQueries.GO_TERMS;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+				geneFunctionList = new ArrayList<String>();
+				while (result.next()) {
+					String goterm=Utils.filterNoiseCharacters(result.getString(1));
+					geneFunctionList.add(goterm);
+				}
+			}
+			
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+	
+    }
+	
 	public void setGeneInput(String geneInput) {
 		this.geneInput = geneInput;
 	}
@@ -132,8 +160,13 @@ public class AutocompleteBean {
 	
 	public ArrayList<String> completeGeneFunction(String input) {
 		ArrayList<String> matches = new ArrayList<String>();
-		matches.add("Gudmap");
-		matches.add("Project");
+		Iterator<String> iterator = geneFunctionList.iterator();
+		String str="";
+		while(iterator.hasNext()){
+			str = iterator.next().toString();
+			if(str.toUpperCase().startsWith(input.toUpperCase()))
+				matches.add(str);
+		}
 		
 		return matches;
 	}

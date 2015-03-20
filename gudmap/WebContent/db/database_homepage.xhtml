@@ -45,7 +45,7 @@
 	   		
 	   		
 	   		<h:commandButton id="il_filter_submit" value="Save" action="#{paramBean.resetGeneSearchValues()}"  onclick="PF('dialog2').hide();">
-	   			<f:ajax execute="@form" ></f:ajax> 
+	   			<f:ajax execute="@form" render=":genefunctionform"></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>
 	   </h:form>
@@ -85,8 +85,49 @@
 	   	
 	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
 	   		
-	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{paramBean.resetAllGeneSearchValues()}">
-	   			<f:ajax execute="@this il_filter_reset" render=":filterform :il_dbhomepage" ></f:ajax> 
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{paramBean.resetAllGeneSearchValues(true)}">
+	   			<f:ajax execute="@this il_filter_reset" render=":filterform :il_dbhomepage :genefunctionform" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>	
+	  </h:form>    
+	   	
+	</pr:dialog> 
+	
+	<pr:dialog header="Gene Function Options" widgetVar="dialog3" width="650" style="position:absolute;left:-300px;" modal="true" > 
+		<h:form id="genefunctionform"> 
+		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+		 
+		 	<h:outputText value="Theiler Stage: "></h:outputText>
+	    	<h:panelGroup>
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
+		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 			</h:selectOneMenu>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagetovalues}">
+		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 			</h:selectOneMenu>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+	   		
+	   		
+	   		
+	   		<h:commandButton id="il_genefunction_submit" value="Save" action="#{paramBean.resetGeneSearchValues()}"  onclick="PF('dialog3').hide();">
+	   			<f:ajax execute="@form" render=":filterform"></f:ajax> 
+	   		
+	   		</h:commandButton>
+	   	</h:panelGrid>
+	   </h:form>
+	   <hr />
+	   
+	   <h:form>	
+	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+	   	
+	   		<h:commandButton id="il_genefunction_test" value="Test" action="result"></h:commandButton>
+	   		
+	   		<h:commandButton id="il_genefunction_reset" value="Reset" actionListener="#{paramBean.resetAllGeneSearchValues(false)}">
+	   			<f:ajax execute="@this il_genefunction_reset" render=":genefunctionform :il_dbhomepage :filterform" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>	
 	  </h:form>    
@@ -119,7 +160,7 @@
 								else if(inField.id=='il_dbhomepage:accession_input')
 				                	document.getElementById('il_dbhomepage:il_accession_go').click();
 								else if(inField.id=='il_dbhomepage:genefunction_input_input')
-				                	document.getElementById('il_dbhomepage:go5').click();
+				                	document.getElementById('il_dbhomepage:il_gene_function_go').click();
 				            }
 				            return false;//so that mainForm is not called
 				        }
@@ -288,15 +329,15 @@
 	    
 	   
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<pr:autoComplete  id="genefunction_input" value="#{sessionBean.geneFunctionParam}" completeMethod="#{autocompleteBean.completeGeneFunction}"
+	    	<pr:autoComplete  id="genefunction_input" value="#{geneFunctionTablePageBean.userInput}" completeMethod="#{autocompleteBean.completeGeneFunction}"
 	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
 	    	
-	    	<pr:commandButton id="showdialog3" value="Options" onclick="PF('dialog2').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
+	    	<pr:commandButton id="showdialog3" value="Options" onclick="PF('dialog3').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
 	    </h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink action="#{solr_result}">
+	    	<h:commandLink id="il_gene_function_go" action="#{geneFunctionTablePageBean.prepareTable}">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>

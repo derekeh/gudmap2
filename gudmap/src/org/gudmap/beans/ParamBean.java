@@ -744,6 +744,12 @@ public class ParamBean implements Serializable {
 		cachedatevalueclause="";cacheassaytypevalueclause="";cachetheilerstagevalueclause="";cachesexvalueclause="";cachespecimentypevalueclause="";
 		cachegenevalueclause="";cacheprobenamevalueclause="";
 	}
+	
+	public void resetWhereClauses() {
+		setWhereclause(GenericQueries.WHERE_CLAUSE);
+		setCachewhereclause(GenericQueries.WHERE_CLAUSE);
+		setarrayCachewhereclause(GenericQueries.WHERE_CLAUSE);
+	}
 	//DONT RESET THE THEILER STAGES HERE BECAUSE THEY ARE SET IN THE OPTIONS AND PRESERVED FOR USE IN THE SUBSEQUENT FILTER
 	public String resetGeneSearchValues() {
 		
@@ -753,10 +759,14 @@ public class ParamBean implements Serializable {
 		return "database_homepage";
 	}
 	
-	public String resetAllGeneSearchValues() {
+	public String resetAllGeneSearchValues(boolean isGene) {
 		String RET=resetGeneSearchValues();
-		setGeneoptionvalues("Expression Summaries");
-		setWhereclause(GenericQueries.WHERE_CLAUSE);
+		if(isGene)
+			setGeneoptionvalues("Expression Summaries");
+		resetWhereClauses();
+		resetClauses();
+		setTheilerstagefromvalues("");
+		setTheilerstagetovalues("");
 		return RET;
 	}
 	
@@ -772,9 +782,7 @@ public class ParamBean implements Serializable {
 	public void resetAll() {
 		resetValues();
 		resetClauses();
-		setWhereclause(GenericQueries.WHERE_CLAUSE);
-		setCachewhereclause(GenericQueries.WHERE_CLAUSE);
-		setarrayCachewhereclause(GenericQueries.WHERE_CLAUSE);
+		resetWhereClauses();
 		//focusGroup="reset";
 	}
 
