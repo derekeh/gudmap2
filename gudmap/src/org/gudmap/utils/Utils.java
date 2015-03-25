@@ -485,7 +485,12 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 	    return output;
     }
     
-    public static String[] processInputString(String input){
+    public static String[] splitInputString(String input) {
+    	String[] userInput = input.split(":|;|,"); 
+    	return userInput;
+    }
+    
+    public static String[] processInputString(String input, boolean isAccession){
     	String RET[] = null;
         	// check for empty string
         	if (input==null || input == "")
@@ -501,10 +506,18 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
         		String tmpStr = "";
         		for (int i=0; i<accessionList.length; i++)
         		{
-        			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
-        			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
-        			parsedString += tmpStr;
-        			tmpStr="";
+        			if(isAccession){
+	        			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
+	        			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
+	        			parsedString += tmpStr;
+	        			tmpStr="";
+        			}
+        			else {
+        				parsedQuery += accessionList[i].trim() + ",";
+	        			tmpStr = accessionList[i].trim()+"\n"; 
+	        			parsedString += tmpStr;
+	        			tmpStr="";
+        			}
         		}
         		//userInputQuery
         		RET[0]= parsedQuery.substring(0,parsedQuery.length()-1);
@@ -530,5 +543,39 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
        		result = result.replaceAll(specialChars[i][0], specialChars[i][1]);
        	return result;
    	}
+    
+    //query to get a list of gene symbols from a specified reference table. Can only add search params to one column in table 
+	  public static  String getSymbolsFromGeneInputParamsQuery(String [] input, 
+			  String startQuery, String searchColumn, int type){
+		  if(input == null)
+			  return "";
+		  StringBuffer symbolsQ = new StringBuffer(startQuery);
+		  //0 == 'like' query ('contains' or 'starts with') ie wildcard
+		  if(type == 0) {
+			  symbolsQ.append("(");
+			  for(int i=0; i<input.length;i++){
+	    			if(i==0){
+	    				symbolsQ.append(searchColumn+" LIKE ? ");
+	    			}
+	    			else {
+	    				symbolsQ.append("OR "+searchColumn+" LIKE ? ");
+	    			}
+	    		}
+	    		symbolsQ.append(")");
+		  }
+		  //else type will be 1: equivalent to 'equals'
+		  else {
+			  symbolsQ.append(searchColumn + " IN (");
+			  for(int i=0;i<input.length;i++){
+	            	if(i == input.length-1){
+	            		symbolsQ.append("?)");
+	            	}
+	            	else {
+	            		symbolsQ.append("?, ");
+	            	}
+	            }
+		  }
+		  return symbolsQ.toString();
+	  }
 
 }

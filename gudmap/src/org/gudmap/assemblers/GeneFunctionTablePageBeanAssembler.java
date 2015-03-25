@@ -15,9 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.gudmap.dao.AnatomyDao;
+import org.gudmap.dao.GeneFunctionDao;
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.anatomy.AnatomyQueries;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.queries.genestrip.GeneListQueries;
+import org.gudmap.queries.genestrip.GeneStripQueries;
 import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.InsituTableBeanModel;
@@ -40,52 +43,56 @@ public class GeneFunctionTablePageBeanAssembler {
 	private String arraycachewhereclause;
 	private String expressionJoin;	
 	private String queryTotals;
-	private String input;	
-	private String timedComponentsQueryString="";
-	private String descendentComponentsQueryString="";
-	private String ancestorComponentsQueryString="";
-	private AnatomyDao anatomyDao;
+	private String input;
+	private String inputArray[];
+	private String geneQueryString="";
+	private GeneFunctionDao geneFunctionDao;
+	private String [] geneSymbols=null;;
 	
 	private boolean ish_present=false;
 	private boolean array_present=false;
 	
-	public  GeneFunctionTablePageBeanAssembler(/*String paramSQL*/) {
+	public  GeneFunctionTablePageBeanAssembler(String paramSQL) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-		//this.paramSQL=paramSQL;
-		anatomyDao = new AnatomyDao();
-		
+		this.paramSQL=paramSQL;
+		geneFunctionDao = new GeneFunctionDao();
 	}
-	//TODO this is the order of events. Still to Work through their implemenation
-	public void init(String input) {
-		String [] descendentComponents = null;
-		String [] ancestorComponents = null;
-		String transitiveRelations=null;
-		//input is the input from the anatomy text input autocomplete on databaseHomepage. (only takes one string at present) - can use
-		String [] timedComponentsArray = anatomyDao.getTimedComponentIdsFromInput(Utils.normaliseApostrophe(input));
-		//get exact expression
-		if(transitiveRelations != null && transitiveRelations.equals("0")) {
-			descendentComponents = timedComponentsArray;
-			ancestorComponents = timedComponentsArray;
-		} 
-		//get inferred expression
-		else {
-			descendentComponents = anatomyDao.getTransitiveRelations(timedComponentsArray, "descendent");
-			ancestorComponents = anatomyDao.getTransitiveRelations(timedComponentsArray, "ancestor");
-		}
-		timedComponentsQueryString=Utils.createSqlInputFromResult(timedComponentsArray);
-		descendentComponentsQueryString=Utils.createSqlInputFromResult(descendentComponents);
-		ancestorComponentsQueryString=Utils.createSqlInputFromResult(ancestorComponents);
+	
+	public void init (String userInput, String wildcard){
 		
-	}
+		inputArray=Utils.splitInputString(userInput);
+    	//array to contain the a specific sql query and the condition to narrow down the result set
+    	String [] symbolsQParts;
+    	String goIdListQ;
+    	geneSymbols=null;
+    		    
+		    //if user wants to do a wild card search
+		if (wildcard.equalsIgnoreCase("contains") || wildcard.equalsIgnoreCase("starts with")) {
+				//get components to build query to find GO: ids for a specific function
+				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGoTerm_GoId");
+				//create the query string from the users input and the components stored in symbolsQParts
+				goIdListQ = Utils.getSymbolsFromGeneInputParamsQuery(inputArray,symbolsQParts[0], symbolsQParts[1], 0);
+		 }
+		    //search for an exact string
+		 else {
+				//get components to build query to find GO: ids for a specific function
+				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGoTerm_GoId");
+				//create the query string from the users input and the components stored in symbolsQParts
+				goIdListQ = Utils.getSymbolsFromGeneInputParamsQuery(inputArray,symbolsQParts[0], symbolsQParts[1], 1);
+		 }
+		 geneSymbols=geneFunctionDao.getGeneSymbols(inputArray, goIdListQ, wildcard); 
+    	 geneQueryString = Utils.createSqlInputFromResult(geneSymbols);
+   }
+	
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
 											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input,
-											String focusGroupSpWhereclause, String cachewhereclause, String arraycachewhereclause){
+											String focusGroupSpWhereclause, String cachewhereclause){
 		this.whereclause=whereclause;
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		this.expressionJoin=expressionJoin;
@@ -94,36 +101,12 @@ public class GeneFunctionTablePageBeanAssembler {
 		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
 		this.cachewhereclause=cachewhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
-		
-		this.arraycachewhereclause = arraycachewhereclause;
-		
-		//assemble unions based on assaytype in filter
-		assembleParamSQL(cachewhereclause);
-		
+				
 		/*String sql = String.format(paramSQL, expressionJoin,whereclause,input,input,input,input,input,
 									focusGroupWhereclause,whereclause,input,focusGroupSpWhereclause,whereclause,input,
 									focusGroupSpWhereclause,sortField, sortDirection);*/
-		String sql="";
-		//different substitutions to query string based on assaytype in filter
-		if(ish_present && array_present) {
-			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
-									cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
-									cachewhereclause,timedComponentsQueryString,
-									arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
-									sortField, sortDirection);
-		}
+		String sql = String.format(paramSQL, cachewhereclause,geneQueryString,sortField, sortDirection);
 		
-		if(ish_present && !array_present){
-			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
-					cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
-					cachewhereclause,timedComponentsQueryString,
-					sortField, sortDirection);
-		}
-		
-		if(!ish_present && array_present){
-			sql = String.format(paramSQL,arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
-					sortField, sortDirection);
-		}
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
@@ -172,12 +155,10 @@ public class GeneFunctionTablePageBeanAssembler {
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
 		String sql="";
-		String queryString=AnatomyQueries.TOTAL_ISH_ANATOMY;
-		if(ish_present){
+		String queryString=GeneListQueries.ISH_GENE_FUNCTION_TOTAL;
+		
 			//String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
-			sql = String.format(queryString, cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
-					cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
-					cachewhereclause,timedComponentsQueryString);
+			sql = String.format(queryString, cachewhereclause,geneQueryString);
 			
 			try
 			{
@@ -194,11 +175,14 @@ public class GeneFunctionTablePageBeanAssembler {
 			finally {
 				    Globals.closeQuietly(con, ps, result);
 			}
-		}
-		queryTotals+=(insitucount+")  Microarray(");
+		
+			queryTotals+=(insitucount+")");
+			
+		//NOT BRINGING BACK MICROARRAY OR SEQUENCE DATA FOR NOW	
+		/*queryTotals+=(insitucount+")  Microarray(");
 		queryString=AnatomyQueries.TOTAL_MICROARRAY_ANATOMY;
 		if(array_present){
-			sql = String.format(queryString, arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
+			sql = String.format(queryString, arraycachewhereclause,geneQueryString);
 			//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 			
 			try
@@ -238,7 +222,8 @@ public class GeneFunctionTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		queryTotals+=(sequencecount+")");
+		queryTotals+=(sequencecount+")");*/
+		
 		return count;
 	}
 	
@@ -290,32 +275,5 @@ public class GeneFunctionTablePageBeanAssembler {
 		return queryTotals;
 	}
 	
-	public void assembleParamSQL(String cachewhereclause) {
-		//String partParamSQL= AnatomyQueries.BROWSE_ANATOMY_HEADER_PARAM;
-		String partParamSQL= AnatomyQueries.BROWSE_ANATOMY_HEADER_PARAM;
-		ish_present=false;
-		array_present=false;
-		if(cachewhereclause.contains("SUB_ASSAY_TYPE")){
-			
-			if(cachewhereclause.contains("'ISH'") || cachewhereclause.contains("'IHC'") || cachewhereclause.contains("'TG'") ) {
-				ish_present=true;
-				partParamSQL+=AnatomyQueries.BROWSE_ANATOMY_ISH_PARAM;
-			}
-			
-			if(cachewhereclause.contains("Microarray") || cachewhereclause.contains("NextGen")) {
-				array_present=true;
-				partParamSQL+=(ish_present)?(" UNION " +AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM):AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM;
-			}
-			
-		}
-		else {
-			ish_present=true;
-			array_present=true;
-			partParamSQL+=(AnatomyQueries.BROWSE_ANATOMY_ISH_PARAM + " UNION " + AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM);
-		}
-		
-		
-		partParamSQL+=AnatomyQueries.BROWSE_ANATOMY_FOOTER_PARAM;
-		paramSQL=partParamSQL;	
-	}
+	
 }

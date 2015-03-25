@@ -18,6 +18,7 @@ import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.anatomy.AnatomyQueries;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.queries.genestrip.GeneListQueries;
 import org.gudmap.utils.Utils;
 
 @Named
@@ -35,6 +36,7 @@ public class GeneFunctionTablePageBean extends PagerImpl implements Serializable
     private String queryTotals;
     private String userInput="";
     private String userInputQuery;
+    private String wildcard=null;
     
     @Inject
    	protected ParamBean paramBean;
@@ -60,7 +62,7 @@ public class GeneFunctionTablePageBean extends PagerImpl implements Serializable
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
     	
     	//assembler=new AnatomyTablePageBeanAssembler(AnatomyQueries.BROWSE_ANATOMY_PARAM);
-    	assembler=new GeneFunctionTablePageBeanAssembler();
+    	assembler=new GeneFunctionTablePageBeanAssembler(GeneListQueries.BROWSE_GENE_FUNCTION_PARAM);
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -71,10 +73,10 @@ public class GeneFunctionTablePageBean extends PagerImpl implements Serializable
     
     @Override
     public void loadDataList() {
-    	assembler.init(userInputQuery.replace("'", ""));
+    	assembler.init(userInputQuery.replace("'", ""),"equals");
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
     									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
-    									paramBean.getFocusGroupSpWhereclause(),paramBean.getCachewhereclause(),paramBean.getArraycachewhereclause());
+    									paramBean.getFocusGroupSpWhereclause(),paramBean.getCachewhereclause());
         // Set currentPage, totalPages, columntotals and pages.
     	//setTotalslist(assembler.getTotals());
     	totalRows = assembler.count();
@@ -138,14 +140,14 @@ public class GeneFunctionTablePageBean extends PagerImpl implements Serializable
     
     public String prepareTable() {
     	loadDataList();
-    	return "browseAnatomyTablePage";
+    	return "browseGeneFunctionTablePage";
     }
     
     public void setUserInput(String input){
     	if(input==null || input.equals(""))
     		this.userInput="";
     	else {
-	    	String processedValues[] = Utils.processInputString(input);
+	    	String processedValues[] = Utils.processInputString(input,false);
 	    	this.userInputQuery = processedValues[0];
 	    	this.userInput = processedValues[1];
     	}

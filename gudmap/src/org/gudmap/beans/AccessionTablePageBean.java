@@ -142,7 +142,7 @@ public class AccessionTablePageBean extends PagerImpl implements Serializable  {
     	if(input==null || input.equals(""))
     		this.userInput="";
     	else {
-	    	String processedValues[] = Utils.processInputString(input);
+	    	String processedValues[] = Utils.processInputString(input,true);
 	    	this.userInputQuery = processedValues[0];
 	    	this.userInput = processedValues[1];
     	}

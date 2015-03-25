@@ -160,7 +160,7 @@ public class GeneListTablePageBean extends PagerImpl implements Serializable  {
     	if(input==null || input.equals(""))
     		this.userInput="";
     	else {
-	    	String processedValues[] = Utils.processInputString(input);
+	    	String processedValues[] = Utils.processInputString(input,false);
 	    	this.userInputQuery = processedValues[0];
 	    	this.userInput = processedValues[1];
     	}

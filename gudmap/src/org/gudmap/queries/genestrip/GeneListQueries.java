@@ -57,11 +57,26 @@ public class GeneListQueries {
 			   "%s  RPR_SYMBOL IN (%s)  " +
 			   "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE NOT IN ('Microarray','NextGen') %s";
 	   
-	   public final static String MICROARRAY_GENELIST_TOTAL = "SELECT COUNT(DISTINCT MBC_SUB_ACCESSION_ID) TOTAL_MICROARRAY FROM " +
+	 public final static String MICROARRAY_GENELIST_TOTAL = "SELECT COUNT(DISTINCT MBC_SUB_ACCESSION_ID) TOTAL_MICROARRAY FROM " +
 			   "MIC_BROWSE_CACHE as Gene JOIN QSC_MIC_CACHE as Cache %s MBC_SUB_ACCESSION_ID=QMC_SUB_ACCESSION_ID  AND ( MBC_GNF_SYMBOL in (%s) ) %s";
 			   
-	   public final static String SEQUENCE_GENELIST_TOTAL = "SELECT 0 TOTAL_SEQUENCE"; 
+	 public final static String SEQUENCE_GENELIST_TOTAL = "SELECT 0 TOTAL_SEQUENCE"; 
+	   
+	 public static String BROWSE_GENE_FUNCTION_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.age, x.sex, x.genotype, " +
+			 "GROUP_CONCAT(DISTINCT x.tissue) tissue, x.expression, x.specimen, x.image " +
+			 "FROM ((" +
+			 "SELECT DISTINCT SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " +
+			 "QIC_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name, QIC_SUB_EMBRYO_STG stage, " +
+			 "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, " +
+			 "QIC_SPN_SEX sex, QIC_SPN_WILDTYPE genotype, " +
+			 "GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " +
+			 "FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+			 "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " + 
+			 "%s  QIC_RPR_SYMBOL in (%s) GROUP BY gudmap_accession ) " +
+			 "ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x " +
+			 "GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
 	
-	
+	public static String ISH_GENE_FUNCTION_TOTAL = "SELECT COUNT(DISTINCT gudmap_accession) FROM ((SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession " +
+				"FROM QSC_ISH_CACHE %s  QIC_RPR_SYMBOL in (%s) ) ) as TABLEA";
 
 }
