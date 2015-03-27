@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	
+	<ui:define name="title">
+	    Disease Results
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	
+	<f:metadata>
+		<f:viewParam name="diseaseName" value="#{sessionBean.diseaseNameParam}" />
+	</f:metadata>
+	<style>
+		.gd_container {max-width:3000px;}
+	</style>
+	
+	<!-- can use relative links on html tags -->
+	    <h1>Disease Results</h1>	
+	    <!-- all other content in here -->  
+	    <h:form>
+	    
+	      <pr:dataTable  id="il_disease_table" value="#{diseaseResourceBean.datalist}" var="row" draggableColumns="true" paginator="true" rows="10"
+		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                 rowsPerPageTemplate="10,50,100" styleClass="il_disease_table">
+               <pr:column>
+    			<f:facet name="header">    			
+    				Omim ID
+				</f:facet>
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/omim/#{row.omimID}"  >
+					<h:outputText value="#{row.omimID}"></h:outputText>
+				</h:outputLink>
+    		   </pr:column>  
+    		   
+    		   <pr:column>
+    			<f:facet name="header">    			
+    				Disease Name
+				</f:facet>
+				<h:outputText value="#{row.diseaseName}"></h:outputText>
+    		   </pr:column> 
+    		   
+    		   <pr:column>
+    			<f:facet name="header">    			
+    				Human Gene Symbol
+				</f:facet>
+				<h:outputText value="#{row.humanGeneSymbol}"></h:outputText>
+    		   </pr:column>
+    		   
+			   <pr:column>
+    			<f:facet name="header">    			
+    				Mouse Gene Symbol
+				</f:facet>
+				<h:outputLink value="viewGeneDetails.jsf">
+					<h:outputText value="#{row.mouseGeneSymbol}"></h:outputText>
+					<f:param name="gene" value="#{row.mouseGeneSymbol}"></f:param>
+				</h:outputLink>
+    		</pr:column>
+    		
+    		<pr:column>
+    			<f:facet name="header">    			
+    				Mouse Gene MGI ID
+				</f:facet>
+				<h:outputText value="#{row.mouseGeneMgiID}"></h:outputText>
+    		</pr:column>
+    		
+    		<pr:column>
+    			<f:facet name="header">    			
+    				In Situ Data
+				</f:facet>
+				<h:outputText value="#{row.hasInsituData}"></h:outputText>
+    		</pr:column>
+    		
+		</pr:dataTable> 
+	  </h:form>
+		
+	</ui:define>
+</ui:composition>
+</html>

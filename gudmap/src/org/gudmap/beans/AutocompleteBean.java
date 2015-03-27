@@ -26,6 +26,7 @@ public class AutocompleteBean {
 	ArrayList<String> geneList=null;
 	ArrayList<String> anatomyList=null;
 	ArrayList<String> geneFunctionList=null;
+	ArrayList<String> diseaseNameList=null;
 	private String geneInput="";
 	private DataSource ds;
 	private Connection con;
@@ -43,6 +44,7 @@ public class AutocompleteBean {
 		populateGeneList();
 		populateAnatomyList();
 		populateGeneFunctionList();
+		populateDiseaseNameList();
 	}
 	
 	public void setGeneList(ArrayList<String> geneList) {
@@ -124,6 +126,29 @@ public class AutocompleteBean {
 	
     }
 	
+	public void populateDiseaseNameList() {
+		String queryString=AutocompleteQueries.DISEASE_NAMES_2;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+				diseaseNameList = new ArrayList<String>();
+				while (result.next()) {
+					diseaseNameList.add(result.getString(1));
+				}
+			}
+			
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+	}
+	
 	public void setGeneInput(String geneInput) {
 		this.geneInput = geneInput;
 	}
@@ -161,6 +186,19 @@ public class AutocompleteBean {
 	public ArrayList<String> completeGeneFunction(String input) {
 		ArrayList<String> matches = new ArrayList<String>();
 		Iterator<String> iterator = geneFunctionList.iterator();
+		String str="";
+		while(iterator.hasNext()){
+			str = iterator.next().toString();
+			if(str.toUpperCase().startsWith(input.toUpperCase()))
+				matches.add(str);
+		}
+		
+		return matches;
+	}
+	
+	public ArrayList<String> completeDiseaseName(String input) {
+		ArrayList<String> matches = new ArrayList<String>();
+		Iterator<String> iterator = diseaseNameList.iterator();
 		String str="";
 		while(iterator.hasNext()){
 			str = iterator.next().toString();

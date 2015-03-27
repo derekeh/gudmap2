@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP Disease Resource
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+
+<!-- 	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define> -->
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<!-- all other content in here --> 
+	<h1><strong>About the GUDMAP Disease Resource</strong></h1>
+    
+    <p align="right"></p>
+
+    <h4><strong>Genitourinary gene expression, development and disease</strong></h4>
+	<p>Studying gene expression in the genitourinary (GU) system is useful to understand GU disease. It supports our understanding of disease mechanisms. If we know that a particular disease affects the GU system we can look at which genes are expressed (or not expressed) in the affected GU tissues and structures. This helps us to better understand how mutations in these genes or disruptions in their expression can play a role in disease.</p>
+	<p>A gene may have a limited pattern of expression – only being active in a few particular structures and at a few particular times. If this gene is faulty then it is likely to have consequences for the function and/or development of those structures, potentially giving rise to disease.</p>
+	<p>Studying development is important as some diseases can occur as a consequence of events that take place during development. Problems during development can result in the incorrect formation of structures, the consequences of which can lead to disease. For example, reduced nephron number may lead to the early onset of renal disease. Understanding development, in particular the role of stem cells, may also lead to future therapies based on regeneration.</p>
+	
+	<p>For more information go to the <a href="http://www.gudmap.org/Links/index.html">Genitourinary Disease</a> section of the Links page.</p>
+	<h4><strong>About the Resource</strong></h4>
+	  <p>The development of the GUDMAP Disease Resource has involved obtaining disease-gene association, primarily from OMIM, and building this data into the GUDMAP database architecture. This has enabled the disease data to be integrated with the existing gene expression data which has enhanced GUDMAP as a research tool for genitourinary development and disease. <br />
+	    <br />
+	    The <a href="../db/query_disease.jsf">GUDMAP Disease Resource</a> provides tools to search GUDMAP for:</p>
+	  <ul>
+	    <li>Associations between genes and diseases of the genitourinary system</li>
+	    <li>Associations between genes and Mammalian Phenotype (MP) terms from the renal/urinary &amp; reproductive systems</li>
+	  </ul>
+	<h3>Related External Sites:</h3>		
+		
+		<p><a href="http://gataca.cchmc.org/gataca/gudmap">The GATACA GUDMAP Gene Explorer</a> at Cincinnati Children's Hospital Medical Center<br />
+		A tool for the identification and analysis of genes responsible for functions and diseases of the genitourinary system.</p>
+		<p><a href="http://toppgene.cchmc.org">ToppGene Suite</a> at Cincinnati Children's Hospital Medical Center<br />
+		A one-stop portal for gene list enrichment analysis and candidate gene prioritization based on functional annotations and protein interaction networks.</p>  
+	</ui:define>
+</ui:composition>
+</html>

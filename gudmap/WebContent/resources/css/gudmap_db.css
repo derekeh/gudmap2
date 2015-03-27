@@ -217,6 +217,12 @@
  	font-size:110%;
  }
  
+  .ui-datatable.il_disease_table th {
+ 	font-size:110%;
+ 	font-weight:bold;
+ 	text-align:left;
+ }
+ 
  .db_table_header {
    color:#FFFFFF;
    background-color:#476885;

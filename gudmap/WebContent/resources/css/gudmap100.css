@@ -354,3 +354,7 @@ input[type="text"], textarea {
 .gd_rightAlign {
   text-align: right;
 }
+
+.gd_leftMargin {
+  margin-left:10px;
+}

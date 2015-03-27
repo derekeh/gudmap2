@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	     Querying the GUDMAP Disease Resource 
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	<f:metadata>
+		<f:viewParam name="diseaseName" value="#{sessionBean.diseaseNameParam}" />
+	</f:metadata>
+	<!-- can use relative links on html tags -->
+	<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='il_querydisease_1:disease_input_input')
+				                	document.getElementById('il_querydisease_1:il_disease_input_go').click();
+								/* else if(inField.id=='il_dbhomepage:anatomy_input_input')
+				                	document.getElementById('il_dbhomepage:il_anatomy_go').click();
+								else if(inField.id=='il_dbhomepage:accession_input')
+				                	document.getElementById('il_dbhomepage:il_accession_go').click();
+								else if(inField.id=='il_dbhomepage:genefunction_input_input')
+				                	document.getElementById('il_dbhomepage:il_gene_function_go').click(); */
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		//]]>
+		</script>
+	    	
+	    <!-- all other content in here -->   
+	<div id="db_querybrowse_left">  
+      <h1>Querying GUDMAP Disease-Gene Associations</h1>
+      <h:form id="il_querydisease_1">
+	      <h:panelGrid columns="1" columnClasses="gd_celltextleft" border="0" cellpadding="0" cellspacing="0">
+		
+		    <h:outputText styleClass="db_bold" value="To search for genes associated with a genitourinary disease:"> </h:outputText>
+		    <h:outputText value="Select the OMIM genitourinary disease of interest from the pull-down menu. Select your disease of interest and click 'Search'.
+		     Alternatively, enter the disease name or term you wish to search for in the text box. You can enter any term you like and the query will search for all 
+		     OMIM disease names that contain your search term (e.g. entering 'wilms' will return all 'Wilms Tumor' entries).">
+		     </h:outputText>
+		     <br />
+			<h:outputText value="Bear in mind, if using the pull-down menu be sure to keep the text box empty as this will take precedence. 
+			The query will bring back a table of genes that are associated with the chosen disease."> 
+			</h:outputText>
+			<br />
+		    <h:panelGroup>
+		    	<h:panelGrid columns="4" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
+		    		<h:outputText styleClass="db_bold" value="Select Disease:&#160;&#160;"> </h:outputText>
+		    		<pr:autoComplete  id="disease_input" value="#{sessionBean.diseaseNameParam}" completeMethod="#{autocompleteBean.completeDiseaseName}"
+		     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+		     		<h:panelGroup styleClass="gd_leftMargin"></h:panelGroup>
+		     		<h:commandButton id="il_disease_input_go" value="Search" action="viewDiseaseResult?faces-redirect=true&amp;includeViewParams=true" />
+			  		
+		    	</h:panelGrid>
+		    </h:panelGroup>
+		  </h:panelGrid>
+	   </h:form>
+	 </div>
+	</ui:define>
+</ui:composition>
+</html>

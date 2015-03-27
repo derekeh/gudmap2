@@ -24,6 +24,7 @@ public class SessionBean implements Serializable {
 	private String geneParam="";
 	private String anatomyParam="";
 	private String geneFunctionParam="";
+	private String diseaseNameParam="";
 	public SessionBean() {
 		
 	}
@@ -107,6 +108,14 @@ public class SessionBean implements Serializable {
 	 
 	 public String getGeneParam() {
 		 return geneParam;
+	 }
+	 
+	 public void setDiseaseNameParam(String diseaseNameParam){
+		 this.diseaseNameParam=diseaseNameParam;
+	 }
+	 
+	 public String getDiseaseNameParam() {
+		 return diseaseNameParam;
 	 }
 	
 	 public void init() {
