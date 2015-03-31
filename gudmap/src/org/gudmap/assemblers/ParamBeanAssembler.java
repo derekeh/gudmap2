@@ -28,6 +28,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>sexlist;
 	private Map<String,String>specimentypelist;
 	private Map<String,String>geneoptionlist;
+	private Map<String,String>annotationtypelist;
 	
 	public ParamBeanAssembler() {
 		try {
@@ -155,6 +156,14 @@ public class ParamBeanAssembler {
 		geneoptionlist.put("GUDMAP Entries", "GUDMAP Entries");
 		
 		return geneoptionlist;
+	}
+	
+	public Map<String,String> getAnnotationtypelist() {
+		annotationtypelist = new LinkedHashMap<String,String>();
+		annotationtypelist.put("Direct Annotations", "Direct Annotations");
+		annotationtypelist.put("Direct and Derived Annotations", "Direct and Derived Annotations");
+		
+		return annotationtypelist;
 	}
 	
 	

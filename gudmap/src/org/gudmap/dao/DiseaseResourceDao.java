@@ -21,6 +21,8 @@ public class DiseaseResourceDao {
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
+	//private String annotationType;
+	private boolean getPhenotypeID=false;
 	
 	public DiseaseResourceDao() {
 		try {
@@ -31,11 +33,44 @@ public class DiseaseResourceDao {
 		}
 	}
 	
-	public ArrayList<DiseaseResourceModel> getGeneAssocDisease(String diseaseName) {
-		if(diseaseName==null || diseaseName.equals(""))
+	public ArrayList<DiseaseResourceModel> getGeneAssocDisease(String inputTerm,String type, boolean isDirect) {
+		if(inputTerm==null || inputTerm.equals(""))
 			return null;
 		
-		String queryString = DiseaseQueries.GENES_ASSOC_DISEASE;
+		String queryString = "";
+		if(type.equals("name"))
+			queryString=DiseaseQueries.GENES_ASSOC_DISEASE;
+		else if(type.equals("gene")){
+			if(inputTerm.startsWith("MGI:"))
+				queryString=DiseaseQueries.GENE_ASSOC_DISEASE_MGI;
+			else
+				queryString=DiseaseQueries.GENE_ASSOC_DISEASE_TERM;
+		}
+		else if(type.equals("phenotype")) {
+			queryString=DiseaseQueries.PHENOTYPE_ID_FROM_TERM;
+			try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, inputTerm);
+				result =  ps.executeQuery();
+				if (result.first()){
+					inputTerm=result.getString(1);					
+				}
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			} 
+			queryString=DiseaseQueries.GENES_ASSOC_PHENOTYPE;
+		}
+		else if(type.equals("phenotypegene")){
+			if(isDirect)//TODO AMEND CONDITION
+				queryString=DiseaseQueries.PHENOTYPE_BY_GENE_DIRECT;
+			else
+				queryString=DiseaseQueries.PHENOTYPE_BY_GENE_DERIVED;
+		}
 		ArrayList<DiseaseResourceModel> datalist = new ArrayList<DiseaseResourceModel>();
 		DiseaseResourceModel diseaseResourceModel=null;
 		
@@ -43,7 +78,7 @@ public class DiseaseResourceDao {
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, diseaseName);
+			ps.setString(1, inputTerm);
 			result =  ps.executeQuery();
 			if (result.first()){
 				result.beforeFirst();

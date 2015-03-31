@@ -19,7 +19,10 @@
 	
 	<ui:define name="content">
 	<f:metadata>
-		<f:viewParam name="diseaseName" value="#{sessionBean.diseaseNameParam}" />
+		<f:viewParam name="diseaseName" value="#{sessionBean.diseaseNameParam}" />	
+		<f:viewParam name="diseaseGene" value="#{sessionBean.diseaseGeneParam}" />	
+		<f:viewParam name="diseasePhenotype" value="#{sessionBean.diseasePhenotypeParam}" />
+		<f:viewParam name="isDirect" value="#{paramBean.isDirect}" />	
 	</f:metadata>
 	<!-- can use relative links on html tags -->
 	<script type="text/javascript">
@@ -30,12 +33,13 @@
 							if (e.keyCode === 13) {
 								if(inField.id=='il_querydisease_1:disease_input_input')
 				                	document.getElementById('il_querydisease_1:il_disease_input_go').click();
-								/* else if(inField.id=='il_dbhomepage:anatomy_input_input')
-				                	document.getElementById('il_dbhomepage:il_anatomy_go').click();
-								else if(inField.id=='il_dbhomepage:accession_input')
-				                	document.getElementById('il_dbhomepage:il_accession_go').click();
-								else if(inField.id=='il_dbhomepage:genefunction_input_input')
-				                	document.getElementById('il_dbhomepage:il_gene_function_go').click(); */
+								 else if(inField.id=='il_querydisease_2:gene_input_input')
+				                	document.getElementById('il_querydisease_2:il_gene_input_go').click();
+								 else if(inField.id=='il_querydisease_3:phenotype_input_input')
+					                	document.getElementById('il_querydisease_2:il_phenotype_input_go').click();
+								 else if(inField.id=='il_querydisease_4:phenotype_gene_input_input')
+					                	document.getElementById('il_querydisease_2:il_phenotype_gene_input_go').click();
+								 
 				            }
 				            return false;//so that mainForm is not called
 				        }
@@ -45,6 +49,7 @@
 	    <!-- all other content in here -->   
 	<div id="db_querybrowse_left">  
       <h1>Querying GUDMAP Disease-Gene Associations</h1>
+      <div id="divalignleft" style="margin-left:15px;" >
       <h:form id="il_querydisease_1">
 	      <h:panelGrid columns="1" columnClasses="gd_celltextleft" border="0" cellpadding="0" cellspacing="0">
 		
@@ -58,18 +63,102 @@
 			The query will bring back a table of genes that are associated with the chosen disease."> 
 			</h:outputText>
 			<br />
+			<h:outputText styleClass="db_bold" value="Select Disease:&#160;&#160;"> </h:outputText>
 		    <h:panelGroup>
-		    	<h:panelGrid columns="4" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
-		    		<h:outputText styleClass="db_bold" value="Select Disease:&#160;&#160;"> </h:outputText>
+		    	<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
+		    		
 		    		<pr:autoComplete  id="disease_input" value="#{sessionBean.diseaseNameParam}" completeMethod="#{autocompleteBean.completeDiseaseName}"
 		     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 		     		<h:panelGroup styleClass="gd_leftMargin"></h:panelGroup>
-		     		<h:commandButton id="il_disease_input_go" value="Search" action="viewDiseaseResult?faces-redirect=true&amp;includeViewParams=true" />
+		     		<h:commandButton id="il_disease_input_go" value="Search" action="viewDiseaseResult?faces-redirect=true&amp;includeViewParams=true&amp;type=name" >
+		     		</h:commandButton>
 			  		
 		    	</h:panelGrid>
 		    </h:panelGroup>
 		  </h:panelGrid>
 	   </h:form>
+	   <br />
+	   <h:form id="il_querydisease_2">
+	      <h:panelGrid columns="1" columnClasses="gd_celltextleft" border="0" cellpadding="0" cellspacing="0">
+		
+		    <h:outputText styleClass="db_bold" value="To search for genitourinary diseases associated with a known gene:"> </h:outputText>
+		    <h:outputText value="The pull-down menu lists genes that have associations with OMIM genitourinary diseases. 
+		    	Select your gene of interest and click 'Search'. Alternatively, enter the gene you wish to search for in the text box. 
+		    	If using the pull-down menu be sure to keep the text box empty as this will take precedence. 
+		    	The query will bring back diseases that are associated with the chosen gene.">
+		     </h:outputText>
+			<br />
+			<h:outputText styleClass="db_bold" value="Select Gene:&#160;&#160;"> </h:outputText>
+		    <h:panelGroup>
+		    	<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
+		    		
+		    		<pr:autoComplete  id="gene_input" value="#{sessionBean.diseaseGeneParam}" completeMethod="#{autocompleteBean.completeGene}"
+		     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+		     		<h:panelGroup styleClass="gd_leftMargin"></h:panelGroup>
+		     		<h:commandButton id="il_gene_input_go" value="Search" action="viewDiseaseResult?faces-redirect=true&amp;includeViewParams=true&amp;type=gene" >
+		     		</h:commandButton>
+			  		
+		    	</h:panelGrid>
+		    </h:panelGroup>
+		  </h:panelGrid>
+	   </h:form>
+	   <br />
+	   <hr />
+	   <br />
+	   <h1 style="margin-left:-15px;">Querying GUDMAP Phenotype-Gene Associations</h1>
+	   <h:form id="il_querydisease_3">
+	      <h:panelGrid columns="1" columnClasses="gd_celltextleft" border="0" cellpadding="0" cellspacing="0">
+		
+		    <h:outputText styleClass="db_bold" value="To search for all genes associated with either a renal/urinary OR reproductive system phenotype:"> </h:outputText>
+		    <h:outputText value="The pull-down menu lists Mammalian Phenotypes (MP) for the Renal/Urinary System and the Reproductive System. Select the phenotype of interest and click 'Search'.
+		    	 The query returns a list of any genes annotated with the chosen phenotype. ">
+		     </h:outputText>
+			<br />
+			<h:outputText styleClass="db_bold" value="Select Phenotype:&#160;&#160;"> </h:outputText>
+		    <h:panelGroup>
+		    	<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
+		    		
+		    		<pr:autoComplete  id="phenotype_input" value="#{sessionBean.diseasePhenotypeParam}" completeMethod="#{autocompleteBean.completePhenotype}"
+		     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+		     		<h:panelGroup styleClass="gd_leftMargin"></h:panelGroup>
+		     		<h:commandButton id="il_phenotype_input_go" value="Search" action="viewDiseaseResult?faces-redirect=true&amp;includeViewParams=true&amp;type=phenotype" />
+			  		
+		    	</h:panelGrid>
+		    </h:panelGroup>
+		  </h:panelGrid>
+	   </h:form>
+	   <br />
+	   <h:form id="il_querydisease_4">
+	      <h:panelGrid columns="1" columnClasses="gd_celltextleft" border="0" cellpadding="0" cellspacing="0">
+		
+		    <h:outputText styleClass="db_bold" value="To search for renal/urinary OR reproductive system phenotypes associated with a known gene:"> </h:outputText>
+		    <h:outputText value="Select your gene of interest by entering it in the text box and click 'Search'. 
+		    	The query will bring back all Mammalian Phenotypes (MP) for the Renal/Urinary System and/or the Reproductive System that are associated with the chosen gene.">
+		     </h:outputText>
+		     <br />
+		     <h:outputText value="Use the radio buttons to select whether to get phenotype terms directly annotated to the gene or both direct &amp; derived annotations." />
+			<br />
+			<h:outputText styleClass="db_bold" value="Select Gene:&#160;&#160;"> </h:outputText>
+		    <h:panelGroup>
+		    	<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
+		    		
+		    		<pr:autoComplete  id="phenotype_gene_input" value="#{sessionBean.diseaseGeneParam}" completeMethod="#{autocompleteBean.completeGene}"
+		     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+		     		<h:panelGroup styleClass="gd_leftMargin"></h:panelGroup>
+		     		<h:commandButton id="il_phenotype_gene_input_go" value="Search" action="viewDiseaseResult?faces-redirect=true&amp;includeViewParams=true&amp;type=phenotypegene" />	
+		    	</h:panelGrid>
+		    </h:panelGroup>
+		    <h:panelGroup>
+		    	<h:panelGrid columns="1" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
+		    		
+	   				<h:selectOneRadio value="#{paramBean.annotationtypevalues}">
+	   					<f:selectItems value="#{paramBean.annotationtypelist}" />
+	   				</h:selectOneRadio>
+		    	</h:panelGrid>
+		    </h:panelGroup>
+		  </h:panelGrid>
+	   </h:form>
+	   </div>
 	 </div>
 	</ui:define>
 </ui:composition>

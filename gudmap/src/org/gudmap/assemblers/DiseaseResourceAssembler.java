@@ -14,8 +14,8 @@ public class DiseaseResourceAssembler {
 	}
 	
 	
-	public ArrayList<DiseaseResourceModel> getData(String oid) {
-		ArrayList<DiseaseResourceModel> datalist = diseaseResourceDao.getGeneAssocDisease(oid);
+	public ArrayList<DiseaseResourceModel> getData(String inputTerm,String type, boolean isDirect) {
+		ArrayList<DiseaseResourceModel> datalist = diseaseResourceDao.getGeneAssocDisease(inputTerm,type,isDirect);
 		return datalist;
 	}
 }

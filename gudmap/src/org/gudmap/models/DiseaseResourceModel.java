@@ -6,15 +6,15 @@ public class DiseaseResourceModel {
 		
 	}
 	
-	private String omimID;
-	private String diseaseName;
-	private String humanGeneSymbol;
-	private String mouseGeneSymbol;
-	private String mouseGeneMgiID;
-	private String hasInsituData;
-	private String mpID;
-	private String mpPhenotype;
-	private String annotationType;
+	private String omimID="";
+	private String diseaseName="";
+	private String humanGeneSymbol="";
+	private String mouseGeneSymbol="";
+	private String mouseGeneMgiID="";
+	private String hasInsituData="";
+	private String mpID="";
+	private String mpPhenotype="";
+	private String annotationType="";
 	
 	public void setOmimID(String omimID) {
 		this.omimID = omimID;

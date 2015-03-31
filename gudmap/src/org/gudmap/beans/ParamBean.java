@@ -78,6 +78,10 @@ public class ParamBean implements Serializable {
 	
 	private boolean[]checkboxes;
 	
+	//disease
+	private String annotationtypevalues="Direct Annotations";
+	private String isDirect="false";
+	
 	SimpleDateFormat sdf;
 	
 	/*gene search options*/
@@ -838,6 +842,32 @@ public class ParamBean implements Serializable {
 			RET =  GenericQueries.EXPRESSION_JOIN;
 		
 		return RET;
+	}
+	
+	/////////////DISEASE///////////////
+	
+	public void setAnnotationtypevalues(String annotationtypevalues) {
+		this.annotationtypevalues = annotationtypevalues;
+		if(annotationtypevalues.equalsIgnoreCase("Direct Annotations"))
+			isDirect="true";
+		else
+			isDirect="false";
+	}
+	
+	public String getAnnotationtypevalues() {
+		return annotationtypevalues;
+	}
+	
+	public Map<String,String> getAnnotationtypelist(){
+		return assembler.getAnnotationtypelist();
+	}
+	
+	public String getIsDirect() {
+		return isDirect;
+	}
+	
+	public void setIsDirect(String isDirect) {
+		this.isDirect = isDirect;
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

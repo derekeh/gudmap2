@@ -358,3 +358,8 @@ input[type="text"], textarea {
 .gd_leftMargin {
   margin-left:10px;
 }
+
+.pr_hyperlink {
+	text-decoration: underline;
+	color:#6ABCE6;
+}

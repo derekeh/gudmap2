@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.naming.Context;
@@ -20,13 +21,14 @@ import org.gudmap.queries.generic.AutocompleteQueries;
 import org.gudmap.utils.Utils;
 
 @Named
-@RequestScoped
+@ApplicationScoped
 public class AutocompleteBean {
 	
 	ArrayList<String> geneList=null;
 	ArrayList<String> anatomyList=null;
 	ArrayList<String> geneFunctionList=null;
 	ArrayList<String> diseaseNameList=null;
+	ArrayList<String> phenotypeList=null;
 	private String geneInput="";
 	private DataSource ds;
 	private Connection con;
@@ -45,6 +47,7 @@ public class AutocompleteBean {
 		populateAnatomyList();
 		populateGeneFunctionList();
 		populateDiseaseNameList();
+		populatePhenotypeList();
 	}
 	
 	public void setGeneList(ArrayList<String> geneList) {
@@ -149,6 +152,29 @@ public class AutocompleteBean {
 		}
 	}
 	
+	public void populatePhenotypeList() {
+		String queryString=AutocompleteQueries.PHENOTYPE_LIST;
+        try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+				phenotypeList = new ArrayList<String>();
+				while (result.next()) {
+					phenotypeList.add(result.getString(1));
+				}
+			}
+			
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+	}
+	
 	public void setGeneInput(String geneInput) {
 		this.geneInput = geneInput;
 	}
@@ -199,6 +225,19 @@ public class AutocompleteBean {
 	public ArrayList<String> completeDiseaseName(String input) {
 		ArrayList<String> matches = new ArrayList<String>();
 		Iterator<String> iterator = diseaseNameList.iterator();
+		String str="";
+		while(iterator.hasNext()){
+			str = iterator.next().toString();
+			if(str.toUpperCase().startsWith(input.toUpperCase()))
+				matches.add(str);
+		}
+		
+		return matches;
+	}
+	
+	public ArrayList<String> completePhenotype(String input) {
+		ArrayList<String> matches = new ArrayList<String>();
+		Iterator<String> iterator = phenotypeList.iterator();
 		String str="";
 		while(iterator.hasNext()){
 			str = iterator.next().toString();

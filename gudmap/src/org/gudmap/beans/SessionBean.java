@@ -25,8 +25,12 @@ public class SessionBean implements Serializable {
 	private String anatomyParam="";
 	private String geneFunctionParam="";
 	private String diseaseNameParam="";
+	private String diseaseGeneParam="";
+	private String diseasePhenotypeParam="";
+	//disease headers: omimID,diseaseName,humanGeneSymbol,mouseGeneSymbol,mouseGeneMgiID,hasInsituData,mpID,mpPhenotype,annotationType
+	private boolean[] diseaseHeaders = {false,false,false,false,false,false,false,false,false};
 	public SessionBean() {
-		
+		 
 	}
 	
 	
@@ -117,6 +121,31 @@ public class SessionBean implements Serializable {
 	 public String getDiseaseNameParam() {
 		 return diseaseNameParam;
 	 }
+	 
+	 public void setDiseaseGeneParam(String diseaseGeneParam){
+		 this.diseaseGeneParam=diseaseGeneParam;
+	 }
+	 
+	 public String getDiseaseGeneParam() {
+		 return diseaseGeneParam;
+	 }
+	 
+	 public void setDiseasePhenotypeParam(String diseasePhenotypeParam){
+		 this.diseasePhenotypeParam=diseasePhenotypeParam;
+	 }
+	 
+	 public String getDiseasePhenotypeParam() {
+		 return diseasePhenotypeParam;
+	 }
+	 
+	 public void setDiseaseHeaders(boolean[]diseaseHeaders){
+		 this.diseaseHeaders = diseaseHeaders;
+	 }
+	 
+	 public boolean[] getDiseaseHeaders() {
+		 return diseaseHeaders;
+	 }
+	 
 	
 	 public void init() {
 	 //dummy to initialise bean from view
