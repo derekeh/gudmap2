@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui">
+	
+
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Edit Page
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+
+	<!-- can use relative links on html tags -->
+	    <h1>Edit Page: </h1>	
+	    <!-- all other content in here -->  
+	   
+	<h:form>
+        <pr:commandButton onclick="inplace.show()" icon="ui-icon-pencil" value="edit" update="editor"/>
+        <pr:inplace widgetVar="inplace" >
+            <pr:editor id="editor" value="#{editPageBean.value}" required="true" requiredMessage="Cannot be empty"/>
+            <pr:message for="editor" />
+            <pr:commandButton onclick="inplace.cancel()" icon="ui-icon-cancel"
+                value="cancel" />
+            <pr:commandButton onclick="inplace.save()" icon="ui-icon-disk" value="save" />
+        </pr:inplace>
+    </h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

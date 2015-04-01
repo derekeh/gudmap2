@@ -97,8 +97,8 @@
     		<h:column rendered="#{paramBean.omimcol == true}">
     			<f:facet name="header">
     				Disease
-				</f:facet>
-				<h:outputLink value="http://www.gudmap.org/gudmap_dis/Gene_Result.jsp?gene=#{u.geneSymbol}&amp;gene_text=#{u.geneSymbol}">
+				</f:facet>				
+				<h:outputLink value="viewDiseaseResult.jsf?type=gene&amp;diseaseGene=#{u.geneSymbol}&amp;isDirect=false">
     				OMIM(#{u.omimCount})
     			</h:outputLink>
     		</h:column>
