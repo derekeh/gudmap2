@@ -351,7 +351,7 @@ function findExpressionNotes(){
 				<h:dataTable  columnClasses="db_inner_image_detail_left,db_inner_detail_right" value="#{ishSubmissionBean.ishSubmissionModel.originalImages}" var="image">
 				        <h:column>
 							<h:outputLink value="#" target="_blank"
-							                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+							                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1166,height=1000');return false">
 								<h:graphicImage value="#{image.filePath}" styleClass="db_thumb_height"/>
 							</h:outputLink>
 				        </h:column>

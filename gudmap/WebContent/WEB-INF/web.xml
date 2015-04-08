@@ -8,10 +8,16 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
-  <context-param>
+  <servlet-mapping>
+  <servlet-name>Faces Servlet</servlet-name>
+  	<url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+  <!-- move to JNDI resource -->
+  <!-- <context-param>
     <param-name>javax.faces.PROJECT_STAGE</param-name>
     <param-value>Development</param-value>
-  </context-param>
+  </context-param> -->
+ 
   <context-param>
     <description>State saving method: 'client' or 'server' (default). See JSF Specification section 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>

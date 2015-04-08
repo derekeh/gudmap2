@@ -22,5 +22,13 @@ public class ApplicationBean implements Serializable {
 	public String getTheilerUrl2 (){
 		return theilerUrl2;
 	}
+	
+	public String getViewerFrameSourceName() {
+		
+		//just for testing the port to glenelgin
+		return "http://glenelgin.hgu.mrc.ac.uk/mrciip/mrciip_gudmap.html";
+	
+		//return Utility.domainUrl+"mrciip/mrciip_gudmap.html";
+	}
 
 }

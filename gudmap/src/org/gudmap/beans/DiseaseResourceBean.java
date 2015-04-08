@@ -31,7 +31,7 @@ public class DiseaseResourceBean implements Serializable{
 	protected SessionBean sessionBean;
 	
 	public DiseaseResourceBean() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		/*FacesContext facesContext = FacesContext.getCurrentInstance();
 		if(facesContext.getExternalContext().getRequestParameterMap().get("type").equals("name")){
 			this.inputTerm = facesContext.getExternalContext().getRequestParameterMap().get("diseaseName");
 			type="name";
@@ -51,7 +51,7 @@ public class DiseaseResourceBean implements Serializable{
 		
 		if(facesContext.getExternalContext().getRequestParameterMap().get("isDirect").equals("true")){
 			this.isDirect=true;
-		}
+		}*/
 		//setup();
 	}
 	
@@ -63,8 +63,31 @@ public class DiseaseResourceBean implements Serializable{
 	    	return sessionBean;
 	}
 	
-	 @PostConstruct
-	 public void setTableHeaders(){
+	 //@PostConstruct
+	 public void init(){
+		 FacesContext facesContext = FacesContext.getCurrentInstance();
+			if(facesContext.getExternalContext().getRequestParameterMap().get("type").equals("name")){
+				this.inputTerm = facesContext.getExternalContext().getRequestParameterMap().get("diseaseName");
+				type="name";
+			}
+			else if(facesContext.getExternalContext().getRequestParameterMap().get("type").equals("gene")){
+				this.inputTerm = facesContext.getExternalContext().getRequestParameterMap().get("diseaseGene");
+				type="gene";
+			}
+			else if(facesContext.getExternalContext().getRequestParameterMap().get("type").equals("phenotype")){
+				this.inputTerm = facesContext.getExternalContext().getRequestParameterMap().get("diseasePhenotype");
+				type="phenotype";
+			}
+			else if(facesContext.getExternalContext().getRequestParameterMap().get("type").equals("phenotypegene")){
+				this.inputTerm = facesContext.getExternalContext().getRequestParameterMap().get("diseaseGene");
+				type="phenotypegene";
+			}
+			
+			if(facesContext.getExternalContext().getRequestParameterMap().get("isDirect").equals("true")){
+				this.isDirect=true;
+			} 
+		 
+		 
     	boolean [] tableHeaders=new boolean[9];
     	//disease headers: omimID,diseaseName,humanGeneSymbol,mouseGeneSymbol,mouseGeneMgiID,hasInsituData,mpID,mpPhenotype,annotationType
     	if(type.equals("name") || type.equals("gene")){

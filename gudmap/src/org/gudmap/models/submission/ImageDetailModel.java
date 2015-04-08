@@ -8,7 +8,7 @@ public class ImageDetailModel extends ImageInfoModel{
 	  protected String geneName;
 	  protected String age;
 	  protected ArrayList<String[]> allImageNotesInSameSubmission;
-	  protected ArrayList<String[]> allPublicImagesInSameSubmission;
+	  protected ArrayList<String> allPublicImagesInSameSubmission;
 	  
 	  public String getGeneSymbol() {
 		return geneSymbol;
@@ -42,11 +42,11 @@ public class ImageDetailModel extends ImageInfoModel{
 		  this.allImageNotesInSameSubmission = allImageNotesInSameSubmission;
 	  }
 	  
-	  public ArrayList<String[]> getAllPublicImagesInSameSubmission() {
+	  public ArrayList<String> getAllPublicImagesInSameSubmission() {
 		  return allPublicImagesInSameSubmission;
 	  }
 	  
-	  public void setAllPublicImagesInSameSubmission(ArrayList<String[]> allPublicImagesInSameSubmission){
+	  public void setAllPublicImagesInSameSubmission(ArrayList<String> allPublicImagesInSameSubmission){
 		  this.allPublicImagesInSameSubmission = allPublicImagesInSameSubmission;
 	  }
 

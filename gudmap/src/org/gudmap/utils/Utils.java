@@ -513,7 +513,7 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 	        			tmpStr="";
         			}
         			else {
-        				parsedQuery += accessionList[i].trim() + ",";
+        				parsedQuery += "'"+accessionList[i].trim() + "',";
 	        			tmpStr = accessionList[i].trim()+"\n"; 
 	        			parsedString += tmpStr;
 	        			tmpStr="";
@@ -543,6 +543,17 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
        		result = result.replaceAll(specialChars[i][0], specialChars[i][1]);
        	return result;
    	}
+    
+    public static boolean isValidInteger(String value) {
+		
+		boolean RET = true;
+		try {
+			Integer.parseInt(value);
+		} catch (NumberFormatException nfe) {
+			RET = false;
+		}
+		return RET;
+	}
     
     //query to get a list of gene symbols from a specified reference table. Can only add search params to one column in table 
 	  public static  String getSymbolsFromGeneInputParamsQuery(String [] input, 

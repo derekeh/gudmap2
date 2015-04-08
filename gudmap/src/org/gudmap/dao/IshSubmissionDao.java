@@ -1092,4 +1092,120 @@ public class IshSubmissionDao {
                   
     }
     
+    //////////////////////////////////////////
+    
+    public ImageDetailModel findImageDetailBySubmissionId(String submissionAccessionId, int serialNum) {
+		ImageDetailModel imageDetailModel = null;
+		String queryString = IshSubmissionQueries.SUBMISSION_IMAGE_DETAIL;// in situ
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, submissionAccessionId);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+				imageDetailModel = populateImageDetailModel(result,serialNum);
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		if(imageDetailModel==null) {
+			
+			queryString = IshSubmissionQueries.SUBMISSION_IMAGE_DETAIL_TG;// tg
+			try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, submissionAccessionId);
+				ps.setInt(2, serialNum);
+				result =  ps.executeQuery();
+				if (result.first()) {
+					result.beforeFirst();
+					imageDetailModel = populateImageDetailModel(result,serialNum);
+	            }
+							
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+		}	
+		if(imageDetailModel!=null){
+			queryString=IshSubmissionQueries.ISH_SUBMISSION_ALL_IMAGE_NOTES;
+			try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, submissionAccessionId);
+				result =  ps.executeQuery();
+				if (result.first()) {
+					ArrayList<String[]> allImageNotes = new ArrayList<String[]>();
+					result.beforeFirst();
+		          	String[] filenamenNote = null;
+		          	while (result.next()) {
+						    filenamenNote = new String[2];
+						    filenamenNote[0] = Utils.netTrim(result.getString(1));
+						    filenamenNote[1] = Utils.netTrim(result.getString(2));
+						    if (null != filenamenNote[0] || null !=  filenamenNote[1])
+						    allImageNotes.add(filenamenNote);
+		          	}
+		          	imageDetailModel.setAllImageNotesInSameSubmission(allImageNotes);
+	            }
+							
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+			
+			queryString=IshSubmissionQueries.ISH_SUBMISSION_PUBLIC_IMGS;
+			try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, submissionAccessionId);
+				result =  ps.executeQuery();
+				if (result.first()) {
+					ArrayList<String> publicImgs = new ArrayList<String>();
+					result.beforeFirst();
+		          	while(result.next()){
+		          		publicImgs.add(result.getString(1));
+		          	}
+		          	imageDetailModel.setAllPublicImagesInSameSubmission(publicImgs);
+	            }
+							
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+		}
+		return imageDetailModel;
+		
+    }
+    
+    public ImageDetailModel populateImageDetailModel(ResultSet result,int serialNum) throws SQLException {
+      if (result.first()) {
+    	  ImageDetailModel imageDetailModel = new ImageDetailModel();
+    	  imageDetailModel.setAccessionId(result.getString(1));
+    	  imageDetailModel.setGeneSymbol(result.getString(2));
+    	  imageDetailModel.setGeneName(result.getString(3));
+    	  imageDetailModel.setStage(result.getString(4));
+    	  imageDetailModel.setAge(result.getString(5));
+    	  imageDetailModel.setAssayType(result.getString(6));
+    	  imageDetailModel.setSpecimenType(result.getString(7));
+    	  imageDetailModel.setFilePath(result.getString(8));
+    	  imageDetailModel.setSerialNo(Integer.toString(serialNum + 1));
+	    
+          return imageDetailModel;
+      }
+      return null;
+  }
+    
+    //////////////////////////////////////////
+    
 }

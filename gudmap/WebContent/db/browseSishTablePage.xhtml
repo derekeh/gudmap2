@@ -278,7 +278,10 @@
     				(#{sishTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_IMAGES")}) <br />
     				Images
 				</f:facet>
-    				<img src="#{u.image}" height="40" />
+    			 <h:commandLink  action="viewSubmissionDetails">
+					<img src="#{u.image}" height="40" />
+					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+				</h:commandLink>
     		</h:column>
  
  		</h:dataTable> 
