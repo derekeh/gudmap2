@@ -107,6 +107,7 @@
     
     <div id="gd_dbstats">
     <h2>Database Statistics</h2>
+    <h:form>
     	<table border="0" width="98%">
           <tr>
             <th align="left" scope="col">Assay Type</th>
@@ -116,9 +117,8 @@
           <tr>
             <td>All In Situ Hybridisation (ISH)</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getIshTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{summaryBean.getIshTotal()}" action="#{insituTablePageBean.refresh()}" />
+            	
             </td>
             <td><h:outputText value="#{summaryBean.getIshGeneTotal()}"></h:outputText></td>
             
@@ -126,45 +126,35 @@
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getWishTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{summaryBean.getWishTotal()}" action="#{wishTablePageBean.refresh()}" />
             </td>
             <td><h:outputText value="#{summaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Section ISH (SISH)</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getSishTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{summaryBean.getSishTotal()}" action="#{sishTablePageBean.refresh()}" />
             </td>
             <td><h:outputText value="#{summaryBean.getSishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>OPT ISH</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getOptTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{summaryBean.getOptTotal()}" action="#{optTablePageBean.refresh()}" />
             </td>
             <td><h:outputText value="#{summaryBean.getOptGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Immunohistochemistry (IHC)</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getIhcTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{summaryBean.getIhcTotal()}" action="#{ihcTablePageBean.refresh()}" />
             </td>
             <td><h:outputText value="#{summaryBean.getIhcGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Transgenic Reporters</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getTgTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:commandLink value="#{summaryBean.getTgTotal()}" action="#{tgTablePageBean.refresh()}" />
             </td>
             <td><h:outputText value="#{summaryBean.getTgGeneTotal()}"></h:outputText></td>
           </tr>
@@ -192,6 +182,7 @@
             <td></td>
           </tr>
         </table>
+        </h:form>
     </div>
     <!--<p><img id="gd_dbstats" src="../images/tests/dbstats_placeholder.png"  alt=""/></p>-->
    

@@ -29,6 +29,8 @@ public class SessionBean implements Serializable {
 	private String diseasePhenotypeParam="";
 	//disease headers: omimID,diseaseName,humanGeneSymbol,mouseGeneSymbol,mouseGeneMgiID,hasInsituData,mpID,mpPhenotype,annotationType
 	private boolean[] diseaseHeaders = {false,false,false,false,false,false,false,false,false};
+	private int docID=0;
+	
 	public SessionBean() {
 		 
 	}
@@ -144,6 +146,14 @@ public class SessionBean implements Serializable {
 	 
 	 public boolean[] getDiseaseHeaders() {
 		 return diseaseHeaders;
+	 }
+	 
+	 public void setDocID(int docID){
+	    this.docID=docID;
+	 }
+	    
+	 public int getDocID(){
+	    return docID;
 	 }
 	 
 	

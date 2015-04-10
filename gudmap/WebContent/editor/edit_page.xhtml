@@ -5,40 +5,26 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:pr="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui">
 	
-
-
-<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
-	<ui:define name="title">
-	    Edit Page
-	</ui:define>
-<!-- 	comment out the following section if you don't want the solr flyin displayed -->
-	<ui:define name="solr">
-		<ui:include src="/snippets/g_solrFly.xhtml"/>
-	</ui:define>
-	
-	<ui:define name="content">
-
-	<!-- can use relative links on html tags -->
-	    <h1>Edit Page: </h1>	
-	    <!-- all other content in here -->  
-	   
+<h:head>
+<title>GUDMAP Editor</title>
+</h:head>
+<h:body>
+	<h1>Editing page: </h1>  
 	<h:form>          
-    <pr:editor id="editor" widgetVar="editorWidget" value="#{editPageBean.value}" width="600" />
+    <p:editor id="editor" widgetVar="editorWidget" value="#{editPageBean.value}" width="1024" height="600" />
  
     <h:panelGrid columns="2" style="margin-top: 10px">
-        <pr:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+        <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
  
-        <pr:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+        <p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
     </h:panelGrid>
  
-    <pr:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+    <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
         <h:outputText id="display" value="#{editPageBean.value}" escape="false" />
-    </pr:dialog>
+    </p:dialog>
 </h:form> 
 
-	</ui:define>
-</ui:composition>
+</h:body> 
 </html>
