@@ -91,6 +91,9 @@ public class ParamBean implements Serializable {
 	//image upload directories
 	private String imageDir="general";
 	
+	//page editing
+	private String pageId="1";
+	
 		
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
@@ -890,6 +893,23 @@ public class ParamBean implements Serializable {
 	
 	public void imageDirChanged(ValueChangeEvent e){
 		this.imageDir = e.getNewValue().toString();
+	}
+	
+	/////////////////PAGE EDITING////////////////////////////
+	public Map<String,String> getPageIdlist(){
+		return assembler.getPageIdlist();
+	}
+	
+	public void setPageId(String pageId){
+		this.pageId = pageId;
+	}
+	
+	public String getPageId() {
+		return pageId;
+	}
+	
+	public void pageIdChanged(ValueChangeEvent e){
+		this.pageId = e.getNewValue().toString();
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

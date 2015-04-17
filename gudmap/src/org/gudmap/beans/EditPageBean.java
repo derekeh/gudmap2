@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,13 +16,13 @@ import org.gudmap.models.EditPageModel;
 @RequestScoped
 public class EditPageBean {
 	
-	private String value="hello derek houghton";
-	private int docID=0;
+	private String value="";
+	private String docID;
 	private EditPageAssembler editPageAssembler;
 	private ArrayList<EditPageModel> editPageList;
 	
 	@Inject
-   	protected SessionBean sessionBean;
+   	protected ParamBean paramBean;
 	
 	public EditPageBean() {
 		/*FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -29,26 +30,29 @@ public class EditPageBean {
 		editPageAssembler = new EditPageAssembler();
 	}
 	
-	public void setSessionBean(SessionBean sessionBean){
-		this.sessionBean=sessionBean;
+	public void setParamBean(ParamBean paramBean){
+		this.paramBean=paramBean;
 	}
     
-    public SessionBean getSessionBean() {
-    	return sessionBean;
+    public ParamBean getSessionBean() {
+    	return paramBean;
     }
     
     @PostConstruct
 	public void init(){
-    	docID = sessionBean.getDocID();
+    	docID = paramBean.getPageId();
 	}
 	  
     public String getValue() {  
-    	//value = editPageAssembler.retrievePage(docID);
+    	value = editPageAssembler.retrievePage(docID).get(0).getContent_1();
         return value;  
     }  
   
     public void setValue(String value) {  
-        this.value = value;  
+        this.value = value; 
+        /*FacesContext facesContext = FacesContext.getCurrentInstance();
+        facesContext.addMessage(null, new FacesMessage("Content Saved."));*/
+
     }
     
     public void setEditPageList(ArrayList<EditPageModel> editPageList){

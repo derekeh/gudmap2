@@ -74,7 +74,7 @@
     			<f:facet name="header">
     				<h:outputText value="Image"></h:outputText>
     			</f:facet>
-    				<img src="http://glenelgin/Appfiles/images/#{paramBean.imageDir}/#{u.name}" />
+    				<img src="#{u.baseUrl}#{paramBean.imageDir}/#{u.name}" />
     		</h:column>
     		
     		<h:column >
@@ -93,7 +93,7 @@
     			<f:facet name="header">
     				<h:outputText value="URL"></h:outputText>
     			</f:facet>
-    				<h:inputText size="70"  value="http://glenelgin/Appfiles/images/#{paramBean.imageDir}/#{u.name}"></h:inputText>
+    				<h:inputText size="70"  value="#{u.baseUrl}#{paramBean.imageDir}/#{u.name}"></h:inputText>
     		</h:column>
 	</h:dataTable>
 </h:form>

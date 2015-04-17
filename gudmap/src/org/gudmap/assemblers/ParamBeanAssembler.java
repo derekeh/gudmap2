@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.queries.generic.WebPageQueries;
 import org.gudmap.globals.Globals;
 
 public class ParamBeanAssembler {
@@ -30,6 +31,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>geneoptionlist;
 	private Map<String,String>annotationtypelist;
 	private Map<String,String>imagedirlist;
+	private Map<String,String>pageIdlist;
 	
 	public ParamBeanAssembler() {
 		try {
@@ -176,6 +178,24 @@ public class ParamBeanAssembler {
 		imagedirlist.put("tissue","tissue");
 		
 		return imagedirlist;
+	}
+	
+	public Map<String,String> getPageIdlist() {
+		pageIdlist = new LinkedHashMap<String,String>();
+		String queryString=WebPageQueries.GET_ALL_PAGES;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next())
+				pageIdlist.put(result.getString(2), result.getString(1));
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return pageIdlist;
 	}
 
 	

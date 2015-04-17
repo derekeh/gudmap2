@@ -13,6 +13,7 @@ public class ImageFileModel {
 	private String length;
 	private String type;
 	private String absolutePath;
+	private String baseUrl="http://glenelgin/Appfiles/images/";
 	
 	public void setPath(String path) {
 		this.path=path;
@@ -68,6 +69,10 @@ public class ImageFileModel {
 	
 	public String getAbsolutePath() {
 		return absolutePath;
+	}
+	
+	public String getBaseUrl() {
+		return baseUrl;
 	}
 
 }

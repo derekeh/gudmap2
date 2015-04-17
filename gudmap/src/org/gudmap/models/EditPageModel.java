@@ -5,7 +5,7 @@ public class EditPageModel {
 	public EditPageModel() {
 		
 	}
-	
+	private String oid;
 	private String title;
 	private String content_1;
 	private String content_2;
@@ -13,6 +13,14 @@ public class EditPageModel {
 	private String content_4;
 	private String hash;
 	private String alias;
+	
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+	
+	public String getOid() {
+		return oid;
+	}
 	
 	public void setTitle(String title){
 		this.title=title;
