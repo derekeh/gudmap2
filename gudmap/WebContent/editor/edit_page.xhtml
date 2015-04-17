@@ -13,7 +13,31 @@
 <h:body>
 	<h1>Editing page: </h1>  
 	<h:form>          
-    <p:editor id="editor" widgetVar="editorWidget" value="#{editPageBean.value}" width="1024" height="600" />
+    <p:editor id="editor" widgetVar="editorWidget" value="#{editPageBean.value}" toolbar="complete" width="1024" height="600" />
+    
+    <script language="javascript">
+    
+
+    (function($) {
+       
+       // Define the image button by replacing the standard one
+       $.cleditor.buttons.image = {
+          name: 'image',
+          title: 'Inserir imagem',
+          command: 'insertimage',
+          stripIndex: $.cleditor.buttons.image.stripIndex,
+          buttonClick: imageButtonClick      
+       };
+
+       function imageButtonClick(e, data) {
+          //alert('teste');
+          PF('dlg').show();
+          //DO WHAT YOU NEED HERE
+       }
+          
+    })(jQuery);
+    
+    </script>
  
     <h:panelGrid columns="2" style="margin-top: 10px">
         <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
@@ -25,6 +49,54 @@
         <h:outputText id="display" value="#{editPageBean.value}" escape="false" />
     </p:dialog>
 </h:form> 
+
+<h:form id="il_filelist">
+
+	
+	
+	<h:selectOneMenu id="selectone" value="#{paramBean.imageDir}"
+			valueChangeListener="#{paramBean.imageDirChanged}">
+   			<f:selectItems value="#{paramBean.getImagedirlist()}" />
+   			<f:ajax event="change" render="tmpimage il_imagelist" execute="selectone"></f:ajax>
+   	</h:selectOneMenu>
+   	
+   	<h:outputText id="tmpimage" value="#{paramBean.imageDir}"></h:outputText>
+
+	<h:dataTable id="il_imagelist" value="#{fileManagementBean.getImageList(paramBean.imageDir)}" var="u">
+    		
+ 			<h:column >
+    			<f:facet name="header">
+    				<h:outputText value="Filename"></h:outputText>
+    			</f:facet>
+    				#{u.name}
+    		</h:column>
+    		<h:column >
+    			<f:facet name="header">
+    				<h:outputText value="Image"></h:outputText>
+    			</f:facet>
+    				<img src="http://glenelgin/Appfiles/images/#{paramBean.imageDir}/#{u.name}" />
+    		</h:column>
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				<h:outputText value="Width"></h:outputText>
+    			</f:facet>
+    				#{u.width} 
+    		</h:column>
+    		<h:column >
+    			<f:facet name="header">
+    				<h:outputText value="Height"></h:outputText>
+    			</f:facet>
+    				#{u.height}
+    		</h:column>
+    		<h:column >
+    			<f:facet name="header">
+    				<h:outputText value="URL"></h:outputText>
+    			</f:facet>
+    				<h:inputText size="70"  value="http://glenelgin/Appfiles/images/#{paramBean.imageDir}/#{u.name}"></h:inputText>
+    		</h:column>
+	</h:dataTable>
+</h:form>
 
 </h:body> 
 </html>

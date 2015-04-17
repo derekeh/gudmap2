@@ -50,8 +50,9 @@ public class InputBean implements Serializable {
 		// Extract file name from content-disposition header of file part
 		String fileName = getFileName(part);
 		sessionBean.setTempParam(processMyFile(fileName,part));
-				 
-		String basePath = "/export/data0/documents/geneuploads/";
+		
+		//don't need to write the file just read it
+		/*String basePath = "/export/data0/documents/geneuploads/";
 		File outputFilePath = new File(basePath + fileName);
 		 
 		// Copy uploaded file to destination path
@@ -79,7 +80,7 @@ public class InputBean implements Serializable {
 				if (inputStream != null) {
 				inputStream.close();
 				}
-			}
+		}*/
 		return paramBean.geneSearchRedirect();    // return to same page
 	}
 	

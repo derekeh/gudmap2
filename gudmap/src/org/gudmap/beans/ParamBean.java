@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -86,6 +87,9 @@ public class ParamBean implements Serializable {
 	
 	/*gene search options*/
 	private String geneoptionvalues="Expression Summaries";
+	
+	//image upload directories
+	private String imageDir="general";
 	
 		
 	public ParamBean() {
@@ -868,6 +872,24 @@ public class ParamBean implements Serializable {
 	
 	public void setIsDirect(String isDirect) {
 		this.isDirect = isDirect;
+	}
+	
+	////////////////IMAGE UPLOAD DIRECTORIES/////////////////
+	
+	public Map<String,String> getImagedirlist(){
+		return assembler.getImagedirlist();
+	}
+	
+	public void setImageDir(String imageDir){
+		this.imageDir = imageDir;
+	}
+	
+	public String getImageDir() {
+		return imageDir;
+	}
+	
+	public void imageDirChanged(ValueChangeEvent e){
+		this.imageDir = e.getNewValue().toString();
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

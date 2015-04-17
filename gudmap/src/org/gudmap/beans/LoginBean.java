@@ -90,7 +90,7 @@ public class LoginBean implements Serializable{
 	}
 	
 	public String logout () {
-		String RET="database_homepage";//name of login page
+		String RET="database_homepage";//name of redirect page
 		username=null;
 		password=null;
 		role=null;

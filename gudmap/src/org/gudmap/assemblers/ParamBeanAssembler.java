@@ -29,6 +29,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>specimentypelist;
 	private Map<String,String>geneoptionlist;
 	private Map<String,String>annotationtypelist;
+	private Map<String,String>imagedirlist;
 	
 	public ParamBeanAssembler() {
 		try {
@@ -166,5 +167,16 @@ public class ParamBeanAssembler {
 		return annotationtypelist;
 	}
 	
+	public Map<String,String> getImagedirlist() {
+		imagedirlist = new LinkedHashMap<String,String>();
+		imagedirlist.put("anatomy","anatomy");
+		imagedirlist.put("general","general");
+		imagedirlist.put("help","help");
+		imagedirlist.put("icons","icons");
+		imagedirlist.put("tissue","tissue");
+		
+		return imagedirlist;
+	}
+
 	
 }

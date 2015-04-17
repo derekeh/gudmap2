@@ -1,5 +1,7 @@
 package org.gudmap.beans;
 
+import java.util.ArrayList;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -7,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.EditPageAssembler;
+import org.gudmap.models.EditPageModel;
 
 @Named
 @RequestScoped
@@ -15,6 +18,7 @@ public class EditPageBean {
 	private String value="hello derek houghton";
 	private int docID=0;
 	private EditPageAssembler editPageAssembler;
+	private ArrayList<EditPageModel> editPageList;
 	
 	@Inject
    	protected SessionBean sessionBean;
@@ -39,12 +43,20 @@ public class EditPageBean {
 	}
 	  
     public String getValue() {  
-    	value = editPageAssembler.retrievePage(docID);
+    	//value = editPageAssembler.retrievePage(docID);
         return value;  
     }  
   
     public void setValue(String value) {  
         this.value = value;  
+    }
+    
+    public void setEditPageList(ArrayList<EditPageModel> editPageList){
+    	this.editPageList = editPageList;
+    }
+    
+    public ArrayList<EditPageModel> getEditPageList() {
+    	return editPageList;
     }
     
     
