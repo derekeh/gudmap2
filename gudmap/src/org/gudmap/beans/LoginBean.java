@@ -10,7 +10,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.sql.DataSource;
 import javax.servlet.http.HttpSession;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.generic.GenericQueries;
@@ -30,6 +32,7 @@ public class LoginBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String username,password,role=null;
+	private int priv_level=0;
 	
 	public LoginBean() {
 		/*try {
@@ -60,6 +63,14 @@ public class LoginBean implements Serializable{
 		return role;
 	}
 	
+	public void setPriv_level(int priv_level){
+		this.priv_level = priv_level;
+	}
+	
+	public int getPriv_level() {
+		return priv_level;
+	}
+	
 	public String login() {
 		String RET="loginFailure";
 		String queryString=GenericQueries.LOGINS;
@@ -76,6 +87,7 @@ public class LoginBean implements Serializable{
 			{
 				username=result.getString(1);
 				role=result.getString(3);
+				priv_level=result.getInt(4);
 				RET="database_homepage";
 			}
 			
@@ -94,9 +106,21 @@ public class LoginBean implements Serializable{
 		username=null;
 		password=null;
 		role=null;
+		priv_level=0;
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		session.invalidate();
 		
 		return RET;
+	}
+	
+	public void isEditor(ComponentSystemEvent event){
+		FacesContext fc = FacesContext.getCurrentInstance();
+		if(priv_level<900) {
+			ConfigurableNavigationHandler nav 
+			   = (ConfigurableNavigationHandler) 
+				fc.getApplication().getNavigationHandler();
+	 
+			nav.performNavigation("/db/access-denied.jsf");
+		}
 	}
 }

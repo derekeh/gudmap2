@@ -1,16 +1,26 @@
 @CHARSET "UTF-8";
-/*
-#header {
-	width:100%;
-	font-size:36px;
-	line-height:48px;
-	background-color:lightblue;
-	color:white;
+
+h1 {
+	color:red;
 }
 
-#footer {
-	 background-color:darkblue;
-	 width:100%;
-	 color:orange;"
+.cke_show_borders h1 {
+	color:blue;
 }
-*/
+
+.CSS1Compat body {
+	color:orange;
+}
+
+.CSS1Compat body h1 {
+	color:green;
+}
+
+.cke_skin_kama .cke_95 iframe h1{
+   color:green !important;
+}
+
+.pEdit {
+	color:green;
+}
+

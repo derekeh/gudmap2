@@ -9,7 +9,10 @@
 	
 <h:head>
 	<title>GUDMAP Editor</title>
+	  <h:outputStylesheet library="css" name="gudmap.css"></h:outputStylesheet>
+	  <h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
 </h:head>
+<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
 <h:body>
 	<h1>Edit page: </h1> 
 	<h:form id="il_pagelist">
@@ -73,6 +76,15 @@
     		</h:column>
 	</h:dataTable>
 </h:form>
+
+<script>
+$(document).ready(function() {
+    $('#form\\:theEditor').find('iframe').contents().find('body').css({
+        'font-size': '10px',
+        'color' : 'red'
+    });
+});
+</script>
 
 </h:body> 
 </html>
