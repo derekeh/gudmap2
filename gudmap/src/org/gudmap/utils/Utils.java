@@ -3,7 +3,11 @@ package org.gudmap.utils;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import org.gudmap.models.submission.ImageInfoModel;
@@ -587,6 +591,18 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 	            }
 		  }
 		  return symbolsQ.toString();
+	  }
+	  
+	  public static String getDateToday() {
+		// Create an instance of SimpleDateFormat used for formatting 
+		// the string representation of date (month/day/year)
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+		// Get the date today using Calendar object.
+		Date today = Calendar.getInstance().getTime();        
+		// Using DateFormat format method we can create a string 
+		// representation of a date with the defined format.
+		return  df.format(today);
 	  }
 
 }

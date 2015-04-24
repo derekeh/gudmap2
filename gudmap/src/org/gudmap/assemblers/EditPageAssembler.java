@@ -20,5 +20,11 @@ public class EditPageAssembler {
 		
 		return editPageList;
 	}
+	
+	public String updatePage(String oid, String title, String content) {
+		String RET="";
+		RET = editPageDao.updatePage( oid, title, content);
+		return RET;
+	}
 
 }

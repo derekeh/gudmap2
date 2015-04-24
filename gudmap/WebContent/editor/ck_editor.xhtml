@@ -9,6 +9,8 @@
 	
 <h:head>
 	<title>GUDMAP Editor</title>
+	  <!-- <h:outputStylesheet library="css" name="gudmap_db.css"></h:outputStylesheet>
+	  <h:outputStylesheet library="css" name="gudmap100.css"></h:outputStylesheet> -->
 	  <h:outputStylesheet library="css" name="gudmap.css"></h:outputStylesheet>
 	  <h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
 </h:head>
@@ -19,15 +21,23 @@
 		<h:selectOneMenu id="selectpage" value="#{paramBean.pageId}"
 			valueChangeListener="#{paramBean.pageIdChanged}">
    			<f:selectItems value="#{paramBean.getPageIdlist()}" />
-   			<f:ajax event="change" render=":editorForm:theEditor tmppage" execute="selectpage"></f:ajax>
+   			<f:ajax event="change" render=":editorForm:theEditor :editorForm:theHeader tmppage" execute="selectpage"></f:ajax>
    		</h:selectOneMenu> 
 		<h:outputText id="tmppage" value="#{paramBean.pageId}"></h:outputText>
    	</h:form>
 	 
 	<h:form id="editorForm"> 
-		        
-    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" />
-		<h:commandButton value="Save"/>
+			<h:outputText value="Title:"></h:outputText>
+			 <h:inputText id="theHeader" value="#{editPageBean.title}"></h:inputText>  
+			 <br />     
+	    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" />
+	    	
+			<h:commandButton value="Save" action="#{editPageBean.updatePage}">
+				<f:param name="pageId" value="#{paramBean.pageId}"></f:param>
+			</h:commandButton>
+			<br />
+			<h:outputText value="#{editPageBean.status}"  />
+		
 		<!-- <h:messages id="messages" /> -->
 	</h:form> 
 	<hr />

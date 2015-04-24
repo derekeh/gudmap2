@@ -16,7 +16,6 @@ import org.gudmap.models.ImageFileModel;
 @RequestScoped
 public class FileManagementBean {
 	private ArrayList<ImageFileModel> imageList =null;
-	//private String imagedir="";
 	private static File dir;
 	private  String[] EXTENSIONS;
 	private  FilenameFilter IMAGE_FILTER;
@@ -26,7 +25,8 @@ public class FileManagementBean {
 	}
 	
 	public void init(String imagedir) {
-		dir = new File("/export/system0/MAWWW/Public/html/Appfiles/images/"+imagedir);
+		//dir = new File("/export/system0/MAWWW/Public/html/Appfiles/images/"+imagedir);
+		dir = new File("/opt/MAWWW/Public/html/Appfiles/images/"+imagedir);
 		EXTENSIONS = new String[]{
 		        "jpg", "png", "jpeg" // and other formats you need
 		};
@@ -46,29 +46,6 @@ public class FileManagementBean {
 	}
 	
 	
-	  // File representing the folder that you select using a FileChooser
-    //static final File dir = new File("/export/data0/documents/image_uploads");
-
-    // array of supported extensions (use a List if you prefer)
-   /* static final String[] EXTENSIONS = new String[]{
-        "jpg", "png", "jpeg" // and other formats you need
-    };*/
-    // filter to identify images based on their extensions
-/*    static final FilenameFilter IMAGE_FILTER = new FilenameFilter() {
-
-        @Override
-        public boolean accept(final File dir, final String name) {
-            for (final String ext : EXTENSIONS) {
-                if (name.endsWith("." + ext)) {
-                    return (true);
-                }
-            }
-            return (false);
-        }
-    };*/
-	
-	
-	
 	public ArrayList<ImageFileModel> getImageList(String directory) {
 		init(directory);
 		if (dir.isDirectory()) { // make sure it's a directory
@@ -86,12 +63,6 @@ public class FileManagementBean {
                     imageFileModel.setAbsolutePath(f.getAbsolutePath());
                     imageList.add(imageFileModel);
                     
-                    // you probably want something more involved here
-                    // to display in your UI
-                    /*System.out.println("image: " + f.getName());
-                    System.out.println(" width : " + img.getWidth());
-                    System.out.println(" height: " + img.getHeight());
-                    System.out.println(" size  : " + f.length());*/
                 } catch (final IOException e) {
                     // handle errors here
                 }
@@ -101,17 +72,6 @@ public class FileManagementBean {
 		return imageList;
 	}
 	
-	/*public void ListDir(){
-		File folder = new File("/export/data0/documents/image_uploads");
-		File[] listOfFiles = folder.listFiles();
 
-		    for (int i = 0; i < listOfFiles.length; i++) {
-		      if (listOfFiles[i].isFile()) {
-		        System.out.println("File " + listOfFiles[i].getName());
-		      } else if (listOfFiles[i].isDirectory()) {
-		        System.out.println("Directory " + listOfFiles[i].getName());
-		      }
-		    }
-	}*/
 
 }

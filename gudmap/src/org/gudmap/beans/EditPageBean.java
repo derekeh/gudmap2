@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,7 +18,10 @@ import org.gudmap.models.EditPageModel;
 public class EditPageBean {
 	
 	private String value="";
+	private String title="";
 	private String docID;
+	private String pageID="";
+	private String status="Page last updated: ";
 	private EditPageAssembler editPageAssembler;
 	private ArrayList<EditPageModel> editPageList;
 	
@@ -25,8 +29,9 @@ public class EditPageBean {
    	protected ParamBean paramBean;
 	
 	public EditPageBean() {
-		/*FacesContext facesContext = FacesContext.getCurrentInstance();
-    	this.docID = Integer.parseInt(facesContext.getExternalContext().getRequestParameterMap().get("docid"));*/
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+    	if(facesContext.getExternalContext().getRequestParameterMap().get("pageid")!=null)
+    		this.pageID=facesContext.getExternalContext().getRequestParameterMap().get("pageid");
 		editPageAssembler = new EditPageAssembler();
 	}
 	
@@ -40,6 +45,8 @@ public class EditPageBean {
     
     @PostConstruct
 	public void init(){
+    	if(!pageID.equals(""))
+    		paramBean.setPageId(pageID);
     	docID = paramBean.getPageId();
 	}
 	  
@@ -55,6 +62,15 @@ public class EditPageBean {
 
     }
     
+    public void setTitle(String title) {
+    	this.title = title;
+    }
+    
+    public String getTitle() {
+    	title = editPageAssembler.retrievePage(docID).get(0).getTitle();
+    	return title;
+    }
+    
     public void setEditPageList(ArrayList<EditPageModel> editPageList){
     	this.editPageList = editPageList;
     }
@@ -63,6 +79,13 @@ public class EditPageBean {
     	return editPageList;
     }
     
+    public String updatePage() {
+    	status += editPageAssembler.updatePage(docID, title, value);
+    	return "ck_editor";
+    }
     
+    public String getStatus() {
+    	return status;
+    }
 
 }

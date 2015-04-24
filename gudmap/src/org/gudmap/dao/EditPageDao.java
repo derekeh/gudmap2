@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import org.gudmap.globals.Globals;
 import org.gudmap.models.EditPageModel;
 import org.gudmap.queries.generic.WebPageQueries;
+import org.gudmap.utils.Utils;
 
 public class EditPageDao {
 	
@@ -36,7 +37,7 @@ public class EditPageDao {
 		if(oid==null || oid.equals(""))
 			return null;
 		
-		String queryString=WebPageQueries.GET_WHOLE_PAGE;
+			String queryString=WebPageQueries.GET_WHOLE_PAGE;
 			try
 			{
 				con = ds.getConnection();
@@ -65,6 +66,32 @@ public class EditPageDao {
 			} 
 			      
         return editPageList;
+	}
+	
+	public String updatePage(String oid, String title, String content) {
+		String RET="Update failed.";
+		int status;
+		String contentCol = "ZWE_CONTENT_1";
+		String queryString=WebPageQueries.UPDATE_CONTENT_AND_TITLE;
+		String sql=String.format(queryString,contentCol);
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(sql); 
+			ps.setString(1, title);
+			ps.setString(2, content);
+			ps.setString(3, oid);
+			status =  ps.executeUpdate();
+			if(status>0)
+				RET=Utils.getDateToday();
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		return RET;
 	}
 
 
