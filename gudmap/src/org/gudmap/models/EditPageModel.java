@@ -5,7 +5,7 @@ public class EditPageModel {
 	public EditPageModel() {
 		
 	}
-	private String oid;
+	private int oid;
 	private String title;
 	private String content_1;
 	private String content_2;
@@ -13,12 +13,18 @@ public class EditPageModel {
 	private String content_4;
 	private String hash;
 	private String alias;
+	private String category;
+	private int level;
+	private String isVisible;
+	private String modifiedBy;
+	private String modifiedDate;
+	private String username;
 	
-	public void setOid(String oid) {
+	public void setOid(int oid) {
 		this.oid = oid;
 	}
 	
-	public String getOid() {
+	public int getOid() {
 		return oid;
 	}
 	
@@ -77,5 +83,52 @@ public class EditPageModel {
 	public String getAlias(){
 		return alias;
 	}
-
+	
+	public void setCategory(String category){
+		this.category=category;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setLevel(int level) {
+		this.level=level;
+	}
+	
+	public int getLevel() {
+		return level;
+	}
+	
+	public void setIsVisible(String isVisible) {
+		this.isVisible=isVisible;
+	}
+	
+	public String getIsVisible() {
+		return isVisible;
+	}
+	
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+	
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+	
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+	
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
 }

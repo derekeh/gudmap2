@@ -21,7 +21,7 @@ public class EditPageBean {
 	private String title="";
 	private String docID;
 	private String pageID="";
-	private String status="Page last updated: ";
+	private String status="Status: ";
 	private EditPageAssembler editPageAssembler;
 	private ArrayList<EditPageModel> editPageList;
 	
@@ -39,14 +39,15 @@ public class EditPageBean {
 		this.paramBean=paramBean;
 	}
     
-    public ParamBean getSessionBean() {
+    public ParamBean getParamBean() {
     	return paramBean;
     }
     
     @PostConstruct
 	public void init(){
-    	if(!pageID.equals(""))
-    		paramBean.setPageId(pageID);
+    	if(!pageID.equals("")) { // modified 
+    		paramBean.setPageId(pageID);   		
+    	}
     	docID = paramBean.getPageId();
 	}
 	  
@@ -86,6 +87,10 @@ public class EditPageBean {
     
     public String getStatus() {
     	return status;
+    }
+    
+    public void dummy() {
+    	
     }
 
 }

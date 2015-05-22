@@ -32,6 +32,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>annotationtypelist;
 	private Map<String,String>imagedirlist;
 	private Map<String,String>pageIdlist;
+	private Map<String,String>pageCategorylist;
 	
 	public ParamBeanAssembler() {
 		try {
@@ -196,6 +197,18 @@ public class ParamBeanAssembler {
 		    Globals.closeQuietly(con, ps, result);
 		}
 		return pageIdlist;
+	}
+	
+	public Map<String,String> getPageCategorylist() {
+		imagedirlist = new LinkedHashMap<String,String>();
+		imagedirlist.put("About","About");
+		imagedirlist.put("Database","Database");
+		imagedirlist.put("Help","Help");
+		imagedirlist.put("Projects","Projects");
+		imagedirlist.put("Resources","Resources");
+		imagedirlist.put("Tutorials","Tutorials");
+		
+		return imagedirlist;
 	}
 
 	

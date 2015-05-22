@@ -1,5 +1,6 @@
 package org.gudmap.dao;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +24,7 @@ public class EditPageDao {
 	private PreparedStatement ps;
 	private ResultSet result;
 	private ArrayList<EditPageModel> editPageList = null;
+	private int insertID=-1;
 	
 	public EditPageDao() {
 		try {
@@ -47,7 +49,7 @@ public class EditPageDao {
 				if (result.first()){
 					editPageList = new ArrayList<EditPageModel>();
 					EditPageModel editPageModel = new EditPageModel();
-					editPageModel.setOid(result.getString("oid"));
+					editPageModel.setOid(result.getInt("oid"));
 					editPageModel.setTitle(result.getString("title"));
 					editPageModel.setHash(result.getString("hash"));
 					editPageModel.setAlias(result.getString("alias"));
@@ -93,6 +95,123 @@ public class EditPageDao {
 		
 		return RET;
 	}
-
+	
+	public String createPage(String alias, String title, String category, int level, String value, int userID)  throws NoSuchAlgorithmException {
+		String RET="Create new page failed.";
+		int status;
+		int last_increment=0;
+		String queryString=WebPageQueries.GET_MAX_INCREMENT;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result=ps.executeQuery();
+			if(result.next())
+				last_increment=result.getInt(1)+10;
+			else
+				return RET;
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		
+		queryString=WebPageQueries.INSERT_NEW_PAGE;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setInt(1, last_increment);
+			ps.setString(2, Utils.getSha1(String.valueOf(last_increment)));
+			ps.setString(3, alias);
+			ps.setString(4, title);
+			ps.setString(5, category);
+			ps.setInt(6, level);
+			ps.setString(7, value);
+			ps.setString(8, null);
+			ps.setString(9, null);
+			ps.setString(10, null);
+			ps.setInt(11, userID);
+			status =  ps.executeUpdate();
+			if(status>0) {
+				RET="Page created successfully " +Utils.getDateToday();
+				queryString=WebPageQueries.GET_LAST_PAGE_INSERT;
+				ps=con.prepareStatement(queryString);
+				result=ps.executeQuery();
+				result.next();
+				insertID=result.getInt(1);
+			}
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		return RET;
+	}
+	
+	public ArrayList<String> getAliasList() {
+		String queryString=WebPageQueries.GET_ALIASES;
+		ArrayList<String> aliasList = new ArrayList<String>();
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			result=ps.executeQuery();
+			while(result.next()){
+				aliasList.add(result.getString(1));
+			}
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+		return aliasList;
+		
+	}
+	
+	public int getLastInsert() {		
+		return insertID;
+	}
+	
+	public ArrayList<EditPageModel> getPageList() {
+			String queryString=WebPageQueries.GET_PAGE_LIST;
+			try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				result =  ps.executeQuery();
+				if (result.first()){
+					editPageList = new ArrayList<EditPageModel>();
+					result.beforeFirst();
+					while(result.next()) {
+						EditPageModel editPageModel = new EditPageModel();
+						editPageModel.setOid(result.getInt("oid"));
+						editPageModel.setTitle(result.getString("title"));
+						editPageModel.setHash(result.getString("hash"));
+						editPageModel.setAlias(result.getString("alias"));
+						editPageModel.setCategory(result.getString("category"));
+						editPageModel.setLevel(result.getInt("level"));
+						editPageModel.setIsVisible(result.getString("isvisible"));
+						editPageModel.setModifiedDate(result.getString("modifiedDate"));
+						editPageModel.setUsername(result.getString("username"));
+						
+						editPageList.add(editPageModel);
+					}
+				}
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			} 
+			      
+        return editPageList;
+	}
 
 }

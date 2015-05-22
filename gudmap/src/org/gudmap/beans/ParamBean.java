@@ -94,6 +94,9 @@ public class ParamBean implements Serializable {
 	//page editing
 	private String pageId="1";
 	
+	//page categories
+	private String pageCategory="About";
+	
 		
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
@@ -910,6 +913,23 @@ public class ParamBean implements Serializable {
 	
 	public void pageIdChanged(ValueChangeEvent e){
 		this.pageId = e.getNewValue().toString();
+	}
+	
+	/////////////////PAGE CATEGORIES////////////////////////////
+	public Map<String,String> getPageCategorylist(){
+	return assembler.getPageCategorylist();
+	}
+	
+	public void setPageCategory(String pageCategory){
+	this.pageCategory = pageCategory;
+	}
+	
+	public String getPageCategory() {
+	return pageCategory;
+	}
+	
+	public void pageCategoryChanged(ValueChangeEvent e){
+	this.pageCategory = e.getNewValue().toString();
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

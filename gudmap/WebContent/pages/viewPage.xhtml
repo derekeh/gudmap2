@@ -11,7 +11,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    GUDMAP
+	    GUDMAP | #{viewPageBean.editPageList.get(0).title}
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -22,7 +22,7 @@
 	<!-- can use relative links on html tags -->
 	    <h1><h:outputText value="#{viewPageBean.editPageList.get(0).title}" escape="false"/></h1>
 	 
-	    <h:outputText value="#{viewPageBean.editPageList.get(0).content_1}" escape="false" />;
+	    <h:outputText value="#{viewPageBean.editPageList.get(0).content_1}" escape="false" />
 	    <!-- all other content in here -->     
 	</ui:define>
 </ui:composition>

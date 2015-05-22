@@ -16,7 +16,8 @@
 </h:head>
 <f:event listener="#{loginBean.isEditor}" type="preRenderView" />
 <h:body>
-	<h:panelGrid columns="3">
+
+<h:panelGrid columns="3">
 		<h:outputLink value="../db/index.jsf">
 			<h:outputText value="Home" />
 		</h:outputLink>
@@ -26,28 +27,36 @@
 		</h:outputLink>
 	</h:panelGrid>
 	
-	<h1>Edit page </h1> 
-	#{editPageBean.dummy()}
-	<h:form id="il_pagelist">
-		<h:selectOneMenu id="selectpage" value="#{paramBean.pageId}"
-			valueChangeListener="#{paramBean.pageIdChanged}">
-   			<f:selectItems value="#{paramBean.getPageIdlist()}" />
-   			<f:ajax event="change" render=":editorForm:theEditor :editorForm:theHeader tmppage" execute="selectpage"></f:ajax>
-   		</h:selectOneMenu> 
-		<h:outputText id="tmppage" value="#{paramBean.pageId}"></h:outputText>
-   	</h:form>
+	<h1>Create page: </h1> 
 	 
 	<h:form id="editorForm"> 
+			<h:outputText value="Category"></h:outputText>
+			<h:selectOneMenu id="selectcategory" value="#{paramBean.pageCategory}"
+					valueChangeListener="#{paramBean.pageCategoryChanged}">
+		   			<f:selectItems value="#{paramBean.getPageCategorylist()}" />
+		   	</h:selectOneMenu>
+			<br /> 
+			 <h:outputText value="Level"></h:outputText>
+			 <h:inputText id="theLevel" value="#{createPageBean.level}" required="true" converterMessage="Must be a number!"></h:inputText> 
+			 <h:message for="theLevel" /> 
+			 <br /> 
+			<h:outputText value="Alias"></h:outputText>
+			 <h:inputText id="theAlias" value="#{createPageBean.alias}" required="true" requiredMessage="You must enter a String value!" 
+			 				validator="#{createPageBean.validateAlias}"></h:inputText> 
+			 <h:message for="theAlias" /> 
+			 <br /> 
 			<h:outputText value="Title:"></h:outputText>
-			 <h:inputText id="theHeader" value="#{editPageBean.title}"></h:inputText>  
+			 <h:inputText id="theHeader" value="#{createPageBean.title}" required="true" requiredMessage="You must enter a String value!"></h:inputText> 
+			 <h:message for="theHeader" /> 
 			 <br />     
-	    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" />
+	    	<ck:editor id="theEditor" value="#{createPageBean.value}"  uiColor="aed0ea" />
 	    	
-			<h:commandButton value="Save" action="#{editPageBean.updatePage}">
-				<f:param name="pageId" value="#{paramBean.pageId}"></f:param>
-			</h:commandButton>
+			<h:commandButton value="Create Page" action="#{createPageBean.createPage}" />
 			<br />
-			<h:outputText value="#{editPageBean.status}"  />
+			<h:outputText value="#{createPageBean.status}&#160;&#160;&#160;"  />
+			<h:outputLink value="../pages/viewPage.jsf?docID=#{createPageBean.lastInsert}"  rendered="#{createPageBean.lastInsert>0}">
+				<h:outputText value="Go to page" />
+			</h:outputLink>
 		
 		<!-- <h:messages id="messages" /> -->
 	</h:form> 

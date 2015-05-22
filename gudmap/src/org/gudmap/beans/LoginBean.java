@@ -33,6 +33,7 @@ public class LoginBean implements Serializable{
 
 	private String username,password,role=null;
 	private int priv_level=0;
+	private int userID;
 	
 	public LoginBean() {
 		/*try {
@@ -71,6 +72,14 @@ public class LoginBean implements Serializable{
 		return priv_level;
 	}
 	
+	public void setUserID(int userID) {
+		this.userID=userID;
+	}
+	
+	public int getUserID() {
+		return userID;
+	}
+	
 	public String login() {
 		String RET="loginFailure";
 		String queryString=GenericQueries.LOGINS;
@@ -88,7 +97,8 @@ public class LoginBean implements Serializable{
 				username=result.getString(1);
 				role=result.getString(3);
 				priv_level=result.getInt(4);
-				RET="database_homepage";
+				userID=result.getInt(5);
+				RET="options";
 			}
 			
 		}

@@ -4,7 +4,7 @@
 	
 <div class="gd_header">
     <div id="gd_logo">
-          	<h:outputLink value="#{appRoot}/index.jsf">
+          	<h:outputLink value="#{appRoot}/db/index.jsf">
           		<h:graphicImage library="images/header" name="gudmap_logo.png" alt="GUDMAP" width="334" height="56" id="gudmap_logo"/>
           	</h:outputLink>
     
@@ -59,31 +59,29 @@
     <nav style="margin-left:20px;">
       <div class="dmxNavigationMenu" id="navmenu1" style="width:350px">
 		  <ul class="menu horizontal">
-		    <li title="About"><a href="javascript:void(0);">About </a></li>
-		    <li title="Help"><a href="javascript:void(0);">Help</a></li>
+		    <li title="About"><a href="#{appRoot}/pages/viewPage.jsf?docID=2">About </a></li>
+		    <li title="Help"><a href="#{appRoot}/pages/viewPage.jsf?docID=25">Help</a></li>
 		    <li title="More..."><a href="javascript:void(0);" class="expandable">More...<span class="sub_down"></span></a>
 		      <ul class="mega cols-3">
 		        <li title="About GUDMAP"><span class="heading">About GUDMAP</span>
 		          <ul class="heading">
 		            <li title="Goals"><a href="#{appRoot}/pages/viewPage.jsf?docID=2">Goals</a></li>
-		            <li title="Projects"><a href="javascript:void(0);">Projects</a></li>
-		            <li title="Publications"><a href="javascript:void(0);">Publications</a></li>
-		            <li title="Contacts"><a href="javascript:void(0);">Contacts</a></li>
-		            <li title="Positions"><a href="javascript:void(0);">Positions</a></li>
-		            <li title="Funding"><a href="javascript:void(0);">Funding</a></li>
-		            <li title="Events"><a href="javascript:void(0);">Events</a></li>
-		            <li title="Links"><a href="javascript:void(0);">Links</a></li>
-		            <li title="Message Board"><a href="javascript:void(0);">Message Board</a></li>
-		            <li title="Citing Gudmap"><a href="javascript:void(0);">Citing Gudmap</a></li>
+		            <li title="Projects"><a href="#{appRoot}/pages/viewPage.jsf?docID=3">Projects</a></li>
+		            <li title="Publications"><a href="#{appRoot}/pages/viewPage.jsf?docID=4">Publications</a></li>
+		            <li title="Contacts"><a href="#{appRoot}/pages/viewPage.jsf?docID=5">Contacts</a></li>
+		            <li title="Positions"><a href="#{appRoot}/pages/viewPage.jsf?docID=6">Positions</a></li>
+		            <li title="Funding"><a href="#{appRoot}/pages/viewPage.jsf?docID=7">Funding</a></li>
+		            <li title="Events"><a href="#{appRoot}/pages/viewPage.jsf?docID=8">Events</a></li>
+		            <li title="Links"><a href="#{appRoot}/pages/viewPage.jsf?docID=9">Links</a></li>
+		            <li title="Message Board"><a href="http://www.biomedatlas.org/smf/index.php?page=gudmap">Message Board</a></li>
+		            <li title="Citing Gudmap"><a href="#{appRoot}/pages/viewPage.jsf?docID=10">Citing Gudmap</a></li>
 		          </ul>
 		        </li>
 		        <li title="Gene Expression"><span class="heading">Gene Expression</span>
 		          <ul class="heading">
-		            <li title="Search GUDMAP"><a href="javascript:void(0);">Search GUDMAP</a></li>
 		            <li title="Expression Database"><a href="#{appRoot}/db/database_homepage.jsf">Expression Database</a></li>
-<!-- 					<li title="Expression Database"><a href="#{appRoot}/pages/test.jsf">Expression Database</a></li> -->
-		            <li title="Tissue Summaries"><a href="http://www.gudmap.org">Tissue Summaries</a></li>
-		            <li title="ISH Quality Control"><a href="javascript:void(0);">ISH Quality Control</a></li>
+		            <li title="Tissue Summaries"><a href="#{appRoot}/pages/viewPage.jsf?docID=12">Tissue Summaries</a></li>
+		            <li title="ISH Quality Control"><a href="#{appRoot}/pages/viewPage.jsf?docID=11">ISH Quality Control</a></li>
 		            <li title="Analysis"><a href="javascript:void(0);">Analysis</a></li>
 		            <li title="Data Source"><a href="javascript:void(0);">Data Source</a></li>
 		            <li title="Collections"><a href="javascript:void(0);">Collections</a></li>
@@ -91,23 +89,23 @@
 		        </li>
 		        <li title="Resources"><span class="heading">Resources</span>
 		          <ul class="heading">
-		            <li title="Submission Archive"><a href="javascript:void(0);">Submission Archive</a></li>
-		            <li title="Project Protocols"><a href="javascript:void(0);">Project Protocols</a></li>
-		            <li title="Mice Cell Lines"><a href="javascript:void(0);">Mice Cell Lines</a></li>
-		            <li title="3D Atlas"><a href="javascript:void(0);">3D Atlas</a></li>
-		            <li title="Ontology"><a href="javascript:void(0);">Ontology</a></li>
-		            <li title="Schematics"><a href="javascript:void(0);">Schematics</a></li>
-		            <li title="Biomart"><a href="javascript:void(0);">Biomart</a></li>
-		            <li title="UQ Gudmap - Probe Design"><a href="javascript:void(0);">UQ Gudmap - Probe Design</a></li>
-		            <li title="Web Stats"><a href="javascript:void(0);">Web Stats</a></li>
-		            <li title="Internal"><a href="javascript:void(0);">Internal</a></li>
+		            <li title="Submission Archive"><a href="#{appRoot}/pages/viewPage.jsf?docID=13">Submission Archive</a></li>
+		            <li title="Project Protocols"><a href="#{appRoot}/pages/viewPage.jsf?docID=14">Project Protocols</a></li>
+		            <li title="Mice Cell Lines"><a href="#{appRoot}/pages/viewPage.jsf?docID=15">Mice Cell Lines</a></li>
+		            <li title="3D Atlas"><a href="#{appRoot}/pages/viewPage.jsf?docID=16">3D Atlas</a></li>
+		            <li title="Ontology"><a href="#{appRoot}/pages/viewPage.jsf?docID=17">Ontology</a></li>
+		            <li title="Schematics"><a href="#{appRoot}/pages/viewPage.jsf?docID=18">Schematics</a></li>
+		            <li title="Biomart"><a href="#{appRoot}/pages/viewPage.jsf?docID=19">Biomart</a></li>
+		            <li title="UQ Gudmap - Probe Design"><a href="http://uqgudmap.imb.uq.edu.au/">UQ Gudmap - Probe Design</a></li>
+		            <li title="Web Stats"><a href="http://www.gudmap.org/Website_Reports/index.html">Web Stats</a></li>
+		            <li title="Internal"><a href="#{appRoot}/pages/viewPage.jsf?docID=21">Internal</a></li>
 		          </ul>
 		        </li>
 		        <li title="Tutorials"><span class="heading">Tutorials</span>
 		          <ul class="heading">
-		            <li title="Overview"><a href="javascript:void(0);">Overview</a></li>
-		            <li title="Urinary Development"><a href="javascript:void(0);">Urinary Development</a></li>
-		            <li title="Reproductive Development"><a href="javascript:void(0);">Reproductive Development</a></li>
+		            <li title="Overview"><a href="#{appRoot}/pages/viewPage.jsf?docID=22">Overview</a></li>
+		            <li title="Urinary Development"><a href="#{appRoot}/pages/viewPage.jsf?docID=23">Urinary Development</a></li>
+		            <li title="Reproductive Development"><a href="#{appRoot}/pages/viewPage.jsf?docID=24">Reproductive Development</a></li>
 		          </ul>
 		        </li>
 		        <li title="Disease"><span class="heading">Disease</span>
@@ -117,10 +115,10 @@
 		        </li>
 		        <li title="Help"><span class="heading">Help</span>
 		          <ul class="heading">
-		            <li title="Using Database"><a href="javascript:void(0);">Using Database</a></li>
-		            <li title="Website"><a href="javascript:void(0);">Website</a></li>
-		            <li title="Glossary"><a href="javascript:void(0);">Glossary</a></li>
-		            <li title="System Requirements"><a href="javascript:void(0);">System Requirements</a></li>
+		            <li title="Using Database"><a href="#{appRoot}/pages/viewPage.jsf?docID=26">Using Database</a></li>
+		            <li title="Website"><a href="#{appRoot}/pages/viewPage.jsf?docID=27">Website</a></li>
+		            <li title="Glossary"><a href="#{appRoot}/pages/viewPage.jsf?docID=30">Glossary</a></li>
+		            <li title="System Requirements"><a href="#{appRoot}/pages/viewPage.jsf?docID=31">System Requirements</a></li>
 		          </ul>
 		        </li>
 		      </ul>
