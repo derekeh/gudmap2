@@ -17,6 +17,8 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.Part;
+
+import org.gudmap.globals.Globals;
  
 @Named
 @RequestScoped
@@ -82,6 +84,42 @@ public class InputBean implements Serializable {
 				}
 		}*/
 		return paramBean.geneSearchRedirect();    // return to same page
+	}
+	
+	public String uploadImage(String imageDir) throws IOException {
+		 
+		// Extract file name from content-disposition header of file part
+		String fileName = getFileName(part);
+		
+		File outputFilePath = new File(Globals.imagePath + imageDir + "/" + fileName);
+		 
+		// Copy uploaded file to destination path
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		try {
+			inputStream = part.getInputStream();
+			outputStream = new FileOutputStream(outputFilePath);
+			 
+			int read = 0;
+			final byte[] bytes = new byte[1024];
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			 
+			statusMessage = "File upload successfull !!";
+			} catch (IOException e) {
+			e.printStackTrace();
+			statusMessage = "File upload failed !!";
+		} 
+		finally {
+				if (outputStream != null) {
+				outputStream.close();
+				}
+				if (inputStream != null) {
+				inputStream.close();
+				}
+		}
+		return statusMessage;
 	}
 	
 	 

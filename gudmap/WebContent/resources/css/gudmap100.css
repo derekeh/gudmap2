@@ -363,3 +363,7 @@ input[type="text"], textarea {
 	text-decoration: underline;
 	color:#6ABCE6;
 }
+
+.gd_datatable_header {
+	background-color: #E0E0E0;
+}

@@ -8,8 +8,8 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
  
-@FacesValidator("FileUploadValidator")
-public class FileUploadValidator implements Validator {
+@FacesValidator("ImageUploadValidator")
+public class ImageUploadValidator implements Validator {
  
 	@Override
 	public void validate(FacesContext context, UIComponent uiComponent, Object value) throws ValidatorException {
@@ -27,15 +27,20 @@ public class FileUploadValidator implements Validator {
 			FacesMessage message = new FacesMessage("Error: File name is too long !!");
 			throw new ValidatorException(message);
 		}
+		
+		// 2. validate file type (only image files allowed)
+		if (!(part.getContentType().contains("image"))) {
+				FacesMessage message = new FacesMessage("Error: File type is invalid !!");
+				throw new ValidatorException(message);
+		}
 		 
-		// 2. validate file type (only text files allowed)
-		if (!"text/plain".equals(part.getContentType())) {
-			FacesMessage message = new FacesMessage("Error: File type is invalid !!");
+		if(!fileName.endsWith(".png") && !fileName.endsWith(".gif") && !fileName.endsWith(".jpg")  && !fileName.endsWith(".jpeg")) {
+			FacesMessage message = new FacesMessage("Error: Image types restricted to png, gif and jpg");
 			throw new ValidatorException(message);
-		  }
+		}
 		 
-		// 3. validate file size (should not be greater than 5KB)
-		if (part.getSize() > 5000) {
+		// 3. validate file size (should not be greater than 200KB)
+		if (part.getSize() > 200000) {
 			FacesMessage message = new FacesMessage("Error: File size is too big !!");
 			throw new ValidatorException(message);
 		}

@@ -5,90 +5,84 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ck="http://code.google.com/ck-jsf-editor"
 	xmlns:pr="http://primefaces.org/ui">
 	
-<h:head>
-	<title>GUDMAP Editor | Page List</title>
-	  <h:outputStylesheet library="css" name="gudmap_db.css"></h:outputStylesheet>
-	  <h:outputStylesheet library="css" name="gudmap100.css"></h:outputStylesheet>
-	  <h:outputStylesheet library="css" name="gudmap.css"></h:outputStylesheet>
-	  <h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
-</h:head>
-<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
-<h:body>
-	#{pageListBean.setup()}
 	
-	<h:panelGrid columns="3">
-		<h:outputLink value="../db/index.jsf">
-			<h:outputText value="Home" />
-		</h:outputLink>
-		<h:panelGroup></h:panelGroup>
-		<h:outputLink value="../db/options.jsf">
-			<h:outputText value="Options" />
-		</h:outputLink>
-	</h:panelGrid>
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP EDITOR | Page List
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<!-- <ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define> -->
 	
-	<h1>View Page List </h1> 
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+		<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
+		    <!-- all other content in here --> 
+		 #{pageListBean.setup()}
+		<h1>View Page List </h1> 
 	 
-	<h:form id="editorForm"> 
-		<h:outputText value="should be a primefaces table in here to iterate through the model list eg viewDiseaseResult" />
-		<br />	
-		<pr:dataTable  id="il_pagelist_table" value="#{pageListBean.pageList}" var="row" draggableColumns="true" resizableColumns="false"
-		paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                 rowsPerPageTemplate="10,50,100" styleClass="il_disease_table">
-                 
-               <!-- <pr:column headerText="OID"  sortBy="#{row.oid}" width="70">
-				<h:outputLink value="../pages/viewPage.jsf?docID=#{row.oid}">
-					<h:outputText value="#{row.oid}" styleClass="pr_hyperlink" ></h:outputText>
-				</h:outputLink>
-    		   </pr:column>  --> 
-    		   
-    		   <pr:column headerText="Title">
-				<h:outputText value="#{row.title}"></h:outputText>
-    		   </pr:column> 
-    		   
-    		   <pr:column headerText="Alias" sortBy="#{row.alias}">
-				<h:outputText value="#{row.alias}"></h:outputText>
-    		   </pr:column>
-    		   
-			   <pr:column headerText="Category" sortBy="#{row.category}">
-				<h:outputText value="#{row.category}"></h:outputText>
-    		</pr:column>
-    		
-    		<pr:column headerText="Level" width="70">
-					<h:outputText value="#{row.level}"></h:outputText>
-    		</pr:column>
-    		
-    		<pr:column headerText="Visibility" sortBy="#{row.isVisible}" width="110">
-					<h:outputText value="#{row.isVisible}"  styleClass="pr_hyperlink"></h:outputText>
-    		</pr:column>
-    		
-    		<pr:column headerText="Link" width="175">
-    			<h:outputLink value="../pages/viewPage.jsf?docID=#{row.oid}">
-					<h:outputText value="viewPage?docID=#{row.oid}" styleClass="pr_hyperlink" ></h:outputText>
-				</h:outputLink>
-    		</pr:column>
-
-    		<pr:column headerText="Edit" width="65">
-    			<h:outputLink value="../editor/ck_editor.jsf?pageid=#{row.oid}">
-					<h:graphicImage library="images/editor" name="edit.png" style="width:30px;"/>
-				</h:outputLink>
-    		</pr:column>
-    		
-    		<pr:column headerText="Delete" width="65">
-				<h:graphicImage library="images/editor" name="delete.png" style="width:30px;"/>
-    		</pr:column>
-    		
-    		<pr:column headerText="Summary" >
-				<h:outputText value="Page last modified by #{row.username} on #{row.modifiedDate}"></h:outputText>
-    		</pr:column>
-    		
-		</pr:dataTable> 
-		<!-- <h:messages id="messages" /> -->
-	</h:form> 
-	<hr />
+		<h:form id="editorForm"> 
+			<h:outputText value="should be a primefaces table in here to iterate through the model list eg viewDiseaseResult" />
+			<br />	
+			<pr:dataTable  id="il_pagelist_table" value="#{pageListBean.pageList}" var="row" draggableColumns="true" resizableColumns="false"
+			paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+	                 rowsPerPageTemplate="10,50,100" styleClass="il_disease_table">
+	                 
+	               <!-- <pr:column headerText="OID"  sortBy="#{row.oid}" width="70">
+					<h:outputLink value="../pages/viewPage.jsf?docID=#{row.oid}">
+						<h:outputText value="#{row.oid}" styleClass="pr_hyperlink" ></h:outputText>
+					</h:outputLink>
+	    		   </pr:column>  --> 
+	    		   
+	    		   <pr:column headerText="Title">
+					<h:outputText value="#{row.title}"></h:outputText>
+	    		   </pr:column> 
+	    		   
+	    		   <pr:column headerText="Alias" sortBy="#{row.alias}">
+					<h:outputText value="#{row.alias}"></h:outputText>
+	    		   </pr:column>
+	    		   
+				   <pr:column headerText="Category" sortBy="#{row.category}">
+					<h:outputText value="#{row.category}"></h:outputText>
+	    		</pr:column>
+	    		
+	    		<pr:column headerText="Level" width="70">
+						<h:outputText value="#{row.level}"></h:outputText>
+	    		</pr:column>
+	    		
+	    		<pr:column headerText="Visibility" sortBy="#{row.isVisible}" width="110">
+						<h:outputText value="#{row.isVisible}"  styleClass="pr_hyperlink"></h:outputText>
+	    		</pr:column>
+	    		
+	    		<pr:column headerText="Link" width="175">
+	    			<h:outputLink value="../pages/viewPage.jsf?docID=#{row.oid}">
+						<h:outputText value="viewPage?docID=#{row.oid}" styleClass="pr_hyperlink" ></h:outputText>
+					</h:outputLink>
+	    		</pr:column>
 	
+	    		<pr:column headerText="Edit" width="65">
+	    			<h:outputLink value="../editor/ck_editor.jsf?pageid=#{row.oid}">
+						<h:graphicImage library="images/editor" name="edit.png" style="width:30px;"/>
+					</h:outputLink>
+	    		</pr:column>
+	    		
+	    		<pr:column headerText="Delete" width="65">
+					<h:graphicImage library="images/editor" name="delete.png" style="width:30px;"/>
+	    		</pr:column>
+	    		
+	    		<pr:column headerText="Summary" >
+					<h:outputText value="Page last modified by #{row.username} on #{row.modifiedDate}"></h:outputText>
+	    		</pr:column>
+	    		
+			</pr:dataTable> 
+			<!-- <h:messages id="messages" /> -->
+		</h:form> 
 
-</h:body> 
+
+	</ui:define>
+  </ui:composition>
 </html>

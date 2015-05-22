@@ -14,6 +14,7 @@ public class Globals {
 	public static final String domainUrl="http://www.gudmap.org/";
     public static final String appUrl=domainUrl+"gudmap/";
     public static final String applicationRoot="/gudmap/";
+    public static final String imagePath="/opt/MAWWW/Public/html/Appfiles/images/";
     
 	
 	public static void closeQuietly(Connection connection, PreparedStatement statement, ResultSet resultSet) {

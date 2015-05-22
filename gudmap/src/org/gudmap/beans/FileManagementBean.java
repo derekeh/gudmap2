@@ -10,6 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
 import javax.inject.Named;
 
+import org.gudmap.globals.Globals;
 import org.gudmap.models.ImageFileModel;
 
 @Named
@@ -26,7 +27,8 @@ public class FileManagementBean {
 	
 	public void init(String imagedir) {
 		//dir = new File("/export/system0/MAWWW/Public/html/Appfiles/images/"+imagedir);
-		dir = new File("/opt/MAWWW/Public/html/Appfiles/images/"+imagedir);
+		/*dir = new File("/opt/MAWWW/Public/html/Appfiles/images/"+imagedir);*/
+		dir = new File(Globals.imagePath+imagedir);
 		EXTENSIONS = new String[]{
 		        "jpg", "png", "jpeg" // and other formats you need
 		};
