@@ -31,6 +31,10 @@ public class Globals {
 			"TG_TYPE_TOTAL_PROBE_NAME","TG_TYPE_TOTAL_EMBRYO_STAGE","TG_TYPE_TOTAL_AGE","TG_TYPE_TOTAL_SEX","TG_TYPE_TOTAL_GENOTYPE",
 			"TG_TYPE_TOTAL_TISSUE","TG_TYPE_TOTAL_EXPRESSION","TG_TYPE_TOTAL_SPECIMEN_TYPE","TG_TYPE_TOTAL_IMAGES"};
 	
+	public static final String[]MicSeriesColTotals={"MIC_SERIES_TOTAL_GEO_ID","MIC_SERIES_TOTAL_SOURCE","MIC_SERIES_TOTAL_PLATFORM"};
+	
+	public static final String[]SeqSeriesColTotals={"MIC_SERIES_TOTAL_GEO_ID","MIC_SERIES_TOTAL_SOURCE","MIC_SERIES_TOTAL_PLATFORM"};
+	
     //************************* gene strip *******************************
 	private static final int defaultExpressionProfileBarHeight = 50;
     

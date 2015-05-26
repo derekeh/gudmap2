@@ -7,14 +7,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.InsituTablePageBeanAssembler;
+import org.gudmap.assemblers.MicSeriesTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
+import org.gudmap.queries.array.ArrayQueries;
 import org.gudmap.queries.generic.GenericQueries;
 
 @Named
@@ -25,10 +25,12 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
 
     // Data.
 	protected InsituTablePageBeanAssembler assembler;
-    //private String whereclause = GenericQueries.WHERE_CLAUSE;
+	protected MicSeriesTablePageBeanAssembler micSeriesAssembler;
     private String specimenWhereclause="";
     protected List<String> selectedItems;
     private boolean areAllChecked;
+    
+    private String assayType="";
     
     @Inject
    	protected ParamBean paramBean;
@@ -51,6 +53,7 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     
     public void setup(String assayType,String specimen_assay) {
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
+    	this.assayType=assayType;
     	
     	if(specimen_assay.equals("WISH"))
     		specimenWhereclause=GenericQueries.WHERE_WISH;
@@ -59,11 +62,18 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     	else if(specimen_assay.equals("OPT"))
     		specimenWhereclause = GenericQueries.WHERE_OPT;
     	
-    	if(assayType.equals("TG"))
+    	if(assayType.equals("Microarray"))
+    		micSeriesAssembler= new MicSeriesTablePageBeanAssembler(ArrayQueries.MIC_SERIES_BROWSE_PARAM,assayType);
+    	else if(assayType.equals("TG"))
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
     	else
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
         selectedItems = new ArrayList<String>(); 
+    }
+    
+    @PostConstruct
+    public void doSomething() {
+    	
     }
     
     /*@PostConstruct
@@ -73,11 +83,22 @@ public class InsituTablePageBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
-    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
-        // Set currentPage, totalPages and pages.
-    	setTotalslist(assembler.getTotals());
-    	totalRows = assembler.count();
+    	if(assayType.equals("Microarray")) {
+    		dataList = micSeriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getMicWhereclause(),
+					paramBean.getFocusGroupWhereclause());
+			// Set currentPage, totalPages and pages.
+    		//TODO Write column total queries.
+			//setTotalslist(micSeriesAssembler.getTotals());
+			totalRows = micSeriesAssembler.count();
+    	}
+    	else
+    	{
+	    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+	    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
+	        // Set currentPage, totalPages and pages.
+	    	setTotalslist(assembler.getTotals());
+	    	totalRows = assembler.count();
+    	}
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
         int pagesLength = Math.min(pageRange, totalPages);

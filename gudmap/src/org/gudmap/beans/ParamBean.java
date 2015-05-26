@@ -51,9 +51,11 @@ public class ParamBean implements Serializable {
 	private String[] insitucols;
 	private String[] tgcols;
 	private String[] genestripcols;
+	private String[] micseriescols;
 	private Map<String,Boolean> resultmap;
 	private Map<String,Boolean> tgresultmap;
 	private Map<String,Boolean> genestripresultmap;
+	private Map<String,Boolean> micseriesresultmap;
 	/*filter*/
 	private String genevalues;
 	private String[] sourcevalues;
@@ -77,6 +79,18 @@ public class ParamBean implements Serializable {
 	private String tempfromvalues;
 	private String temptheilervalues;
 	
+	//microarray
+	private String micWhereClause="";
+	private boolean mic_titlecol=true;
+	private boolean mic_geoSeriesIDcol=true;
+	private boolean mic_sourcecol=true;
+	private boolean mic_numsamplescol=true;
+	private boolean mic_platfromIDcol=true;
+	private boolean mic_seriescomponentscol=true;
+	
+	
+	
+	//checkboxes
 	private boolean[]checkboxes;
 	
 	//disease
@@ -103,9 +117,11 @@ public class ParamBean implements Serializable {
 		insitucols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","probename","embryostage","age","images"};
 		tgcols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","embryostage","age","genotype","images"};
 		genestripcols= new String[]{"gene","synonym","omim","stagerange","expressionprofile","images","microarrayprofile","rnaseq"};
+		micseriescols= new String[]{"title","geoid","source","numsamples","platform","components"};
 		resultmap=new HashMap<String,Boolean>();
 		tgresultmap=new HashMap<String,Boolean>();
 		genestripresultmap=new HashMap<String,Boolean>();
+		micseriesresultmap=new HashMap<String,Boolean>();
 		assembler = new ParamBeanAssembler();
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
@@ -728,6 +744,14 @@ public class ParamBean implements Serializable {
 		arraycachewhereclause=arraycachewhereclause.replace("QIC", "QMC");
 		return arraycachewhereclause;
 	}
+	
+	public void setMicWhereclause(String micWhereClause) {
+		this.micWhereClause = micWhereClause;
+	}
+	public String getMicWhereclause () {
+		micWhereClause = GenericQueries.WHERE_CLAUSE;
+		return micWhereClause;
+	}
 		 
 	/******************reset*******************/
 	
@@ -930,6 +954,95 @@ public class ParamBean implements Serializable {
 	
 	public void pageCategoryChanged(ValueChangeEvent e){
 	this.pageCategory = e.getNewValue().toString();
+	}
+	
+	////////////////////MICROARRAY/SEQUENCE///////////////
+	
+	public void setMic_titlecol(boolean mic_titlecol){
+		this.mic_titlecol=mic_titlecol;
+	}
+	
+	public boolean getMic_titlecol() {
+		return mic_titlecol;
+	}
+	
+	public void setMic_geoSeriesIDcol(boolean mic_geoSeriesIDcol){
+		this.mic_geoSeriesIDcol=mic_geoSeriesIDcol;
+	}
+	
+	public boolean getMic_geoSeriesIDcol() {
+		return mic_geoSeriesIDcol;
+	}
+	
+	public void setMic_sourcecol(boolean mic_sourcecol){
+		this.mic_sourcecol=mic_sourcecol;
+	}
+	
+	public boolean getMic_sourcecol() {
+		return mic_sourcecol;
+	}
+	
+	public void setMic_numsamplescol(boolean mic_numsamplescol){
+		this.mic_numsamplescol=mic_numsamplescol;
+	}
+	
+	public boolean getMic_numsamplescol() {
+		return mic_numsamplescol;
+	}
+	
+	public void setMic_platfromIDcol(boolean mic_platfromIDcol){
+		this.mic_platfromIDcol=mic_platfromIDcol;
+	}
+	
+	public boolean getMic_platfromIDcol() {
+		return mic_platfromIDcol;
+	}
+	
+	public void setMic_seriescomponentscol(boolean mic_seriescomponentscol){
+		this.mic_seriescomponentscol=mic_seriescomponentscol;
+	}
+	
+	public boolean getMic_seriescomponentscol() {
+		return mic_seriescomponentscol;
+	}
+	
+	public void setMicseriescols(String[]micseriescols){
+		this.micseriescols=micseriescols;
+		micseriesresultmap.clear();
+		for(int i=0;i<micseriescols.length;i++){
+			micseriesresultmap.put(micseriescols[i], true);	
+		}
+		mic_titlecol=micseriesresultmap.containsKey("title");
+		mic_geoSeriesIDcol=micseriesresultmap.containsKey("geoid");
+		mic_sourcecol=micseriesresultmap.containsKey("source");
+		mic_numsamplescol=micseriesresultmap.containsKey("numsamples");
+		mic_platfromIDcol=micseriesresultmap.containsKey("platform");
+		mic_seriescomponentscol=micseriesresultmap.containsKey("components");
+	}
+	
+	
+	public String[] getMicseriescols(){
+		return micseriescols;
+	}
+	
+	
+	private static Map<String,Object> micseriescolmap;
+	static{
+		micseriescolmap = new LinkedHashMap<String,Object>();
+		micseriescolmap.put("Title", "title");
+		micseriescolmap.put("GEO Series ID", "geoid");
+		micseriescolmap.put("Source", "source");
+		micseriescolmap.put("Number of Samples", "numsamples");
+		micseriescolmap.put("Platform", "platform");
+		micseriescolmap.put("Component(s) Sampled", "components");
+	}
+ 
+	public Map<String,Object> getMicseriescolmap() {
+		return micseriescolmap;
+	}
+ 
+	public String getMicseriescolsInString() {
+		return Arrays.toString(micseriescols);
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

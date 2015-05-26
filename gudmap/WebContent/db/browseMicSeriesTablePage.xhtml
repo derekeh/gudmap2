@@ -18,9 +18,150 @@
 	</ui:define> 
 	
 	<ui:define name="content">
+	
+	<h:form>
+		<h:panelGrid columns="2">
+			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+<!-- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> -->
+		</h:panelGrid>
+	</h:form>
+	<h:form>
+	<pr:dialog header="Column Selection" widgetVar="dialog1" width="350" style="position:absolute;left:-100px;" >  
+	 <h:panelGrid columns="2">
+    	<h:selectManyCheckbox binding="#{il_insitucheckbox}" id="il_insitucheckbox" layout="pageDirection" value="#{paramBean.micseriescols}">
+   			<f:selectItems value="#{paramBean.micseriescolmap}" />
+<!--    			<f:validator validatorId="insituCheckboxColumnsValidator" /> -->
+   			<f:attribute name="checkboxType" value="insitu"></f:attribute>
+   			<f:ajax execute="il_insitucheckbox" render="checkboxmessage il_columnSubmit"></f:ajax> 
+   		</h:selectManyCheckbox>
+   		
+   		<h:panelGroup></h:panelGroup>
+   		<h:commandButton id="il_columnSubmit" value="Submit" action="browseMicSeriesTablePage" disabled="#{not il_insitucheckbox.valid}">
+   			<f:ajax execute="@form" render=":form1" ></f:ajax>
+   		</h:commandButton>
+	    <h:commandButton value="Reset" type="reset" />
+   	</h:panelGrid>
+   	<h:message id="checkboxmessage" for="il_insitucheckbox" /> 
+	</pr:dialog> 
+
+	</h:form>
+	
 	<!-- can use relative links on html tags -->
-	    <h1>Browse Microarray Series Data</h1>	
-	    <!-- all other content in here -->     
+	    <h:form id="focusform"><h1>Microarray Series Data <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	
+	    <!-- all other content in here -->  
+	     <h:form id="form1"> 
+	     <h:dataTable value="#{micSeriesTablePageBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    		
+    		
+    		<h:column rendered="#{paramBean.mic_titlecol == true}">
+    			<f:facet name="header">
+    				Title 
+    			</f:facet>
+    				#{u.title}
+    		</h:column>
+ 
+    		<h:column rendered="#{paramBean.mic_geoSeriesIDcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="GEO Series ID" actionListener="#{micSeriesTablePageBean.sort}">
+                         <f:attribute name="sortField" value="NATURAL_SORT(geo_series_id)" />
+                    </h:commandLink>
+				</f:facet>
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
+					<h:outputText value="#{u.geoSeriesID}"/>
+				</h:outputLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_sourcecol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="Source" actionListener="#{micSeriesTablePageBean.sort}">
+                         <f:attribute name="sortField" value="source" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.source}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_numsamplescol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="Number of Samples" actionListener="#{micSeriesTablePageBean.sort}">
+                         <f:attribute name="sortField" value="num_samples" />
+                    </h:commandLink>
+    				
+				</f:facet>
+    				#{u.numSamples}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_platfromIDcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="Platform" actionListener="#{micSeriesTablePageBean.sort}">
+                         <f:attribute name="sortField" value="NATURAL_SORT(platform)" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.platformID}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_seriescomponentscol == true}">
+    			<f:facet name="header">
+    				Component(s) Sampled
+				</f:facet>
+    				#{u.seriesComponents}
+    		</h:column>
+    		
+    		
+ 
+ 		</h:dataTable> 
+ 		
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{micSeriesTablePageBean.pageFirst}"
+                    disabled="#{micSeriesTablePageBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{micSeriesTablePageBean.pagePrevious}"
+                    disabled="#{micSeriesTablePageBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{micSeriesTablePageBean.pageNext}"
+                    disabled="#{micSeriesTablePageBean.firstRow + micSeriesTablePageBean.rowsPerPage >= micSeriesTablePageBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{micSeriesTablePageBean.pageLast}"
+                    disabled="#{micSeriesTablePageBean.firstRow + micSeriesTablePageBean.rowsPerPage >= micSeriesTablePageBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form" />
+                </h:commandButton>
+                <h:outputText value="Page #{micSeriesTablePageBean.currentPage} / #{micSeriesTablePageBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <pr:dataList value="#{micSeriesTablePageBean.pages}" var="page" type="none" itemStyleClass="display:inline;">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{micSeriesTablePageBean.page}"
+                        rendered="#{page != micSeriesTablePageBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == micSeriesTablePageBean.currentPage}" />
+                </pr:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{micSeriesTablePageBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{micSeriesTablePageBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+		</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{micSeriesTablePageBean.gotopage}" />
+		</h:form> 
+	   
 	</ui:define>
 </ui:composition>
 </html>
