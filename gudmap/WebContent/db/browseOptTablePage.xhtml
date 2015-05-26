@@ -27,26 +27,7 @@
 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
 		</h:panelGrid>
 	</h:form>
-	<h:form>
-	<pr:dialog header="Column Selection" widgetVar="dialog1" width="350" style="position:absolute;left:-100px;" >  
-	 <h:panelGrid columns="2">
-    	<h:selectManyCheckbox binding="#{il_insitucheckbox}" id="il_insitucheckbox" layout="pageDirection" value="#{paramBean.insitucols}">
-   			<f:selectItems value="#{paramBean.insitucolmap}" />
-   			<f:validator validatorId="insituCheckboxColumnsValidator" />
-   			<f:attribute name="checkboxType" value="insitu"></f:attribute>
-   			<f:ajax execute="il_insitucheckbox" render="checkboxmessage il_columnSubmit"></f:ajax> 
-   		</h:selectManyCheckbox>
-   		
-   		<h:panelGroup></h:panelGroup>
-   		<h:commandButton id="il_columnSubmit" value="Submit" action="browseOptTablePage" disabled="#{not il_insitucheckbox.valid}">
-   			<f:ajax execute="@form" render=":form1" ></f:ajax>
-   		</h:commandButton>
-	    <h:commandButton value="Reset" type="reset" />
-   	</h:panelGrid>
-   	<h:message id="checkboxmessage" for="il_insitucheckbox" /> 
-	</pr:dialog> 
-
-	</h:form>
+	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
 	
 	
 		<pr:dialog header="Filter Results" widgetVar="dialog2" width="750" style="position:absolute;left:-300px;"  >  
