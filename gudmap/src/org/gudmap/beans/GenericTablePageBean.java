@@ -10,12 +10,15 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.gudmap.assemblers.GeneListTablePageBeanAssembler;
 import org.gudmap.assemblers.InsituTablePageBeanAssembler;
 import org.gudmap.assemblers.MicSeriesTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.array.ArrayQueries;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.queries.genestrip.GeneListQueries;
+import org.gudmap.utils.Utils;
 
 @Named
 @SessionScoped
@@ -26,14 +29,22 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     // Data.
 	protected InsituTablePageBeanAssembler assembler;
 	protected MicSeriesTablePageBeanAssembler micSeriesAssembler;
+	private GeneListTablePageBeanAssembler geneListAssembler;
     private String specimenWhereclause="";
     protected List<String> selectedItems;
     private boolean areAllChecked;
+    
+    private String queryTotals;
+    private String userInput="";
+    private String userInputQuery;
     
     private String assayType="";
     
     @Inject
    	protected ParamBean paramBean;
+    
+  /*  @Inject
+   	protected SessionBean sessionBean;*/
    	
     // Constructors -------------------------------------------------------------------------------
 
@@ -49,6 +60,10 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	public void setParamBean(ParamBean paramBean){
 		this.paramBean=paramBean;
 	}
+	
+/*	public void setSessionBean(SessionBean sessionBean){
+		this.sessionBean=sessionBean;
+	}*/
 	
 	public void init(String assayType, String specimenAssay, int rowsperpage, int pagenumbers, String defaultOrderCol, boolean sortDirection) {
 		this.assayType=assayType;
@@ -68,12 +83,16 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	else if(specimenAssay.equals("OPT"))
     		specimenWhereclause = GenericQueries.WHERE_OPT;
     	
-    	if(assayType.equals("Microarray"))
+    	if(assayType.equals("genelist"))
+    		geneListAssembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM);
+    	else if(assayType.equals("Microarray"))
     		micSeriesAssembler= new MicSeriesTablePageBeanAssembler(ArrayQueries.MIC_SERIES_BROWSE_PARAM,assayType);
     	else if(assayType.equals("TG"))
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
     	else
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
+    	
+    	
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -89,7 +108,17 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
-    	if(assayType.equals("Microarray")) {
+    	if(assayType.equals("genelist")) {
+    		dataList = geneListAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+    				paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+    				paramBean.getFocusGroupSpWhereclause());
+        	
+            // Set currentPage, totalPages and pages.
+        	//setTotalslist(assembler.getTotals());
+        	totalRows = geneListAssembler.count();
+        	queryTotals=geneListAssembler.getQueryTotals();
+    	}
+    	else if(assayType.equals("Microarray")) {
     		dataList = micSeriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getMicWhereclause(),
 					paramBean.getFocusGroupWhereclause());
 			// Set currentPage, totalPages and pages.
@@ -168,6 +197,34 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		str+=s + ", ";
     	}
     	return str;
+    }
+    
+    public String getQueryTotals() {
+		return queryTotals;
+	}
+    
+    public String prepareTable() {
+    	loadDataList();
+    	return "browseGeneListTablePage";
+    }
+    
+    public void setUserInput(String input){
+    	if(input==null || input.equals(""))
+    		this.userInput="";
+    	else {
+	    	String processedValues[] = Utils.processInputString(input,false);
+	    	this.userInputQuery = processedValues[0];
+	    	this.userInput = processedValues[1];
+    	}
+    }
+       
+    
+    public String getUserInput(){
+    	return userInput;
+    }
+    
+    public String getUserInputQuery() {
+    	return userInputQuery;
     }
    
 }
