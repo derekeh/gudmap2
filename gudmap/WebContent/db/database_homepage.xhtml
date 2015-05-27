@@ -391,7 +391,7 @@
           <tr>
             <td>All In Situ Hybridisation (ISH)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getIshTotal()}" action="#{insituTablePageBean.refresh()}"></h:commandLink>
+            	<h:commandLink value="#{volatileSummaryBean.getIshTotal()}" action="browseInsituTablePage"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
             
@@ -399,35 +399,35 @@
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getWishTotal()}" action="#{wishTablePageBean.refresh()}"></h:commandLink>
+            	<h:commandLink value="#{volatileSummaryBean.getWishTotal()}" action="browseWishTablePage"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Section ISH (SISH)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getSishTotal()}" action="#{sishTablePageBean.refresh()}"></h:commandLink>
+            	<h:commandLink value="#{volatileSummaryBean.getSishTotal()}" action="browseSishTablePage"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>OPT ISH</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getOptTotal()}" action="#{optTablePageBean.refresh()}"></h:commandLink>
+            	<h:commandLink value="#{volatileSummaryBean.getOptTotal()}" action="browseOptTablePage"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Immunohistochemistry (IHC)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getIhcTotal()}" action="#{ihcTablePageBean.refresh()}"></h:commandLink>
+            	<h:commandLink value="#{volatileSummaryBean.getIhcTotal()}" action="browseIhcTablePage"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Transgenic Reporters</td>
             <td>
-            		<h:commandLink value="#{volatileSummaryBean.getTgTotal()}" action="#{tgTablePageBean.refresh()}"></h:commandLink>
+            		<h:commandLink value="#{volatileSummaryBean.getTgTotal()}" action="browseTgTablePage"></h:commandLink>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
           </tr>

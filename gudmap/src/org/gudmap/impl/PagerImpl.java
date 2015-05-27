@@ -40,6 +40,13 @@ public class PagerImpl implements PagerAbs {
         this.sortAscending = sortAscending; // Default sort direction.
 	}
 	
+	protected void initPaging(int rowsPerPage, int pageRange, String sortField, boolean sortAscending) {
+		this.rowsPerPage = rowsPerPage; // Default rows per page (max amount of rows to be displayed at once).
+        this.pageRange = pageRange; // Default page range (max amount of page links to be displayed at once).
+        this.sortField = sortField; // Default sort field.
+        this.sortAscending = sortAscending; // Default sort direction.
+	}
+	
 	// Paging actions -----------------------------------------------------------------------------
 
     public void pageFirst() {

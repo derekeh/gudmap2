@@ -28,97 +28,19 @@
 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
 		</h:panelGrid>
 	</h:form>
+	
 	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
 	
-		<pr:dialog header="Filter Results" widgetVar="dialog2" width="700" style="position:absolute;left:-300px;"  > 
-		<h:form id="filterform"> 
-		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
-		 
-		 <ui:remove>
-		 	<h:outputText value="Gene:"></h:outputText>
-		 	<h:inputText value="#{paramBean.genevalues}"></h:inputText>
-		 </ui:remove>
-		 	
-		 	<h:outputText value="Source:"></h:outputText>
-		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
-		 		<f:selectItems value="#{paramBean.sourcelist}" />
-		 	</h:selectManyListbox>
-		 	
-		 	<h:outputText value="Submission Date: "></h:outputText>
-		 	<h:panelGroup>
-		 		<h:panelGrid columns="4">
-		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.fromdatevalues}"></pr:calendar>
-		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.todatevalues}"></pr:calendar>
-		 		</h:panelGrid>
-		 	</h:panelGroup>
-		 	
-		 	<ui:remove>
-		 	<h:outputText value="Assay Type: "></h:outputText>
-		 	<h:selectManyListbox value="#{paramBean.assaytypeinsituvalues}">
-		 		<f:selectItems value="#{paramBean.assaytypeinsitulist}" />
-		 	</h:selectManyListbox>
-	   		</ui:remove>
-	   		
-	   		<ui:remove>
-		   		<h:outputText value="Probe Name:"></h:outputText>
-		   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
-	   		</ui:remove>
-	   		
-	   		<h:outputText value="Theiler Stage: "></h:outputText>
-	    	<h:panelGroup>
-		 		<h:panelGrid columns="4">
-		 			<h:outputText value="From:"></h:outputText>
-		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
-		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
-		 			</h:selectOneMenu>
-		 			<h:outputText value="To:"></h:outputText>
-		 			<h:selectOneMenu value="#{paramBean.theilerstagetovalues}">
-		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
-		 			</h:selectOneMenu>
-		 		</h:panelGrid>
-		 	</h:panelGroup>
-	   		
-	   		<ui:remove>
-	   		<h:outputText value="Sex:"></h:outputText>
-	   		<h:selectOneRadio value="#{paramBean.sexvalues}">
-	   			<f:selectItems value="#{paramBean.sexlist}" />
-	   		</h:selectOneRadio>
-	   		</ui:remove>
-	   		
-	   		<ui:remove>
-		   		<h:outputText value="Specimen Type:"></h:outputText>
-		   		<h:selectOneRadio value="#{paramBean.specimentypevalues}">
-		   			<f:selectItems value="#{paramBean.specimentypelist}" />
-		   		</h:selectOneRadio>
-	   		</ui:remove>
-	   		
-	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{geneListTablePageBean.refresh()}">
-	   			<f:ajax execute="@form" render=":form1" ></f:ajax> 
-	   		</h:commandButton>
-	   	</h:panelGrid>
-	   </h:form>
-	   
-	   <h:form>	
-	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
-	   	
-	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
-	   		
-	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{geneListTablePageBean.resetAll()}">
-	   			<f:ajax execute="@this il_filter_reset" render=":filterform :form1 :focusform" ></f:ajax> 
-	   		</h:commandButton>
-	   	</h:panelGrid>	
-	  </h:form>    
-	   	
-	</pr:dialog> 
+	<ui:include src="/snippets/g_genelistFilter.xhtml"></ui:include>
+	
+		
 	 
 	    <h:form id="focusform"><h1>Gene List Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
 	     #{geneListTablePageBean.setUserInput(sessionBean.getTempParam())}
 	     #{geneListTablePageBean.loadDataList()}
 	     <h:outputText value="#{geneListTablePageBean.userInput}"></h:outputText>
 	     <!-- all other content in here --> 
-	    <h:form id="form1"> 
+	    <h:form id="dataform"> 
 	     <h:dataTable value="#{geneListTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
@@ -259,25 +181,27 @@
     		</h:column>
  
  		</h:dataTable> 
+ 		</h:form>
  		
+ 		<h:form id="pagingform">
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
                 <h:commandButton id="firstbutton" value="first" action="#{geneListTablePageBean.pageFirst}"
                     disabled="#{geneListTablePageBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="prevbutton" value="prev" action="#{geneListTablePageBean.pagePrevious}"
                     disabled="#{geneListTablePageBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="nextbutton" value="next" action="#{geneListTablePageBean.pageNext}"
                     disabled="#{geneListTablePageBean.firstRow + geneListTablePageBean.rowsPerPage >= geneListTablePageBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="lastbutton" value="last" action="#{geneListTablePageBean.pageLast}"
                     disabled="#{geneListTablePageBean.firstRow + geneListTablePageBean.rowsPerPage >= geneListTablePageBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:outputText value="Page #{geneListTablePageBean.currentPage} / #{geneListTablePageBean.totalPages}" />
                </h:panelGrid>
@@ -285,26 +209,28 @@
 			
 			
 			<h:panelGroup>
-                <t:dataList value="#{geneListTablePageBean.pages}" var="page">
-                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{geneListTablePageBean.page}"
-                        rendered="#{page != geneListTablePageBean.currentPage}" />
+                <pr:dataList value="#{geneListTablePageBean.pages}" var="page" type="none" itemStyleClass="display:inline;" rendered="#{geneListTablePageBean.totalPages>0}">
+                    <h:commandLink id="pagelink" class="db_pagenum" value="#{page}" actionListener="#{geneListTablePageBean.page}"
+                        rendered="#{page != geneListTablePageBean.currentPage}" >
+                        <f:ajax execute="@this pagelink" render="@form :dataform" />
+                     </h:commandLink>
                     <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
                         rendered="#{page == geneListTablePageBean.currentPage}" />
-                </t:dataList>
+                </pr:dataList>
            </h:panelGroup>
            <h:panelGroup>
 				<h:panelGrid columns="4">
 	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
 	                <h:inputText id="rowsPerPage" value="#{geneListTablePageBean.rowsPerPage}" size="3" maxlength="3" />
 	                <h:commandButton id="setrowsbutton" value="Set" action="#{geneListTablePageBean.pageFirst}" >
-	                	<f:ajax execute="@form" render="@form" />
+	                	<f:ajax execute="@form" render="@form :dataform" />
 	                </h:commandButton>               
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
 	             </h:panelGrid>
            </h:panelGroup>
          </h:panelGrid>    
 		</h:form> 
-		<h:form id="form2">
+		<h:form id="gotoform">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{geneListTablePageBean.gotopage}" />
 		</h:form> 

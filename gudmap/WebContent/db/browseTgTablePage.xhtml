@@ -19,6 +19,8 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+	#{genericTablePageBean.init('TG','',20,10,'SUB_OID',true)}
+	#{genericTablePageBean.loadDataList()}
 	<h:form>
 	#{paramBean.setGenotypecol(true)}
 	#{paramBean.setProbenamecol(false)}
@@ -30,99 +32,24 @@
 	
 	<ui:include src="/snippets/g_tgCols.xhtml"></ui:include>
 	
-		<pr:dialog header="Filter Results" widgetVar="dialog2" width="750" style="position:absolute;left:-300px;"  >  
-		<h:form id="filterform">
-		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
-		 
-		 	<h:outputText value="Gene:"></h:outputText>
-		 	<h:inputText value="#{paramBean.genevalues}"></h:inputText>
-		 	
-		 	<h:outputText value="Source:"></h:outputText>
-		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
-		 		<f:selectItems value="#{paramBean.sourcelist}" />
-		 	</h:selectManyListbox>
-		 	
-		 	<h:outputText value="Submission Date: "></h:outputText>
-		 	<h:panelGroup>
-		 		<h:panelGrid columns="4">
-		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.fromdatevalues}"></pr:calendar>
-		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.todatevalues}"></pr:calendar>
-		 		</h:panelGrid>
-		 	</h:panelGroup>
-		 	
-		 	<ui:remove>
-		 	<h:outputText value="Assay Type: "></h:outputText>
-		 	<h:selectManyListbox value="#{paramBean.assaytypeinsituvalues}">
-		 		<f:selectItems value="#{paramBean.assaytypeinsitulist}" />
-		 	</h:selectManyListbox>
-	   		</ui:remove>
-	   		
-	   		<ui:remove>
-	   		<h:outputText value="Probe Name:"></h:outputText>
-	   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
-	   		</ui:remove>
-	   		
-	   		<h:outputText value="Theiler Stage: "></h:outputText>
-	    	<h:panelGroup>
-		 		<h:panelGrid columns="4">
-		 			<h:outputText value="From:"></h:outputText>
-		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
-		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
-		 			</h:selectOneMenu>
-		 			<h:outputText value="To:"></h:outputText>
-		 			<h:selectOneMenu value="#{paramBean.theilerstagetovalues}">
-		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
-		 			</h:selectOneMenu>
-		 		</h:panelGrid>
-		 	</h:panelGroup>
-	   		
-	   		<h:outputText value="Sex:"></h:outputText>
-	   		<h:selectOneRadio value="#{paramBean.sexvalues}">
-	   			<f:selectItems value="#{paramBean.sexlist}" />
-	   		</h:selectOneRadio>
-	   		
-	   		<h:outputText value="Specimen Type:"></h:outputText>
-	   		<h:selectOneRadio value="#{paramBean.specimentypevalues}">
-	   			<f:selectItems value="#{paramBean.specimentypelist}" />
-	   		</h:selectOneRadio>
-	   		
-	   		
-	   		
-	   		<h:commandButton id="il_filter_submit" value="Submit" action="#{tgTablePageBean.refresh()}">
-	   			<f:ajax execute="@form" render=":form1" ></f:ajax> 
-	   		</h:commandButton>
-	   	</h:panelGrid>
-	   </h:form>
-	   
-	   <h:form>	
-	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
-	   	
-	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
-	   		
-	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{tgTablePageBean.resetAll()}">
-	   			<f:ajax execute="@this il_filter_reset" render=":filterform :form1 :focusform" ></f:ajax> 
-	   		</h:commandButton>
-	   	</h:panelGrid>	
-	  </h:form>    
-	   	
-	</pr:dialog> 
+	<ui:include src="/snippets/g_tgFilter.xhtml"></ui:include>
+	
+	
 	
 	
     
 	    <h:form id="focusform"><h1>TG Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>    
 	     <!-- all other content in here --> 
-	    <h:form id="form1"> 
-	     <h:dataTable value="#{tgTablePageBean.dataList}" var="u"
+	    <h:form id="dataform"> 
+	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
     		
  			<h:column >
     			<f:facet name="header">
-    				<ui:remove><h:commandButton value="Check" action="#{tgTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
-    				<h:commandButton id="checkall" value="Check" action="#{tgTablePageBean.checkAll}">
+    				<ui:remove><h:commandButton value="Check" action="#{genericTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
+    				<h:commandButton id="checkall" value="Check" action="#{genericTablePageBean.checkAll}">
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
     			</f:facet>
@@ -131,7 +58,7 @@
  			
     		<!-- <h:column rendered="#{paramBean.oidcol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="oid" actionListener="#{tgTablePageBean.sort}">
+    				<h:commandLink value="oid" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="SUB_OID" />
                     </h:commandLink>
     			</f:facet>
@@ -140,7 +67,7 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				(<h:commandLink value="#{tgTablePageBean.totalslist.get('TG_TYPE_TOTAL_GENE')}" actionListener="#{tgTablePageBean.sort}">
+    				(<h:commandLink value="#{genericTablePageBean.totalslist.get('TG_TYPE_TOTAL_GENE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="ALE_GENE" />
                     </h:commandLink> ) <br />
     				Gene 
@@ -150,7 +77,7 @@
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{tgTablePageBean.totalslist.get('TG_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{tgTablePageBean.sort}">
+    			(<h:commandLink value="#{genericTablePageBean.totalslist.get('TG_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="SUB_OID" />
                     </h:commandLink> )
     				<br />
@@ -163,7 +90,7 @@
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{tgTablePageBean.totalslist.get('TG_TYPE_TOTAL_SOURCE')}" actionListener="#{tgTablePageBean.sort}">
+    			(<h:commandLink value="#{genericTablePageBean.totalslist.get('TG_TYPE_TOTAL_SOURCE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="PER_SURNAME" />
                     </h:commandLink> )
     				 <br />
@@ -174,7 +101,7 @@
     		
     		<h:column rendered="#{paramBean.submissiondatecol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_SUBMISSION_DATE")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_SUBMISSION_DATE")}) <br />
     				Submission Date
 				</f:facet>
     				#{u.submission_date}
@@ -182,7 +109,7 @@
     		
     		<h:column rendered="#{paramBean.assaytypecol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_ASSAY_TYPE")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_ASSAY_TYPE")}) <br />
     				Assay Type
 				</f:facet>
     				#{u.assay_type}
@@ -191,7 +118,7 @@
     		<ui:remove>
     		<h:column rendered="#{paramBean.probenamecol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_PROBE_NAME")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_PROBE_NAME")}) <br />
     				Probe Name
 				</f:facet>
     				#{u.probe_name}
@@ -200,7 +127,7 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{tgTablePageBean.totalslist.get('TG_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{tgTablePageBean.sort}">
+    			(<h:commandLink value="#{genericTablePageBean.totalslist.get('TG_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="SUB_EMBRYO_STG" />
                     </h:commandLink> )
     				 <br />
@@ -211,7 +138,7 @@
     		
     		<h:column rendered="#{paramBean.agecol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_AGE")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_AGE")}) <br />
     				Age
 				</f:facet>
     				#{u.age}
@@ -219,7 +146,7 @@
     		
     		<h:column rendered="#{paramBean.sexcol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_SEX")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_SEX")}) <br />
     				Sex
 				</f:facet>
     				#{u.sex}
@@ -227,7 +154,7 @@
     		
     		<h:column rendered="#{paramBean.genotypecol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_GENOTYPE")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_GENOTYPE")}) <br />
     				Genotype
 				</f:facet>
     				#{u.genotype}
@@ -235,7 +162,7 @@
     		
     		<h:column rendered="#{paramBean.tissuecol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_TISSUE")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_TISSUE")}) <br />
     				Tissue
 				</f:facet>
     				#{u.tissue}
@@ -243,7 +170,7 @@
     		
     		<h:column rendered="#{paramBean.expressioncol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_EXPRESSION")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_EXPRESSION")}) <br />
     				Expression
 				</f:facet>
     				#{u.expression}
@@ -251,7 +178,7 @@
     		
     		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_SPECIMEN_TYPE")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_SPECIMEN_TYPE")}) <br />
     				Specimen Type
 				</f:facet>
     				#{u.specimen}
@@ -259,7 +186,7 @@
     		
     		<h:column rendered="#{paramBean.imagescol == true}">
     			<f:facet name="header">
-    				(#{tgTablePageBean.totalslist.get("TG_TYPE_TOTAL_IMAGES")}) <br />
+    				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_IMAGES")}) <br />
     				Images
 				</f:facet>
     			<h:commandLink  action="viewSubmissionDetails">
@@ -269,56 +196,9 @@
     		</h:column>
  
  		</h:dataTable> 
+ 		</h:form>
  		
- 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
- 			<h:panelGroup>
- 			  <h:panelGrid columns="5">
-                <h:commandButton id="firstbutton" value="first" action="#{tgTablePageBean.pageFirst}"
-                    disabled="#{tgTablePageBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
-                </h:commandButton>
-                <h:commandButton id="prevbutton" value="prev" action="#{tgTablePageBean.pagePrevious}"
-                    disabled="#{tgTablePageBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
-                </h:commandButton>
-                <h:commandButton id="nextbutton" value="next" action="#{tgTablePageBean.pageNext}"
-                    disabled="#{tgTablePageBean.firstRow + tgTablePageBean.rowsPerPage >= tgTablePageBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
-                </h:commandButton>
-                <h:commandButton id="lastbutton" value="last" action="#{tgTablePageBean.pageLast}"
-                    disabled="#{tgTablePageBean.firstRow + tgTablePageBean.rowsPerPage >= tgTablePageBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
-                </h:commandButton>
-                <h:outputText value="Page #{tgTablePageBean.currentPage} / #{tgTablePageBean.totalPages}" />
-               </h:panelGrid>
-			</h:panelGroup>
-			
-			
-			<h:panelGroup>
-                <t:dataList value="#{tgTablePageBean.pages}" var="page">
-                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{tgTablePageBean.page}"
-                        rendered="#{page != tgTablePageBean.currentPage}" />
-                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-                        rendered="#{page == tgTablePageBean.currentPage}" />
-                </t:dataList>
-           </h:panelGroup>
-           <h:panelGroup>
-				<h:panelGrid columns="4">
-	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
-	                <h:inputText id="rowsPerPage" value="#{tgTablePageBean.rowsPerPage}" size="3" maxlength="3" />
-	                <h:commandButton id="setrowsbutton" value="Set" action="#{tgTablePageBean.pageFirst}" >
-	                	<f:ajax execute="@form" render="@form" />
-	                </h:commandButton>               
-	                <h:message for="rowsPerPage" errorStyle="color: red;" />
-	             </h:panelGrid>
-           </h:panelGroup>
-         </h:panelGrid>    
-		</h:form> 
-		<h:form id="form2">
-			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
-			<h:inputText id="gotopage" value="#{tgTablePageBean.gotopage}" />
-		</h:form> 
-	
+ 		<ui:include src="/snippets/g_pagingForm.xhtml"></ui:include>
 		
 	</ui:define>
 </ui:composition>

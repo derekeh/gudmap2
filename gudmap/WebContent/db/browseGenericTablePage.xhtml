@@ -5,12 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:pr="http://primefaces.org/ui" >
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    OPT Data Results
+	    ISH Data Results
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -19,8 +18,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	#{genericTablePageBean.init('ISH','OPT',20,10,'SUB_OID',true)}
-	#{genericTablePageBean.loadDataList()}
+	#{genericTablePageBean.init('ISH','',20,10,'SUB_OID',true)}
 	<h:form>
 	#{paramBean.setGenotypecol(false)}
 	#{paramBean.setProbenamecol(true)}
@@ -29,12 +27,12 @@
 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
 		</h:panelGrid>
 	</h:form>
-	
 	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
 	
 	<ui:include src="/snippets/g_ishFilter.xhtml"></ui:include>
+	
     
-	   <h:form id="focusform"> <h1>OPT Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	    <h:form id="focusform"><h1>ISH Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
 	     <!-- all other content in here --> 
 	    <h:form id="dataform"> 
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
@@ -82,6 +80,7 @@
     			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
@@ -127,7 +126,8 @@
     				 <br />
     				Theiler Stage
 				</f:facet>
-    			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
+				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.agecol == true}">
