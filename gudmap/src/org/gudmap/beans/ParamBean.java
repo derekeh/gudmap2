@@ -52,10 +52,14 @@ public class ParamBean implements Serializable {
 	private String[] tgcols;
 	private String[] genestripcols;
 	private String[] micseriescols;
+	private String[] micsamplecols;
+	private String[] micplatformcols;
 	private Map<String,Boolean> resultmap;
 	private Map<String,Boolean> tgresultmap;
 	private Map<String,Boolean> genestripresultmap;
 	private Map<String,Boolean> micseriesresultmap;
+	private Map<String,Boolean> micsampleresultmap;
+	private Map<String,Boolean> micplatformresultmap;
 	/*filter*/
 	private String genevalues;
 	private String[] sourcevalues;
@@ -83,11 +87,25 @@ public class ParamBean implements Serializable {
 	private String micWhereClause="";
 	private boolean mic_titlecol=true;
 	private boolean mic_geoSeriesIDcol=true;
-	private boolean mic_sourcecol=true;
 	private boolean mic_numsamplescol=true;
-	private boolean mic_platfromIDcol=true;
-	private boolean mic_seriescomponentscol=true;
+	private boolean mic_platformIDcol=true;
+	private boolean mic_platformnamecol=true;
+	private boolean mic_platformtechnologycol=true;
+	private boolean mic_platformmanufacturercol=true;
+	private boolean mic_numseriescol=true;
+	private boolean mic_sourcecol=true;
+	private boolean mic_stagecol=true;
+	private boolean mic_agecol=false;
+	private boolean mic_submissiondatecol=false;
+	private boolean mic_sexcol=false;
+	private boolean mic_genotypecol=true;
+	private boolean mic_geoSampleIDcol=true;
+	private boolean mic_sampledescriptioncol=true;
+	private boolean mic_samplenamecol=false;
+	private boolean mic_componentscol=true;
+	private boolean mic_gudmapaccessioncol=true;
 	
+
 	
 	
 	//checkboxes
@@ -118,10 +136,16 @@ public class ParamBean implements Serializable {
 		tgcols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","embryostage","age","genotype","images"};
 		genestripcols= new String[]{"gene","synonym","omim","stagerange","expressionprofile","images","microarrayprofile","rnaseq"};
 		micseriescols= new String[]{"title","geoid","source","numsamples","platform","components"};
+		/*micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","age","submissiondate","sex","sampledescription",
+				"samplename","genotype","components"};*/
+		micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
+				"genotype","components"};
+		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};
 		resultmap=new HashMap<String,Boolean>();
 		tgresultmap=new HashMap<String,Boolean>();
 		genestripresultmap=new HashMap<String,Boolean>();
 		micseriesresultmap=new HashMap<String,Boolean>();
+		micsampleresultmap=new HashMap<String,Boolean>();
 		assembler = new ParamBeanAssembler();
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
@@ -990,20 +1014,111 @@ public class ParamBean implements Serializable {
 		return mic_numsamplescol;
 	}
 	
-	public void setMic_platfromIDcol(boolean mic_platfromIDcol){
-		this.mic_platfromIDcol=mic_platfromIDcol;
+	public void setMic_platformIDcol(boolean mic_platformIDcol){
+		this.mic_platformIDcol=mic_platformIDcol;
 	}
 	
-	public boolean getMic_platfromIDcol() {
-		return mic_platfromIDcol;
+	public boolean getMic_platformIDcol() {
+		return mic_platformIDcol;
 	}
 	
-	public void setMic_seriescomponentscol(boolean mic_seriescomponentscol){
-		this.mic_seriescomponentscol=mic_seriescomponentscol;
+	public void setMic_platformnamecol(boolean mic_platformnamecol ) {
+		this.mic_platformnamecol = mic_platformnamecol;
+	}
+	public boolean getMic_platformnamecol() {
+		return mic_platformnamecol;
 	}
 	
-	public boolean getMic_seriescomponentscol() {
-		return mic_seriescomponentscol;
+	public void setMic_platformtechnologycol(boolean mic_platformtechnologycol ) {
+		this.mic_platformtechnologycol = mic_platformtechnologycol;
+	}
+	public boolean getMic_platformtechnologycol() {
+		return mic_platformtechnologycol;
+	}
+	
+	public void setMic_platformmanufacturercol(boolean mic_platformmanufacturercol ) {
+		this.mic_platformmanufacturercol = mic_platformmanufacturercol;
+	}
+	public boolean getMic_platformmanufacturercol() {
+		return mic_platformmanufacturercol;
+	}
+	
+	public void setMic_numseriescol(boolean mic_numseriescol ) {
+		this.mic_numseriescol = mic_numseriescol;
+	}
+	public boolean getMic_numseriescol() {
+		return mic_numseriescol;
+	}
+	
+	public void setMic_componentscol(boolean mic_componentscol){
+		this.mic_componentscol=mic_componentscol;
+	}
+	
+	public boolean getMic_componentscol() {
+		return mic_componentscol;
+	}
+	
+	public void setMic_stagecol(boolean mic_stagecol) {
+		this.mic_stagecol = mic_stagecol;
+	}
+	public boolean getMic_stagecol() {
+		return mic_stagecol;
+	}
+	
+	public void setMic_agecol(boolean mic_agecol) {
+		this.mic_agecol = mic_agecol;
+	}
+	public boolean getMic_agecol() {
+		return mic_agecol;
+	}
+	
+	public void setMic_submissiondatecol(boolean mic_submissiondatecol) {
+		this.mic_submissiondatecol = mic_submissiondatecol;
+	}
+	public boolean getMic_submissiondatecol() {
+		return mic_submissiondatecol;
+	}
+	
+	public void setMic_sexcol(boolean mic_sexcol) {
+		this.mic_sexcol = mic_sexcol;
+	}
+	public boolean getMic_sexcol() {
+		return mic_sexcol;
+	}
+	
+	public void setMic_genotypecol(boolean mic_genotypecol) {
+		this.mic_genotypecol = mic_genotypecol;
+	}
+	public boolean getMic_genotypecol() {
+		return mic_genotypecol;
+	}
+	
+	public void setMic_geoSampleIDcol(boolean mic_geoSampleIDcol) {
+		this.mic_geoSampleIDcol = mic_geoSampleIDcol;
+	}
+	public boolean getMic_geoSampleIDcol() {
+		return mic_geoSampleIDcol;
+	}
+	
+	public void setMic_sampledescriptioncol(boolean mic_sampledescriptioncol) {
+		this.mic_sampledescriptioncol = mic_sampledescriptioncol;
+	}
+	public boolean getMic_sampledescriptioncol() {
+		return mic_sampledescriptioncol;
+	}
+	
+	public void setMic_samplenamecol(boolean mic_samplenamecol) {
+		this.mic_samplenamecol = mic_samplenamecol;
+	}
+	public boolean getMic_samplenamecol() {
+		return mic_samplenamecol;
+	}
+	
+	public void setMic_gudmapaccessioncol(boolean mic_gudmapaccessioncol) {
+		this.mic_gudmapaccessioncol = mic_gudmapaccessioncol;
+	}
+	public boolean getMic_gudmapaccessioncol() {
+		return mic_gudmapaccessioncol;
 	}
 	
 	public void setMicseriescols(String[]micseriescols){
@@ -1016,8 +1131,8 @@ public class ParamBean implements Serializable {
 		mic_geoSeriesIDcol=micseriesresultmap.containsKey("geoid");
 		mic_sourcecol=micseriesresultmap.containsKey("source");
 		mic_numsamplescol=micseriesresultmap.containsKey("numsamples");
-		mic_platfromIDcol=micseriesresultmap.containsKey("platform");
-		mic_seriescomponentscol=micseriesresultmap.containsKey("components");
+		mic_platformIDcol=micseriesresultmap.containsKey("platform");
+		mic_componentscol=micseriesresultmap.containsKey("components");
 	}
 	
 	
@@ -1043,6 +1158,96 @@ public class ParamBean implements Serializable {
  
 	public String getMicseriescolsInString() {
 		return Arrays.toString(micseriescols);
+	}
+	
+	///////////sample///////////////
+	public void setMicsamplecols(String[]micsamplecols){
+		this.micsamplecols=micsamplecols;
+		micsampleresultmap.clear();
+		for(int i=0;i<micsamplecols.length;i++){
+			micsampleresultmap.put(micsamplecols[i], true);	
+		}
+		mic_gudmapaccessioncol=micsampleresultmap.containsKey("gudmapaccession");
+		mic_geoSampleIDcol=micsampleresultmap.containsKey("geosampleid");
+		mic_geoSeriesIDcol=micsampleresultmap.containsKey("geoseriesid");
+		mic_sourcecol=micsampleresultmap.containsKey("source");
+		mic_stagecol=micsampleresultmap.containsKey("stage");
+		mic_agecol=micsampleresultmap.containsKey("age");
+		mic_submissiondatecol=micsampleresultmap.containsKey("submissiondate");
+		mic_sexcol=micsampleresultmap.containsKey("sex");
+		mic_sampledescriptioncol=micsampleresultmap.containsKey("sampledescription");
+		mic_samplenamecol=micsampleresultmap.containsKey("samplename");
+		mic_genotypecol=micsampleresultmap.containsKey("genotype");
+		mic_componentscol=micsampleresultmap.containsKey("components");
+	}
+	
+	
+	
+	public String[] getMicsamplecols(){
+		return micsamplecols;
+	}
+	
+	
+	private static Map<String,Object> micsamplecolmap;
+	static{
+		micsamplecolmap = new LinkedHashMap<String,Object>();	
+		micsamplecolmap.put("Gudmap Entry Details", "gudmapaccession");
+		micsamplecolmap.put("GEO Sample ID", "geosampleid");
+		micsamplecolmap.put("GEO Series ID", "geoseriesid");
+		micsamplecolmap.put("Source", "source");
+		micsamplecolmap.put("Stage", "stage");
+		micsamplecolmap.put("Age", "age");
+		micsamplecolmap.put("Submission Date", "submissiondate");
+		micsamplecolmap.put("Sex", "sex");
+		micsamplecolmap.put("Sample Description", "sampledescription");
+		micsamplecolmap.put("Sample Name", "samplename");
+		micsamplecolmap.put("Genotype", "genotype");
+		micsamplecolmap.put("Component(s) Sampled", "components");
+	}
+ 
+	public Map<String,Object> getMicsamplecolmap() {
+		return micsamplecolmap;
+	}
+ 
+	public String getMicsamplecolsInString() {
+		return Arrays.toString(micsamplecols);
+	}
+	
+	//////////////platform////////////////
+	public void setMicplatformcols(String[]micplatformcols){
+		this.micplatformcols=micplatformcols;
+		micplatformresultmap.clear();
+		for(int i=0;i<micplatformcols.length;i++){
+			micplatformresultmap.put(micplatformcols[i], true);	
+		}
+		mic_platformIDcol=micplatformresultmap.containsKey("geoplatformid");
+		mic_platformnamecol=micplatformresultmap.containsKey("platformname");
+		mic_platformtechnologycol=micplatformresultmap.containsKey("platformtechnology");
+		mic_platformmanufacturercol=micplatformresultmap.containsKey("platformmanufacturer");
+		mic_numseriescol=micplatformresultmap.containsKey("numseries");
+	}
+	
+	public String[] getMicplatformcols(){
+		return micplatformcols;
+	}
+	
+	
+	private static Map<String,Object> micplatformcolmap;
+	static{
+		micplatformcolmap = new LinkedHashMap<String,Object>();
+		micplatformcolmap.put("GEO ID", "geoplatformid");
+		micplatformcolmap.put("Name", "platformname");
+		micplatformcolmap.put("Technology", "platformtechnology");
+		micplatformcolmap.put("Manufacturer", "platformmanufacturer");
+		micplatformcolmap.put("Number of Series", "numseries");
+	}
+ 
+	public Map<String,Object> getMicplatformcolmap() {
+		return micplatformcolmap;
+	}
+ 
+	public String getMicplatformcolsInString() {
+		return Arrays.toString(micplatformcols);
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

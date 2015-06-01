@@ -228,12 +228,12 @@
 	    
 	   
 	    <h:panelGroup class="db_cell_object_padding">
-	    	 <pr:autoComplete  id="anatomy_input" value="#{anatomyTablePageBean.userInput}" completeMethod="#{autocompleteBean.completeAnatomy}"
+	    	 <pr:autoComplete  id="anatomy_input" value="#{sessionBean.anatomyParam}" completeMethod="#{autocompleteBean.completeAnatomy}"
 	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_anatomy_go" action="#{anatomyTablePageBean.prepareTable}">
+	    	<h:commandLink id="il_anatomy_go" action="browseAnatomyTablePage">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
@@ -295,11 +295,11 @@
 	    
 	    <h:panelGroup class="db_cell_object_padding">
 	    	
-	    	<pr:inputText id="accession_input" value="#{accessionTablePageBean.userInput}"  onkeypress="handleInput(this,event)" style="position:relative;"></pr:inputText>
+	    	<pr:inputText id="accession_input" value="#{sessionBean.accessionParam}"  onkeypress="handleInput(this,event)" style="position:relative;"></pr:inputText>
 	    </h:panelGroup> 
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_accession_go" action="#{accessionTablePageBean.prepareTable}">
+	    	<h:commandLink id="il_accession_go" action="browseAccessionTablePage">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
@@ -329,7 +329,7 @@
 	    
 	   
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<pr:autoComplete  id="genefunction_input" value="#{geneFunctionTablePageBean.userInput}" completeMethod="#{autocompleteBean.completeGeneFunction}"
+	    	<pr:autoComplete  id="genefunction_input" value="#{sessionBean.geneFunctionParam}" completeMethod="#{autocompleteBean.completeGeneFunction}"
 	     				minQueryLength="2" maxResults="10" forceSelection="true" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
@@ -337,7 +337,7 @@
 	    	<pr:commandButton id="showdialog3" value="Options" onclick="PF('dialog3').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
 	    </h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_gene_function_go" action="#{geneFunctionTablePageBean.prepareTable}">
+	    	<h:commandLink id="il_gene_function_go" action="browseGeneFunctionTablePage">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>

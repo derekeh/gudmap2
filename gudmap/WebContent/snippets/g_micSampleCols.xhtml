@@ -7,15 +7,16 @@
 	<h:form>
 	<pr:dialog header="Column Selection" widgetVar="dialog1" width="350" style="position:absolute;left:-100px;" >  
 	 <h:panelGrid columns="2">
-    	<h:selectManyCheckbox binding="#{il_insitucheckbox}" id="il_insitucheckbox" layout="pageDirection" value="#{paramBean.micseriescols}">
-   			<f:selectItems value="#{paramBean.micseriescolmap}" />
+    	<h:selectManyCheckbox binding="#{il_insitucheckbox}" id="il_insitucheckbox" layout="pageDirection" value="#{paramBean.micsamplecols}">
+   			<f:selectItems value="#{paramBean.micsamplecolmap}" />
+   			<f:validator validatorId="insituCheckboxColumnsValidator" />
    			<f:attribute name="checkboxType" value="insitu"></f:attribute>
    			<f:ajax execute="il_insitucheckbox" render="checkboxmessage il_columnSubmit"></f:ajax> 
    		</h:selectManyCheckbox>
    		
    		<h:panelGroup></h:panelGroup>
    		<h:commandButton id="il_columnSubmit" value="Submit"  disabled="#{not il_insitucheckbox.valid}">
-   			<f:ajax execute="@form" render=":form1" ></f:ajax>
+   			<f:ajax execute="@form" render=":dataform :pagingform" ></f:ajax>
    		</h:commandButton>
 	    <h:commandButton value="Reset" type="reset" />
    	</h:panelGrid>

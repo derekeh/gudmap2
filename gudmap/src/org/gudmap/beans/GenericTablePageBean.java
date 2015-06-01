@@ -10,8 +10,13 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.gudmap.assemblers.AccessionTablePageBeanAssembler;
+import org.gudmap.assemblers.AnatomyTablePageBeanAssembler;
+import org.gudmap.assemblers.GeneFunctionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneListTablePageBeanAssembler;
 import org.gudmap.assemblers.InsituTablePageBeanAssembler;
+import org.gudmap.assemblers.MicPlatformTablePageBeanAssembler;
+import org.gudmap.assemblers.MicSampleTablePageBeanAssembler;
 import org.gudmap.assemblers.MicSeriesTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
@@ -29,7 +34,13 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     // Data.
 	protected InsituTablePageBeanAssembler assembler;
 	protected MicSeriesTablePageBeanAssembler micSeriesAssembler;
+	private MicSampleTablePageBeanAssembler micSampleAssembler;
+	private MicPlatformTablePageBeanAssembler micPlatformAssembler;
 	private GeneListTablePageBeanAssembler geneListAssembler;
+	private AccessionTablePageBeanAssembler accessionAssembler;
+	protected AnatomyTablePageBeanAssembler anatomyAssembler;
+	private GeneFunctionTablePageBeanAssembler genefunctionAssembler;
+	private String whereclause = GenericQueries.WHERE_CLAUSE;
     private String specimenWhereclause="";
     protected List<String> selectedItems;
     private boolean areAllChecked;
@@ -37,8 +48,10 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     private String queryTotals;
     private String userInput="";
     private String userInputQuery;
+    private String wildcard="";
     
     private String assayType="";
+    private String specimenAssay="";
     
     @Inject
    	protected ParamBean paramBean;
@@ -67,6 +80,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	
 	public void init(String assayType, String specimenAssay, int rowsperpage, int pagenumbers, String defaultOrderCol, boolean sortDirection) {
 		this.assayType=assayType;
+		this.specimenAssay=specimenAssay;
 		initPaging(rowsperpage,pagenumbers,defaultOrderCol,sortDirection);
 		setup(assayType,specimenAssay);
 	}
@@ -74,7 +88,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     
     public void setup(String assayType,String specimenAssay) {
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
-    	this.assayType=assayType;
+    	//this.assayType=assayType;
     	
     	if(specimenAssay.equals("WISH"))
     		specimenWhereclause=GenericQueries.WHERE_WISH;
@@ -85,8 +99,19 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	
     	if(assayType.equals("genelist"))
     		geneListAssembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM);
+    	else if(assayType.equals("anatomy"))
+    		anatomyAssembler=new AnatomyTablePageBeanAssembler();
+    	else if(assayType.equals("accession"))
+    		accessionAssembler=new AccessionTablePageBeanAssembler(GenericQueries.BROWSE_ACCESSION_PARAM);
+    	else if(assayType.equals("genefunction"))
+    		genefunctionAssembler=new GeneFunctionTablePageBeanAssembler(GeneListQueries.BROWSE_GENE_FUNCTION_PARAM);
     	else if(assayType.equals("Microarray"))
-    		micSeriesAssembler= new MicSeriesTablePageBeanAssembler(ArrayQueries.MIC_SERIES_BROWSE_PARAM,assayType);
+    		if(specimenAssay.equals("micseries"))
+    			micSeriesAssembler= new MicSeriesTablePageBeanAssembler(ArrayQueries.MIC_SERIES_BROWSE_PARAM,assayType);
+	    	if(specimenAssay.equals("micsample"))
+				micSampleAssembler= new MicSampleTablePageBeanAssembler(ArrayQueries.MIC_SAMPLE_BROWSE_PARAM,assayType);
+	    	if(specimenAssay.equals("micplatform"))
+    			micPlatformAssembler= new MicPlatformTablePageBeanAssembler(ArrayQueries.MIC_PLATFORM_BROWSE_PARAM,assayType);
     	else if(assayType.equals("TG"))
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
     	else
@@ -113,18 +138,66 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     				paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
     				paramBean.getFocusGroupSpWhereclause());
         	
-            // Set currentPage, totalPages and pages.
-        	//setTotalslist(assembler.getTotals());
         	totalRows = geneListAssembler.count();
         	queryTotals=geneListAssembler.getQueryTotals();
     	}
+    	else if(assayType.equals("anatomy")) {
+    		//reset whereclause for this search
+    		paramBean.setWhereclause(whereclause);
+    		anatomyAssembler.init(userInputQuery.replace("'", ""));
+        	dataList = anatomyAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+        									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+        									paramBean.getFocusGroupSpWhereclause(),paramBean.getCachewhereclause(),paramBean.getArraycachewhereclause());
+            // Set currentPage, totalPages, columntotals and pages.
+        	//setTotalslist(assembler.getTotals());
+        	totalRows = anatomyAssembler.count();
+        	queryTotals=anatomyAssembler.getQueryTotals();
+    	}
+    	else if(assayType.equals("accession")) {
+    		//reset whereclause for this search
+    		paramBean.setWhereclause(whereclause);
+    		dataList = accessionAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+					paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+					paramBean.getFocusGroupSpWhereclause());
+			totalRows = accessionAssembler.count();
+			
+			queryTotals=accessionAssembler.getQueryTotals();
+    	}
+    	else if(assayType.equals("genefunction")) {
+    		//reset whereclause for this search
+    		paramBean.setWhereclause(whereclause);
+    		genefunctionAssembler.init(userInputQuery.replace("'", ""),"equals");
+        	dataList = genefunctionAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+        									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+        									paramBean.getFocusGroupSpWhereclause(),paramBean.getCachewhereclause());
+            
+        	totalRows = genefunctionAssembler.count();
+        	queryTotals=genefunctionAssembler.getQueryTotals();
+    	}
     	else if(assayType.equals("Microarray")) {
-    		dataList = micSeriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getMicWhereclause(),
-					paramBean.getFocusGroupWhereclause());
-			// Set currentPage, totalPages and pages.
-    		//TODO Write column total queries.
-			//setTotalslist(micSeriesAssembler.getTotals());
-			totalRows = micSeriesAssembler.count();
+    		if(specimenAssay.equals("micseries")) {
+    			micSeriesAssembler.setAssayType("Microarray");
+	    		dataList = micSeriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getMicWhereclause(),
+						paramBean.getFocusGroupWhereclause());
+	    		//TODO Write column total queries.
+				//setTotalslist(micSeriesAssembler.getTotals());
+				totalRows = micSeriesAssembler.count();
+    		}
+    		if(specimenAssay.equals("micsample")) {
+    			micSampleAssembler.setAssayType("Microarray");
+	    		dataList = micSampleAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getMicWhereclause(),
+						paramBean.getFocusGroupWhereclause());
+	    		//TODO Write column total queries.
+				//setTotalslist(micSeriesAssembler.getTotals());
+				totalRows = micSampleAssembler.count();
+    		}
+    		if(specimenAssay.equals("micplatform")) {
+    			micPlatformAssembler.setAssayType("Microarray");
+	    		dataList = micPlatformAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending);
+	    		//TODO Write column total queries.
+				//setTotalslist(micSeriesAssembler.getTotals());
+				totalRows = micPlatformAssembler.count();
+    		}
     	}
     	else
     	{
@@ -203,16 +276,16 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 		return queryTotals;
 	}
     
-    public String prepareTable() {
+   /* public String prepareTable() {
     	loadDataList();
     	return "browseGeneListTablePage";
-    }
+    }*/
     
-    public void setUserInput(String input){
+    public void setUserInput(String input, boolean type){
     	if(input==null || input.equals(""))
     		this.userInput="";
     	else {
-	    	String processedValues[] = Utils.processInputString(input,false);
+	    	String processedValues[] = Utils.processInputString(input,type);
 	    	this.userInputQuery = processedValues[0];
 	    	this.userInput = processedValues[1];
     	}
@@ -225,6 +298,14 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     
     public String getUserInputQuery() {
     	return userInputQuery;
+    }
+    
+    public void setWildcard(String wildcard){
+    	this.wildcard = wildcard;
+    }
+    
+    public String getWildcard() {
+    	return wildcard;
     }
    
 }

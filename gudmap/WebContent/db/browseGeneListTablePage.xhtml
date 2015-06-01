@@ -20,7 +20,7 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 	#{genericTablePageBean.init('genelist','',20,10,'x.stage',true)}
-	#{genericTablePageBean.setUserInput(sessionBean.getTempParam())}
+	#{genericTablePageBean.setUserInput(sessionBean.getTempParam(),false)}
 	#{genericTablePageBean.loadDataList()}
 	<h:form>
 	#{paramBean.setGenotypecol(false)}

@@ -20,7 +20,7 @@ import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.ArraySeqTableBeanModel;
 
-public class MicSeriesTablePageBeanAssembler {
+public class MicPlatformTablePageBeanAssembler {
 	
 	
 	private DataSource ds;
@@ -30,10 +30,10 @@ public class MicSeriesTablePageBeanAssembler {
 	private ArraySeqTableBeanModel arraySeqmodel;
 	private String paramSQL;
 	private String assayType;
-	private String whereclause;
-	private String focusGroupWhereclause;
+	//private String whereclause;
+	//private String focusGroupWhereclause;
 	
-	public MicSeriesTablePageBeanAssembler(String paramSQL,String assayType) {
+	public MicPlatformTablePageBeanAssembler(String paramSQL,String assayType) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -45,32 +45,28 @@ public class MicSeriesTablePageBeanAssembler {
 		
 	}
 	
-	public List<ArraySeqTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
-											String focusGroupWhereclause){
-		this.whereclause=whereclause;
-		this.focusGroupWhereclause=focusGroupWhereclause;
+	public List<ArraySeqTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending){
+		//this.whereclause=whereclause;
+		//this.focusGroupWhereclause=focusGroupWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, whereclause, focusGroupWhereclause, sortField, sortDirection);
+		String sql = String.format(paramSQL, sortField, sortDirection);
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 		try
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setString(1, assayType);
-			ps.setInt(2, firstRow);
-			ps.setInt(3, rowCount);
+			ps.setInt(1, firstRow);
+			ps.setInt(2, rowCount);
 			result =  ps.executeQuery();
 			
 			while(result.next()){
 				arraySeqmodel=new ArraySeqTableBeanModel();
-				arraySeqmodel.setTitle(result.getString("series_title"));
-				arraySeqmodel.setGeoSeriesID(result.getString("geo_series_id"));
-				arraySeqmodel.setNumSamples(result.getInt("num_samples"));
-				arraySeqmodel.setSource(result.getString("source"));
-				arraySeqmodel.setPlatformID(result.getString("platform"));
-				arraySeqmodel.setSeriesOid(result.getInt("series_oid"));
-				arraySeqmodel.setSeriesComponents(result.getString("components"));
+				arraySeqmodel.setPlatformID(result.getString("geo_platform_id"));
+				arraySeqmodel.setPltName(result.getString("platform_name"));
+				arraySeqmodel.setPltTechnology(result.getString("platform_technology"));
+				arraySeqmodel.setPltManufacturer(result.getString("platform_manufacturer"));
+				arraySeqmodel.setNumSeries(result.getInt("num_series"));
 				
 				arraySeqmodel.setSelected(false);
 				list.add(arraySeqmodel);
@@ -86,13 +82,12 @@ public class MicSeriesTablePageBeanAssembler {
 	public int count() {
 		int count=0;
 		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");*/
-		String totalwhere=whereclause;
-		String sql = String.format(ArrayQueries.COUNT_TOTAL_MIC_SERIES,totalwhere,focusGroupWhereclause);
+		//String totalwhere=whereclause;
+		String sql = ArrayQueries.COUNT_TOTAL_MIC_PLATFORM;
 		try
 		{
 				con = ds.getConnection();
 				ps = con.prepareStatement(sql);
-				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
@@ -106,35 +101,7 @@ public class MicSeriesTablePageBeanAssembler {
 		return count;
 	}
 	
-	public Map<String,String>  getTotals() {
-		Map<String,String> totals = new HashMap<String,String>();
-		
-		String [] queries=(assayType.equals("Microarray")?Globals.MicSeriesColTotals:Globals.SeqSeriesColTotals);
-		
-		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
-		
-		String sql="";
-		for(int i=0;i<queries.length;i++) {
-			try
-			{
-				con = ds.getConnection();
-				sql=String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause);
 
-				ps = con.prepareStatement(sql);
-				ps.setString(1, assayType);
-				result =  ps.executeQuery();
-				
-				while(result.next()){
-					totals.put(queries[i],result.getString("TOTAL"));
-				}
-			}
-			catch(SQLException sqle){sqle.printStackTrace();}
-			finally {
-			    Globals.closeQuietly(con, ps, result);
-			}
-		}
-		return totals;
-	}
 	
 	public void setAssayType(String assayType){
 		this.assayType=assayType;

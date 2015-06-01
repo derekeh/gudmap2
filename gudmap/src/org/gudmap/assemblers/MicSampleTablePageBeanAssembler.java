@@ -20,7 +20,7 @@ import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.ArraySeqTableBeanModel;
 
-public class MicSeriesTablePageBeanAssembler {
+public class MicSampleTablePageBeanAssembler {
 	
 	
 	private DataSource ds;
@@ -33,7 +33,7 @@ public class MicSeriesTablePageBeanAssembler {
 	private String whereclause;
 	private String focusGroupWhereclause;
 	
-	public MicSeriesTablePageBeanAssembler(String paramSQL,String assayType) {
+	public MicSampleTablePageBeanAssembler(String paramSQL,String assayType) {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -64,13 +64,23 @@ public class MicSeriesTablePageBeanAssembler {
 			
 			while(result.next()){
 				arraySeqmodel=new ArraySeqTableBeanModel();
-				arraySeqmodel.setTitle(result.getString("series_title"));
-				arraySeqmodel.setGeoSeriesID(result.getString("geo_series_id"));
-				arraySeqmodel.setNumSamples(result.getInt("num_samples"));
+				arraySeqmodel.setOid(result.getString("oid"));
+				arraySeqmodel.setGudmap_accession(result.getString("gudmap_accession"));
+				arraySeqmodel.setGeoSampleID(result.getString("geo_sample_id"));
+				arraySeqmodel.setStage(result.getString("stage"));
+				arraySeqmodel.setAge(result.getString("age"));
 				arraySeqmodel.setSource(result.getString("source"));
-				arraySeqmodel.setPlatformID(result.getString("platform"));
+				arraySeqmodel.setSubmission_date(result.getString("submission_date"));
+				arraySeqmodel.setSex(result.getString("sex"));
+				arraySeqmodel.setSampleDescription(result.getString("sample_description"));
+				arraySeqmodel.setTitle(result.getString("sample_title"));
+				arraySeqmodel.setGeoSeriesID(result.getString("geo_series_id"));
+				arraySeqmodel.setSampleComponents(result.getString("components"));
+				arraySeqmodel.setGenotype(result.getString("genotype"));
+				arraySeqmodel.setAssay_type(result.getString("assay_type"));
+				arraySeqmodel.setSpecimen_assay_type(result.getString("specimen_assay_type"));
+				arraySeqmodel.setPersonOid(result.getInt("person_oid"));
 				arraySeqmodel.setSeriesOid(result.getInt("series_oid"));
-				arraySeqmodel.setSeriesComponents(result.getString("components"));
 				
 				arraySeqmodel.setSelected(false);
 				list.add(arraySeqmodel);
@@ -87,7 +97,7 @@ public class MicSeriesTablePageBeanAssembler {
 		int count=0;
 		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");*/
 		String totalwhere=whereclause;
-		String sql = String.format(ArrayQueries.COUNT_TOTAL_MIC_SERIES,totalwhere,focusGroupWhereclause);
+		String sql = String.format(ArrayQueries.COUNT_TOTAL_MIC_SAMPLE,totalwhere,focusGroupWhereclause);
 		try
 		{
 				con = ds.getConnection();

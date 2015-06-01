@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Browse Microarray Platform Data
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	 <ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define> 
+	
+	<ui:define name="content">
+	#{genericTablePageBean.init('Microarray','micplatform',20,10,'natural_sort(TRIM(geo_platform_id))',true)}
+	#{genericTablePageBean.loadDataList()}
+	<h:form>
+		<h:panelGrid columns="2">
+			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+<!-- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> -->
+		</h:panelGrid>
+	</h:form>
+	
+	<!-- column selection -->
+	<ui:include src="/snippets/g_micPlatformCols.xhtml"></ui:include>
+	
+	<!-- can use relative links on html tags -->
+	    <h:form id="focusform"><h1>Microarray Platform Data <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	
+	    <!-- all other content in here -->  
+	     <h:form id="dataform"> 
+	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    		
+    		<h:column rendered="#{paramBean.mic_platformIDcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="GEO ID" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="NATURAL_SORT(TRIM(geo_platform_id))" />
+                         <f:ajax execute="@form" render="@form"></f:ajax>
+                    </h:commandLink>
+				</f:facet>
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.platformID}">
+					<h:outputText value="#{u.platformID}"/>
+				</h:outputLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_platformnamecol == true}">
+    			<f:facet name="header">
+    				Name 
+    			</f:facet>
+    				#{u.pltName}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_platformtechnologycol == true}">
+    			<f:facet name="header">
+    				Technology 
+    			</f:facet>
+    				#{u.pltTechnology}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_platformmanufacturercol == true}">
+    			<f:facet name="header">
+    				Manufacturer 
+    			</f:facet>
+    				#{u.pltManufacturer}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_sourcecol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="Number of Series" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="num_series" />
+                         <f:ajax execute="@form" render="@form"></f:ajax>
+                    </h:commandLink>
+				</f:facet>
+    				#{u.numSeries}
+    		</h:column>
+    		
+
+ 		</h:dataTable> 
+ 		</h:form>
+ 		
+ 		<ui:include src="/snippets/g_pagingForm.xhtml"></ui:include>
+	   
+	</ui:define>
+</ui:composition>
+</html>

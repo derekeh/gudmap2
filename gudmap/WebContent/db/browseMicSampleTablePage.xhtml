@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    Browse Microarray Series Data
+	    Browse Microarray Sample Data
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	 <ui:define name="solr">
@@ -18,7 +18,7 @@
 	</ui:define> 
 	
 	<ui:define name="content">
-	#{genericTablePageBean.init('Microarray','micseries',20,10,'source',true)}
+	#{genericTablePageBean.init('Microarray','micsample',20,10,'geo_sample_id',true)}
 	#{genericTablePageBean.loadDataList()}
 	<h:form>
 		<h:panelGrid columns="2">
@@ -28,10 +28,12 @@
 	</h:form>
 	
 	<!-- column selection -->
-	<ui:include src="/snippets/g_micSeriesCols.xhtml"></ui:include>
+	
+	<ui:include src="/snippets/g_micSampleCols.xhtml"></ui:include>
+	
 	
 	<!-- can use relative links on html tags -->
-	    <h:form id="focusform"><h1>Microarray Series Data <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	
+	    <h:form id="focusform"><h1>Microarray Sample Data <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	
 	    <!-- all other content in here -->  
 	     <h:form id="dataform"> 
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
@@ -40,11 +42,26 @@
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
     		
     		
-    		<h:column rendered="#{paramBean.mic_titlecol == true}">
+    		<h:column rendered="#{paramBean.mic_gudmapaccessioncol == true}">
     			<f:facet name="header">
-    				Title 
+    				GUDMAP Entry Details 
     			</f:facet>
-    				#{u.title}
+    				
+    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+						<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+				</h:commandLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_geoSampleIDcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="GEO Sample ID" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="NATURAL_SORT(geo_sample_id)" />
+                         <f:ajax execute="@form" render="@form"></f:ajax>
+                    </h:commandLink>
+				</f:facet>
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSampleID}">
+					<h:outputText value="#{u.geoSampleID}"/>
+				</h:outputLink>
     		</h:column>
  
     		<h:column rendered="#{paramBean.mic_geoSeriesIDcol == true}">
@@ -69,35 +86,64 @@
     				#{u.source}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.mic_numsamplescol == true}">
+    		<h:column rendered="#{paramBean.mic_stagecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Number of Samples" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="num_samples" />
+    				<h:commandLink value="Stage" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="stage" />
                          <f:ajax execute="@form" render="@form"></f:ajax>
                     </h:commandLink>
     				
 				</f:facet>
-    				#{u.numSamples}
+    				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.mic_platformIDcol == true}">
+    		<h:column rendered="#{paramBean.mic_agecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Platform" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="NATURAL_SORT(platform)" />
-                         <f:ajax execute="@form" render="@form"></f:ajax>
-                    </h:commandLink>
+    				Age
 				</f:facet>
-				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.platformID}">
-					<h:outputText value="#{u.platformID}"/>
-				</h:outputLink>
-    				
+    				#{u.age}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_submissiondatecol == true}">
+    			<f:facet name="header">
+    				Date
+				</f:facet>
+    				#{u.submission_date}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_sexcol == true}">
+    			<f:facet name="header">
+    				Sex
+				</f:facet>
+    				#{u.sex}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_sampledescriptioncol == true}">
+    			<f:facet name="header">
+    				Sample Description
+				</f:facet>
+    				#{u.sampleDescription}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_samplenamecol == true}">
+    			<f:facet name="header">
+    				Sample Name
+				</f:facet>
+    				#{u.title}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_genotypecol == true}">
+    			<f:facet name="header">
+    				Genotype
+				</f:facet>
+    				#{u.genotype}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.mic_componentscol == true}">
     			<f:facet name="header">
     				Component(s) Sampled
 				</f:facet>
-    				#{u.seriesComponents}
+    				#{u.sampleComponents}
     		</h:column>
 
  		</h:dataTable> 
