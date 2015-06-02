@@ -37,7 +37,8 @@
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
-    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row"
+    			columnClasses="db_table_col_left,db_table_col_center,db_table_col_center,db_table_col_center,db_table_col_center,db_table_col_left">
     		
     		
     		<h:column rendered="#{paramBean.mic_titlecol == true}">

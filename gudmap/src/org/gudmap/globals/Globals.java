@@ -6,9 +6,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 public class Globals {
 	public Globals(){
 		
+	}
+	
+	public static DataSource getDatasource() {
+		DataSource ds=null;
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		return ds;
 	}
 	
 	public static final String domainUrl="http://www.gudmap.org/";

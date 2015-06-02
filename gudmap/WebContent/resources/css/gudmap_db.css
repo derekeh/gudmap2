@@ -113,6 +113,24 @@
 	border-top:1px solid #BBBBBB;
 }
 
+.db_odd-row{
+	background:none repeat scroll 0 0 #FFFFFFF;
+	border-top:1px solid #BBBBBB;
+}
+
+.db_even-row{
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-top:1px solid #BBBBBB;
+}
+
+.db_table_col_left{
+	text-align:left;
+}
+
+.db_table_col_center{
+	text-align:center;
+}
+
 .db_tooltip{
 	margin:8px;
 	padding:8px;

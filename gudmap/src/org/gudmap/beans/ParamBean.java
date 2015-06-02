@@ -54,12 +54,14 @@ public class ParamBean implements Serializable {
 	private String[] micseriescols;
 	private String[] micsamplecols;
 	private String[] micplatformcols;
+	private String[] seqseriescols;
 	private Map<String,Boolean> resultmap;
 	private Map<String,Boolean> tgresultmap;
 	private Map<String,Boolean> genestripresultmap;
 	private Map<String,Boolean> micseriesresultmap;
 	private Map<String,Boolean> micsampleresultmap;
 	private Map<String,Boolean> micplatformresultmap;
+	private Map<String,Boolean> seqseriesresultmap;
 	/*filter*/
 	private String genevalues;
 	private String[] sourcevalues;
@@ -104,6 +106,7 @@ public class ParamBean implements Serializable {
 	private boolean mic_samplenamecol=false;
 	private boolean mic_componentscol=true;
 	private boolean mic_gudmapaccessioncol=true;
+	private boolean mic_librarystrategycol=true;
 	
 
 	
@@ -141,11 +144,15 @@ public class ParamBean implements Serializable {
 		micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
 				"genotype","components"};
 		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};
+		seqseriescols= new String[]{"title","geoid","source","numsamples","librarystrategy","components"};
 		resultmap=new HashMap<String,Boolean>();
 		tgresultmap=new HashMap<String,Boolean>();
 		genestripresultmap=new HashMap<String,Boolean>();
 		micseriesresultmap=new HashMap<String,Boolean>();
 		micsampleresultmap=new HashMap<String,Boolean>();
+		micplatformresultmap=new HashMap<String,Boolean>();
+		seqseriesresultmap=new HashMap<String,Boolean>();
+		
 		assembler = new ParamBeanAssembler();
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
@@ -1121,6 +1128,14 @@ public class ParamBean implements Serializable {
 		return mic_gudmapaccessioncol;
 	}
 	
+	public void setMic_librarystrategycol(boolean mic_librarystrategycol) {
+		this.mic_librarystrategycol = mic_librarystrategycol;
+	}
+	public boolean getMic_librarystrategycol() {
+		return mic_librarystrategycol;
+	}
+	
+	
 	public void setMicseriescols(String[]micseriescols){
 		this.micseriescols=micseriescols;
 		micseriesresultmap.clear();
@@ -1248,6 +1263,46 @@ public class ParamBean implements Serializable {
  
 	public String getMicplatformcolsInString() {
 		return Arrays.toString(micplatformcols);
+	}
+	
+	//////////sequence series/////////////
+	public void setSeqseriescols(String[]seqseriescols){
+		this.seqseriescols=seqseriescols;
+		seqseriesresultmap.clear();
+		for(int i=0;i<seqseriescols.length;i++){
+			seqseriesresultmap.put(seqseriescols[i], true);	
+		}
+		mic_titlecol=seqseriesresultmap.containsKey("title");
+		mic_geoSeriesIDcol=seqseriesresultmap.containsKey("geoid");
+		mic_sourcecol=seqseriesresultmap.containsKey("source");
+		mic_numsamplescol=seqseriesresultmap.containsKey("numsamples");
+		mic_librarystrategycol=seqseriesresultmap.containsKey("librarystrategy");
+		mic_componentscol=seqseriesresultmap.containsKey("components");
+	}
+	
+	
+	public String[] getSeqseriescols(){
+		return seqseriescols;
+	}
+	
+	
+	private static Map<String,Object> seqseriescolmap;
+	static{
+		seqseriescolmap = new LinkedHashMap<String,Object>();
+		seqseriescolmap.put("Title", "title");
+		seqseriescolmap.put("GEO Series ID", "geoid");
+		seqseriescolmap.put("Source", "source");
+		seqseriescolmap.put("Number of Samples", "numsamples");
+		seqseriescolmap.put("Library Strategy", "librarystrategy");
+		seqseriescolmap.put("Component(s) Sampled", "components");
+	}
+ 
+	public Map<String,Object> getSeqseriescolmap() {
+		return seqseriescolmap;
+	}
+ 
+	public String getSeqseriescolsInString() {
+		return Arrays.toString(seqseriescols);
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

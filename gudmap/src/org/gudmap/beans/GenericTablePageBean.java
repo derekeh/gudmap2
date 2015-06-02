@@ -18,9 +18,12 @@ import org.gudmap.assemblers.InsituTablePageBeanAssembler;
 import org.gudmap.assemblers.MicPlatformTablePageBeanAssembler;
 import org.gudmap.assemblers.MicSampleTablePageBeanAssembler;
 import org.gudmap.assemblers.MicSeriesTablePageBeanAssembler;
+import org.gudmap.assemblers.SeqSampleTablePageBeanAssembler;
+import org.gudmap.assemblers.SeqSeriesTablePageBeanAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.array.ArrayQueries;
+import org.gudmap.queries.array.SequenceQueries;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.genestrip.GeneListQueries;
 import org.gudmap.utils.Utils;
@@ -36,6 +39,8 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	private MicSeriesTablePageBeanAssembler micSeriesAssembler;
 	private MicSampleTablePageBeanAssembler micSampleAssembler;
 	private MicPlatformTablePageBeanAssembler micPlatformAssembler;
+	private SeqSeriesTablePageBeanAssembler seqSeriesAssembler=null;
+	private SeqSampleTablePageBeanAssembler seqSampleAssembler=null;
 	private GeneListTablePageBeanAssembler geneListAssembler;
 	private AccessionTablePageBeanAssembler accessionAssembler;
 	private AnatomyTablePageBeanAssembler anatomyAssembler;
@@ -112,6 +117,12 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 				micSampleAssembler= new MicSampleTablePageBeanAssembler(ArrayQueries.MIC_SAMPLE_BROWSE_PARAM,assayType);
 	    	if(specimenAssay.equals("micplatform"))
     			micPlatformAssembler= new MicPlatformTablePageBeanAssembler(ArrayQueries.MIC_PLATFORM_BROWSE_PARAM,assayType);
+	    	if(specimenAssay.equals("seqseries"))
+	    		if(seqSeriesAssembler==null)
+	    			seqSeriesAssembler= new SeqSeriesTablePageBeanAssembler(SequenceQueries.SEQUENCE_SERIES_BROWSE_PARAM,assayType);
+	    	if(specimenAssay.equals("seqsample"))
+	    		if(seqSampleAssembler==null)
+	    			seqSampleAssembler= new SeqSampleTablePageBeanAssembler(SequenceQueries.SEQUENCE_SAMPLE_BROWSE_PARAM,assayType);
     	else if(assayType.equals("TG"))
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
     	else
@@ -197,6 +208,23 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	    		//TODO Write column total queries.
 				//setTotalslist(micSeriesAssembler.getTotals());
 				totalRows = micPlatformAssembler.count();
+    		}
+    		
+    	}
+    	else if(assayType.equals("NextGen")) {
+    		if(specimenAssay.equals("seqseries")) {
+    			seqSeriesAssembler.setAssayType("NextGen");
+	    		dataList = seqSeriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending,paramBean.getMicWhereclause());
+	    		//TODO Write column total queries.
+				//setTotalslist(micSeriesAssembler.getTotals());
+				totalRows = seqSeriesAssembler.count();
+    		}
+    		if(specimenAssay.equals("seqsample")) {
+    			seqSampleAssembler.setAssayType("NextGen");
+	    		dataList = seqSampleAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending,paramBean.getMicWhereclause());
+	    		//TODO Write column total queries.
+				//setTotalslist(micSeriesAssembler.getTotals());
+				totalRows = seqSampleAssembler.count();
     		}
     	}
     	else
