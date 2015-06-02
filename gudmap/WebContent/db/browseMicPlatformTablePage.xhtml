@@ -41,9 +41,9 @@
     		
     		<h:column rendered="#{paramBean.mic_platformIDcol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="GEO ID" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink id="geoplatformlink" value="GEO ID" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="NATURAL_SORT(TRIM(geo_platform_id))" />
-                         <f:ajax execute="@form" render="@form"></f:ajax>
+                         <f:ajax execute="@this geoplatformlink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.platformID}">
@@ -74,9 +74,9 @@
     		
     		<h:column rendered="#{paramBean.mic_sourcecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Number of Series" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink id="numserieslink" value="Number of Series" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="num_series" />
-                         <f:ajax execute="@form" render="@form"></f:ajax>
+                         <f:ajax execute="@this numserieslink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
     				#{u.numSeries}

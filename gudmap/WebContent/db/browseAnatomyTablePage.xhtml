@@ -67,8 +67,9 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Gene" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink id="genelink" value="Gene" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.gene" />
+    					<f:ajax execute="@this genelink" render="@form"></f:ajax>
                     </h:commandLink> 
     			</f:facet>
     			<h:commandLink value="#{u.gene}"  action="viewGeneStrip">
@@ -78,8 +79,9 @@
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    			<h:commandLink value="Gudmap Accession" actionListener="#{genericTablePageBean.sort}">
+    			<h:commandLink  id="accessionlink" value="Gudmap Accession" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.gudmap_accession" />
+    					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
     			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
@@ -90,8 +92,9 @@
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    			<h:commandLink value="Source" actionListener="#{genericTablePageBean.sort}">
+    			<h:commandLink  id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.source" />
+    					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
     				#{u.source}
@@ -106,8 +109,9 @@
     		
     		<h:column rendered="#{paramBean.assaytypecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Assay Type" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink  id="assaylink" value="Assay Type" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.assay_type" />
+    					<f:ajax execute="@this assaylink" render="@form"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
     				#{u.assay_type}
@@ -122,8 +126,9 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    			<h:commandLink value="Theiler Stage" actionListener="#{genericTablePageBean.sort}">
+    			<h:commandLink id="stagelink"  value="Theiler Stage" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.stage" />
+    					<f:ajax execute="@this stagelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
 				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>

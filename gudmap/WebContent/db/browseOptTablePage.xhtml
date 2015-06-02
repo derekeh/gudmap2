@@ -63,8 +63,9 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				(<h:commandLink value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GENE')}" actionListener="#{genericTablePageBean.sort}">
+    				(<h:commandLink id="genelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GENE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="RPR_SYMBOL" />
+    					<f:ajax execute="@this genelink" render="@form"></f:ajax>
                     </h:commandLink> ) <br />
     				Gene 
     			</f:facet>
@@ -73,8 +74,9 @@
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{genericTablePageBean.sort}">
+    			(<h:commandLink id="accessionlink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="SUB_OID" />
+    					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
                     </h:commandLink> )
     				<br />
     				Gudmap Accession
@@ -86,8 +88,9 @@
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SOURCE')}" actionListener="#{genericTablePageBean.sort}">
+    			(<h:commandLink id="sourcelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SOURCE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="PER_SURNAME" />
+    					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
                     </h:commandLink> )
     				 <br />
     				Source
@@ -121,8 +124,9 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{genericTablePageBean.sort}">
+    			(<h:commandLink id="stagelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="SUB_EMBRYO_STG" />
+    					<f:ajax execute="@this stagelink" render="@form"></f:ajax>
                     </h:commandLink> )
     				 <br />
     				Theiler Stage

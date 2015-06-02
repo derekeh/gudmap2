@@ -32,17 +32,17 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
     // Data.
-	protected InsituTablePageBeanAssembler assembler;
-	protected MicSeriesTablePageBeanAssembler micSeriesAssembler;
+	private InsituTablePageBeanAssembler assembler;
+	private MicSeriesTablePageBeanAssembler micSeriesAssembler;
 	private MicSampleTablePageBeanAssembler micSampleAssembler;
 	private MicPlatformTablePageBeanAssembler micPlatformAssembler;
 	private GeneListTablePageBeanAssembler geneListAssembler;
 	private AccessionTablePageBeanAssembler accessionAssembler;
-	protected AnatomyTablePageBeanAssembler anatomyAssembler;
+	private AnatomyTablePageBeanAssembler anatomyAssembler;
 	private GeneFunctionTablePageBeanAssembler genefunctionAssembler;
 	private String whereclause = GenericQueries.WHERE_CLAUSE;
     private String specimenWhereclause="";
-    protected List<String> selectedItems;
+    private List<String> selectedItems;
     private boolean areAllChecked;
     
     private String queryTotals;

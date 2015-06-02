@@ -54,9 +54,9 @@
     		
     		<h:column rendered="#{paramBean.mic_geoSampleIDcol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="GEO Sample ID" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink id="geosamplelink" value="GEO Sample ID" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="NATURAL_SORT(geo_sample_id)" />
-                         <f:ajax execute="@form" render="@form"></f:ajax>
+                         <f:ajax execute="@this geosamplelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSampleID}">
@@ -66,9 +66,9 @@
  
     		<h:column rendered="#{paramBean.mic_geoSeriesIDcol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="GEO Series ID" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink id="geoserieslink" value="GEO Series ID" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="NATURAL_SORT(geo_series_id)" />
-                         <f:ajax execute="@form" render="@form"></f:ajax>
+                         <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
@@ -78,9 +78,9 @@
     		
     		<h:column rendered="#{paramBean.mic_sourcecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Source" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="source" />
-                         <f:ajax execute="@form" render="@form"></f:ajax>
+                          <f:ajax execute="@this sourcelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
     				#{u.source}
@@ -88,9 +88,9 @@
     		
     		<h:column rendered="#{paramBean.mic_stagecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Stage" actionListener="#{genericTablePageBean.sort}">
+    				<h:commandLink id="stagelink" value="Stage" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="stage" />
-                         <f:ajax execute="@form" render="@form"></f:ajax>
+                         <f:ajax execute="@this stagelink" render="@form"></f:ajax>
                     </h:commandLink>
     				
 				</f:facet>
