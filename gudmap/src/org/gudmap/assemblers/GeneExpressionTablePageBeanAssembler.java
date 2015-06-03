@@ -1,5 +1,6 @@
 package org.gudmap.assemblers;
 
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,12 +17,13 @@ import java.util.Map;
 
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.queries.genestrip.GeneIndexQueries;
 import org.gudmap.queries.genestrip.GeneListQueries;
 import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.InsituTableBeanModel;
 
-public class GeneListTablePageBeanAssembler {
+public class GeneExpressionTablePageBeanAssembler {
 	
 	
 	//private DataSource ds;
@@ -31,16 +33,12 @@ public class GeneListTablePageBeanAssembler {
 	private InsituTableBeanModel ishmodel;
 	private String paramSQL;
 	private String assayType;
-	private String whereclause;
-	private String arrayWhereclause;
-	private String focusGroupWhereclause;
-	private String expressionJoin;
-	private String specimenWhereclause;
+	private String expressionStrength;
+	private String geneSymbol;
+	private String type;
 	private String queryTotals;
-	private String input;
-	private String focusGroupSpWhereclause;
 	
-	public  GeneListTablePageBeanAssembler(String paramSQL) {
+	public  GeneExpressionTablePageBeanAssembler(String paramSQL, String assayType) {
 		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
@@ -48,34 +46,29 @@ public class GeneListTablePageBeanAssembler {
 			e.printStackTrace();
 		}*/
 		this.paramSQL=paramSQL;
-		
+		this.assayType=assayType;
 	}
 	
-	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
-											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input,
-											String focusGroupSpWhereclause){
-		this.whereclause=whereclause;
-		arrayWhereclause=whereclause.replace("SUB_EMBRYO_STG", "MBC_SUB_EMBRYO_STG");
-		arrayWhereclause=arrayWhereclause.replace("SUB_SOURCE", "MBC_SUB_SOURCE");
-		this.focusGroupWhereclause=focusGroupWhereclause;
-		this.expressionJoin=expressionJoin;
-		this.specimenWhereclause=specimenWhereclause;
-		this.input=input;
-		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
+	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending){
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if(facesContext.getExternalContext().getRequestParameterMap().get("gene")!=null) 
+			this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
+		if(facesContext.getExternalContext().getRequestParameterMap().get("strength")!=null) 
+			this.expressionStrength = facesContext.getExternalContext().getRequestParameterMap().get("strength");
+		
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, expressionJoin,
-									whereclause,input,focusGroupWhereclause,
-									arrayWhereclause,input,focusGroupSpWhereclause,
-									sortField, sortDirection);
+		String sql = String.format(paramSQL, processExpression(expressionStrength, assayType),sortField, sortDirection);
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
 			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, firstRow);
-			ps.setInt(2, rowCount);
+			ps.setString(1, geneSymbol);
+			ps.setInt(2, firstRow);
+			ps.setInt(3, rowCount);
 			result =  ps.executeQuery();
 			
 			//group_concat returning no value will return a null row so don't get those!
@@ -116,12 +109,13 @@ public class GeneListTablePageBeanAssembler {
 		queryTotals="Totals returned: Insitu (";
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
-		String queryString=GeneListQueries.ISH_GENELIST_TOTAL;
-		String sql = String.format(queryString, expressionJoin,whereclause,input,focusGroupWhereclause);
+		String queryString=GeneIndexQueries.TOTAL_GENES_BY_EXPRESSION;
+		String sql = String.format(queryString, expressionStrength);
 		try
 		{
 				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
+				ps.setString(1, geneSymbol);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
@@ -133,8 +127,9 @@ public class GeneListTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		queryTotals+=(insitucount+")  Microarray(");
-		queryString=GeneListQueries.MICROARRAY_GENELIST_TOTAL;
+		queryTotals+=insitucount+")";
+		//queryTotals+=(insitucount+")  Microarray(");
+		/*queryString=GeneListQueries.MICROARRAY_GENELIST_TOTAL;
 		sql = String.format(queryString, arrayWhereclause,input,focusGroupSpWhereclause);
 		try
 		{
@@ -171,11 +166,11 @@ public class GeneListTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		queryTotals+=(sequencecount+")");
+		queryTotals+=(sequencecount+")");*/
 		return count;
 	}
 	
-	public Map<String,String>  getTotals() {
+	/*public Map<String,String>  getTotals() {
 		Map<String,String> totals = new HashMap<String,String>();
 		
 		String [] queries=(assayType.equals("TG")?Globals.TgColTotals:Globals.IshColTotals);
@@ -213,7 +208,7 @@ public class GeneListTablePageBeanAssembler {
 			}
 		}
 		return totals;
-	}
+	}*/
 	
 	public void setAssayType(String assayType){
 		this.assayType=assayType;
@@ -223,5 +218,36 @@ public class GeneListTablePageBeanAssembler {
 		return queryTotals;
 	}
 	
-	
+	public String processExpression(String expressionStrength, String assayType) {
+		String ishString="";
+		String micString="";
+		if(null != expressionStrength) {
+			if(assayType.equals("ISH"))
+			{
+			    if(expressionStrength.equals("present")) {
+			    	ishString = " AND QIC_EXP_STRENGTH='present' ";
+			    } else if (expressionStrength.equals("absent")) {
+			    	ishString = " AND QIC_EXP_STRENGTH='not detected' ";
+			    } else if (expressionStrength.equals("unknown")) {
+			    	ishString = " AND QIC_EXP_STRENGTH not in ('not detected', 'present') ";
+			    } else { 
+			    	ishString = " AND QIC_EXP_STRENGTH='uncertain' ";
+			    }
+			}
+			else if(assayType.equals("Microarray"))
+			{
+			    if(expressionStrength.equals("P")) {
+			    	micString = " AND MBC_GLI_DETECTION='P' ";
+			    } else if (expressionStrength.equals("A")) {
+			    	micString = " AND MBC_GLI_DETECTION='A' ";
+			    } else if (expressionStrength.equals("M")){
+			    	micString = " AND MBC_GLI_DETECTION='M' ";
+			    }
+			}
+		}
+		if(assayType.equals("microarray"))
+			return micString;
+		
+		return ishString;
+	}
 }

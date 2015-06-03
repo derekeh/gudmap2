@@ -113,6 +113,13 @@
 	border-top:1px solid #BBBBBB;
 }
 
+.db_table-header{
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:16px;
+	vertical-align:top;
+}
+
 .db_odd-row{
 	background:none repeat scroll 0 0 #FFFFFFF;
 	border-top:1px solid #BBBBBB;
@@ -266,6 +273,35 @@
  .db_thumb_height {
  	max-height:50px;
  }
+ 
+ .superbigplaintext {
+    color: #22316C;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 24px;
+    text-align: left;
+    padding-right:5px;
+}
+
+.superbigplaintext a, .superbigplaintext a:visited{
+    text-decoration: none;
+    color: #22316C;
+}
+
+ .superbigplaintext a:hover, .superbigplaintext a:active, .superbigplaintext a:focus{
+    text-decoration: underline;
+    color: lightblue;
+}
+
+.bigplaintext {
+    color: #22316C;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    text-align: left;
+    text-decoration: none;
+}
  
  /***************************** ISH expression bars *******************************/
 div.exprGraph {

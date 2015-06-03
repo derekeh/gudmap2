@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import org.gudmap.assemblers.AccessionTablePageBeanAssembler;
 import org.gudmap.assemblers.AnatomyTablePageBeanAssembler;
+import org.gudmap.assemblers.GeneExpressionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneFunctionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneListTablePageBeanAssembler;
 import org.gudmap.assemblers.InsituTablePageBeanAssembler;
@@ -25,6 +26,7 @@ import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.array.ArrayQueries;
 import org.gudmap.queries.array.SequenceQueries;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.queries.genestrip.GeneIndexQueries;
 import org.gudmap.queries.genestrip.GeneListQueries;
 import org.gudmap.utils.Utils;
 
@@ -45,6 +47,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	private AccessionTablePageBeanAssembler accessionAssembler;
 	private AnatomyTablePageBeanAssembler anatomyAssembler;
 	private GeneFunctionTablePageBeanAssembler genefunctionAssembler;
+	private GeneExpressionTablePageBeanAssembler expressionAssembler;
 	private String whereclause = GenericQueries.WHERE_CLAUSE;
     private String specimenWhereclause="";
     private List<String> selectedItems;
@@ -110,23 +113,36 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		accessionAssembler=new AccessionTablePageBeanAssembler(GenericQueries.BROWSE_ACCESSION_PARAM);
     	else if(assayType.equals("genefunction"))
     		genefunctionAssembler=new GeneFunctionTablePageBeanAssembler(GeneListQueries.BROWSE_GENE_FUNCTION_PARAM);
-    	else if(assayType.equals("Microarray"))
+    	else if(assayType.equals("Microarray")) {
     		if(specimenAssay.equals("micseries"))
     			micSeriesAssembler= new MicSeriesTablePageBeanAssembler(ArrayQueries.MIC_SERIES_BROWSE_PARAM,assayType);
 	    	if(specimenAssay.equals("micsample"))
 				micSampleAssembler= new MicSampleTablePageBeanAssembler(ArrayQueries.MIC_SAMPLE_BROWSE_PARAM,assayType);
 	    	if(specimenAssay.equals("micplatform"))
     			micPlatformAssembler= new MicPlatformTablePageBeanAssembler(ArrayQueries.MIC_PLATFORM_BROWSE_PARAM,assayType);
-	    	if(specimenAssay.equals("seqseries"))
+    	}
+    	else if(assayType.equals("NextGen")) {
+    		if(specimenAssay.equals("seqseries")) {
 	    		if(seqSeriesAssembler==null)
 	    			seqSeriesAssembler= new SeqSeriesTablePageBeanAssembler(SequenceQueries.SEQUENCE_SERIES_BROWSE_PARAM,assayType);
-	    	if(specimenAssay.equals("seqsample"))
+    		}
+	    	if(specimenAssay.equals("seqsample")) {
 	    		if(seqSampleAssembler==null)
 	    			seqSampleAssembler= new SeqSampleTablePageBeanAssembler(SequenceQueries.SEQUENCE_SAMPLE_BROWSE_PARAM,assayType);
+	    	}
+    	}
     	else if(assayType.equals("TG"))
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
-    	else
-    		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
+    	else if(assayType.equals("ISH")) {
+    		if(specimenAssay.equals("expression")) {
+    			if(expressionAssembler==null)
+    				expressionAssembler = new GeneExpressionTablePageBeanAssembler(GeneIndexQueries.GENES_BY_EXPRESSION, assayType) ;
+    		}
+    		else
+    			assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
+    	}
+    	/*else
+    			assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);*/
     	
     	
         selectedItems = new ArrayList<String>(); 
@@ -227,13 +243,28 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 				totalRows = seqSampleAssembler.count();
     		}
     	}
-    	else
+    	/*else {
+    		dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+					paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
+			// Set currentPage, totalPages and pages.
+			setTotalslist(assembler.getTotals());
+			totalRows = assembler.count();
+    	}*/
+    	else if(assayType.equals("ISH"))
     	{
-	    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-	    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
-	        // Set currentPage, totalPages and pages.
-	    	setTotalslist(assembler.getTotals());
-	    	totalRows = assembler.count();
+    		if(specimenAssay.equals("expression")){
+    			dataList = expressionAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending);
+				// Set currentPage, totalPages and pages.
+				//setTotalslist(assembler.getTotals());
+				totalRows = expressionAssembler.count();
+    		}
+    		else {
+		    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+		    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
+		        // Set currentPage, totalPages and pages.
+		    	setTotalslist(assembler.getTotals());
+		    	totalRows = assembler.count();
+    		}
     	}
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
