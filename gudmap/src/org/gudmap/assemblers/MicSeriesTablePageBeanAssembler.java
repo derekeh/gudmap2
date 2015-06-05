@@ -23,7 +23,7 @@ import org.gudmap.models.ArraySeqTableBeanModel;
 public class MicSeriesTablePageBeanAssembler {
 	
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -34,12 +34,12 @@ public class MicSeriesTablePageBeanAssembler {
 	private String focusGroupWhereclause;
 	
 	public MicSeriesTablePageBeanAssembler(String paramSQL,String assayType) {
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
+		}*/
 		this.paramSQL=paramSQL;
 		//this.assayType=assayType;
 		
@@ -55,7 +55,7 @@ public class MicSeriesTablePageBeanAssembler {
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, assayType);
 			ps.setInt(2, firstRow);
@@ -90,7 +90,7 @@ public class MicSeriesTablePageBeanAssembler {
 		String sql = String.format(ArrayQueries.COUNT_TOTAL_MIC_SERIES,totalwhere,focusGroupWhereclause);
 		try
 		{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
@@ -117,7 +117,7 @@ public class MicSeriesTablePageBeanAssembler {
 		for(int i=0;i<queries.length;i++) {
 			try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				sql=String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause);
 
 				ps = con.prepareStatement(sql);

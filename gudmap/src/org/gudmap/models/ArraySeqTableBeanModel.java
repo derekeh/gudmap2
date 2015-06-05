@@ -3,12 +3,13 @@ package org.gudmap.models;
 public class ArraySeqTableBeanModel extends GenericTableBeanModel {
 //series
 private String title,geoSeriesID,seriesComponents,platformID,libraryStrategy=null;
+private String summary,type,overallDesign=null;
 //sample
 private String geoSampleID,sampleDescription,sampleComponents=null;
 //platform
 private String pltName,pltTechnology,pltManufacturer=null;
 //integers
-private int numSamples,numSeries,seriesOid,sampleOid=0;
+private int numSamples,numSeries,seriesOid,sampleOid,batchID,archiveID=0;
 
 	public void setTitle(String title){
 		this.title=title;
@@ -39,6 +40,24 @@ private int numSamples,numSeries,seriesOid,sampleOid=0;
 	}
 	public String getSeriesComponents(){
 		return seriesComponents;
+	}
+	public void setSummary(String summary){
+		this.summary=summary;
+	}
+	public String getSummary(){
+		return summary;
+	}
+	public void setType(String type){
+		this.type=type;
+	}
+	public String getType(){
+		return type;
+	}
+	public void setOverallDesign(String overallDesign){
+		this.overallDesign=overallDesign;
+	}
+	public String getOverallDesign(){
+		return overallDesign;
 	}
 	public void setGeoSampleID(String geoSampleID){
 		this.geoSampleID=geoSampleID;
@@ -99,6 +118,18 @@ private int numSamples,numSeries,seriesOid,sampleOid=0;
 	}
 	public int getSampleOid(){
 		return sampleOid;
+	}
+	public void setBatchID(int batchID){
+		this.batchID=batchID;
+	}
+	public int getBatchID(){
+		return batchID;
+	}
+	public void setArchiveID(int archiveID){
+		this.archiveID=archiveID;
+	}
+	public int getArchiveID(){
+		return archiveID;
 	}
 	
 	

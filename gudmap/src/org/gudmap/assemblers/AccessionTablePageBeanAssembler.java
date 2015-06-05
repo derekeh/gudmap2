@@ -23,7 +23,7 @@ import org.gudmap.models.InsituTableBeanModel;
 public class AccessionTablePageBeanAssembler {
 	
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -39,12 +39,12 @@ public class AccessionTablePageBeanAssembler {
 	private String focusGroupSpWhereclause;
 	
 	public  AccessionTablePageBeanAssembler(String paramSQL) {
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
+		}*/
 		this.paramSQL=paramSQL;
 		
 	}
@@ -67,7 +67,7 @@ public class AccessionTablePageBeanAssembler {
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, firstRow);
 			ps.setInt(2, rowCount);
@@ -115,7 +115,7 @@ public class AccessionTablePageBeanAssembler {
 		String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
 		try
 		{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
 				result =  ps.executeQuery();
 				
@@ -133,7 +133,7 @@ public class AccessionTablePageBeanAssembler {
 		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
 		{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
 				//ps.setString(1, assayType);
 				result =  ps.executeQuery();
@@ -152,7 +152,7 @@ public class AccessionTablePageBeanAssembler {
 		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
 		{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
 				//ps.setString(1, assayType);
 				result =  ps.executeQuery();
@@ -182,7 +182,7 @@ public class AccessionTablePageBeanAssembler {
 		for(int i=0;i<queries.length;i++) {
 			try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				if(queries[i].equals("ASSAY_TYPE_TOTAL_TISSUE") || queries[i].equals("ASSAY_TYPE_TOTAL_EXPRESSION") || queries[i].equals("TG_TYPE_TOTAL_EXPRESSION")){
 					sql= String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause);
 					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
