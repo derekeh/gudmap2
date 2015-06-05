@@ -391,7 +391,7 @@
           <tr>
             <td>All In Situ Hybridisation (ISH)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getIshTotal()}" action="browseInsituTablePage"></h:commandLink>
+            	<h:link value="#{volatileSummaryBean.getIshTotal()}" outcome="browseInsituTablePage"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
             
@@ -399,53 +399,51 @@
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getWishTotal()}" action="browseWishTablePage"></h:commandLink>
+            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Section ISH (SISH)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getSishTotal()}" action="browseSishTablePage"></h:commandLink>
+            	<h:link value="#{volatileSummaryBean.getSishTotal()}" outcome="browseSishTablePage"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>OPT ISH</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getOptTotal()}" action="browseOptTablePage"></h:commandLink>
+            	<h:link value="#{volatileSummaryBean.getOptTotal()}" outcome="browseOptTablePage"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Immunohistochemistry (IHC)</td>
             <td>
-            	<h:commandLink value="#{volatileSummaryBean.getIhcTotal()}" action="browseIhcTablePage"></h:commandLink>
+            	<h:link value="#{volatileSummaryBean.getIhcTotal()}" outcome="browseIhcTablePage"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Transgenic Reporters</td>
             <td>
-            		<h:commandLink value="#{volatileSummaryBean.getTgTotal()}" action="browseTgTablePage"></h:commandLink>
+            		<h:link value="#{volatileSummaryBean.getTgTotal()}" outcome="browseTgTablePage"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Microarray</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{volatileSummaryBean.getMicroarrayTotal()}"></h:outputText>
-            	</h:outputLink>
+            	
+            	<h:link value="#{volatileSummaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage"></h:link>
+            	
             </td>
             <td></td>
           </tr>
           <tr>
             <td>Sequence</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{volatileSummaryBean.getSequenceTotal()}"></h:outputText>
-            	</h:outputLink>
+            		<h:link value="#{volatileSummaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage"></h:link>
             </td>
             <td></td>
           </tr>
@@ -545,6 +543,7 @@
     <p></p> 
     
    <div id="db_browsequery_left">
+   <h:form id="browseform">
   	<table  width="100%" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 		<td><h:graphicImage library="images/dbhome" name="n_browse_ext2.png" width="109" height="24" alt=""/></td>
@@ -556,33 +555,33 @@
 		  
 		    <li title=""><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_array.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
 		      <ul class="sub">
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </a><div id="array_series_info" style="float:right;margin-top:-29px;cursor:help;"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
-		        <li title=" "><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </a><div id="array_sample_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample. More... &lt;br /&gt; The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the Submission Archive. To see Analyses of Microarray Gene Lists click here. ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_platform.png" border="0" width="130" height="24" alt=" " /> </a><div id="array_platform_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Platform lists all microarray platforms (chips) used in GUDMAP ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseMicSeriesTablePage"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="array_series_info" style="float:right;margin-top:-29px;cursor:help;"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=" "><h:link outcome="browseMicSampleTablePage"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="array_sample_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample. More... &lt;br /&gt; The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the Submission Archive. To see Analyses of Microarray Gene Lists click here. ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseMicPlatformTablePage"><h:graphicImage library="images/dbhome" name="n_platform.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="array_platform_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Platform lists all microarray platforms (chips) used in GUDMAP ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
 		      </ul>
 		    </li>
 		    
 		    <li title=""><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_seq.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
 		      <ul class="sub">
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </a><div id="seq_series_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sequence Series returns a list of all the Sequence series in GUDMAP. From there you can link to individual series and then to individual samples. More.... ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </a><div id="seq_sample_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sequence Sample returns a list of all Sequence samples. From there, click GUDMAP Entry ID to view data for each sample. More.... ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseSeqSeriesTablePage"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="seq_series_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sequence Series returns a list of all the Sequence series in GUDMAP. From there you can link to individual series and then to individual samples. More.... ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseSeqSampleTablePage"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="seq_sample_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','Sequence Sample returns a list of all Sequence samples. From there, click GUDMAP Entry ID to view data for each sample. More.... ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
 		      </ul>
 		    </li>
 		    
-		    <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_theilerStage.png" border="0" width="130" height="24" alt=" " /></a><div id="theiler_info" style="float:right;margin-top:-29px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','Theiler Stage returns a list of GUDMAP database entries organized by developmental (Theiler) stage. Theiler Stages are described here; see also Tutorial on genitourinary development.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		    <li title=""><h:link outcome="browseStageSubmissions"><h:graphicImage library="images/dbhome" name="n_theilerStage.png" border="0" width="130" height="24" alt=" " /></h:link><div id="theiler_info" style="float:right;margin-top:-29px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','Theiler Stage returns a list of GUDMAP database entries organized by developmental (Theiler) stage. Theiler Stages are described here; see also Tutorial on genitourinary development.','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'auto','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
 		    
-		    <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_gene.png" border="0" width="130" height="24" alt=" " /></a><div id="browsegene_info" style="float:right;margin-top:-30px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','Browse>Gene returns a list of all genes for which there is in situ gene expression data in the database. ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div> </li>
+		    <li title=""><h:link outcome="viewGeneIndex"><h:graphicImage library="images/dbhome" name="n_gene.png" border="0" width="130" height="24" alt=" " /></h:link><div id="browsegene_info" style="float:right;margin-top:-30px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','Browse>Gene returns a list of all genes for which there is in situ gene expression data in the database. ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div> </li>
 		    
-		    <li title=""><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_inSitu.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
+		    <li title=""><a href="browseInsituTablePage.jsf" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_inSitu.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
 		      <ul class="sub">
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_wish.png" border="0" width="130" height="24" alt=" " /> </a><div id="wish_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','WISH returns a list of Wholemount In situ Hybridisation data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_sish.png" border="0" width="130" height="24" alt=" " /> </a><div id="sish_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','SISH returns a list of Section In situ Hybridisation data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_opt.png" border="0" width="130" height="24" alt=" " /> </a><div id="opt_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','OPT returns a list of Optical Projection Tomography data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
-		        <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="n_ihc.png" border="0" width="130" height="24" alt=" " /> </a><div id="ihc_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','IHC returns a list of Immunohistochemistry data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseWishTablePage"><h:graphicImage library="images/dbhome" name="n_wish.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="wish_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','WISH returns a list of Wholemount In situ Hybridisation data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseSishTablePage"><h:graphicImage library="images/dbhome" name="n_sish.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="sish_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','SISH returns a list of Section In situ Hybridisation data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseOptTablePage"><h:graphicImage library="images/dbhome" name="n_opt.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="opt_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','OPT returns a list of Optical Projection Tomography data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		        <li title=""><h:link outcome="browseIhcTablePage"><h:graphicImage library="images/dbhome" name="n_ihc.png" border="0" width="130" height="24" alt=" " /> </h:link><div id="ihc_info" style="float:right;margin-top:-29px;" onMouseOver="applyDMXTooltip(this,'','IHC returns a list of Immunohistochemistry data  ','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
 		      </ul>
 		    </li>
 		    
-		    <li title=""><a href="javascript:void(0);"><h:graphicImage library="images/dbhome" name="transgenic.png" border="0" width="130" height="24" alt=" " /> </a> <div id="transgenic_info" style="float:right;margin-top:-29px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','an html &lt;a href=&quot;http://www.statetheta.com&quot;&gt;link&lt;/a&gt;','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
+		    <li title=""><h:link outcome="browseTgTablePage"><h:graphicImage library="images/dbhome" name="transgenic.png" border="0" width="130" height="24" alt=" " /> </h:link> <div id="transgenic_info" style="float:right;margin-top:-29px;margin-right:3px;" onMouseOver="applyDMXTooltip(this,'','an html &lt;a href=&quot;http://www.statetheta.com&quot;&gt;link&lt;/a&gt;','fade','easeOutQuad','mouse','out',600,600,'mouseout','bluebevel',true,'','',0,0,'0','auto','auto','auto')"><h:graphicImage library="images/dbhome" name="n_information.png" /></div></li>
 		    
 		  </ul>
 		  <div style="height:0;font-size:0;clear:both;"></div>
@@ -601,6 +600,7 @@
 		</script></td>
 		</tr>
 	</table>
+	</h:form>
  </div>
      
      

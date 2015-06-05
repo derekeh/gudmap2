@@ -77,7 +77,7 @@ public class GeneExpressionTablePageBeanAssembler {
 				if(result.getString(1)!=null)
 				{
 					ishmodel=new InsituTableBeanModel();
-					ishmodel.setOid(result.getString("oid"));
+					//ishmodel.setOid(result.getString("oid"));
 					ishmodel.setGene(result.getString("gene"));
 					ishmodel.setGudmap_accession(result.getString("gudmap_accession"));
 					ishmodel.setSource(result.getString("source"));

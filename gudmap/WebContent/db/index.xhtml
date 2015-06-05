@@ -117,7 +117,7 @@
           <tr>
             <td>All In Situ Hybridisation (ISH)</td>
             <td>
-            	<h:commandLink value="#{summaryBean.getIshTotal()}" action="browseInsituTablePage" />
+            	<h:link value="#{summaryBean.getIshTotal()}" outcome="browseInsituTablePage" />
             	
             </td>
             <td><h:outputText value="#{summaryBean.getIshGeneTotal()}"></h:outputText></td>
@@ -126,53 +126,49 @@
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
-            	<h:commandLink value="#{summaryBean.getWishTotal()}" action="browseWishTablePage" />
+            	<h:link value="#{summaryBean.getWishTotal()}" outcome="browseWishTablePage" />
             </td>
             <td><h:outputText value="#{summaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Section ISH (SISH)</td>
             <td>
-            	<h:commandLink value="#{summaryBean.getSishTotal()}" action="browseSishTablePage" />
+            	<h:link value="#{summaryBean.getSishTotal()}" outcome="browseSishTablePage" />
             </td>
             <td><h:outputText value="#{summaryBean.getSishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>OPT ISH</td>
             <td>
-            	<h:commandLink value="#{summaryBean.getOptTotal()}" action="browseOptTablePage" />
+            	<h:link value="#{summaryBean.getOptTotal()}" outcome="browseOptTablePage" />
             </td>
             <td><h:outputText value="#{summaryBean.getOptGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Immunohistochemistry (IHC)</td>
             <td>
-            	<h:commandLink value="#{summaryBean.getIhcTotal()}" action="browseIhcTablePage" />
+            	<h:link value="#{summaryBean.getIhcTotal()}" outcome="browseIhcTablePage" />
             </td>
             <td><h:outputText value="#{summaryBean.getIhcGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Transgenic Reporters</td>
             <td>
-            	<h:commandLink value="#{summaryBean.getTgTotal()}" action="browseTgTablePage" />
+            	<h:link value="#{summaryBean.getTgTotal()}" outcome="browseTgTablePage" />
             </td>
             <td><h:outputText value="#{summaryBean.getTgGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Microarray</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getMicroarrayTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:link value="#{summaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" />
             </td>
             <td></td>
           </tr>
           <tr>
             <td>Sequence</td>
             <td>
-            	<h:outputLink value="#">
-            		<h:outputText value="#{summaryBean.getSequenceTotal()}"></h:outputText>
-            	</h:outputLink>
+            	<h:link value="#{summaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" />
             </td>
             <td></td>
           </tr>

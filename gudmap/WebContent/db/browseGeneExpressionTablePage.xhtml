@@ -44,8 +44,8 @@
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
     			
-    		<f:facet name="header">#{genericTablePageBean.queryTotals}</f:facet>
- 			<h:column >
+    		<ui:remove>
+ 			<!-- <h:column >
     			<f:facet name="header">
     				<ui:remove><h:commandButton value="Check" action="#{genericTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
     				<h:commandButton id="checkall" value="Check" action="#{genericTablePageBean.checkAll}">
@@ -53,7 +53,7 @@
 					</h:commandButton>
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
-    		</h:column>
+    		</h:column> -->
  			
     		<!-- <h:column rendered="#{paramBean.oidcol == true}">
     			<f:facet name="header">
@@ -63,6 +63,7 @@
     			</f:facet>
     				#{u.oid}
     		</h:column> -->
+    		</ui:remove>
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">

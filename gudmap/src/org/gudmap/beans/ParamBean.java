@@ -854,6 +854,20 @@ public class ParamBean implements Serializable {
 		resetWhereClauses();
 		//focusGroup="reset";
 	}
+	
+	public void resetAllArraySeq() {
+		resetArraySeqValues();
+		//resetClauses();
+		//resetWhereClauses();
+		//focusGroup="reset";
+	}
+	//TODO populate once array/seq filters are in place
+	public void resetArraySeqValues(){
+		//reset the parameterized values
+		
+		//DON'T RESET THE WHERECLAUSE HERE OTHERWISE THE PAGING WONT WORK!!!
+		setMicWhereclause(GenericQueries.WHERE_CLAUSE);
+	}
 
 	/*******************focus groups****************/
 	public void focusGroupAction(ActionEvent event){

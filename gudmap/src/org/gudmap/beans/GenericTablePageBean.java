@@ -104,6 +104,8 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		specimenWhereclause = GenericQueries.WHERE_SISH;
     	else if(specimenAssay.equals("OPT"))
     		specimenWhereclause = GenericQueries.WHERE_OPT;
+    	else
+    		specimenWhereclause="";
     	
     	if(assayType.equals("genelist"))
     		geneListAssembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM);
@@ -131,8 +133,12 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	    			seqSampleAssembler= new SeqSampleTablePageBeanAssembler(SequenceQueries.SEQUENCE_SAMPLE_BROWSE_PARAM,assayType);
 	    	}
     	}
-    	else if(assayType.equals("TG"))
+    	else if(assayType.equals("TG")){
     		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_TG_PARAM,assayType);
+    	}
+    	else if(assayType.equals("IHC")) {
+    		assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
+    	}
     	else if(assayType.equals("ISH")) {
     		if(specimenAssay.equals("expression")) {
     			if(expressionAssembler==null)
@@ -141,6 +147,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		else
     			assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
     	}
+    	
     	/*else
     			assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);*/
     	
@@ -250,6 +257,22 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 			setTotalslist(assembler.getTotals());
 			totalRows = assembler.count();
     	}*/
+    	else if(assayType.equals("TG"))
+    	{
+    		dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+					paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
+			// Set currentPage, totalPages and pages.
+			setTotalslist(assembler.getTotals());
+			totalRows = assembler.count();
+    	}
+    	else if(assayType.equals("IHC"))
+    	{
+    		dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+					paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
+					// Set currentPage, totalPages and pages.
+					setTotalslist(assembler.getTotals());
+					totalRows = assembler.count();
+    	}
     	else if(assayType.equals("ISH"))
     	{
     		if(specimenAssay.equals("expression")){
@@ -280,25 +303,18 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
         }
     }
     
-   /* public String refresh(String returnPage){
-    	loadDataList();
-    	////paramBean.resetValues();
-    	return returnPage;
-    }
-    
-    public String resetAll(String returnPage) {
-		paramBean.resetAll();
-		//must return to homepage to reset focus group. Can't refresh div on other page
-		////paramBean.setFocusGroup("reset");
-		loadDataList();
-		return returnPage;
-	}*/
-    
     public void refresh(){
     	loadDataList();
     }
     
     public void resetAll() {
+		paramBean.resetAll();
+		//must return to homepage to reset focus group. Can't refresh div on other page
+		//paramBean.setFocusGroup("reset");
+		loadDataList();
+	}
+    
+    public void resetAllArraySeq() {
 		paramBean.resetAll();
 		//must return to homepage to reset focus group. Can't refresh div on other page
 		//paramBean.setFocusGroup("reset");
