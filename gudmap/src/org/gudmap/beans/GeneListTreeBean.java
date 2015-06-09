@@ -12,6 +12,8 @@ import java.util.HashMap;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
 
@@ -54,11 +56,17 @@ public class GeneListTreeBean implements Serializable
 		this.masterTableId = masterTableId;
 	}
 	
+    public void processAction(ActionEvent event) throws AbortProcessingException,Exception {    
+	
+    }
+
     public String findNode()
     {   
 		if (genelistId.equalsIgnoreCase("0"))
 			return null;
 
+//    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId + "&cleartabs=true";
+//		return result;
 		return "leaf";
     }
     

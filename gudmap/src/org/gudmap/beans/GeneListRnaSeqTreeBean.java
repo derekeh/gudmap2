@@ -34,7 +34,14 @@ public class GeneListRnaSeqTreeBean implements Serializable
 
 	
     public GeneListRnaSeqTreeBean(){
-    	arrayDao = new ArrayDao();
+    	FacesContext facesContext = FacesContext.getCurrentInstance();
+    	//View submission Details link from viewMaProbeDetails
+		String genelistId = facesContext.getExternalContext().getRequestParameterMap().get("genelistId");
+		String masterTableId = facesContext.getExternalContext().getRequestParameterMap().get("masterTableId");
+
+//		<h:outputLink value="viewRnaSeqTree.jsf?genelistId=1717&masterTableId=3_3" >
+		
+		arrayDao = new ArrayDao();
     	
 //    	createJSONFile();
     }
