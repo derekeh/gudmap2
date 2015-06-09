@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP Genelist Analysis Page
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags 
+	<h:outputScript library="scripts" name="ftiens4.js" target="head"></h:outputScript>
+	<h:outputScript library="scripts" name="ua.js" target="head"></h:outputScript>
+	
+	<h:outputStylesheet library="css" name="my_jstree_style.css"  />-->
+	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1/_lib" name="jquery.cookie.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1/_lib" name="jquery.hotkeys.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1" name="jquery.jstree.js"></h:outputScript>
+	
+
+	
+	
+	    <h1>
+	    	<h:outputText value="GUDMAP:#{geneListRnaSeqTreeBean.title}"></h:outputText>    	
+	    </h1>	
+	    <!-- all other content in here -->  
+	   
+
+		
+<script type="text/javascript">
+//<![CDATA[
+
+jQuery(document).ready(function(){
+	jQuery("#genelist_seq_tree").jstree({ 	
+		"json_data" : {
+		    "progressive_render" : true,
+		    "ajax" : {
+		    	"url" : "../scripts/genelistrnaseq.json"
+		    }
+		},	
+		"types": {
+            "types": {
+                "Role": {
+                },
+            }
+		},
+        themes : {
+			theme : "classic",
+			dots  : true,
+			icons : false,
+			url   : "../scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
+		},	
+		plugins : ["types", "themes", "json_data", "ui", "cookies"]												
+
+	})  		
+	.delegate("a", "click", function(e, data) {
+		var node = jQuery.jstree._focused().get_selected();
+		jQuery.jstree._focused( ).save_selected( ) ;
+		
+		var result = node.attr("id");
+
+		
+		jQuery.cookie("save_selected", result);
+		if (result <= '0'){
+			jQuery.jstree._focused().toggle_node(node);
+			return;
+		}
+	
+		var selectedNode =  document.getElementById('mainForm:treeitem');
+		selectedNode.value = result;
+
+		selectedNode =  document.getElementById('mainForm:genelist_htmlfile');
+		selectedNode.value = node.attr("file");
+
+		window.open(selectedNode.value);
+
+	});
+  		
+});
+
+function getCrumb(node){
+	alert("into crumb");
+	
+	var path =  jQuery.jstree._focused().get_parent(node, false);
+	alert("path = " + path);	
+	
+}	
+
+//]]>
+</script>
+		
+
+		
+<h:form id="mainForm">
+	    	    	
+	 <h:inputText id="treeitem" value="#{geneListRnaSeqTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
+	 <h:inputText id="genelist_htmlfile" value="#{geneListRnaSeqTreeBean.htmlFile}" style="display:none; visibility: hidden; "/>
+	 <f:verbatim>
+<!--   		<div id="genelist_seq_tree" class="rnaseq" style="overflow: auto; align: left; height: 540px;">
+		</div> --> 
+	</f:verbatim>
+	
+	<t:commandLink id="genelistLink" forceId="true" style="display:none; visibility: hidden;" action="#{geneListRnaSeqTreeBean.findNode}" actionListener="#{geneListRnaSeqTreeBean.processAction}" >
+	</t:commandLink>
+		
+	    
+</h:form>
+	    
+	    
+	    
+	</ui:define>
+</ui:composition>
+</html>
