@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Test Heatmap File
+	</ui:define>
+	
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	    <h1>Test Heatmap</h1>
+	    
+<h:form>	
+
+	    <h:commandButton value="test Heatmap with gene = wnt4" action="/db/browseHeatmap">
+	    	<f:param name="masterTableId" value="4_7"></f:param>
+	    	<f:param name="gene" value="sox8"></f:param>
+	    </h:commandButton>
+	    <br/>
+	    
+	    <h:commandButton value="test Heatmap genelistId = 1493" action="/db/browseHeatmap">
+	    	<f:param name="masterTableId" value="3_2"></f:param>
+			<f:param name="genelistId" value="1493"/>
+	    </h:commandButton>
+	    <br/>
+
+
+ <!--   
+	    <h:commandButton value="test Heatmap with gene = wnt4" action="/db/browseHeatmapPage">
+	    	<f:param name="masterTableId" value="4_7"></f:param>
+	    	<f:param name="gene" value="sox8"></f:param>
+	    </h:commandButton>
+	    <br/>
+	    
+	    <h:commandButton value="test Heatmap genelistId = 1493" action="/db/browseHeatmapPage">
+	    	<f:param name="masterTableId" value="3_2"></f:param>
+			<f:param name="genelistId" value="1493"/>
+	    </h:commandButton>
+	    <br/>
+	    
+	    <h:commandButton value="testpage  Heatmap genelistId = 1493" action="/db/browseHeatmapPage1">
+	    	<f:param name="masterTableId" value="3_2"></f:param>
+			<f:param name="genelistId" value="1493"/>
+	    </h:commandButton>
+	    <br/>
+	    
+	    <h:commandButton value="testpage2  Heatmap genelistId = 1493" action="/db/browseHeatmapPage2">
+	    	<f:param name="masterTableId" value="3_2"></f:param>
+			<f:param name="genelistId" value="1493"/>
+	    </h:commandButton>
+	    <br/>
+--> 	    
+							    
+</h:form>	    
+    	
+	    
+	</ui:define>
+	
+</ui:composition>
+</html>

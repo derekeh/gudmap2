@@ -57,36 +57,24 @@ public class GeneListTreeBean implements Serializable
 	}
 	
     public void processAction(ActionEvent event) throws AbortProcessingException,Exception {    
+		if (!genelistId.equalsIgnoreCase("0")){
+			String uri = getResultURL();
+			FacesContext.getCurrentInstance().getExternalContext().dispatch(uri);
+		}
 	
     }
 
-    public String findNode()
+    public String findNode() throws IOException
     {   
 		if (genelistId.equalsIgnoreCase("0"))
 			return null;
 
-//    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId + "&cleartabs=true";
-//		return result;
 		return "leaf";
     }
-    
-	public String getSearchParams(){
 
-		String urlParams = null;
-		HashMap<String, String> params = new HashMap<String, String>();		
-    	params.put("genelistId", genelistId);
-    	params.put("masterTableId", masterTableId);
-    	params.put("cleartabs", "true");
-//    	urlParams = Visit.packParams(params);	
-		if (urlParams==null)
-			return "";
-		return "?" + urlParams;
-
-	}
 
     public String getResultURL () {
-    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId + "&cleartabs=true";
-     	
+    	String result = "browseHeatmap.jsf?genelistId="+ genelistId + "&masterTableId="+ masterTableId;    	
         return result;
     }
 
