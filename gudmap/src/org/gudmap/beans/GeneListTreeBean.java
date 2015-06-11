@@ -79,9 +79,6 @@ public class GeneListTreeBean implements Serializable
     }
 
 	public String getTitle() {
-//    	createJSONFile();
-
-//		return "Microarray Analysis (gene list)";  
 		return "Genelists from Microarray Analysis";
 	}
 	

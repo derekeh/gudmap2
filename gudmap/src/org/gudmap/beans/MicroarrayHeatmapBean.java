@@ -22,8 +22,8 @@ import java.util.Map;
 
 
 @Named (value="microarrayHeatmapBean")
-//@SessionScoped
-@RequestScoped
+@SessionScoped
+//@RequestScoped
 public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 
 	private static final long serialVersionUID = 1L;	
@@ -71,6 +71,14 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		gene = facesContext.getExternalContext().getRequestParameterMap().get("gene");
 		masterTableId = facesContext.getExternalContext().getRequestParameterMap().get("masterTableId");		
 		genelistId = facesContext.getExternalContext().getRequestParameterMap().get("genelistId");
+		
+//		if (gene == null && masterTableId == null && genelistId == null) {
+//			Map<String, Object> mymap = facesContext.getExternalContext().getSessionMap();
+//			gene = (String)facesContext.getExternalContext().getSessionMap().get("gene");
+//			masterTableId = (String)facesContext.getExternalContext().getSessionMap().get("masterTableId");		
+//			genelistId = (String)facesContext.getExternalContext().getSessionMap().get("genelistId");
+//		
+//		};
 
     	
 		assembler = new MicroarrayHeatmapBeanAssembler();
@@ -203,6 +211,14 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     			info.setSelected(false);
     	}
     	masterTableId = selectedSample;
+    	
+//    	FacesContext facesContext = FacesContext.getCurrentInstance();
+//    	Map<String, Object> mymap = facesContext.getExternalContext().getSessionMap();
+// 		facesContext.getExternalContext().getSessionMap().put("gene",gene);
+//		facesContext.getExternalContext().getSessionMap().put("masterTableId",masterTableId);		
+//		facesContext.getExternalContext().getSessionMap().put("genelistId",genelistId);
+    	
+    	
 //  	updateHeatmap();
     	this.loadDataList();
 	}

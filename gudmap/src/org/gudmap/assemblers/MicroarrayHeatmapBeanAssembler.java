@@ -13,7 +13,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.gudmap.globals.Globals;
-import org.gudmap.models.array.MasterTableInfo;
+import org.gudmap.models.MasterTableInfo;
 import org.gudmap.queries.array.MicroarrayHeatmapQueries;
 import org.gudmap.utils.Utils;
 
@@ -496,7 +496,7 @@ public class MicroarrayHeatmapBeanAssembler {
 		    if (resSet.first()) {
 		    	resSet.beforeFirst();
 				while (resSet.next()) {
-					String[] item = new String[7];
+					String[] item = new String[8];
 	                item[0] = resSet.getString(1); 
 	                item[1] = resSet.getString(2); 
 	                item[2] = resSet.getString(3); 
@@ -504,6 +504,7 @@ public class MicroarrayHeatmapBeanAssembler {
 	                item[4] = resSet.getString(5); 
 	                item[5] = resSet.getString(6); 
 	                item[6] = resSet.getString(7); 
+	                item[7] = resSet.getString(8); 
 	                
 	                annotations.add(item);
 				}
