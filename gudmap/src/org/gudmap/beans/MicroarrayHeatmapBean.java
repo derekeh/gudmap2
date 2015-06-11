@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import org.apache.myfaces.custom.tabbedpane.TabChangeEvent;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
-import org.gudmap.models.array.MasterTableInfo;
+import org.gudmap.models.MasterTableInfo;
 import org.primefaces.component.tabview.TabView;
 import org.gudmap.impl.PagerImpl;
 
