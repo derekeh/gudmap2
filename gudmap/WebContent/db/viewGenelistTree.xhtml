@@ -65,6 +65,16 @@ jQuery(document).ready(function(){
 		plugins : ["types", "themes", "json_data", "ui", "cookies"]												
 
 	})  		
+	.bind("loaded.jstree", function(event, data){
+//		$("#tree").jstree("open_all");
+//		$("#tree").jstree("open_node", $('#childNode'));
+		 var depth = 2;
+	        data.inst.get_container().find('li').each(function(i) {
+	                if(data.inst.get_path($(this)).length<=depth){
+	                        data.inst.open_node($(this));
+	                }
+	        }); 
+	})	
 	.delegate("a", "click", function(e, data) {
 		//alert("click node");
 		var node = jQuery.jstree._focused().get_selected();
