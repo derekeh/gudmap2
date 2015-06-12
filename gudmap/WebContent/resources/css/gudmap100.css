@@ -153,6 +153,10 @@ input[type="text"], textarea {
 	min-height:350px;
 }
 
+#editorForm:theEditor a {
+	color:red;
+}
+
 /* ~~ The footer ~~ */
 .gd_footer {
 	padding: 10px 0;

@@ -41,6 +41,10 @@ public class SubmissionModel {
     
     protected PersonModel[] principalInvestigators;
     protected AlleleModel[] alleleModel;
+    
+    protected ArrayList<String[]> linkedPublications;
+    protected String[] acknowledgements;
+    protected ArrayList<Object> linkedSubmissions;
 
     public SubmissionModel() {
     
@@ -433,6 +437,30 @@ public class SubmissionModel {
 		if (deletedFlag < 1)
 		    return false;
 		return true;
+    }
+    
+    public ArrayList<String[]> getLinkedPublications() {
+        return linkedPublications;
+    }
+
+    public void setLinkedPublications(ArrayList<String[]> linkedPublications) {
+        this.linkedPublications = linkedPublications;
+    }
+    
+    public ArrayList<Object> getLinkedSubmissions() {
+        return linkedSubmissions;
+    }
+
+    public void setLinkedSubmissions(ArrayList<Object> linkedSubmissions) {
+        this.linkedSubmissions = linkedSubmissions;
+    }
+    
+    public String[] getAcknowledgements() {
+        return acknowledgements;
+    }
+
+    public void setAcknowledgements(String[] acknowledgements) {
+        this.acknowledgements = acknowledgements;
     }
 
 }

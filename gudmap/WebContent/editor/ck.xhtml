@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html >
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -8,18 +7,13 @@
 	xmlns:ck="http://code.google.com/ck-jsf-editor">
 	
 	
-
-<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
-	<ui:define name="title">
-	    GUDMAP EDITOR | Page List
-	</ui:define>
-<!-- 	comment out the following section if you don't want the solr flyin displayed -->
-	<!-- <ui:define name="solr">
-		<ui:include src="/snippets/g_solrFly.xhtml"/>
-	</ui:define> -->
-	
-	<ui:define name="content">
+<h:head>
+	<title>GUDMAP EDITOR | Page List</title>
 	<h:outputStylesheet library="css" name="gudmap.css"></h:outputStylesheet>
+</h:head>
+
+<h:body>
+	    
 	<!-- can use relative links on html tags -->
 		<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
 		    <!-- all other content in here --> 
@@ -49,7 +43,7 @@
 							 <h:message for="theHeader" /> 
 						</h:panelGroup> 
 					 </h:panelGrid>    
-			    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" cssContents="/resources/css/gudmap.css"/>
+			    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea"/>
 			    	
 					<h:commandButton value="Save" action="#{editPageBean.updatePage}">
 						<f:param name="pageId" value="#{paramBean.pageId}"></f:param>
@@ -124,17 +118,8 @@
 		  <p><h:messages id="messages"/></p>
 		</h:form>
 		
-		<script>
-		$(document).ready(function() {
-		    $('#form\\:theEditor').find('iframe').contents().find('body').css({
-		        'font-size': '10px',
-		        'color' : 'red'
-		    });
-		});
-		</script>
 
-	</ui:define>
-  </ui:composition>
+	</h:body>
 </html>
 
 

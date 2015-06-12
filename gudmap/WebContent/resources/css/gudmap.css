@@ -1,5 +1,7 @@
 @CHARSET "UTF-8";
 
+a {color:#EBEBEB;}
+
 h1 {
 	color:red;
 }
@@ -9,6 +11,14 @@ h1 {
 }
 
 .CSS1Compat body {
+	color:orange;
+}
+
+.cke_show_borders a {
+	color:red;
+}
+
+.CSS1Compat a {
 	color:orange;
 }
 
@@ -23,4 +33,10 @@ h1 {
 .pEdit {
 	color:green;
 }
+
+#cke_contents_editorForm:theEditor a {
+	color:red;
+}
+
+.cke_contents a {color:red;}
 

@@ -6,13 +6,13 @@ public class IshSubmissionModel extends SubmissionModel{
 	
 		protected ProbeModel probeModel;
 		
-	    protected ArrayList<String[]> linkedPublications;
+	    /*protected ArrayList<String[]> linkedPublications;
 	    
 	    protected String[] acknowledgements;
 	    
-	    protected ArrayList<?> annotationTree;
+	    protected ArrayList<Object> linkedSubmissions;*/
 	    
-	    protected ArrayList<Object> linkedSubmissions;
+	    protected ArrayList<?> annotationTree;
 	    
 	    protected ExpressionDetailModel [] expressionDetailModel;
 	    protected AntibodyModel antibodyModel;
@@ -77,7 +77,7 @@ public class IshSubmissionModel extends SubmissionModel{
 	        return probeModel;
 	    }
 
-	    public ArrayList<String[]> getLinkedPublications() {
+	    /*public ArrayList<String[]> getLinkedPublications() {
 	        return linkedPublications;
 	    }
 
@@ -99,7 +99,7 @@ public class IshSubmissionModel extends SubmissionModel{
 
 	    public void setAcknowledgements(String[] acknowledgements) {
 	        this.acknowledgements = acknowledgements;
-	    }
+	    }*/
 
 	    
 	    public ArrayList<?> getAnnotationTree(){
