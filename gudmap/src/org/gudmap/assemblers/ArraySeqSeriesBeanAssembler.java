@@ -10,6 +10,7 @@ import org.gudmap.globals.Globals;
 import org.gudmap.models.ArraySeqTableBeanModel;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.array.ArrayQueries;
+import org.gudmap.queries.array.SequenceQueries;
 
 public class ArraySeqSeriesBeanAssembler {
 	
@@ -33,7 +34,7 @@ public class ArraySeqSeriesBeanAssembler {
 			try
 			{
 				con = Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(ArrayQueries.ARRAY_SEQ_SERIES);
+				ps = con.prepareStatement(ArrayQueries.ARRAY_SERIES);
 				ps.setString(1, seriesID);
 				result =  ps.executeQuery();
 				
@@ -63,7 +64,34 @@ public class ArraySeqSeriesBeanAssembler {
 		}
 		//Sequence Series
 		else {
-			
+			try
+			{
+				con = Globals.getDatasource().getConnection();
+				ps = con.prepareStatement(SequenceQueries.SEQ_SERIES);
+				ps.setString(1, seriesID);
+				result =  ps.executeQuery();
+				
+				//group_concat returning no value will return a null row so don't get those!
+				while(result.next()){
+					arraySeqTableBeanModel=new ArraySeqTableBeanModel();
+					datalist=new ArrayList<ArraySeqTableBeanModel>();
+					arraySeqTableBeanModel.setGeoSeriesID(result.getString("geo_series_id"));
+					arraySeqTableBeanModel.setNumSamples(result.getInt("num_samples"));
+					arraySeqTableBeanModel.setTitle(result.getString("title"));
+					arraySeqTableBeanModel.setSummary(result.getString("summary"));
+					arraySeqTableBeanModel.setOverallDesign(result.getString("overall_design"));
+					arraySeqTableBeanModel.setSeriesOid(result.getInt("series_oid"));
+					arraySeqTableBeanModel.setBatchID(result.getInt("batch_id"));
+					arraySeqTableBeanModel.setArchiveID(result.getInt("archive_id"));
+						
+					
+					datalist.add(arraySeqTableBeanModel);
+				}
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
 		}
 		
 		return datalist;

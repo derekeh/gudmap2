@@ -78,7 +78,10 @@
                     </h:commandLink>
     				
 				</f:facet>
-    				#{u.numSamples}
+				<h:commandLink value="#{u.numSamples}" action="viewArraySeriesDetails">
+					<f:param name="arraySeriesID" value="#{u.seriesOid}"></f:param>
+				</h:commandLink>
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.mic_platformIDcol == true}">

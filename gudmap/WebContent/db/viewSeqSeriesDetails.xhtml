@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    GUDMAP | Microarray Series Details
+	    GUDMAP | Sequence Series Details
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	 <ui:define name="solr">
@@ -19,7 +19,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	    <h1>Microarray Series Details</h1>	
+	    <h1>Sequence Series Details</h1>	
 	    <h:outputText styleClass="plaintextbold" value="There are no series entries in the database matching the specified submission id" rendered="#{arraySeqSeriesBean.datalist == null}"/>
 	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{arraySeqSeriesBean.datalist != null}">
 		<h:outputText value="Series GEO ID:" styleClass="plaintext" />
@@ -45,14 +45,11 @@
 		<h:outputText styleClass="plaintext" value="Summary:" />
 		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).summary}" />
 	
-		<h:outputText styleClass="plaintext" value="Type:" />
-		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).type}" />
-	
 		<h:outputText styleClass="plaintext" value="Overall Design:" />
 		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).overallDesign}" />
 	</h:panelGrid>
 
-	#{genericTablePageBean.init('Microarray','micsample',20,10,'geo_sample_id',true)}
+	#{genericTablePageBean.init('NextGen','seqsample',20,10,'natural_sort(geo_sample_id)',true)}
 	#{genericTablePageBean.loadDataList()}
 	<h:form>
 		<h:panelGrid columns="2">
@@ -67,7 +64,7 @@
 	
 	
 	<!-- can use relative links on html tags -->
-	    <h:form id="focusform"><h1>Microarray Sample Data <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	
+	    <h:form id="focusform"><h1>Sequence Sample Data <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	
 	    <!-- all other content in here -->  
 	     <h:form id="dataform"> 
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
@@ -118,6 +115,17 @@
                     </h:commandLink>
 				</f:facet>
     				#{u.source}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_librarystrategycol == true}">
+    			<f:facet name="header">
+    				<h:commandLink id="librarystrategylink" value="Library Strategy" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="library_strategy" />
+                         <f:ajax execute="@this librarystrategylink" render="@form"></f:ajax>
+                    </h:commandLink>
+				</f:facet>
+				#{u.libraryStrategy}
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.mic_stagecol == true}">

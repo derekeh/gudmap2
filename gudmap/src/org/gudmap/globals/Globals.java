@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -26,6 +27,15 @@ public class Globals {
 		}
 		return ds;
 	}
+	
+	public static String getParameterValue (String paramName) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if(facesContext.getExternalContext().getRequestParameterMap().get(paramName)!=null) 
+			return facesContext.getExternalContext().getRequestParameterMap().get(paramName);
+		
+		return null;
+	}
+	
 	
 	public static final String domainUrl="http://www.gudmap.org/";
     public static final String appUrl=domainUrl+"gudmap/";

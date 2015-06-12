@@ -78,7 +78,9 @@
                     </h:commandLink>
     				
 				</f:facet>
-    				#{u.numSamples}
+    			<h:commandLink value="#{u.numSamples}" action="viewSeqSeriesDetails">
+					<f:param name="seqSeriesID" value="#{u.seriesOid}"></f:param>
+				</h:commandLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.mic_librarystrategycol == true}">

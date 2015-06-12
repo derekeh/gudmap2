@@ -31,6 +31,7 @@ public class SeqSampleTablePageBeanAssembler {
 	private ArraySeqTableBeanModel arraySeqmodel;
 	private String paramSQL;
 	private String assayType;
+	private String paramValue;
 	//private String whereclause;
 	//private String focusGroupWhereclause;
 	
@@ -42,6 +43,8 @@ public class SeqSampleTablePageBeanAssembler {
 			e.printStackTrace();
 		}*/
 		this.paramSQL=paramSQL;
+		paramValue=(Globals.getParameterValue("seqSeriesID")!=null)?"AND NGL_SERIES_FK="+Globals.getParameterValue("seqSeriesID")+" ":"";
+		
 		//this.assayType=assayType;
 		
 	}
@@ -51,7 +54,7 @@ public class SeqSampleTablePageBeanAssembler {
 		//this.focusGroupWhereclause=focusGroupWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, whereclause, sortField, sortDirection);
+		String sql = String.format(paramSQL, whereclause, paramValue, sortField, sortDirection);
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 		try
 		{
@@ -97,11 +100,11 @@ public class SeqSampleTablePageBeanAssembler {
 		int count=0;
 		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");*/
 		//String totalwhere=whereclause;
-		//String sql = String.format(SequenceQueries.TOTAL_SEQUENCE_SAMPLE,totalwhere);
+		String sql = String.format(SequenceQueries.TOTAL_SEQUENCE_SAMPLE,paramValue);
 		try
 		{
 				con = Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(SequenceQueries.TOTAL_SEQUENCE_SAMPLE);
+				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				

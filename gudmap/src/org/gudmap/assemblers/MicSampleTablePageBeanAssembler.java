@@ -23,7 +23,7 @@ import org.gudmap.models.ArraySeqTableBeanModel;
 public class MicSampleTablePageBeanAssembler {
 	
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -32,16 +32,19 @@ public class MicSampleTablePageBeanAssembler {
 	private String assayType;
 	private String whereclause;
 	private String focusGroupWhereclause;
+	private String paramValue;
 	
 	public MicSampleTablePageBeanAssembler(String paramSQL,String assayType) {
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
-		this.paramSQL=paramSQL;
+		}*/
 		//this.assayType=assayType;
+		this.paramSQL=paramSQL;
+		
+		paramValue=(Globals.getParameterValue("arraySeriesID")!=null)?"AND SRM_SERIES_FK="+Globals.getParameterValue("arraySeriesID")+" ":"";
 		
 	}
 	
@@ -51,11 +54,11 @@ public class MicSampleTablePageBeanAssembler {
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, whereclause, focusGroupWhereclause, sortField, sortDirection);
+		String sql = String.format(paramSQL, whereclause, focusGroupWhereclause, paramValue, sortField, sortDirection);
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection(); 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, assayType);
 			ps.setInt(2, firstRow);
@@ -97,10 +100,10 @@ public class MicSampleTablePageBeanAssembler {
 		int count=0;
 		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");*/
 		String totalwhere=whereclause;
-		String sql = String.format(ArrayQueries.COUNT_TOTAL_MIC_SAMPLE,totalwhere,focusGroupWhereclause);
+		String sql = String.format(ArrayQueries.COUNT_TOTAL_MIC_SAMPLE,totalwhere,focusGroupWhereclause,paramValue);
 		try
 		{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
@@ -127,7 +130,7 @@ public class MicSampleTablePageBeanAssembler {
 		for(int i=0;i<queries.length;i++) {
 			try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				sql=String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause);
 
 				ps = con.prepareStatement(sql);
