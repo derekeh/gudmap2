@@ -640,4 +640,125 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 	        return fileHash.equals(testChecksum);
 	    }
 */
+	  /**
+		 * @param linkedSubmissionsRaw
+		 * @return an array list of LS, within every element of this array list, it's an 3-unit object array,
+		 *         the first element is resource string, the second element is an array list of accession id and
+		 *         link types, the third one is URL string;
+		 *         The first element of the array list of accesion id and link types is the accession id,
+		 *         the second element is an array list of link types.
+		 *         
+		 */
+		public static ArrayList<Object> formatLinkedSubmissionData(ArrayList<String[]> linkedSubmissionsRaw) {
+	    	
+			if (linkedSubmissionsRaw == null || linkedSubmissionsRaw.isEmpty()) {
+				return null;
+			}
+			
+			int len = linkedSubmissionsRaw.size();
+//			System.out.println("len: " + len);
+
+			// go through the linked submission list raw data and assemble them into desired data structure
+			ArrayList<Object> result = new ArrayList<Object>();
+			
+	        // linked submissions from one resource
+			ArrayList<Object> linkedSubmission = null;
+			
+	        // list of linked submission and accession id and their link types
+			ArrayList<Object> accessionIDAndTypesList = null;
+			
+			// linked submission accession id and types
+			ArrayList<Object> accessionIDAndTypes = null;
+			
+			ArrayList<String> linkTypes = null;
+			String tempResource = null;
+			String tempAccessionId = null;
+			
+			for (int i=0;i<len;i++) {
+	    		
+				// get the data
+				String resource = ((String[])linkedSubmissionsRaw.get(i))[0].trim();
+//				System.out.println("resource len: " + resource.length());
+	    		String oid = ((String[])linkedSubmissionsRaw.get(i))[1].trim();
+//	    		System.out.println("accessionid: " + oid);
+	    		String linkType = ((String[])linkedSubmissionsRaw.get(i))[2].trim();
+	    		String url = ((String[])linkedSubmissionsRaw.get(i))[3].trim();
+//	    		System.out.println("this is no " + i);
+	    		
+	    		// assemble
+	    		if (i == 0) { // first row
+	    			linkedSubmission = new ArrayList<Object>();
+	        		linkedSubmission.add(0, resource);
+	        		linkedSubmission.add(1, url);
+	        		
+	        		tempResource = resource;
+	        		tempAccessionId = oid;
+	        		
+	        		accessionIDAndTypesList = new ArrayList<Object>();
+	        		
+	        		accessionIDAndTypes = new ArrayList<Object>();
+	        		accessionIDAndTypes.add(0, oid);
+	        		
+	        		linkTypes = new ArrayList<String>();
+	        		linkTypes.add(linkType);
+	        		
+	    		} else { // if it's not the first row, compare the resource, accession id, and assemble the link type accordingly
+	    			
+	    			if (resource.equals(tempResource)) {
+	    				if (oid.equals(tempAccessionId)) {
+	    					linkTypes.add(linkType);
+	    				} else {
+	    					accessionIDAndTypes.add(1, linkTypes);
+	    					accessionIDAndTypesList.add(accessionIDAndTypes);
+	    					
+	    					accessionIDAndTypes = new ArrayList<Object>();
+	    	        		accessionIDAndTypes.add(0, oid);
+	    	        		tempAccessionId = oid;
+
+	    					linkTypes = new ArrayList<String>();
+	    					linkTypes.add(linkType);
+	    				}
+	    				
+	    			} else { // not the same resource
+	    				
+	    				// add the type, accession id, into LS data structure (ArrayList)
+						accessionIDAndTypes.add(1, linkTypes);
+						accessionIDAndTypesList.add(accessionIDAndTypes);
+						linkedSubmission.add(1, accessionIDAndTypesList);
+	    				
+						// convert the data structure for display
+						Object[] linkedSubmissionObj = 
+	    					(Object[])linkedSubmission.toArray(new Object[linkedSubmission.size()]);
+	    				result.add(linkedSubmissionObj);
+	    				
+	        			linkedSubmission = new ArrayList<Object>();
+	            		linkedSubmission.add(0, resource);
+	            		linkedSubmission.add(1, url);
+	            		
+	            		tempResource = resource;
+	            		tempAccessionId = oid;
+	            		
+	            		accessionIDAndTypesList = new ArrayList<Object>();
+	            		
+	            		accessionIDAndTypes = new ArrayList<Object>();
+		        		accessionIDAndTypes.add(0, oid);
+	            		
+	            		linkTypes = new ArrayList<String>();
+	            		linkTypes.add(linkType);
+	    			}
+	    		}
+				// put the last row of data into the result data structure
+//				System.out.println("len: " + len);
+				if (i == len-1) {
+					accessionIDAndTypes.add(1, linkTypes);
+					accessionIDAndTypesList.add(accessionIDAndTypes);
+					linkedSubmission.add(1, accessionIDAndTypesList);
+					Object[] linkedSubmissionObj = 
+						(Object[])linkedSubmission.toArray(new Object[linkedSubmission.size()]);
+					result.add(linkedSubmissionObj);
+				}
+	    		
+			} // end of going through the linked submission list raw data
+			return result;
+	    }
 }
