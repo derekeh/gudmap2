@@ -647,3 +647,314 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	     
 }
 
+function gudmap_genelist_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel, rowLabel, cellSize, tooltip, symbol) {
+
+	   var row_number = rowLabel.length;
+       var hcrow = [];
+       for (var i=1; i<row_number+1; i++)
+    	   hcrow.push(1*i);
+
+	   var col_number = colLabel.length;
+	   
+       var hccol = [];
+       for (i=1; i<col_number+1; i++)
+			hccol.push(1*i);
+	   	   
+	   var margin = { top: 190, right: 10, bottom: 50, left: 100 },
+	   width = cellSize*col_number*3, // - margin.left - margin.right,
+	   height = cellSize*row_number ; // - margin.top - margin.bottom,
+	
+ 
+ var svg = d3.select(heatmapid).append("svg")
+ .attr("width", width)
+ .attr("height", height + margin.bottom + margin.top)
+ .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+ ;
+ 
+// var rowSortOrder=false;
+//var colSortOrder=false;
+ 
+	
+		var row = svg.selectAll(".row")
+		.data(data)
+		.enter().append("g")
+		.attr("class", "row")
+		.attr("id", function(d) {
+		    return d.idx;
+		});
+
+		
+//		var fixed = false;
+		var j = 0;
+		var heatMap = row.selectAll(".cell")
+		.data(function(d) {
+		    j++;
+		    return d;
+		})
+		.enter().append("svg:rect")
+		.attr("x", function(d, i) {
+		    return (i * cellSize + 56);
+		})
+		.attr("y", function(d, i, j) {
+		    return j * cellSize;
+		})
+//		.attr("rx", 4)
+//		.attr("ry", 4)
+		.attr("class", function(d, i, j) {
+		    return "cell bordered cr" + j + " cc" + i;
+		})
+		.attr("row", function(d, i, j) {
+		    return j;
+		})
+		.attr("col", function(d, i, j) {
+		    return i;
+		})
+		.attr("width", cellSize)
+		.attr("height", cellSize)
+		.style("fill", function(d) { if (d.adjvalue == 100) return '#FFFFFF'; else return getHeatmapColor(d.adjvalue); })
+		.on('mouseover', function(d, i, j) {
+        d3.select(this).classed("cell-hover",true);
+        d3.selectAll(".geneLabel").classed("text-highlight",function(r,ri){ return ri==j;});
+        d3.selectAll(".rowLabel").classed("text-highlight",function(r,ri){ return ri==j;});
+        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
+		   tooltip.html('<div class="mytooltip">'+rowLabel[j]+'</div>');
+        tooltip.style("left", (d3.event.pageX-50) + "px");
+        tooltip.style("top", (d3.event.pageY-50) + "px");
+        if (rowLabel[j] == "")
+     	   tooltip.style("visibility", "hidden")
+        else
+     	   tooltip.style("visibility", "visible");
+
+
+		})
+		.on('mouseout', function(d, i, j) {
+        d3.select(this).classed("cell-hover",false);
+        d3.selectAll(".geneLabel").classed("text-highlight",false);
+        d3.selectAll(".rowLabel").classed("text-highlight",false);
+        d3.selectAll(".colLabel").classed("text-highlight",false);
+			tooltip.style("visibility", "hidden");
+		})
+		.on('click', function(d,i,j) {
+//			d3.select("#tabulate2").remove;
+			var item = dataset2[j];
+			var ds1 = [];
+			ds1.push(item);
+//			alert(ds1);
+//			var ad = annotatedDataArray3(item);
+//			alert(ad);
+			
+//			tabulate(ds1, headers);
+
+        d3.selectAll(".geneLabel").classed("text-selected",function(r,ri){ return ri==j;});
+    	   d3.selectAll(".rowLabel").classed("text-selected",function(r,ri){ return ri==j;});
+        d3.selectAll(".colLabel").classed("text-selected",function(c,ci){ return ci==i;});
+
+		}); 
+		
+	    //==================================================
+	    d3.select("#palette")
+	        .on("keyup", function() {
+		var newPalette = d3.select("#palette").property("value");
+		if (newPalette != null)						// when interfaced with jQwidget, the ComboBox handles keyup event but value is then not available ?
+	            	changePalette(newPalette, "#chart");
+	        })
+	        .on("change", function() {
+		var newPalette = d3.select("#palette").property("value");
+	            changePalette(newPalette, "#chart");
+	        });			    
+
+
+	    //==================================================
+	    // Change ordering of cells
+	   function sortbylabel(rORc,i,sortOrder){
+	          var t = svg.transition().duration(3000);
+	          var log2r=[];
+	          var sorted; // sorted is zero-based index
+	          d3.selectAll(".c"+rORc+i) 
+	            .filter(function(ce){
+	               log2r.push(ce.value);
+	             })
+	          ;
+	          if(rORc=="r"){ // sort log2ratio of a gene
+	            sorted=d3.range(col_number).sort(function(a,b){ if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
+	            t.selectAll(".cell")
+	              .attr("x", function(d) { 
+	                  var col = parseInt(d3.select(this).attr("col"));
+	            	  return sorted.indexOf(col) * cellSize + 56; 
+	              })
+	            ;
+	            t.selectAll(".colLabel")
+	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
+	            ;
+	          }else{ // sort log2ratio of a contrast
+	            sorted=d3.range(row_number).sort(function(a,b){if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
+	            t.selectAll(".cell")
+	              .attr("y", function(d) { 
+	                  var col = parseInt(d3.select(this).attr("row"));
+	            	  return sorted.indexOf(col) * cellSize; 
+	              })
+	            ;
+	            t.selectAll(".rowLabel")
+	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
+	            ;
+	            t.selectAll(".geneLabel")
+	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
+	            ;
+	          }
+	     }
+
+	     d3.select("#order").on("change",function(){
+	       order(this.value);
+	     });
+	     
+	     function order(value){
+	      if(value=="hclust"){
+	       var t = svg.transition().duration(3000);
+	       t.selectAll(".cell")
+	         .attr("x", function(d) { return hccol.indexOf(d.col) * cellSize + 56; })
+	         .attr("y", function(d) { return hcrow.indexOf(d.row) * cellSize; })
+	         ;
+
+	       t.selectAll(".rowLabel")
+	         .attr("y", function (d, i) { return hcrow.indexOf(i+1) * cellSize; })
+	         ;
+
+	       t.selectAll(".colLabel")
+	         .attr("y", function (d, i) { return hccol.indexOf(i+1) * cellSize; })
+	         ;
+
+	      }else if (value=="probecontrast"){
+	       var t = svg.transition().duration(3000);
+	       t.selectAll(".cell")
+	         .attr("x", function(d) { return (d.col - 1) * cellSize + 56; })
+	         .attr("y", function(d) { return (d.row - 1) * cellSize; })
+	         ;
+
+	       t.selectAll(".rowLabel")
+	         .attr("y", function (d, i) { return i * cellSize; })
+	         ;
+
+	       t.selectAll(".colLabel")
+	         .attr("y", function (d, i) { return i * cellSize; })
+	         ;
+
+	      }else if (value=="probe"){
+	       var t = svg.transition().duration(3000);
+	       t.selectAll(".cell")
+	         .attr("y", function(d) { return (d.row - 1) * cellSize; })
+	         ;
+
+	       t.selectAll(".rowLabel")
+	         .attr("y", function (d, i) { return i * cellSize; })
+	         ;
+	      }else if (value=="contrast"){
+	       var t = svg.transition().duration(3000);
+	       t.selectAll(".cell")
+	         .attr("x", function(d) { return (d.col - 1) * cellSize + 56; })
+	         ;
+	       t.selectAll(".colLabel")
+	         .attr("y", function (d, i) { return i * cellSize; })
+	         ;
+	      }
+	     }
+	     // 
+	     var sa=d3.select(".g3")
+	         .on("mousedown", function() {
+	             if( !d3.event.altKey) {
+	                d3.selectAll(".cell-selected").classed("cell-selected",false);
+	                d3.selectAll(".rowLabel").classed("text-selected",false);
+	                d3.selectAll(".colLabel").classed("text-selected",false);
+	             }
+	            var p = d3.mouse(this);
+	            sa.append("rect")
+	            .attr({
+	                rx      : 0,
+	                ry      : 0,
+	                class   : "selection",
+	                x       : p[0],
+	                y       : p[1],
+	                width   : 1,
+	                height  : 1
+	            })
+	         })
+	         .on("mousemove", function() {
+	            var s = sa.select("rect.selection");
+	         
+	            if(!s.empty()) {
+	                var p = d3.mouse(this),
+	                    d = {
+	                        x       : parseInt(s.attr("x"), 10),
+	                        y       : parseInt(s.attr("y"), 10),
+	                        width   : parseInt(s.attr("width"), 10),
+	                        height  : parseInt(s.attr("height"), 10)
+	                    },
+	                    move = {
+	                        x : p[0] - d.x,
+	                        y : p[1] - d.y
+	                    }
+	                ;
+	         
+	                if(move.x < 1 || (move.x*2<d.width)) {
+	                    d.x = p[0];
+	                    d.width -= move.x;
+	                } else {
+	                    d.width = move.x;       
+	                }
+	         
+	                if(move.y < 1 || (move.y*2<d.height)) {
+	                    d.y = p[1];
+	                    d.height -= move.y;
+	                } else {
+	                    d.height = move.y;       
+	                }
+	                s.attr(d);
+	         
+	                    // deselect all temporary selected state objects
+	                d3.selectAll('.cell-selection.cell-selected').classed("cell-selected", false);
+	                d3.selectAll(".text-selection.text-selected").classed("text-selected",false);
+
+	                d3.selectAll('.cell').filter(function(cell_d, i) {
+	                    if(
+	                        !d3.select(this).classed("cell-selected") && 
+	                            // inner circle inside selection frame
+	                        (this.x.baseVal.value)+cellSize >= d.x && (this.x.baseVal.value)<=d.x+d.width && 
+	                        (this.y.baseVal.value)+cellSize >= d.y && (this.y.baseVal.value)<=d.y+d.height
+	                    ) {
+	         
+	                        d3.select(this)
+	                        .classed("cell-selection", true)
+	                        .classed("cell-selected", true);
+
+	                        d3.select(".r"+(cell_d.row-1))
+	                        .classed("text-selection",true)
+	                        .classed("text-selected",true);
+
+	                        d3.select(".c"+(cell_d.col-1))
+	                        .classed("text-selection",true)
+	                        .classed("text-selected",true);
+	                    }
+	                });
+	            }
+	         })
+	         .on("mouseup", function() {
+	               // remove selection frame
+	            sa.selectAll("rect.selection").remove();
+	         
+	                // remove temporary selection marker class
+	            d3.selectAll('.cell-selection').classed("cell-selection", false);
+	            d3.selectAll(".text-selection").classed("text-selection",false);
+	         })
+	         .on("mouseout", function() {
+	            if(d3.event.relatedTarget.tagName=='html') {
+	                    // remove selection frame
+	                sa.selectAll("rect.selection").remove();
+	                    // remove temporary selection marker class
+	                d3.selectAll('.cell-selection').classed("cell-selection", false);
+	                d3.selectAll(".rowLabel").classed("text-selected",false);
+	                d3.selectAll(".colLabel").classed("text-selected",false);
+	            }
+	         })
+	         ;
+	     
+};
