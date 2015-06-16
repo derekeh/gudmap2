@@ -18,6 +18,7 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
 	#{sessionBean.init()}
 	<!-- can use relative links on html tags -->
 		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
@@ -145,18 +146,36 @@
     		
     		
     	</h:dataTable>
+
+	<h:panelGroup style="visibility:hidden">
+		Palette:
+		<select id="palette">
+		  <option value="Default" selected="selected">Default</option>
+		  <option value="RdYlGn">RdYlGn</option>
+		  <option value="Spectral">Spectral</option>
+		  <option value="RdYlBu">RdYlBu</option>
+		  <option value="RdGy">RdGy</option>
+		  <option value="RdBu">RdBu</option>
+		  <option value="PiYG">PiYG</option>
+		  <option value="PRGn">PRGn</option>
+		  <option value="BrBG">BrBG</option>
+		  <option value="PuOr">PuOr</option>
+		</select>
+	</h:panelGroup>	
+
+
     	
-				    <div id="genestrip"></div>					
+				    <div id="chart1"></div>					
 
 
-    </h:form>  
+         </h:form> 
     
 <script type="text/javascript">
 //<![CDATA[
 
 $(document).ready(function() {
 	   
-	   var tooltip = d3.select("#genestrip")
+	   var tooltip = d3.select("#chart1")
 	   .append("div")
 	   .style("position", "absolute")
 	   .style("visibility", "hidden");
@@ -169,13 +188,14 @@ $(document).ready(function() {
 	   var valuedata = valueDataArray2(values,adjvalues,maxcolnum);
 	   var cellSize = 5;	   
 	   var symbol = "#{geneStripBean.inputString}";
-	   gudmap_genelist_heatmap("#genestrip", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol);
+	   alert("here");
+	   gudmap_genelist_heatmap("#chart1", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol);
 					
  }); 
 
 //]]>
  </script>    
-    
+
 	</ui:define>
 </ui:composition>
 </html>

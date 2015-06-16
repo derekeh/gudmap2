@@ -445,11 +445,11 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	        .on("keyup", function() {
 		var newPalette = d3.select("#palette").property("value");
 		if (newPalette != null)						// when interfaced with jQwidget, the ComboBox handles keyup event but value is then not available ?
-	            	changePalette(newPalette, "#chart");
+	            	changePalette(newPalette, heatmapid);
 	        })
 	        .on("change", function() {
 		var newPalette = d3.select("#palette").property("value");
-	            changePalette(newPalette, "#chart");
+	            changePalette(newPalette, heatmapid);
 	        });			    
 
 
@@ -733,18 +733,19 @@ function gudmap_genelist_heatmap(heatmapid, data, maxColNumber, rowLabel, cellSi
 		}); 
 		
 	    //==================================================
+/*
 	    d3.select("#palette")
 	        .on("keyup", function() {
-		var newPalette = d3.select("#palette").property("value");
-		if (newPalette != null)						// when interfaced with jQwidget, the ComboBox handles keyup event but value is then not available ?
-	            	changePalette(newPalette, "#chart");
+	        	var newPalette = d3.select("#palette").property("value");
+	        	if (newPalette != null)						
+	            	changePalette(newPalette, heatmapid);
 	        })
 	        .on("change", function() {
-		var newPalette = d3.select("#palette").property("value");
-	            changePalette(newPalette, "#chart");
+	        	var newPalette = d3.select("#palette").property("value");
+	            changePalette(newPalette, heatmapid);
 	        });			    
 
-
+*/
 	     var sa=d3.select(".g3")
 	         .on("mousedown", function() {
 	             if( !d3.event.altKey) {

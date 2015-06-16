@@ -32,7 +32,6 @@ public class GeneStripBean implements Serializable {
     
     private int maxColNumber = 0;
     private String rowLabels;
-    private String columnLabels;
     private String genelistAdjustedData;
     private String genelistValueData;    
     @Inject
@@ -141,10 +140,6 @@ public class GeneStripBean implements Serializable {
 
 	public String getRowLabels(){
 		return rowLabels;
-	}
-	
-	public String getColumnLabels(){
-		return columnLabels;
 	}
 
 	public int getMaxColNumber(){
