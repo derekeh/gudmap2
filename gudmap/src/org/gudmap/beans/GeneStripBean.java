@@ -11,7 +11,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.models.GeneStripModel;
+import org.gudmap.models.MasterTableInfo;
 import org.gudmap.assemblers.GeneStripBeanAssembler;
+import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 
 @Named
 @RequestScoped
@@ -28,6 +30,11 @@ public class GeneStripBean implements Serializable {
    // private String tempParam="";
     String str;
     
+    private int maxColNumber = 0;
+    private String rowLabels;
+    private String columnLabels;
+    private String genelistAdjustedData;
+    private String genelistValueData;    
     @Inject
    	protected SessionBean sessionBean;
     
@@ -85,7 +92,8 @@ public class GeneStripBean implements Serializable {
        			       	 
        		dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard);
        	}
-    	
+       	
+       	CreateMicroarrayExpressionProfile();
     }
     
     public void setOid(String oid) {
@@ -130,4 +138,91 @@ public class GeneStripBean implements Serializable {
 	public String getTempParam(){
 		return tempParam;
 	}*/
+
+	public String getRowLabels(){
+		return rowLabels;
+	}
+	
+	public String getColumnLabels(){
+		return columnLabels;
+	}
+
+	public int getMaxColNumber(){
+		return maxColNumber;
+	}
+
+	public String getGenelistValueData(){
+		return genelistValueData;
+	}
+	
+	public String getGenelistAdjustedData(){
+		return genelistAdjustedData;
+	}
+	
+	private void CreateMicroarrayExpressionProfile(){
+
+		MicroarrayHeatmapBeanAssembler assembler = new MicroarrayHeatmapBeanAssembler();
+		ArrayList<MasterTableInfo> tableinfo = assembler.getMasterTableList();	
+		
+		String labels = "";
+		int colsize = 0;
+    	for(MasterTableInfo info : tableinfo){
+    		if (info.getSelected()){
+    			String id = info.getId();
+    			
+    			String platformId = assembler.getPlatformIdFromMasterTableId(id);
+    			ArrayList<String> probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+    			for(String probeId : probeIds){
+    				labels += info.getTitle() + ",";
+    				
+        			colsize = assembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id).size();
+        			if (colsize > maxColNumber) 
+        				maxColNumber = colsize;
+    			}
+    			labels += ",";
+    			
+    		}
+    	}
+    	rowLabels = labels.substring(0, labels.length()-1);
+
+
+		String values = "";
+		String adjvalues = "";
+	
+    	for(MasterTableInfo info : tableinfo){
+    		String id = info.getId();
+    		String platformId = assembler.getPlatformIdFromMasterTableId(id);
+    		ArrayList<String> probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+    		for (String probeId : probeIds){
+    			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
+    			int dlsize = dataList.size();
+    			int colCounter = 1;
+    			for(String[] data : dataList){
+    				String rma = data[2];
+					String scaledRma = data[5];
+					String backgroundColor = "#" + data[6];
+					values += rma + ",";
+					adjvalues += scaledRma + ",";
+    					
+					colCounter ++;
+    			}
+    			if (dlsize < maxColNumber){
+    				int diff = maxColNumber - dlsize;
+    				for (int i = 0; i < diff; i ++){
+    					values += "100,";
+    					adjvalues += "100,";
+    				}
+    			}
+    		}
+    		for (int i = 0; i < maxColNumber; i++){
+				values += "100,";
+				adjvalues += "100,";    			
+    		}
+    	}
+
+		genelistValueData = values.substring(0, values.length()-1);
+		genelistAdjustedData = adjvalues.substring(0, adjvalues.length()-1);
+
+	}
+	
 }

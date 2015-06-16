@@ -124,7 +124,6 @@
     			<f:facet name="header">
     				Microarray Expression Profile
 				</f:facet>
-				    						
     		</h:column>
     		
     		<h:column rendered="#{paramBean.rnaseqcol == true}">
@@ -147,34 +146,32 @@
     		
     	</h:dataTable>
     	
-    	<div id="genestrip" style='width:1100px; height:400px;' ></div>	
+				    <div id="genestrip"></div>					
+
+
     </h:form>  
     
 <script type="text/javascript">
 //<![CDATA[
 
-   $(document).ready(function() {
+$(document).ready(function() {
 	   
 	   var tooltip = d3.select("#genestrip")
 	   .append("div")
 	   .style("position", "absolute")
 	   .style("visibility", "hidden");
 	   
-	   var rowLabel = rowLabelArray("#{microarrayHeatmapBean.genelistLabels}");	
-	   var colLabel = columnLabelArray("#{microarrayHeatmapBean.columnLabels}");	   
-	   
-	   var values = "#{microarrayHeatmapBean.genelistValueData}";
-	   var adjvalues = "#{microarrayHeatmapBean.genelistAdjustedData}";
-	   
-	   var maxcolnum = "#{microarrayHeatmapBean.maxColNumber}";
+	   var rowLabel = rowLabelArray("#{geneStripBean.rowLabels}");		   
+	   var values = "#{geneStripBean.genelistValueData}";
+	   var adjvalues = "#{geneStripBean.genelistAdjustedData}";	   
+	   var maxcolnum = "#{geneStripBean.maxColNumber}";
 	   
 	   var valuedata = valueDataArray2(values,adjvalues,maxcolnum);
 	   var cellSize = 5;	   
-	   var symbol = "#{microarrayHeatmapBean.gene}";
-	   
-	   gudmap_genelist_heatmap2("#genestrip", valuedata, colLabel, rowLabel, cellSize, tooltip, symbol);
-	   
-
+	   var symbol = "#{geneStripBean.inputString}";
+	   gudmap_genelist_heatmap("#genestrip", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol);
+					
+ }); 
 
 //]]>
  </script>    

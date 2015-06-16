@@ -647,30 +647,30 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	     
 }
 
-function gudmap_genelist_heatmap(heatmapid, data, colLabel, rowLabel, cellSize, tooltip, symbol) {
+function gudmap_genelist_heatmap(heatmapid, data, maxColNumber, rowLabel, cellSize, tooltip, symbol) {
 
 	   var row_number = rowLabel.length;
-    var hcrow = [];
-    for (var i=1; i<row_number+1; i++)
- 	   hcrow.push(1*i);
+	   var hcrow = [];
+	   for (var i=1; i<row_number+1; i++)
+		   hcrow.push(1*i);
 
-	   var col_number = colLabel.length;
+	   var col_number = maxColNumber;
 	   
-    var hccol = [];
-    for (i=1; i<col_number+1; i++)
+	   var hccol = [];
+	   for (i=1; i<col_number+1; i++)
 			hccol.push(1*i);
 	   	   
-	   var margin = { top: 190, right: 10, bottom: 50, left: 100 },
+	   var margin = { top: 1, right: 1, bottom: 1, left: 1 },
 	   width = cellSize*col_number*3, // - margin.left - margin.right,
 	   height = cellSize*row_number ; // - margin.top - margin.bottom,
 	
 
-var svg = d3.select(heatmapid).append("svg")
-.attr("width", width)
-.attr("height", height + margin.bottom + margin.top)
-.append("g")
-.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-;
+	   var svg = d3.select(heatmapid).append("svg")
+	   .attr("width", width)
+	   //.attr("height", height + margin.bottom + margin.top)
+	   .attr("height", height).append("g")
+	   .attr("transform", "translate(" + 1 + "," + 1 + ")")
+	   ;
 
 
 		var row = svg.selectAll(".row")
@@ -681,8 +681,7 @@ var svg = d3.select(heatmapid).append("svg")
 		    return d.idx;
 		});
 
-		
-//		var fixed = false;
+
 		var j = 0;
 		var heatMap = row.selectAll(".cell")
 		.data(function(d) {
@@ -691,13 +690,11 @@ var svg = d3.select(heatmapid).append("svg")
 		})
 		.enter().append("svg:rect")
 		.attr("x", function(d, i) {
-		    return (i * cellSize + 56);
+		    return (i * cellSize);
 		})
 		.attr("y", function(d, i, j) {
 		    return j * cellSize;
 		})
-//		.attr("rx", 4)
-//		.attr("ry", 4)
 		.attr("class", function(d, i, j) {
 		    return "cell bordered cr" + j + " cc" + i;
 		})
@@ -709,35 +706,30 @@ var svg = d3.select(heatmapid).append("svg")
 		})
 		.attr("width", cellSize)
 		.attr("height", cellSize)
-		.style("fill", function(d) { if (d.adjvalue == 100) return '#FFFFFF'; else return getHeatmapColor(d.adjvalue); })
+		.style("fill", function(d) { 
+			if (d.adjvalue == 100) 
+				return '#FFFFFF'; 
+			else 
+				return getHeatmapColor(d.adjvalue); 
+		})
 		.on('mouseover', function(d, i, j) {
-     d3.select(this).classed("cell-hover",true);
-     d3.selectAll(".rowLabel").classed("text-highlight",function(r,ri){ return ri==j;});
-     d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
+			d3.select(this).classed("cell-hover",true);
 		   tooltip.html('<div class="mytooltip">'+rowLabel[j]+'</div>');
-     tooltip.style("left", (d3.event.pageX-50) + "px");
-     tooltip.style("top", (d3.event.pageY-50) + "px");
-     if (rowLabel[j] == "")
-  	   tooltip.style("visibility", "hidden")
-     else
-  	   tooltip.style("visibility", "visible");
-
-
+		   tooltip.style("left", (d3.event.pageX-50) + "px");
+		   tooltip.style("top", (d3.event.pageY-50) + "px");
+		   if (rowLabel[j] == "")
+			   tooltip.style("visibility", "hidden")
+		   else
+			   tooltip.style("visibility", "visible");
 		})
 		.on('mouseout', function(d, i, j) {
-     d3.select(this).classed("cell-hover",false);
-     d3.selectAll(".rowLabel").classed("text-highlight",false);
-     d3.selectAll(".colLabel").classed("text-highlight",false);
+			d3.select(this).classed("cell-hover",false);
 			tooltip.style("visibility", "hidden");
 		})
 		.on('click', function(d,i,j) {
 			var masterTableId = rowLabel[j];
 			var url = "browseHeatmap.jsf?gene="+ symbol + "&masterTableId="+ masterTableId;  
 			window.location = url;
-
- 	   d3.selectAll(".rowLabel").classed("text-selected",function(r,ri){ return ri==j;});
-        d3.selectAll(".colLabel").classed("text-selected",function(c,ci){ return ci==i;});
-
 		}); 
 		
 	    //==================================================
@@ -753,97 +745,6 @@ var svg = d3.select(heatmapid).append("svg")
 	        });			    
 
 
-	    //==================================================
-	    // Change ordering of cells
-	   function sortbylabel(rORc,i,sortOrder){
-	          var t = svg.transition().duration(3000);
-	          var log2r=[];
-	          var sorted; // sorted is zero-based index
-	          d3.selectAll(".c"+rORc+i) 
-	            .filter(function(ce){
-	               log2r.push(ce.value);
-	             })
-	          ;
-	          if(rORc=="r"){ // sort log2ratio of a gene
-	            sorted=d3.range(col_number).sort(function(a,b){ if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
-	            t.selectAll(".cell")
-	              .attr("x", function(d) { 
-	                  var col = parseInt(d3.select(this).attr("col"));
-	            	  return sorted.indexOf(col) * cellSize + 56; 
-	              })
-	            ;
-	            t.selectAll(".colLabel")
-	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
-	            ;
-	          }else{ // sort log2ratio of a contrast
-	            sorted=d3.range(row_number).sort(function(a,b){if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
-	            t.selectAll(".cell")
-	              .attr("y", function(d) { 
-	                  var col = parseInt(d3.select(this).attr("row"));
-	            	  return sorted.indexOf(col) * cellSize; 
-	              })
-	            ;
-	            t.selectAll(".rowLabel")
-	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
-	            ;
-	          }
-	     }
-
-	     d3.select("#order").on("change",function(){
-	       order(this.value);
-	     });
-	     
-	     function order(value){
-	      if(value=="hclust"){
-	       var t = svg.transition().duration(3000);
-	       t.selectAll(".cell")
-	         .attr("x", function(d) { return hccol.indexOf(d.col) * cellSize + 56; })
-	         .attr("y", function(d) { return hcrow.indexOf(d.row) * cellSize; })
-	         ;
-
-	       t.selectAll(".rowLabel")
-	         .attr("y", function (d, i) { return hcrow.indexOf(i+1) * cellSize; })
-	         ;
-
-	       t.selectAll(".colLabel")
-	         .attr("y", function (d, i) { return hccol.indexOf(i+1) * cellSize; })
-	         ;
-
-	      }else if (value=="probecontrast"){
-	       var t = svg.transition().duration(3000);
-	       t.selectAll(".cell")
-	         .attr("x", function(d) { return (d.col - 1) * cellSize + 56; })
-	         .attr("y", function(d) { return (d.row - 1) * cellSize; })
-	         ;
-
-	       t.selectAll(".rowLabel")
-	         .attr("y", function (d, i) { return i * cellSize; })
-	         ;
-
-	       t.selectAll(".colLabel")
-	         .attr("y", function (d, i) { return i * cellSize; })
-	         ;
-
-	      }else if (value=="probe"){
-	       var t = svg.transition().duration(3000);
-	       t.selectAll(".cell")
-	         .attr("y", function(d) { return (d.row - 1) * cellSize; })
-	         ;
-
-	       t.selectAll(".rowLabel")
-	         .attr("y", function (d, i) { return i * cellSize; })
-	         ;
-	      }else if (value=="contrast"){
-	       var t = svg.transition().duration(3000);
-	       t.selectAll(".cell")
-	         .attr("x", function(d) { return (d.col - 1) * cellSize + 56; })
-	         ;
-	       t.selectAll(".colLabel")
-	         .attr("y", function (d, i) { return i * cellSize; })
-	         ;
-	      }
-	     }
-	     // 
 	     var sa=d3.select(".g3")
 	         .on("mousedown", function() {
 	             if( !d3.event.altKey) {

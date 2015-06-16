@@ -310,6 +310,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	public int getMaxColNumber(){
 		return maxColNumber;
 	}
+	
 	public String getData(){
 		return data;
 	}
