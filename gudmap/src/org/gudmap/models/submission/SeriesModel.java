@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class SeriesModel {
 	
 	 private String geoID;
-	    private String numSamples;
+	    private int numSamples;
 	    private String title;
 	    private String summary;
 	    private String type;
@@ -24,11 +24,11 @@ public class SeriesModel {
 	        return geoID;
 	    }
 
-	    public void setNumSamples(String numSamples) {
+	    public void setNumSamples(int numSamples) {
 	        this.numSamples = numSamples;
 	    }
 
-	    public String getNumSamples() {
+	    public int getNumSamples() {
 	        return numSamples;
 	    }
 
