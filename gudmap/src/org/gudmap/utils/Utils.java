@@ -600,7 +600,7 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 		// the string representation of date (month/day/year)
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-<<<<<<< HEAD
+
 		// Get the date today using Calendar object.
 		Date today = Calendar.getInstance().getTime();        
 		// Using DateFormat format method we can create a string 

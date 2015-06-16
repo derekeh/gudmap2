@@ -40,6 +40,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	private boolean dataAvailable = true;
     private String columnLabels;
     private String rowLabels;
+    private String genelistLabels;
     private String data;
 
     
@@ -56,8 +57,10 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     private String geneLabels;
     private String annotationData;
     private String valueData;
+    private String genelistAdjustedData;
+    private String genelistValueData;
     private String adjustedData;
-    
+    private int maxColNumber = 0;    
     
     public MicroarrayHeatmapBean() {
     	
@@ -99,6 +102,8 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 //  	gene = "Sox8";   	
     	updateHeatmap();
     	
+    	
+    	CreateGenelistLabels();    	
     }
     
 	public MicroarrayHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
@@ -293,10 +298,18 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		columnLabels = columnLabels.substring(0, columnLabels.length()-1);
 
 	}
+	
 	public String getColumnLabels(){
 		return columnLabels;
 	}
 
+	public String getGenelistLabels(){
+		return genelistLabels;
+	}
+	
+	public int getMaxColNumber(){
+		return maxColNumber;
+	}
 	public String getData(){
 		return data;
 	}
@@ -311,6 +324,14 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	
 	public String getAdjustedData(){
 		return adjustedData;
+	}
+
+	public String getGenelistValueData(){
+		return genelistValueData;
+	}
+	
+	public String getGenelistAdjustedData(){
+		return genelistAdjustedData;
 	}
 
 	private void CreateAnnotations(){
@@ -412,5 +433,69 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		return maxStringLength;
 	}
 	
+	private void CreateGenelistLabels(){
+		
+		String labels = "";
+		int colsize = 0;
+    	for(MasterTableInfo info : tableinfo){
+    		if (info.getSelected()){
+    			String id = info.getId();
+    			
+    			String platformId = assembler.getPlatformIdFromMasterTableId(id);
+    			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
+    			for(String probeId : probeIds){
+    				labels += info.getTitle() + ",";
+    				
+        			colsize = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, id).size();
+        			if (colsize > maxColNumber) 
+        				maxColNumber = colsize;
+    			}
+    			labels += ",";
+    			
+    		}
+    	}
+    	genelistLabels = labels.substring(0, labels.length()-1);
+    	
+		String values = "";
+		String adjvalues = "";
+
+//		int rowCounter = 1;		
+    	for(MasterTableInfo info : tableinfo){
+    		String id = info.getId();
+    		String platformId = assembler.getPlatformIdFromMasterTableId(id);
+			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
+    		for (String probeId : probeIds){
+    			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, id);
+    			int dlsize = dataList.size();
+    			int colCounter = 1;
+    			for(String[] data : dataList){
+    				String rma = data[2];
+					String scaledRma = data[5];
+					String backgroundColor = "#" + data[6];
+					values += rma + ",";
+					adjvalues += scaledRma + ",";
+    					
+					colCounter ++;
+    			}
+    			if (dlsize < maxColNumber){
+    				int diff = maxColNumber - dlsize;
+    				for (int i = 0; i < diff; i ++){
+    					values += "100,";
+    					adjvalues += "100,";
+    				}
+    			}
+//    			rowCounter++;
+    		}
+    		for (int i = 0; i < maxColNumber; i++){
+				values += "100,";
+				adjvalues += "100,";    			
+    		}
+//    		rowCounter++;
+    	}
+
+		genelistValueData = values.substring(0, values.length()-1);
+		genelistAdjustedData = adjvalues.substring(0, adjvalues.length()-1);
+
+	}
 	
  }

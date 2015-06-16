@@ -31,9 +31,19 @@
 		<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
 	    
 	    
-	    <h:form id="focusform"><h1>Gene Query Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	    <h:form id="focusform"><h1>Gene Query Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1></h:form>		    
 	     <!-- all other content in here --> 
+
+	     
 	    <h:form id="form1"> 
+	    
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
+		<h:outputScript library="scripts" name="heatmap.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="heatmap.css" /> 
+	    
+	    
 	     <h:dataTable value="#{geneStripBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
@@ -114,7 +124,7 @@
     			<f:facet name="header">
     				Microarray Expression Profile
 				</f:facet>
-    				To Do
+				    						
     		</h:column>
     		
     		<h:column rendered="#{paramBean.rnaseqcol == true}">
@@ -136,7 +146,39 @@
     		
     		
     	</h:dataTable>
+    	
+    	<div id="genestrip" style='width:1100px; height:400px;' ></div>	
     </h:form>  
+    
+<script type="text/javascript">
+//<![CDATA[
+
+   $(document).ready(function() {
+	   
+	   var tooltip = d3.select("#genestrip")
+	   .append("div")
+	   .style("position", "absolute")
+	   .style("visibility", "hidden");
+	   
+	   var rowLabel = rowLabelArray("#{microarrayHeatmapBean.genelistLabels}");	
+	   var colLabel = columnLabelArray("#{microarrayHeatmapBean.columnLabels}");	   
+	   
+	   var values = "#{microarrayHeatmapBean.genelistValueData}";
+	   var adjvalues = "#{microarrayHeatmapBean.genelistAdjustedData}";
+	   
+	   var maxcolnum = "#{microarrayHeatmapBean.maxColNumber}";
+	   
+	   var valuedata = valueDataArray2(values,adjvalues,maxcolnum);
+	   var cellSize = 5;	   
+	   var symbol = "#{microarrayHeatmapBean.gene}";
+	   
+	   gudmap_genelist_heatmap2("#genestrip", valuedata, colLabel, rowLabel, cellSize, tooltip, symbol);
+	   
+
+
+//]]>
+ </script>    
+    
 	</ui:define>
 </ui:composition>
 </html>

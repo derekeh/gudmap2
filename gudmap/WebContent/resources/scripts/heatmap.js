@@ -647,7 +647,7 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	     
 }
 
-function gudmap_genelist_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel, rowLabel, cellSize, tooltip, symbol) {
+function gudmap_genelist_heatmap(heatmapid, data, colLabel, rowLabel, cellSize, tooltip, symbol) {
 
 	   var row_number = rowLabel.length;
     var hcrow = [];
@@ -689,12 +689,6 @@ var svg = d3.select(heatmapid).append("svg")
 		    j++;
 		    return d;
 		})
-//		.enter().append("svg:a")
-//		.attr("xlink:href", function(d,i,j){
-//			var masterTableId = rowLabel[j];
-//			var url = "browseHeatmap.jsf?gene="+ symbol + "&masterTableId="+ masterTableId;  				
-//			return 0;
-//			})			
 		.enter().append("svg:rect")
 		.attr("x", function(d, i) {
 		    return (i * cellSize + 56);
@@ -718,7 +712,6 @@ var svg = d3.select(heatmapid).append("svg")
 		.style("fill", function(d) { if (d.adjvalue == 100) return '#FFFFFF'; else return getHeatmapColor(d.adjvalue); })
 		.on('mouseover', function(d, i, j) {
      d3.select(this).classed("cell-hover",true);
-     d3.selectAll(".geneLabel").classed("text-highlight",function(r,ri){ return ri==j;});
      d3.selectAll(".rowLabel").classed("text-highlight",function(r,ri){ return ri==j;});
      d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
 		   tooltip.html('<div class="mytooltip">'+rowLabel[j]+'</div>');
@@ -733,7 +726,6 @@ var svg = d3.select(heatmapid).append("svg")
 		})
 		.on('mouseout', function(d, i, j) {
      d3.select(this).classed("cell-hover",false);
-     d3.selectAll(".geneLabel").classed("text-highlight",false);
      d3.selectAll(".rowLabel").classed("text-highlight",false);
      d3.selectAll(".colLabel").classed("text-highlight",false);
 			tooltip.style("visibility", "hidden");
@@ -743,7 +735,6 @@ var svg = d3.select(heatmapid).append("svg")
 			var url = "browseHeatmap.jsf?gene="+ symbol + "&masterTableId="+ masterTableId;  
 			window.location = url;
 
-        d3.selectAll(".geneLabel").classed("text-selected",function(r,ri){ return ri==j;});
  	   d3.selectAll(".rowLabel").classed("text-selected",function(r,ri){ return ri==j;});
         d3.selectAll(".colLabel").classed("text-selected",function(c,ci){ return ci==i;});
 
@@ -793,9 +784,6 @@ var svg = d3.select(heatmapid).append("svg")
 	              })
 	            ;
 	            t.selectAll(".rowLabel")
-	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
-	            ;
-	            t.selectAll(".geneLabel")
 	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
 	            ;
 	          }
