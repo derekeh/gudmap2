@@ -647,7 +647,7 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	     
 }
 
-function gudmap_genelist_heatmap(heatmapid, data, maxColNumber, rowLabel, cellSize, tooltip, symbol) {
+function gudmap_genelist_heatmap(heatmapid, data, maxColNumber, rowLabel, cellSize, tooltip, symbol, microarrayLinks) {
 
 	   var row_number = rowLabel.length;
 	   var hcrow = [];
@@ -727,25 +727,12 @@ function gudmap_genelist_heatmap(heatmapid, data, maxColNumber, rowLabel, cellSi
 			tooltip.style("visibility", "hidden");
 		})
 		.on('click', function(d,i,j) {
-			var masterTableId = rowLabel[j];
+			var masterTableId = microarrayLinks[j];
 			var url = "browseHeatmap.jsf?gene="+ symbol + "&masterTableId="+ masterTableId;  
 			window.location = url;
 		}); 
-		
-	    //==================================================
-/*
-	    d3.select("#palette")
-	        .on("keyup", function() {
-	        	var newPalette = d3.select("#palette").property("value");
-	        	if (newPalette != null)						
-	            	changePalette(newPalette, heatmapid);
-	        })
-	        .on("change", function() {
-	        	var newPalette = d3.select("#palette").property("value");
-	            changePalette(newPalette, heatmapid);
-	        });			    
 
-*/
+
 	     var sa=d3.select(".g3")
 	         .on("mousedown", function() {
 	             if( !d3.event.altKey) {
@@ -844,4 +831,4 @@ function gudmap_genelist_heatmap(heatmapid, data, maxColNumber, rowLabel, cellSi
 	         })
 	         ;
 	     
-};
+}

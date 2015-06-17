@@ -125,6 +125,7 @@
     			<f:facet name="header">
     				Microarray Expression Profile
 				</f:facet>
+				<div id="chart1"></div>		
     		</h:column>
     		
     		<h:column rendered="#{paramBean.rnaseqcol == true}">
@@ -142,31 +143,8 @@
 				</h:outputLink>
 				
     		</h:column>
-    		
-    		
-    		
-    	</h:dataTable>
 
-	<h:panelGroup style="visibility:hidden">
-		Palette:
-		<select id="palette">
-		  <option value="Default" selected="selected">Default</option>
-		  <option value="RdYlGn">RdYlGn</option>
-		  <option value="Spectral">Spectral</option>
-		  <option value="RdYlBu">RdYlBu</option>
-		  <option value="RdGy">RdGy</option>
-		  <option value="RdBu">RdBu</option>
-		  <option value="PiYG">PiYG</option>
-		  <option value="PRGn">PRGn</option>
-		  <option value="BrBG">BrBG</option>
-		  <option value="PuOr">PuOr</option>
-		</select>
-	</h:panelGroup>	
-
-
-    	
-				    <div id="chart1"></div>					
-
+    	 </h:dataTable>
 
          </h:form> 
     
@@ -183,14 +161,15 @@ $(document).ready(function() {
 	   var rowLabel = rowLabelArray("#{geneStripBean.rowLabels}");		   
 	   var values = "#{geneStripBean.genelistValueData}";
 	   var adjvalues = "#{geneStripBean.genelistAdjustedData}";	   
-	   var maxcolnum = "#{geneStripBean.maxColNumber}";
+	   var maxColNumber = "#{geneStripBean.maxColNumber}";
+	   var microarrayLinks = rowLabelArray("#{geneStripBean.microarrayLinks}");
 	   
-	   var valuedata = valueDataArray2(values,adjvalues,maxcolnum);
-	   var cellSize = 5;	   
+	   var valuedata = valueDataArray2(values,adjvalues,maxColNumber);
+	   var cellSize = 4;	   
 	   var symbol = "#{geneStripBean.inputString}";
-	   alert("here");
-	   gudmap_genelist_heatmap("#chart1", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol);
-					
+	   
+	   gudmap_genelist_heatmap("#chart1", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol, microarrayLinks);
+	   	   	  	   
  }); 
 
 //]]>

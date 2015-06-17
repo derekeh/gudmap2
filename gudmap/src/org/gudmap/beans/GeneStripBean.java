@@ -32,6 +32,7 @@ public class GeneStripBean implements Serializable {
     
     private int maxColNumber = 0;
     private String rowLabels;
+    private String microarrayLinks;
     private String genelistAdjustedData;
     private String genelistValueData;    
     @Inject
@@ -142,6 +143,10 @@ public class GeneStripBean implements Serializable {
 		return rowLabels;
 	}
 
+	public String getMicroarrayLinks(){
+		return microarrayLinks;
+	}
+	
 	public int getMaxColNumber(){
 		return maxColNumber;
 	}
@@ -160,30 +165,31 @@ public class GeneStripBean implements Serializable {
 		ArrayList<MasterTableInfo> tableinfo = assembler.getMasterTableList();	
 		
 		String labels = "";
+		String links = "";	
 		int colsize = 0;
     	for(MasterTableInfo info : tableinfo){
     		if (info.getSelected()){
-    			String id = info.getId();
-    			
+    			String id = info.getId();    			
     			String platformId = assembler.getPlatformIdFromMasterTableId(id);
     			ArrayList<String> probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
     			for(String probeId : probeIds){
     				labels += info.getTitle() + ",";
-    				
+           			links += info.getId() + ",";
+
         			colsize = assembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id).size();
         			if (colsize > maxColNumber) 
         				maxColNumber = colsize;
     			}
     			labels += ",";
-    			
+       			links += ",";
+   			
     		}
     	}
-    	rowLabels = labels.substring(0, labels.length()-1);
-
+    	rowLabels = labels.substring(0, labels.length()-2);
+    	microarrayLinks = links.substring(0, links.length()-2);
 
 		String values = "";
 		String adjvalues = "";
-	
     	for(MasterTableInfo info : tableinfo){
     		String id = info.getId();
     		String platformId = assembler.getPlatformIdFromMasterTableId(id);
@@ -208,10 +214,10 @@ public class GeneStripBean implements Serializable {
     					adjvalues += "100,";
     				}
     			}
-    		}
+     		}
     		for (int i = 0; i < maxColNumber; i++){
 				values += "100,";
-				adjvalues += "100,";    			
+				adjvalues += "100,";   
     		}
     	}
 

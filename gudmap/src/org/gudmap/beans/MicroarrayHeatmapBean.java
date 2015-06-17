@@ -101,9 +101,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 //   	genelistId = "1493";
 //  	gene = "Sox8";   	
     	updateHeatmap();
-    	
-    	
-    	CreateGenelistLabels();    	
+    	  	
     }
     
 	public MicroarrayHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
