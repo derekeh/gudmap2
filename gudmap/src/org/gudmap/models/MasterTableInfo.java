@@ -8,7 +8,17 @@ public class MasterTableInfo {
     protected String title;
     protected String description;
     protected String platform;
+    protected boolean selected;
     
+    public void print() {
+	System.out.println(" id = "+id);
+	System.out.println(" masterId = "+masterId);
+	System.out.println(" sectionId = "+sectionId);
+	System.out.println(" title = "+title);
+	System.out.println(" description = "+description);
+	System.out.println(" platform = "+platform);
+    }
+
     public MasterTableInfo() {
 
     }
@@ -18,6 +28,7 @@ public class MasterTableInfo {
     	this.title = title;
     	this.description = description;
     	this.platform = platform;
+    	this.selected = false;
     }
     
     public MasterTableInfo(String masterId, String sectionId, String title, String description, String platform) {
@@ -27,6 +38,7 @@ public class MasterTableInfo {
     	this.title = title;
     	this.description = description;
     	this.platform = platform;
+    	this.selected = false;
     }
     
     public String getDescription() {
@@ -77,4 +89,11 @@ public class MasterTableInfo {
 		this.platform = platform;
 	}
 
+	public boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 }

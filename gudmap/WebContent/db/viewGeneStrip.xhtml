@@ -18,6 +18,7 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
 	#{sessionBean.init()}
 	<!-- can use relative links on html tags -->
 		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
@@ -31,9 +32,19 @@
 		<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
 	    
 	    
-	    <h:form id="focusform"><h1>Gene Query Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	    <h:form id="focusform"><h1>Gene Query Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1></h:form>		    
 	     <!-- all other content in here --> 
+
+	     
 	    <h:form id="form1"> 
+	    
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
+		<h:outputScript library="scripts" name="heatmap.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="heatmap.css" /> 
+	    
+	    
 	     <h:dataTable value="#{geneStripBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
@@ -114,7 +125,7 @@
     			<f:facet name="header">
     				Microarray Expression Profile
 				</f:facet>
-    				To Do
+				<div id="chart1"></div>		
     		</h:column>
     		
     		<h:column rendered="#{paramBean.rnaseqcol == true}">
@@ -132,11 +143,38 @@
 				</h:outputLink>
 				
     		</h:column>
-    		
-    		
-    		
-    	</h:dataTable>
-    </h:form>  
+
+    	 </h:dataTable>
+
+         </h:form> 
+    
+<script type="text/javascript">
+//<![CDATA[
+
+$(document).ready(function() {
+	   
+	   var tooltip = d3.select("#chart1")
+	   .append("div")
+	   .style("position", "absolute")
+	   .style("visibility", "hidden");
+	   
+	   var rowLabel = rowLabelArray("#{geneStripBean.rowLabels}");		   
+	   var values = "#{geneStripBean.genelistValueData}";
+	   var adjvalues = "#{geneStripBean.genelistAdjustedData}";	   
+	   var maxColNumber = "#{geneStripBean.maxColNumber}";
+	   var microarrayLinks = rowLabelArray("#{geneStripBean.microarrayLinks}");
+	   
+	   var valuedata = valueDataArray2(values,adjvalues,maxColNumber);
+	   var cellSize = 4;	   
+	   var symbol = "#{geneStripBean.inputString}";
+	   
+	   gudmap_genelist_heatmap("#chart1", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol, microarrayLinks);
+	   	   	  	   
+ }); 
+
+//]]>
+ </script>    
+
 	</ui:define>
 </ui:composition>
 </html>

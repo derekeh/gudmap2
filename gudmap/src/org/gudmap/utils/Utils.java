@@ -600,6 +600,7 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 		// the string representation of date (month/day/year)
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
+
 		// Get the date today using Calendar object.
 		Date today = Calendar.getInstance().getTime();        
 		// Using DateFormat format method we can create a string 
@@ -640,6 +641,23 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 	        return fileHash.equals(testChecksum);
 	    }
 */
+
+
+    public static String[] parseMasterTableId(String masterId) {
+		String[] result = new String[2];
+		if (masterId.indexOf("_") == -1) {
+		    result[0] = masterId.substring(0, 1);
+		    result[1] = "0";
+		} else {
+		    int delimiterPos = masterId.indexOf("_");
+		    result[0] = masterId.substring(0, delimiterPos);
+		    result[1] = masterId.substring(delimiterPos+1, masterId.length());;
+		}
+		return result;
+    }
+   
+
+
 	  /**
 		 * @param linkedSubmissionsRaw
 		 * @return an array list of LS, within every element of this array list, it's an 3-unit object array,
@@ -761,4 +779,5 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 			} // end of going through the linked submission list raw data
 			return result;
 	    }
+
 }
