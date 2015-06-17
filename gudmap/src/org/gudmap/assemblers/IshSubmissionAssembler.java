@@ -3,6 +3,7 @@ package org.gudmap.assemblers;
 import java.util.ArrayList;
 
 
+
 /*import gmerg.beans.UserBean;
 import gmerg.db.AnatomyDAO;
 import gmerg.db.ArrayDAO;
@@ -20,6 +21,7 @@ import org.gudmap.models.submission.SubmissionModel;
 //import org.gudmap.models.submission.StatusNoteModel;
 import org.gudmap.models.submission.IshSubmissionModel;
 import org.gudmap.models.submission.ImageInfoModel;
+import org.gudmap.utils.Utils;
 //import org.gudmap.queries.submission.*;
 import org.gudmap.dao.IshSubmissionDao;
 import org.gudmap.dao.AnatomyDao;
@@ -129,7 +131,7 @@ public class IshSubmissionAssembler {
 		ArrayList<String[]> linkedSubmissionsRaw = ishSubmissionDao.findLinkedSubmissionBySubmissionId(oid);
 		
 		// format the linked submission raw data into appropriate data structure
-		ArrayList<Object> linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
+		ArrayList<Object> linkedSubmission = Utils.formatLinkedSubmissionData(linkedSubmissionsRaw);
 			
 		// get acknowledgement 
 		String[] acknowledgements = ishSubmissionDao.findAcknowledgementBySubmissionId(oid);
@@ -159,7 +161,7 @@ public class IshSubmissionAssembler {
 	    return ishSubmissionModel;
 	}
 		
-	
+	//Moved to Utils
 	/**
 	 * Linked Submissions(ArrayList)-- resource (e.g. GUDMAP)
 	 *                              -- submissions(ArrayList)-- oid
@@ -174,7 +176,7 @@ public class IshSubmissionAssembler {
 	 *         the second element is an array list of link types.
 	 *         
 	 */
-	public ArrayList<Object> formatLinkedSubmissionData(ArrayList<String[]> linkedSubmissionsRaw) {
+	/*public ArrayList<Object> formatLinkedSubmissionData(ArrayList<String[]> linkedSubmissionsRaw) {
     	
 		if (linkedSubmissionsRaw == null || linkedSubmissionsRaw.isEmpty()) {
 			return null;
@@ -285,7 +287,7 @@ public class IshSubmissionAssembler {
     		
 		} // end of going through the linked submission list raw data
 		return result;
-    }
+    }*/
 	
 /*	public PersonModel getPersonById(String personId) {
 		

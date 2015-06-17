@@ -19,19 +19,19 @@ import org.gudmap.queries.array.ArrayQueries;
 
 public class ArrayDao {
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
 	private GeneModel geneModel;
 	
 	public ArrayDao() {
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public GeneModel findGeneInfoBySymbol(ArrayList<String> genes) {
@@ -51,7 +51,8 @@ public class ArrayDao {
         
         try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			if (result.first()) {
