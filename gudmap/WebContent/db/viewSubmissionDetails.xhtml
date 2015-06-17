@@ -426,9 +426,21 @@ function findExpressionNotes(){
 				                <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
 						</h:panelGroup>
 						
-						<h:outputText rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="Archive/Batch ID:" />
-						<h:outputLink rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="http://www.gudmap.org/Submission_Archive/index.html##{ishSubmissionBean.ishSubmissionModel.archiveId}" >
+						<ui:remove>
+						<!-- <h:outputText rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="Archive/Batch ID:" />
+						<h:outputLink rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="#{appRoot}/pages/viewPage.jsf?docID=13##{ishSubmissionBean.ishSubmissionModel.archiveId}" >
 							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.archiveId}" />
+						</h:outputLink> -->
+						</ui:remove>
+						
+						<h:outputText value="Archive ID:"     rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}"/>
+						<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=13##{ishSubmissionBean.ishSubmissionModel.archiveId}"  rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}">
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.archiveId}"    rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}"/>
+						</h:outputLink>
+						
+						<h:outputText value="Batch ID:" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>
+						<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{ishSubmissionBean.ishSubmissionModel.batchId}" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}">
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.batchId}" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>
 						</h:outputLink>
 						
 						<h:outputText value="Submission ID:" />
@@ -983,24 +995,7 @@ function findExpressionNotes(){
 		               </h:panelGrid>
 		</h:panelGrid>
 		
-		<h:panelGrid   columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.linkedPublications}">
-			<h:outputText value="Linked Publications" />
-			<h:panelGrid  columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0" >
-				<h:dataTable  value="#{ishSubmissionBean.ishSubmissionModel.linkedPublications}" var="pub">
-					<h:column>
-                        <h:outputText value="#{pub[0]}" /> <br />
-                        <h:outputText styleClass="db_bold" value="#{pub[2]}" /><br />
-                        <h:outputText style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
-						<h:outputText value="#{pub[1]}, " />
-						<h:outputText styleClass="db_bold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
-						<h:outputText styleClass="db_bold" value="(#{pub[5]})" rendered="#{not empty pub[5]}"/>
-						<h:outputText styleClass="db_bold" value="&#160;:&#160;#{pub[6]}" rendered="#{not empty pub[6]}"/><br />
-                        <h:outputText style="font-style:italic" value="#{pub[7]}:&#160;" rendered="#{not empty pub[7]}" />
-                        <h:outputText styleClass="db_bold" value="#{pub[8]}" rendered="#{not empty pub[8]}"/><br />
-					</h:column>
-				</h:dataTable>
-			</h:panelGrid>
-		</h:panelGrid>
+
 		
 		<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{null != ishSubmissionBean.ishSubmissionModel.linkedSubmissions}">
 			<h:outputText value="Linked Submissions" />
@@ -1054,6 +1049,25 @@ function findExpressionNotes(){
 				<h:dataTable value="#{ishSubmissionBean.ishSubmissionModel.acknowledgements}" var="ack">
 					<h:column>
 						<h:outputText value = "#{ack}"/>
+					</h:column>
+				</h:dataTable>
+			</h:panelGrid>
+		</h:panelGrid>
+		
+		<h:panelGrid   columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.linkedPublications}">
+			<h:outputText value="Linked Publications" />
+			<h:panelGrid  columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0" >
+				<h:dataTable  value="#{ishSubmissionBean.ishSubmissionModel.linkedPublications}" var="pub">
+					<h:column>
+                        <h:outputText value="#{pub[0]}" /> <br />
+                        <h:outputText styleClass="db_bold" value="#{pub[2]}" /><br />
+                        <h:outputText style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
+						<h:outputText value="#{pub[1]}, " />
+						<h:outputText styleClass="db_bold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
+						<h:outputText styleClass="db_bold" value="(#{pub[5]})" rendered="#{not empty pub[5]}"/>
+						<h:outputText styleClass="db_bold" value="&#160;:&#160;#{pub[6]}" rendered="#{not empty pub[6]}"/><br />
+                        <h:outputText style="font-style:italic" value="#{pub[7]}:&#160;" rendered="#{not empty pub[7]}" />
+                        <h:outputText styleClass="db_bold" value="#{pub[8]}" rendered="#{not empty pub[8]}"/><br />
 					</h:column>
 				</h:dataTable>
 			</h:panelGrid>
