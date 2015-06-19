@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+
 
 import org.gudmap.globals.Globals;
 import org.gudmap.models.GenelistTreeInfo;
@@ -76,7 +73,7 @@ public class ArrayDao {
 		String queryString = ArrayQueries.GET_ALL_REF_GENELISTS;
         try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 
@@ -136,7 +133,7 @@ public class ArrayDao {
 		
         try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 

@@ -1,5 +1,7 @@
 package org.gudmap.models;
 
+import java.util.List;
+
 public class SupplementaryFiles {
 	
 	private String filename;
@@ -12,6 +14,8 @@ public class SupplementaryFiles {
 	private String txtFile;
 	private String file_location;
 	private String tissue;
+	private List<SupplementaryFiles> rawFiles;
+	private List<SupplementaryFiles> processedFiles;
 	
 	public void setFilename(String filename) {
         this.filename = filename;
@@ -92,6 +96,22 @@ public class SupplementaryFiles {
 
 	public void setFileLocation(String file_location) {
     	this.file_location = file_location;
+    }
+	
+	public void setRawFile(List<SupplementaryFiles> file) {
+        rawFiles = file;
+    }
+
+    public List<SupplementaryFiles> getRawFile() {
+        return rawFiles;
+    }
+
+    public void setProcessedFile(List<SupplementaryFiles> file) {
+       processedFiles = file;
+    }
+
+    public List<SupplementaryFiles> getProcessedFile() {
+        return processedFiles;
     }
 
     
