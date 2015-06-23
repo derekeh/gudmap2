@@ -249,13 +249,10 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 			hccol.push(1*i);
       
 	   var margin = { top: 190, right: 10, bottom: 50, left: 100 },
-
 	   width = cellSize*col_number*3, // - margin.left - margin.right,
-	   height = cellSize*row_number , // - margin.top - margin.bottom,
-	   legendElementWidth = cellSize*1.5;
-	
-	   var genes = geneLabel;
-	   var samples = colLabel;	
+	   height = cellSize*row_number, // - margin.top - margin.bottom,	
+	   genes = geneLabel,
+	   samples = colLabel;	
  
  var svg = d3.select(heatmapid).append("svg")
 // .attr("width", width + margin.left + margin.right)
@@ -267,7 +264,54 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
  
  var rowSortOrder=false;
  var colSortOrder=false;
+ 
+ var geneLabelLength = 0;
 
+ 	// some precalculation to get text length
+	var geneLabels0 = svg.append("g")
+	.selectAll(".geneLabelg")
+	.data(geneLabel)
+	.enter()
+	.append("text")
+	.text(function (d) { return d; })
+	.attr("x", 0)
+	.attr("y", function (d, i) { return (i * cellSize); })
+	.style("text-anchor", "end")
+	.style("visibility", "hidden")
+	.attr("transform", "translate(50," + cellSize / 1.5 + ")")
+//	.attr("class", function (d,i) { return "geneLabel mono r"+i;} ) 
+	//     .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;})
+	 .attr("width", function(d){ 
+		 var len = this.parentNode.getBBox().width;
+		 if (len > geneLabelLength) geneLabelLength = len;
+		 })
+	 ;
+	geneLabelLength = 	geneLabelLength+10;
+	
+	 
+	var geneLabels = svg.append("g")
+	.selectAll(".geneLabelg")
+	.data(geneLabel)
+	.enter()
+	.append("text")
+	.text(function (d) { return d; })
+	.attr("x", 0)
+	.attr("y", function (d, i) { return (i * cellSize); })
+	.style("text-anchor", "end")
+	.attr("transform", "translate(" + geneLabelLength + "," + cellSize / 1.5 + ")")
+	.attr("class", function (d,i) { return "geneLabel mono r"+i;} ) 
+	.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
+	.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
+	//     .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;})
+	 .attr("width", function(d){ 
+		 var len = this.parentNode.getBBox().width;
+		 if (len > geneLabelLength) geneLabelLength = len;
+		 })
+	 ;
+ 
+ 
+ 
+ 
  var rowLabels = svg.append("g")
     .selectAll(".rowLabelg")
     .data(rowLabel)
@@ -282,25 +326,8 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
  .on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
  .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;})
  ;
-
-
-	var geneLabels = svg.append("g")
-		.selectAll(".geneLabelg")
-		.data(geneLabel)
-		.enter()
-		.append("text")
-		.text(function (d) { return d; })
-		.attr("x", 0)
-		.attr("y", function (d, i) { return (i * cellSize); })
-		.style("text-anchor", "end")
-		.attr("transform", "translate(50," + cellSize / 1.5 + ")")
-		.attr("class", function (d,i) { return "geneLabel mono r"+i;} ) 
-		.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
-		.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
-		//     .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;})
-		;
-		
-
+	
+ 	var colLabelspacer = geneLabelLength + 10;
 	var colLabels = svg.append("g")
 		.selectAll(".colLabelg")
 		.data(colLabel)
@@ -310,7 +337,8 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 		.attr("x", 0)
 		.attr("y", function (d, i) { return (i * cellSize); })
 		.style("text-anchor", "left")
-		.attr("transform", "translate(60,0) translate("+cellSize/2 + ",-6) rotate (-90)")
+//		.attr("transform", "translate(60,0) translate("+cellSize/2 + ",-6) rotate (-90)")
+		.attr("transform", "translate("+ colLabelspacer +",0) translate("+ cellSize/2 + ",-6) rotate (-90)")
 		//.attr("transform", "translate("+cellSize/2 + ",-6) rotate (-90)")
 		.attr("class",  function (d,i) { return "colLabel mono c"+i;} )
 		.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
@@ -328,6 +356,7 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 
 		
 //		var fixed = false;
+	 	var rectLabelspacer = geneLabelLength + 6;
 		var j = 0;
 		var heatMap = row.selectAll(".cell")
 		.data(function(d) {
@@ -336,7 +365,8 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 		})
 		.enter().append("svg:rect")
 		.attr("x", function(d, i) {
-		    return (i * cellSize + 56);
+//		    return (i * cellSize + 56);
+		    return (i * cellSize + rectLabelspacer);
 		})
 		.attr("y", function(d, i, j) {
 		    return j * cellSize;
@@ -461,7 +491,8 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	          var sorted; // sorted is zero-based index
 	          d3.selectAll(".c"+rORc+i) 
 	            .filter(function(ce){
-	               log2r.push(ce.value);
+//	               log2r.push(ce.value);
+	               log2r.push(ce.adjvalue);
 	             })
 	          ;
 	          if(rORc=="r"){ // sort log2ratio of a gene
@@ -469,14 +500,17 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	            t.selectAll(".cell")
 	              .attr("x", function(d) { 
 	                  var col = parseInt(d3.select(this).attr("col"));
-	            	  return sorted.indexOf(col) * cellSize + 56; 
+	            	  return sorted.indexOf(col) * cellSize + rectLabelspacer; 
 	              })
 	            ;
 	            t.selectAll(".colLabel")
 	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; })
 	            ;
 	          }else{ // sort log2ratio of a contrast
-	            sorted=d3.range(row_number).sort(function(a,b){if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
+	            sorted=d3.range(row_number).sort(function(a,b){
+	            	if(sortOrder){ return log2r[b]-log2r[a];}
+	            	else{ return log2r[a]-log2r[b];}});
+	            
 	            t.selectAll(".cell")
 	              .attr("y", function(d) { 
 	                  var col = parseInt(d3.select(this).attr("row"));
@@ -500,7 +534,7 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	      if(value=="hclust"){
 	       var t = svg.transition().duration(3000);
 	       t.selectAll(".cell")
-	         .attr("x", function(d) { return hccol.indexOf(d.col) * cellSize + 56; })
+	         .attr("x", function(d) { return hccol.indexOf(d.col) * cellSize + rectLabelspacer; })
 	         .attr("y", function(d) { return hcrow.indexOf(d.row) * cellSize; })
 	         ;
 
@@ -515,7 +549,7 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	      }else if (value=="probecontrast"){
 	       var t = svg.transition().duration(3000);
 	       t.selectAll(".cell")
-	         .attr("x", function(d) { return (d.col - 1) * cellSize + 56; })
+	         .attr("x", function(d) { return (d.col - 1) * cellSize + rectLabelspacer; })
 	         .attr("y", function(d) { return (d.row - 1) * cellSize; })
 	         ;
 
@@ -539,7 +573,7 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 	      }else if (value=="contrast"){
 	       var t = svg.transition().duration(3000);
 	       t.selectAll(".cell")
-	         .attr("x", function(d) { return (d.col - 1) * cellSize + 56; })
+	         .attr("x", function(d) { return (d.col - 1) * cellSize + rectLabelspacer; })
 	         ;
 	       t.selectAll(".colLabel")
 	         .attr("y", function (d, i) { return i * cellSize; })
@@ -661,7 +695,7 @@ function gudmap_genelist_heatmap(heatmapid, data, maxColNumber, rowLabel, cellSi
 			hccol.push(1*i);
 	   	   
 	   var margin = { top: 1, right: 1, bottom: 1, left: 1 },
-	   width = cellSize*col_number*3, // - margin.left - margin.right,
+	   width = cellSize*col_number, // - margin.left - margin.right,
 	   height = cellSize*row_number ; // - margin.top - margin.bottom,
 	
 

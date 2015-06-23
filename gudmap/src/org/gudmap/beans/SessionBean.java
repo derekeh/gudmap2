@@ -31,6 +31,8 @@ public class SessionBean implements Serializable {
 	//disease headers: omimID,diseaseName,humanGeneSymbol,mouseGeneSymbol,mouseGeneMgiID,hasInsituData,mpID,mpPhenotype,annotationType
 	private boolean[] diseaseHeaders = {false,false,false,false,false,false,false,false,false};
 	private int docID=0;
+	private String masterTableId;
+	private String genelistId;
 	
 	public SessionBean() {
 		 
@@ -165,7 +167,22 @@ public class SessionBean implements Serializable {
 	    return docID;
 	 }
 	 
-	
+	 public void setMasterTableId(String id){
+	    this.masterTableId=id;
+	 }
+		    
+	 public String getMasterTableId(){
+	    return masterTableId;
+	 }
+
+	 public void setGenelistId(String id){
+	    this.genelistId=id;
+	 }
+			    
+	 public String getGenelistId(){
+	    return genelistId;
+	 }
+	 
 	 public void init() {
 	 //dummy to initialise bean from view
 	 }

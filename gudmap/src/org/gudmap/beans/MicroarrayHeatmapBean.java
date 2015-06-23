@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+import javax.inject.Inject;
 
 
 @Named (value="microarrayHeatmapBean")
@@ -61,29 +61,57 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     private String genelistValueData;
     private String adjustedData;
     private int maxColNumber = 0;    
+
+    @Inject
+   	protected SessionBean sessionBean;    
     
     public MicroarrayHeatmapBean() {
     	
-       	super(50,10,null,true);   	
+       	super(500,10,null,true);   	
+    }
+    
+	public MicroarrayHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
+		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
+	}
+    
+    public void setSessionBean(SessionBean sessionBean){
+		this.sessionBean=sessionBean;
+	}
+    
+    public SessionBean getSessionBean() {
+    	return sessionBean;
+    }
 
-       	
-    	selectedTabIndex = "1";
-//    	tabStyle = "tabbedPaneText";
-    	
+	public void init(){
+		
     	FacesContext facesContext = FacesContext.getCurrentInstance();
 		gene = facesContext.getExternalContext().getRequestParameterMap().get("gene");
-		masterTableId = facesContext.getExternalContext().getRequestParameterMap().get("masterTableId");		
+		masterTableId = facesContext.getExternalContext().getRequestParameterMap().get("masterTableId");
 		genelistId = facesContext.getExternalContext().getRequestParameterMap().get("genelistId");
 		
-//		if (gene == null && masterTableId == null && genelistId == null) {
-//			Map<String, Object> mymap = facesContext.getExternalContext().getSessionMap();
-//			gene = (String)facesContext.getExternalContext().getSessionMap().get("gene");
-//			masterTableId = (String)facesContext.getExternalContext().getSessionMap().get("masterTableId");		
-//			genelistId = (String)facesContext.getExternalContext().getSessionMap().get("genelistId");
-//		
-//		};
-
-    	
+		
+		if (gene != null){
+			sessionBean.setGeneParam(gene);
+			sessionBean.setGenelistId(null);
+		}
+		else
+			gene = sessionBean.getGeneParam();
+		
+		
+		if (masterTableId != null)
+			sessionBean.setMasterTableId(masterTableId);
+		else
+			masterTableId = sessionBean.getMasterTableId();
+		
+				
+		if (genelistId != null) {
+			sessionBean.setGeneParam(null);
+			sessionBean.setGenelistId(genelistId);
+//			tableTitle = assembler.getGenelistTitle(genelistId) + " (gene list)";
+		}
+		else
+			tableTitle = gene;
+					
 		assembler = new MicroarrayHeatmapBeanAssembler();
 		tableinfo = assembler.getMasterTableList();	
 		
@@ -96,35 +124,17 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     	}
 
     	this.setSelectedSample(masterTableId);
-// 	masterTableId = "3_2";
-//  	selectedSample = masterTableId;
-//   	genelistId = "1493";
-//  	gene = "Sox8";   	
-    	updateHeatmap();
-    	  	
-    }
-    
-	public MicroarrayHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
-		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
 	}
-    
-
-    public String updateHeatmap(){
-     	
-	   	this.loadDataList();
-	   	return null;
 	
+    public String updateHeatmap(){
+    	    	   	
+	   	this.loadDataList();
+	   	return null;	
     }
     
    
 	public String getGeneList(){
 		String genelist = gene;
-		
-//		if (genelistId != null) 
-//			genelist = DbUtility.retrieveGenelist(genelistId);
-//		else if (listOfGenes != null) 
-//			genelist = DbUtility.retrieveGenelistFromGenes(listOfGenes);
-		
 		return genelist;
 	}
 	
@@ -160,19 +170,10 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		this.masterTableId = masterTableId;
 	}
 	
-	public String getSelectedTabIndex(){
-		return selectedTabIndex;
-	}
-    
-	public void setSelectedTabIndex(String selectedTabIndex){
-		this.selectedTabIndex = selectedTabIndex;
-	}
-	
 	public ArrayList<MasterTableInfo> getAllMasterTableInfo() {
 		return tableinfo;
 	}
-    
-	 
+    	 
     public Map<String,String> getTabOptions() {
     	LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
     	for(MasterTableInfo info : tableinfo){
@@ -181,48 +182,20 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     	return options;
     }
     
-    public ArrayList<String> getSelectedTabOptions() {
-    	return selectedTabs;
-    }
-    public void setSelectedTabOptions(ArrayList<String> selection) {
-    	selectedTabs = selection;
-    }
-    
-	public void selectedTabOptionsChanged(ValueChangeEvent e){
-		selectedTabs =  (ArrayList<String>) e.getNewValue();
-		
-    	for(MasterTableInfo info : tableinfo){
-    		if (selectedTabs.contains(info.getId()))
-    			info.setSelected(true);
-    		else
-    			info.setSelected(false);
-    	}
-	}
     public String getSelectedSample() {
     	return selectedSample;
     }
+    
     public void setSelectedSample(String selection) {
     	selectedSample = selection;
     }
+    
 	public void selectedSampleChanged(ValueChangeEvent e){
 		selectedSample = (String)e.getNewValue();
 		
-    	for(MasterTableInfo info : tableinfo){
-    		if (selectedTabs.contains(info.getId()))
-    			info.setSelected(true);
-    		else
-    			info.setSelected(false);
-    	}
     	masterTableId = selectedSample;
+    	sessionBean.setMasterTableId(masterTableId);
     	
-//    	FacesContext facesContext = FacesContext.getCurrentInstance();
-//    	Map<String, Object> mymap = facesContext.getExternalContext().getSessionMap();
-// 		facesContext.getExternalContext().getSessionMap().put("gene",gene);
-//		facesContext.getExternalContext().getSessionMap().put("masterTableId",masterTableId);		
-//		facesContext.getExternalContext().getSessionMap().put("genelistId",genelistId);
-    	
-    	
-//  	updateHeatmap();
     	this.loadDataList();
 	}
 
@@ -457,8 +430,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     	
 		String values = "";
 		String adjvalues = "";
-
-//		int rowCounter = 1;		
+	
     	for(MasterTableInfo info : tableinfo){
     		String id = info.getId();
     		String platformId = assembler.getPlatformIdFromMasterTableId(id);
@@ -483,13 +455,11 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     					adjvalues += "100,";
     				}
     			}
-//    			rowCounter++;
     		}
     		for (int i = 0; i < maxColNumber; i++){
 				values += "100,";
 				adjvalues += "100,";    			
     		}
-//    		rowCounter++;
     	}
 
 		genelistValueData = values.substring(0, values.length()-1);

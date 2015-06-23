@@ -17,7 +17,6 @@ import javax.servlet.ServletContext;
 
 import org.gudmap.dao.ArrayDao;
 import org.gudmap.models.GenelistRnaSeqTreeInfo;
-import org.gudmap.models.GenelistTreeInfo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
