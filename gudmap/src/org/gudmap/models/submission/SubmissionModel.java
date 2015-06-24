@@ -23,7 +23,7 @@ public class SubmissionModel {
     protected int localStatusId; 		// SUB_LOCAL_STATUS_FK: 3
     protected int dbStatusId; 			// SUB_DB_STATUS_FK: 2
     protected String project; 			// SUB_PROJECT_FK: GUDMAP
-    protected int batchId; 				// SUB_BATCH: 111
+    protected int batchId=0; 				// SUB_BATCH: 111
     protected String nameSpace; 		// SUB_NAMESPACE: http://www.gudmap.org
     protected String osAccession; 		// SUB_OS_ACCESSION: UNASSIGNED
     protected String loaclId; 			// SUB_LOCAL_ID:
@@ -60,6 +60,7 @@ public class SubmissionModel {
     	this.authors = authors;
         this.originalImages = originalImages;
     }
+    
     
 
     public AlleleModel[] getAlleleModel() {

@@ -78,6 +78,7 @@ public class IshSubmissionAssembler {
 		ishSubmissionModel.setStage(submissionModel.getStage());
 		ishSubmissionModel.setAssayType(assayType);
 		ishSubmissionModel.setArchiveId(submissionModel.getArchiveId());
+		ishSubmissionModel.setBatchId(submissionModel.getBatchId());
 		//This is for the old tree. Don't need anymore
 		//ishSubmissionModel.setAnnotationTree(annotationTree);
 		ishSubmissionModel.setExpressionDetailModel(expressionDetailModel);

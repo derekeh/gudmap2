@@ -10,6 +10,9 @@ public class SeqSubmissionModel extends ArraySeqSubmissionModel {
 	 private DataProcessing[] dataProcessing;
 	 private List<SupplementaryFiles>  rawFile;
 	 private List<SupplementaryFiles> processedFile;
+	 private SeqSampleModel seqSampleModel;
+	 private SeqSeriesModel seqSeriesModel;
+	
 	
 	
 	  public void setDataProcessing(DataProcessing[] dataProcessing) {
@@ -35,6 +38,22 @@ public class SeqSubmissionModel extends ArraySeqSubmissionModel {
 
 	    public List<SupplementaryFiles> getProcessedFile() {
 	        return processedFile;
+	    }
+	    
+	    public void setSeqSampleModel(SeqSampleModel seqSampleModel) {
+	    	this.seqSampleModel=seqSampleModel;
+	    }
+	    
+	    public SeqSampleModel getSeqSampleModel() {
+	    	return seqSampleModel;
+	    }
+	    
+	    public void setSeqSeriesModel(SeqSeriesModel seqSeriesModel) {
+	    	this.seqSeriesModel=seqSeriesModel;
+	    }
+	    
+	    public SeqSeriesModel getSeqSeriesModel() {
+	    	return seqSeriesModel;
 	    }
 
 }

@@ -5,22 +5,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import java.util.List;
 
 import org.gudmap.globals.Globals;
 import org.gudmap.models.ArraySeqTableBeanModel;
+import org.gudmap.models.DataProcessing;
 import org.gudmap.models.SupplementaryFiles;
-import org.gudmap.models.submission.GeneModel;
 import org.gudmap.models.submission.ImageInfoModel;
 import org.gudmap.models.submission.PlatformModel;
 import org.gudmap.models.submission.SampleModel;
+import org.gudmap.models.submission.SeqSampleModel;
+import org.gudmap.models.submission.SeqSeriesModel;
 import org.gudmap.models.submission.SeriesModel;
-import org.gudmap.queries.anatomy.AnatomyQueries;
 import org.gudmap.queries.array.ArrayQueries;
+import org.gudmap.queries.array.SequenceQueries;
 import org.gudmap.utils.Utils;
 
 public class ArraySeqDao {
@@ -60,6 +58,66 @@ public class ArraySeqDao {
 		    Globals.closeQuietly(con, ps, result);
 		}        
         return supplementaryFiles;		
+    }
+    
+    public SupplementaryFiles findSeqSupplementaryFiles(int oid) {
+    	SupplementaryFiles supplementaryFiles = null;		
+        try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(SequenceQueries.SEQUENCE_SUPPLEMENTARY_FILES); 
+			ps.setInt(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+			    supplementaryFiles = new SupplementaryFiles();
+			    List<SupplementaryFiles> rFiles=new ArrayList<SupplementaryFiles>();
+			    List<SupplementaryFiles> pFiles=new ArrayList<SupplementaryFiles>();
+			    SupplementaryFiles ngdsupfiles=null;
+			    StringBuffer filesize=new StringBuffer();
+			    do
+			    {
+			    	filesize.setLength(0);
+			    	if(result.getString(4)!=null)
+			    		filesize.append("("+result.getString(4)+")");
+			    		
+			    	if(result.getString(3).equalsIgnoreCase("raw"))
+			    	{
+			    		ngdsupfiles=new SupplementaryFiles();
+			    		ngdsupfiles.setFilename(result.getString(2).trim());
+		    	    	ngdsupfiles.setFilesize(filesize.toString());
+		    	    	ngdsupfiles.setFiletype(result.getString(3).trim());
+			    		rFiles.add(ngdsupfiles);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW; 4.NGF_FILESIZE
+			    	}
+			    	else if (result.getString(3).equalsIgnoreCase("processed"))
+			    	{
+			    		ngdsupfiles=new SupplementaryFiles();
+			    		ngdsupfiles.setFilename(result.getString(2).trim());
+		    	    	ngdsupfiles.setFilesize(filesize.toString());
+		    	    	ngdsupfiles.setFiletype(result.getString(3).trim());
+			    		pFiles.add(ngdsupfiles);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW; 4.NGF_FILESIZE
+			    	}
+				    
+			    }
+			    while(result.next());
+			    
+			    if (0 == pFiles.size())
+			    	supplementaryFiles.setProcessedFile(null);
+			    else 
+			    	supplementaryFiles.setProcessedFile(pFiles);
+			    
+			    if (0 == rFiles.size())
+			    	supplementaryFiles.setRawFile(null);
+			    else 
+			    	supplementaryFiles.setRawFile(rFiles);
+			    
+			    return supplementaryFiles;
+			}						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}        
+        return supplementaryFiles;
     }
     
     //sample, series, platform/library data for array/seq
@@ -148,6 +206,45 @@ public class ArraySeqDao {
     	return sampleModel;
     }
     
+    public SeqSampleModel getSeqSampleData(int oid) {
+    	SeqSampleModel seqSampleModel=null;
+    	try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(SequenceQueries.SEQUENCE_SINGLE_SAMPLE); 
+			ps.setInt(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				seqSampleModel=new SeqSampleModel();
+				seqSampleModel.setGeoID(result.getString(1));
+				seqSampleModel.setDescription(result.getString(2));
+				seqSampleModel.setTitle(result.getString(3));
+				seqSampleModel.setOrganism(result.getString(4));
+				seqSampleModel.setStrain(result.getString(5));
+				seqSampleModel.setGenotype(result.getString(6));
+				seqSampleModel.setSex(result.getString(7));
+				seqSampleModel.setDevAge(result.getString(8));
+				seqSampleModel.setTheilerStage(result.getString(9));
+				seqSampleModel.setPooledSample(result.getString(10));
+				seqSampleModel.setPoolSize(result.getString(11));
+				seqSampleModel.setExperimentalDesign(result.getString(12));
+				seqSampleModel.setSampleNotes(result.getString(13));
+				seqSampleModel.setLibraryPoolSize(result.getString(14));
+				seqSampleModel.setLibraryReads(result.getString(15));
+				seqSampleModel.setReadLength(result.getString(16));
+				seqSampleModel.setMeanInsertSize(result.getString(17));
+
+			}						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	
+    	return seqSampleModel;
+    }
+    
     public SeriesModel getSeriesData(int oid) {
     	
     	SeriesModel seriesModel=null;
@@ -195,6 +292,53 @@ public class ArraySeqDao {
     	return seriesModel;
     }
     
+public SeqSeriesModel getSeqSeriesData(int oid) {
+    	
+	SeqSeriesModel seqSeriesModel=null;
+    	try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(SequenceQueries.SEQUENCE_SINGLE_SAMPLE); 
+			ps.setInt(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				seqSeriesModel=new SeqSeriesModel();
+				seqSeriesModel.setGeoID(result.getString("geo_series_id"));
+				seqSeriesModel.setTitle(result.getString("title"));
+				seqSeriesModel.setSummary(result.getString("summary"));
+				seqSeriesModel.setCreated_by(result.getInt("created_by"));
+				seqSeriesModel.SetDesign(result.getString("overall_design"));
+				seqSeriesModel.setOid(result.getInt("series_oid"));
+				
+
+			}						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	if(seqSeriesModel!=null) {
+    		
+    		try
+    		{
+    			con = Globals.getDatasource().getConnection();
+    			ps = con.prepareStatement(SequenceQueries.SEQUENCE_NUM_SAMPLES);
+    			ps.setInt(1, oid);
+    			result =  ps.executeQuery();
+    			if (result.first()) {
+    				seqSeriesModel.setNumSamples(result.getInt("total"));
+    			}						
+    		}
+    		catch(SQLException sqle){sqle.printStackTrace();}
+    		finally {
+    		    Globals.closeQuietly(con, ps, result);
+    		}
+    	}
+    	
+    	return seqSeriesModel;
+    }
+    
     public PlatformModel getPlatformData(int oid) {
     	PlatformModel platformModel=null;
     	
@@ -227,13 +371,64 @@ public class ArraySeqDao {
     	return platformModel;
     }
     
-    public ArrayList<ImageInfoModel> getMicroarrayImages(int oid) {
+    public ArrayList<ImageInfoModel> getArraySeqImages(int oid, String assayType) {
     	ArrayList<ImageInfoModel> image_list = null;
     	
     	try
 		{
 			con = Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(ArrayQueries.ARRAY_IMAGES); 
+			ps = con.prepareStatement(ArrayQueries.ARRAY_SEQ_IMAGES); 
+			ps.setInt(1, oid);
+			ps.setString(2, assayType);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				image_list = new ArrayList<ImageInfoModel>();
+				result.beforeFirst();
+				int serialNo = 1;
+				//int dotPosition = 0;
+				//String fileExtension = null;
+				String str = null;
+				ImageInfoModel imageInfoModel = null;
+				
+				while (result.next()) {
+					imageInfoModel = new ImageInfoModel();
+				    str = Utils.netTrim(result.getString(1));
+				    if (null != str && !str.equals("")) 
+				    	imageInfoModel.setAccessionId(str);
+				    str = Utils.netTrim(result.getString(2));
+				    if (null != str && !str.equals("")) 
+				    	imageInfoModel.setFilePath(str);
+				    str = Utils.netTrim(result.getString(3));
+				    if (null != str && !str.equals("")) 
+				    	imageInfoModel.setClickFilePath(str);
+				    
+				    // do not know the reason zoom_viewer does not work for microarray
+				    // even though microarray images have tif. So
+				    // use specimen type to mark microarray image
+				    imageInfoModel.setSpecimenType(assayType);
+				    imageInfoModel.setSerialNo(""+serialNo);
+		
+				    serialNo++;
+				    image_list.add(imageInfoModel);
+				}
+
+			}						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	
+    	return image_list;
+    }
+    
+    public ArrayList<ImageInfoModel> getSequenceImages(int oid) {
+    	ArrayList<ImageInfoModel> image_list = null;
+    	
+    	try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(SequenceQueries.SEQUENCE_IMAGES); 
 			ps.setInt(1, oid);
 			result =  ps.executeQuery();
 			if (result.first()) {
@@ -260,7 +455,7 @@ public class ArraySeqDao {
 				    // do not know the reason zoom_viewer does not work for microarray
 				    // even though microarray images have tif. So
 				    // use specimen type to mark microarray image
-				    imageInfoModel.setSpecimenType("microarray");
+				    imageInfoModel.setSpecimenType("nextgen");
 				    imageInfoModel.setSerialNo(""+serialNo);
 		
 				    serialNo++;
@@ -296,6 +491,47 @@ public class ArraySeqDao {
 		}
     	
     	return tissue;
+    }
+    
+    public DataProcessing[] getDataProcessing(int oid) {
+    	ArrayList<DataProcessing> dataProcessingList = new ArrayList<DataProcessing>();
+    	DataProcessing dataProcessing=null;
+    	try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(SequenceQueries.SEQUENCE_DATA_PROCESSING); 
+			ps.setInt(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+		 	    while (result.next()) {
+					dataProcessing = new DataProcessing();
+					dataProcessing.setProStep(result.getString(1));
+					dataProcessing.setBuild(result.getString(2));
+					dataProcessing.setAlignedGenome(result.getString(3));
+					dataProcessing.setUnalignedGenome(result.getString(4));
+					dataProcessing.setRnaReads(result.getString(5));
+					dataProcessing.setFiveThreeRatio(result.getString(6));
+					dataProcessing.setFormatContent(result.getString(7));				
+					dataProcessing.setNumberOfReads(result.getString(8));
+					dataProcessing.setBeforeCleanUpReads(result.getString(9));
+					dataProcessing.setPairedEnd(result.getString(10));
+					dataProcessing.setFilename(result.getString(11));
+					dataProcessing.setFiletype(result.getString(12));
+					dataProcessing.setRawOrProcessed(result.getString(13));
+					
+					dataProcessingList.add(dataProcessing);
+		 	    }
+	        }					
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	if (0 == dataProcessingList.size())
+		    return null;
+    	
+    	return (DataProcessing[])dataProcessingList.toArray(new DataProcessing[0]);
     }
     
   
