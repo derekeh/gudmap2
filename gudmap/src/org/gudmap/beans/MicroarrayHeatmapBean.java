@@ -138,14 +138,6 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		return genelist;
 	}
 	
-	public void setTabStyle(String tabStyle){		
-		 this.tabStyle = tabStyle;			
-	}
-	
-	public String getTabStyle(){		
-		return tabStyle;			
-	}
-    
     public void setGene(String gene) {
     	this.gene = gene;
     }
@@ -174,7 +166,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		return tableinfo;
 	}
     	 
-    public Map<String,String> getTabOptions() {
+    public Map<String,String> getSampleOptions() {
     	LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
     	for(MasterTableInfo info : tableinfo){
     		options.put(info.getTitle(), info.getId());
@@ -198,28 +190,13 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     	
     	this.loadDataList();
 	}
-
-	private Integer activeTab;	
- 	public Integer getActiveTab() {
-        return activeTab;
-    }
-
-    public void setActiveTab(Integer activeTab) {
-        this.activeTab = activeTab;
-    }   
-	    
-	public void onTabChange(TabChangeEvent event) 
-    {   
-        TabView tabView = (TabView) event.getComponent();
-        int activeTabIndex = tabView.getActiveIndex();
-//        activeTab = tabView.getChildren().indexOf(event.getTab());
-    }
 	    
 	public boolean getDataAvailable(){
 		return dataAvailable;
 	}
 
-// ********************   deal with heatmap  	
+// ********************   deal with heatmap  
+	
 	private String CreateRowLabels(){
 		
 		

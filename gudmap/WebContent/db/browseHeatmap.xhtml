@@ -43,7 +43,7 @@
  	   
 		<h:selectOneMenu id="menu1" value="#{microarrayHeatmapBean.selectedSample}" 
 	   		onchange="submit()" immediate="true" valueChangeListener="#{microarrayHeatmapBean.selectedSampleChanged}" >
-			<f:selectItems value="#{microarrayHeatmapBean.tabOptions}" />
+			<f:selectItems value="#{microarrayHeatmapBean.sampleOptions}" />
 		</h:selectOneMenu>
 
 		<h:outputLink id="topGene" target="_blank" 

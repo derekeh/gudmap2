@@ -249,7 +249,7 @@ function gudmap_heatmap(heatmapid, data, dataset2, headers, geneLabel, colLabel,
 			hccol.push(1*i);
       
 	   var margin = { top: 190, right: 10, bottom: 50, left: 100 },
-	   width = cellSize*col_number*3, // - margin.left - margin.right,
+	   width = cellSize*col_number*1.2, // - margin.left - margin.right,
 	   height = cellSize*row_number, // - margin.top - margin.bottom,	
 	   genes = geneLabel,
 	   samples = colLabel;	
