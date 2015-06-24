@@ -463,7 +463,6 @@ public class ParamBean implements Serializable {
 		rnaseqcol=genestripresultmap.containsKey("rnaseq");
 	}
 	
-	
 	public String[] getGenestripcols(){
 		return genestripcols;
 	}
@@ -1325,11 +1324,18 @@ public class ParamBean implements Serializable {
 		String RET="";
 		if(assayType.equalsIgnoreCase("Microarray"))
 			RET="viewArraySubmissionDetails";
-		else if(assayType.equalsIgnoreCase("NextGen") || assayType.equalsIgnoreCase("sequence"))
+		else if(assayType.equalsIgnoreCase("NextGen") || assayType.equalsIgnoreCase("Sequence"))
 			RET="viewSeqSubmissionDetails";
 		else
 			RET="viewSubmissionDetails";
 		return RET;
+	}
+	
+	///////FROM browseStageSubmissions//////////////////
+	public void updateStaging(String stage){
+		resetAll();
+		setTheilerstagetovalues(stage);
+		setTheilerstagefromvalues(stage);
 	}
 	
 	

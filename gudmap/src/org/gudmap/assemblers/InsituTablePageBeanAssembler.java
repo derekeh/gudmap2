@@ -23,7 +23,7 @@ import org.gudmap.models.InsituTableBeanModel;
 public class InsituTablePageBeanAssembler {
 	
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -36,12 +36,14 @@ public class InsituTablePageBeanAssembler {
 	private String specimenWhereclause;
 	
 	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
+		}*/
+
+		
 		this.paramSQL=paramSQL;
 		this.assayType=assayType;
 		
@@ -65,7 +67,7 @@ public class InsituTablePageBeanAssembler {
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, assayType);
 			ps.setInt(2, firstRow);
@@ -111,7 +113,7 @@ public class InsituTablePageBeanAssembler {
 		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
 		try
 		{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();
@@ -139,7 +141,7 @@ public class InsituTablePageBeanAssembler {
 		for(int i=0;i<queries.length;i++) {
 			try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				if(queries[i].equals("ASSAY_TYPE_TOTAL_TISSUE") || queries[i].equals("ASSAY_TYPE_TOTAL_EXPRESSION") || queries[i].equals("TG_TYPE_TOTAL_EXPRESSION")){
 					sql= String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause);
 					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
