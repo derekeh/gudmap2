@@ -20,18 +20,18 @@ import org.gudmap.utils.Utils;
 
 public class MicroarrayHeatmapBeanAssembler {
 		
-	private DataSource ds;
+//	private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet resSet;
 	
 	public  MicroarrayHeatmapBeanAssembler() {
-		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Context ctx = new InitialContext();
+//			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
     public ArrayList<MasterTableInfo> getMasterTableList() {
@@ -41,7 +41,8 @@ public class MicroarrayHeatmapBeanAssembler {
 
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			resSet =  ps.executeQuery();
 		    if (resSet.first()) {
@@ -93,7 +94,8 @@ public class MicroarrayHeatmapBeanAssembler {
 
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);			
 		    String masterId = Utils.parseMasterTableId(masterTableId)[0];		    
 		    ps.setInt(1, Integer.parseInt(masterId));
@@ -119,7 +121,8 @@ public class MicroarrayHeatmapBeanAssembler {
 
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, symbol);
 			ps.setString(2, platformId);
@@ -180,7 +183,8 @@ public class MicroarrayHeatmapBeanAssembler {
     	
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, genelistId);
 			resSet =  ps.executeQuery();
@@ -213,7 +217,8 @@ public class MicroarrayHeatmapBeanAssembler {
     
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Integer.parseInt(genelistId));
 			resSet =  ps.executeQuery();
@@ -249,7 +254,8 @@ public class MicroarrayHeatmapBeanAssembler {
     	
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, Integer.parseInt(genelistId));
 			ps.setString(2, platformId);
@@ -297,7 +303,8 @@ public class MicroarrayHeatmapBeanAssembler {
         
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString);
 			ps.setString(1, platformId);
 			resSet =  ps.executeQuery();
@@ -324,7 +331,8 @@ public class MicroarrayHeatmapBeanAssembler {
    	
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			
         	String[] masterTableAndSectionId = Utils.parseMasterTableId(masterTableId);
@@ -353,7 +361,8 @@ public class MicroarrayHeatmapBeanAssembler {
    	
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			
         	String[] masterTableAndSectionId = Utils.parseMasterTableId(masterTableId);
@@ -438,7 +447,8 @@ public class MicroarrayHeatmapBeanAssembler {
    	
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			
 			ps.setInt(1, Integer.parseInt(genelistId));
@@ -490,7 +500,8 @@ public class MicroarrayHeatmapBeanAssembler {
         
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString);
 			resSet =  ps.executeQuery();
 		    if (resSet.first()) {
@@ -526,7 +537,8 @@ public class MicroarrayHeatmapBeanAssembler {
     	              
 		try
 		{
-			con = ds.getConnection();
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
         	ps.setString(1, gene);
 

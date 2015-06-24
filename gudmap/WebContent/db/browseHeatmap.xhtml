@@ -23,6 +23,9 @@
 	
 	<ui:define name="content">
 
+	#{microarrayHeatmapBean.init()}
+	#{microarrayHeatmapBean.loadDataList()}
+	
 	<h:form id="microarrayHeatmapForm">	
 		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
@@ -34,18 +37,20 @@
 <h:panelGrid columns="4">
 	<h:panelGroup>
 	    <h:outputText  value="Microarray Expression Profile for:"></h:outputText>
-	    <h:outputText  value=" #{microarrayHeatmapBean.title}"></h:outputText>    
-	    
-	</h:panelGroup>	    
-		<h:selectOneMenu value="#{microarrayHeatmapBean.selectedSample}" 
-			onchange="submit()" immediate="true" valueChangeListener="#{microarrayHeatmapBean.selectedSampleChanged}" >
-			<f:selectItems value="#{microarrayHeatmapBean.tabOptions}" />
+	    <h:outputText  value=" #{microarrayHeatmapBean.title}"></h:outputText>        
+	</h:panelGroup>	 
+	
+ 	   
+		<h:selectOneMenu id="menu1" value="#{microarrayHeatmapBean.selectedSample}" 
+	   		onchange="submit()" immediate="true" valueChangeListener="#{microarrayHeatmapBean.selectedSampleChanged}" >
+			<f:selectItems value="#{microarrayHeatmapBean.sampleOptions}" />
 		</h:selectOneMenu>
 
 		<h:outputLink id="topGene" target="_blank" 
 					value ="http://toppgene.cchmc.org/CheckInput.action?training_set=#{MasterTableBrowseBean.geneList}&amp;type=HGNC&amp;query=TOPPFUN">
 			<h:graphicImage library="images/display" name="ToppFun_Button.png" width="60"/> 		
 		</h:outputLink>
+		
 	<h:panelGroup>
 		Palette:
 		<select id="palette">
@@ -157,14 +162,11 @@
 	   var valuedata = valueDataArray2(values,adjvalues,col_number);
 	   var cellSize=14;
 	   
+     
 	   gudmap_heatmap("#chart", valuedata, annotationdata, annotationHeaders, geneLabel, colLabel, rowLabel, cellSize, tooltip);	   
-
-
-			
-
+		
 			
  });   	
-//#########################################################
 
 //]]>
  </script>		
