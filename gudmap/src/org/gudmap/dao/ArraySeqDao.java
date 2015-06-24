@@ -10,6 +10,7 @@ import java.util.List;
 import org.gudmap.globals.Globals;
 import org.gudmap.models.ArraySeqTableBeanModel;
 import org.gudmap.models.DataProcessing;
+import org.gudmap.models.SeqProtocol;
 import org.gudmap.models.SupplementaryFiles;
 import org.gudmap.models.submission.ImageInfoModel;
 import org.gudmap.models.submission.PlatformModel;
@@ -298,7 +299,7 @@ public SeqSeriesModel getSeqSeriesData(int oid) {
     	try
 		{
 			con = Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(SequenceQueries.SEQUENCE_SINGLE_SAMPLE); 
+			ps = con.prepareStatement(SequenceQueries.SEQUENCE_SINGLE_SERIES); 
 			ps.setInt(1, oid);
 			result =  ps.executeQuery();
 			if (result.first()) {
@@ -422,55 +423,7 @@ public SeqSeriesModel getSeqSeriesData(int oid) {
     	return image_list;
     }
     
-    public ArrayList<ImageInfoModel> getSequenceImages(int oid) {
-    	ArrayList<ImageInfoModel> image_list = null;
-    	
-    	try
-		{
-			con = Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(SequenceQueries.SEQUENCE_IMAGES); 
-			ps.setInt(1, oid);
-			result =  ps.executeQuery();
-			if (result.first()) {
-				image_list = new ArrayList<ImageInfoModel>();
-				result.beforeFirst();
-				int serialNo = 1;
-				//int dotPosition = 0;
-				//String fileExtension = null;
-				String str = null;
-				ImageInfoModel imageInfoModel = null;
-				
-				while (result.next()) {
-					imageInfoModel = new ImageInfoModel();
-				    str = Utils.netTrim(result.getString(1));
-				    if (null != str && !str.equals("")) 
-				    	imageInfoModel.setAccessionId(str);
-				    str = Utils.netTrim(result.getString(2));
-				    if (null != str && !str.equals("")) 
-				    	imageInfoModel.setFilePath(str);
-				    str = Utils.netTrim(result.getString(3));
-				    if (null != str && !str.equals("")) 
-				    	imageInfoModel.setClickFilePath(str);
-				    
-				    // do not know the reason zoom_viewer does not work for microarray
-				    // even though microarray images have tif. So
-				    // use specimen type to mark microarray image
-				    imageInfoModel.setSpecimenType("nextgen");
-				    imageInfoModel.setSerialNo(""+serialNo);
-		
-				    serialNo++;
-				    image_list.add(imageInfoModel);
-				}
-
-			}						
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		}
-    	
-    	return image_list;
-    }
+    
     
     public String getTissue(int oid) {
     	String tissue=null;
@@ -534,6 +487,36 @@ public SeqSeriesModel getSeqSeriesData(int oid) {
     	return (DataProcessing[])dataProcessingList.toArray(new DataProcessing[0]);
     }
     
-  
+   public SeqProtocol getSequenceProtocol(int oid) {
+	   SeqProtocol seqProtocol=null;
+	   try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(SequenceQueries.SEQUENCE_PROTOCOL); 
+			ps.setInt(1, oid);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				 seqProtocol = new SeqProtocol();
+				 seqProtocol.setName(result.getString(1));
+				 seqProtocol.setLibraryConProt(result.getString(2));
+				 seqProtocol.setLibraryStrategy(result.getString(3));
+				 seqProtocol.setExtractedMolecule(result.getString(4));
+				 seqProtocol.setRnaIsolationMethod(result.getString(5));
+				 seqProtocol.setSequencingMethod(result.getString(6));
+				 seqProtocol.setLabelMethod(result.getString(7));
+				 seqProtocol.setInstrumentModel(result.getString(8));
+				 seqProtocol.setPairedEnd(result.getString(9));
+				 seqProtocol.setProtAdditionalNotes(result.getString(10));
+				 seqProtocol.setDnaExtractMethod(result.getString(11));
+				 seqProtocol.setAntibody(result.getString(12));
+				 seqProtocol.setCreatedBy(result.getString(13));
+			}		
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+	   return seqProtocol;
+   }
 
 }

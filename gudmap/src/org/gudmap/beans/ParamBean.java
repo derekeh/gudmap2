@@ -1319,6 +1319,20 @@ public class ParamBean implements Serializable {
 		return Arrays.toString(seqseriescols);
 	}
 	
+	//////////////REDIRECTIONS////////////////
+	
+	public String returnDetailsPage(String assayType) {
+		String RET="";
+		if(assayType.equalsIgnoreCase("Microarray"))
+			RET="viewArraySubmissionDetails";
+		else if(assayType.equalsIgnoreCase("NextGen") || assayType.equalsIgnoreCase("sequence"))
+			RET="viewSeqSubmissionDetails";
+		else
+			RET="viewSubmissionDetails";
+		return RET;
+	}
+	
+	
 	/**********TODO **********checkboxes keep this code ******************/
 	
 	/*public void setCheckboxes(boolean[]checkboxes){

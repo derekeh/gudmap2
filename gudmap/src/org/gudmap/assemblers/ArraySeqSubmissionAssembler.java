@@ -58,7 +58,6 @@ public class ArraySeqSubmissionAssembler {
 			arraySubmissionModel.setOriginalImages(arraySeqDao.getArraySeqImages(oid_int,"Microarray"));
 			arraySubmissionModel.setTissue(arraySeqDao.getTissue(oid_int));
 			
-			//arraySubmissionModel.getSupplementaryFiles().
 		}
 		
 		return arraySubmissionModel;
@@ -83,6 +82,7 @@ public class ArraySeqSubmissionAssembler {
 			SupplementaryFiles supplementaryFiles=arraySeqDao.findSeqSupplementaryFiles(oid_int);
 			seqSubmissionModel.setRawFile(supplementaryFiles.getRawFile());
 			seqSubmissionModel.setProcessedFile(supplementaryFiles.getProcessedFile());
+			seqSubmissionModel.setSeqProtocol(arraySeqDao.getSequenceProtocol(oid_int));
 			
 			seqSubmissionModel.setSeqSampleModel(arraySeqDao.getSeqSampleData(oid_int));
 			seqSubmissionModel.setSeqSeriesModel(arraySeqDao.getSeqSeriesData(oid_int));

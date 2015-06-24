@@ -47,8 +47,9 @@
     				GUDMAP Entry Details 
     			</f:facet>
     				
-    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+    			<h:commandLink value="#{u.gudmap_accession}"  action="viewArraySubmissionDetails">
 						<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+						<f:param name="isArray" value="true"></f:param>
 				</h:commandLink>
     		</h:column>
     		

@@ -32,7 +32,7 @@ public class ArraySeqSeriesBean {
 			seriesID= facesContext.getExternalContext().getRequestParameterMap().get("seqSeriesID");
 			isArray=false;
 		}*/
-		
+		//seriesID="";
 		if(Globals.getParameterValue("arraySeriesID")!=null){
 			seriesID = Globals.getParameterValue("arraySeriesID");
 			isArray=true;

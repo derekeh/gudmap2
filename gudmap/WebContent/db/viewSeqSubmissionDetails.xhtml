@@ -20,22 +20,27 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	    <h1>Microarray Details</h1>	
+	    <h1>Sequence Details</h1>	
 	    <!-- all other content in here -->  
 	    <ui:include src="/snippets/g_personDetails.xhtml"></ui:include>
 	    
 	    <h:form id="db_submission_detail_form">
 	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
 	    		<h:outputText value="Accession ID" />
-	    		<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.accID}" />
+	    		<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.accID}" />
 	    		
 	    		<h:outputText value="Stage " />
-	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.arraySubmissionModel.stage}definition.html">
-					<h:outputText value="Theiler Stage #{arraySeqSubmissionBean.arraySubmissionModel.stage}" />
+	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.seqSubmissionModel.stage}definition.html">
+					<h:outputText value="Theiler Stage #{arraySeqSubmissionBean.seqSubmissionModel.stage}" />
 				</h:outputLink>
 				
-				<h:outputText value="Result Notes" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.resultNotes}"/>
-	    		<h:dataTable columnClasses="db_inner_detail_right" value="#{arraySeqSubmissionBean.arraySubmissionModel.resultNotes}" var="note"  rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.resultNotes}">
+				<h:outputText value="External/Internal Links: " />
+	    	    <h:outputLink styleClass="datatext" value="#{AppRoot}/pages/viewPage.jsf?docID=36">
+	    			<h:outputText value="View sequencing data on UCSC Genome Browser or IGV" />
+	    	    </h:outputLink>
+				
+				<h:outputText value="Result Notes" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.resultNotes}"/>
+	    		<h:dataTable columnClasses="db_inner_detail_right" value="#{arraySeqSubmissionBean.seqSubmissionModel.resultNotes}" var="note"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.resultNotes}">
 					<h:column>
 						<h:outputText value="#{note}"/>
 					</h:column>
@@ -43,9 +48,9 @@
 	    	</h:panelGrid>
 	    	
 	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" 
-	    		rendered="#{null != arraySeqSubmissionBean.arraySubmissionModel.originalImages}">
+	    		rendered="#{null != arraySeqSubmissionBean.seqSubmissionModel.originalImages}">
 	    		<h:outputText value="Images" />
-				<h:dataTable  columnClasses="db_inner_image_detail_left,db_inner_detail_right" value="#{arraySeqSubmissionBean.arraySubmissionModel.originalImages}" var="image">
+				<h:dataTable  columnClasses="db_inner_image_detail_left,db_inner_detail_right" value="#{arraySeqSubmissionBean.seqSubmissionModel.originalImages}" var="image">
 				        <h:column>
 							<h:outputLink value="#" target="_blank"
 							                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1166,height=1000');return false">
@@ -61,43 +66,48 @@
 	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" >
 	    		<h:outputText value="Supplementary Data Files" />
 				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
-					<h:outputText value="CEL file:" />
-					<h:outputLink value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CEL/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}">
-						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}" />
-					</h:outputLink>
+				
+					<h:outputText value="Raw file:" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.rawFile}"/>
+					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.rawFile}" var="rfile" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.rawFile}">
+						<h:column>
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}">
+								<h:outputText value="#{rfile.filename}"/>
+							</h:outputLink>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{rfile.filesize}" rendered="#{not empty rfile.filesize}"/>
+						</h:column>
+					</h:dataTable>
+					<h:outputText value="Processed file:"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.processedFile}"/>
+					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.processedFile}" var="pfile"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.processedFile}">
+						<h:column>
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}">
+								<h:outputText value="#{pfile.filename}"/>
+							</h:outputLink>
+						</h:column>
+						<h:column>
+								<h:outputText value="#{pfile.filesize}" rendered="#{not empty pfile.filesize}"/>
+							</h:column>
+					</h:dataTable>	
 					
-					<h:outputText value="CHP file:" />
-					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CHP/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}">
-						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}" />
-					</h:outputLink>
-					
-					<h:outputText value="RPT file:" />
-					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}RPT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}">
-						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}" />
-					</h:outputLink>
-					
-					<h:outputText value="TXT file:" />
-					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}TXT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}">
-						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}" />
-					</h:outputLink>
 				</h:panelGrid>				
 	    	</h:panelGrid>
 	    	
 	        <h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"
-	    	 	rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.archiveId and arraySeqSubmissionBean.arraySubmissionModel.archiveId > 0}">
+	    	 	rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.archiveId and arraySeqSubmissionBean.seqSubmissionModel.archiveId > 0}">
 			
-				<h:outputText value="Archive ID:"     rendered="#{arraySeqSubmissionBean.arraySubmissionModel.archiveId > 0}"/>
-				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=13##{arraySeqSubmissionBean.arraySubmissionModel.archiveId}"  rendered="#{arraySeqSubmissionBean.arraySubmissionModel.archiveId > 0}">
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.archiveId}"    rendered="#{arraySeqSubmissionBean.arraySubmissionModel.archiveId > 0}"/>
+				<h:outputText value="Archive ID:"     rendered="#{arraySeqSubmissionBean.seqSubmissionModel.archiveId > 0}"/>
+				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=13##{arraySeqSubmissionBean.seqSubmissionModel.archiveId}"  rendered="#{arraySeqSubmissionBean.seqSubmissionModel.archiveId > 0}">
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.archiveId}"    rendered="#{arraySeqSubmissionBean.seqSubmissionModel.archiveId > 0}"/>
 				</h:outputLink>
 		   </h:panelGrid>
 		   
 		   <h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"
-		   	rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.batchId and arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}">
+		   	rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.batchId and arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}">
 			
-				<h:outputText value="Batch ID:" rendered="#{arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}"/>
-				<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{arraySeqSubmissionBean.arraySubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}">
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}"/>
+				<h:outputText value="Batch ID:" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}"/>
+				<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{arraySeqSubmissionBean.seqSubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}">
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}"/>
 				</h:outputLink>
           </h:panelGrid>
           
@@ -106,7 +116,7 @@
 	    		<h:panelGroup>
 	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
 	    			    <h:outputText value="Principal Investigator(s) : "/>
-	    				<t:dataList id="piDataList" var="piInfo" value="#{arraySeqSubmissionBean.arraySubmissionModel.principalInvestigators}" >
+	    				<t:dataList id="piDataList" var="piInfo" value="#{arraySeqSubmissionBean.seqSubmissionModel.principalInvestigators}" >
 							<h:commandLink id="lastbutton2" value="#{piInfo.name}, "  onclick="PF('lab_dialog').show();">
 	                            	<f:setPropertyActionListener id="piproperty" target="#{personBean.id}" value="#{piInfo.id}" />     	
 				                    <f:ajax execute="lastbutton2" render=":dialogform" />
@@ -115,15 +125,15 @@
 				        </t:dataList>
 				        
 				        <h:outputText value="Contributors:" />
-						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.authors}" />						
+						<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.authors}" />						
 						
 						<h:outputText value="Submitted By:" />
 						<h:panelGroup>
-	                            <h:commandLink id="lastbutton" value="#{arraySeqSubmissionBean.arraySubmissionModel.submitter.name}, "  onclick="PF('lab_dialog').show();">
-	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{arraySeqSubmissionBean.arraySubmissionModel.submitter.id}" />     	
+	                            <h:commandLink id="lastbutton" value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.name}, "  onclick="PF('lab_dialog').show();">
+	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.id}" />     	
 				                    <f:ajax execute="lastbutton" render=":dialogform" />
 				                </h:commandLink>
-				                <h:outputText title="#{arraySeqSubmissionBean.arraySubmissionModel.submitter.fullAddress}"  value="#{arraySeqSubmissionBean.arraySubmissionModel.submitter.displayAddress}" />
+				                <h:outputText title="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.fullAddress}"  value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.displayAddress}" />
 						</h:panelGroup>	
 	    			</h:panelGrid>
 	    		</h:panelGroup>
@@ -135,33 +145,30 @@
 				<h:outputText value="Sample GEO ID:" />
 				<h:panelGroup>
 					<h:outputLink  value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-						<f:param value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.geoID}" name="acc" />
-						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.geoID}" />
+						<f:param value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.geoID}" name="acc" />
+						<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.geoID}" />
 					</h:outputLink>
 				</h:panelGroup>
 				
 				<h:outputText value="Sample Description:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.description}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.description}" />
 				
 				<h:outputText value="Sample Name:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.title}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.title}" />
 				
 				<h:outputText value="Component(s) Sampled:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.source}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.source}" />
 				
 				<h:outputText value="Organism:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.organism}" />
-	
-				<h:outputText value="Tissue:" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.tissue}"/>
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.tissue}" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.tissue}"/>
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism}" />
 				
 				<h:outputText value="Strain:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.strain}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.strain}" />
 				
 				<h:outputText value="Genotype:" />
-				<h:outputText value="wild type" rendered="#{null == arraySeqSubmissionBean.arraySubmissionModel.alleleModel}"/>
-			    <t:dataTable id="alleleContentTable" value="#{arraySeqSubmissionBean.arraySubmissionModel.alleleModel}" var="allele"  style="margin-left:-5px;"  
-			                			 rendered="#{null != arraySeqSubmissionBean.arraySubmissionModel.alleleModel}">
+				<h:outputText value="wild type" rendered="#{null == arraySeqSubmissionBean.seqSubmissionModel.alleleModel}"/>
+			    <t:dataTable id="alleleContentTable" value="#{arraySeqSubmissionBean.seqSubmissionModel.alleleModel}" var="allele"  style="margin-left:-5px;"  
+			                			 rendered="#{null != arraySeqSubmissionBean.seqSubmissionModel.alleleModel}">
 				    <t:column>
 				       <h:panelGrid columns="3" columnClasses="db_bold, db_30_width, db_inner_detail_right">
 							<h:outputText value="#{allele.title}" styleClass="db_inner_inner_title"/>
@@ -206,75 +213,75 @@
 			     </t:dataTable>
 			     
 			     <h:outputText value="Sex:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.sex}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.sex}" />
 				
 				<h:outputText value="Development Age:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.devAge}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.devAge}" />
 				
 				<h:outputText value="Theiler Stage:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.stage}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.stage}" />
 	
-				<h:outputText value="Developmental Landmark:" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}"/>
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}"/>
+				<h:outputText value="Developmental Landmark:" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}"/>
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}"/>
 				
 				<h:outputText value="Pooled Sample:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.pooledSample}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.pooledSample}" />
 				
 				<h:outputText value="Pool Size:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.poolSize}" />			
-				
-				<h:outputText value="Dissection Method:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.dissectionMethod}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.poolSize}" />			
 				
 				<h:outputText value="Experiment Design:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.experimentalDesign}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.experimentalDesign}" />
+				
+				<h:outputText value="Sample Notes:" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.sampleNotes}" />
 			</h:panelGrid>				
 		</h:panelGrid>
 			
 		<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
 				<h:outputText value="Protocol Details" />
 				<h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+					<h:outputText value="Library Strategy:" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.libraryStrategy}" />
+					
+					<h:outputText value="ChIP Antibody:" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.libraryStrategy=='ChIP-Seq'}" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.antibody}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.libraryStrategy=='ChIP-Seq'}"/>
+					
 					<h:outputText value="Extracted Molecule:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.molecule}" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.extractedMolecule}" />
 					
-					<h:outputText value="A260:280 Ratio:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.a_260_280}" />
+					<h:outputText value="Isolation Method:" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.rnaIsolationMethod}" />
 					
-					<h:outputText value="RNA Extraction Protocol:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.extractionProtocol}" />
+					<h:outputText value="Library Construction Protocol:" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.libraryConProt}" />
 					
-					<h:outputText value="Target Amplification Manufacturer/kit:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.amplificationKit}" escape="false" />
+					<h:outputText value="Labelling Method:"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.labelMethod}" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.labelMethod}" escape="false"   rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.labelMethod}" />
 					
-					<h:outputText value="Target Amplification Protocol:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.amplificationProtocol}" />
+					<h:outputText value="Sequencing Method:"   rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.sequencingMethod}"/>
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.sequencingMethod}"   rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.sequencingMethod}" />
 					
-					<h:outputText value="Rounds of Amplification:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.amplificationRounds}" />
+					<h:outputText value="Single or Paired End:" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.pairedEnd}" />
 					
-					<h:outputText value="Amount Labeled Target Hybridized To Array:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.volTargHybrid}" />
+					<h:outputText value="Instrument Model:" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.instrumentModel}" />
 					
-					<h:outputText value="Label:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.label}" />
+					<h:outputText value="Protocol Notes:"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.protAdditionalNotes}" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.protAdditionalNotes}"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqProtocol.protAdditionalNotes}"/>
 					
-					<h:outputText value="Label Protocol:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.labelProtocol}" />
+					<h:outputText value="Library Pool Size:" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.libraryPoolSize}" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.libraryPoolSize}" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.libraryPoolSize}" />
 		
-					<h:outputText value="Array Hyb/Wash Protocol:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.washScanHybProtocol}" />
+					<h:outputText value="Library Reads:"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.libraryReads}" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.libraryReads}"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.libraryReads}" />
 					
-					<h:outputText value="Scan Protocol:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.scanProtocol}" />
+					<h:outputText value="Read Length:" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.readLength}" />
 					
-					<h:outputText value="GCOS Tgt Value:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.gcosTgtVal}" />
-					
-					<h:outputText value="Data Analysis Method:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.dataAnalProtocol}" />
-					
-					<h:outputText value="Reference:" />
-					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.reference}" />
+					<h:outputText value="Mean Insert Size:"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.meanInsertSize}" />
+					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.meanInsertSize}" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.meanInsertSize}" />
 				</h:panelGrid>
 		</h:panelGrid>
 			
@@ -284,71 +291,85 @@
         		<h:outputText value="Series GEO ID:" />
         	    <h:panelGroup>
         			<h:outputLink  value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-        			              <f:param value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.geoID}" name="acc" />
-        			               <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.geoID}" />
+        			              <f:param value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.geoID}" name="acc" />
+        			               <h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.geoID}" />
         		    </h:outputLink>
         	    </h:panelGroup>
         	
         	    <h:outputText value="Number of Samples:" />
         	    <h:panelGroup>
-        		    <h:outputLink  value="viewArraySeriesDetails.jsf">
-						<f:param value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.oid}" name="arraySeriesID" />
-						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.numSamples} samples" />
+        		    <h:outputLink  value="viewSeqSeriesDetails.jsf">
+						<f:param value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.oid}" name="seqSeriesID" />
+						<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.numSamples} samples" />
 			        </h:outputLink>
 		       </h:panelGroup>
 			
 			    <h:outputText value="Title:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.title}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.title}" />
 				
 				<h:outputText value="Summary:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.summary}" />
-				
-				<h:outputText value="Type:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.type}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.summary}" />
 				
 				<h:outputText value="Overall Design:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.seriesModel.design}" />
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.design}" />
 	  		</h:panelGrid>
         </h:panelGrid>
         
         <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
-        	<h:outputText value="Platform Details" />
-            <h:panelGrid columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
-            	<h:outputText value="Platform GEO ID:" />
-                <h:panelGroup>
-                	<h:outputLink  value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-                       <f:param value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.geoID}" name="acc"/>
-                       <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.geoID}" />
-                    </h:outputLink>
-                </h:panelGroup>
-          
-                <h:outputText value="Title:" />
-                <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.title}" />
-
-                <h:outputText value="Distribution:" />
-                <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.distribution}" />
-          
-                <h:outputText value="Technology:" />
-                <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.technology}" />
-          
-                <h:outputText value="Organism:" />
-                <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.organism}" />
-          
-                <h:outputText value="Manufacturer:" />
-                <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.manufacturer}" />
-          
-                <h:outputText value="Manufacturer Protocol:" />
-                <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.manufactureProtocol}" />
-          
-                <h:outputText value="Catalogue Number:" />
-                <h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.platformModel.catNo}" />
-            </h:panelGrid>
+        	<h:outputText value="Data Processing and Transcript Profile" />
+            <h:dataTable value="#{arraySeqSubmissionBean.seqSubmissionModel.dataProcessing}" var="dp">
+				<h:column>
+					<h:panelGrid  columns="2" columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+					
+						<h:outputText value="Filename:"/>
+						<h:outputText value="#{dp.filename}"/>
+						
+						<h:outputText value="Filetype:"/>
+						<h:outputText value="#{dp.filetype}"/>
+						
+						<h:outputText value="Raw / Processed:"/>
+						<h:outputText value="#{dp.rawOrProcessed}"/>
+						
+						<h:outputText value="Total No of Reads (RAW Only):"  rendered="#{not empty dp.numberOfReads}"/>
+						<h:outputText value="#{dp.numberOfReads}"  rendered="#{not empty dp.numberOfReads}"/>
+						
+						<h:outputText value="Reads Before Cleanup (RAW Only):"  rendered="#{not empty dp.beforeCleanUpReads}"/>
+						<h:outputText value="#{dp.beforeCleanUpReads}" rendered="#{not empty dp.beforeCleanUpReads}" />
+						
+						<h:outputText value="Single or Paired End:"  rendered="#{not empty dp.pairedEnd}"/>
+						<h:outputText value="#{dp.pairedEnd}" rendered="#{not empty dp.pairedEnd}" />
+						
+						<h:outputText value="Processing Step:" rendered="#{not empty dp.proStep}" />
+						<h:outputText value="#{dp.proStep}"  rendered="#{not empty dp.proStep}"/>
+						
+						<h:outputText value="Genome Build or Alignment Reference Sequence:"  rendered="#{not empty dp.build}"/>
+						<h:outputText value="#{dp.build}" escape="false"  rendered="#{not empty dp.build}"/>
+						
+						<h:outputText value="% Aligned to Genome:"  rendered="#{not empty dp.alignedGenome}"/>
+						<h:outputText value="#{dp.alignedGenome}"  rendered="#{not empty dp.alignedGenome}"/>
+						
+						<h:outputText value="% UnAligned to Genome:"  rendered="#{not empty dp.unalignedGenome}"/>
+						<h:outputText value="#{dp.unalignedGenome}"  rendered="#{not empty dp.unalignedGenome}"/>
+						
+						<h:outputText value="% RNA Reads:"  rendered="#{not empty dp.rnaReads}"/>
+						<h:outputText value="#{dp.rnaReads}"  rendered="#{not empty dp.rnaReads}"/>
+						
+						<h:outputText value="Format and Content:" rendered="#{not empty dp.formatContent}" />
+						<h:outputText value="#{dp.formatContent}" escape="false"  rendered="#{not empty dp.formatContent}"/>
+						
+						<h:outputText value="_________"/>
+						<h:outputText value=""/>
+					</h:panelGrid>
+					
+			</h:column>
+		</h:dataTable>
+            
         </h:panelGrid>
         
-        <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{null != arraySeqSubmissionBean.arraySubmissionModel.linkedSubmissions}">
+        <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{null != arraySeqSubmissionBean.seqSubmissionModel.linkedSubmissions}">
 			<h:outputText value="Linked Submissions" />
 			<h:panelGrid   columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
-				<h:dataTable value="#{arraySeqSubmissionBean.arraySubmissionModel.linkedSubmissions}" var="link">
+				<h:dataTable value="#{arraySeqSubmissionBean.seqSubmissionModel.linkedSubmissions}" var="link">
 					<h:column>
 						<h:panelGrid columns="1">
 							<h:panelGroup>
@@ -391,10 +412,10 @@
 			</h:panelGrid>
 		</h:panelGrid>
 		
-		<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{null != arraySeqSubmissionBean.arraySubmissionModel.acknowledgements}">
+		<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{null != arraySeqSubmissionBean.seqSubmissionModel.acknowledgements}">
 			<h:outputText value="Acknowledgements" />
 			<h:panelGrid   columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
-				<h:dataTable value="#{arraySeqSubmissionBean.arraySubmissionModel.acknowledgements}" var="ack">
+				<h:dataTable value="#{arraySeqSubmissionBean.seqSubmissionModel.acknowledgements}" var="ack">
 					<h:column>
 						<h:outputText value = "#{ack}"/>
 					</h:column>
@@ -402,10 +423,10 @@
 			</h:panelGrid>
 		</h:panelGrid>
 		
-		<h:panelGrid   columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.linkedPublications}">
+		<h:panelGrid   columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.linkedPublications}">
 			<h:outputText value="Linked Publications" />
 			<h:panelGrid  columns="1" columnClasses="db_inner_detail_right" border="0" cellspacing="0" cellpadding="0" >
-				<h:dataTable  value="#{arraySeqSubmissionBean.arraySubmissionModel.linkedPublications}" var="pub">
+				<h:dataTable  value="#{arraySeqSubmissionBean.seqSubmissionModel.linkedPublications}" var="pub">
 					<h:column>
                         <h:outputText value="#{pub[0]}" /> <br />
                         <h:outputText styleClass="db_bold" value="#{pub[2]}" /><br />

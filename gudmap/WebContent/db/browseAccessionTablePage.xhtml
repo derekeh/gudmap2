@@ -84,8 +84,11 @@
     					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+    			<h:commandLink value="#{u.gudmap_accession}"  action="#{paramBean.returnDetailsPage(u.assay_type)}">
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+					<f:param name="isArray" value="true" rendered="#{u.assay_type == 'Microarray'}"></f:param>
+					<f:param name="isArray" value="false" rendered="#{u.assay_type == 'Sequence'}"></f:param>
+					
 				</h:commandLink>
     				
     		</h:column>
