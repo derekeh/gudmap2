@@ -13,12 +13,19 @@ import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 import org.gudmap.models.MasterTableInfo;
 import org.primefaces.component.tabview.TabView;
 import org.gudmap.impl.PagerImpl;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
+
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 
 @Named (value="microarrayHeatmapBean")
@@ -308,6 +315,8 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     @Override
     public void loadDataList() {
     	
+    	createJSONFile();    	
+    	
     	rowLabels = CreateRowLabels();
     	if (rowLabels == null){
     		dataAvailable = false;
@@ -442,6 +451,133 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		genelistValueData = values.substring(0, values.length()-1);
 		genelistAdjustedData = adjvalues.substring(0, adjvalues.length()-1);
 
+	}
+	
+	
+	private void createJSONFile(){
+		
+		createHeatmapJSONObject();
+	}
+	
+	private void createHeatmapJSONObject(){
+		
+//		JSONObject obj = new JSONObject();
+//		obj.put("samples", getSamples());
+//		obj.put("probes", getProbes());
+//		obj.put("genes", getGenes());
+//		obj.put("data", getDataValues());
+		
+		Map m1 = new LinkedHashMap();
+		m1.put("samples", getSamples());
+		m1.put("probes", getProbes());
+		m1.put("genes", getGenes());
+		m1.put("data", getDataValues());
+
+		
+		
+		
+		
+		JSONArray  outerlist = new JSONArray();
+		outerlist.add(m1);
+
+		try{
+			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+			String realPath = ctx.getRealPath("/");
+			String path = realPath + "/resources/scripts/heatmap2.json";
+			
+			FileWriter file = new FileWriter(path);
+			file.write(outerlist.toJSONString());
+			file.flush();
+			file.close();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+				
+	
+	}
+	
+	private LinkedList<String> getSamples(){
+		
+		LinkedList<String> samples = new LinkedList<String>();
+
+		ArrayList<String> expressionTitles = assembler.getHeatmapExpressionTitlesFromMasterTableId(masterTableId);
+		for(String expressionTitle : expressionTitles){
+			samples.add(expressionTitle);
+		}
+			
+		return samples;
+	}
+	
+	private LinkedList<String> getProbes(){
+		
+		LinkedList<String> probes = new LinkedList<String>();
+
+		String platformId = assembler.getPlatformIdFromMasterTableId(masterTableId);
+		
+		if (genelistId != null){
+			probeIds = assembler.getProbeSetIdsByGenelistIdAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, genelistId, platformId);
+		}
+		else{
+			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
+		}
+
+		for(String probe : probeIds){
+			probes.add(probe);
+		}
+			
+		return probes;
+	}
+
+	private LinkedList<String> getGenes(){
+		
+		LinkedList<String> genes = new LinkedList<String>();
+
+		ArrayList<String[]> annotations = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
+		for (String[] annotation : annotations){
+			
+			 genes.add(annotation[1]);
+		}
+			
+		return genes;
+	}
+
+	private LinkedList<LinkedList<String>> getDataValues(){
+		
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items = new LinkedList<String>();
+
+		for (String probeId : probeIds){
+			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
+			for(String[] item : dataList){
+				String rma = item[2];
+				String scaledRma = item[5];
+				
+				items.add(rma);
+			}
+			data.add(items);
+		}
+				
+		return data;
+	}
+	
+	private LinkedList<LinkedList<String>> getDataAdjValues(){
+		
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items = new LinkedList<String>();
+
+		for (String probeId : probeIds){
+			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
+			for(String[] item : dataList){
+				String rma = item[2];
+				String scaledRma = item[5];
+				
+				items.add(scaledRma);
+			}
+			data.add(items);
+		}
+				
+		return data;
 	}
 	
  }
