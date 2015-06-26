@@ -3,6 +3,7 @@ package org.gudmap.models.submission;
 import java.util.List;
 
 import org.gudmap.models.DataProcessing;
+import org.gudmap.models.SeqProtocol;
 import org.gudmap.models.SupplementaryFiles;
 
 public class SeqSubmissionModel extends ArraySeqSubmissionModel {
@@ -12,6 +13,7 @@ public class SeqSubmissionModel extends ArraySeqSubmissionModel {
 	 private List<SupplementaryFiles> processedFile;
 	 private SeqSampleModel seqSampleModel;
 	 private SeqSeriesModel seqSeriesModel;
+	 private SeqProtocol seqProtocol;
 	
 	
 	
@@ -54,6 +56,14 @@ public class SeqSubmissionModel extends ArraySeqSubmissionModel {
 	    
 	    public SeqSeriesModel getSeqSeriesModel() {
 	    	return seqSeriesModel;
+	    }
+	    
+	    public void setSeqProtocol(SeqProtocol seqProtocol) {
+	    	this.seqProtocol=seqProtocol;
+	    }
+	    
+	    public SeqProtocol getSeqProtocol() {
+	    	return seqProtocol;
 	    }
 
 }

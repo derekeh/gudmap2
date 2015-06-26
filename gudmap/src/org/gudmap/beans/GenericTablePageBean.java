@@ -125,11 +125,11 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	}
     	else if(assayType.equals("NextGen")) {
     		if(specimenAssay.equals("seqseries")) {
-	    		if(seqSeriesAssembler==null)
+	    		//if(seqSeriesAssembler==null)
 	    			seqSeriesAssembler= new SeqSeriesTablePageBeanAssembler(SequenceQueries.SEQUENCE_SERIES_BROWSE_PARAM,assayType);
     		}
 	    	if(specimenAssay.equals("seqsample")) {
-	    		if(seqSampleAssembler==null)
+	    		//if(seqSampleAssembler==null)
 	    			seqSampleAssembler= new SeqSampleTablePageBeanAssembler(SequenceQueries.SEQUENCE_SAMPLE_BROWSE_PARAM,assayType);
 	    	}
     	}
@@ -141,7 +141,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	}
     	else if(assayType.equals("ISH")) {
     		if(specimenAssay.equals("expression")) {
-    			if(expressionAssembler==null)
+    			//if(expressionAssembler==null)
     				expressionAssembler = new GeneExpressionTablePageBeanAssembler(GeneIndexQueries.GENES_BY_EXPRESSION, assayType) ;
     		}
     		else

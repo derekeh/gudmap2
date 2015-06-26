@@ -463,7 +463,6 @@ public class ParamBean implements Serializable {
 		rnaseqcol=genestripresultmap.containsKey("rnaseq");
 	}
 	
-	
 	public String[] getGenestripcols(){
 		return genestripcols;
 	}
@@ -1318,6 +1317,30 @@ public class ParamBean implements Serializable {
 	public String getSeqseriescolsInString() {
 		return Arrays.toString(seqseriescols);
 	}
+	
+	//////////////REDIRECTIONS////////////////
+	
+	public String returnDetailsPage(String assayType) {
+		String RET="";
+		if(assayType.equalsIgnoreCase("Microarray"))
+			RET="viewArraySubmissionDetails";
+		else if(assayType.equalsIgnoreCase("NextGen") || assayType.equalsIgnoreCase("Sequence"))
+			RET="viewSeqSubmissionDetails";
+		else
+			RET="viewSubmissionDetails";
+		return RET;
+	}
+	
+	///////FROM browseStageSubmissions//////////////////
+	public void updateStaging(String stage, String geneSymbol){
+		resetAll();
+		setTheilerstagefromvalues(stage);
+		setTheilerstagetovalues(stage);
+		if(!geneSymbol.equals(""))
+			setGenevalues(geneSymbol);
+		
+	}
+	
 	
 	/**********TODO **********checkboxes keep this code ******************/
 	

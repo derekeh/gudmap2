@@ -21,14 +21,12 @@
 	<!-- can use relative links on html tags -->
 	#{genericTablePageBean.init('TG','',20,10,'SUB_OID',true)}
 	#{genericTablePageBean.loadDataList()}
-	<h:form>
+	
 	#{paramBean.setGenotypecol(true)}
 	#{paramBean.setProbenamecol(false)}
-		<h:panelGrid columns="2">
-			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
-		</h:panelGrid>
-	</h:form>
+	
+	
+	<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
 	
 	<ui:include src="/snippets/g_tgCols.xhtml"></ui:include>
 	
