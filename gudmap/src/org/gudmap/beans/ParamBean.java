@@ -1332,10 +1332,13 @@ public class ParamBean implements Serializable {
 	}
 	
 	///////FROM browseStageSubmissions//////////////////
-	public void updateStaging(String stage){
+	public void updateStaging(String stage, String geneSymbol){
 		resetAll();
-		setTheilerstagetovalues(stage);
 		setTheilerstagefromvalues(stage);
+		setTheilerstagetovalues(stage);
+		if(!geneSymbol.equals(""))
+			setGenevalues(geneSymbol);
+		
 	}
 	
 	

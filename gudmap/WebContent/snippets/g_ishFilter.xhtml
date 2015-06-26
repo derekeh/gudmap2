@@ -62,7 +62,7 @@
 	   		
 	   		
 	   		<h:commandButton id="il_filter_submit" value="Submit" actionListener="#{genericTablePageBean.refresh()}">
-	   			<f:ajax execute="@form" render=":dataform :pagingform" ></f:ajax> 
+	   			<f:ajax execute="@form" render=":dataform :pagingform :buttonform" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>
 	   </h:form>
@@ -73,7 +73,7 @@
 	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
 	   		
 	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{genericTablePageBean.resetAll()}">
-	   			<f:ajax execute="@this il_filter_reset" render=":filterform :dataform :pagingform :focusform" ></f:ajax> 
+	   			<f:ajax execute="@this il_filter_reset" render=":filterform :dataform :pagingform :focusform :buttonform" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>	
 	  </h:form>    

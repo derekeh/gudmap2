@@ -5,13 +5,15 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.StageAssembler;
 
 @Named
-@RequestScoped
+//@RequestScoped
+@ViewScoped
 public class StageBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

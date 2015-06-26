@@ -18,7 +18,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	    <h1>Submissions by Stage <h:outputText value ="for Gene: #{stageBean.geneSymbol}" rendered="not empty #{stageBean.geneSymbol}"  /></h1>	
+	    <h1>Submissions by Stage <h:outputText value ="for Gene: #{stageBean.geneSymbol}" rendered="#{not empty stageBean.geneSymbol}" /></h1>	
 	    <!-- all other content in here -->  
 	    <h:form id="stageBrowseForm">
 		<h:dataTable styleClass="db_order-table"
@@ -56,7 +56,7 @@
 				<f:facet name="header">              
 					<h:outputText styleClass="plaintextbold" value="Number of In situ Submissions Test" />
 				</f:facet>
-				<h:commandLink value="#{submission[2]}" actionListener="#{paramBean.updateStaging(submission[4])}"  action="browseInsituTablePage" rendered="#{submission[2]!='0'}">  
+				<h:commandLink value="#{submission[2]}" actionListener="#{paramBean.updateStaging(submission[4],stageBean.geneSymbol)}"  action="browseInsituTablePage" rendered="#{submission[2]!='0'}">  
 					
 				</h:commandLink>
 			</h:column>

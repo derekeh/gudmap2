@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<h:form id="buttonform">
+		<h:panelGrid columns="2">
+			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button" 
+			style="#{paramBean.getWhereclause()!=' WHERE ' ?'background-image:none;background-color:#FFE6E6':''}"></pr:commandButton>
+		</h:panelGrid>
+	</h:form>
+		
+</ui:composition>
