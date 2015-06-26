@@ -8,12 +8,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 
-import org.apache.myfaces.custom.tabbedpane.TabChangeEvent;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 import org.gudmap.models.MasterTableInfo;
-import org.primefaces.component.tabview.TabView;
 import org.gudmap.impl.PagerImpl;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
@@ -379,11 +376,10 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	
 	public String getTitle() {
 		
-		if (tableTitle == null)
-			if (genelistId != null) 
-				tableTitle = assembler.getGenelistTitle(genelistId) + " (gene list)";
-			else
-				tableTitle = gene;
+		if (genelistId != null) 
+			tableTitle = assembler.getGenelistTitle(genelistId) + " (gene list)";
+		else
+			tableTitle = gene;
 		
 		return tableTitle;
 	}
@@ -462,15 +458,29 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			String path = ctx.getRealPath("/");
 			
 			if (genelistId != null){
+				// cache the analysis json files
+				
 				path += "/resources/scripts/" + genelistId + "heatmap.json";
+				
+				File f = new File(path);
+				if (!f.exists()){
+				
+					FileWriter writer = new FileWriter(f);
+					
+					JSONObject obj = createHeatmapJSONObject();
+					
+					writer.write(obj.toJSONString());
+					writer.flush();
+					writer.close();
+				}				
+				
 			}
 			else {
+				// write over any browsed json files
+				
 				path += "/resources/scripts/heatmap.json";
-			}
-			File f = new File(path);
-			if (!f.exists()){
-			
-				FileWriter writer = new FileWriter(f);
+				
+				FileWriter writer = new FileWriter(path);
 				
 				JSONObject obj = createHeatmapJSONObject();
 				
@@ -478,6 +488,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 				writer.flush();
 				writer.close();
 			}
+
 		}
 		catch(IOException e){
 			e.printStackTrace();
@@ -590,18 +601,22 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		LinkedList<LinkedList<String>> annotations = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
 
-		for (String probeId : probeIds){
-			ArrayList<String[]> dataList = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
+		ArrayList<String[]> dataList = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
+		for(String[] item : dataList){
 			items = new LinkedList<String>();
-			for(String[] item : dataList){
-				items.add(item[0]);
-				items.add(item[1]);
-				items.add(item[2]);
-				items.add(item[3]);
-				items.add(item[4]);
-				items.add(item[5]);
-				items.add(item[6]);
-			}
+
+			items.add(item[0]);
+			items.add(item[1]);
+			items.add(item[2]);
+			items.add(item[3]);
+			items.add(item[4]);
+			items.add(item[5]);
+			items.add(item[6]);
+			items.add("GUDMAP");
+			items.add("UCSC");
+			items.add("KEGG");
+			items.add("ENS");
+			
 			annotations.add(items);
 		}
 				

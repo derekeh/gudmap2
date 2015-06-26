@@ -1132,8 +1132,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			var log2r=[];
 			var sorted; // sorted is zero-based index
 			d3.selectAll(".c"+rORc+i) 
-				.filter(function(ce){
-	               log2r.push(ce.value);
+				.filter(function(d){
+	               log2r.push(d);
 //	               log2r.push(ce.adjvalue);
 	             });
 			if(rORc=="r"){ // sort log2ratio of a gene
@@ -1305,6 +1305,11 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
         		 d3.selectAll(".colLabel").classed("text-selected",false);
         	 }
          });	     
+	     
+
+	     
+	     
+	     
 	     
 	     
     }); 
