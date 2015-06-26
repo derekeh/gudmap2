@@ -1331,6 +1331,23 @@ public class ParamBean implements Serializable {
 		return RET;
 	}
 	
+	public String returnBatchPage(String assayType, String specimenAssay) {
+		String RET="";
+		/*if(specimenAssay.equalsIgnoreCase("section"))
+			RET="browseSishTablePage";
+		else if(specimenAssay.equalsIgnoreCase("wholemount"))
+			RET="browseWishTablePage";
+		else if(specimenAssay.equalsIgnoreCase("opt-wholemount"))
+			RET="browseOptTablePage";
+		else */if(assayType.equalsIgnoreCase("IHC"))
+			RET="browseIhcTablePage";
+		else if(assayType.equalsIgnoreCase("Tg"))
+			RET="browseTgTablePage";
+		else
+			RET="browseInsituTablePage";
+		return RET;
+	}
+	
 	///////FROM browseStageSubmissions//////////////////
 	public void updateStaging(String stage, String geneSymbol){
 		resetAll();

@@ -443,6 +443,13 @@ function findExpressionNotes(){
 							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.batchId}" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>
 						</h:outputLink>
 						
+						<h:outputText value="Batch ID:" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>
+						<h:commandLink value="#{ishSubmissionBean.ishSubmissionModel.batchId}" 
+							action="#{paramBean.returnBatchPage(ishSubmissionBean.ishSubmissionModel.assayType,ishSubmissionBean.ishSubmissionModel.specimenModel.assayType)}" 
+							rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}">
+							<f:param name="batch" value="#{ishSubmissionBean.ishSubmissionModel.batchId}" />
+						</h:commandLink>
+						
 						<h:outputText value="Submission ID:" />
 						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.labId}" />
 	    			

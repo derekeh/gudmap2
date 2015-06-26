@@ -34,6 +34,7 @@ public class InsituTablePageBeanAssembler {
 	private String focusGroupWhereclause;
 	private String expressionJoin;
 	private String specimenWhereclause;
+	private int batch=0;
 	
 	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
 		/*try {
@@ -42,6 +43,8 @@ public class InsituTablePageBeanAssembler {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}*/
+		if(Globals.getParameterValue("batch")!=null)
+			batch=Integer.parseInt(Globals.getParameterValue("batch"));
 
 		
 		this.paramSQL=paramSQL;
@@ -56,6 +59,8 @@ public class InsituTablePageBeanAssembler {
 		this.expressionJoin=expressionJoin;
 		this.specimenWhereclause=specimenWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
+		
+		if(batch>0){whereclause+=" SUB_BATCH="+batch+" AND ";}
 		
 		if(assayType.equals("TG"))
 			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");
@@ -105,12 +110,15 @@ public class InsituTablePageBeanAssembler {
 	
 	public int count() {
 		int count=0;
+		
 		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
 		//String totalwhere=(whereclause.trim().equals("WHERE"))?"":Utils.removeWhere(whereclause, " WHERE ");
 		if(assayType.equals("TG"))
 			totalwhere = totalwhere.replace("RPR_SYMBOL", "ALE_GENE");
 		String sql = String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause);
 		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
+		if(batch>0)
+			sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
 		try
 		{
 				con = Globals.getDatasource().getConnection();
@@ -153,6 +161,10 @@ public class InsituTablePageBeanAssembler {
 					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
 					//ps = con.prepareStatement(sql);
 				}
+				//is it a batch query?
+				if(batch>0)
+					sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
+				
 				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
 				result =  ps.executeQuery();

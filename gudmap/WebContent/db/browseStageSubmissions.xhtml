@@ -42,19 +42,10 @@
 				<h:outputText styleClass="plaintext" value="#{submission[1]}" />
 			</h:column>
 			
-			<h:column>
-				<f:facet name="header">              
-					<h:outputText styleClass="plaintextbold" value="Number of In situ Submissions" />
-				</f:facet>
-				<h:outputLink value="browseInsituTablePage.jsf?stage=#{submission[4]}&amp;gene=#{sessionBean.inputParam}" styleClass="plaintext" rendered="#{submission[2]!='0'}">  
-					<h:outputText value="#{submission[2]}" />
-				</h:outputLink>
-				<h:outputText styleClass="plaintext" value="#{submission[2]}" rendered="#{submission[2]=='0'}"/>
-			</h:column>
 			
 			<h:column>
 				<f:facet name="header">              
-					<h:outputText styleClass="plaintextbold" value="Number of In situ Submissions Test" />
+					<h:outputText styleClass="plaintextbold" value="Number of In situ Submissions" />
 				</f:facet>
 				<h:commandLink value="#{submission[2]}" actionListener="#{paramBean.updateStaging(submission[4],stageBean.geneSymbol)}"  action="browseInsituTablePage" rendered="#{submission[2]!='0'}">  
 					
