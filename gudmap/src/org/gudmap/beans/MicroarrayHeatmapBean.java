@@ -8,17 +8,22 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 
-import org.apache.myfaces.custom.tabbedpane.TabChangeEvent;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 import org.gudmap.models.MasterTableInfo;
-import org.primefaces.component.tabview.TabView;
 import org.gudmap.impl.PagerImpl;
+import org.json.simple.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
+
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
 
 @Named (value="microarrayHeatmapBean")
@@ -67,7 +72,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     
     public MicroarrayHeatmapBean() {
     	
-       	super(500,10,null,true);   	
+       	super(1000,10,null,true);   	
     }
     
 	public MicroarrayHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
@@ -308,47 +313,49 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     @Override
     public void loadDataList() {
     	
-    	rowLabels = CreateRowLabels();
-    	if (rowLabels == null){
-    		dataAvailable = false;
-    		return;
-    	}
-    	else
-    		dataAvailable = true;
+    	createJSONFile();    	
     	
-    	CreateColumnLabels();
-    	CreateAnnotations();
-    	CreateAnnotationData();
-
-    	
-		String heatmapData = "";
-		String values = "";
-		String adjvalues = "";
-		
-		int rowCounter = 1;
-		for (String probeId : probeIds){
-			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
-			int colCounter = 1;
-//			String subcolor = "";
-			for(String[] data : dataList){
-				String rma = data[2];
-				String scaledRma = data[5];
-				String backgroundColor = "#" + data[6];
-				String hdata = Integer.toString(rowCounter) + "," + Integer.toString(colCounter) + "," + rma + "," + scaledRma + "," + backgroundColor + ",";
-				heatmapData += Integer.toString(rowCounter) + "," + Integer.toString(colCounter) + "," + rma + "," + scaledRma + "," + backgroundColor + ",";
-				values += rma + ",";
-				adjvalues += scaledRma + ",";
-				
-				colCounter ++;
-				
-				if (debug)
-					System.out.println("heatmapData: " + hdata);
-			}
-			rowCounter++;
-		}
-		data = heatmapData.substring(0, heatmapData.length()-1);
-		valueData = values.substring(0, values.length()-1);
-		adjustedData = adjvalues.substring(0, adjvalues.length()-1);
+//    	rowLabels = CreateRowLabels();
+//    	if (rowLabels == null){
+//    		dataAvailable = false;
+//    		return;
+//    	}
+//    	else
+//    		dataAvailable = true;
+//    	
+//    	CreateColumnLabels();
+//    	CreateAnnotations();
+//    	CreateAnnotationData();
+//
+//    	
+//		String heatmapData = "";
+//		String values = "";
+//		String adjvalues = "";
+//		
+//		int rowCounter = 1;
+//		for (String probeId : probeIds){
+//			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
+//			int colCounter = 1;
+////			String subcolor = "";
+//			for(String[] data : dataList){
+//				String rma = data[2];
+//				String scaledRma = data[5];
+//				String backgroundColor = "#" + data[6];
+//				String hdata = Integer.toString(rowCounter) + "," + Integer.toString(colCounter) + "," + rma + "," + scaledRma + "," + backgroundColor + ",";
+//				heatmapData += Integer.toString(rowCounter) + "," + Integer.toString(colCounter) + "," + rma + "," + scaledRma + "," + backgroundColor + ",";
+//				values += rma + ",";
+//				adjvalues += scaledRma + ",";
+//				
+//				colCounter ++;
+//				
+//				if (debug)
+//					System.out.println("heatmapData: " + hdata);
+//			}
+//			rowCounter++;
+//		}
+//		data = heatmapData.substring(0, heatmapData.length()-1);
+//		valueData = values.substring(0, values.length()-1);
+//		adjustedData = adjvalues.substring(0, adjvalues.length()-1);
 		
         // Set currentPage, totalPages and pages.
 //    	setTotalslist(assembler.getTotals());
@@ -369,11 +376,10 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	
 	public String getTitle() {
 		
-		if (tableTitle == null)
-			if (genelistId != null) 
-				tableTitle = assembler.getGenelistTitle(genelistId) + " (gene list)";
-			else
-				tableTitle = gene;
+		if (genelistId != null) 
+			tableTitle = assembler.getGenelistTitle(genelistId) + " (gene list)";
+		else
+			tableTitle = gene;
 		
 		return tableTitle;
 	}
@@ -442,6 +448,179 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		genelistValueData = values.substring(0, values.length()-1);
 		genelistAdjustedData = adjvalues.substring(0, adjvalues.length()-1);
 
+	}
+	
+	
+	private void createJSONFile(){
+		
+		try{
+			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+			String path = ctx.getRealPath("/");
+			
+			if (genelistId != null){
+				// cache the analysis json files
+				
+				path += "/resources/scripts/" + genelistId + "heatmap.json";
+				
+				File f = new File(path);
+				if (!f.exists()){
+				
+					FileWriter writer = new FileWriter(f);
+					
+					JSONObject obj = createHeatmapJSONObject();
+					
+					writer.write(obj.toJSONString());
+					writer.flush();
+					writer.close();
+				}				
+				
+			}
+			else {
+				// write over any browsed json files
+				
+				path += "/resources/scripts/heatmap.json";
+				
+				FileWriter writer = new FileWriter(path);
+				
+				JSONObject obj = createHeatmapJSONObject();
+				
+				writer.write(obj.toJSONString());
+				writer.flush();
+				writer.close();
+			}
+
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private JSONObject createHeatmapJSONObject(){
+		
+		JSONObject obj = new JSONObject();
+		
+		obj.put("samples", getSamples());
+		obj.put("probes", getProbes());
+		obj.put("genes", getGenes());
+		obj.put("data", getDataValues());
+		obj.put("adjdata", getDataAdjValues());
+		obj.put("annotations", getProbeAnnotations());
+		
+				
+		return obj;
+	}
+	
+	private LinkedList<String> getSamples(){
+		
+		LinkedList<String> samples = new LinkedList<String>();
+
+		ArrayList<String> expressionTitles = assembler.getHeatmapExpressionTitlesFromMasterTableId(masterTableId);
+		for(String expressionTitle : expressionTitles){
+			samples.add(expressionTitle);
+		}
+			
+		return samples;
+	}
+	
+	private LinkedList<String> getProbes(){
+		
+		LinkedList<String> probes = new LinkedList<String>();
+
+		String platformId = assembler.getPlatformIdFromMasterTableId(masterTableId);
+		
+		if (genelistId != null){
+			probeIds = assembler.getProbeSetIdsByGenelistIdAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, genelistId, platformId);
+		}
+		else{
+			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
+		}
+
+		for(String probe : probeIds){
+			probes.add(probe);
+		}
+			
+		return probes;
+	}
+
+	private LinkedList<String> getGenes(){
+		
+		LinkedList<String> genes = new LinkedList<String>();
+
+		ArrayList<String[]> annotations = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
+		for (String[] annotation : annotations){
+			
+			 genes.add(annotation[1]);
+		}
+			
+		return genes;
+	}
+
+	private LinkedList<LinkedList<String>> getDataValues(){
+		
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items;
+
+		for (String probeId : probeIds){
+			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
+			items = new LinkedList<String>();
+			for(String[] item : dataList){
+				String rma = item[2];
+				String scaledRma = item[5];
+				
+				items.add(rma);
+			}
+			data.add(items);
+		}
+				
+		return data;
+	}
+	
+	private LinkedList<LinkedList<String>> getDataAdjValues(){
+		
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items;
+
+		for (String probeId : probeIds){
+			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
+			items = new LinkedList<String>();
+			for(String[] item : dataList){
+				String rma = item[2];
+				String scaledRma = item[5];
+				
+				items.add(scaledRma);
+			}
+			data.add(items);
+		}
+				
+		return data;
+	}
+
+	private LinkedList<LinkedList<String>> getProbeAnnotations(){
+		
+		LinkedList<LinkedList<String>> annotations = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items;
+
+		ArrayList<String[]> dataList = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
+		for(String[] item : dataList){
+			items = new LinkedList<String>();
+
+			items.add(item[0]);
+			items.add(item[1]);
+			items.add(item[2]);
+			items.add(item[3]);
+			items.add(item[4]);
+			items.add(item[5]);
+			items.add(item[6]);
+			items.add("GUDMAP");
+			items.add("UCSC");
+			items.add("KEGG");
+			items.add("ENS");
+			
+			annotations.add(items);
+		}
+				
+		return annotations;
 	}
 	
  }
