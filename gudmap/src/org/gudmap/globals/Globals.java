@@ -12,6 +12,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.gudmap.queries.generic.GenericQueries;
+
 public class Globals {
 	public Globals(){
 		
@@ -68,7 +70,7 @@ public class Globals {
     	return defaultExpressionProfileBarHeight;
     }
     
-    final static public String[] interestedStructures = {
+   /* final static public String[] interestedStructures = {
 		  "Mesonephros (all parts, all stages)", 
 		  "Metanephros",
 		  "Lower urinary tract",
@@ -76,11 +78,18 @@ public class Globals {
 		  "Male reproductive system",
 		  "Female reproductive system", 
 		  "Others" // items down from this item will not be implemented for time being - 13/11/2008
-	};
+	};*/
+    
+    static public String[] focusGroups={"NA","Metanephros","Early reproductive system","Male reproductive system","Female reproductive system","Lower urinary tract",
+    									"Mesonephros"};
+    	
+    
 	  
 	final static public String[] getInterestedAnatomyStructureIds () {
 		  return new String[] {"6", "1", "5", "2", "3", "4"};
 	}
+	
+	
 	
 	 final static public Hashtable<String, String[]> getEMAPID(){
 			Hashtable<String, String[]> lookupsection = new Hashtable<String,String[]>();

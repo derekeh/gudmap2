@@ -21,6 +21,7 @@ import org.gudmap.assemblers.MicSampleTablePageBeanAssembler;
 import org.gudmap.assemblers.MicSeriesTablePageBeanAssembler;
 import org.gudmap.assemblers.SeqSampleTablePageBeanAssembler;
 import org.gudmap.assemblers.SeqSeriesTablePageBeanAssembler;
+import org.gudmap.globals.Globals;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.array.ArrayQueries;
@@ -64,8 +65,8 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     @Inject
    	protected ParamBean paramBean;
     
-  /*  @Inject
-   	protected SessionBean sessionBean;*/
+    @Inject
+   	protected VolatileSummaryBean volatileSummaryBean;
    	
     // Constructors -------------------------------------------------------------------------------
 
@@ -82,9 +83,9 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 		this.paramBean=paramBean;
 	}
 	
-/*	public void setSessionBean(SessionBean sessionBean){
-		this.sessionBean=sessionBean;
-	}*/
+	public void setVolatileSummaryBean(VolatileSummaryBean volatileSummaryBean){
+		this.volatileSummaryBean=volatileSummaryBean;
+	}
 	
 	public void init(String assayType, String specimenAssay, int rowsperpage, int pagenumbers, String defaultOrderCol, boolean sortDirection) {
 		this.assayType=assayType;
@@ -144,8 +145,18 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     			//if(expressionAssembler==null)
     				expressionAssembler = new GeneExpressionTablePageBeanAssembler(GeneIndexQueries.GENES_BY_EXPRESSION, assayType) ;
     		}
-    		else
+    		//insitu data
+    		else {
+    			if(Globals.getParameterValue("gene")!=null)
+    				paramBean.setGenevalues(Globals.getParameterValue("gene"));
+    			if(Globals.getParameterValue("focusGroup")!=null)  {
+    				
+    				paramBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
+    				volatileSummaryBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
+    			}
+    			
     			assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
+    		}
     	}
     	
     	/*else

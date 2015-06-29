@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -12,7 +13,8 @@ import org.gudmap.assemblers.SummaryBeanAssembler;
 import org.gudmap.models.SummaryBeanModel;
 
 @Named(value="volatileSummaryBean")
-@ViewScoped
+//@ViewScoped
+@SessionScoped
 public class VolatileSummaryBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private SummaryBeanAssembler dbsummary;

@@ -881,6 +881,8 @@ public class ParamBean implements Serializable {
 			RET="";
 		else if(focusGroup.equals("Metanephros"))
 			RET =  GenericQueries.FOCUS_METANEPHROS;
+		else if(focusGroup.equals("Mesonephros"))
+			RET =  GenericQueries.FOCUS_MESONEPHROS;
 		else if(focusGroup.equals("Lower urinary tract"))
 			RET =  GenericQueries.FOCUS_URINARY;
 		else if(focusGroup.equals("Early reproductive system"))
@@ -900,6 +902,8 @@ public class ParamBean implements Serializable {
 			RET="";
 		else if(focusGroup.equals("Metanephros"))
 			RET =  GenericQueries.FOCUS_METANEPHROS_SP;
+		else if(focusGroup.equals("Mesonephros"))
+			RET =  GenericQueries.FOCUS_MESONEPHROS_SP;
 		else if(focusGroup.equals("Lower urinary tract"))
 			RET =  GenericQueries.FOCUS_URINARY_SP;
 		else if(focusGroup.equals("Early reproductive system"))
