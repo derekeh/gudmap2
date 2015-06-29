@@ -33,6 +33,8 @@ public class MicSampleTablePageBeanAssembler {
 	private String whereclause;
 	private String focusGroupWhereclause;
 	private String paramValue;
+	private String stageValue;
+	private String geneValue;
 	
 	public MicSampleTablePageBeanAssembler(String paramSQL,String assayType) {
 		/*try {
@@ -45,6 +47,8 @@ public class MicSampleTablePageBeanAssembler {
 		this.paramSQL=paramSQL;
 		
 		paramValue=(Globals.getParameterValue("arraySeriesID")!=null)?"AND SRM_SERIES_FK="+Globals.getParameterValue("arraySeriesID")+" ":"";
+		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND SUB_EMBRYO_STG="+Globals.getParameterValue("stage")+" ":"";
+		
 		
 	}
 	

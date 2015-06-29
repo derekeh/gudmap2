@@ -44,10 +44,12 @@
     		
  			<h:column >
     			<f:facet name="header">
-    				<ui:remove><h:commandButton value="Check" action="#{genericTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
-    				<h:commandButton id="checkall" value="Check" action="#{genericTablePageBean.checkAll}">
+    				<h:commandButton id="checkall" value="Check All" action="#{genericTablePageBean.checkAll}">
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
+					<br />
+    				<h:commandButton  id="tocart" value="Add" action="#{genericTablePageBean.checkboxSelections()}" />	
+    				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
