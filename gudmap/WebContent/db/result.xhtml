@@ -8,6 +8,8 @@
 	xmlns:pr="http://primefaces.org/ui" >
  
     <h:body>
+    <h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
+    <h:outputScript library="scripts" name="modernizr.html5.js"></h:outputScript>
  
     	<h1>JSF 2 checkboxes example</h1>
  
@@ -37,6 +39,66 @@
     	<p>genericTablePageBean.getSelectedItemstoString:<strong> #{genericTablePageBean.getSelectedItemstoString()}</strong></p>
     	
     	<p>paramBean.getFocusGroupWhereclause: <strong>#{paramBean.focusGroupWhereclause}</strong></p>
+    	
+    	<p>paramBean.collectionType: <strong>#{paramBean.collectionType}</strong></p>
+    	
+    	<p>paramBean.totalLocalStorage: <strong>#{paramBean.returnTotalLocalStorage(genericTablePageBean.getSelectedItemstoStringBuffer())}</strong></p>
+    	
+    	
+	
+	<script type="text/javascript">
+//<![CDATA[
+
+	//$(document).ready(function() {
+		   
+		 if(Modernizr.localstorage) {
+			var type = JSON.stringify(#{paramBean.getCollectionTypeBuffer()});
+			var newtype=type.replace(/"/g, '');
+			//alert('type: '+newtype);
+	 		
+	 		
+	 		var ids=JSON.stringify(#{genericTablePageBean.getSelectedItemstoStringBuffer()});
+	 		var newstr=ids.replace(/"/g, '');
+	 		newstr=newstr.substring(0,newstr.lastIndexOf(";"));
+	 		//alert('newstr: ' + newstr);
+	 		
+	 		var currentStorage='';
+	 		var newStorage='';
+	 		if(localStorage["Entries"]!=undefined) {
+	 			//alert('NOT UNDEFINED');
+	 			//alert('Entries: '+ localStorage["Entries"]);
+	 			if(localStorage["Entries"]!=''){
+	 				currentStorage=localStorage["Entries"];	
+	 				//alert('entries not blank string: '+ currentStorage);
+	 			}
+	 		}
+	 		//else
+	 			//alert('UNDEFINED');
+	 		
+	 		//alert('current storage: '+localStorage["Entries"]);
+	 		if(currentStorage=='')
+	 			newStorage=newstr;
+	 		else
+	 			newStorage=currentStorage+';'+newstr;
+	 		//var newcurrentStorage=currentStorage.replace('undefined','');
+	 		
+	 		
+	 		//alert('new storage: ' + newStorage);
+	 		if(newStorage!=';')
+	 			localStorage.setItem(newtype,newStorage);
+	 		
+	 		document.write('<p>Local Storage Entry values: '+localStorage["Entries"]+'</p>');
+	 		document.write('<p>Local Storage Gene values: '+localStorage["Genes"]+'</p>');
+	 			 		
+	 	 }
+	 	else 
+	 		document.write('<p><strong>No local storage available on this browser</strong></p>');	
+		   	   	  	   
+	 //}); 
+  
+
+//]]>
+ </script>  
     	
     	
     

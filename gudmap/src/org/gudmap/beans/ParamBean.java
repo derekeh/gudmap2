@@ -8,11 +8,15 @@ import javax.inject.Named;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.gudmap.assemblers.ParamBeanAssembler;
 import org.gudmap.queries.generic.GenericQueries;
@@ -131,6 +135,11 @@ public class ParamBean implements Serializable {
 	
 	//page categories
 	private String pageCategory="About";
+	
+	//collections
+	private String collectionType="Entries";
+	private String localStorage="";
+	private String totalLocalStorage="";
 	
 		
 	public ParamBean() {
@@ -1359,6 +1368,74 @@ public class ParamBean implements Serializable {
 		setTheilerstagetovalues(stage);
 		if(!geneSymbol.equals(""))
 			setGenevalues(geneSymbol);
+		
+	}
+	
+/////////////////COLLECTIONS////////////////////////////
+	public Map<String,String> getCollectionTypelist(){
+	return assembler.getCollectionTypelist();
+	}
+	
+	public void setCollectionType(String collectionType){
+	this.collectionType = collectionType;
+	}
+	
+	public String getCollectionType() {
+	return collectionType;
+	}
+	
+	 public String getCollectionTypeBuffer(){
+	    	StringBuffer str=new StringBuffer();
+	    	
+	    	if(collectionType!=null) {
+	    		str.append("'");
+		    	str.append(collectionType);
+		    	str.append("'");
+	    	}
+	    	
+	    	return str.toString();
+	    }
+	
+	public void collectionTypeChanged(ValueChangeEvent e){
+	this.collectionType = e.getNewValue().toString();
+	}
+	
+	Set<String> items = null;
+	public void setLocalStorage(String localStorage) {
+		//get rid of duplicates by splitting the string into a set
+		items = new HashSet<String>(Arrays.asList(localStorage.split(";")));
+		String tmpstr = items.toString();
+		tmpstr=tmpstr.substring(1,tmpstr.lastIndexOf(']'));
+		tmpstr=tmpstr.replace(", ",";");
+		this.localStorage=tmpstr.replace("undefined","");
+		if(this.localStorage.startsWith(";"))
+			this.localStorage=this.localStorage.substring(1);
+		int i=0;
+	}
+	
+	public String getLocalStorage() {
+		return localStorage;
+	}
+	
+	public void resetItems() {
+		if(items!=null)
+			items.clear();
+	}
+	//TODO remove duplicates from newval see above
+	public String returnTotalLocalStorage(String newval){
+		StringBuffer outputstr = new StringBuffer();
+		newval=newval.substring(1,newval.lastIndexOf("'"));
+		
+		List<String> list = new ArrayList<String>(Arrays.asList(newval.split(";")));
+		for(String str : list) {
+			if(!items.contains(str) && !str.equals(""))
+				outputstr.append(str+";");
+		}
+		if(getLocalStorage().equals(""))
+			return outputstr.toString();
+		else
+			return getLocalStorage()+";"+outputstr.toString();
+		
 		
 	}
 	

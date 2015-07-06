@@ -513,8 +513,8 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
         		for (int i=0; i<accessionList.length; i++)
         		{
         			if(isAccession){
-	        			parsedQuery += Utils.checkAccessionInput(accessionList[i].trim()) + ",";
-	        			tmpStr = Utils.checkAccessionInput(accessionList[i].trim())+"\n"; 
+	        			parsedQuery += checkAccessionInput(accessionList[i].trim()) + ",";
+	        			tmpStr = checkAccessionInput(accessionList[i].trim())+"\n"; 
 	        			parsedString += tmpStr;
 	        			tmpStr="";
         			}

@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import org.gudmap.assemblers.AccessionTablePageBeanAssembler;
 import org.gudmap.assemblers.AnatomyTablePageBeanAssembler;
+import org.gudmap.assemblers.CollectionEntriesAssembler;
 import org.gudmap.assemblers.GeneExpressionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneFunctionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneListTablePageBeanAssembler;
@@ -49,6 +50,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	private AnatomyTablePageBeanAssembler anatomyAssembler;
 	private GeneFunctionTablePageBeanAssembler genefunctionAssembler;
 	private GeneExpressionTablePageBeanAssembler expressionAssembler;
+	private CollectionEntriesAssembler collectionEntriesAssembler;
 	private String whereclause = GenericQueries.WHERE_CLAUSE;
     private String specimenWhereclause="";
     private List<String> selectedItems;
@@ -108,7 +110,9 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	else
     		specimenWhereclause="";
     	
-    	if(assayType.equals("genelist"))
+    	if(assayType.equals("collections"))
+    		collectionEntriesAssembler=new CollectionEntriesAssembler(GenericQueries.BROWSE_LOCAL_STORAGE_PARAM);
+    	else if(assayType.equals("genelist"))
     		geneListAssembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM);
     	else if(assayType.equals("anatomy"))
     		anatomyAssembler=new AnatomyTablePageBeanAssembler();
@@ -178,7 +182,17 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
-    	if(assayType.equals("genelist")) {
+    	if(assayType.equals("collections")) {
+    		//reset whereclause for this search
+    		paramBean.setWhereclause(whereclause);
+    		dataList = collectionEntriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+					paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+					paramBean.getFocusGroupSpWhereclause());
+			totalRows = collectionEntriesAssembler.count();
+			
+			queryTotals=collectionEntriesAssembler.getQueryTotals();
+    	}
+    	else if(assayType.equals("genelist")) {
     		dataList = geneListAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
     				paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
     				paramBean.getFocusGroupSpWhereclause());
@@ -337,10 +351,31 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
     		if (((InsituTableBeanModel) dataList.get(i)).getSelected()) { 
-    			selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getOid()); 
+    			if(paramBean.getCollectionType().equalsIgnoreCase("Entries"))
+    				selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getOid());
+    			else if(paramBean.getCollectionType().equalsIgnoreCase("Genes"))
+    				selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getGene());
     		} 
     	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
+    	//return "browseCollectionEntriesTablePage";
     	return "result";
+    }
+    
+    public String clearCheckboxSelections() {
+    	selectedItems.clear();
+    	return "result";
+    }
+    
+    //Test for running javascript from view
+    public String processCheckboxSelections() { 
+    	selectedItems.clear();
+    	for (int i=0;i<dataList.size();i++) { 
+    		if (((InsituTableBeanModel) dataList.get(i)).getSelected()) { 
+    			selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getOid()); 
+    		} 
+    	}    	
+    	//return getSelectedItemstoStringBuffer();
+    	return null;
     }
     
     public void checkAll() { 
@@ -350,13 +385,33 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	} 
     }
     
+    //create comma separated string of selected checkbox items created in checkboxSelections()
     public String getSelectedItemstoString(){
     	String str="";
-    	for(String s : selectedItems){
-    		str+=s + ", ";
+    	if(selectedItems!=null) {
+	    	for(String s : selectedItems){
+	    		str+=s + ", ";
+	    	}
     	}
     	return str;
     }
+    
+  
+    //create string of ; separated values for passing to parameterized query. Surround String in single quotes to allow javascript to read it
+    public String getSelectedItemstoStringBuffer(){
+    	StringBuffer str=new StringBuffer();
+    	
+    	if(selectedItems!=null) {
+    		str.append("'");
+	    	for(String s : selectedItems){
+	    		str.append(s+";");
+	    	}
+	    	str.append("'");
+    	}
+    	
+    	return str.toString();
+    }
+    
     
     public String getQueryTotals() {
 		return queryTotals;

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    HTML5 local storage
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<!-- <ui:define name="solr">
+		<ui:include src="/snippets/g_solrFly.xhtml"/>
+	</ui:define> -->
+	
+	<ui:define name="content">
+	
+	<h:outputScript library="scripts" name="modernizr.html5.js" target="head"></h:outputScript>
+	<script type="text/javascript">
+//<![CDATA[
+	    	function canvasTest() {
+		    	 if(Modernizr.canvas)
+		    		alert('we have a canvas');
+		    	else 
+		    		alert('no canvas here');
+	    	}
+	    	
+	    	function localStorageTest() {
+		    	 if(Modernizr.localstorage) {
+		    		
+		    		alert('we have local storage');
+		    		//localStorage.clear();
+		    		alert('value before: '+localStorage["bar"]);
+		    		if(localStorage["bar"]==undefined)
+		    			alert('bar is undefined');
+		    		else
+		    			alert('bar has value');
+		    		var ids='2,4,101,3305';
+		    		localStorage.setItem("bar",ids);
+		    		var ids2='23,45,1011,564';
+		    		localStorage.setItem("bar",ids2);
+		    		alert('value after: '+localStorage["bar"]);
+		    	 }
+		    	else 
+		    		alert('no local storage here');	
+		    	
+	    	}
+	    	
+	    	function localStorageClear() {
+		    	 if(Modernizr.localstorage) {
+		    		
+		    		alert('clearing local storage');
+		    		localStorage.clear();
+		    	 }
+		    	else 
+		    		alert('no local storage here');	
+		    	
+	    	}
+//]]>
+</script>
+	<!-- can use relative links on html tags -->
+	    <h1><a href="javascript:void(0);" onclick="canvasTest()">Do I have a canvas?</a></h1>	
+	    <h1><a href="javascript:void(0);" onclick="localStorageTest()">Do I have local storage?</a></h1>
+	     <h1><a href="javascript:void(0);" onclick="localStorageClear()">Clear local storage?</a></h1>
+	    
+	    <!-- all other content in here -->     
+	</ui:define>
+</ui:composition>
+</html>

@@ -18,7 +18,7 @@ import org.gudmap.globals.Globals;
 
 public class ParamBeanAssembler {
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -33,14 +33,15 @@ public class ParamBeanAssembler {
 	private Map<String,String>imagedirlist;
 	private Map<String,String>pageIdlist;
 	private Map<String,String>pageCategorylist;
+	private Map<String,String>collectionTypeList;
 	
 	public ParamBeanAssembler() {
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}		
+		}*/		
 	}
 	
 	
@@ -49,7 +50,7 @@ public class ParamBeanAssembler {
 		String queryString=GenericQueries.ALL_SOURCES;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			while(result.next())
@@ -67,7 +68,7 @@ public class ParamBeanAssembler {
 		String queryString=GenericQueries.ALL_ASSAY_TYPES_INSITU;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			while(result.next())
@@ -85,7 +86,7 @@ public class ParamBeanAssembler {
 		String queryString=GenericQueries.ALL_ASSAY_TYPES;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			while(result.next())
@@ -103,7 +104,7 @@ public class ParamBeanAssembler {
 		String queryString=GenericQueries.ALL_THEILER_STAGES;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			theilerstagelist.put("ALL","ALL");
@@ -122,7 +123,7 @@ public class ParamBeanAssembler {
 		String queryString=GenericQueries.ALL_SEXES;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			sexlist.put("ALL","ALL");
@@ -141,7 +142,7 @@ public class ParamBeanAssembler {
 		String queryString=GenericQueries.ALL_SPECIMEN_TYPES;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			while(result.next())
@@ -186,7 +187,7 @@ public class ParamBeanAssembler {
 		String queryString=WebPageQueries.GET_ALL_PAGES;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			while(result.next())
@@ -209,6 +210,14 @@ public class ParamBeanAssembler {
 		imagedirlist.put("Tutorials","Tutorials");
 		
 		return imagedirlist;
+	}
+	
+	public Map<String,String> getCollectionTypelist() {
+		collectionTypeList = new LinkedHashMap<String,String>();
+		collectionTypeList.put("Entries","Entries");
+		collectionTypeList.put("Genes","Genes");
+		
+		return collectionTypeList;
 	}
 
 	

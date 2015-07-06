@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    SISH Data Results
+	    Accession ID Results
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -18,37 +18,70 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	<h:outputScript library="scripts" name="modernizr.html5.js" target="head"></h:outputScript>
+		<script type="text/javascript">
+		//<![CDATA[
+		
+			function() {
+				   
+				 if(Modernizr.localstorage) {
+					var type = JSON.stringify(#{paramBean.getCollectionTypeBuffer()});
+					var newtype=type.replace(/"/g, '');			 		
+			 		//localStorage.clear();
+			 		var ids=JSON.stringify(#{genericTablePageBean.getSelectedItemstoStringBuffer()});
+			 		var newstr=ids.replace(/"/g, '');
+			 		newstr=newstr.substring(0,newstr.lastIndexOf(";"));
+			 		
+			 		localStorage.setItem(newtype,newstr);
+			 		var entries=localStorage["Entries"];	
+			 		alert('localstorage entries: '+entries);
+			 		#{genericTablePageBean.setUserInput(entries,true)}
+			 			 		
+			 	 }
+			 	else 
+			 		document.write('<p><strong>No local storage available on this browser</strong></p>');	
+				   	   	  	   
+			
+			}
+		  
+		
+		//]]>
+	</script> 
+	 
 	<!-- can use relative links on html tags -->
-	#{genericTablePageBean.init('ISH','SISH',20,10,'SUB_OID',true)}
+	#{genericTablePageBean.init('collections','entries',20,10,'x.assay_type',true)}
+	#{genericTablePageBean.setUserInput(sessionBean.getAccessionParam(),true)}
 	#{genericTablePageBean.loadDataList()}
-	
+	<h:form>
 	#{paramBean.setGenotypecol(false)}
 	#{paramBean.setProbenamecol(true)}
-	
-	
-	<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
-	
+		<h:panelGrid columns="2">
+			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
+		</h:panelGrid>
+	</h:form>
 	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
 	
-	<ui:include src="/snippets/g_ishFilter.xhtml"></ui:include>
+	<ui:include src="/snippets/g_genelistFilter.xhtml"></ui:include>
 	
-    
-	    <h:form id="focusform"><h1>SISH Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	
+        
+	    <h:form id="focusform"><h1>Accession ID Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	     <h:outputText value="#{genericTablePageBean.userInput}"></h:outputText>
 	     <!-- all other content in here --> 
 	    <h:form id="dataform"> 
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
-    		
+    			
+    		<f:facet name="header">#{genericTablePageBean.queryTotals}</f:facet>
  			<h:column >
     			<f:facet name="header">
-    				<h:commandButton id="checkall" value="Check All" action="#{genericTablePageBean.checkAll}">
+    				<ui:remove><h:commandButton value="Check" action="#{genericTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
+    				<h:commandButton id="checkall" value="Check" action="#{genericTablePageBean.checkAll}">
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
-					<br />
-    				<h:commandButton  id="tocart" value="Add" action="#{genericTablePageBean.checkboxSelections()}" />	
-    				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
@@ -64,44 +97,43 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				(<h:commandLink id="genelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GENE')}" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="RPR_SYMBOL" />
+    				<h:commandLink id="genelink" value="Gene" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.gene" />
     					<f:ajax execute="@this genelink" render="@form"></f:ajax>
-                    </h:commandLink> ) <br />
-    				Gene 
+                    </h:commandLink> 
     			</f:facet>
-    				#{u.gene}
+    			<h:commandLink value="#{u.gene}"  action="viewGeneStrip">
+					<f:param name="gene" value="#{u.gene}"></f:param>
+				</h:commandLink>
     		</h:column>
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    			(<h:commandLink id="accessionlink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="SUB_OID" />
+    			<h:commandLink id="accessionlink" value="Gudmap Accession" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="natural_sort(x.gudmap_accession)" />
     					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
-                    </h:commandLink> )
-    				<br />
-    				Gudmap Accession
+                    </h:commandLink> 
 				</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+    			<h:commandLink value="#{u.gudmap_accession}"  action="#{paramBean.returnDetailsPage(u.assay_type)}" >
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+					<f:param name="isArray" value="#{u.assay_type == 'Microarray'?true:false}"></f:param>
+					
 				</h:commandLink>
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink id="sourcelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SOURCE')}" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="PER_SURNAME" />
+    			<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.source" />
     					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
-                    </h:commandLink> )
-    				 <br />
-    				Source
+                    </h:commandLink>
 				</f:facet>
     				#{u.source}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.submissiondatecol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SUBMISSION_DATE")}) <br />
     				Submission Date
 				</f:facet>
     				#{u.submission_date}
@@ -109,15 +141,16 @@
     		
     		<h:column rendered="#{paramBean.assaytypecol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_ASSAY_TYPE")}) <br />
-    				Assay Type
+    				<h:commandLink id="assaylink" value="Assay Type" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.assay_type" />
+    					<f:ajax execute="@this assaylink" render="@form"></f:ajax>
+                    </h:commandLink> 
 				</f:facet>
     				#{u.assay_type}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.probenamecol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_PROBE_NAME")}) <br />
     				Probe Name
 				</f:facet>
     				#{u.probe_name}
@@ -125,19 +158,17 @@
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
-    			(<h:commandLink id="stagelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="SUB_EMBRYO_STG" />
+    			<h:commandLink id="stagelink" value="Theiler Stage" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.stage" />
     					<f:ajax execute="@this stagelink" render="@form"></f:ajax>
-                    </h:commandLink> )
-    				 <br />
-    				Theiler Stage
+                    </h:commandLink>
 				</f:facet>
-    			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
+				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.agecol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_AGE")}) <br />
     				Age
 				</f:facet>
     				#{u.age}
@@ -145,7 +176,6 @@
     		
     		<h:column rendered="#{paramBean.sexcol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SEX")}) <br />
     				Sex
 				</f:facet>
     				#{u.sex}
@@ -153,7 +183,6 @@
     		
     		<h:column rendered="#{paramBean.genotypecol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_GENOTYPE")}) <br />
     				Genotype
 				</f:facet>
     				#{u.genotype}
@@ -161,7 +190,6 @@
     		
     		<h:column rendered="#{paramBean.tissuecol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_TISSUE")}) <br />
     				Tissue
 				</f:facet>
     				#{u.tissue}
@@ -169,7 +197,6 @@
     		
     		<h:column rendered="#{paramBean.expressioncol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_EXPRESSION")}) <br />
     				Expression
 				</f:facet>
     				#{u.expression}
@@ -177,7 +204,6 @@
     		
     		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SPECIMEN_TYPE")}) <br />
     				Specimen Type
 				</f:facet>
     				#{u.specimen}
@@ -185,10 +211,9 @@
     		
     		<h:column rendered="#{paramBean.imagescol == true}">
     			<f:facet name="header">
-    				(#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_IMAGES")}) <br />
     				Images
 				</f:facet>
-    			 <h:commandLink  action="viewSubmissionDetails">
+    			<h:commandLink  action="viewSubmissionDetails">
 					<img src="#{u.image}" height="40" />
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
@@ -198,6 +223,7 @@
  		</h:form>
  		
  		<ui:include src="/snippets/g_pagingForm.xhtml"></ui:include>
+	
 		
 	</ui:define>
 </ui:composition>
