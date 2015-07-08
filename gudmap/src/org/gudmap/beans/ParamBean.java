@@ -632,7 +632,7 @@ public class ParamBean implements Serializable {
 		this.theilerstagefromvalues=theilerstagefromvalues;
 		if(theilerstagefromvalues!=null){
 			if(!theilerstagefromvalues.equals("ALL")){
-				temptheilervalues="SUB_EMBRYO_STG BETWEEN "+theilerstagefromvalues+" AND ";
+				temptheilervalues="STG_SPECIES='Mus musculus' AND STG_ORDER BETWEEN "+theilerstagefromvalues+" AND ";
 			}
 			if(theilerstagefromvalues.equals("ALL")){
 				theilerstagevalueclause="";

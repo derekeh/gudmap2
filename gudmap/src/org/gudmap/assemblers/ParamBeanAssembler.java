@@ -109,7 +109,7 @@ public class ParamBeanAssembler {
 			result =  ps.executeQuery();
 			theilerstagelist.put("ALL","ALL");
 			while(result.next())
-				theilerstagelist.put(result.getString(1), result.getString(1));
+				theilerstagelist.put(result.getString(2), result.getString(1));
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {

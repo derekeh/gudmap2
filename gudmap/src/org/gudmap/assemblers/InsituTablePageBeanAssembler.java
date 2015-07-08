@@ -89,6 +89,7 @@ public class InsituTablePageBeanAssembler {
 				ishmodel.setAssay_type(result.getString("assay_type"));
 				ishmodel.setProbe_name(result.getString("probe_name"));
 				ishmodel.setStage(result.getString("stage"));
+				ishmodel.setStage_order(result.getString("stage").substring(2));
 				ishmodel.setAge(result.getString("age"));
 				ishmodel.setSex(result.getString("sex"));
 				ishmodel.setGenotype(result.getString("genotype"));

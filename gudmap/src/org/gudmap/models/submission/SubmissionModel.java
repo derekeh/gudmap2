@@ -9,6 +9,7 @@ public class SubmissionModel {
     protected SpecimenModel specimenModel;
     protected PersonModel submitter;
     protected String stage;
+    protected String stageOrder;
     protected String authors;
     protected ArrayList<ImageInfoModel> originalImages;
     protected int publicFlag;
@@ -148,6 +149,14 @@ public class SubmissionModel {
 
     public String getStage() {
         return stage;
+    }
+    
+    public void setStageOrder(String stageOrder) {
+        this.stageOrder = stageOrder;
+    }
+
+    public String getStageOrder() {
+        return stageOrder;
     }
 
     public void setAuthors(String authors) {
