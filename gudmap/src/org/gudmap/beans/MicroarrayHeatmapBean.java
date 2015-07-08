@@ -1,8 +1,6 @@
 package org.gudmap.beans;
 
 
-
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -43,30 +41,13 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	private ArrayList<String> selectedTabs;
 	private String selectedSample;
 	private boolean dataAvailable = true;
-    private String columnLabels;
-    private String rowLabels;
-    private String genelistLabels;
-    private String data;
 
-    
     private String gene;// = "Sox8";
     private String masterTableId;// = "3_2";
     private String genelistId;// = "1493";
 
     private ArrayList<String> probeIds; 
     
-    private String selectedTabIndex;
-    private String tabStyle;
-    private int maxStringLength = 0;
-
-    private String geneLabels;
-    private String annotationData;
-    private String valueData;
-    private String genelistAdjustedData;
-    private String genelistValueData;
-    private String adjustedData;
-    private int maxColNumber = 0;    
-
     @Inject
    	protected SessionBean sessionBean;    
     
@@ -202,163 +183,12 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 
 // ********************   deal with heatmap  
 	
-	private String CreateRowLabels(){
-		
-		
-		String platformId = assembler.getPlatformIdFromMasterTableId(masterTableId);
-		
-		if (genelistId != null){
-			probeIds = assembler.getProbeSetIdsByGenelistIdAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, genelistId, platformId);
-			totalRows = assembler.getProbeSetIdsByGenelistIdAndPlatformId(-1, rowsPerPage, sortField, sortAscending, genelistId, platformId).size();		
-		}
-		else{
-			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
-			totalRows = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId).size();
-		}
-
-		if (totalRows == 0)
-			return null;
-		
-		String labels = "";
-		for(String probeId : probeIds){
-			labels += probeId + ",";
-		}
-		labels = labels.substring(0, labels.length()-1);
-		return labels;
-
-	}
-	public String getRowLabels(){
-		return rowLabels;
-	}
-    
-	public String getGeneLabels(){
-		return geneLabels;
-	}
-
-	private void CreateColumnLabels(){
-		
-		int length = 0;
-		ArrayList<String> expressionTitles = assembler.getHeatmapExpressionTitlesFromMasterTableId(masterTableId);
-		columnLabels = "";
-		for(String expressionTitle : expressionTitles){
-			columnLabels += expressionTitle + ",";
-			
-			length = expressionTitle.toCharArray().length;
-			if (length > maxStringLength)
-				maxStringLength = length;
-			
-		}
-		columnLabels = columnLabels.substring(0, columnLabels.length()-1);
-
-	}
-	
-	public String getColumnLabels(){
-		return columnLabels;
-	}
-
-	public String getGenelistLabels(){
-		return genelistLabels;
-	}
-	
-	public int getMaxColNumber(){
-		return maxColNumber;
-	}
-	
-	public String getData(){
-		return data;
-	}
-	
-	public String getAnnotationData(){
-		return annotationData;
-	}
-	
-	public String getValueData(){
-		return valueData;
-	}
-	
-	public String getAdjustedData(){
-		return adjustedData;
-	}
-
-	public String getGenelistValueData(){
-		return genelistValueData;
-	}
-	
-	public String getGenelistAdjustedData(){
-		return genelistAdjustedData;
-	}
-
-	private void CreateAnnotations(){
-		geneLabels = "";
-		
-		ArrayList<String[]> annotations = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
-		for (String[] annotation : annotations){
-			
-			geneLabels += annotation[1] + "," ;
-		}
-		geneLabels = geneLabels.substring(0, geneLabels.length()-1);
-	}
-
-	private void CreateAnnotationData(){
-		annotationData = "";
-		
-		ArrayList<String[]> annotations = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
-		for (String[] annotation : annotations){
-			annotationData +=  annotation[0] + "," + annotation[1] + "," + annotation[2] + "," + annotation[3] + "," + annotation[4] + "," + annotation[5] + "," + annotation[6] + ",";
-		}
-		annotationData = annotationData.substring(0, annotationData.length()-1);
-	}
-	
 	
     @Override
     public void loadDataList() {
     	
     	createJSONFile();    	
     	
-//    	rowLabels = CreateRowLabels();
-//    	if (rowLabels == null){
-//    		dataAvailable = false;
-//    		return;
-//    	}
-//    	else
-//    		dataAvailable = true;
-//    	
-//    	CreateColumnLabels();
-//    	CreateAnnotations();
-//    	CreateAnnotationData();
-//
-//    	
-//		String heatmapData = "";
-//		String values = "";
-//		String adjvalues = "";
-//		
-//		int rowCounter = 1;
-//		for (String probeId : probeIds){
-//			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
-//			int colCounter = 1;
-////			String subcolor = "";
-//			for(String[] data : dataList){
-//				String rma = data[2];
-//				String scaledRma = data[5];
-//				String backgroundColor = "#" + data[6];
-//				String hdata = Integer.toString(rowCounter) + "," + Integer.toString(colCounter) + "," + rma + "," + scaledRma + "," + backgroundColor + ",";
-//				heatmapData += Integer.toString(rowCounter) + "," + Integer.toString(colCounter) + "," + rma + "," + scaledRma + "," + backgroundColor + ",";
-//				values += rma + ",";
-//				adjvalues += scaledRma + ",";
-//				
-//				colCounter ++;
-//				
-//				if (debug)
-//					System.out.println("heatmapData: " + hdata);
-//			}
-//			rowCounter++;
-//		}
-//		data = heatmapData.substring(0, heatmapData.length()-1);
-//		valueData = values.substring(0, values.length()-1);
-//		adjustedData = adjvalues.substring(0, adjvalues.length()-1);
-		
-        // Set currentPage, totalPages and pages.
-//    	setTotalslist(assembler.getTotals());
 
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -383,73 +213,6 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		
 		return tableTitle;
 	}
-
-	public int getMaxStringLength() {
-		return maxStringLength;
-	}
-	
-	private void CreateGenelistLabels(){
-		
-		String labels = "";
-		int colsize = 0;
-    	for(MasterTableInfo info : tableinfo){
-    		if (info.getSelected()){
-    			String id = info.getId();
-    			
-    			String platformId = assembler.getPlatformIdFromMasterTableId(id);
-    			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
-    			for(String probeId : probeIds){
-    				labels += info.getTitle() + ",";
-    				
-        			colsize = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, id).size();
-        			if (colsize > maxColNumber) 
-        				maxColNumber = colsize;
-    			}
-    			labels += ",";
-    			
-    		}
-    	}
-    	genelistLabels = labels.substring(0, labels.length()-1);
-    	
-		String values = "";
-		String adjvalues = "";
-	
-    	for(MasterTableInfo info : tableinfo){
-    		String id = info.getId();
-    		String platformId = assembler.getPlatformIdFromMasterTableId(id);
-			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
-    		for (String probeId : probeIds){
-    			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, id);
-    			int dlsize = dataList.size();
-    			int colCounter = 1;
-    			for(String[] data : dataList){
-    				String rma = data[2];
-					String scaledRma = data[5];
-					String backgroundColor = "#" + data[6];
-					values += rma + ",";
-					adjvalues += scaledRma + ",";
-    					
-					colCounter ++;
-    			}
-    			if (dlsize < maxColNumber){
-    				int diff = maxColNumber - dlsize;
-    				for (int i = 0; i < diff; i ++){
-    					values += "100,";
-    					adjvalues += "100,";
-    				}
-    			}
-    		}
-    		for (int i = 0; i < maxColNumber; i++){
-				values += "100,";
-				adjvalues += "100,";    			
-    		}
-    	}
-
-		genelistValueData = values.substring(0, values.length()-1);
-		genelistAdjustedData = adjvalues.substring(0, adjvalues.length()-1);
-
-	}
-	
 	
 	private void createJSONFile(){
 		

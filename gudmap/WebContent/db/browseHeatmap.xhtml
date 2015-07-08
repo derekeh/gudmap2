@@ -145,50 +145,6 @@
 		var annotationHeaders = ["Platform","Gene","Probe Seq ID","MGI Gene ID","Entrez Gene ID","Human Ortholog Symbol","Human Ortholog Entrez","GUDMAP-ISH","UCSC","KEGG","ENS"];
 	   
 		heatmap_display(url, annotationHeaders, "#chart", "Default");
-	   
-//	    var viewerWidth = $(document).width();
-//	    var viewerHeight = $(document).height();
-//	    var viewerPosTop = 200;
-//	    var viewerPosLeft = 100;
-	   
-//	   var d1 = d3.json("../resources/scripts/heatmap2.json", function(error, data){
-//		   alert(error);
-
-	        //console.log(data);
-//	        var arr = data.data;
-//	        var probes = data.probes;
-//	        var genes = data.genes;
-//	        var sample = data.samples;
-//	   })
-	   
-//	   var tooltip = d3.select("#chart")
-//	   .append("div")
-//	   .style("position", "absolute")
-//	   .style("visibility", "hidden");
-	   
-//	   var rowLabel = rowLabelArray("#{microarrayHeatmapBean.rowLabels}");	
-//	   var colLabel = columnLabelArray("#{microarrayHeatmapBean.columnLabels}");	   
-//	   var col_number = colLabel.length;
-
-//	   var geneLabels = "#{microarrayHeatmapBean.geneLabels}";
-//	   var geneLabel = geneLabels.split(",");
-   
-//	   var annotationHeaders = ["Platform","Gene","Probe Seq ID","MGI Gene ID","Entrez Gene ID","Human Ortholog Symbol","Human Ortholog Entrez","GUDMAP-ISH","UCSC","KEGG","ENS"];
-	   
-//	   var annotationdata = annotatedDataArray("#{microarrayHeatmapBean.annotationData}");
-	   
-//	   var values = "#{microarrayHeatmapBean.valueData}";
-//	   var adjvalues = "#{microarrayHeatmapBean.adjustedData}";
-	   
-//	   var valuedata = valueDataArray2(values,adjvalues,col_number);
-//	   var cellSize=14;
-	   
-     
-//	   gudmap_heatmap("#chart", valuedata, annotationdata, annotationHeaders, geneLabel, colLabel, rowLabel, cellSize, tooltip);	   
-
-	   
-	   
-
  });   	
 
 //]]>

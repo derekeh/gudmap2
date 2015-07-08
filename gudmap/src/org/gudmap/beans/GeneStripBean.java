@@ -1,7 +1,10 @@
 package org.gudmap.beans;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -9,11 +12,13 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
 
 import org.gudmap.models.GeneStripModel;
 import org.gudmap.models.MasterTableInfo;
 import org.gudmap.assemblers.GeneStripBeanAssembler;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
+import org.json.simple.JSONObject;
 
 @Named
 @RequestScoped
@@ -26,7 +31,9 @@ public class GeneStripBean implements Serializable {
     private String inputString="";
     private String wildcard = "equals";
     private GeneStripBeanAssembler geneStripBeanAssembler;
+    private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
     private ArrayList<GeneStripModel> dataList;
+	private ArrayList<MasterTableInfo> tableinfo;	
    // private String tempParam="";
     String str;
     
@@ -46,6 +53,8 @@ public class GeneStripBean implements Serializable {
         	this.inputString = facesContext.getExternalContext().getRequestParameterMap().get("input");
         
         geneStripBeanAssembler = new GeneStripBeanAssembler();       
+        microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
+        tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
         //setup();
         
     }
@@ -93,7 +102,7 @@ public class GeneStripBean implements Serializable {
        		dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard);
        	}
        	
-       	CreateMicroarrayExpressionProfile();
+       	createJSONFile();
     }
     
     public void setOid(String oid) {
@@ -159,71 +168,167 @@ public class GeneStripBean implements Serializable {
 		return genelistAdjustedData;
 	}
 	
-	private void CreateMicroarrayExpressionProfile(){
-
-		MicroarrayHeatmapBeanAssembler assembler = new MicroarrayHeatmapBeanAssembler();
-		ArrayList<MasterTableInfo> tableinfo = assembler.getMasterTableList();	
+	private void createJSONFile(){
 		
-		String labels = "";
-		String links = "";	
-		int colsize = 0;
-    	for(MasterTableInfo info : tableinfo){
-    		if (info.getSelected()){
-    			String id = info.getId();    			
-    			String platformId = assembler.getPlatformIdFromMasterTableId(id);
-    			ArrayList<String> probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
-    			for(String probeId : probeIds){
-    				labels += info.getTitle() + ",";
-           			links += info.getId() + ",";
+		try{
+			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+			String path = ctx.getRealPath("/");
+				
+			path += "/resources/scripts/genestrip_heatmap.json";
+			
+			FileWriter writer = new FileWriter(path);
+			
+			JSONObject obj = createHeatmapJSONObject();
+			
+			writer.write(obj.toJSONString());
+			writer.flush();
+			writer.close();
 
-        			colsize = assembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id).size();
+
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private JSONObject createHeatmapJSONObject(){
+		
+		JSONObject obj = new JSONObject();
+		
+		obj.put("labels", getLabels());
+		obj.put("links", getLinks());
+		obj.put("data", getDataValues());
+		obj.put("adjdata", getDataAdjValues());
+						
+		return obj;
+	}
+	
+
+	
+	private LinkedList<String> getLabels(){
+		
+		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		LinkedList<String> labels = new LinkedList<String>();
+		int colsize = 0;
+		
+		for(MasterTableInfo info : tableinfo){
+			if (info.getSelected()){
+				String id = info.getId();    			
+				String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
+				ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+				for(String probeId : probeIds){
+					labels.add(info.getTitle());
+
+        			colsize = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id).size();
         			if (colsize > maxColNumber) 
         				maxColNumber = colsize;
-    			}
-    			labels += ",";
-       			links += ",";
-   			
-    		}
-    	}
-    	rowLabels = labels.substring(0, labels.length()-2);
-    	microarrayLinks = links.substring(0, links.length()-2);
+				}
+				labels.add("");
+			}
 
-		String values = "";
-		String adjvalues = "";
+		}	
+		return labels;
+	}
+
+	private LinkedList<String> getLinks(){
+		
+		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		LinkedList<String> links = new LinkedList<String>();
+		
+		for(MasterTableInfo info : tableinfo){
+			if (info.getSelected()){
+				String id = info.getId();    			
+				String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
+				ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+				for(String probeId : probeIds){
+	       			links.add(info.getId());
+				}
+				links.add("");
+			}
+		}	
+		return links;
+	}
+	
+	private LinkedList<LinkedList<String>> getDataValues(){
+		
+		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items;
+
+		
     	for(MasterTableInfo info : tableinfo){
     		String id = info.getId();
-    		String platformId = assembler.getPlatformIdFromMasterTableId(id);
-    		ArrayList<String> probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+    		String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
+    		ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
     		for (String probeId : probeIds){
-    			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
+    			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
     			int colCounter = 1;
-    			for(String[] data : dataList){
-    				String rma = data[2];
-					String scaledRma = data[5];
-					String backgroundColor = "#" + data[6];
-					values += rma + ",";
-					adjvalues += scaledRma + ",";
-    					
+    			items = new LinkedList<String>();
+    			for(String[] item : dataList){
+    				String rma = item[2];
+    				items.add(rma);	
 					colCounter ++;
     			}
     			if (dlsize < maxColNumber){
     				int diff = maxColNumber - dlsize;
     				for (int i = 0; i < diff; i ++){
-    					values += "100,";
-    					adjvalues += "100,";
+    					items.add("100");
     				}
     			}
+    			data.add(items);
      		}
+    		items = new LinkedList<String>();
     		for (int i = 0; i < maxColNumber; i++){
-				values += "100,";
-				adjvalues += "100,";   
+    			items.add("100");
     		}
+    	
+    		data.add(items);
     	}
-
-		genelistValueData = values.substring(0, values.length()-1);
-		genelistAdjustedData = adjvalues.substring(0, adjvalues.length()-1);
-
+				
+		return data;
 	}
+	
+	private LinkedList<LinkedList<String>> getDataAdjValues(){
+
+		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items;
+
+		
+    	for(MasterTableInfo info : tableinfo){
+    		String id = info.getId();
+    		String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
+    		ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+    		for (String probeId : probeIds){
+    			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
+    			int dlsize = dataList.size();
+    			int colCounter = 1;
+    			items = new LinkedList<String>();
+    			for(String[] item : dataList){
+    				String scaledRma = item[5];
+    				items.add(scaledRma);	
+					colCounter ++;
+    			}
+    			if (dlsize < maxColNumber){
+    				int diff = maxColNumber - dlsize;
+    				for (int i = 0; i < diff; i ++){
+    					items.add("100");
+    				}
+    			}
+    			data.add(items);
+     		}
+    		items = new LinkedList<String>();
+    		for (int i = 0; i < maxColNumber; i++){
+    			items.add("100");
+    		}
+    	
+    		data.add(items);
+    	}
+				
+		return data;
+	}
+	
 	
 }
