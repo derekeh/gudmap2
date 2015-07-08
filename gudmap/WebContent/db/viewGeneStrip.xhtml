@@ -125,27 +125,12 @@
 				<script type="text/javascript">
 					//<![CDATA[
 					
-					
-						   
-						   var tooltip = d3.select("#chart1")
-						   .append("div")
-						   .style("position", "absolute")
-						   .style("visibility", "hidden");
-						   
-						   var rowLabel = rowLabelArray("#{geneStripBean.rowLabels}");		   
-						   var values = "#{geneStripBean.genelistValueData}";
-						   var adjvalues = "#{geneStripBean.genelistAdjustedData}";	   
-						   var maxColNumber = "#{geneStripBean.maxColNumber}";
-						   var microarrayLinks = rowLabelArray("#{geneStripBean.microarrayLinks}");
-						   
-						   var valuedata = valueDataArray2(values,adjvalues,maxColNumber);
-						   var cellSize = 4;	   
-						   var symbol = "#{geneStripBean.inputString}";
-						   
-						   gudmap_genelist_heatmap("#chart1", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol, microarrayLinks);
-						   	   	  	   
-					  
-					  
+				   var cellSize = 4;	   
+				   var symbol = "#{geneStripBean.inputString}";
+				   var url = "../resources/scripts/genestrip_heatmap.json";
+				   
+				   genestrip_heatmap_display(url, "#chart1", cellSize, symbol);
+			   	   	  	   					 					  
 					
 					//]]>
 					 </script> 
@@ -172,33 +157,6 @@
 
          </h:form> 
     
-<script type="text/javascript">
-//<![CDATA[
-
-$(document).ready(function() {
-	   
-	   var tooltip = d3.select("#chart1")
-	   .append("div")
-	   .style("position", "absolute")
-	   .style("visibility", "hidden");
-	   
-	   var rowLabel = rowLabelArray("#{geneStripBean.rowLabels}");		   
-	   var values = "#{geneStripBean.genelistValueData}";
-	   var adjvalues = "#{geneStripBean.genelistAdjustedData}";	   
-	   var maxColNumber = "#{geneStripBean.maxColNumber}";
-	   var microarrayLinks = rowLabelArray("#{geneStripBean.microarrayLinks}");
-	   
-	   var valuedata = valueDataArray2(values,adjvalues,maxColNumber);
-	   var cellSize = 4;	   
-	   var symbol = "#{geneStripBean.inputString}";
-	   
-	   gudmap_genelist_heatmap("#chart1", valuedata, maxColNumber, rowLabel, cellSize, tooltip, symbol, microarrayLinks);
-	   	   	  	   
- }); 
-  
-
-//]]>
- </script>    
 
 	</ui:define>
 </ui:composition>
