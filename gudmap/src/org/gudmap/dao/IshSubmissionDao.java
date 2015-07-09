@@ -1046,6 +1046,11 @@ public class IshSubmissionDao {
   		}
   		ArrayList<String[]> relatedSubmissionISH=null;
   		String queryString = IshSubmissionQueries.GENE_RELATED_SUBMISSIONS_ISH;
+  		
+		if(assayType.equals("TG"))
+			queryString = queryString.replace("RPR_LOCUS_TAG", "ALE_MUTATED_GENE_ID");
+
+  			
   		try
 		{
 			con = ds.getConnection();
