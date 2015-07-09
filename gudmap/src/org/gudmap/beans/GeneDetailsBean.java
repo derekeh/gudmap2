@@ -29,6 +29,11 @@ public class GeneDetailsBean {
 			geneDetailsBeanAssembler = new GeneDetailsBeanAssembler(geneSymbol);
 			setup();
 		}		
+		if(facesContext.getExternalContext().getRequestParameterMap().get("geneId")!=null) {
+			this.geneId = facesContext.getExternalContext().getRequestParameterMap().get("geneId");
+			geneDetailsBeanAssembler = new GeneDetailsBeanAssembler(geneId);
+			setup();
+		}		
 	}
 	
 	public void setup(){

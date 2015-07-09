@@ -40,7 +40,7 @@ public class GeneDetailsQueries {
 	                                "AND HGNC_SYMBOL_SEARCH_URL.URL_TYPE = 'hgnc_symbol_search' " +
 	                                "AND UCSC_URL.URL_TYPE = 'ucsc_genome' " + 
 	  		                        "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
-	  		                        "AND RPR_SYMBOL = ?";
+	  		                        "AND RPR_LOCUS_TAG = ?";
 	  
 	  public static String GENE_INFO_IUPHAR = "SELECT DISTINCT CONCAT(IUPHAR_URL.URL_URL, IUP_IUPHAR_ID), "+
 	  		                        "CONCAT(IUPHAR_2_URL.URL_URL, IUP_IUPHAR_ID), IUP_URL_TYPE " +
@@ -69,6 +69,6 @@ public class GeneDetailsQueries {
 	  		"JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK " +
 	  		"LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +  		
 	  		"WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
-	  		"AND RPR_SYMBOL = ? ";
+	  		"AND RPR_LOCUS_TAG = ? ";
 
 }

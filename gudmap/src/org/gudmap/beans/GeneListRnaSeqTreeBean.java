@@ -42,7 +42,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		
 		arrayDao = new ArrayDao();
     	
-//    	createJSONFile();
+    	createJSONFile();
     }
 
 	public String getSelectedItem() {
@@ -113,7 +113,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		try{
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String realPath = ctx.getRealPath("/");
-			String path = realPath + "/scripts/genelistrnaseq.json";
+			String path = realPath + "/resources/scripts/genelistrnaseq.json";
 			
 			FileWriter file = new FileWriter(path);
 			file.write(outerlist.toJSONString());

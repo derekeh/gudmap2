@@ -47,7 +47,7 @@ jQuery(document).ready(function(){
 		"json_data" : {
 		    "progressive_render" : true,
 		    "ajax" : {
-		    	"url" : "../scripts/genelistrnaseq.json"
+		    	"url" : "../resources/scripts/genelistrnaseq.json"
 		    }
 		},	
 		"types": {
@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
 			theme : "classic",
 			dots  : true,
 			icons : false,
-			url   : "../scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
+			url   : "../resources/scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
 		},	
 		plugins : ["types", "themes", "json_data", "ui", "cookies"]												
 
@@ -108,8 +108,8 @@ function getCrumb(node){
 	 <h:inputText id="treeitem" value="#{geneListRnaSeqTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
 	 <h:inputText id="genelist_htmlfile" value="#{geneListRnaSeqTreeBean.htmlFile}" style="display:none; visibility: hidden; "/>
 	 <f:verbatim>
-<!--   		<div id="genelist_seq_tree" class="rnaseq" style="overflow: auto; align: left; height: 540px;">
-		</div> --> 
+   		<div id="genelist_seq_tree" class="rnaseq" style="overflow: auto; align: left; height: 540px;">
+		</div> 
 	</f:verbatim>
 	
 	<t:commandLink id="genelistLink" forceId="true" style="display:none; visibility: hidden;" action="#{geneListRnaSeqTreeBean.findNode}" actionListener="#{geneListRnaSeqTreeBean.processAction}" >

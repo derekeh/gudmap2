@@ -34,8 +34,8 @@ public class GeneDetailsDao {
 		}
 	}
 	
-    public GeneModel findGeneInfoBySymbol(String symbol) {
-        if (symbol == null) {
+    public GeneModel findGeneInfoBySymbolId(String geneId) {
+        if (geneId == null) {
 		    return null;
         }
         GeneModel geneModel = null;
@@ -45,7 +45,7 @@ public class GeneDetailsDao {
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, symbol);
+			ps.setString(1, geneId);
 			result =  ps.executeQuery();
 			if (result.first()) {
 				geneModel = new GeneModel();
@@ -99,7 +99,7 @@ public class GeneDetailsDao {
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, symbol);
+			ps.setString(1, geneModel.getSymbol());
 			result =  ps.executeQuery();
 			if (result.first()) {
 				geneModel.setNumMicArrays(result.getString(1));
@@ -114,7 +114,7 @@ public class GeneDetailsDao {
         
         return geneModel;
       
-    } // end findGeneInfoBySymbol
+    } // end findGeneInfoBySymbolId
     
     public String findSymbolBySynonym(String synonym){
     	String RET="";
@@ -230,14 +230,14 @@ public class GeneDetailsDao {
 
     }
     
-    public ArrayList<String[]> findRelatedMAProbeBySymbol(String symbol) {
+    public ArrayList<String[]> findRelatedMAProbeBySymbol(String geneId) {
     	String queryString=GeneDetailsQueries.GENE_RELATED_MAPROBE;
     	ArrayList<String[]> relatedMAProbe=null;
         try
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, symbol);
+			ps.setString(1, geneId);
 			result =  ps.executeQuery();
 			relatedMAProbe = Utils.formatResultSetToArrayList(result);						
 		}
