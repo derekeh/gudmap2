@@ -27,7 +27,7 @@ public class ProbeModel extends CommonAntibodyProbeModel {
     //private ArrayList fullSequence;
     private String[] fullSequence;
     private String labProbeId; 
-
+    private String geneId;
 
     private String maprobeNoteString;
 
@@ -47,8 +47,6 @@ public class ProbeModel extends CommonAntibodyProbeModel {
     public String getProbeName() {
         return probeName;
     }
-
-  
     
     public void setGeneIdUrl(String geneIdUrl) {
         this.geneIdUrl = geneIdUrl;
@@ -244,6 +242,15 @@ public class ProbeModel extends CommonAntibodyProbeModel {
         return labProbeId;
     }
  
+    public void setGeneId(String value) {
+        geneId = value;
+    }
 
+    public String getGeneId() {
+        return geneId;
+    }
+
+    
+    
 
 }

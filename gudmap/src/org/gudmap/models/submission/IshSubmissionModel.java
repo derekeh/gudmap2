@@ -48,8 +48,9 @@ public class IshSubmissionModel extends SubmissionModel{
 			    ret = null;
 			
 			return ret;
-		    }
-		    public String getGeneName() {
+		}
+	    
+	    public String getGeneName() {
 			String str = assayType.toLowerCase();
 			String ret = null;
 	
@@ -61,6 +62,29 @@ public class IshSubmissionModel extends SubmissionModel{
 				ret = antibodyModel.getGeneName();
 			    if (null != probeModel)
 				ret = probeModel.getGeneName();
+			}
+		    
+			if (null != ret && ret.trim().equals(""))
+			    ret = null;
+			
+			return ret;
+	    }
+
+	    public String getGeneId() {
+			String str = assayType.toLowerCase();
+			String ret = null;
+	
+			if (-1 != str.indexOf("ish")) {
+			    if (null != probeModel)
+				ret = probeModel.getGeneId();
+			} else if (str.contains("tg")) {
+			    if (null != antibodyModel)
+				ret = antibodyModel.getGeneId();
+			    if (null != probeModel)
+				ret = probeModel.getGeneId();
+			} else {// ihc
+			    if (null != antibodyModel)
+				ret = antibodyModel.getGeneId();				
 			}
 		    
 			if (null != ret && ret.trim().equals(""))
