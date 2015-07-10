@@ -64,10 +64,14 @@ public class GeneListTablePageBeanAssembler {
 		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, expressionJoin,
+		/*String sql = String.format(paramSQL, expressionJoin,
 									whereclause,input,focusGroupWhereclause,
 									arrayWhereclause,input,focusGroupSpWhereclause,
-									sortField, sortDirection);
+									sortField, sortDirection);*/
+		
+		String sql = String.format(paramSQL, expressionJoin,
+				whereclause,input,focusGroupWhereclause,
+				sortField, sortDirection);
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
@@ -92,6 +96,8 @@ public class GeneListTablePageBeanAssembler {
 					ishmodel.setAssay_type(result.getString("assay_type"));
 					ishmodel.setProbe_name(result.getString("probe_name"));
 					ishmodel.setStage(result.getString("stage"));
+					ishmodel.setStage_order(result.getString("stage").substring(2));
+					ishmodel.setSpecies(result.getString("species"));
 					ishmodel.setAge(result.getString("age"));
 					ishmodel.setSex(result.getString("sex"));
 					ishmodel.setGenotype(result.getString("genotype"));
@@ -133,6 +139,9 @@ public class GeneListTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
+		queryTotals+=(insitucount+")");
+		
+		/*
 		queryTotals+=(insitucount+")  Microarray(");
 		queryString=GeneListQueries.MICROARRAY_GENELIST_TOTAL;
 		sql = String.format(queryString, arrayWhereclause,input,focusGroupSpWhereclause);
@@ -171,7 +180,7 @@ public class GeneListTablePageBeanAssembler {
 		finally {
 			    Globals.closeQuietly(con, ps, result);
 		}
-		queryTotals+=(sequencecount+")");
+		queryTotals+=(sequencecount+")");*/
 		return count;
 	}
 	
