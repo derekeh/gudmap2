@@ -299,14 +299,14 @@
 		</h:dataTable>
 	</h:panelGrid>
 	
-	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.ihcSubmissions == null}">
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel.ihcSubmissions == null}">
 		 <h:outputText value="IHC Data" />
 		 <h:outputText value="no data" />	
 	</h:panelGrid>
 	
-	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.ihcSubmissions != null}">
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel.ihcSubmissions != null}">
 		 <h:outputText value="IHC Data" />
-		    <h:dataTable cellspacing="5" value="#{GeneDetailsBean.geneModel.ihcSubmissions}" var="sub">
+		    <h:dataTable cellspacing="5" value="#{geneDetailsBean.geneModel.ihcSubmissions}" var="sub">
 			<h:column>
 				<f:facet name="header">
 					Accession ID
@@ -365,14 +365,14 @@
 		</h:dataTable>
 	</h:panelGrid>
 
-	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.tgSubmissions == null}">
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel.tgSubmissions == null}">
 		        <h:outputText value="Transgenic Data" />
 		        <h:outputText value="no data" />
 	</h:panelGrid>
 
-	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{GeneDetailsBean.geneModel.tgSubmissions != null}">
+	<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0"  cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel.tgSubmissions != null}">
 		        <h:outputText value="Transgenic Data" />
-		        <h:dataTable cellspacing="5" value="#{GeneDetailsBean.geneModel.tgSubmissions}" var="sub">
+		        <h:dataTable cellspacing="5" value="#{geneDetailsBean.geneModel.tgSubmissions}" var="sub">
 			<h:column>
 				<f:facet name="header">
 					Accession ID

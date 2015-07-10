@@ -393,7 +393,7 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
                                   "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
                                   "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +
                                   "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
-                                  "WHERE RPR_SYMBOL = ? " + 
+                                  "WHERE RPR_LOCUS_TAG = ? " + 
                                   "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
                                   "AND SUB_ASSAY_TYPE = ? " +
                                   "GROUP BY SUB_OID " +

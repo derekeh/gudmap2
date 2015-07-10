@@ -8,172 +8,81 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java7">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_60">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/acc-config.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/admin-cli.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/admin-cli-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/admin-core.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/admin-util.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/admin-util-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/amx-core.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/amx-javaee.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/annotation-framework.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/annotation-framework-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/ant.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/antlr-repackaged.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/aopalliance-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/api-exporter.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/appclient.security.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/appclient-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/appclient-server-core.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/appclient-server-core-l10n.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/asm-all.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/asm-all-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/backup.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/backup-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/bean-validator.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/bean-validator-cdi.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cglib.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/cdi-api.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/cdi-api-fragment.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/class-model.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cli-optional-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/cluster-admin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cluster-admin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cluster-cli-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/cluster-common.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cluster-common-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/cluster-ssh.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cluster-ssh-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-ejb-mapping.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-ejb-mapping-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-enhancer.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-enhancer-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-generator-database.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-generator-database-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-internal-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-model.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-model-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-support-ejb.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-support-ejb-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-support-sqlstore.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-support-sqlstore-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-utility.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/cmp-utility-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/com.ibm.jbatch-ri-spi.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/com.ibm.jbatch-runtime-all.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/common-util.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/common-util-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/concurrent-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/concurrent-connector-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/concurrent-impl.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/concurrent-impl-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/config-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/config-api-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/config-types.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-admin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-admin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-inbound-runtime.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-inbound-runtime-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-internal-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-internal-api-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-runtime.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/connectors-runtime-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-cluster-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-cluster-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-common.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-common-full-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-common-full-plugin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-common-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-community-branding-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-community-branding-plugin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-concurrent-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-concurrent-plugin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-corba-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-corba-plugin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-core-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-ejb-lite-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-ejb-lite-plugin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-ejb-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-ejb-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jca-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jca-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jdbc-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jdbc-plugin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jms-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jms-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jts-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-jts-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-plugin-service.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-updatecenter-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-updatecenter-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/console-web-plugin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/console-web-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/container-common.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/container-common-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/core.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/dataprovider.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/dbschema-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-admin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-admin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-autodeploy.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-autodeploy-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-client.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-client-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-common.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-common-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-javaee-core.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-javaee-core-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-javaee-full.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/deployment-javaee-full-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/dol.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/dol-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/ejb.security.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/ejb-container.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/ejb-container-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/ejb-full-container.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/ejb-internal-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/entitybean-container.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/flashlight-extra-jdk-packages.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/flashlight-framework.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/flashlight-framework-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-admingui-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-client-module.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-client-module-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-connectors-connector.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-ejb-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-ejb-connector-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-jms-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-jms-connector-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-jms-injection.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-jms-injection-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-jpa-connector.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-load-balancer-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-load-balancer-connector-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-restadmin-connector.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-web-connector.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gf-weld-connector.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-api-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-batch-commands.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-batch-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-corba-csiv2-idl.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-corba-internal-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-corba-omgapi.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-corba-orb.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-ee-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-extra-jre-packages.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-grizzly-extra-all.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-mbeanserver.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-naming.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-naming-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-oracle-jdbc-driver-packages.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/glassfish-registration.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gmbal.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gms-adapter.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/gms-bootstrap.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/gms-bootstrap-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/guava.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/ha-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/ha-file-store.jar"/>
@@ -187,26 +96,22 @@
 	<classpathentry kind="lib" path="/opt/glassfish_lib/hk2-utils.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/inmemory.jacc.provider.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/internal-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/internal-api-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-core-asl.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-jaxrs.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-mapper-asl.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-xc.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-annotations.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-core.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-databind.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-jaxrs-base.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jackson-jaxrs-json-provider.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jaspic.provider.framework.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javaee-kernel.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javamail-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/javamail-connector-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javamail-runtime.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.batch-api.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/javassist.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.ejb-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.el.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.enterprise.concurrent.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.enterprise.concurrent-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.enterprise.deploy-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.faces.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.inject.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.interceptor-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.jms-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.json.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.mail.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.management.j2ee-api.jar"/>
@@ -222,24 +127,20 @@
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.transaction-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.websocket-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.ws.rs-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.xml.registry-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/javax.xml.rpc-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jaxb-extra-osgi.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jaxb-osgi.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jboss-logging.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jdbc-admin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jdbc-admin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jdbc-config.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jdbc-config-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jdbc-runtime.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jdbc-runtime-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-bean-validation.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-client.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-common.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-container-grizzly2-http.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-container-servlet.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-container-servlet-core.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-entity-filtering.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-gf-cdi.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-gf-ejb.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-guava.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-media-json-jackson.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-media-json-jettison.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-media-json-processing.jar"/>
@@ -252,45 +153,28 @@
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jersey-server.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jettison.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/j-interop-repackaged.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jms-admin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jms-admin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jms-core.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jms-core-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jmxremote_optional-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jpa-container.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jpa-container-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jsf-connector.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jsftemplating.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jsonp-jaxrs.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jspcaching-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jsr109-impl.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jsr109-impl-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jstl-connector.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jta.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jta-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/jts.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/jts-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/kernel.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/kernel-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/launcher.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/launcher-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/ldapbp-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/libpam4j-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/load-balancer-admin.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/load-balancer-admin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/logging.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/logging-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/management-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/metro-glue.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/mimepull.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/monitoring-core.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/monitoring-core-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/nucleus-grizzly-all.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/nucleus-resources.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/orb-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/orb-connector-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/orb-enabler.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/orb-iiop.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/org.apache.felix.bundlerepository.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/org.eclipse.persistence.antlr.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/org.eclipse.persistence.asm.jar"/>
@@ -316,73 +200,61 @@
 	<classpathentry kind="lib" path="/opt/glassfish_lib/pkg-client.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/registration-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/registration-impl.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/registration-impl-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/resources-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/resources-connector-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/resources-runtime.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/rest-client.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/rest-service.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/rest-service-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/scattered-archive-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/schema2beans-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/security.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/security-ee.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/security-ee-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/security-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/security-services.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/server-mgmt-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/shoal-cache.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/shoal-gms-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/shoal-gms-impl.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/simple-glassfish-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/soap-tcp.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/ssl-impl.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/stats77.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/stats77-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/stax2-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/transaction-internal-api.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/transaction-internal-api-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/trilead-ssh2-repackaged.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-client.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-container-glassfish-cdi.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-container-grizzly.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-container-glassfish-ejb.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-container-grizzly-client.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-container-servlet.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-core.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-server.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-spi.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/tyrus-websocket-core.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/war-util.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/war-util-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-cli.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/web-cli-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-core.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/web-core-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-embed-api.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-glue.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/web-glue-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-gui-plugin-common.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/web-gui-plugin-common-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-ha.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-naming.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/web-naming-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/websecurity.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webservices.security.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webservices.security-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webservices-connector.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webservices-connector-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webservices-extra-jdk-packages.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webservices-osgi.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/web-sse.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webui-jsf-plugin-l10n.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/webui-jsf-suntheme-plugin-l10n.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/weld-integration.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/weld-integration-fragment.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/weld-osgi-bundle.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/woodstox-core-asl.jar"/>
 	<classpathentry kind="lib" path="/opt/glassfish_lib/work-management.jar"/>
-	<classpathentry kind="lib" path="/opt/glassfish_lib/work-management-l10n.jar"/>
-	<classpathentry kind="lib" path="/export/data0/software/glassfish-4.0/glassfish/modules/endorsed/javax.annotation-api.jar"/>
-	<classpathentry kind="lib" path="/export/data0/software/glassfish-4.0/glassfish/modules/endorsed/jaxb-api-osgi.jar"/>
-	<classpathentry kind="lib" path="/export/data0/software/glassfish-4.0/glassfish/modules/endorsed/webservices-api-osgi.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/org.apache.felix.configadmin.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/org.apache.felix.eventadmin.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/org.apache.felix.fileinstall.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/org.apache.felix.gogo.command.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/org.apache.felix.gogo.runtime.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/org.apache.felix.gogo.shell.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/org.apache.felix.scr.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-cdi.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-ee-resources.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-ejb-container.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-http.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-javaee-base.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-jdbc.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-jpa.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-jta.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/autostart/osgi-web-container.jar"/>
+	<classpathentry kind="lib" path="/opt/glassfish_lib/endorsed/javax.annotation-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

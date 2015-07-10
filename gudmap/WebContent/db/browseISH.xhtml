@@ -39,7 +39,9 @@
     				(#{insituTableBean.totalslist.get("ASSAY_TYPE_TOTAL_GENE")}) <br />
     				Gene 
     			</f:facet>
-    				#{u.gene}
+     			<h:commandLink value="#{u.gene}"  action="viewGeneDetails">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+				</h:commandLink>
     		</h:column>
  
     		<h:column>

@@ -3,7 +3,7 @@ package org.gudmap.models;
 import java.util.List;
 
 public class GenericTableBeanModel {
-protected String oid,gudmap_accession,source,submission_date,assay_type,specimen_assay_type,stage,stage_order,age,sex,genotype,image=null;
+protected String oid,gudmap_accession,source,submission_date,assay_type,specimen_assay_type,stage,stage_order,age,sex,genotype,image=null,gene_id;
 protected int personOid=0;
 protected List<String> totals=null;
 protected boolean selected;
@@ -85,6 +85,12 @@ protected boolean selected;
 	}
 	public int getPersonOid(){
 		return personOid;
+	}
+	public void setGene_id(String gene_id){
+		this.gene_id=gene_id;
+	}
+	public String getGene_id(){
+		return gene_id;
 	}
 	
 	/////////////////////////////////////////////////////////

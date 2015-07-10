@@ -1040,17 +1040,22 @@ public class IshSubmissionDao {
 		return tissue;
     } //end findTissueBySubmissionId
     
-    public ArrayList<String[]> findRelatedSubmissionBySymbol(String symbol, String assayType) {
-  		if (symbol == null || symbol.equals("")) {
+    public ArrayList<String[]> findRelatedSubmissionBySymbol(String geneId, String assayType) {
+  		if (geneId == null || geneId.equals("")) {
   		    return null;
   		}
   		ArrayList<String[]> relatedSubmissionISH=null;
   		String queryString = IshSubmissionQueries.GENE_RELATED_SUBMISSIONS_ISH;
+  		
+//		if(assayType.equals("TG"))
+//			queryString = queryString.replace("RPR_LOCUS_TAG", "ALE_MUTATED_GENE_ID");
+
+  			
   		try
 		{
 			con = ds.getConnection();
 			ps = con.prepareStatement(queryString); 
-			ps.setString(1, symbol);
+			ps.setString(1, geneId);
 			ps.setString(2, assayType);
 			result =  ps.executeQuery();
 			if (result.first()) {

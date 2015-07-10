@@ -11,6 +11,7 @@ public class GeneDetailsBeanAssembler {
 	
 	private GeneModel geneModel=null;
 	private String geneSymbol;
+	private String geneId;
 	private GeneDetailsDao geneDetailsDao;
 	private ArrayDao arrayDao;
 	private IshSubmissionDao ishSubmissionDao;
@@ -19,52 +20,52 @@ public class GeneDetailsBeanAssembler {
 		
 	}
 	
-	public GeneDetailsBeanAssembler(String geneSymbol) {
-		this.geneSymbol = geneSymbol;
+	public GeneDetailsBeanAssembler(String geneId) {
+		this.geneId = geneId;
 		geneDetailsDao = new GeneDetailsDao();
 		arrayDao = new ArrayDao();
 		ishSubmissionDao = new IshSubmissionDao();
 	}
 	
 	public GeneModel getGeneModel(){
-		if (geneSymbol == null || geneSymbol.equals("")) {
+		if (geneId == null || geneId.equals("")) {
 			return null;
 		}
 		String alternateSymbol = null;
 		
-			 geneModel = geneDetailsDao.findGeneInfoBySymbol(geneSymbol);
+		geneModel = geneDetailsDao.findGeneInfoBySymbolId(geneId);
 			
 			// might not find the gene
-			if (geneModel == null) {
-				ArrayList<String> synonymsAndSymbol = new ArrayList<String>();
-				synonymsAndSymbol.add(geneSymbol);
-				alternateSymbol = geneDetailsDao.findSymbolBySynonym(geneSymbol);
-				if (alternateSymbol != null && !alternateSymbol.equals("")) {
-					synonymsAndSymbol.add(alternateSymbol);
-				}
-								
-				geneModel = arrayDao.findGeneInfoBySymbol(synonymsAndSymbol);
-				if(geneModel == null){
-			    	return null;
-				} 
-				else {
-					geneModel = geneDetailsDao.findFurtherGeneInfoForMicroarray(geneModel);
-			    	// should use alternate symbol to make query
-			    	geneSymbol = alternateSymbol;
-			    }
-			}
+//			if (geneModel == null) {
+//				ArrayList<String> synonymsAndSymbol = new ArrayList<String>();
+//				synonymsAndSymbol.add(geneSymbol);
+//				alternateSymbol = geneDetailsDao.findSymbolBySynonym(geneSymbol);
+//				if (alternateSymbol != null && !alternateSymbol.equals("")) {
+//					synonymsAndSymbol.add(alternateSymbol);
+//				}
+//								
+//				geneModel = arrayDao.findGeneInfoBySymbol(synonymsAndSymbol);
+//				if(geneModel == null){
+//			    	return null;
+//				} 
+//				else {
+//					geneModel = geneDetailsDao.findFurtherGeneInfoForMicroarray(geneModel);
+//			    	// should use alternate symbol to make query
+//			    	geneSymbol = alternateSymbol;
+//			    }
+//			}
 	
 			// get associated probe
-			ArrayList<String[]> associatedProbe = geneDetailsDao.findRelatedMAProbeBySymbol(geneSymbol);
+			ArrayList<String[]> associatedProbe = geneDetailsDao.findRelatedMAProbeBySymbol(geneId);
 			
 			//get related ish submissions
-			ArrayList<String[]> relatedSubmissionISH = ishSubmissionDao.findRelatedSubmissionBySymbol(geneSymbol,"ISH");
+			ArrayList<String[]> relatedSubmissionISH = ishSubmissionDao.findRelatedSubmissionBySymbol(geneId,"ISH");
 
 			//get related ish submissions
-			ArrayList<String[]> relatedSubmissionIHC = ishSubmissionDao.findRelatedSubmissionBySymbol(geneSymbol,"IHC");
+			ArrayList<String[]> relatedSubmissionIHC = ishSubmissionDao.findRelatedSubmissionBySymbol(geneId,"IHC");
 
 			//get related ish submissions
-			ArrayList<String[]> relatedSubmissionTG = ishSubmissionDao.findRelatedSubmissionBySymbol(geneSymbol,"TG");
+			ArrayList<String[]> relatedSubmissionTG = ishSubmissionDao.findRelatedSubmissionBySymbol(geneId,"TG");
 			
 			/** ---complete gene object---  */
 			if (null != relatedSubmissionISH) {
