@@ -1426,7 +1426,9 @@ public class ParamBean implements Serializable {
 		
 		List<String> list = new ArrayList<String>(Arrays.asList(newval.split(";")));
 		for(String str : list) {
-			if(!items.contains(str) && !str.equals(""))
+			/*if(!items.contains(str) && !str.equals(""))
+				outputstr.append(str+";");*/
+			if( (items==null || !items.contains(str) ) && !str.equals(""))
 				outputstr.append(str+";");
 		}
 		if(getLocalStorage().equals(""))
