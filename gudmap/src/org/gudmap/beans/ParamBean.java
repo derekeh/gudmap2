@@ -650,7 +650,6 @@ public class ParamBean implements Serializable {
 		if(theilerstagetovalues!=null){
 			if(getTheilerstagefromvalues()!=null && !getTheilerstagefromvalues().equals("") && !getTheilerstagefromvalues().equals("ALL") && !theilerstagetovalues.equals("ALL")){
 				temptheilervalues+=theilerstagetovalues;
-				//whereclause+=temptheilervalues+" AND ";
 				theilerstagevalueclause=temptheilervalues+" AND ";
 				cachetheilerstagevalueclause=cacheprefix+theilerstagevalueclause;
 			}
@@ -671,7 +670,6 @@ public class ParamBean implements Serializable {
 	public void setSexvalues(String sexvalues){
 		this.sexvalues=sexvalues;
 		if(!sexvalues.equals("")) {
-				//whereclause+="SPN_SEX = '"+sexvalues+"' AND ";
 				sexvalueclause="SPN_SEX = '"+sexvalues+"' AND ";
 				cachesexvalueclause=cacheprefix+sexvalueclause;
 		}

@@ -1,9 +1,6 @@
 package org.gudmap.assemblers;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +14,6 @@ import java.util.Map;
 import org.gudmap.dao.AnatomyDao;
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.anatomy.AnatomyQueries;
-import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.InsituTableBeanModel;
@@ -25,7 +21,6 @@ import org.gudmap.models.InsituTableBeanModel;
 public class AnatomyTablePageBeanAssembler {
 	
 	
-	private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -49,14 +44,8 @@ public class AnatomyTablePageBeanAssembler {
 	private boolean ish_present=false;
 	private boolean array_present=false;
 	
-	public  AnatomyTablePageBeanAssembler(/*String paramSQL*/) {
-		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-		//this.paramSQL=paramSQL;
+	public  AnatomyTablePageBeanAssembler() {
+		
 		anatomyDao = new AnatomyDao();
 		
 	}
@@ -128,7 +117,7 @@ public class AnatomyTablePageBeanAssembler {
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, firstRow);
 			ps.setInt(2, rowCount);
@@ -147,6 +136,8 @@ public class AnatomyTablePageBeanAssembler {
 					ishmodel.setAssay_type(result.getString("assay_type"));
 					ishmodel.setProbe_name(result.getString("probe_name"));
 					ishmodel.setStage(result.getString("stage"));
+					ishmodel.setStage_order(result.getString("stage").substring(2));
+					ishmodel.setSpecies(result.getString("species"));
 					ishmodel.setAge(result.getString("age"));
 					ishmodel.setSex(result.getString("sex"));
 					ishmodel.setGenotype(result.getString("genotype"));
@@ -154,6 +145,7 @@ public class AnatomyTablePageBeanAssembler {
 					ishmodel.setExpression(result.getString("expression"));
 					ishmodel.setSpecimen(result.getString("specimen"));
 					ishmodel.setImage(result.getString("image"));
+					ishmodel.setGene_id(result.getString("gene_id"));
 					
 					ishmodel.setSelected(false);
 					list.add(ishmodel);
@@ -174,14 +166,13 @@ public class AnatomyTablePageBeanAssembler {
 		String sql="";
 		String queryString=AnatomyQueries.TOTAL_ISH_ANATOMY;
 		if(ish_present){
-			//String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
 			sql = String.format(queryString, cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
 					cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
 					cachewhereclause,timedComponentsQueryString);
 			
 			try
 			{
-					con = ds.getConnection();
+					con = Globals.getDatasource().getConnection();
 					ps = con.prepareStatement(sql);
 					result =  ps.executeQuery();
 					
@@ -199,11 +190,10 @@ public class AnatomyTablePageBeanAssembler {
 		queryString=AnatomyQueries.TOTAL_MICROARRAY_ANATOMY;
 		if(array_present){
 			sql = String.format(queryString, arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
-			//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 			
 			try
 			{
-					con = ds.getConnection();
+					con = Globals.getDatasource().getConnection();
 					ps = con.prepareStatement(sql);
 					//ps.setString(1, assayType);
 					result =  ps.executeQuery();
@@ -220,12 +210,10 @@ public class AnatomyTablePageBeanAssembler {
 		}
 		queryTotals+=(microarraycount+")  Sequence(");
 		queryString=AnatomyQueries.TOTAL_SEQUENCE_ANATOMY;
-		//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
-		//sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		sql = queryString;
 		try
 		{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
 				result =  ps.executeQuery();
 				
@@ -254,7 +242,7 @@ public class AnatomyTablePageBeanAssembler {
 		for(int i=0;i<queries.length;i++) {
 			try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				if(queries[i].equals("ASSAY_TYPE_TOTAL_TISSUE") || queries[i].equals("ASSAY_TYPE_TOTAL_EXPRESSION") || queries[i].equals("TG_TYPE_TOTAL_EXPRESSION")){
 					sql= String.format(QueryTotals.ReturnQuery(queries[i]),totalwhere,focusGroupWhereclause);
 					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
@@ -291,7 +279,6 @@ public class AnatomyTablePageBeanAssembler {
 	}
 	
 	public void assembleParamSQL(String cachewhereclause) {
-		//String partParamSQL= AnatomyQueries.BROWSE_ANATOMY_HEADER_PARAM;
 		String partParamSQL= AnatomyQueries.BROWSE_ANATOMY_HEADER_PARAM;
 		ish_present=false;
 		array_present=false;
