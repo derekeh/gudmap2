@@ -57,7 +57,7 @@ public class IshSubmissionModel extends SubmissionModel{
 			if (-1 != str.indexOf("ish")) {
 			    if (null != probeModel)
 				ret = probeModel.getGeneName();
-			} else if (str.contains("tg")) {
+			} else if (str.contains("tg") || str.contains("ihc")) {
 			    if (null != antibodyModel)
 				ret = antibodyModel.getGeneName();
 			    if (null != probeModel)
@@ -76,16 +76,12 @@ public class IshSubmissionModel extends SubmissionModel{
 	
 			if (-1 != str.indexOf("ish")) {
 			    if (null != probeModel)
-				ret = probeModel.getGeneId();
-			} else if (str.contains("tg")) {
+				ret = probeModel.getGeneID();
+			} else if (-1 == str.indexOf("tg")) {
 			    if (null != antibodyModel)
 				ret = antibodyModel.getGeneId();
-			    if (null != probeModel)
-				ret = probeModel.getGeneId();
-			} else {// ihc
-			    if (null != antibodyModel)
-				ret = antibodyModel.getGeneId();				
-			}
+			} else
+			    ret = super.getGeneId();
 		    
 			if (null != ret && ret.trim().equals(""))
 			    ret = null;

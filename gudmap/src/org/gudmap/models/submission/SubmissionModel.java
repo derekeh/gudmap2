@@ -89,6 +89,17 @@ public class SubmissionModel {
 		    }
 		}
     }
+    
+    public String getGeneId() {
+		String ret = null;
+		if (null != alleleModel && 0 < alleleModel.length)
+	    	ret = alleleModel[0].getGeneId();
+	    
+		if (null != ret && ret.trim().equals(""))
+		    ret = null;
+		
+		return ret;
+    }
 
     public String getGeneSymbol() {
 	String ret = null;
