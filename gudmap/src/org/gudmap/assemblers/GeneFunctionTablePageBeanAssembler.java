@@ -137,6 +137,7 @@ public class GeneFunctionTablePageBeanAssembler {
 					ishmodel.setExpression(result.getString("expression"));
 					ishmodel.setSpecimen(result.getString("specimen"));
 					ishmodel.setImage(result.getString("image"));
+					ishmodel.setGene_id(result.getString("gene_id"));
 					
 					ishmodel.setSelected(false);
 					list.add(ishmodel);

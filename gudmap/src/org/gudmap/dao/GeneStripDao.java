@@ -69,6 +69,7 @@ public class GeneStripDao {
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
 						geneStripModel.setImageUrl(getRepresentativeImage(gene));
 						geneStripModel.setSelected(false);
+						geneStripModel.setGene_id(result.getString("mgi"));
 					}
 				}
 				
@@ -337,11 +338,46 @@ public class GeneStripDao {
 		
 		// this query will return a list of synonyms to be used as input in another genefinding query - symbolsFromSynListQ
 		String synonymListQ;
+		//string to contain sql to find gene symbol from REF_PROBE using gene synonym
+		String symbolsFromRefProbeSynonymQ;
 		
 
 					
 			//if user wants to do a wild card search
-			if (wildcard.equalsIgnoreCase("contains") || wildcard.equalsIgnoreCase("starts with")) {
+		if (wildcard.equalsIgnoreCase("contains") || wildcard.equalsIgnoreCase("starts with")) {
+			//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
+			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
+			//create sql from components and user input
+			symbolsFromRefProbeSymbolQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+			//get components to build query to find symbols from REF_PROBE using gene name as a param to narrow search
+			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Name");
+			//create sql from components and user input
+			symbolsFromRefProbeNameQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+			//get components to build query to find symbols from REF_GENE_INFO using gene symbol as a param to narrow search
+			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Symbol");
+			//create sql from components and user input
+			symbolsFromrefGeneInfoSymbolQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+			//get components to build query to find symbols from REF_GENE_INFO using gene name as a param to narrow search
+			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Name");
+			//create sql from components and user input
+			symbolsFromrefGeneInfoNameQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+			// 09/10/2009 - START
+			//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
+			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
+			//create sql from components and user input
+			symbolsFromrefGeneInfoSynonymQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+			// 09/10/2009 - END
+			//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
+			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
+			//create sql from components and user input
+			synonymListQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+			//get components to build query to find synonymns from REF_PROBE using synonym as a param to narrow search
+			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_synonym");
+			//create sql from components and user input
+			symbolsFromRefProbeSynonymQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 0);
+			}
+			//search for an exact string
+			else {
 				//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
 				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
 				//create sql from components and user input
@@ -362,41 +398,16 @@ public class GeneStripDao {
 				//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
 				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
 				//create sql from components and user input
-				symbolsFromrefGeneInfoSynonymQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-				// 09/10/2009 - END
-				//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
-				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
-				//create sql from components and user input
-				synonymListQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-			}
-			//search for an exact string
-			else {
-				//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
-				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
-				//create sql from components and user input
-				symbolsFromRefProbeSymbolQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-				//get components to build query to find symbols from REF_PROBE using gene name as a param to narrow search
-				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Name");
-				//create sql from components and user input
-				symbolsFromRefProbeNameQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-				//get components to build query to find symbols from REF_GENE_INFO using gene symbol as a param to narrow search
-				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Symbol");
-				//create sql from components and user input
-				symbolsFromrefGeneInfoSymbolQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-				//get components to build query to find symbols from REF_GENE_INFO using gene name as a param to narrow search
-				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Name");
-				//create sql from components and user input
-				symbolsFromrefGeneInfoNameQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-				// 09/10/2009 - START
-				//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
-				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
-				//create sql from components and user input
-				symbolsFromrefGeneInfoSynonymQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				symbolsFromrefGeneInfoSynonymQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1],0);
 				// 09/10/2009 - END
 				//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
 				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
 				//create sql from components and user input
 				synonymListQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				//get components to build query to find synonymns from REF_PROBE using synonym as a param to narrow search
+				symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_synonym");
+				//create sql from components and user input
+				symbolsFromRefProbeSynonymQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 0);
 			}
 
 			// need to execute query to get syn list here
@@ -417,7 +428,7 @@ public class GeneStripDao {
 						ps.setString(i+1, input[i].trim());
 					}
 				}
-				result =  ps.executeQuery();
+				result = ps.executeQuery();
 				if (result.first()) {
 					result.last();
 					int rowCount = result.getRow();
@@ -428,7 +439,7 @@ public class GeneStripDao {
 						synList[i] = result.getString(1);
 						i++;
 					}
-				}				
+				}
 			}
 			catch(SQLException sqle){sqle.printStackTrace();}
 			finally {
@@ -437,10 +448,10 @@ public class GeneStripDao {
 			
 
 			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefMgiMrk_MGIAcc");
-			String symbolsFromMGiAccQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+			String symbolsFromMGiAccQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 1);
 			
 			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefEnsGene_EnsemblId");
-			String symbolsFromEnsemblIdQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+			String symbolsFromEnsemblIdQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 1);
 			
 			// sligtly different query - had to get list of relevant synonyms
 			// from db to use as input for this query
@@ -454,6 +465,7 @@ public class GeneStripDao {
 					+ symbolsFromrefGeneInfoSymbolQ + union
 					+ symbolsFromrefGeneInfoNameQ + union
 					+ symbolsFromrefGeneInfoSynonymQ + union // 09/10/2009
+					+ symbolsFromRefProbeSynonymQ + union
 					+ symbolsFromMGiAccQ + union 
 					+ symbolsFromEnsemblIdQ;
 			if(!symbolsFromSynListQ.equals("")){
@@ -480,7 +492,7 @@ public class GeneStripDao {
 				}
 				//start the loop at 4 since we have already set params for the first four queries.
 				//set the params for the remaining 'union' queries
-				for(int i=5;i<7;i++){// xingjun - 09/10/2009 - change from 4 to 5 and 6 to 7 respectively
+				for(int i=5;i<8;i++){// xingjun - 09/10/2009 - change from 4 to 5 and 6 to 7 respectively
 					for(int j=0;j<input.length;j++){
 						ps.setString((i*input.length)+j+1, input[j].trim());
 					}
@@ -489,7 +501,7 @@ public class GeneStripDao {
 				if(synList != null) {
 				    for(int i = 0;i< synList.length;i++){
 				    	//as there are 6 previous queries, need to start setting params from 6 onwards.
-				    	ps.setString((7*input.length+1+i), synList[i].trim());// xingjun - 09/10/2009 - change from 6 to 7
+				    	ps.setString((8*input.length+1+i), synList[i].trim());// xingjun - 09/10/2009 - change from 6 to 7
 				    }
 				}
 					
@@ -551,6 +563,38 @@ public class GeneStripDao {
 		  return symbolsQ.toString();
 	  }
 	  
+	  static public String getSymbolsFromGeneInputParamsQuery(String [] input, 
+			  String startQuery, String searchColumn, String order, int type){
+		  if(input == null)
+			  return "";
+		  StringBuffer symbolsQ = new StringBuffer(startQuery);
+		  //0 == 'like' query ('contains' or 'starts with')
+		  if(type == 0) {
+			  symbolsQ.append("(");
+			  for(int i=0; i<input.length;i++){
+	    			if(i==0){
+	    				symbolsQ.append(searchColumn+" RLIKE ? ");
+	    			}
+	    			else {
+	    				symbolsQ.append("OR "+searchColumn+" RLIKE ? ");
+	    			}
+	    		}
+	    		symbolsQ.append(")");
+		  }
+		  //else type will be 1: equivalent to 'equals'
+		  else {
+			  symbolsQ.append(searchColumn + " IN (");
+			  for(int i=0;i<input.length;i++){
+	            	if(i == input.length-1){
+	            		symbolsQ.append("?)");
+	            	}
+	            	else {
+	            		symbolsQ.append("?, ");
+	            	}
+	            }
+		  }
+		  return symbolsQ.toString() + order;
+	  }
 
 	  
 	  private String calculateStageRange(String arrayRange, String ishRange){

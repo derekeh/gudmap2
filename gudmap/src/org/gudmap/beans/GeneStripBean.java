@@ -167,6 +167,14 @@ public class GeneStripBean implements Serializable {
 	public String getGenelistAdjustedData(){
 		return genelistAdjustedData;
 	}
+
+//	public String getGene_id(){
+//		return gene_id;
+//	}
+//	
+//	public String getGene_id(){
+//		return gene_id;
+//	}
 	
 	private void createJSONFile(){
 		

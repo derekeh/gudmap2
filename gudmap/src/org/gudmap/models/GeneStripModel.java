@@ -14,6 +14,7 @@ public class GeneStripModel {
 	private MasterTableInfo[] microarrayProfile;
 	private ArrayList<String> rnaSeq;
 	private boolean selected=false;
+	private String gene_id;
 	
 	public GeneStripModel() {
 	}
@@ -99,4 +100,11 @@ public class GeneStripModel {
 		return selected;
 	}
 
+	public void setGene_id(String gene_id){
+		this.gene_id=gene_id;
+	}
+	public String getGene_id(){
+		return gene_id;
+	}
+	
 }

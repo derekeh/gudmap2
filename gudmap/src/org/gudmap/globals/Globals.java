@@ -132,4 +132,24 @@ public class Globals {
 			return lookupsection;
 	  }
 
+	  final static public Hashtable getEMAPAID(){
+			Hashtable<String, String[]> lookupsection = new Hashtable<String,String[]>();
+			lookupsection.put("1",new String[]{// metanephros (11)
+					"EMAPA:17373"}); 
+			lookupsection.put("2",new String[]{// early reproductive system (7)
+					"EMAPA:16744","EMAPA:16857","EMAPA:27644","EMAPA:17382","EMAPA:17383"}); 
+			lookupsection.put("3",new String[]{// Male Reproductive System (9)
+					"EMAPA:17968"}); 
+			lookupsection.put("4",new String[]{// Female Reproductive System (9)
+					"EMAPA:17959"}); 
+			lookupsection.put("5",new String[]{// Lower Urinary Tract (39)
+					"EMAPA:17210","EMAPA:17211","EMAPA:17212","EMAPA:17378","EMAPA:17379",
+					"EMAPA:17380","EMAPA:18321","EMAPA:28555","EMAPA:28747","EMAPA:30897",
+					"EMAPA:30901","EMAPA:31522"});
+			lookupsection.put("6", new String[]{// Mesonephros (11 all parts, all stages)
+					"EMAPA:16744","EMAPA:27644", "EMAPA:28909", "EMAPA:29138"});
+
+			return lookupsection;
+	  }
+	 
 }

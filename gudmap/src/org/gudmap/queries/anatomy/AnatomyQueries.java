@@ -237,7 +237,6 @@ public class AnatomyQueries {
 			"ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x " +
 			"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
 		
-		
 		public static String BROWSE_ANATOMY_HEADER_PARAM="SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.species, x.age, x.sex, " +
 				"x.genotype, x.tissue, x.expression, x.specimen, x.image, x.gene_id FROM (";
 		

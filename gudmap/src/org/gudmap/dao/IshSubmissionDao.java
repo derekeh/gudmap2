@@ -161,7 +161,7 @@ public class IshSubmissionDao {
 	            probeModel.setGeneName(result.getString(2));
 	            String probeName = result.getString(3);
 	            probeModel.setProbeName(probeName);
-	            probeModel.setGeneID(result.getString(4));
+	            probeModel.setGeneId(result.getString(4));
 	            probeModel.setSource(result.getString(5));
 	            probeModel.setStrain(result.getString(6));
 	            probeModel.setTissue(result.getString(7));
@@ -348,6 +348,7 @@ public class IshSubmissionDao {
 			    antibodyModel.setGeneSymbol(result.getString(4));
 			    antibodyModel.setGeneName(result.getString(5));
 			    antibodyModel.setLocusTag(result.getString(6));
+			    antibodyModel.setGeneId(result.getString(6));
 			    antibodyModel.setUniprotId(result.getString(7));
 			    antibodyModel.setseqStartLocation(result.getInt(8));
 			    antibodyModel.setSeqEndLocation(result.getInt(9));
