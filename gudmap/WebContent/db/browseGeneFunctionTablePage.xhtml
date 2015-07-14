@@ -70,8 +70,8 @@
     					<f:ajax execute="@this genelink" render="@form"></f:ajax>
                     </h:commandLink> 
     			</f:facet>
-    			<h:commandLink value="#{u.gene}"  action="viewGeneStrip">
-					<f:param name="gene" value="#{u.gene}"></f:param>
+    			<h:commandLink value="#{u.gene}"  action="viewGeneDetails">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
     		</h:column>
  
