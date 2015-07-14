@@ -70,9 +70,9 @@
     			<f:facet name="header">
     				Gene 
     			</f:facet>
-    			<h:outputLink value="viewGeneDetails.jsf?gene=#{u.geneSymbol}">
-    				#{u.geneSymbol}
-    			</h:outputLink>
+     			<h:commandLink value="#{u.gene}"  action="viewGeneDetails">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+				</h:commandLink>
     		</h:column>
  
     		<h:column rendered="#{paramBean.synonymcol == true}">

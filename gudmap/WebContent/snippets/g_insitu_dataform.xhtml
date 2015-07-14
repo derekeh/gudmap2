@@ -7,7 +7,9 @@
 	xmlns:pr="http://primefaces.org/ui" >
 	
 	<h:form id="dataform"> 
-	    <h:inputHidden id="lshidden" value="#{paramBean.localStorage}"></h:inputHidden>
+
+  	    <h:inputHidden id="lshidden" value="#{paramBean.localStorage}"></h:inputHidden> 
+
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
