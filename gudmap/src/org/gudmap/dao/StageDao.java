@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,23 +13,24 @@ import javax.sql.DataSource;
 
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.array.ArrayQueries;
+import org.gudmap.queries.array.SequenceQueries;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.totals.QueryTotals;
 
 public class StageDao {
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
 	
 	public StageDao() {
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public String[][] getStageList(String[] stage, String organ, String symbol) {
@@ -62,7 +64,7 @@ public class StageDao {
 	
 	/////////
 	
-	public String[] getStageList(String assayType, String[] stage, String organ, String symbol) {
+	public String[] getStageList(String assayType, String[] stage, String organ, String geneId) {
 		String[] stageList = new String[stage.length];
 		String stageString = null;
 		String geneString = "";
@@ -73,26 +75,36 @@ public class StageDao {
 		if(null != stage) {
 			if (assayType.equals("insitu")) {
 				querySQL=QueryTotals.ReturnQuery("INSITU_TOTAL");
-				stageString = " AND SUB_EMBRYO_STG = '";
-				if (symbol != null && !symbol.equals("")) {
-					geneString += " AND RPR_SYMBOL = '" + symbol + "'";
+				stageString = " AND STG_STAGE_DISPLAY = '";
+				if (geneId != null && !geneId.equals("")) {
+					//geneString += " AND RPR_SYMBOL = '" + symbol + "'";
+					geneString += " AND RPR_LOCUS_TAG = '" + geneId + "'";
 				}
 				componentString = " AND EXP_COMPONENT_ID IN ";
 			} 
 			else if (assayType.equals("Microarray")) {
 				// if gene criteria is not provided, use alternative query and much faster
-				if (symbol != null && !symbol.equals("")) {
+				if (geneId != null && !geneId.equals("")) {
 					querySQL = ArrayQueries.TOTAL_CACHE_ARRAY_SUBMISSIONS;
-					stageString = " AND MBC_SUB_EMBRYO_STG = '";
-					geneString += " AND MBC_GNF_SYMBOL = '" + symbol + "'";
+					stageString = " AND MBC_STG_STAGE_DISPLAY = '";
+					//geneString += " AND MBC_GNF_SYMBOL = '" + symbol + "'";
+					geneString += " AND MBC_MAN_MGI_ID = '" + geneId + "'";
 					componentString = " AND MBC_COMPONENT_ID IN ";
 				} 
 				else {
 					querySQL = ArrayQueries.TOTAL_ARRAY_SUBMISSIONS;
-					stageString = " AND SUB_EMBRYO_STG = '";
+					stageString = " AND STG_STAGE_DISPLAY = '";
 					componentString = " AND EXP_COMPONENT_ID IN ";
 				}
 			}
+			else if (assayType.equals("sequence")) {
+				querySQL = SequenceQueries.TOTAL_NUMBER_OF_NGSEQUENCES;
+				stageString = " AND STG_STAGE_DISPLAY = '";
+				componentString = "";
+				geneString = "";
+			}
+			
+			
 			String queryString = "";
 			
 			for(int i = 0; i < stage.length; i++) {
@@ -141,7 +153,7 @@ public class StageDao {
 		String RET="";
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
 			if (result.first()) {
@@ -164,12 +176,12 @@ public class StageDao {
 		String queryString = GenericQueries.EQUIVALENT_DPC_STAGE_FOR_THEILER_STAGE;
 		try
 		{
-			con = ds.getConnection();
+			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString);
 			ps.setString(1, theilerStage);
 			result =  ps.executeQuery();
 			if (result.first()) {
-				dpcStageValue = result.getString(1) + " " + result.getString(2);
+				dpcStageValue = result.getString(1);
 			} else {
 				dpcStageValue = "";
 			}			
@@ -181,6 +193,36 @@ public class StageDao {
 		return dpcStageValue;
 		
 	}
+	
+
+	
+public ArrayList<String> getStages(String species) {
+		
+		ArrayList<String> stages = new ArrayList<String>();
+		
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(GenericQueries.STAGES_FROM_REF_STAGE);
+			ps.setString(1, species);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				//need to reset cursor as 'if' move it on a place
+				result.beforeFirst();
+				while(result.next()) {
+					String stage = result.getString(1);
+			        stages.add(stage);
+				}
+			}			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return stages;
+	}
+
+	
 
 
 }

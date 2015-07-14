@@ -281,7 +281,7 @@ public class GenericQueries {
 			   "ON IST_SUBMISSION_FK=SUB_OID " +
 			   "%s  SUB_ACCESSION_ID  IN (%s)   AND SUB_ASSAY_TYPE = 'NextGen' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 %s"; 
 	   
-       public final static String EQUIVALENT_DPC_STAGE_FOR_THEILER_STAGE = "SELECT STG_DPC_PREFIX, STG_DPC_VALUE FROM REF_STAGE WHERE STG_VALUE = ?";
+       public final static String EQUIVALENT_DPC_STAGE_FOR_THEILER_STAGE = "SELECT STG_ALT_STAGE FROM REF_STAGE WHERE STG_STAGE_DISPLAY = ?";
        
        public final static String BROWSE_LOCAL_STORAGE_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.age, x.sex, x.genotype, " +
 			   "GROUP_CONCAT(DISTINCT x.tissue) tissue, x.expression, x.specimen, x.image " +
@@ -329,6 +329,8 @@ public class GenericQueries {
 				"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex LIMIT ? , ?";
        
 	   
-	   
+	   			//stages
+       
+   		public final static String STAGES_FROM_REF_STAGE = "SELECT DISTINCT(STG_STAGE_DISPLAY) FROM REF_STAGE WHERE STG_SPECIES = ? ORDER BY STG_ORDER";
 	   
 }

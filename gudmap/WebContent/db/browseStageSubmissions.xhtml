@@ -27,7 +27,7 @@
 		             value="#{stageBean.tableData}" var="submission">
 			<h:column>
 				<f:facet name="header">
-					<h:outputText styleClass="plaintextbold" value="Theiler Stage" />
+					<h:outputText styleClass="plaintextbold" value="Stage" />
 				</f:facet>
 
 				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{submission[4]}definition.html" styleClass="plaintext">
@@ -47,9 +47,10 @@
 				<f:facet name="header">              
 					<h:outputText styleClass="plaintextbold" value="Number of In situ Submissions" />
 				</f:facet>
-				<h:commandLink value="#{submission[2]}" actionListener="#{paramBean.updateStaging(submission[4],stageBean.geneSymbol)}"  action="browseInsituTablePage" rendered="#{submission[2]!='0'}">  
-					
+				<h:commandLink value="#{submission[2]}" actionListener="#{paramBean.updateStaging(submission[4],stageBean.geneSymbol)}"  
+					action="browseInsituTablePage" rendered="#{submission[2]!='0'}">  	
 				</h:commandLink>
+			
 			</h:column>
 			
 			
@@ -61,6 +62,16 @@
 					<h:outputText value="#{submission[3]}" />
 				</h:outputLink>
 				<h:outputText styleClass="plaintext" value="#{submission[3]}" rendered="#{submission[3]=='0'}"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:outputText styleClass="plaintextbold" value="Number of Sequence Submissions" />
+				</f:facet>
+				<h:outputLink value="browseSeqSampleTablePage.jsf?stage=#{submission[4]}" rendered="#{submission[5]!='0'}">  
+					<h:outputText value="#{submission[5]}" />
+				</h:outputLink>
+				<h:outputText styleClass="plaintext" value="#{submission[5]}" rendered="#{submission[5]=='0'}"/>
 			</h:column>
 			
 		</h:dataTable>

@@ -24,7 +24,6 @@ import org.gudmap.models.ArraySeqTableBeanModel;
 public class SeqSampleTablePageBeanAssembler {
 	
 	
-	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -36,16 +35,10 @@ public class SeqSampleTablePageBeanAssembler {
 	//private String focusGroupWhereclause;
 	
 	public SeqSampleTablePageBeanAssembler(String paramSQL,String assayType) {
-	/*	try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
+	
 		this.paramSQL=paramSQL;
 		paramValue=(Globals.getParameterValue("seqSeriesID")!=null)?"AND NGL_SERIES_FK="+Globals.getParameterValue("seqSeriesID")+" ":"";
 		
-		//this.assayType=assayType;
 		
 	}
 	
@@ -71,6 +64,8 @@ public class SeqSampleTablePageBeanAssembler {
 				arraySeqmodel.setGudmap_accession(result.getString("gudmap_accession"));
 				arraySeqmodel.setGeoSampleID(result.getString("geo_sample_id"));
 				arraySeqmodel.setStage(result.getString("stage"));
+				arraySeqmodel.setStage_order(result.getString("stage").substring(2));
+				arraySeqmodel.setSpecies(result.getString("species"));
 				arraySeqmodel.setAge(result.getString("age"));
 				arraySeqmodel.setSource(result.getString("source"));
 				arraySeqmodel.setLibraryStrategy(result.getString("library_strategy"));
