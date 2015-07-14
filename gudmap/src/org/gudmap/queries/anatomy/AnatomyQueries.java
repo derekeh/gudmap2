@@ -237,116 +237,68 @@ public class AnatomyQueries {
 			"ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x " +
 			"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
 		
-		public static String BROWSE_ANATOMY_HEADER_PARAM="SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.age, x.sex, " +
-				"x.genotype, x.tissue, x.expression, x.specimen, x.image FROM (";
+		
+		public static String BROWSE_ANATOMY_HEADER_PARAM="SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.species, x.age, x.sex, " +
+				"x.genotype, x.tissue, x.expression, x.specimen, x.image, x.gene_id FROM (";
+		
 		
 		public static String BROWSE_ANATOMY_ISH_PARAM = "(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
-			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " +
-			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-			"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  " +
-			"%s " +
-			"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='present' ) " + 
-			"UNION " +
-			"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
-			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " + 
-			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-			"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  " + 
-			"%s " +
-			"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='not detected') " +
-			"UNION " + 
-			"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
-			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " + 
-			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-			"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +  
-			"%s  " +
-			"(QIC_ATN_PUBLIC_ID in (%s))  AND QIC_EXP_STRENGTH not in('present', 'not detected') ) ";
+				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
+				"QIC_STG_SPECIES species, QIC_STG_ALT_STAGE age, QIC_SPN_SEX sex, " +
+				"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image, QIC_RPR_LOCUS_TAG gene_id " +
+				"FROM QSC_ISH_CACHE JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+				"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  " +
+				"%s " +
+				"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='present' ) " + 
+				"UNION " +
+				"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
+				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
+				"QIC_STG_SPECIES species, QIC_STG_ALT_STAGE age, QIC_SPN_SEX sex, " +
+				"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image, QIC_RPR_LOCUS_TAG gene_id  " + 
+				"FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+				"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  " + 
+				"%s " +
+				"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='not detected') " +
+				"UNION " + 
+				"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
+				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
+				"QIC_STG_SPECIES species, QIC_STG_ALT_STAGE age, QIC_SPN_SEX sex, " +
+				"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image, QIC_RPR_LOCUS_TAG gene_id  " + 
+				"FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+				"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +  
+				"%s  " +
+				"(QIC_ATN_PUBLIC_ID in (%s))  AND QIC_EXP_STRENGTH not in('present', 'not detected') ) ";
+		
 		
 		public static String BROWSE_ANATOMY_MIC_PARAM = //"UNION " +
-			"(select distinct SUBSTRING(QMC_SUB_ACCESSION_ID,8) oid, '' gene, QMC_SUB_ACCESSION_ID gudmap_accession, QMC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) age, QMC_SPN_SEX sex, " +
-			"QMC_SPN_WILDTYPE genotype, QMC_ANO_COMPONENT_NAME tissue, '' expression, QMC_SPN_ASSAY_TYPE specimen, '' image " +
-			"FROM " +
-			"QSC_MIC_CACHE " +
-			"%s  " +
-			"(QMC_ATN_PUBLIC_ID in (%s,%s,%s))) ";
+				"(select distinct SUBSTRING(QMC_SUB_ACCESSION_ID,8) oid, '' gene, QMC_SUB_ACCESSION_ID gudmap_accession, QMC_SUB_SOURCE source, " +
+				"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_STG_STAGE_DISPLAY stage, " +
+				"QMC_STG_SPECIES species, QMC_STG_ALT_STAGE age, QMC_SPN_SEX sex, " +
+				"QMC_SPN_WILDTYPE genotype, QMC_ANO_COMPONENT_NAME tissue, '' expression, QMC_SPN_ASSAY_TYPE specimen, '' image, '' gene_id " +
+				"FROM " +
+				"QSC_MIC_CACHE  JOIN REF_STAGE ON STG_OID = QMC_SUB_STAGE_FK  " +
+				"%s  " +
+				"(QMC_ATN_PUBLIC_ID in (%s,%s,%s))) ";
 		
 		public static String BROWSE_ANATOMY_FOOTER_PARAM = "ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x " +
 			"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
 		
-		/*public static String BROWSE_ANATOMY_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.age, x.sex, " +
-				"x.genotype, x.tissue, x.expression, x.specimen, x.image " +
-			"FROM " + 
-			"((select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
-			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " +
-			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-			"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  " +
-			"%s " +
-			"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='present' ) " + 
-			"UNION " +
-			"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
-			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " + 
-			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-			"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  " + 
-			"%s " +
-			"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='not detected') " +
-			"UNION " + 
-			"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
-			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " + 
-			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-			"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +  
-			"%s  " +
-			"(QIC_ATN_PUBLIC_ID in (%s))  AND QIC_EXP_STRENGTH not in('present', 'not detected') ) " + 
-			"UNION " +
-			"(select distinct SUBSTRING(QMC_SUB_ACCESSION_ID,8) oid, '' gene, QMC_SUB_ACCESSION_ID gudmap_accession, QMC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_SUB_EMBRYO_STG stage, " +
-			"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) age, QMC_SPN_SEX sex, " +
-			"QMC_SPN_WILDTYPE genotype, QMC_ANO_COMPONENT_NAME tissue, '' expression, QMC_SPN_ASSAY_TYPE specimen, '' image " +
-			"FROM " +
-			"QSC_MIC_CACHE " +
-			"%s  " +
-			"(QMC_ATN_PUBLIC_ID in (%s,%s,%s)))  " +
-			"ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x " +
-			"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";*/
 		
-		/*public static String TOTAL_ISH_DESCENDENT="SELECT COUNT(DISTINCT QIC_SUB_ACCESSION_ID) total_ish_descendent FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON " +
-				"IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT LEFT JOIN " +
-				"ANA_NODE ON ATN_NODE_FK = ANO_OID  WHERE  (QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='present'";
-		
-		public static String TOTAL_ISH_ANCESTOR="SELECT COUNT(DISTINCT QIC_SUB_ACCESSION_ID) total_ish_descendent FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON " +
-				"IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT LEFT JOIN " +
-				"ANA_NODE ON ATN_NODE_FK = ANO_OID  WHERE  (QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='not detected'";
-		
-		public static String TOTAL_ISH_COMPONENT="SELECT COUNT(DISTINCT QIC_SUB_ACCESSION_ID) total_ish_descendent FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON " +
-				"IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT LEFT JOIN " +
-				"ANA_NODE ON ATN_NODE_FK = ANO_OID  WHERE  (QIC_ATN_PUBLIC_ID in (%s))  AND QIC_EXP_STRENGTH not in('present', 'not detected')";*/
 		
 		public static String TOTAL_ISH_ANATOMY="select count(distinct gudmap_accession) FROM " +
-				"((SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON " +
+				"((SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON " +
 				"IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT LEFT JOIN " +
 				"ANA_NODE ON ATN_NODE_FK = ANO_OID  %s  (QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='present' ) " +
 				"UNION " +
-				"(SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON " +
+				"(SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON " +
 				"IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT LEFT JOIN " +
 				"ANA_NODE ON ATN_NODE_FK = ANO_OID  %s  (QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='not detected' ) " +
 				"UNION " +
-				"(SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON " +
+				"(SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON " +
 				"IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT LEFT JOIN " +
 				"ANA_NODE ON ATN_NODE_FK = ANO_OID %s  (QIC_ATN_PUBLIC_ID in (%s))  AND QIC_EXP_STRENGTH NOT IN ('present', 'not detected') )) AS TABLEA";
 		
-		public static String TOTAL_MICROARRAY_ANATOMY="select count(distinct QMC_SUB_ACCESSION_ID) total_microarray FROM QSC_MIC_CACHE %s  " +
+		public static String TOTAL_MICROARRAY_ANATOMY="select count(distinct QMC_SUB_ACCESSION_ID) total_microarray FROM QSC_MIC_CACHE JOIN REF_STAGE ON STG_OID = QMC_SUB_STAGE_FK   %s  " +
 				"(QMC_ATN_PUBLIC_ID in (%s,%s,%s))";
 		
 		public static String TOTAL_SEQUENCE_ANATOMY="SELECT 0 TOTAL_SEQUENCE";

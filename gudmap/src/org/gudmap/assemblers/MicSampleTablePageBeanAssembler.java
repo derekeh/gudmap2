@@ -23,7 +23,6 @@ import org.gudmap.models.ArraySeqTableBeanModel;
 public class MicSampleTablePageBeanAssembler {
 	
 	
-	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -37,17 +36,11 @@ public class MicSampleTablePageBeanAssembler {
 	private String geneValue;
 	
 	public MicSampleTablePageBeanAssembler(String paramSQL,String assayType) {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
-		//this.assayType=assayType;
+		
 		this.paramSQL=paramSQL;
 		
 		paramValue=(Globals.getParameterValue("arraySeriesID")!=null)?"AND SRM_SERIES_FK="+Globals.getParameterValue("arraySeriesID")+" ":"";
-		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND SUB_EMBRYO_STG="+Globals.getParameterValue("stage")+" ":"";
+		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND STG_STAGE_DISPLAY="+Globals.getParameterValue("stage")+" ":"";
 		
 		
 	}
@@ -75,6 +68,8 @@ public class MicSampleTablePageBeanAssembler {
 				arraySeqmodel.setGudmap_accession(result.getString("gudmap_accession"));
 				arraySeqmodel.setGeoSampleID(result.getString("geo_sample_id"));
 				arraySeqmodel.setStage(result.getString("stage"));
+				arraySeqmodel.setStage_order(result.getString("stage").substring(2));
+				arraySeqmodel.setSpecies(result.getString("species"));
 				arraySeqmodel.setAge(result.getString("age"));
 				arraySeqmodel.setSource(result.getString("source"));
 				arraySeqmodel.setSubmission_date(result.getString("submission_date"));
