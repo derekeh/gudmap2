@@ -69,6 +69,7 @@ public class GeneStripDao {
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
 						geneStripModel.setImageUrl(getRepresentativeImage(gene));
 						geneStripModel.setSelected(false);
+						geneStripModel.setGene_id(result.getString("mgi"));
 					}
 				}
 				
