@@ -610,7 +610,7 @@ public class GeneStripDao {
 			  rangeList.add(Integer.valueOf(ishValues[i]));
 		  }
 		  java.util.Collections.sort(rangeList);
-		  RET="TS"+rangeList.get(0).toString()+"-TS"+rangeList.get(1).toString();
+		  RET="TS"+rangeList.get(0).toString()+"-TS"+rangeList.get((rangeList.size()-1)).toString();
 		  
 		  
 		  return RET;
