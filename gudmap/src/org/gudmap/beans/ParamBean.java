@@ -1361,6 +1361,11 @@ public class ParamBean implements Serializable {
 	
 	///////FROM browseStageSubmissions//////////////////
 	public void updateStaging(String stage, String geneSymbol){
+		if(stage.startsWith("TS0"))
+			stage=stage.substring(3);
+		else if(stage.startsWith("TS"))
+			stage=stage.substring(2);
+	
 		resetAll();
 		setTheilerstagefromvalues(stage);
 		setTheilerstagetovalues(stage);

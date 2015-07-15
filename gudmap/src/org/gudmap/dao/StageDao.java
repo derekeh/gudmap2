@@ -25,44 +25,8 @@ public class StageDao {
 	private ResultSet result;
 	
 	public StageDao() {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
-	}
-	
-	public String[][] getStageList(String[] stage, String organ, String symbol) {
-		
-		String[][] stageLists = null;			
-		/** get data from database */
-		// get insitu stage list
-		String[] insituStageList = getStageList("insitu", stage, organ, symbol);
-			
-		// get microarray stage list
-		String[] arrayStageList = getStageList("Microarray", stage, organ, symbol);
-			
-		// get age (dpc) stage list
-		int len = stage.length;
-		String[] dpcStageList = new String[len];
-		for (int i=0;i<len;i++) {
-			dpcStageList[i] = getDpcStageValue(stage[i]);
-		}
-			
-		// put them together
-		stageLists = new String[len][3];
-		for (int i=0;i<len;i++) {
-			stageLists[i][0] = dpcStageList[i];
-			stageLists[i][1] = insituStageList[i];
-			stageLists[i][2] = arrayStageList[i];
-		}
-			/** return the value object */
-		return stageLists;
 		
 	}
-	
-	/////////
 	
 	public String[] getStageList(String assayType, String[] stage, String organ, String geneId) {
 		String[] stageList = new String[stage.length];
@@ -71,7 +35,6 @@ public class StageDao {
 		String componentString = null;
 		String querySQL="";
 		////////////
-		///////////////
 		if(null != stage) {
 			if (assayType.equals("insitu")) {
 				querySQL=QueryTotals.ReturnQuery("INSITU_TOTAL");
@@ -207,7 +170,6 @@ public ArrayList<String> getStages(String species) {
 			ps.setString(1, species);
 			result =  ps.executeQuery();
 			if (result.first()) {
-				//need to reset cursor as 'if' move it on a place
 				result.beforeFirst();
 				while(result.next()) {
 					String stage = result.getString(1);

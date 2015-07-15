@@ -70,6 +70,7 @@ public class GeneStripDao {
 						geneStripModel.setImageUrl(getRepresentativeImage(gene));
 						geneStripModel.setSelected(false);
 						geneStripModel.setGene_id(result.getString("mgi"));
+						geneStripModel.setSpecies(result.getString("species"));
 					}
 				}
 				

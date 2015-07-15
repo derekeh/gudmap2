@@ -38,7 +38,7 @@ public class SeqSampleTablePageBeanAssembler {
 	
 		this.paramSQL=paramSQL;
 		paramValue=(Globals.getParameterValue("seqSeriesID")!=null)?"AND NGL_SERIES_FK="+Globals.getParameterValue("seqSeriesID")+" ":"";
-		
+		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND STG_STAGE_DISPLAY='"+Globals.getParameterValue("stage")+"' ":"";
 		
 	}
 	

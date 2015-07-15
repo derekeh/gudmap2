@@ -15,6 +15,7 @@ public class GeneStripModel {
 	private ArrayList<String> rnaSeq;
 	private boolean selected=false;
 	private String gene_id;
+	private String species;
 	
 	public GeneStripModel() {
 	}
@@ -105,6 +106,14 @@ public class GeneStripModel {
 	}
 	public String getGene_id(){
 		return gene_id;
+	}
+	
+	public void setSpecies(String species) {
+		this.species = species;
+	}
+	
+	public String getSpecies() {
+		return species;
 	}
 	
 }

@@ -40,7 +40,7 @@ public class MicSampleTablePageBeanAssembler {
 		this.paramSQL=paramSQL;
 		
 		paramValue=(Globals.getParameterValue("arraySeriesID")!=null)?"AND SRM_SERIES_FK="+Globals.getParameterValue("arraySeriesID")+" ":"";
-		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND STG_STAGE_DISPLAY="+Globals.getParameterValue("stage")+" ":"";
+		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND STG_STAGE_DISPLAY='"+Globals.getParameterValue("stage")+"' ":"";
 		
 		
 	}

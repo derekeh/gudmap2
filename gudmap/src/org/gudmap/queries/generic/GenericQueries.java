@@ -329,8 +329,9 @@ public class GenericQueries {
 				"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex LIMIT ? , ?";
        
 	   
-	   			//stages
+	   			//stages in db
        
-   		public final static String STAGES_FROM_REF_STAGE = "SELECT DISTINCT(STG_STAGE_DISPLAY) FROM REF_STAGE WHERE STG_SPECIES = ? ORDER BY STG_ORDER";
+   		public final static String STAGES_FROM_REF_STAGE = "SELECT DISTINCT(STG_STAGE_DISPLAY) FROM ISH_SUBMISSION, REF_STAGE " +
+   				"WHERE STG_OID = SUB_STAGE_FK AND STG_SPECIES = ? ORDER BY STG_ORDER";
 	   
 }

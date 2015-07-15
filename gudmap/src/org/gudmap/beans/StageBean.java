@@ -37,7 +37,7 @@ public class StageBean implements Serializable {
 		//FacesContext facesContext = FacesContext.getCurrentInstance();
         //this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
         geneSymbol = Globals.getParameterValue("gene");
-        geneId = Globals.getParameterValue("gene_id");
+        geneId = Globals.getParameterValue("geneId");
         species = Globals.getParameterValue("species");
         if (species == null || species.equals(""))
 			species = "Mus musculus";
