@@ -313,8 +313,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			var sorted; // sorted is zero-based index
 			d3.selectAll(".c"+rORc+i) 
 				.filter(function(d){
-	               log2r.push(d);
-//	               log2r.push(ce.adjvalue);
+//	               log2r.push(d);
+	               log2r.push(ce.adjvalue);
 	             });
 			if(rORc=="r"){ // sort log2ratio of a gene
 				sorted=d3.range(col_number).sort(function(a,b){ if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
