@@ -82,7 +82,7 @@ jQuery(document).ready(function(){
           "line": false,
           "dots" : false,
           "icons": true,
-		  "url" : "../resources/scripts/jstree_pre1.0_fix_1/themes/anatomytree/style.css"
+		  "url" : "../resources/scripts/jstree_pre1.0_fix_1/themes/anatomytree/style3.css"
         },
         "ui" : {
           "select_limit" : -1,
@@ -552,11 +552,6 @@ function findExpressionNotes(){
 						<f:setPropertyActionListener id="annoDisplayproperty" target="#{sessionBean.displayAsTree}" value="#{!sessionBean.displayAsTree}" />
 						<f:param name="accId" value="#{ishSubmissionBean.ishSubmissionModel.accID}"/>
 					</h:commandLink>
-					<h:commandLink value="#{sessionBean.annotationGroupsText}" rendered="#{sessionBean.displayAsTree}" styleClass="plaintext" >
-						<f:setPropertyActionListener id="annoGroupsproperty" target="#{sessionBean.displayAnnotationGroups}" value="#{!sessionBean.displayAnnotationGroups}" />
-						<f:param name="accId" value="#{ishSubmissionBean.ishSubmissionModel.accID}"/>
-						
-					</h:commandLink>
 					<h:link style="cursor:help;">
 			    		<span id="il_tree_span">
 			    			<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" id="il_annotation_info"></h:graphicImage>
@@ -646,10 +641,6 @@ function findExpressionNotes(){
 				<h:panelGroup rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
 					 <div id="demo2_view" class="demo" style="overflow: auto; align: left; min-height: 540px; background-color:#green; color:red;">hello derek</div>
 						
-					<h:panelGroup>
-						<h:outputText styleClass="plaintextbold" value="G " />
-						<h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
-					</h:panelGroup>	
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGrid>
