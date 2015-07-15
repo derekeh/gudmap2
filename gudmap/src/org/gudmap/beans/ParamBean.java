@@ -1438,6 +1438,8 @@ public class ParamBean implements Serializable {
 		}
 		if(getLocalStorage().equals(""))
 			return outputstr.toString();
+		else if (outputstr.toString().equals(""))
+			return getLocalStorage();
 		else
 			return getLocalStorage()+";"+outputstr.toString();
 		

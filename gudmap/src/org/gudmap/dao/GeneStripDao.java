@@ -45,6 +45,7 @@ public class GeneStripDao {
 		  String arrayRange="";
 		  String ishRange="";
 		  String gene="";
+		  String species="";
 		  
 		  try
 			{
@@ -63,14 +64,15 @@ public class GeneStripDao {
 						geneStripModel.setMgiId(result.getString("mgi"));
 						arrayRange = (result.getString("arrayRange"));
 						ishRange = (result.getString("ishRange"));
+						species = (result.getString("species"));
 						geneStripModel.setExpressionProfile(buildExpressionProfile(gene));
 						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(gene));
-						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange));
+						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
 						geneStripModel.setImageUrl(getRepresentativeImage(gene));
 						geneStripModel.setSelected(false);
 						geneStripModel.setGene_id(result.getString("mgi"));
-						geneStripModel.setSpecies(result.getString("species"));
+						geneStripModel.setSpecies(species);
 					}
 				}
 				
@@ -598,20 +600,65 @@ public class GeneStripDao {
 	  }
 
 	  
-	  private String calculateStageRange(String arrayRange, String ishRange){
+	  private String calculateStageRange(String arrayRange, String ishRange, String species){
 		  String RET="";
+		  Connection stgConn = null;
+		  PreparedStatement stgps = null;;
+		  ResultSet stgresult = null;
 		  ArrayList<Integer> rangeList=new ArrayList<Integer>();
-		  String [] arrayValues = arrayRange.split("-");
-		  String [] ishValues = ishRange.split("-");
-		  for(int i=0;i<arrayValues.length;i++) {
-			  rangeList.add(Integer.valueOf(arrayValues[i]));
+		  if(arrayRange!=null) {
+			  String [] arrayValues = arrayRange.split("-");
+			  
+			  for(int i=0;i<arrayValues.length;i++) {
+				  rangeList.add(Integer.valueOf(arrayValues[i]));
+			  }
 		  }
-		  for(int i=0;i<ishValues.length;i++) {
-			  rangeList.add(Integer.valueOf(ishValues[i]));
+		  if(ishRange!=null) {
+			  String [] ishValues = ishRange.split("-"); 		  
+			  for(int i=0;i<ishValues.length;i++) {
+				  rangeList.add(Integer.valueOf(ishValues[i]));
+			  }
 		  }
-		  java.util.Collections.sort(rangeList);
-		  RET="TS"+rangeList.get(0).toString()+"-TS"+rangeList.get((rangeList.size()-1)).toString();
-		  
+		  if(rangeList.size()>0) {
+			  java.util.Collections.sort(rangeList);			  
+			  if(species.startsWith("Mus")) {
+				  RET="TS"+rangeList.get(0).toString()+"-TS"+rangeList.get((rangeList.size()-1)).toString();
+			  }
+			  else if(species.startsWith("Hom")) {
+				  RET = "";
+				  
+				  //////////////
+				try
+				{
+					stgConn = ds.getConnection();
+					stgps = stgConn.prepareStatement("SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_ORDER = "+rangeList.get(0).toString()+" AND STG_SPECIES = 'Homo sapiens'"); 
+					stgresult =  stgps.executeQuery();
+					while (stgresult.next()) {
+						RET=stgresult.getString(1)+"-";			
+					}			
+				}
+				catch(SQLException sqle){sqle.printStackTrace();}
+				finally {
+						Globals.closeQuietly(stgConn, stgps, stgresult);
+				}
+				
+				try
+				{
+					stgConn = ds.getConnection();
+					stgps = stgConn.prepareStatement("SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_ORDER = "+rangeList.get((rangeList.size()-1)).toString()+" AND STG_SPECIES = 'Homo sapiens'"); 
+					stgresult =  stgps.executeQuery();
+					while (stgresult.next()) {
+						RET+=stgresult.getString(1);			
+					}			
+				}
+				catch(SQLException sqle){sqle.printStackTrace();}
+				finally {
+						Globals.closeQuietly(stgConn, stgps, stgresult);
+				}
+				  
+				  /////////////
+			  }
+		  }
 		  
 		  return RET;
 	  }
