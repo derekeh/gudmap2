@@ -206,7 +206,7 @@ public class GeneStripBean implements Serializable {
 		
 		obj.put("labels", getLabels());
 		obj.put("links", getLinks());
-		obj.put("data", getDataValues());
+//		obj.put("data", getDataValues());
 		obj.put("adjdata", getDataAdjValues());
 						
 		return obj;
