@@ -22,7 +22,7 @@
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
 		<h:outputScript library="scripts" name="heatmap.js" ></h:outputScript>
 		<h:outputStylesheet library="css" name="heatmap.css" /> 	
-	
+	#{sessionBean.setTempParam(geneDetailsBean.geneModel.symbol)}
 	
 	<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	<!-- can use relative links on html tags -->
