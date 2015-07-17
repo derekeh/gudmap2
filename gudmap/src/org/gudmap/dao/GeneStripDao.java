@@ -326,6 +326,7 @@ public class GeneStripDao {
 	
 	private ArrayList<String> getSymbolsFromGeneInput(String[] input, String wildcard) {
     	ArrayList<String> geneSymbols = null;
+    	ArrayList<String> geneIds = null;
     	//array to contain components to build a specific query
 		String[] symbolsQParts;
 		//string to contain sql to find gene symbols from REF_PROBE using gene symbol
@@ -513,12 +514,14 @@ public class GeneStripDao {
 				if(result.first()){
 					result.last();
 					geneSymbols = new ArrayList<String>();
+					geneIds = new ArrayList<String>();
 					result.beforeFirst();
 					while (result.next()) {
 					    str = Utils.netTrim(result.getString(1));
 					    if(null != str){
 					    	geneSymbols.add(str);
 					    }
+					    //geneIds.add(result.getString(2));
 					}
 				}
 	
@@ -529,6 +532,7 @@ public class GeneStripDao {
 			}
 			
 			return geneSymbols;
+			//return geneIds;
 
 	} // end of getSymbolsFromGeneI
 	

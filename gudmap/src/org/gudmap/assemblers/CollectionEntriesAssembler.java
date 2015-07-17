@@ -23,7 +23,6 @@ import org.gudmap.models.InsituTableBeanModel;
 public class CollectionEntriesAssembler {
 	
 	
-	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -39,12 +38,7 @@ public class CollectionEntriesAssembler {
 	private String focusGroupSpWhereclause;
 	
 	public  CollectionEntriesAssembler(String paramSQL) {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
+		
 		this.paramSQL=paramSQL;
 		
 	}
@@ -60,7 +54,7 @@ public class CollectionEntriesAssembler {
 		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, expressionJoin,whereclause,input,input,input,input,input,
+		String sql = String.format(paramSQL, expressionJoin,whereclause,input,
 									focusGroupWhereclause,whereclause,input,focusGroupSpWhereclause,whereclause,input,
 									focusGroupSpWhereclause,sortField, sortDirection);
 		
@@ -87,6 +81,8 @@ public class CollectionEntriesAssembler {
 					ishmodel.setAssay_type(result.getString("assay_type"));
 					ishmodel.setProbe_name(result.getString("probe_name"));
 					ishmodel.setStage(result.getString("stage"));
+					ishmodel.setStage_order(result.getString("stage").substring(2));
+					ishmodel.setSpecies(result.getString("species"));
 					ishmodel.setAge(result.getString("age"));
 					ishmodel.setSex(result.getString("sex"));
 					ishmodel.setGenotype(result.getString("genotype"));
@@ -94,6 +90,7 @@ public class CollectionEntriesAssembler {
 					ishmodel.setExpression(result.getString("expression"));
 					ishmodel.setSpecimen(result.getString("specimen"));
 					ishmodel.setImage(result.getString("image"));
+					ishmodel.setGene_id(result.getString("gene_id"));
 					
 					ishmodel.setSelected(false);
 					list.add(ishmodel);
@@ -111,8 +108,8 @@ public class CollectionEntriesAssembler {
 		queryTotals="Totals returned: Insitu (";
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
-		String queryString=GenericQueries.ISH_ACCESSION_TOTAL;
-		String sql = String.format(queryString, expressionJoin,whereclause,input,input,input,input,input,focusGroupWhereclause);
+		String queryString=GenericQueries.ISH_OID_TOTAL;
+		String sql = String.format(queryString, expressionJoin,whereclause,input,focusGroupWhereclause);
 		try
 		{
 				con = Globals.getDatasource().getConnection();
@@ -129,7 +126,7 @@ public class CollectionEntriesAssembler {
 			    Globals.closeQuietly(con, ps, result);
 		}
 		queryTotals+=(insitucount+")  Microarray(");
-		queryString=GenericQueries.MICROARRAY_ACCESSION_TOTAL;
+		queryString=GenericQueries.MICROARRAY_OID_TOTAL;
 		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
 		{
@@ -148,7 +145,7 @@ public class CollectionEntriesAssembler {
 			    Globals.closeQuietly(con, ps, result);
 		}
 		queryTotals+=(microarraycount+")  Sequence(");
-		queryString=GenericQueries.SEQUENCE_ACCESSION_TOTAL;
+		queryString=GenericQueries.SEQUENCE_OID_TOTAL;
 		sql = String.format(queryString, whereclause,input,focusGroupSpWhereclause);
 		try
 		{

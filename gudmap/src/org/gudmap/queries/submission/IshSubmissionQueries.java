@@ -365,11 +365,11 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
 	public static String STAGE_BY_OID = "SELECT SUB_OID, SUB_EMBRYO_STG FROM ISH_SUBMISSION WHERE SUB_OID = ?";
 	  
     //LIST OF SUBMISSIONS WITH GENE SYMBOL
-    public static String GENE_RELATED_SUBMISSIONS_ISH = "SELECT DISTINCT SUB_ACCESSION_ID, 'viewSubmissionDetails.jsf', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE,  " + 
+    public static String GENE_RELATED_SUBMISSIONS_ISH = "SELECT DISTINCT SUB_ACCESSION_ID, 'viewSubmissionDetails.jsf', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
                                   "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
                                   "ELSE 'without annotation' " + 
                                   "END, " +
-                                  "CASE WHEN (SPN_SEX = 'unknown') THEN 'unknown sex' " + 
+                                  "CASE WHEN (SPN_SEX = 'unknown') THEN 'unknown' " + 
                                   "ELSE SPN_SEX " + 
                                   "END, " +
                                   "RPR_JAX_ACC, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '), " + 
@@ -386,7 +386,7 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
                                   "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
                                   "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
                                   "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
-                                  "JOIN REF_STAGE " +
+                                  "JOIN REF_STAGE ON STG_OID = SUB_STAGE_FK " +
                                   "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
                                   "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
                                   "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +

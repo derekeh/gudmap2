@@ -30,9 +30,10 @@
 					<h:outputText styleClass="plaintextbold" value="Stage" />
 				</f:facet>
 
-				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{submission[4]}definition.html" styleClass="plaintext">
+				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{submission[4]}definition.html" rendered="#{submission[0].startsWith('TS')}">
 					<h:outputText styleClass="plaintext" value="#{submission[0]}"/>
 				</h:outputLink>
+				<h:outputText value="#{submission[0]}" rendered="#{!submission[0].startsWith('TS')}"></h:outputText>
 			</h:column>
 			
 			<h:column>

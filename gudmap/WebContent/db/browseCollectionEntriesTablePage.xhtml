@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    Accession ID Results
+	    Collection Entries
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
@@ -66,7 +66,7 @@
 	
 	
         
-	    <h:form id="focusform"><h1>Accession ID Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	    <h:form id="focusform"><h1>Collection Entries For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
 	     <h:outputText value="#{genericTablePageBean.userInput}"></h:outputText>
 	     <!-- all other content in here --> 
 	    <h:form id="dataform"> 
@@ -103,7 +103,7 @@
                     </h:commandLink> 
     			</f:facet>
     			<h:commandLink value="#{u.gene}"  action="viewGeneStrip">
-					<f:param name="gene" value="#{u.gene}"></f:param>
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
     		</h:column>
  
