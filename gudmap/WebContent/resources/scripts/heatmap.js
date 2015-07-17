@@ -501,13 +501,11 @@ function genestrip_heatmap_display(url, heatmapid, cellSize, symbol) {
     //==================================================
     d3.json(url, function(error, data) {
 
-        //console.log(data);
-        var arr = data.data;
         var adj = data.adjdata;
         var labels = data.labels;
         var links = data.links;
-        var row_number = arr.length;
-        var col_number = arr[0].length;
+        var row_number = adj.length;
+        var col_number = adj[0].length;
        
         
 	   var hcrow = [];

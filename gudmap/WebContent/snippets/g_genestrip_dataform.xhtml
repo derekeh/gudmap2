@@ -7,7 +7,7 @@
 	xmlns:pr="http://primefaces.org/ui" >
 	
 	<h:form id="dataform"> 
-	    <h:dataTable value="#{geneStripBean.dataList}" var="u"
+	    <h:dataTable rowIndexVar="row" value="#{geneStripBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
@@ -88,19 +88,10 @@
     			<f:facet name="header">
     				Microarray Expression Profile
 				</f:facet>
-				<script type="text/javascript">
-					//<![CDATA[
-					
-				   var cellSize = 4;	   
-				   var symbol = "#{geneStripBean.inputString}";
-				   var url = "../resources/scripts/genestrip_heatmap.json";
-				   
-				   genestrip_heatmap_display(url, "#chart1", cellSize, symbol);
-			   	   	  	   					 					  
-					
-					//]]>
-					 </script> 
-				<div id="chart1"></div>		
+				<div id="genestrip_#{u.geneSymbol}"></div>		
+				<script type="text/javascript">				   
+				   genestrip_heatmap_display("../resources/scripts/genestrip_heatmap.json", "#genestrip_#{u.geneSymbol}", 4, "#{u.geneSymbol}");
+				</script> 
     		</h:column>
     		
     		<h:column rendered="#{paramBean.rnaseqcol == true}">
