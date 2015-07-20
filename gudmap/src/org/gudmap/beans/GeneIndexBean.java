@@ -5,17 +5,17 @@ import javax.faces.component.html.HtmlDataTable;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.GeneIndexAssembler;
-import org.gudmap.utils.FacesUtil;
+import org.gudmap.globals.Globals;
 
 @Named
 @RequestScoped
 public class GeneIndexBean {
 	
 		private String[] index;
-//		private ArrayDataModel rows;
 		private HtmlDataTable myDataTable = new HtmlDataTable();
 		private GeneIndexAssembler geneIndexAssembler;
 		private String focusGroup;
+		private String index_val;
 		
 		public GeneIndexBean() {
 
@@ -25,22 +25,16 @@ public class GeneIndexBean {
 								"P","Q","R","S","T",
 								"U","V","W","X","Y",
 								"Z","0-9"};
-			getData();
+			
 		}
 	    
-	    public String queryGenes() {
-
-	    	//Visit.setStatusParam("query", FacesUtil.getRequestParamValue("query"));
-	    	//Visit.setStatusParam("input", FacesUtil.getRequestParamValue("input"));
-	    	return "AdvancedQuery";
-	    }
 	    
 	    private void getData() {
 			geneIndexAssembler = new GeneIndexAssembler();
-			String index = FacesUtil.getRequestParamValue("index");
-			if(null == index || index.equals(""))
-				index = "A";
-			Object[][] data = geneIndexAssembler.getGeneIndex(index,focusGroup);
+			index_val = Globals.getParameterValue("index_val");
+			if(null == index_val || index_val.equals(""))
+				index_val = "A";
+			Object[][] data = geneIndexAssembler.getGeneIndex(index_val,focusGroup);
 			myDataTable.setValue(data);
 	    }
 	    
@@ -51,8 +45,17 @@ public class GeneIndexBean {
 		public void setIndex(String[] index) {
 			this.index = index;
 		}
+		
+		public String getIndex_val() {
+			return index_val;
+		}
+
+		public void setIndex_val(String index_val) {
+			this.index_val = index_val;
+		}
 
 		public HtmlDataTable getMyDataTable() {
+			getData();
 			return myDataTable;
 		}
 
@@ -60,26 +63,5 @@ public class GeneIndexBean {
 			this.myDataTable = myDataTable;
 		}
 		
-	/*
-	    public ArrayDataModel getRows() {
-			if (rows!=null)
-				return rows;
-		
-			FocusGeneIndexAssembler assembler = new FocusGeneIndexAssembler();
-			String focusedOrgan = Visit.getRequestParam("focusedOrgan");
-			String index = FacesUtil.getRequestParamValue("index");
-			if(null == index || index.equals(""))
-				index = "A";
-			Object[][] data = assembler.getGeneIndex(index, focusedOrgan);
-			rows = new ArrayDataModel();
-			rows.setWrappedData(data);
-			myDataTable.setValue(data);
-			return rows;
-		}
-		
-		public void setRows(ArrayDataModel rows) {
-			this.rows = rows;
-		}
-	*/
 
 }

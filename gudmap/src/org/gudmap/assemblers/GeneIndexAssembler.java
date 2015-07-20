@@ -21,9 +21,7 @@ public class GeneIndexAssembler {
 		
 	}
 	
-	public Object[][] getGeneIndex(String prefix, String focusGroup) {
-		// TODO Auto-generated method stub
-		
+	public Object[][] getGeneIndex(String prefix, String focusGroup) {		
 		ArrayList<String[]> list = new ArrayList<String[]>();
 		Object[][] resultObject = null;
 		try

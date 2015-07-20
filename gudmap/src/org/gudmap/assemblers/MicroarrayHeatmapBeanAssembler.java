@@ -1,10 +1,5 @@
 package org.gudmap.assemblers;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,18 +15,12 @@ import org.gudmap.utils.Utils;
 
 public class MicroarrayHeatmapBeanAssembler {
 		
-//	private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet resSet;
 	
 	public  MicroarrayHeatmapBeanAssembler() {
-//		try {
-//			Context ctx = new InitialContext();
-//			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
+//		
 	}
 	
     public ArrayList<MasterTableInfo> getMasterTableList() {
@@ -41,7 +30,6 @@ public class MicroarrayHeatmapBeanAssembler {
 
 		try
 		{
-			//con = ds.getConnection();
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
 			resSet =  ps.executeQuery();
@@ -146,7 +134,7 @@ public class MicroarrayHeatmapBeanAssembler {
     public ArrayList<String> getProbeSetIdsByGenelistIdAndPlatformId(int firstRow, int rowsPerPage, String sortField, boolean sortAscending, String genelistId, String platformId){
     	
 	    ArrayList<String> probeSetIds = new ArrayList<String>();    	
-    	String sql = String.format(MicroarrayHeatmapQueries.PROBESET_FROM_GENELIST_ID_AND_PLATFORM_ID);
+    	//String sql = String.format(MicroarrayHeatmapQueries.PROBESET_FROM_GENELIST_ID_AND_PLATFORM_ID);
 
 		// check if given genelist is linked to the given platform
 		// if it is, return relevant probe ids;

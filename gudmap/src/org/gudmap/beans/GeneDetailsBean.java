@@ -5,6 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.GeneDetailsBeanAssembler;
+import org.gudmap.globals.Globals;
 import org.gudmap.models.submission.GeneModel;
 
 @Named
@@ -23,7 +24,7 @@ public class GeneDetailsBean {
 	private String geneSymbol;
 	
 	public GeneDetailsBean() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+		/*FacesContext facesContext = FacesContext.getCurrentInstance();
 		if(facesContext.getExternalContext().getRequestParameterMap().get("gene")!=null) {
 			this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
 			geneDetailsBeanAssembler = new GeneDetailsBeanAssembler(geneSymbol);
@@ -33,7 +34,12 @@ public class GeneDetailsBean {
 			this.geneId = facesContext.getExternalContext().getRequestParameterMap().get("geneId");
 			geneDetailsBeanAssembler = new GeneDetailsBeanAssembler(geneId);
 			setup();
-		}		
+		}*/
+		if(Globals.getParameterValue("geneId")!=null) {
+			this.geneId = Globals.getParameterValue("geneId");
+			geneDetailsBeanAssembler = new GeneDetailsBeanAssembler(geneId);
+			setup();
+		}
 	}
 	
 	public void setup(){

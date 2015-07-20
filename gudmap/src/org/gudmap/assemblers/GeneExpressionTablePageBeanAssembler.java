@@ -35,27 +35,25 @@ public class GeneExpressionTablePageBeanAssembler {
 	private String assayType;
 	private String expressionStrength;
 	private String geneSymbol;
+	private String geneId;
 	private String type;
 	private String queryTotals;
 	
 	public  GeneExpressionTablePageBeanAssembler(String paramSQL, String assayType) {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
+		
 		this.paramSQL=paramSQL;
 		this.assayType=assayType;
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending){
 		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		if(facesContext.getExternalContext().getRequestParameterMap().get("gene")!=null) 
-			this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
-		if(facesContext.getExternalContext().getRequestParameterMap().get("strength")!=null) 
-			this.expressionStrength = facesContext.getExternalContext().getRequestParameterMap().get("strength");
+		if(Globals.getParameterValue("geneId")!=null)
+			geneId = Globals.getParameterValue("geneId");
+		if(Globals.getParameterValue("strength")!=null)
+			expressionStrength = Globals.getParameterValue("strength");
+		
+		if(geneId==null || geneId.equals("") || expressionStrength==null || expressionStrength.equals(""))
+			return null;
 		
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
@@ -66,7 +64,7 @@ public class GeneExpressionTablePageBeanAssembler {
 		{
 			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setString(1, geneSymbol);
+			ps.setString(1, geneId);
 			ps.setInt(2, firstRow);
 			ps.setInt(3, rowCount);
 			result =  ps.executeQuery();
@@ -77,7 +75,7 @@ public class GeneExpressionTablePageBeanAssembler {
 				if(result.getString(1)!=null)
 				{
 					ishmodel=new InsituTableBeanModel();
-					//ishmodel.setOid(result.getString("oid"));
+					ishmodel.setOid(result.getString("gudmap_accession").substring(7));
 					ishmodel.setGene(result.getString("gene"));
 					ishmodel.setGudmap_accession(result.getString("gudmap_accession"));
 					ishmodel.setSource(result.getString("source"));
@@ -85,6 +83,8 @@ public class GeneExpressionTablePageBeanAssembler {
 					ishmodel.setAssay_type(result.getString("assay_type"));
 					ishmodel.setProbe_name(result.getString("probe_name"));
 					ishmodel.setStage(result.getString("stage"));
+					ishmodel.setStage_order(result.getString("stage").substring(2));
+					ishmodel.setSpecies(result.getString("species"));
 					ishmodel.setAge(result.getString("age"));
 					ishmodel.setSex(result.getString("sex"));
 					ishmodel.setGenotype(result.getString("genotype"));
@@ -92,6 +92,7 @@ public class GeneExpressionTablePageBeanAssembler {
 					ishmodel.setExpression(result.getString("expression"));
 					ishmodel.setSpecimen(result.getString("specimen"));
 					ishmodel.setImage(result.getString("image"));
+					ishmodel.setGene_id(result.getString("gene_id"));
 					
 					ishmodel.setSelected(false);
 					list.add(ishmodel);
@@ -115,7 +116,7 @@ public class GeneExpressionTablePageBeanAssembler {
 		{
 				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
-				ps.setString(1, geneSymbol);
+				ps.setString(1, geneId);
 				result =  ps.executeQuery();
 				
 				while(result.next()){

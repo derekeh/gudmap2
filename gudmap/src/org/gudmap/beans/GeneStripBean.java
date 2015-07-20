@@ -8,12 +8,13 @@ import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-//import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
 
+import org.gudmap.globals.Globals;
 import org.gudmap.models.GeneStripModel;
 import org.gudmap.models.MasterTableInfo;
 import org.gudmap.assemblers.GeneStripBeanAssembler;
@@ -21,13 +22,14 @@ import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 import org.json.simple.JSONObject;
 
 @Named
-@RequestScoped
-//@SessionScoped
+//@RequestScoped
+@SessionScoped
 public class GeneStripBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String oid;
     private String geneSymbol="";
+    private String gene_id="";
     private String inputString="";
     private String wildcard = "equals";
     private GeneStripBeanAssembler geneStripBeanAssembler;
@@ -46,16 +48,17 @@ public class GeneStripBean implements Serializable {
    	protected SessionBean sessionBean;
     
     public GeneStripBean() {
-    	FacesContext facesContext = FacesContext.getCurrentInstance();
-    	if(facesContext.getExternalContext().getRequestParameterMap().get("gene")!=null)
-    		this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
-        if(facesContext.getExternalContext().getRequestParameterMap().get("input")!=null)
-        	this.inputString = facesContext.getExternalContext().getRequestParameterMap().get("input");
+        
+        /*if(Globals.getParameterValue("gene")!=null)
+        	this.geneSymbol = Globals.getParameterValue("gene");
+        if(Globals.getParameterValue("input")!=null)
+        	this.inputString = Globals.getParameterValue("input");
+        if(Globals.getParameterValue("geneId")!=null)
+        	this.gene_id = Globals.getParameterValue("geneId");*/
         
         geneStripBeanAssembler = new GeneStripBeanAssembler();       
         microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
         tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
-        //setup();
         
     }
     
@@ -68,7 +71,7 @@ public class GeneStripBean implements Serializable {
     }
     //if the parameters are not passed in via the url then they are passed in from sessionBean.getTempParam
     //in a view (viewGeneStrip) which has this as Request scoped backing bean are unable to set the <f:param value to sessionBean.tempParam
-    @PostConstruct
+   /* @PostConstruct
 	 public void setInputParams(){
     	if(inputString==null || inputString.equals(""))
     	{
@@ -79,16 +82,14 @@ public class GeneStripBean implements Serializable {
     	}
     	getSessionBean().setInputParam(inputString);
 		setup();
-	 }
-    
-	 /*@PostConstruct
-	 public void setInputParams(){
-		 sessionBean.setInputParam(inputString);
 	 }*/
     
     
+    
     public void setup() {
+    	
         // check input string to decide wildcard value
+    	inputString=sessionBean.getGeneParam();
        	
        	if (inputString != null && !inputString.equals("")) {
        		inputString = inputString.trim();
@@ -168,13 +169,13 @@ public class GeneStripBean implements Serializable {
 		return genelistAdjustedData;
 	}
 
-//	public String getGene_id(){
-//		return gene_id;
-//	}
-//	
-//	public String getGene_id(){
-//		return gene_id;
-//	}
+	public void setGene_id(String gene_id){
+		this.gene_id = gene_id;
+	}
+	
+	public String getGene_id(){
+		return gene_id;
+	}
 	
 	private void createJSONFile(){
 		
@@ -216,7 +217,7 @@ public class GeneStripBean implements Serializable {
 	
 	private LinkedList<String> getLabels(){
 		
-		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> labels = new LinkedList<String>();
 		int colsize = 0;
 		
@@ -241,7 +242,7 @@ public class GeneStripBean implements Serializable {
 
 	private LinkedList<String> getLinks(){
 		
-		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> links = new LinkedList<String>();
 		
 		for(MasterTableInfo info : tableinfo){
@@ -260,7 +261,7 @@ public class GeneStripBean implements Serializable {
 	
 	private LinkedList<LinkedList<String>> getDataValues(){
 		
-		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
 
@@ -300,7 +301,7 @@ public class GeneStripBean implements Serializable {
 	
 	private LinkedList<LinkedList<String>> getDataAdjValues(){
 
-		ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
 
