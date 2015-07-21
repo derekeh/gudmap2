@@ -41,14 +41,8 @@ public class GeneListTablePageBeanAssembler {
 	private String focusGroupSpWhereclause;
 	
 	public  GeneListTablePageBeanAssembler(String paramSQL) {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
-		this.paramSQL=paramSQL;
 		
+		this.paramSQL=paramSQL;	
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 

@@ -158,7 +158,7 @@ public class GeneStripDao {
 		focusGroupString = focusGroupString.substring(0, (focusGroupString.length()-1));
 		
 		// url
-		String browseLink = "'browseInsituTablePage.jsf?geneId=" + geneId + "&amp;focusGroup='";
+		String browseLink = "'browseGeneListTablePage.jsf?expressionGene=" + symbol + "&amp;focusGroup='";
 		
 		// concatenate script string
     	//code += "<script type='text/javascript'> //<![CDATA[ var val=";
