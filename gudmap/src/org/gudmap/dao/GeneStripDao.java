@@ -22,7 +22,7 @@ import org.gudmap.utils.Utils;
 
 public class GeneStripDao {
 	
-	private DataSource ds;
+	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -32,46 +32,44 @@ public class GeneStripDao {
 	private ResultSet repeatResult=null;
 	
 	public GeneStripDao(){
-		try {
+		/*try {
 			Context ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
 		} catch (NamingException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
-	  public GeneStripModel getGeneStripDataFromSymbol(String geneSymbol){
+	  public GeneStripModel getGeneStripDataFromSymbol(String geneId){
 		  GeneStripModel geneStripModel=null;
 		  String arrayRange="";
 		  String ishRange="";
-		  String gene="";
 		  String species="";
 		  
 		  try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(GeneStripQueries.GENESTRIP_ROW_MINUS_PROFILES); 
-				ps.setString(1, geneSymbol);
+				ps.setString(1, geneId);
 				result =  ps.executeQuery();
 				
 				if (result.first()) {
 					result.beforeFirst();
 					geneStripModel = new GeneStripModel();
 					while (result.next()) {
-						gene=result.getString("gene");
-						geneStripModel.setGeneSymbol(gene);
+						geneStripModel.setGeneSymbol(result.getString("gene"));
 						geneStripModel.setSynonyms(result.getString("synonyms"));
 						geneStripModel.setMgiId(result.getString("mgi"));
 						arrayRange = (result.getString("arrayRange"));
 						ishRange = (result.getString("ishRange"));
 						species = (result.getString("species"));
-						geneStripModel.setExpressionProfile(buildExpressionProfile(gene));
-						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(gene));
+						geneStripModel.setExpressionProfile(buildExpressionProfile(result.getString("gene"),geneId));
+						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
 						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
-						geneStripModel.setImageUrl(getRepresentativeImage(gene));
+						geneStripModel.setImageUrl(getRepresentativeImage(geneId));
 						geneStripModel.setSelected(false);
-						geneStripModel.setGene_id(result.getString("mgi"));
+						geneStripModel.setGene_id(geneId);
 						geneStripModel.setSpecies(species);
 					}
 				}
@@ -86,11 +84,11 @@ public class GeneStripDao {
 		  return geneStripModel;
 	  }
 	  
-	private String buildExpressionProfile(String geneSymbol) {
+	private String buildExpressionProfile(String geneSymbol, String geneId) {
 		String RET="";
-		double[] insituExprofile = getInsituExprofile(geneSymbol);
+		double[] insituExprofile = getInsituExprofile(geneId);
 		String[] interestedAnatomyStructures = Globals.getInterestedAnatomyStructureIds();
-		RET=getExpressionHtmlCode(insituExprofile,interestedAnatomyStructures,geneSymbol);
+		RET=getExpressionHtmlCode(insituExprofile,interestedAnatomyStructures,geneSymbol,geneId);
 		return RET;
 	}
 	
@@ -101,7 +99,7 @@ public class GeneStripDao {
 		////////////
 		try
 		{
-			repeatCon = ds.getConnection();
+			repeatCon = Globals.getDatasource().getConnection();
 			repeatPs = repeatCon.prepareStatement(queryString); 
 			repeatResult =  repeatPs.executeQuery();
 			if (repeatResult.first()) {
@@ -145,7 +143,7 @@ public class GeneStripDao {
 			return null;*/
 	}
 	
-	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol) {
+	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String geneId) {
 		// added by xingjun - 08/05/2009 - its possible values is null
 		if (values == null || values.length == 0) {
 			return "";
@@ -160,7 +158,7 @@ public class GeneStripDao {
 		focusGroupString = focusGroupString.substring(0, (focusGroupString.length()-1));
 		
 		// url
-		String browseLink = "'browseInsituTablePage.jsf?gene=" + symbol + "&amp;focusGroup='";
+		String browseLink = "'browseInsituTablePage.jsf?geneId=" + geneId + "&amp;focusGroup='";
 		
 		// concatenate script string
     	//code += "<script type='text/javascript'> //<![CDATA[ var val=";
@@ -177,8 +175,8 @@ public class GeneStripDao {
     	return code;
 	}
 	
-	private double[] getInsituExprofile(String geneSymbol) {
-		if (geneSymbol == null || geneSymbol.equals("")) {
+	private double[] getInsituExprofile(String geneId) {
+		if (geneId == null || geneId.equals("")) {
 			return null;
 		}
 		String[] interestedAnatomyStructures = Globals.getInterestedAnatomyStructureIds();
@@ -207,7 +205,7 @@ public class GeneStripDao {
 				}
 	
 				// get expression info
-				ArrayList<String[]> expressionOfGivenComponents = getGeneExpressionForStructure(geneSymbol, componentIds, true);
+				ArrayList<String[]> expressionOfGivenComponents = getGeneExpressionForStructure(geneId, componentIds, true);
 				
 				// start to calculate - only relevant expression exists
 				double indicator = 0;
@@ -245,8 +243,8 @@ public class GeneStripDao {
 		
 	} // end of getInsituExprofile
 	
-	public ArrayList<String[]> getGeneExpressionForStructure(String symbol, String[] componentIds, boolean expressionForGivenComponents) {
-		if (symbol == null || symbol.equals("")) {
+	public ArrayList<String[]> getGeneExpressionForStructure(String geneId, String[] componentIds, boolean expressionForGivenComponents) {
+		if (geneId == null || geneId.equals("")) {
 		return null;
 		}
 		ArrayList<String[]> expressions = null;
@@ -284,9 +282,9 @@ public class GeneStripDao {
 		}
 		try
 		{
-			repeatCon = ds.getConnection();
+			repeatCon = Globals.getDatasource().getConnection();
 			repeatPs = repeatCon.prepareStatement(queryString); 
-			repeatPs.setString(1, symbol);
+			repeatPs.setString(1, geneId);
 			repeatResult =  repeatPs.executeQuery();
 			expressions = Utils.formatResultSetToArrayList(repeatResult);
 			
@@ -419,7 +417,7 @@ public class GeneStripDao {
 			
 			try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(synonymListQ);
 				for(int i=0;i<input.length;i++){
 					if(wildcard.equalsIgnoreCase("contains")) {
@@ -478,7 +476,7 @@ public class GeneStripDao {
 			
 			try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(allQueriesQ); 
 				//for the first 4 in 'union' query, set the parameters
 				for(int i=0;i<5;i++){// xingjun - 09/10/2009 - change from 4 to 5
@@ -521,7 +519,7 @@ public class GeneStripDao {
 					    if(null != str){
 					    	geneSymbols.add(str);
 					    }
-					    //geneIds.add(result.getString(2));
+					    geneIds.add(result.getString(2));
 					}
 				}
 	
@@ -531,8 +529,8 @@ public class GeneStripDao {
 			    Globals.closeQuietly(con, ps, result);
 			}
 			
-			return geneSymbols;
-			//return geneIds;
+			//return geneSymbols;
+			return geneIds;
 
 	} // end of getSymbolsFromGeneI
 	
@@ -634,7 +632,7 @@ public class GeneStripDao {
 				  //////////////
 				try
 				{
-					stgConn = ds.getConnection();
+					stgConn = Globals.getDatasource().getConnection();
 					stgps = stgConn.prepareStatement("SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_ORDER = "+rangeList.get(0).toString()+" AND STG_SPECIES = 'Homo sapiens'"); 
 					stgresult =  stgps.executeQuery();
 					while (stgresult.next()) {
@@ -648,7 +646,7 @@ public class GeneStripDao {
 				
 				try
 				{
-					stgConn = ds.getConnection();
+					stgConn = Globals.getDatasource().getConnection();
 					stgps = stgConn.prepareStatement("SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_ORDER = "+rangeList.get((rangeList.size()-1)).toString()+" AND STG_SPECIES = 'Homo sapiens'"); 
 					stgresult =  stgps.executeQuery();
 					while (stgresult.next()) {
@@ -676,7 +674,7 @@ public class GeneStripDao {
 		  String queryString = GeneStripQueries.GENE_RELATED_SUBMISSIONS_ISH;
 		  try
 			{
-			  repeatCon = ds.getConnection();
+			  repeatCon = Globals.getDatasource().getConnection();
 			  repeatPs = repeatCon.prepareStatement(queryString); 
 			  repeatPs.setString(1, geneSymbol);
 			  repeatResult =  repeatPs.executeQuery();
@@ -700,7 +698,7 @@ public class GeneStripDao {
 			 queryString = IshSubmissionQueries.IMAGE_INFO_BY_ACCESSION_ID;
 			 try
 				{
-				 repeatCon = ds.getConnection();
+				 repeatCon = Globals.getDatasource().getConnection();
 				 repeatPs = repeatCon.prepareStatement(queryString); 
 				 repeatPs.setString(1, candidateSubmission);
 				 repeatResult =  repeatPs.executeQuery();
@@ -845,17 +843,17 @@ public class GeneStripDao {
 		}
 	    
 	    //IMAGE MATRIX
-	    public ArrayList<String> retrieveImageIdsByGeneSymbol(String symbol) {
-	    	if (symbol == null || symbol.equals("")) {
+	    public ArrayList<String> retrieveImageIdsByGeneId(String geneId) {
+	    	if (geneId == null || geneId.equals("")) {
 				return null;
 			}
-	    	String queryString = GeneStripQueries.INSITU_SUBMISSION_IMAGE_ID_BY_GENE_SYMBOL;
+	    	String queryString = GeneStripQueries.INSITU_SUBMISSION_IMAGE_ID_BY_GENE_ID;
 	    	ArrayList<String> imageList=null;
 	    	try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(queryString);
-				ps.setString(1, symbol);
+				ps.setString(1, geneId);
 				result =  ps.executeQuery();
 				if (result.first()) {
 					imageList = new ArrayList<String>();
@@ -893,7 +891,7 @@ public class GeneStripDao {
 	        queryString = queryString.replace(whereClause, imageIdWhereClause);
 	        try
 			{
-				con = ds.getConnection();
+				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(queryString);
 				result =  ps.executeQuery();
 				if (result.first()) {
@@ -910,7 +908,8 @@ public class GeneStripDao {
 			
 					    submissionId = result.getString(1);
 					    imageInfoModel.setAccessionId(submissionId);
-					    imageInfoModel.setStage("TS"+result.getString(2));
+					    //imageInfoModel.setStage("TS"+result.getString(2));
+					    imageInfoModel.setStage(result.getString(2));
 					    imageInfoModel.setSpecimenType(result.getString(3));
 					    imageInfoModel.setFilePath(result.getString(4));
 					    imageInfoModel.setClickFilePath(result.getString(5));

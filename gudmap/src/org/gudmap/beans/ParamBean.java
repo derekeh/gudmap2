@@ -68,6 +68,7 @@ public class ParamBean implements Serializable {
 	private Map<String,Boolean> seqseriesresultmap;
 	/*filter*/
 	private String genevalues;
+	private String geneIdvalues;
 	private String[] sourcevalues;
 	private Date fromdatevalues;
 	private Date todatevalues;
@@ -714,6 +715,21 @@ public class ParamBean implements Serializable {
 		return genevalues;
 	}
 	
+	private String geneIdvalueclause="";
+	private String cachegeneIdvalueclause="";
+	
+	public void setGeneIdvalues(String geneIdvalues){
+		this.geneIdvalues=geneIdvalues;
+		if(!geneIdvalues.equals("")) {
+			geneIdvalueclause="RPR_LOCUS_TAG = '"+geneIdvalues+"' AND ";
+			cachegeneIdvalueclause=cacheprefix+geneIdvalueclause;
+		}
+	}
+
+	public String getGeneIdvalues(){
+		return geneIdvalues;
+	}
+	
 	//used to remove this from the mic cache query
 		public String getCachegenevalueclause() {
 			return cachegenevalueclause;
@@ -757,7 +773,7 @@ public class ParamBean implements Serializable {
 	
 	public String getWhereclause(){
 		whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+theilerstagevalueclause+sexvalueclause+specimentypevalueclause+
-				genevalueclause+probenamevalueclause;
+				genevalueclause+geneIdvalueclause+probenamevalueclause;
 		return whereclause;
 	}
 	
@@ -767,7 +783,7 @@ public class ParamBean implements Serializable {
 	
 	public String getCachewhereclause(){
 		cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+
-				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cacheprobenamevalueclause;
+				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cachegeneIdvalueclause+cacheprobenamevalueclause;
 		return cachewhereclause;
 	}
 	
@@ -795,6 +811,7 @@ public class ParamBean implements Serializable {
 	public void resetValues(){
 		//reset the parameterized values
 		genevalues="";
+		geneIdvalues="";
 		fromdatevalues=null;
 		todatevalues=null;
 		setSourcevalues(new String[0]);
@@ -814,10 +831,10 @@ public class ParamBean implements Serializable {
 	public void resetClauses() {
 		sourcevalueclause="";
 		datevalueclause="";assaytypevalueclause="";theilerstagevalueclause="";sexvalueclause="";specimentypevalueclause="";
-		genevalueclause="";probenamevalueclause="";
+		genevalueclause="";geneIdvalueclause="";probenamevalueclause="";
 		cachesourcevalueclause="";
 		cachedatevalueclause="";cacheassaytypevalueclause="";cachetheilerstagevalueclause="";cachesexvalueclause="";cachespecimentypevalueclause="";
-		cachegenevalueclause="";cacheprobenamevalueclause="";
+		cachegenevalueclause="";cachegeneIdvalueclause="";cacheprobenamevalueclause="";
 	}
 	
 	public void resetWhereClauses() {

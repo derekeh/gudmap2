@@ -19,53 +19,23 @@ import org.gudmap.models.submission.ImageInfoModel;
 
 @Named
 @SessionScoped
-//@RequestScoped
 public class ImageMatrixBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private ImageMatrixAssembler imageMatrixAssembler;
-	private String geneSymbol="";
 	private ImageInfoModel[][]imageInfoModelArray=null;
 	private String[] imageMatrixHeaders;
-	//private String[] imageMatrixHeaders = {"TS17","TS20","TS21","TS23","TS25","TS27","TS28"};
 	private List<String> selectedItems;
     private boolean areAllChecked;
+    private String geneId;
     
-   /* @Inject
-   	protected SessionBean sessionBean;*/
+   
 	
 	public ImageMatrixBean() {
-		//use this if request bean. 
-		/*FacesContext facesContext = FacesContext.getCurrentInstance();
-		if(facesContext.getExternalContext().getRequestParameterMap().get("gene")!=null)
-    		this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
-		imageMatrixAssembler = new ImageMatrixAssembler(geneSymbol);
-		setup();*/
 	}
-	
-	/*public void setSessionBean(SessionBean sessionBean){
-		this.sessionBean=sessionBean;
-	}
-    
-    public SessionBean getSessionBean() {
-    	return sessionBean;
-    }*/
-    
-   /* @PostConstruct
-	 public void setInputParams(){
-    	if(geneSymbol==null || geneSymbol.equals(""))
-    		geneSymbol=getSessionBean().getGeneParam();
-    	//imageMatrixAssembler = new ImageMatrixAssembler(geneSymbol);
-		//setup();
-	 }*/
 		
 	public void setup() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
-		imageMatrixAssembler = new ImageMatrixAssembler(geneSymbol);
-		
-		/*if(geneSymbol==null || geneSymbol.equals(""))
-    		geneSymbol=getSessionBean().getGeneParam();*/
+		imageMatrixAssembler = new ImageMatrixAssembler(getGeneId());
 		
 		imageInfoModelArray=imageMatrixAssembler.retrieveData();
 	}
@@ -114,7 +84,11 @@ public class ImageMatrixBean implements Serializable{
     	return str;
     }
     
-    public String getGeneSymbol() {
-    	return geneSymbol;
+    public void setGeneId(String geneId) {
+    	this.geneId = geneId;
+    }
+    
+    public String getGeneId() {
+    	return geneId;
     }
 }

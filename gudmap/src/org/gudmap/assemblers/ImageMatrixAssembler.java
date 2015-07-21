@@ -10,17 +10,15 @@ public class ImageMatrixAssembler {
 	private ArrayList<String> imageIdList;
 	private GeneStripDao geneStripDao;
 	private ArrayList<Object> imageInfoList = null;
-	//private ArrayList<ArrayList> imageInfoList = null;
 	private ArrayList<String> stages = null;
-	//private String geneSymbol;
 	
 	public ImageMatrixAssembler() {
 		
 	}
 	
-	public ImageMatrixAssembler(String geneSymbol){
+	public ImageMatrixAssembler(String geneId){
 		geneStripDao = new GeneStripDao();
-		imageIdList = geneStripDao.retrieveImageIdsByGeneSymbol(geneSymbol);
+		imageIdList = geneStripDao.retrieveImageIdsByGeneId(geneId);
 		stages = new ArrayList<String>();
 	}
 	
@@ -81,39 +79,6 @@ public class ImageMatrixAssembler {
 			return null;
 	 }
 	 
-	/* public ImageInfoModel[][] retrieveData() {
-			
-		 	getData();
-			
-			if (imageInfoList == null || imageInfoList.size() == 0) {
-			    return null;
-			}
-			int dataLength = getDataLength();
-			int numRows = dataLength;
-			int numCols = retrieveStages().size();
-			
-			ImageInfoModel[][] dataItems = new ImageInfoModel[numRows][numCols];
-			ArrayList imagesOfGivenStage =null;
-			int iNumber = -1;
-			ImageInfoModel imageInfoItem = null;
-			for (int i=0; i<numRows; i++)  
-			    for (int j=0, col=0; j<imageInfoList.size(); j++) {
-				
-					imagesOfGivenStage = (ArrayList)imageInfoList.get(j);
-					iNumber = imagesOfGivenStage.size();
-					imageInfoItem = null;
-					if (i >= iNumber)
-					    dataItems[i][col] = null; //using null can use EL in rendered statement for checkbox
-						//dataItems[i][col] = new ImageInfoModel();
-					else {
-					    imageInfoItem = (ImageInfoModel)imagesOfGivenStage.get(i);
-					    dataItems[i][col] = imageInfoItem;
-					}
-					col++;
-			    }
-			
-			return dataItems; 
-	    }*/
 	 
 	 public ImageInfoModel[][] retrieveData() {
 			

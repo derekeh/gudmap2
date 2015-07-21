@@ -151,10 +151,9 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		}
     		//insitu data
     		else {
-    			if(Globals.getParameterValue("gene")!=null)
-    				paramBean.setGenevalues(Globals.getParameterValue("gene"));
+    			if(Globals.getParameterValue("geneId")!=null)
+    				paramBean.setGeneIdvalues(Globals.getParameterValue("geneId"));
     			if(Globals.getParameterValue("focusGroup")!=null)  {
-    				
     				paramBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
     				volatileSummaryBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
     			}

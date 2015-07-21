@@ -16,10 +16,10 @@ public class GeneStripBeanAssembler {
 	public ArrayList<GeneStripModel> getData(String gene, String input, String wildcard) {
 		ArrayList<GeneStripModel> geneStripList=new ArrayList<GeneStripModel>();
 		
-   		ArrayList<String> geneSymbols = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
-   		for(String currentGene : geneSymbols) {
+   		ArrayList<String> geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
+   		for(String currentGeneId : geneIds) {
    			
-   			geneStripList.add(geneStripDao.getGeneStripDataFromSymbol(currentGene));
+   			geneStripList.add(geneStripDao.getGeneStripDataFromSymbol(currentGeneId));
    		}
    		
 		

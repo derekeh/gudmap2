@@ -56,7 +56,7 @@
 			   <pr:column headerText="Mouse Gene Symbol" rendered="#{sessionBean.diseaseHeaders[3]}" sortBy="#{row.mouseGeneSymbol}">
 				<h:outputLink value="viewGeneDetails.jsf">
 					<h:outputText value="#{row.mouseGeneSymbol}"  styleClass="pr_hyperlink" ></h:outputText>
-					<f:param name="gene" value="#{row.mouseGeneSymbol}"></f:param>
+					<f:param name="geneId" value="#{row.mouseGeneMgiID}"></f:param>
 				</h:outputLink>
     		</pr:column>
     		

@@ -79,9 +79,11 @@
     			<f:facet name="header">
     				Expression Images
 				</f:facet>
-				<h:outputLink value="viewImageMatrix.jsf?gene=#{u.geneSymbol}">
-    				<img src="#{u.imageUrl}"  height="40"/>
-    			</h:outputLink>
+				
+    			<h:commandLink  action="viewImageMatrix">
+    					<img src="#{u.imageUrl}"  height="40"/>
+                        <f:setPropertyActionListener id="il_imageMatrix" target="#{imageMatrixBean.geneId}" value="#{u.gene_id}" />
+                 </h:commandLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.arrayexpressioncol == true}">

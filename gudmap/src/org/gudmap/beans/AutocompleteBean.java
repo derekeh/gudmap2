@@ -30,18 +30,11 @@ public class AutocompleteBean {
 	ArrayList<String> diseaseNameList=null;
 	ArrayList<String> phenotypeList=null;
 	private String geneInput="";
-	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
 	
 	public AutocompleteBean() {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
 		
 		populateGeneList();
 		populateAnatomyList();
