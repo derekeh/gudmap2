@@ -18,7 +18,6 @@ import org.gudmap.globals.Globals;
 
 public class ParamBeanAssembler {
 	
-	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -26,6 +25,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>assaytypeinsitulist;
 	private Map<String,String>allassaytypelist;
 	private Map<String,String>theilerstagelist;
+	private Map<String,String>carnegiestagelist;
 	private Map<String,String>sexlist;
 	private Map<String,String>specimentypelist;
 	private Map<String,String>geneoptionlist;
@@ -36,12 +36,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>collectionTypeList;
 	
 	public ParamBeanAssembler() {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/		
+			
 	}
 	
 	
@@ -116,6 +111,25 @@ public class ParamBeanAssembler {
 		    Globals.closeQuietly(con, ps, result);
 		}
 		return theilerstagelist;
+	}
+	
+	public Map<String,String> getCarnegiestagelist() {
+		carnegiestagelist = new LinkedHashMap<String,String>();
+		String queryString=GenericQueries.ALL_CARNEGIE_STAGES;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			carnegiestagelist.put("ALL","ALL");
+			while(result.next())
+				carnegiestagelist.put(result.getString(2), result.getString(1));
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return carnegiestagelist;
 	}
 	
 	public Map<String,String> getSexlist() {

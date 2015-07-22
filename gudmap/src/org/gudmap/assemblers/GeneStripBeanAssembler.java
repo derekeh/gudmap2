@@ -8,6 +8,7 @@ import org.gudmap.dao.GeneStripDao;
 public class GeneStripBeanAssembler {
 	
 	private GeneStripDao geneStripDao;	
+	private ArrayList<String> geneIds;
 	
 	public GeneStripBeanAssembler() {
 		geneStripDao = new GeneStripDao();
@@ -16,7 +17,8 @@ public class GeneStripBeanAssembler {
 	public ArrayList<GeneStripModel> getData(String gene, String input, String wildcard) {
 		ArrayList<GeneStripModel> geneStripList=new ArrayList<GeneStripModel>();
 		
-   		ArrayList<String> geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
+   		//ArrayList<String> geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
+   		geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
    		for(String currentGeneId : geneIds) {
    			
    			geneStripList.add(geneStripDao.getGeneStripDataFromSymbol(currentGeneId));
@@ -24,6 +26,10 @@ public class GeneStripBeanAssembler {
    		
 		
 		return geneStripList;
+	}
+	
+	public ArrayList<String> getGeneIds() {
+		return geneIds;
 	}
 
 }

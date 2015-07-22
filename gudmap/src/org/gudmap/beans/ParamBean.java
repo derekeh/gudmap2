@@ -78,6 +78,8 @@ public class ParamBean implements Serializable {
 	private String probenamevalues;
 	private String theilerstagefromvalues;
 	private String theilerstagetovalues;
+	private String carnegiestagefromvalues;
+	private String carnegiestagetovalues;
 	private String sexvalues="ALL";
 	private String specimentypevalues;
 	
@@ -89,6 +91,8 @@ public class ParamBean implements Serializable {
 	private String arraycacheprefix="QMC_";
 	private String tempfromvalues;
 	private String temptheilervalues;
+	private String tempcarnegievalues;
+    private String stagecondition=" AND ";
 	
 	//microarray
 	private String micWhereClause="";
@@ -516,6 +520,10 @@ public class ParamBean implements Serializable {
 		return assembler.getTheilerstagelist();
 	}
 	
+	public Map<String,String> getCarnegiestagelist(){
+		return assembler.getCarnegiestagelist();
+	}
+	
 	public Map<String,String> getSexlist(){
 		return assembler.getSexlist();
 	}
@@ -626,7 +634,7 @@ public class ParamBean implements Serializable {
 	public String getCacheassaytypevalueclause() {
 		return cacheassaytypevalueclause;
 	}
-	
+	/////////////THEILER STAGE///////////////////////
 	private String theilerstagevalueclause="";
 	private String cachetheilerstagevalueclause="";
 	public void setTheilerstagefromvalues(String theilerstagefromvalues){
@@ -651,6 +659,7 @@ public class ParamBean implements Serializable {
 		if(theilerstagetovalues!=null){
 			if(getTheilerstagefromvalues()!=null && !getTheilerstagefromvalues().equals("") && !getTheilerstagefromvalues().equals("ALL") && !theilerstagetovalues.equals("ALL")){
 				temptheilervalues+=theilerstagetovalues;
+				//theilerstagevalueclause=temptheilervalues+" AND ";
 				theilerstagevalueclause=temptheilervalues+" AND ";
 				cachetheilerstagevalueclause=cacheprefix+theilerstagevalueclause;
 			}
@@ -665,7 +674,48 @@ public class ParamBean implements Serializable {
 	public String getTheilerstagetovalues(){
 		return theilerstagetovalues;
 	}
+	///////////////////CARNEGIE STAGE/////////////////////
 	
+	private String carnegiestagevalueclause="";
+	private String cachecarnegiestagevalueclause="";
+	public void setCarnegiestagefromvalues(String carnegiestagefromvalues){
+		this.carnegiestagefromvalues=carnegiestagefromvalues;
+		if(carnegiestagefromvalues!=null){
+			if(!carnegiestagefromvalues.equals("ALL")){
+				tempcarnegievalues="STG_SPECIES='Homo sapiens' AND STG_ORDER BETWEEN "+carnegiestagefromvalues+" AND ";
+			}
+			if(carnegiestagefromvalues.equals("ALL")){
+				carnegiestagevalueclause="";
+				cachecarnegiestagevalueclause="";
+			}
+		}
+	}
+	public String getCarnegiestagefromvalues(){
+		return carnegiestagefromvalues;
+	}
+	
+	
+	public void setCarnegiestagetovalues(String carnegiestagetovalues){
+		this.carnegiestagetovalues=carnegiestagetovalues;
+		if(carnegiestagetovalues!=null){
+			if(getCarnegiestagefromvalues()!=null && !getCarnegiestagefromvalues().equals("") && !getCarnegiestagefromvalues().equals("ALL") && !carnegiestagetovalues.equals("ALL")){
+				tempcarnegievalues+=carnegiestagetovalues;
+				carnegiestagevalueclause=tempcarnegievalues+" AND ";
+				cachecarnegiestagevalueclause=cacheprefix+carnegiestagevalueclause;
+			}
+			if(carnegiestagetovalues.equals("ALL")){
+				carnegiestagevalueclause="";
+				cachecarnegiestagevalueclause="";
+			}
+			
+		}
+	}
+	
+	public String getCarnegiestagetovalues(){
+		return carnegiestagetovalues;
+	}
+	
+	//////////////////////////////////////////////////////
 	private String sexvalueclause="";
 	private String cachesexvalueclause="";
 	public void setSexvalues(String sexvalues){
@@ -772,8 +822,22 @@ public class ParamBean implements Serializable {
 	}
 	
 	public String getWhereclause(){
-		whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+theilerstagevalueclause+sexvalueclause+specimentypevalueclause+
+		String allstageclause=theilerstagevalueclause+carnegiestagevalueclause;
+		StringBuffer stagebuffer = new StringBuffer(theilerstagevalueclause+carnegiestagevalueclause);
+		/*if(stagebuffer.indexOf("Mus")>0 && stagebuffer.indexOf("Homo")>0) {
+			stagebuffer.insert(0, "(");
+			stagebuffer.insert(stagebuffer.lastIndexOf("AND")-1, ")");
+			stagebuffer.replace(stagebuffer.lastIndexOf("STG_SPECIES")-4, stagebuffer.lastIndexOf("STG_SPECIES")-1, "OR");			
+		}*/
+		if(stagebuffer.indexOf("Mus")>0 && stagebuffer.indexOf("Homo")>0) {
+			stagebuffer.insert(0, "((");
+			stagebuffer.insert(stagebuffer.lastIndexOf("AND")-1, "))");
+			stagebuffer.replace(stagebuffer.lastIndexOf("STG_SPECIES")-4, stagebuffer.lastIndexOf("STG_SPECIES")-1, ") OR (");			
+		}
+		whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+stagebuffer.toString()+sexvalueclause+specimentypevalueclause+
 				genevalueclause+geneIdvalueclause+probenamevalueclause;
+		/*whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+theilerstagevalueclause+carnegiestagevalueclause+sexvalueclause+specimentypevalueclause+
+				genevalueclause+geneIdvalueclause+probenamevalueclause;*/
 		return whereclause;
 	}
 	
@@ -782,7 +846,7 @@ public class ParamBean implements Serializable {
 	}
 	
 	public String getCachewhereclause(){
-		cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+
+		cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
 				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cachegeneIdvalueclause+cacheprobenamevalueclause;
 		return cachewhereclause;
 	}
@@ -792,7 +856,7 @@ public class ParamBean implements Serializable {
 	}
 	//array cache table does not have all the columns of the insitu cache. The column prefix is Replaced in the assembler
 	public String getArraycachewhereclause(){
-		arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cachetheilerstagevalueclause+
+		arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
 				cachesexvalueclause+cachespecimentypevalueclause;
 		arraycachewhereclause=arraycachewhereclause.replace("QIC", "QMC");
 		return arraycachewhereclause;
@@ -821,6 +885,8 @@ public class ParamBean implements Serializable {
 		setProbenamevalues("");
 		setTheilerstagefromvalues("");
 		setTheilerstagetovalues("");
+		setCarnegiestagefromvalues("");
+		setCarnegiestagetovalues("");
 		setSexvalues("ALL");
 		setSpecimentypevalues("");
 		tempfromvalues="";
@@ -830,10 +896,10 @@ public class ParamBean implements Serializable {
 	
 	public void resetClauses() {
 		sourcevalueclause="";
-		datevalueclause="";assaytypevalueclause="";theilerstagevalueclause="";sexvalueclause="";specimentypevalueclause="";
+		datevalueclause="";assaytypevalueclause="";theilerstagevalueclause="";carnegiestagevalueclause="";sexvalueclause="";specimentypevalueclause="";
 		genevalueclause="";geneIdvalueclause="";probenamevalueclause="";
 		cachesourcevalueclause="";
-		cachedatevalueclause="";cacheassaytypevalueclause="";cachetheilerstagevalueclause="";cachesexvalueclause="";cachespecimentypevalueclause="";
+		cachedatevalueclause="";cacheassaytypevalueclause="";cachetheilerstagevalueclause="";cachecarnegiestagevalueclause="";cachesexvalueclause="";cachespecimentypevalueclause="";
 		cachegenevalueclause="";cachegeneIdvalueclause="";cacheprobenamevalueclause="";
 	}
 	

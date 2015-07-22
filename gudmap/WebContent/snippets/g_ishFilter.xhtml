@@ -49,6 +49,20 @@
 		 			</h:selectOneMenu>
 		 		</h:panelGrid>
 		 	</h:panelGroup>
+		 	
+		 	<h:outputText value="Carnegie Stage: "></h:outputText>
+	    	<h:panelGroup>
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.carnegiestagefromvalues}">
+		 				<f:selectItems value="#{paramBean.carnegiestagelist}" />
+		 			</h:selectOneMenu>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.carnegiestagetovalues}">
+		 				<f:selectItems value="#{paramBean.carnegiestagelist}" />
+		 			</h:selectOneMenu>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
 	   		
 	   		<h:outputText value="Sex:"></h:outputText>
 	   		<h:selectOneRadio value="#{paramBean.sexvalues}">

@@ -126,7 +126,10 @@
     				 <br />
     				Stage
 				</f:facet>
-    			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
+    			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
+				 	<h:outputText value="#{u.stage}" />
+				</h:outputLink>
+				<h:outputText value="#{u.stage}" rendered="#{u.species != 'Mus musculus'}"/>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.agecol == true}">
