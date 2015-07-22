@@ -40,16 +40,36 @@
 		   		<h:inputText value="#{paramBean.probenamevalues}"></h:inputText>
 	   		</ui:remove>
 	   		
-	   		<h:outputText value="Theiler Stage: "></h:outputText>
-	    	<h:panelGroup>
+	   		<h:outputText value="Species: "></h:outputText>
+	    	<h:selectOneMenu value="#{paramBean.species}">
+		 				<f:selectItems value="#{paramBean.specieslist}" />
+		 				<f:ajax render="@form" />
+		 	</h:selectOneMenu>		 	
+	   		
+	   		<h:outputText value="Theiler Stage: " rendered="#{paramBean.species=='Mouse' || paramBean.species=='ALL'}"></h:outputText>
+	    	<h:panelGroup rendered="#{paramBean.species=='Mouse' || paramBean.species=='ALL'}">
 		 		<h:panelGrid columns="4">
 		 			<h:outputText value="From:"></h:outputText>
 		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
-		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 				<f:selectItems value="#{paramBean.getTheilerstagelist(true)}" />
 		 			</h:selectOneMenu>
 		 			<h:outputText value="To:"></h:outputText>
 		 			<h:selectOneMenu value="#{paramBean.theilerstagetovalues}">
-		 				<f:selectItems value="#{paramBean.theilerstagelist}" />
+		 				<f:selectItems value="#{paramBean.getTheilerstagelist(false)}" />
+		 			</h:selectOneMenu>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+		 	
+		 	<h:outputText value="Carnegie Stage: " rendered="#{paramBean.species=='Human' || paramBean.species=='ALL'}"></h:outputText>
+	    	<h:panelGroup rendered="#{paramBean.species=='Human' || paramBean.species=='ALL'}">
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.carnegiestagefromvalues}">
+		 				<f:selectItems value="#{paramBean.getCarnegiestagelist(true)}" />
+		 			</h:selectOneMenu>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.carnegiestagetovalues}">
+		 				<f:selectItems value="#{paramBean.getCarnegiestagelist(false)}" />
 		 			</h:selectOneMenu>
 		 		</h:panelGrid>
 		 	</h:panelGroup>

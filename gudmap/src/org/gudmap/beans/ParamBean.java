@@ -145,6 +145,7 @@ public class ParamBean implements Serializable {
 	private String collectionType="Entries";
 	private String localStorage="";
 	private String totalLocalStorage="";
+	private String species="Mouse";
 	
 		
 	public ParamBean() {
@@ -516,12 +517,16 @@ public class ParamBean implements Serializable {
 		return assembler.getAllassaytypelist();
 	}
 	
-	public Map<String,String> getTheilerstagelist(){
-		return assembler.getTheilerstagelist();
+	public Map<String,String> getSpecieslist(){
+		return assembler.getSpecieslist();
 	}
 	
-	public Map<String,String> getCarnegiestagelist(){
-		return assembler.getCarnegiestagelist();
+	public Map<String,String> getTheilerstagelist(boolean direction){
+		return assembler.getTheilerstagelist(direction);
+	}
+	
+	public Map<String,String> getCarnegiestagelist(boolean direction){
+		return assembler.getCarnegiestagelist(direction);
 	}
 	
 	public Map<String,String> getSexlist(){
@@ -633,6 +638,14 @@ public class ParamBean implements Serializable {
 	//used to remove this from the mic cache query
 	public String getCacheassaytypevalueclause() {
 		return cacheassaytypevalueclause;
+	}
+	
+	public void setSpecies(String species) {
+		this.species = species;
+	}
+	
+	public String getSpecies() {
+		return species;
 	}
 	/////////////THEILER STAGE///////////////////////
 	private String theilerstagevalueclause="";

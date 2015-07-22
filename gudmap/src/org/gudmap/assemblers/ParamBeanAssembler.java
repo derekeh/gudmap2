@@ -34,6 +34,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>pageIdlist;
 	private Map<String,String>pageCategorylist;
 	private Map<String,String>collectionTypeList;
+	private Map<String,String>speciesList;
 	
 	public ParamBeanAssembler() {
 			
@@ -94,7 +95,7 @@ public class ParamBeanAssembler {
 		return allassaytypelist;
 	}
 	
-	public Map<String,String> getTheilerstagelist() {
+	public Map<String,String> getTheilerstagelist(boolean direction) {
 		theilerstagelist = new LinkedHashMap<String,String>();
 		String queryString=GenericQueries.ALL_THEILER_STAGES;
 		try
@@ -102,9 +103,16 @@ public class ParamBeanAssembler {
 			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
-			theilerstagelist.put("ALL","ALL");
-			while(result.next())
-				theilerstagelist.put(result.getString(2), result.getString(1));
+			//theilerstagelist.put("ALL","ALL");
+			if(direction) {
+				while(result.next())
+					theilerstagelist.put(result.getString(2), result.getString(1));
+			}
+			else {
+				result.last();
+				while(result.previous())
+					theilerstagelist.put(result.getString(2), result.getString(1));
+			}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
@@ -113,7 +121,7 @@ public class ParamBeanAssembler {
 		return theilerstagelist;
 	}
 	
-	public Map<String,String> getCarnegiestagelist() {
+	public Map<String,String> getCarnegiestagelist(boolean direction) {
 		carnegiestagelist = new LinkedHashMap<String,String>();
 		String queryString=GenericQueries.ALL_CARNEGIE_STAGES;
 		try
@@ -121,9 +129,16 @@ public class ParamBeanAssembler {
 			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
-			carnegiestagelist.put("ALL","ALL");
-			while(result.next())
-				carnegiestagelist.put(result.getString(2), result.getString(1));
+			//carnegiestagelist.put("ALL","ALL");
+			if(direction) {
+				while(result.next())
+					carnegiestagelist.put(result.getString(2), result.getString(1));
+			}
+			else {
+				result.last();
+				while(result.previous())
+					carnegiestagelist.put(result.getString(2), result.getString(1));
+			}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
@@ -232,6 +247,15 @@ public class ParamBeanAssembler {
 		collectionTypeList.put("Genes","Genes");
 		
 		return collectionTypeList;
+	}
+	
+	public Map<String,String> getSpecieslist() {
+		speciesList = new LinkedHashMap<String,String>();
+		speciesList.put("Mouse","Mouse");
+		speciesList.put("Human","Human");
+		speciesList.put("ALL","ALL");
+		
+		return speciesList;
 	}
 
 	
