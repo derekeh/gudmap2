@@ -145,7 +145,7 @@ public class ParamBean implements Serializable {
 	private String collectionType="Entries";
 	private String localStorage="";
 	private String totalLocalStorage="";
-	private String species="Mouse";
+	private String species="ALL";
 	
 		
 	public ParamBean() {
@@ -154,8 +154,6 @@ public class ParamBean implements Serializable {
 		tgcols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","embryostage","age","genotype","images"};
 		genestripcols= new String[]{"gene","synonym","omim","stagerange","expressionprofile","images","microarrayprofile","rnaseq"};
 		micseriescols= new String[]{"title","geoid","source","numsamples","platform","components"};
-		/*micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","age","submissiondate","sex","sampledescription",
-				"samplename","genotype","components"};*/
 		micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
 				"genotype","components"};
 		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};

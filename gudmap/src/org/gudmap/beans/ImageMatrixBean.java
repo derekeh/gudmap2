@@ -11,10 +11,12 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.ImageMatrixAssembler;
+import org.gudmap.globals.Globals;
 import org.gudmap.models.submission.ImageInfoModel;
 
 @Named
@@ -35,6 +37,7 @@ public class ImageMatrixBean implements Serializable{
 	}
 		
 	public void setup() {
+		geneId=Globals.getParameterValue("geneId");
 		imageMatrixAssembler = new ImageMatrixAssembler(getGeneId());
 		
 		imageInfoModelArray=imageMatrixAssembler.retrieveData();
@@ -59,7 +62,8 @@ public class ImageMatrixBean implements Serializable{
     	for (int i=0;i<imageInfoModelArray.length;i++) { 
     		for (int j=0; j<imageInfoModelArray[i].length; j++) {
 	    		if (imageInfoModelArray[i][j].getSelected()) {
-	    			selectedItems.add(imageInfoModelArray[i][j].getOid()); 
+	    			//selectedItems.add(imageInfoModelArray[i][j].getOid()); 
+	    			selectedItems.add(imageInfoModelArray[i][j].getFilePath());
 	    		} 
     		}
     	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
@@ -71,7 +75,8 @@ public class ImageMatrixBean implements Serializable{
     	areAllChecked=(areAllChecked)?false:true;
     	for (int i=0;i<imageInfoModelArray.length;i++) { 
     		for (int j=0; j<imageInfoModelArray[i].length; j++) {
-    			imageInfoModelArray[i][j].setSelected(areAllChecked); 
+    			if(imageInfoModelArray[i][j]!=null)
+    				imageInfoModelArray[i][j].setSelected(areAllChecked); 
     		}
     	}
     }

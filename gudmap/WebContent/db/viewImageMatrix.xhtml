@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -27,13 +26,33 @@
 	</style>
 	
 	<!-- can use relative links on html tags -->
-	    <h1>Image Matrix</h1>	
-	    <!-- all other content in here -->  
-	    <h:form>
-	    #{imageMatrixBean.setup()}
-	      <pr:dataTable  id="row" value="#{imageMatrixBean.imageInfoModelArray}" var="row" draggableColumns="true" paginator="true" rows="10"
+	    <h1>Image Matrix for #{sessionBean.geneParam}</h1>	
+	    <!-- all other content in here --> 
+	    #{imageMatrixBean.setup()} 
+	    
+	    <form id="collectionform">
+	    
+	    			<h:commandButton id="checkall" value="Check All" action="#{imageMatrixBean.checkAll()}">
+    					<f:ajax execute="@this checkall" render=":imagedataform" />
+					</h:commandButton>
+					<br />
+    				<h:commandButton  id="tocart" value="Add to Collection" action="#{imageMatrixBean.checkboxSelections()}" >
+    				</h:commandButton>	
+    				<h:selectOneMenu id="selectcollection" value="#{paramBean.collectionType}">
+				   			<f:selectItem itemValue="Images" itemLabel="Images" />	
+				   	</h:selectOneMenu>
+				   	
+	    </form>
+	   
+	    <h:form id="imagedataform">
+	    
+	  
+	    
+	      <pr:dataTable  id="imagerow" value="#{imageMatrixBean.imageInfoModelArray}" var="row" draggableColumns="true" paginator="true" rows="10"
 		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                  rowsPerPageTemplate="10,50,100">
+                 
+                 
 			    <pr:columns  columnIndexVar="index" var="columnNames" value="#{imageMatrixBean.imageMatrixHeaders}">
 				    <f:facet name="header">
 				    	<h:outputText value="#{columnNames}"/>  <!-- rendered="#{columnNames == 'TS23'}" --> 

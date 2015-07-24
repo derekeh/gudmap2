@@ -75,7 +75,8 @@
 				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.imagescol == true}">
+    		<ui:remove>
+    		<!-- <h:column rendered="#{paramBean.imagescol == true}">
     			<f:facet name="header">
     				Expression Images
 				</f:facet>
@@ -84,6 +85,18 @@
     					<img src="#{u.imageUrl}"  height="40"/>
                         <f:setPropertyActionListener id="il_imageMatrix" target="#{imageMatrixBean.geneId}" value="#{u.gene_id}" />
                  </h:commandLink>
+    		</h:column> -->
+    		
+    		</ui:remove>
+    		
+    		<h:column rendered="#{paramBean.imagescol == true}">
+    			<f:facet name="header">
+    				Expression Images
+				</f:facet>
+				
+    			<h:outputLink  value="viewImageMatrix.jsf?geneId=#{u.gene_id}">
+    					<img src="#{u.imageUrl}"  height="40"/>
+                 </h:outputLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.arrayexpressioncol == true}">
