@@ -43,6 +43,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	private boolean dataAvailable = true;
 
     private String gene;// = "Sox8";
+    private String geneId;  
     private String masterTableId;// = "3_2";
     private String genelistId;// = "1493";
 
@@ -72,10 +73,18 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		
     	FacesContext facesContext = FacesContext.getCurrentInstance();
 		gene = facesContext.getExternalContext().getRequestParameterMap().get("gene");
+		geneId = facesContext.getExternalContext().getRequestParameterMap().get("geneId");
 		masterTableId = facesContext.getExternalContext().getRequestParameterMap().get("masterTableId");
 		genelistId = facesContext.getExternalContext().getRequestParameterMap().get("genelistId");
 		
 		
+		if (geneId != null){
+			sessionBean.setGeneId(geneId);
+			sessionBean.setGenelistId(null);
+		}
+		else
+			geneId = sessionBean.getGeneId();
+
 		if (gene != null){
 			sessionBean.setGeneParam(gene);
 			sessionBean.setGenelistId(null);
@@ -92,6 +101,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 				
 		if (genelistId != null) {
 			sessionBean.setGeneParam(null);
+			sessionBean.setGeneId(null);
 			sessionBean.setGenelistId(genelistId);
 //			tableTitle = assembler.getGenelistTitle(genelistId) + " (gene list)";
 		}
@@ -138,6 +148,14 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     
     public String getGenelistId() {
     	return genelistId;
+    }
+
+    public void setGeneId(String geneId) {
+    	this.geneId = geneId;
+    }
+    
+    public String getGeneId() {
+    	return geneId;
     }
 
 	public String getMasterTableId(){
@@ -242,7 +260,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 				// write over any browsed json files
 				
 				path += "/resources/scripts/heatmap.json";
-				
+								
 				FileWriter writer = new FileWriter(path);
 				
 				JSONObject obj = createHeatmapJSONObject();
@@ -250,6 +268,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 				writer.write(obj.toJSONString());
 				writer.flush();
 				writer.close();
+			
 			}
 
 		}
@@ -296,7 +315,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			probeIds = assembler.getProbeSetIdsByGenelistIdAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, genelistId, platformId);
 		}
 		else{
-			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, gene, platformId);
+			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, geneId, platformId);
 		}
 
 		for(String probe : probeIds){

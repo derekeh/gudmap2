@@ -102,7 +102,7 @@ public class MicroarrayHeatmapBeanAssembler {
    	
     }
 
-    public ArrayList<String> getProbeSetIdsBySymbolAndPlatformId(int firstRow, int rowsPerPage, String sortField, boolean sortAscending, String symbol, String platformId){
+    public ArrayList<String> getProbeSetIdsBySymbolAndPlatformId(int firstRow, int rowsPerPage, String sortField, boolean sortAscending, String geneId, String platformId){
 
 	    ArrayList<String> probeSetIds = new ArrayList<String>();    	
     	//String sql = String.format(MicroarrayHeatmapQueries.PROBESET_FROM_SYMBOL_AND_PLATFORM_ID);
@@ -111,8 +111,8 @@ public class MicroarrayHeatmapBeanAssembler {
 		{
 			//con = ds.getConnection();
 			con=Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(MicroarrayHeatmapQueries.PROBESET_FROM_SYMBOL_AND_PLATFORM_ID);
-			ps.setString(1, symbol);
+			ps = con.prepareStatement(MicroarrayHeatmapQueries.PROBESET_FROM_GENEID_AND_PLATFORM_ID);
+			ps.setString(1, geneId);
 			ps.setString(2, platformId);
 			resSet =  ps.executeQuery();
 		    if (resSet.first()) {
