@@ -33,6 +33,7 @@ public class SessionBean implements Serializable {
 	private int docID=0;
 	private String masterTableId;
 	private String genelistId;
+	private String geneId;	
 	
 	public SessionBean() {
 		 
@@ -182,6 +183,14 @@ public class SessionBean implements Serializable {
 	 public String getGenelistId(){
 	    return genelistId;
 	 }
+
+	 public void setGeneId(String id){
+		    this.geneId=id;
+		 }
+				    
+		 public String getGeneId(){
+		    return geneId;
+		 }
 	 
 	 public void init() {
 	 //dummy to initialise bean from view

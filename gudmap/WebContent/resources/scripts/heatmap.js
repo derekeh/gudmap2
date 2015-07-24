@@ -489,14 +489,14 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
     }); 
 }
 
-function genestrip_heatmap_display(url, heatmapid, cellSize, symbol) {
+function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
 
 	   var tooltip = d3.select(heatmapid)
 	   .append("div")
 	   .style("position", "absolute")
 	   .style("visibility", "hidden");
 
-
+	   var url =  "../resources/scripts/genestrip_" + geneid + ".json"
 
     //==================================================
     d3.json(url, function(error, data) {
@@ -584,7 +584,7 @@ function genestrip_heatmap_display(url, heatmapid, cellSize, symbol) {
 		})
 		.on('click', function(d,i,j) {
 			var masterTableId = links[j];
-			var url = "browseHeatmap.jsf?gene="+ symbol + "&masterTableId="+ masterTableId;  
+			var url = "browseHeatmap.jsf?gene="+ symbol + "&geneId="+ geneid + "&masterTableId="+ masterTableId;  
 			window.location = url;
 		}); 
 

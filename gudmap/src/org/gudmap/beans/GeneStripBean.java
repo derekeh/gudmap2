@@ -1,5 +1,6 @@
 package org.gudmap.beans;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import org.gudmap.assemblers.GeneStripBeanAssembler;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 import org.json.simple.JSONObject;
 
+
 @Named
 //@RequestScoped
 @SessionScoped
@@ -36,6 +38,7 @@ public class GeneStripBean implements Serializable {
     private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
     private ArrayList<GeneStripModel> dataList;
 	private ArrayList<MasterTableInfo> tableinfo;	
+	private ArrayList<String> geneIds;
    // private String tempParam="";
     String str;
     
@@ -101,9 +104,11 @@ public class GeneStripBean implements Serializable {
        		}
        			       	 
        		dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard);
+       		geneIds = geneStripBeanAssembler.getGeneIds();         		
        	}
-       	
-       	createJSONFile();
+       	for (String geneId : geneIds){
+       		createJSONFile(geneId);
+       	}
     }
     
     public void setOid(String oid) {
@@ -177,22 +182,23 @@ public class GeneStripBean implements Serializable {
 		return gene_id;
 	}
 	
-	private void createJSONFile(){
+	private void createJSONFile(String geneId){
 		
 		try{
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String path = ctx.getRealPath("/");
 				
-			path += "/resources/scripts/genestrip_heatmap.json";
-			
-			FileWriter writer = new FileWriter(path);
-			
-			JSONObject obj = createHeatmapJSONObject();
-			
-			writer.write(obj.toJSONString());
-			writer.flush();
-			writer.close();
-
+			path += "/resources/scripts/genestrip_" + geneId + ".json";
+			File f = new File(path);
+			if (!f.exists()){
+				FileWriter writer = new FileWriter(f);
+				
+				JSONObject obj = createHeatmapJSONObject(geneId);
+				
+				writer.write(obj.toJSONString());
+				writer.flush();
+				writer.close();
+			}
 
 		}
 		catch(IOException e){
@@ -201,21 +207,21 @@ public class GeneStripBean implements Serializable {
 		
 	}
 	
-	private JSONObject createHeatmapJSONObject(){
+	private JSONObject createHeatmapJSONObject(String geneId){
 		
 		JSONObject obj = new JSONObject();
 		
-		obj.put("labels", getLabels());
-		obj.put("links", getLinks());
-//		obj.put("data", getDataValues());
-		obj.put("adjdata", getDataAdjValues());
+		obj.put("labels", getLabels(geneId));
+		obj.put("links", getLinks(geneId));
+//		obj.put("data", getDataValues(geneId));
+		obj.put("adjdata", getDataAdjValues(geneId));
 						
 		return obj;
 	}
 	
 
 	
-	private LinkedList<String> getLabels(){
+	private LinkedList<String> getLabels(String geneId){
 		
 		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> labels = new LinkedList<String>();
@@ -225,7 +231,7 @@ public class GeneStripBean implements Serializable {
 			if (info.getSelected()){
 				String id = info.getId();    			
 				String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
-				ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+				ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, geneId, platformId);
 				for(String probeId : probeIds){
 					labels.add(info.getTitle());
 
@@ -240,7 +246,7 @@ public class GeneStripBean implements Serializable {
 		return labels;
 	}
 
-	private LinkedList<String> getLinks(){
+	private LinkedList<String> getLinks(String geneId){
 		
 		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> links = new LinkedList<String>();
@@ -249,7 +255,7 @@ public class GeneStripBean implements Serializable {
 			if (info.getSelected()){
 				String id = info.getId();    			
 				String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
-				ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+				ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, geneId, platformId);
 				for(String probeId : probeIds){
 	       			links.add(info.getId());
 				}
@@ -259,7 +265,7 @@ public class GeneStripBean implements Serializable {
 		return links;
 	}
 	
-	private LinkedList<LinkedList<String>> getDataValues(){
+	private LinkedList<LinkedList<String>> getDataValues(String geneId){
 		
 		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
@@ -269,7 +275,7 @@ public class GeneStripBean implements Serializable {
     	for(MasterTableInfo info : tableinfo){
     		String id = info.getId();
     		String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
-    		ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+    		ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, geneId, platformId);
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
@@ -299,7 +305,7 @@ public class GeneStripBean implements Serializable {
 		return data;
 	}
 	
-	private LinkedList<LinkedList<String>> getDataAdjValues(){
+	private LinkedList<LinkedList<String>> getDataAdjValues(String geneId){
 
 		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
@@ -309,7 +315,7 @@ public class GeneStripBean implements Serializable {
     	for(MasterTableInfo info : tableinfo){
     		String id = info.getId();
     		String platformId = microarrayHeatmapBeanAssembler.getPlatformIdFromMasterTableId(id);
-    		ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, inputString, platformId);
+    		ArrayList<String> probeIds = microarrayHeatmapBeanAssembler.getProbeSetIdsBySymbolAndPlatformId(1, 20, null, true, geneId, platformId);
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
