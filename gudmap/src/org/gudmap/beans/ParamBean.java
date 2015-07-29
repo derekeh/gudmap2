@@ -833,13 +833,7 @@ public class ParamBean implements Serializable {
 	}
 	
 	public String getWhereclause(){
-		String allstageclause=theilerstagevalueclause+carnegiestagevalueclause;
 		StringBuffer stagebuffer = new StringBuffer(theilerstagevalueclause+carnegiestagevalueclause);
-		/*if(stagebuffer.indexOf("Mus")>0 && stagebuffer.indexOf("Homo")>0) {
-			stagebuffer.insert(0, "(");
-			stagebuffer.insert(stagebuffer.lastIndexOf("AND")-1, ")");
-			stagebuffer.replace(stagebuffer.lastIndexOf("STG_SPECIES")-4, stagebuffer.lastIndexOf("STG_SPECIES")-1, "OR");			
-		}*/
 		if(stagebuffer.indexOf("Mus")>0 && stagebuffer.indexOf("Homo")>0) {
 			stagebuffer.insert(0, "((");
 			stagebuffer.insert(stagebuffer.lastIndexOf("AND")-1, "))");
@@ -849,6 +843,8 @@ public class ParamBean implements Serializable {
 				genevalueclause+geneIdvalueclause+probenamevalueclause;
 		/*whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+theilerstagevalueclause+carnegiestagevalueclause+sexvalueclause+specimentypevalueclause+
 				genevalueclause+geneIdvalueclause+probenamevalueclause;*/
+		
+		resetFilter();
 		return whereclause;
 	}
 	
@@ -857,8 +853,16 @@ public class ParamBean implements Serializable {
 	}
 	
 	public String getCachewhereclause(){
-		cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
+		StringBuffer stagebuffer = new StringBuffer(cachetheilerstagevalueclause+cachecarnegiestagevalueclause);
+		if(stagebuffer.indexOf("Mus")>0 && stagebuffer.indexOf("Homo")>0) {
+			stagebuffer.insert(0, "((");
+			stagebuffer.insert(stagebuffer.lastIndexOf("AND")-1, "))");
+			stagebuffer.replace(stagebuffer.lastIndexOf("STG_SPECIES")-4, stagebuffer.lastIndexOf("STG_SPECIES")-1, ") OR (");			
+		}
+		cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+stagebuffer.toString()+
 				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cachegeneIdvalueclause+cacheprobenamevalueclause;
+		/*cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
+				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cachegeneIdvalueclause+cacheprobenamevalueclause;*/
 		return cachewhereclause;
 	}
 	
@@ -867,8 +871,16 @@ public class ParamBean implements Serializable {
 	}
 	//array cache table does not have all the columns of the insitu cache. The column prefix is Replaced in the assembler
 	public String getArraycachewhereclause(){
-		arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
+		StringBuffer stagebuffer = new StringBuffer(cachetheilerstagevalueclause+cachecarnegiestagevalueclause);
+		if(stagebuffer.indexOf("Mus")>0 && stagebuffer.indexOf("Homo")>0) {
+			stagebuffer.insert(0, "((");
+			stagebuffer.insert(stagebuffer.lastIndexOf("AND")-1, "))");
+			stagebuffer.replace(stagebuffer.lastIndexOf("STG_SPECIES")-4, stagebuffer.lastIndexOf("STG_SPECIES")-1, ") OR (");			
+		}
+		arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+stagebuffer.toString()+
 				cachesexvalueclause+cachespecimentypevalueclause;
+		/*arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
+				cachesexvalueclause+cachespecimentypevalueclause;*/
 		arraycachewhereclause=arraycachewhereclause.replace("QIC", "QMC");
 		return arraycachewhereclause;
 	}
@@ -967,6 +979,11 @@ public class ParamBean implements Serializable {
 		
 		//DON'T RESET THE WHERECLAUSE HERE OTHERWISE THE PAGING WONT WORK!!!
 		setMicWhereclause(GenericQueries.WHERE_CLAUSE);
+	}
+	
+	public void resetFilter() {
+		resetValues();
+		resetClauses();
 	}
 
 	/*******************focus groups****************/

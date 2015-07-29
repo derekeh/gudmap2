@@ -21,13 +21,14 @@
 	
 		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
-		<h:outputScript library="scripts" name="heatmap.js" ></h:outputScript>
+		<h:outputScript library="scripts" name="heatmap.js"  target="head"></h:outputScript>
+		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 		<h:outputStylesheet library="css" name="heatmap.css" /> 	
 	
 	#{sessionBean.init()}
 	#{geneStripBean.setup()}
 	<!-- can use relative links on html tags -->
-		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
+		
 	    <!-- all other content in here -->  
 	    <h:form>
 			<h:panelGrid columns="2">
