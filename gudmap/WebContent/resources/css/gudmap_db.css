@@ -141,8 +141,8 @@
 .db_tooltip{
 	margin:8px;
 	padding:8px;
-	border:1px solid blue;
-	background-color:yellow;
+	border:1px solid #347982;
+	background-color:#EBEBBE;
 	position: absolute;
 	z-index: 2;
 }

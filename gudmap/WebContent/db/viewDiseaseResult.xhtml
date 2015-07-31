@@ -67,9 +67,10 @@
     		</pr:column>
     		
     		<pr:column headerText="In Situ Data" rendered="#{sessionBean.diseaseHeaders[5]}">
-				<h:outputLink value="viewImageMatrix.jsf?gene=#{row.mouseGeneSymbol}" rendered="#{row.hasInsituData=='yes'}">
-					<h:outputText value="#{row.hasInsituData}"  styleClass="pr_hyperlink"  rendered="#{row.hasInsituData=='yes'}"></h:outputText>
-				</h:outputLink>
+				<h:commandLink value="#{row.hasInsituData}" action="viewImageMatrix.jsf" actionListener="#{sessionBean.setGeneParam(row.mouseGeneSymbol)}" 
+					rendered="#{row.hasInsituData=='yes'}"  style="color:#6ABCE6; text-decoration:underline;">
+					<f:param name="geneId" value="#{row.mouseGeneMgiID}"></f:param>
+				</h:commandLink>
 				<h:outputText value="#{row.hasInsituData}"  rendered="#{row.hasInsituData=='no'}"></h:outputText>
     		</pr:column>
 

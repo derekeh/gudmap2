@@ -15,10 +15,15 @@ public class GeneStripBeanAssembler {
 	}
 	
 	public ArrayList<GeneStripModel> getData(String gene, String input, String wildcard) {
-		ArrayList<GeneStripModel> geneStripList=new ArrayList<GeneStripModel>();
+		ArrayList<GeneStripModel> geneStripList = null;  
 		
    		//ArrayList<String> geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
    		geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
+   		if(geneIds==null  || geneIds.size() <1)
+   			return null;
+   		else
+   			geneStripList = new ArrayList<GeneStripModel>();
+   		
    		for(String currentGeneId : geneIds) {
    			
    			geneStripList.add(geneStripDao.getGeneStripDataFromSymbol(currentGeneId));

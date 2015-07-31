@@ -106,8 +106,10 @@ public class GeneStripBean implements Serializable {
        		dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard);
        		geneIds = geneStripBeanAssembler.getGeneIds();         		
        	}
-       	for (String geneId : geneIds){
-       		createJSONFile(geneId);
+       	if(geneIds!=null) {
+	       	for (String geneId : geneIds){
+	       		createJSONFile(geneId);
+	       	}
        	}
     }
     

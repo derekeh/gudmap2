@@ -803,7 +803,8 @@ public class AnatomyDao {
     }
     
     public String [] getTransitiveRelations(String [] input, String relationType){
-    	
+    	if(input==null)
+    		return null;
     	//string to contain sql
     	String queryString="";
     	String[] componentSet=null;

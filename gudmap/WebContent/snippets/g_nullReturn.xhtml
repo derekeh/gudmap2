@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<h:panelGrid id="nullreturn" columns="1" rendered="#{null==genericTablePageBean.dataList || genericTablePageBean.dataList.size()==0}">
+		<h:outputText value="Sorry, no data was found for that query with value: #{genericTablePageBean.userInput}" />
+		
+		<h:panelGroup>
+			<h:outputText value="You may wish to refer to the "/>
+			<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=26">
+					<h:outputText value="Query Help pages "/>
+			</h:outputLink>
+			<h:outputText value="for further information on making queries."/>
+		</h:panelGroup>
+	</h:panelGrid>	
+		
+</ui:composition>

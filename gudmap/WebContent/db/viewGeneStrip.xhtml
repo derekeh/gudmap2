@@ -29,7 +29,22 @@
 	#{geneStripBean.setup()}
 	<!-- can use relative links on html tags -->
 		
-	    <!-- all other content in here -->  
+	    <!-- all other content in here --> 
+	    
+	<h:panelGrid id="nullreturn" columns="1" rendered="#{null==geneStripBean.dataList || geneStripBean.dataList.size()==0}">
+		<h:outputText value="Sorry, no data was found for that query with value: #{sessionBean.geneParam}" />
+		
+		<h:panelGroup>
+			<h:outputText value="You may wish to refer to the "/>
+			<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=26">
+					<h:outputText value="Query Help pages "/>
+			</h:outputLink>
+			<h:outputText value="for further information on making queries."/>
+		</h:panelGroup>
+	</h:panelGrid>	
+	
+	<h:panelGrid id="pageview" rendered="#{null!=geneStripBean.dataList || geneStripBean.dataList.size()>0}">
+	     
 	    <h:form>
 			<h:panelGrid columns="2">
 					<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
@@ -44,7 +59,7 @@
 
 	     <ui:include src="/snippets/g_genestrip_dataform.xhtml"></ui:include>
 	    
-    
+    </h:panelGrid>
 
 	</ui:define>
 </ui:composition>

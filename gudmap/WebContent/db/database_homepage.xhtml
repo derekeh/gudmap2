@@ -189,6 +189,7 @@
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.accordion.min.css" />
 		<h:outputStylesheet library="css" name="override_vertical.css" /> 
 		
+		<!-- use this script to simulate RETURN on input fields -->
 		<script type="text/javascript">
 		//<![CDATA[
 		
@@ -658,7 +659,10 @@
    $(document).ready(function() {
 	   var showGeneTooltip = function(event) {
 	   $('div.db_tooltip').remove();
-	   $('<div class="db_tooltip">Information about genes</div>')
+	   $('<div class="db_tooltip">Search for genes with expression data in the database.<br /> This search addresses all in situ and microarray expression data.<br />'+
+			   'Type gene symbol or gene name or synonym (<a href="http://www.informatics.jax.org/genes.shtml">see MGI</a>).<br /> Enter more than one item using a semicolon ; as the delimiter.<br />'+
+			   '<a href="../pages/viewPage.jsf?docID=32">More...</a><br /><br />'+
+			   'Choose the output format from Options</div>')
 	     .appendTo('body');
 	   changeTooltipPosition(event);
 		};
@@ -725,7 +729,7 @@
 		$("#il_gene_span").bind({
 			mousemove : changeTooltipPosition,
 			mouseenter : showGeneTooltip,
-			mouseleave: hideTooltip
+			//mouseleave: hideTooltip
 		});
 		$("#il_anatomy_span").bind({
 			mousemove : changeTooltipPosition,
@@ -762,6 +766,10 @@
 			collapsible:true,
 			heightStyle:"content"
 		}); 
+		
+		$(document).on('click', '.db_tooltip', function() {
+		    $('.db_tooltip').hide();
+		});
    });
    
    

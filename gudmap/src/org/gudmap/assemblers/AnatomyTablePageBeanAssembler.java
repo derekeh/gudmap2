@@ -114,7 +114,8 @@ public class AnatomyTablePageBeanAssembler {
 					sortField, sortDirection);
 		}
 		
-		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
+		//List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
+		List<InsituTableBeanModel> list = null;
 		try
 		{
 			con = Globals.getDatasource().getConnection();
@@ -124,6 +125,10 @@ public class AnatomyTablePageBeanAssembler {
 			result =  ps.executeQuery();
 			
 			//group_concat returning no value will return a null row so don't get those!
+			if(result.first()) {
+				list = new ArrayList<InsituTableBeanModel>();
+				result.beforeFirst();
+			}
 			while(result.next()){
 				if(result.getString(1)!=null)
 				{
