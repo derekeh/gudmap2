@@ -21,12 +21,16 @@ public class EditPageBean {
 	private String title="";
 	private String docID;
 	private String pageID="";
+	private int userID;
 	private String status="Status: ";
 	private EditPageAssembler editPageAssembler;
 	private ArrayList<EditPageModel> editPageList;
 	
 	@Inject
    	protected ParamBean paramBean;
+	
+	@Inject
+	protected LoginBean loginBean;
 	
 	public EditPageBean() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -43,12 +47,22 @@ public class EditPageBean {
     	return paramBean;
     }
     
+    public void setLoginBean(LoginBean loginBean){
+		this.loginBean=loginBean;
+	}
+    
+    public LoginBean getLoginBean() {
+    	return loginBean;
+    }
+    
+    
     @PostConstruct
 	public void init(){
     	if(!pageID.equals("")) { // modified 
     		paramBean.setPageId(pageID);   		
     	}
     	docID = paramBean.getPageId();
+    	userID = loginBean.getUserID();
 	}
 	  
     public String getValue() {  
@@ -81,7 +95,7 @@ public class EditPageBean {
     }
     
     public String updatePage() {
-    	status += editPageAssembler.updatePage(docID, title, value);
+    	status += editPageAssembler.updatePage(docID, title, value, userID);
     	return "ck_editor";
     }
     

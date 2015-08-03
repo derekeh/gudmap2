@@ -70,7 +70,7 @@ public class EditPageDao {
         return editPageList;
 	}
 	
-	public String updatePage(String oid, String title, String content) {
+	public String updatePage(String oid, String title, String content, int userID) {
 		String RET="Update failed.";
 		int status;
 		String contentCol = "ZWE_CONTENT_1";
@@ -82,7 +82,9 @@ public class EditPageDao {
 			ps = con.prepareStatement(sql); 
 			ps.setString(1, title);
 			ps.setString(2, content);
-			ps.setString(3, oid);
+			ps.setString(3, Utils.getMysqlDateToday());
+			ps.setInt(4, userID);
+			ps.setString(5, oid);
 			status =  ps.executeUpdate();
 			if(status>0)
 				RET=Utils.getDateToday();

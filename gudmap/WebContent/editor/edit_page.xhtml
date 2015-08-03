@@ -12,9 +12,12 @@
 </h:head>
 <f:event listener="#{loginBean.isEditor}" type="preRenderView" />
 <h:body>
+<h:outputStylesheet library="css" name="gudmap.css"></h:outputStylesheet>
+
 	<h1>Editing page: </h1>  
 	<h:form>          
-    <p:editor id="editor" widgetVar="editorWidget" value="#{editPageBean.value}" toolbar="complete" width="1024" height="600" />
+    <p:editor id="editor" widgetVar="editorWidget"  value="#{editPageBean.value}" toolbar="complete"  width="1024" height="600"></p:editor>
+   
     
     <script language="javascript">
     

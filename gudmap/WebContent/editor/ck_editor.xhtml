@@ -19,7 +19,7 @@
 	</ui:define> -->
 	
 	<ui:define name="content">
-	<h:outputStylesheet library="css" name="gudmap.css"></h:outputStylesheet>
+	
 	<!-- can use relative links on html tags -->
 		<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
 		    <!-- all other content in here --> 
@@ -49,7 +49,7 @@
 							 <h:message for="theHeader" /> 
 						</h:panelGroup> 
 					 </h:panelGrid>    
-			    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" cssContents="/resources/css/gudmap.css"/>
+			    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" cssContents="/gudmap/resources/css/gudmap.css"/>
 			    	
 					<h:commandButton value="Save" action="#{editPageBean.updatePage}">
 						<f:param name="pageId" value="#{paramBean.pageId}"></f:param>

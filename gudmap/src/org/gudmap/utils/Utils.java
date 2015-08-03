@@ -608,6 +608,19 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 		return  df.format(today);
 	  }
 	  
+	  public static String getMysqlDateToday() {
+			// Create an instance of SimpleDateFormat used for formatting 
+			// the string representation of date (month/day/year)
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+			// Get the date today using Calendar object.
+			Date today = Calendar.getInstance().getTime();        
+			// Using DateFormat format method we can create a string 
+			// representation of a date with the defined format.
+			return  df.format(today);
+		  }
+	  
 	  public static String getSha1(String input) throws NoSuchAlgorithmException {
 	        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
 	        byte[] result = mDigest.digest(input.getBytes());

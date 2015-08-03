@@ -13,7 +13,7 @@ public class ImageFileModel {
 	private String length;
 	private String type;
 	private String absolutePath;
-	private String baseUrl="http://glenelgin/Appfiles/images/";
+	private String baseUrl="http://glenelgin.hgu.mrc.ac.uk/Appfiles/images/";
 	
 	public void setPath(String path) {
 		this.path=path;

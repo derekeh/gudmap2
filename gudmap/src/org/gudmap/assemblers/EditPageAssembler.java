@@ -21,9 +21,9 @@ public class EditPageAssembler {
 		return editPageList;
 	}
 	
-	public String updatePage(String oid, String title, String content) {
+	public String updatePage(String oid, String title, String content, int userID) {
 		String RET="";
-		RET = editPageDao.updatePage( oid, title, content);
+		RET = editPageDao.updatePage( oid, title, content, userID);
 		return RET;
 	}
 	
