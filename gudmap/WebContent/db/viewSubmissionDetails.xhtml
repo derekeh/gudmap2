@@ -20,8 +20,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	<h:outputScript library="scripts" name="ftiens4.js" target="head"></h:outputScript>
-	<h:outputScript library="scripts" name="ua.js" target="head"></h:outputScript>
+	
 	
 	<h:outputStylesheet library="css" name="my_jstree_style.css"  />
 	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
@@ -436,11 +435,6 @@ function findExpressionNotes(){
 						<h:outputText value="Archive ID:"     rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}"/>
 						<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=13##{ishSubmissionBean.ishSubmissionModel.archiveId}"  rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}">
 							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.archiveId}"    rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}"/>
-						</h:outputLink>
-						
-						<h:outputText value="Batch ID:" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>
-						<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{ishSubmissionBean.ishSubmissionModel.batchId}" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}">
-							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.batchId}" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>
 						</h:outputLink>
 						
 						<h:outputText value="Batch ID:" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>

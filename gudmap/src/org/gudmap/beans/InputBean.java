@@ -51,7 +51,7 @@ public class InputBean implements Serializable {
 	 
 		// Extract file name from content-disposition header of file part
 		String fileName = getFileName(part);
-		sessionBean.setTempParam(processMyFile(fileName,part));
+		sessionBean.setGeneParam(processMyFile(fileName,part));
 		
 		//don't need to write the file just read it
 		/*String basePath = "/export/data0/documents/geneuploads/";

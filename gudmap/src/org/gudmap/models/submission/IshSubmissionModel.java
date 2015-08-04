@@ -76,7 +76,7 @@ public class IshSubmissionModel extends SubmissionModel{
 	
 			if (-1 != str.indexOf("ish")) {
 			    if (null != probeModel)
-				ret = probeModel.getGeneID();
+				ret = probeModel.getGeneId();
 			} else if (-1 == str.indexOf("tg")) {
 			    if (null != antibodyModel)
 				ret = antibodyModel.getGeneId();
