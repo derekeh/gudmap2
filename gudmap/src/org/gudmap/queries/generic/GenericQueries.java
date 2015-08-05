@@ -271,5 +271,8 @@ public class GenericQueries {
        
    		public final static String STAGES_FROM_REF_STAGE = "SELECT DISTINCT(STG_STAGE_DISPLAY) FROM ISH_SUBMISSION, REF_STAGE " +
    				"WHERE STG_OID = SUB_STAGE_FK AND STG_SPECIES = ? ORDER BY STG_ORDER";
+   		
+   		//update statistics
+   		public final static String UPDATE_INFO = "SELECT MIS_SOFT_UPDATE software_update, MIS_EDIT_UPDATE editorial_update, MIS_SOFT_VERSION software_version FROM REF_MISC";
 	   
 }

@@ -27,6 +27,15 @@
 	<h:outputScript library="scripts/yahoo" name="container.js" />
 	<h:outputScript library="scripts/yahoo" name="TSGlossary.js" />
 	
+	<pr:dialog header="Gene Query" widgetVar="gene_dialog" width="250" style="position:absolute;left:-300px;"  > 
+		<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
+		This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
+Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml' style='color:#0797F5';&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
+Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
+&lt;br /&gt;&lt;br /&gt;
+Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+	</pr:dialog>
+	
 	<!-- can use relative links on html tags -->
 	    <h1>Boolean Search</h1>	
 	    <!-- all other content in here -->  
@@ -40,6 +49,11 @@
 	    <h:link outcome="#Link263891Context" id="Link263891Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263891', 'Find Components in Tree', 'To find structures in the anatomy tree, expand the tree or type all or part of the name of the structure in the text box and click - \'Find components in tree\' box.   TS = Theiler Stage.', 'Link263891Context')">
 	    	<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24"></h:graphicImage>
 	    </h:link>
+	    
+	     <p>JSF2 VERSION with prime faces dialog</p>
+	    <h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('gene_dialog').show();" style="cursor:help;"></h:graphicImage>
+	    
+	   
 	</ui:define>
 </ui:composition>
 </html>

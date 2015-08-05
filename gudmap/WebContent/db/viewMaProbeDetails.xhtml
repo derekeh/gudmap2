@@ -61,15 +61,15 @@
 							<h:outputText styleClass="db_inner_inner_title" value="Symbol: " />
 							<h:outputLink  value="viewGeneStrip.jsf">
 								<h:outputText value="#{maProbeBean.probeModel.geneSymbol}" />
-								<f:param name="gene" value="#{maProbeBean.probeModel.geneSymbol}" />
+								<f:param name="geneId" value="#{maProbeBean.probeModel.geneId}" />
 							</h:outputLink>
 						</h:panelGroup>
 						<h:panelGroup>
 							<h:outputText styleClass="db_inner_inner_title" value="Name: " />
 							<h:outputText  value="#{maProbeBean.probeModel.geneName} " />
 							<h:outputText  value="(" rendered="#{not empty maProbeBean.probeModel.geneIdUrl}" />
-							<h:outputLink  value="#{maProbeBean.probeModel.geneIdUrl}" >
-							<h:outputText value="#{maProbeBean.probeModel.geneID}" />
+							<h:outputLink  value="#{maProbeBean.probeModel.geneIdUrl}" rendered="#{not empty maProbeBean.probeModel.geneIdUrl}" >
+							<h:outputText value="#{maProbeBean.probeModel.geneId}" />
 							</h:outputLink>
 							<h:outputText  value=")" rendered="#{not empty maProbeBean.probeModel.geneIdUrl}" />
 						</h:panelGroup>

@@ -6,7 +6,7 @@ public class CommonAntibodyProbeModel {
 	
 	protected String geneSymbol;
 	protected String geneName;
-	protected String geneID;
+	//protected String geneID;
 	protected String seqStatus;
 	protected String seqInfo;
 	protected String type;
@@ -34,13 +34,13 @@ public class CommonAntibodyProbeModel {
         return geneName;
     }
     
-    public void setGeneID(String geneID) {
+   /* public void setGeneID(String geneID) {
         this.geneID = geneID;
     }
 
     public String getGeneID() {
         return geneID;
-    }
+    }*/
     
     public void setType(String type) {
         this.type = type;

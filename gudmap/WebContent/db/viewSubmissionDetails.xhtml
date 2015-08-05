@@ -780,8 +780,8 @@ function findExpressionNotes(){
 							<h:outputText styleClass="db_inner_inner_title" value="Name: " />
 							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.geneName} " />
 							<h:outputText  value="(" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" />
-							<h:outputLink  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" >
-							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneID}" />
+							<h:outputLink  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" >
+							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneId}" />
 							</h:outputLink>
 							<h:outputText  value=")" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" />
 						</h:panelGroup>

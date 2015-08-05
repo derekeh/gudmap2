@@ -3,10 +3,19 @@ package org.gudmap.beans;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+
+import org.gudmap.globals.Globals;
+import org.gudmap.models.SupplementaryFiles;
+import org.gudmap.queries.array.ArrayQueries;
+import org.gudmap.queries.generic.GenericQueries;
 
 
 @Named(value="sessionBean")
@@ -34,8 +43,29 @@ public class SessionBean implements Serializable {
 	private String masterTableId;
 	private String genelistId;
 	private String geneId;	
+	private String softwareUpdate="06 Aug 2015";
+	private String softwareVersion="JSF2 v2.05";
+	private String editorialUpdate="28 Jul 2015";
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet result;
 	
 	public SessionBean() {
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(GenericQueries.UPDATE_INFO); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				setSoftwareUpdate(result.getString("software_update"));
+				setEditorialUpdate(result.getString("editorial_update"));
+				setSoftwareVersion(result.getString("software_version"));
+			}						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}       
 		 
 	}
 	
@@ -188,9 +218,30 @@ public class SessionBean implements Serializable {
 		    this.geneId=id;
 		 }
 				    
-		 public String getGeneId(){
+	public String getGeneId(){
 		    return geneId;
-		 }
+	}
+	
+	public void setSoftwareUpdate(String softwareUpdate) {
+		this.softwareUpdate = softwareUpdate;
+	}
+	public String getSoftwareUpdate() {
+		return softwareUpdate;
+	}
+	
+	public void setEditorialUpdate(String editorialUpdate) {
+		this.editorialUpdate = editorialUpdate;
+	}
+	public String getEditorialUpdate() {
+		return editorialUpdate;
+	}
+	
+	public void setSoftwareVersion(String softwareVersion) {
+		this.softwareVersion = softwareVersion;
+	}
+	public String getSoftwareVersion() {
+		return softwareVersion;
+	}
 	 
 	 public void init() {
 	 //dummy to initialise bean from view
