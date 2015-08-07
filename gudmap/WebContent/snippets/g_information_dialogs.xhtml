@@ -14,156 +14,103 @@
 	</pr:dialog>
 	
 	<pr:dialog header="Anatomy Query" widgetVar="anatomy_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Search for genes annotated with expression present, uncertain or not detected in a structure. &lt;br /&gt;
+			This search addresses annotated in situ expression data and microarray data. &lt;br&gt;
+			Type exact name of structure or exact synonym or EMAP anatomy ID. 
+			Find anatomy terms with predictive text or &lt;a href='boolean_search.jsf'&gt;search anatomy tree&lt;/a&gt; then return to enter text.
+			   &lt;a href='../pages/viewPage.jsf?docID=33'&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+			   For Boolean searches (genes expressed in X and/or/not Y) &lt;a href='boolean_search.jsf'&gt;go here&lt;/a&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Boolean Anatomy" widgetVar="boolean_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Search for genes expressed in structure X and/or/not in structure Y. &lt;br&gt;
+			Click Boolean Anatomy for this search page where there is additional help.&lt;br&gt;&lt;br&gt;
+			&lt;a href='../pages/viewPage.jsf?docID=33'&gt;More....&lt;/a&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Accession Query" widgetVar="accession_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Search for database entries related to an accession number from the following databases: 
+			GUDMAP, ENSEMBL, MGI Gene ID.  &lt;br /&gt; List IDs separated by semi-colon ( ; ). &lt;br /&gt;
+			Lists are treated as A OR B.  Example,  ENSMUSG00000050846; gudmap:8328. 
+			This search addresses all in situ data but will include microarrays for GUDMAP IDs. &lt;br&gt;&lt;br&gt;     
+			&lt;a href='../pages/viewPage.jsf?docID=32#Accession'&gt;More....&lt;/a&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Gene Function Query" widgetVar="gene_function_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Search for genes and probes &lt;a href='http://www.geneontology.org/GO.evidence.tree.shtml'&gt;annotated&lt;/a&gt; 
+			with a Gene Ontology (GO) Molecular Function,  Biological Process, or Subcellular Location term. &lt;br /&gt;
+			This search addresses all in situ data in GUDMAP.     &lt;br /&gt;Type exact GO term or ID. 
+			The search accepts GO terms for Molecular Function, Biological Process, or Subcellular Location. &lt;br /&gt;
+			Find GO terms using predictive text then copy to the query box. &lt;br /&gt;List terms separated by semicolon ( ; ). 
+			Lists are treated as A OR B. &lt;br /&gt;&lt;br /&gt;    
+			&lt;a  href='../pages/viewPage.jsf?docID=32#Function'&gt;More....&lt;/a&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Disease Query" widgetVar="disease_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="A link to the GUDMAP Disease Resource. &lt;br /&gt; 
+			The resource contains a searchable database of associations between genes, 
+			genitourinary disease and renal/urinary and reproductive phenotypes." escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse Array Series" widgetVar="array_series_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Array Series returns a list of all the microarray experiments (series) in GUDMAP. &lt;br /&gt; 
+			From there you can go to individual experiments and then to individual samples.     &lt;a href='../pages/viewPage.jsf?docID=34#Genename'&gt;More....&lt;/a&gt; 
+			&lt;br /&gt;&lt;br /&gt; The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages 
+			or from the &lt;a href='../pages/viewPage.jsf?docID=13'&gt;Submission Archive.&lt;/a&gt;  &lt;br /&gt; 
+			To see Analyses of Microarray Gene Lists click &lt;a href='../db/viewGenelistTree.jsf'&gt;here.&lt;/a&gt;&lt;br /&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse Array Samples" widgetVar="array_sample_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Array Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample. 
+			 &lt;a href='../pages/viewPage.jsf?docID=32#Anatomy'&gt;More...&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;
+			 The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the 
+			 &lt;a href='../pages/viewPage.jsf?docID=13'&gt;Submission Archive.&lt;/a&gt;  &lt;br /&gt; 
+			 To see Analyses of Microarray Gene Lists click &lt;a href='../db/viewGenelistTree.jsf'&gt;here.&lt;/a&gt;&lt;br /&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse Array Platform" widgetVar="array_platform_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Array Platform lists all microarray platforms (chips) used in GUDMAP" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse Sequence Series" widgetVar="seq_series_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Sequence Series returns a list of all the Sequence series in GUDMAP. &lt;br /&gt;
+			From there you can link to individual series and then to individual samples. &lt;br /&gt;&lt;br /&gt;    
+			&lt;a href='../pages/viewPage.jsf?docID=34#nextgen'&gt;More....&lt;/a&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse Sequence Samples" widgetVar="seq_sample_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Sequence Sample returns a list of all Sequence samples. From there, click GUDMAP Entry ID to view data for each sample.    
+			&lt;br /&gt;&lt;br /&gt;    &lt;a href='../pages/viewPage.jsf?docID=34#nextgen'&gt;More....&lt;/a&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse Stages" widgetVar="stages_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Browse Stage returns a list of GUDMAP database entries organized by developmental stage. &lt;br /&gt; 
+			Theiler Stages are described &lt;a href='http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagedefinition.html'&gt;here&lt;/a&gt; 
+			&lt;br /&gt; See also &lt;a href='../pages/viewPage.jsf?docID=22'&gt;Tutorial on genitourinary development.&lt;/a&gt;" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
-	<pr:dialog header="Browse Expression by Gene" widgetVar="gene_expression_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+	<pr:dialog header="Browse Gene Index" widgetVar="gene_expression_dialog" width="250" style="position:absolute;left:-1000px;"  > 
+			<h:outputText value="Browse Gene Index returns a list of all genes for which there is in situ gene expression data in the database" escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse WISH" widgetVar="wish_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="WISH returns a list of Wholemount In situ Hybridisation data." escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse SISH" widgetVar="sish_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="SISH returns a list of Section In situ Hybridisation data." escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse OPT" widgetVar="opt_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="OPT returns a list of Optical Projection Tomography data." escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse IHC" widgetVar="ihc_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="IHC returns a list of immunohistochemistry data." escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 	
 	<pr:dialog header="Browse Transgenics" widgetVar="transgenic_dialog" width="250" style="position:absolute;left:-1000px;"  > 
-			<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-			This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-	Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml'&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-	Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-	&lt;br /&gt;&lt;br /&gt;
-	Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
+			<h:outputText value="Transgenic returns a list of transgene reporter expression data." escape="false" styleClass="pr_dialog_link"/>
 	</pr:dialog>
 		
 </ui:composition>

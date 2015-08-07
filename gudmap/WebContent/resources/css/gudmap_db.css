@@ -1,6 +1,16 @@
 @charset "UTF-8";
 /* CSS Document */
 
+.db_h1 {
+	font-size:24px;
+	margin-left:-15px;
+	color:darkblue;
+}
+
+.db_pseudo_row {
+	padding-bottom:15px;
+}
+
 #db_querybrowse_left {
 	min-height: 252px;
 	min-width: 250px;
