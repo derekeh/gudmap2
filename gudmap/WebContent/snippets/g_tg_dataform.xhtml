@@ -13,7 +13,8 @@
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
-    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row"
+    			columnClasses="db_max_col_width">
     		
  			<h:column >
     			<f:facet name="header">
@@ -22,35 +23,11 @@
 					</h:commandButton>
 					<br />
     				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />
-    					
-    				<h:selectOneMenu id="selectcollection" value="#{paramBean.collectionType}"
-							valueChangeListener="#{paramBean.collectionTypeChanged}">
-				   			<f:selectItems value="#{paramBean.getCollectionTypelist()}" />
-				   			<f:ajax event="change" render="@none" execute="selectcollection"></f:ajax>
-				   	</h:selectOneMenu>
-				   	
-				   	<h:commandButton  id="clearcart" value="-" onclick="clearLocalStorage();" action="#{genericTablePageBean.clearCheckboxSelections()}" />
-				   	
-    				<ui:remove>
-					<!-- <br />
-    				<h:commandButton id="local" value="local"  action="#{genericTablePageBean.processCheckboxSelections()}" 
-    					onclick="localStorageTest();" >	
-    				</h:commandButton> -->
-    				</ui:remove>
     				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
  			
-    		<!-- <h:column rendered="#{paramBean.oidcol == true}">
-    			<f:facet name="header">
-    				<h:commandLink value="oid" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="SUB_OID" />
-                    </h:commandLink>
-    			</f:facet>
-    				#{u.oid}
-    		</h:column> -->
-    		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
     				(<h:commandLink id="genelink" value="#{genericTablePageBean.totalslist.get('TG_TYPE_TOTAL_GENE')}" actionListener="#{genericTablePageBean.sort}">
@@ -144,7 +121,7 @@
     				#{u.sex}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genotypecol == true}">
+    		<h:column rendered="#{paramBean.genotypecol == true}" >
     			<f:facet name="header">
     				(#{genericTablePageBean.totalslist.get("TG_TYPE_TOTAL_GENOTYPE")}) <br />
     				Genotype

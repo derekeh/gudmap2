@@ -107,10 +107,18 @@
 	text-align:center;
 	background:none repeat scroll 0 0 #E5E5E5;
 	border-bottom:1px solid #BBBBBB;
+	padding:2px 10px;
+	vertical-align:top;
+}
+/*
+.db_order-table-header{
+	text-align:center;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
 	padding:16px;
 	vertical-align:top;
 }
-
+*/
 .db_order-table-odd-row{
 	text-align:center;
 	background:none repeat scroll 0 0 #FFFFFFF;
@@ -311,6 +319,16 @@
     font-weight: normal;
     text-align: left;
     text-decoration: none;
+}
+
+#focusform {
+	padding-left:19px;
+}
+
+.db_max_col_width {
+	table-layout: fixed;
+    word-wrap: break-word;
+	max-width:130px;
 }
 
  
