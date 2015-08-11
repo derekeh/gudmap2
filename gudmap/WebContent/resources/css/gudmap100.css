@@ -149,7 +149,8 @@ input[type="text"], textarea {
 }
 
 #gd_edit_area {
-	margin-left:35px;	
+	/* use with solr flyin margin-left:35px; */
+	margin-left:5px;	
 	min-height:350px;
 }
 
@@ -333,6 +334,7 @@ input[type="text"], textarea {
 	padding-left: 3px;
 	border-radius: 5px;
 	font-size: 12px;
+	margin-left:10px;
 }
 
 .gd_citing_gudmap a {
