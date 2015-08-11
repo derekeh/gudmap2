@@ -78,6 +78,32 @@ input[type="text"], textarea {
 	font-weight: 400;
 }
 
+.gd_webfont_title {
+	font-size:30px;
+}
+
+.gd_input_large {
+	width:250px;
+	padding:20px 10px;
+	line-height:30px;
+	background-color:white !important;
+	font-size: 20px;
+	background:url(/gudmap/resources/images/header/mag_glass.png) right no-repeat;
+	background-size:20px 20px;
+}
+
+/* .gd_input_large::after {
+	content: "";
+  background:url(/gudmap/resources/images/header/mag_glass.png) right no-repeat;
+  opacity: 0.3;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1; 
+} */
+
 #gd_login {
 	width:250px;
 	float:left;
@@ -265,9 +291,9 @@ input[type="text"], textarea {
 	min-height: 250px;
 	margin-left: 15px;
 	margin-bottom: 15px;
-	background-color: #D0DFE5;
+	/*background-color: #D0DFE5;*/
 	border-radius: 8px;
-	float: right;
+	float: left;
 	margin-right: 7px;
 	/*-webkit-box-shadow: 3px 3px #D5D5D5;
 	box-shadow: 3px 3px #D5D5D5;*/
@@ -277,9 +303,10 @@ input[type="text"], textarea {
 	float: right;
 	width: 340px;
 	min-height: 250px;
-	background-color: #D0DFE5;
+	/*background-color: #D0DFE5;*/
 	/*padding-top: 20px;*/
 	border-radius: 8px;
+	margin-right:15px;
 }
 
 .gd_table98center {
