@@ -23,23 +23,7 @@
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
 					<br />
-    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />
-    					
-    				<h:selectOneMenu id="selectcollection" value="#{paramBean.collectionType}"
-							valueChangeListener="#{paramBean.collectionTypeChanged}">
-				   			<f:selectItems value="#{paramBean.getCollectionTypelist()}" />
-				   			<f:ajax event="change" render="@none" execute="selectcollection"></f:ajax>
-				   	</h:selectOneMenu>
-				   	
-				   	<h:commandButton  id="clearcart" value="-" onclick="clearLocalStorage();" action="#{genericTablePageBean.clearCheckboxSelections()}" />
-				   	
-    				<ui:remove>
-					<!-- <br />
-    				<h:commandButton id="local" value="local"  action="#{genericTablePageBean.processCheckboxSelections()}" 
-    					onclick="localStorageTest();" >	
-    				</h:commandButton> -->
-    				</ui:remove>
-    				
+    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>

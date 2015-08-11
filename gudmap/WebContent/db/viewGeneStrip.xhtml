@@ -45,17 +45,18 @@
 	
 	<h:panelGrid id="pageview" rendered="#{null!=geneStripBean.dataList || geneStripBean.dataList.size()>0}">
 	     
-	    <h:form>
-			<h:panelGrid columns="2">
+	    <ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
+		<h:panelGrid columns="2">
+			<h:form>
+				<h:panelGrid columns="2">
 					<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-			</h:panelGrid>
-		</h:form>
-		
-		<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
+		<!-- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> -->
+				</h:panelGrid>
+			</h:form>
+			<h:form id="focusform"><h1>Gene Query Results<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+		</h:panelGrid>
 	    
-	    
-	    <h:form id="focusform"><h1>Gene Query Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1></h:form>		    
-	     <!-- all other content in here --> 
+	    <!-- all other content in here --> 
 
 	     <ui:include src="/snippets/g_genestrip_dataform.xhtml"></ui:include>
 	    

@@ -28,25 +28,22 @@
 	
 	<ui:include src="/snippets/g_nullReturn.xhtml"></ui:include>	
 	
-	<h:panelGrid id="pageview" rendered="#{null!=genericTablePageBean.dataList || genericTablePageBean.dataList.size()>0}">
-	
-	<h:form>
-		<h:panelGrid columns="2">
-			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
-		</h:panelGrid>
-	</h:form>
-	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
-	
-	<ui:include src="/snippets/g_anatomyFilter.xhtml"></ui:include>
+	<h:panelGrid id="pageview" rendered="#{null!=genericTablePageBean.dataList || genericTablePageBean.dataList.size()>0}" styleClass="db_grid_top_zero">
 	
 	
-	
-    
-        
-	    <h:form id="focusform"><h1>Anatomy Results For Input: <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
-	     <h:outputText value="#{genericTablePageBean.userInput}"></h:outputText>
 	     <!-- all other content in here --> 
+	     
+	     <ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
+	
+		<ui:include src="/snippets/g_anatomyFilter.xhtml"></ui:include>
+		<h:panelGrid columns="2">
+			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
+			<h:form id="focusform">
+				<h:outputText value="Anatomy Results For Input: " styleClass="db_bold" />
+		    	<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />
+		    	<h:outputText value="#{genericTablePageBean.userInput}"/>	
+	    	</h:form>		
+	    </h:panelGrid>
 
 	    <ui:include src="/snippets/g_mixed_assay_dataform.xhtml"></ui:include>
  		

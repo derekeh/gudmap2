@@ -11,6 +11,10 @@
 	padding-bottom:15px;
 }
 
+.db_grid_top_zero {
+	margin-top:-10px;
+}
+
 #db_querybrowse_left {
 	min-height: 252px;
 	min-width: 250px;
@@ -105,6 +109,14 @@
 
 .db_order-table-header{
 	text-align:center;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:2px 10px;
+	vertical-align:top;
+}
+
+.db_order-table-header-left{
+	text-align:left;
 	background:none repeat scroll 0 0 #E5E5E5;
 	border-bottom:1px solid #BBBBBB;
 	padding:2px 10px;

@@ -22,14 +22,6 @@
     				<h:selectBooleanCheckbox id="cb_#{u.geneSymbol}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
  			
-    		<!-- <h:column rendered="#{paramBean.oidcol == true}">
-    			<f:facet name="header">
-    				<h:commandLink value="oid" actionListener="#{geneStripBean.sort}">
-                         <f:attribute name="sortField" value="SUB_OID" />
-                    </h:commandLink>
-    			</f:facet>
-    				#{u.oid}
-    		</h:column> -->
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">

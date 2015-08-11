@@ -20,18 +20,20 @@
 	<ui:define name="content">
 	#{genericTablePageBean.init('NextGen','seqseries',20,10,'source',true)}
 	#{genericTablePageBean.loadDataList()}
-	<h:form>
-		<h:panelGrid columns="2">
-			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-<!-- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> -->
-		</h:panelGrid>
-	</h:form>
 	
-	<!-- column selection -->
 	<ui:include src="/snippets/g_seqSeriesCols.xhtml"></ui:include>
+	<h:panelGrid columns="2">
+			<h:form>
+				<h:panelGrid columns="2">
+					<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+		<!-- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> -->
+				</h:panelGrid>
+			</h:form>
+			<h:form id="focusform"><h1>Sequence Series Data<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+	</h:panelGrid>
+
 	
 	<!-- can use relative links on html tags -->
-	    <h:form id="focusform"><h1>Sequence Series Data <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	
 	    <!-- all other content in here -->  
 	     <h:form id="dataform"> 
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
