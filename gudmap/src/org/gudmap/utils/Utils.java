@@ -621,6 +621,12 @@ public static ArrayList<String[]> formatResultSetToArrayList(ResultSet resSet) t
 			return  df.format(today);
 		  }
 	  
+	  public static String getMysqlDateFromInput(Date date) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+			return  df.format(date);
+		  }
+	  
 	  public static String getSha1(String input) throws NoSuchAlgorithmException {
 	        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
 	        byte[] result = mDigest.digest(input.getBytes());

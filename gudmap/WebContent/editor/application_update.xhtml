@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui">
+	
+	
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP EDITOR | Application Update
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	 <ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define> 
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+		<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
+		    <!-- all other content in here --> 
+			<h1>Modify Editorial and Software Updates: </h1> 
+		 
+		<h:form id="editorForm"> 
+			<h:panelGrid columns="3">
+				<h:outputText value="Last Editorial Update:"></h:outputText>
+				<h:panelGroup style="min-width:10px;"></h:panelGroup>
+				<pr:calendar widgetVar="editorDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{sessionBean.editorialUpdateDB}"></pr:calendar>
+				 
+				<h:outputText value="Last Software Update:"></h:outputText>
+				<h:panelGroup style="min-width:10px;"></h:panelGroup>
+				<pr:calendar widgetVar="softwareDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{sessionBean.softwareUpdateDB}"></pr:calendar>
+			
+				<h:outputText value="Software Version:"></h:outputText>
+				<h:panelGroup style="min-width:10px;"></h:panelGroup>
+			 	<h:inputText value="#{sessionBean.softwareVersion}"></h:inputText>
+			</h:panelGrid>    
+		    
+		    	
+			<h:commandButton value="Update" action="#{sessionBean.applicationUpdate()}" />
+			
+			
+			<!-- <h:messages id="messages" /> -->
+			
+		</h:form> 
+	</ui:define>
+</ui:composition>
+</html>
+	

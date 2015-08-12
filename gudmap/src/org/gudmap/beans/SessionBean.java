@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import org.gudmap.globals.Globals;
 import org.gudmap.models.SupplementaryFiles;
 import org.gudmap.queries.array.ArrayQueries;
 import org.gudmap.queries.generic.GenericQueries;
+import org.gudmap.utils.Utils;
 
 
 @Named(value="sessionBean")
@@ -46,15 +48,22 @@ public class SessionBean implements Serializable {
 	private String softwareUpdate="06 Aug 2015";
 	private String softwareVersion="JSF2 v2.05";
 	private String editorialUpdate="28 Jul 2015";
+	private Date softwareUpdateDB;
+	private Date editorialUpdateDB;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
 	
 	public SessionBean() {
+		      
+		 setUpdateValues();
+	}
+	
+	public void setUpdateValues() {
 		try
 		{
 			con = Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(GenericQueries.UPDATE_INFO); 
+			ps = con.prepareStatement(GenericQueries.GET_UPDATE_INFO); 
 			result =  ps.executeQuery();
 			if (result.first()) {
 				setSoftwareUpdate(result.getString("software_update"));
@@ -65,8 +74,48 @@ public class SessionBean implements Serializable {
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 		    Globals.closeQuietly(con, ps, result);
-		}       
-		 
+		} 
+		
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(GenericQueries.GET_UPDATE_INFO_DB); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				softwareUpdateDB=(result.getDate("software_update"));
+				editorialUpdateDB=(result.getDate("editorial_update"));
+			}						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		} 
+	}
+	
+	public String applicationUpdate() {
+		/*String one = Utils.getMysqlDateFromInput(softwareUpdateDB);
+		String two = softwareVersion;
+		String three = Utils.getMysqlDateFromInput(editorialUpdateDB);
+		String four = "four";*/
+		int status=-1;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(GenericQueries.UPDATE_INFO); 
+			ps.setString(1, Utils.getMysqlDateFromInput(softwareUpdateDB));
+			ps.setString(2, Utils.getMysqlDateFromInput(editorialUpdateDB));
+			ps.setString(3, softwareVersion);
+			status =  ps.executeUpdate();
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		} 
+		if(status > 0)	
+			setUpdateValues();
+		
+		return "/db/database_homepage";
 	}
 	
 	
@@ -234,6 +283,20 @@ public class SessionBean implements Serializable {
 	}
 	public String getEditorialUpdate() {
 		return editorialUpdate;
+	}
+	
+	public void setSoftwareUpdateDB(Date softwareUpdateDB) {
+		this.softwareUpdateDB = softwareUpdateDB;
+	}
+	public Date getSoftwareUpdateDB() {
+		return softwareUpdateDB;
+	}
+	
+	public void setEditorialUpdateDB(Date editorialUpdateDB) {
+		this.editorialUpdateDB = editorialUpdateDB;
+	}
+	public Date getEditorialUpdateDB() {
+		return editorialUpdateDB;
 	}
 	
 	public void setSoftwareVersion(String softwareVersion) {

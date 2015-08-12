@@ -52,6 +52,12 @@
 	margin-right:7px;
 }
 
+
+#db_organstats_right h2 {
+    font-size: 120%;
+}
+
+
 .db_cellborder_topleft {
 	border-top-color: #6FAEC4;
 	border-top-style: solid;
@@ -87,12 +93,15 @@
 }
 
 #db_homestats a {
-	color:#c2d5dc;
+	/* color:#c2d5dc; */
+	color:#0797F5;
+	
 	text-decoration: none;
 }
 
 #db_homestats a:visited {
-	color:#c2d5dc;	
+	/* color:#c2d5dc; */
+	color:#0797F5;	
 }
 #db_homestats a:hover, #db_homestats a:active, #db_homestats a:focus { 
 	text-decoration: underline;

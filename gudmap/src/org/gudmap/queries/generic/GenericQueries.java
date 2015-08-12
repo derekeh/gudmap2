@@ -273,6 +273,12 @@ public class GenericQueries {
    				"WHERE STG_OID = SUB_STAGE_FK AND STG_SPECIES = ? ORDER BY STG_ORDER";
    		
    		//update statistics
-   		public final static String UPDATE_INFO = "SELECT DATE_FORMAT(MIS_SOFT_UPDATE,'%e %M %Y') software_update, DATE_FORMAT(MIS_EDIT_UPDATE,'%e %M %Y') editorial_update, MIS_SOFT_VERSION software_version FROM REF_MISC";
+		public final static String GET_UPDATE_INFO = "SELECT DATE_FORMAT(MIS_SOFT_UPDATE,'%e %M %Y') software_update, DATE_FORMAT(MIS_EDIT_UPDATE,'%e %M %Y') editorial_update, MIS_SOFT_VERSION software_version FROM REF_MISC";
+		 
+	   	public final static String GET_UPDATE_INFO_DB = "SELECT MIS_SOFT_UPDATE software_update, MIS_EDIT_UPDATE editorial_update FROM REF_MISC";
+	   	
+		public final static String UPDATE_INFO = "UPDATE REF_MISC SET MIS_SOFT_UPDATE = ?, MIS_EDIT_UPDATE = ?, MIS_SOFT_VERSION = ?";
+
+
 	   
 }
