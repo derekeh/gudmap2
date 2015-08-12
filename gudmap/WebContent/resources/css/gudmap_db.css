@@ -195,7 +195,8 @@
  }
  
  .db_outer_detail_left {
- 	 background-color:#476885;
+ 	 /* background-color:#476885; */
+ 	 background-color:#c2d5dc;
 	 color:#FFFFFF;
 	 vertical-align:top;
 	 text-align:left;
@@ -205,7 +206,8 @@
  }
  
   .db_outer_detail_right {
- 	background-color: #c2d5dc;
+ 	/* background-color: #c2d5dc; */
+ 	background-color: #ffffff;
  	color:#476885;
  	vertical-align:top;
  	text-align:left;

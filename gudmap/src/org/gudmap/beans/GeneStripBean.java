@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -17,6 +18,7 @@ import javax.servlet.ServletContext;
 
 import org.gudmap.globals.Globals;
 import org.gudmap.models.GeneStripModel;
+import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.models.MasterTableInfo;
 import org.gudmap.assemblers.GeneStripBeanAssembler;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
@@ -39,6 +41,8 @@ public class GeneStripBean implements Serializable {
     private ArrayList<GeneStripModel> dataList;
 	private ArrayList<MasterTableInfo> tableinfo;	
 	private ArrayList<String> geneIds;
+	private boolean areAllChecked;
+	private List<String> selectedItems;
    // private String tempParam="";
     String str;
     
@@ -49,6 +53,8 @@ public class GeneStripBean implements Serializable {
     private String genelistValueData;    
     @Inject
    	protected SessionBean sessionBean;
+    @Inject
+   	protected ParamBean paramBean;
     
     public GeneStripBean() {
         
@@ -72,6 +78,14 @@ public class GeneStripBean implements Serializable {
     public SessionBean getSessionBean() {
     	return sessionBean;
     }
+    
+    public void setParamBean(ParamBean paramBean){
+		this.paramBean=paramBean;
+	}
+    
+    public ParamBean getParamBean (){
+		return paramBean;
+	}
     //if the parameters are not passed in via the url then they are passed in from sessionBean.getTempParam
     //in a view (viewGeneStrip) which has this as Request scoped backing bean are unable to set the <f:param value to sessionBean.tempParam
    /* @PostConstruct
@@ -145,8 +159,25 @@ public class GeneStripBean implements Serializable {
     	return inputString;
     }
     
-    public void checkAll(){}
-	public void checkboxSelections(){}
+    public void checkAll() { 
+    	areAllChecked=(areAllChecked)?false:true;
+    	for (int i=0;i<dataList.size();i++) { 
+    		((GeneStripModel)dataList.get(i)).setSelected(areAllChecked);
+    	} 
+    }
+    
+    
+    public String checkboxSelections() { 
+    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
+    	selectedItems.clear();
+    	for (int i=0;i<dataList.size();i++) { 
+    		if (((GeneStripModel) dataList.get(i)).getSelected()) { 
+    			selectedItems.add(((GeneStripModel) dataList.get(i)).getGene_id());
+    		} 
+    	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
+    	//return "browseCollectionEntriesTablePage";
+    	return "result";
+    }
 	
 	/*public void setTempParam(String tempParam) {
 		this.tempParam=tempParam;

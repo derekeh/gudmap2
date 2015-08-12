@@ -18,3 +18,14 @@
 	padding-top:5px;
 	/*border-left:#6FAEC4 solid 4px;*/
 }
+
+ /*Accordions */
+ 
+ .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    color: #c2d5dc;
+    font-weight: bold;
+}
+
+/*ORIGINAL FROM jquery.ui.theme.min.css
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active{border:1px solid #aaa;background:#fff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;font-weight:normal;color:#212121}
+*/
