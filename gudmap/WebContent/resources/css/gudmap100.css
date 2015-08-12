@@ -84,7 +84,7 @@ input[type="text"], textarea {
 
 .gd_input_large {
 	width:250px;
-	padding:20px 10px;
+	padding:10px 10px;
 	line-height:30px;
 	background-color:white !important;
 	font-size: 20px;
@@ -301,7 +301,8 @@ input[type="text"], textarea {
 
 #gd_slideshow_home {
 	float: right;
-	width: 340px;
+	/* width: 340px; */
+	width: 650px;
 	min-height: 250px;
 	/*background-color: #D0DFE5;*/
 	/*padding-top: 20px;*/

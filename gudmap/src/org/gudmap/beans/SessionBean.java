@@ -93,10 +93,6 @@ public class SessionBean implements Serializable {
 	}
 	
 	public String applicationUpdate() {
-		/*String one = Utils.getMysqlDateFromInput(softwareUpdateDB);
-		String two = softwareVersion;
-		String three = Utils.getMysqlDateFromInput(editorialUpdateDB);
-		String four = "four";*/
 		int status=-1;
 		try
 		{

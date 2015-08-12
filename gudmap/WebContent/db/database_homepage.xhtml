@@ -178,7 +178,6 @@
 	
 	
 	<!-- can use relative links on html tags -->
-	    <h:form id="h1form"><h1 class="db_h1">Expression Database<h:outputText id="il_focustext" value="&#160; &gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>
 	    <!-- all other content in here --> 	
 	    <h:outputScript library="scripts" name="jquery-ui-1.9.2.accordion.custom.min.js"></h:outputScript>  
 	    <!-- need to use this type of linking if the stylesheet references other stylesheets or relative icon directories -->
@@ -211,11 +210,15 @@
 		//]]>
 		</script>
 
-		
-   <div id="db_querybrowse_left">  
-    
+   <h:form id="focusform">
+				<h:outputText id="il_focustext" value="Expression Database&#160;&#160;" styleClass="db_h1_indent"/> 
+				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />	
+   </h:form> 
+   	
+   <div id="db_querybrowse_left">
+
       <h:form id="il_dbhomepage">
-      <h:panelGrid columns="4" columnClasses="gd_celltextleft,gd_celltextleft,gd_celltextleft,gd_celltextleft" border="0" cellpadding="0" cellspacing="0">
+      <h:panelGrid columns="4" columnClasses="gd_celltextleft,gd_celltextleft,gd_celltextleft,gd_celltextleft" p:border="0" p:cellpadding="0" p:cellspacing="0">
 	
 	    <h:panelGroup>
 	    	<h:panelGrid columns="2" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
@@ -244,7 +247,7 @@
 	    </h:panelGroup>
 	   
 
-    	<h:graphicImage library="images/resources" name="20spacer.png" width="20" height="5" alt=""></h:graphicImage>
+    	<h:panelGroup><div style="min-height:5px;width:100%;" /></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
@@ -274,7 +277,7 @@
 	    </h:panelGroup>
 	    
 	    
-	    <h:graphicImage library="images/resources" name="20spacer.png" width="20" height="5" alt=""></h:graphicImage>
+	    <h:panelGroup><div style="min-height:5px;width:100%;" /></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
@@ -298,7 +301,7 @@
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 
-	   <h:graphicImage library="images/resources" name="20spacer.png" width="20" height="5" alt=""></h:graphicImage>
+	   <h:panelGroup><div style="min-height:5px;width:100%;" /></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
@@ -328,7 +331,7 @@
 	    </h:panelGroup>
 	    
 	    
-	    <h:graphicImage library="images/resources" name="20spacer.png" width="20" height="5" alt=""></h:graphicImage>
+	    <h:panelGroup><div style="min-height:5px;width:100%;" /></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
@@ -360,7 +363,7 @@
 	    </h:panelGroup>
 	    
 	    
-	    <h:graphicImage library="images/resources" name="20spacer.png" width="20" height="5" alt=""></h:graphicImage>
+	    <h:panelGroup><div style="min-height:5px;width:100%;" /></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
