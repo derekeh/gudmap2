@@ -100,6 +100,8 @@ public class LoginBean implements Serializable{
 				userID=result.getInt(5);
 				RET="options";
 			}
+			else
+				resetLogin();
 			
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
@@ -109,6 +111,15 @@ public class LoginBean implements Serializable{
 		
 		//set RET to forward to correct page or create a FacesMessage to notify user and force null return
 		return RET;
+	}
+	
+	public void resetLogin() {
+		username=null;
+		password=null;
+		role=null;
+		priv_level=0;
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		session.invalidate();
 	}
 	
 	public String logout () {
