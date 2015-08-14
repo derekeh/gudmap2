@@ -286,6 +286,7 @@
 
  .db_bold {
    font-weight:bold;
+   font-size:1.2em;
  }
  
  .db_h1_indent {
@@ -339,6 +340,8 @@
  
  .db_expression_icon {
  	padding:2px 5px 0 0;
+ 	min-width:20px;
+ 	min-height:20px;
  }
  
  .db_thumb_height {
@@ -348,7 +351,8 @@
  .superbigplaintext {
     color: #22316C;
     font-family: Arial,Helvetica,sans-serif;
-    font-size: 24px;
+    /* font-size: 24px; */
+    font-size: 1.2em;
     text-align: left;
     padding-right:5px;
 }
@@ -377,6 +381,18 @@
 #focusform {
 	padding-left:19px;
 }
+
+#dataform img, .db_outer_detail_right img {
+	border:1px solid #c2d5dc;
+	border-bottom-left-radius: 5px;
+	border-top-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	margin: 1px 0;
+	padding:2px;
+}
+
+
 
 .db_max_col_width {
 	table-layout: fixed;

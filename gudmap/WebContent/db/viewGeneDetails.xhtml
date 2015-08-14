@@ -28,7 +28,7 @@
 	
 	<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	<!-- can use relative links on html tags -->
-	    <h1>Gene Details </h1>	
+	    <h:outputText value="Gene Details" styleClass="db_bold" />	
 	    <!-- all other content in here -->  
 	    <h:outputText value="There is no available data on the selected gene.1" styleClass="plaintext" rendered="#{geneDetailsBean.geneModel == null}" />
 		<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel != null}">

@@ -31,9 +31,9 @@
 	<ui:include src="/snippets/g_wholemount_text.xhtml"></ui:include>
 	
 	
-	    <h1>Submission Details for: 
-	    	<h:outputText value="GUDMAP:#{ishSubmissionBean.oid}"></h:outputText>    	
-	    </h1>	
+	   
+	   <h:outputText value="Submission Details for: GUDMAP:#{ishSubmissionBean.oid}" styleClass="db_bold"></h:outputText>    	
+	    	
 	    <!-- all other content in here -->  
 	   
 		#{ishSubmissionBean.returnResults(sessionBean.displayAsTree)}

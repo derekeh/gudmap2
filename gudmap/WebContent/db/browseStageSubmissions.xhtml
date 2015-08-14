@@ -18,7 +18,8 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	    <h1>Submissions by Stage <h:outputText value ="for Gene: #{stageBean.geneSymbol}" rendered="#{not empty stageBean.geneSymbol}" /></h1>	
+		<h:outputText value ="Submissions by Stage&#160;&#160;" styleClass="db_bold" />
+	     <h:outputText value ="for Gene: #{stageBean.geneSymbol}" rendered="#{not empty stageBean.geneSymbol}" styleClass="db_bold" />	
 	    <!-- all other content in here -->  
 	    <h:form id="stageBrowseForm">
 		<h:dataTable styleClass="db_order-table"
