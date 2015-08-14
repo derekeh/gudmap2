@@ -12,16 +12,23 @@
 	padding-bottom:0px;
 }
 
+.db_columnFilterMargin {
+	margin-bottom:5px;
+}
+
 .db_grid_top_zero {
 	margin-top:-10px;
 }
 
 #db_querybrowse_left {
-	/* min-height: 252px; */
+	float:left;
+	margin-left:2%;
+	/*margin-right:5%;
+	 min-height: 252px;
 	min-width: 250px;
 	float: left;
 	margin-left:100px;
-	/*background-color: #D7E8D5;*/
+	background-color: #D7E8D5;*/
 }
 
 #db_querybrowse2_left {
@@ -43,8 +50,12 @@
 
 
 #db_organstats_right {
-	/* background-color: #D0DFE5; */
-	/* width: 340px; */
+	background-color: #ffffff;
+	float:left;
+	font-size:90%;
+	margin-left:2%;
+	/* background-color: #D0DFE5;
+	 width: 340px;
 	background-color: #ffffff;
 	width: 450px;
 	min-height: 252px;
@@ -54,7 +65,7 @@
 	border-top-left-radius: 8px;
 	border-bottom-right-radius: 8px;
 	border-top-right-radius: 8px;
-	margin-right:100px;
+	margin-right:100px; */
 }
 
 
@@ -112,6 +123,10 @@
 #db_homestats a:hover, #db_homestats a:active, #db_homestats a:focus { 
 	text-decoration: underline;
 	color:#6ABCE6;
+}
+
+#db_homestats td {
+    padding: 5px 7px 5px 0;
 }
 
 .db_organimage {
@@ -274,7 +289,8 @@
  }
  
  .db_h1_indent {
- 	margin-left:80px;
+ 	/* margin-left:80px; */
+ 	margin-left:1%;
  	color:#476885;
  	font-size:24px;
  	line-height:40px;

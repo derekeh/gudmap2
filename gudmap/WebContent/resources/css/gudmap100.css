@@ -46,6 +46,11 @@ input[type="text"], textarea {
 
 }
 
+img {
+	max-width:100%;
+	height:auto;
+}
+
 /* ~~ this container surrounds all other divs giving them their percentage-based width ~~ */
 .gd_container {
 	width: 100%;
@@ -287,27 +292,39 @@ input[type="text"], textarea {
 }
 
 #gd_dbstats {
-	width: 400px;
-	min-height: 250px;
-	margin-left: 15px;
-	margin-bottom: 15px;
-	/*background-color: #D0DFE5;*/
-	border-radius: 8px;
+	
 	float: left;
+	width: 40%;
+	margin-left: 2%;
+	margin-bottom: 2%;
+	/* float: left;
 	margin-right: 7px;
-	/*-webkit-box-shadow: 3px 3px #D5D5D5;
+	width: 48%;
+	margin-left: 15px;
+	margin-bottom: 2%; */
+	
+	/*background-color: #D0DFE5;
+	border-radius: 8px;
+	-webkit-box-shadow: 3px 3px #D5D5D5;
 	box-shadow: 3px 3px #D5D5D5;*/
 }
 
 #gd_slideshow_home {
-	float: right;
-	/* width: 340px; */
-	width: 650px;
+	
+	float: left;
+	width:48%;
+	margin-left:5%;
+	/* float: left;
+	width:48%;
+	margin-right:2%; */
+	
+	/* width: 340px;
+	width: 650px;	
 	min-height: 250px;
-	/*background-color: #D0DFE5;*/
-	/*padding-top: 20px;*/
-	border-radius: 8px;
-	margin-right:15px;
+	background-color: #D0DFE5;
+	padding-top: 20px;
+	border-radius: 8px;*/
+	
 }
 
 .gd_table98center {

@@ -22,7 +22,7 @@
 	#{genericTablePageBean.loadDataList()}
 	
 	<ui:include src="/snippets/g_seqSeriesCols.xhtml"></ui:include>
-	<h:panelGrid columns="2">
+	<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
 			<h:form>
 				<h:panelGrid columns="2">
 					<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>

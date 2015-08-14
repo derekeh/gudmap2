@@ -301,7 +301,7 @@
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 
-	   <h:panelGroup><div style="min-height:5px;width:100%;" /></h:panelGroup>
+	   <h:panelGroup><div style="min-height:9px;width:100%;" /></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
@@ -384,8 +384,106 @@
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup></h:panelGroup> 
+	    
+	    <h:panelGroup><div style="min-height:5px;width:100%;" /></h:panelGroup>
+	    <h:panelGroup></h:panelGroup>
+	    <h:panelGroup></h:panelGroup>
+	    <h:panelGroup></h:panelGroup>
 	</h:panelGrid>
   </h:form>
+  
+  <h:form id="browseform">
+  	<table  width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+		<td>
+		<div id="navmenu2" class="dmxNavigationMenu" style="width:155px;float:left">
+		  <ul class="menu vertical">
+		  
+		    <li title="" class="db_pseudo_row"><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_array.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
+		      <ul class="sub">
+		        <li title=""><h:link outcome="browseMicSeriesTablePage"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="array_series_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('array_series_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		        <li title=" "><h:link outcome="browseMicSampleTablePage"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="array_sample_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('array_sample_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		        <li title=""><h:link outcome="browseMicPlatformTablePage"><h:graphicImage library="images/dbhome" name="n_platform.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="array_platform_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('array_platform_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		      </ul>
+		    </li>
+		    
+		    <li title="" class="db_pseudo_row"><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_seq.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
+		      <ul class="sub">
+		        <li title=""><h:link outcome="browseSeqSeriesTablePage"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="seq_series_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('seq_series_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		        <li title=""><h:link outcome="browseSeqSampleTablePage"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="seq_sample_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('seq_sample_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		      </ul>
+		    </li>
+		    
+		    <li title="" class="db_pseudo_row"><h:link outcome="browseStageSubmissions"><h:graphicImage library="images/dbhome" name="n_theilerStage.png" border="0" width="130" height="24" alt=" " /></h:link>
+		    	<div id="theiler_info" style="float:right;margin-top:-29px;margin-right:3px;cursor:help;" onclick="PF('stages_dialog').show();">
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div>
+		    </li>
+		    
+		    <li title="" class="db_pseudo_row"><h:link outcome="viewGeneIndex"><h:graphicImage library="images/dbhome" name="n_gene.png" border="0" width="130" height="24" alt=" " /></h:link>
+		    	<div id="browsegene_info" style="float:right;margin-top:-30px;margin-right:3px;cursor:help;" onclick="PF('gene_expression_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		    
+		    <li title="" class="db_pseudo_row"><a href="browseInsituTablePage.jsf" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_inSitu.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
+		      <ul class="sub">
+		        <li title=""><h:link outcome="browseWishTablePage"><h:graphicImage library="images/dbhome" name="n_wish.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="wish_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('wish_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		        <li title=""><h:link outcome="browseSishTablePage"><h:graphicImage library="images/dbhome" name="n_sish.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="sish_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('sish_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		        <li title=""><h:link outcome="browseOptTablePage"><h:graphicImage library="images/dbhome" name="n_opt.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="opt_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('opt_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		        <li title=""><h:link outcome="browseIhcTablePage"><h:graphicImage library="images/dbhome" name="n_ihc.png" border="0" width="130" height="24" alt=" " /> </h:link>
+		        <div id="ihc_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('ihc_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		      </ul>
+		    </li>
+		    
+		    <li title=""><h:link outcome="browseTgTablePage"><h:graphicImage library="images/dbhome" name="transgenic.png" border="0" width="130" height="24" alt=" " /> </h:link> 
+		    <div id="transgenic_info" style="float:right;margin-top:-29px;margin-right:3px;cursor:help;" onclick="PF('transgenic_dialog').show();" >
+		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
+		    </li>
+		    
+		  </ul>
+		  <div style="height:0;font-size:0;clear:both;"></div>
+		</div>
+		<script type="text/javascript">
+		  // <![CDATA[
+		 jQuery(document).ready(
+		   function()
+		     {
+		       jQuery("#navmenu2").dmxNavigationMenu(
+		         {"width": 155, "mainShowEffect": "slide", "mainShowDuration": "slow", "mainShowEasing": "swing", "mainHideEffect": "slide", "mainHideDuration": "slow", "mainHideEasing": "swing", "subShowEffect": "fade", "subShowDuration": "slow", "subShowEasing": "swing", "subHideEffect": "fade", "subHideDuration": "slow", "subHideEasing": "swing", "menuOrientation": "vertical", "useMenuBarSearch": false, "keyboard": true, "menuAlign": "left"}
+		       );
+		     }
+		 );
+		  // ]]>
+		</script></td>
+		</tr>
+	</table>
+	</h:form>
+  
 </div> <!-- End query_browse_left -->
 
 
@@ -496,107 +594,7 @@
     <p></p> 
     <p></p> 
     
-   <div id="db_browsequery_left">
-   <h:form id="browseform">
-  	<table  width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-		<td>
-		<div id="navmenu2" class="dmxNavigationMenu" style="width:155px;float:left">
-		  <ul class="menu vertical">
-		  
-		    <li title="" class="db_pseudo_row"><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_array.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
-		      <ul class="sub">
-		        <li title=""><h:link outcome="browseMicSeriesTablePage"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="array_series_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('array_series_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		        <li title=" "><h:link outcome="browseMicSampleTablePage"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="array_sample_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('array_sample_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		        <li title=""><h:link outcome="browseMicPlatformTablePage"><h:graphicImage library="images/dbhome" name="n_platform.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="array_platform_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('array_platform_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		      </ul>
-		    </li>
-		    
-		    <li title="" class="db_pseudo_row"><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_seq.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
-		      <ul class="sub">
-		        <li title=""><h:link outcome="browseSeqSeriesTablePage"><h:graphicImage library="images/dbhome" name="n_series.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="seq_series_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('seq_series_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		        <li title=""><h:link outcome="browseSeqSampleTablePage"><h:graphicImage library="images/dbhome" name="n_sample.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="seq_sample_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('seq_sample_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		      </ul>
-		    </li>
-		    
-		    <li title="" class="db_pseudo_row"><h:link outcome="browseStageSubmissions"><h:graphicImage library="images/dbhome" name="n_theilerStage.png" border="0" width="130" height="24" alt=" " /></h:link>
-		    	<div id="theiler_info" style="float:right;margin-top:-29px;margin-right:3px;cursor:help;" onclick="PF('stages_dialog').show();">
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div>
-		    </li>
-		    
-		    <li title="" class="db_pseudo_row"><h:link outcome="viewGeneIndex"><h:graphicImage library="images/dbhome" name="n_gene.png" border="0" width="130" height="24" alt=" " /></h:link>
-		    	<div id="browsegene_info" style="float:right;margin-top:-30px;margin-right:3px;cursor:help;" onclick="PF('gene_expression_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		    
-		    <li title="" class="db_pseudo_row"><a href="browseInsituTablePage.jsf" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_inSitu.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>
-		      <ul class="sub">
-		        <li title=""><h:link outcome="browseWishTablePage"><h:graphicImage library="images/dbhome" name="n_wish.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="wish_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('wish_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		        <li title=""><h:link outcome="browseSishTablePage"><h:graphicImage library="images/dbhome" name="n_sish.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="sish_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('sish_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		        <li title=""><h:link outcome="browseOptTablePage"><h:graphicImage library="images/dbhome" name="n_opt.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="opt_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('opt_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		        <li title=""><h:link outcome="browseIhcTablePage"><h:graphicImage library="images/dbhome" name="n_ihc.png" border="0" width="130" height="24" alt=" " /> </h:link>
-		        <div id="ihc_info" style="float:right;margin-top:-29px;cursor:help;" onclick="PF('ihc_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		      </ul>
-		    </li>
-		    
-		    <li title=""><h:link outcome="browseTgTablePage"><h:graphicImage library="images/dbhome" name="transgenic.png" border="0" width="130" height="24" alt=" " /> </h:link> 
-		    <div id="transgenic_info" style="float:right;margin-top:-29px;margin-right:3px;cursor:help;" onclick="PF('transgenic_dialog').show();" >
-		    	<h:graphicImage library="images/dbhome" name="n_information.png" /></div> 
-		    </li>
-		    
-		  </ul>
-		  <div style="height:0;font-size:0;clear:both;"></div>
-		</div>
-		<script type="text/javascript">
-		  // <![CDATA[
-		 jQuery(document).ready(
-		   function()
-		     {
-		       jQuery("#navmenu2").dmxNavigationMenu(
-		         {"width": 155, "mainShowEffect": "slide", "mainShowDuration": "slow", "mainShowEasing": "swing", "mainHideEffect": "slide", "mainHideDuration": "slow", "mainHideEasing": "swing", "subShowEffect": "fade", "subShowDuration": "slow", "subShowEasing": "swing", "subHideEffect": "fade", "subHideDuration": "slow", "subHideEasing": "swing", "menuOrientation": "vertical", "useMenuBarSearch": false, "keyboard": true, "menuAlign": "left"}
-		       );
-		     }
-		 );
-		  // ]]>
-		</script></td>
-		</tr>
-	</table>
-	</h:form>
- </div>
-     
-     
-
-<!-- <h1>jQuery tooltips example</h1>
-<h:form> 
-<label id="username">Username : </label>
-<span id="hint">hint (mouseover me)</span>
-</h:form> -->
+ 
 
 <script type="text/javascript">
 //<![CDATA[
