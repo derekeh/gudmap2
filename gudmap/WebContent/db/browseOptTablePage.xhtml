@@ -30,7 +30,10 @@
 		<ui:include src="/snippets/g_ishFilter.xhtml"></ui:include>
 		<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
 			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
-			<h:form id="focusform"><h1>OPT Data Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+			<h:form id="focusform">
+				<h:outputText value="OPT Data Results&#160;&#160;" styleClass="db_bold"/> 
+				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />	
+			</h:form>
 		</h:panelGrid>
 	     <!-- all other content in here --> 
 	    <ui:include src="/snippets/g_insitu_dataform.xhtml"></ui:include>
