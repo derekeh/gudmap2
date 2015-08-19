@@ -90,9 +90,14 @@ public class ComponentExpressionBean { //implements Serializable {
     	return componentId;
     }
     
-    public void newValues(String id, String compid) {
+    /*public void newValues(String id, String compid) {
     	this.oid=id;
     	this.componentId=compid.replace("EMAP", "EMAP:");
+    }*/
+    
+    public void newValues(String id, String compid) {
+    	this.oid=id;
+    	this.componentId=compid.replace("EMAPS", "EMAPS:");
     }
 
 }

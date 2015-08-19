@@ -992,6 +992,7 @@ public class ParamBean implements Serializable {
 	public void resetFilter() {
 		resetValues();
 		resetClauses();
+		
 	}
 
 	/*******************focus groups****************/
@@ -1017,6 +1018,7 @@ public class ParamBean implements Serializable {
 			RET =  GenericQueries.FOCUS_MALE_REPRO;
 		else if(focusGroup.equals("Female reproductive system"))
 			RET =  GenericQueries.FOCUS_FEMALE_REPRO;
+		
 		
 		return RET;
 	}

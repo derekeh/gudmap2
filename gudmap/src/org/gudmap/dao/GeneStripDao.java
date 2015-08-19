@@ -194,8 +194,9 @@ public class GeneStripDao {
 			/** calculate expression profile for all given structures */
 			for (int i=0;i<analen;i++) {
 	//			System.out.println("structure: " + i);
-				// get component ids
-				String[] componentIds = (String[])Globals.getEMAPID().get(interestedAnatomyStructures[i]);
+				// get component ids new anatomy
+				//String[] componentIds = (String[])Globals.getEMAPID().get(interestedAnatomyStructures[i]);
+				String[] componentIds = (String[])Globals.getEMAPAID().get(interestedAnatomyStructures[i]);
 				
 				// put component ids into componentIdsInAll arrayList
 				int eLen = componentIds.length;
@@ -267,9 +268,14 @@ public class GeneStripDao {
 		componentString = componentString.substring(0, (componentString.length()-2)) + ")";
 		
 		// assemble full component ids string including child nodes as well as parent component ids
-		String childQuery = GeneStripQueries.FIND_CHILD_NODE;
+		/*String childQuery = GeneStripQueries.FIND_CHILD_NODE;
 		componentClause += childQuery.replaceAll("WHERE ANCES_ATN.ATN_PUBLIC_ID IN", 
-		("WHERE ANCES_ATN.ATN_PUBLIC_ID IN "+ componentString)) + ")";
+		("WHERE ANCES_ATN.ATN_PUBLIC_ID IN "+ componentString)) + ")";*/
+		
+		//NEW ANATOMY
+		String childQuery = GeneStripQueries.FIND_CHILD_NODE_EMAPA;
+		componentClause += childQuery.replaceAll("WHERE ANO_PUBLIC_ID IN ", 
+    			("WHERE ANO_PUBLIC_ID IN  "+ componentString)) + ")";
 		
 		
 		// use different query string according to what expressions we are looking for
@@ -280,6 +286,8 @@ public class GeneStripDao {
 		else {
 			queryString = expressionQuery.replace("AND EXP_COMPONENT_ID NOT IN", componentClause);
 		}
+		
+		
 		try
 		{
 			repeatCon = Globals.getDatasource().getConnection();

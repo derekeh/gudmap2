@@ -126,7 +126,7 @@ function clickLink(node){
      "#{componentExpressionBean.newValues(ishSubmissionBean.ishSubmissionModel.oid,myval)}";
   	 PF('expression_dialog').show(); */ 
   	 
-  	javascript:showExpressionInformation("${ishSubmissionBean.ishSubmissionModel.oid}",node.attr("ATN_PUBLIC_ID"));
+  	javascript:showExpressionInformation("${ishSubmissionBean.ishSubmissionModel.oid}",node.attr("ANO_PUBLIC_ID"));
 }
 
 function enhanceTree(event, data) {
@@ -558,7 +558,7 @@ function findExpressionNotes(){
 				</ui:remove>
 				<h:panelGroup rendered="#{ishSubmissionBean.expressionMapped and !sessionBean.displayAsTree}">
 					<h:outputText value="ACCESSION ID: #{ishSubmissionBean.ishSubmissionModel.accID}"/>
-					<h:dataTable cellpadding="2" width="100%" styleClass="db_order-table" headerClass="db_order-table-header" rowClasses="db_order-table-odd-row,db_order-table-even-row" 
+					<h:dataTable cellpadding="2" width="100%" styleClass="db_order-table db_list_images" headerClass="db_order-table-header" rowClasses="db_order-table-odd-row,db_order-table-even-row" 
 								 value="#{ishSubmissionBean.ishSubmissionModel.expressionDetailModel}" var="exp" >
 						<h:column>
 							<f:facet name="header">

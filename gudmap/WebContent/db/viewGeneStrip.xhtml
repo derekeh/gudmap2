@@ -53,7 +53,10 @@
 		<!-- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> -->
 				</h:panelGrid>
 			</h:form>
-			<h:form id="focusform"><h1>Gene Query Results<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1>	</h:form>	    
+			<h:form id="focusform">
+				<h:outputText value="Gene Query Results" styleClass="db_bold" />
+				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" styleClass="db_bold" />	
+			</h:form>	    
 		</h:panelGrid>
 	    
 	    <!-- all other content in here --> 

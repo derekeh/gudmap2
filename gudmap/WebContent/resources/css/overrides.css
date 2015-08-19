@@ -134,6 +134,8 @@
   	padding-right:30px;
   } */
   
+  /* PRIME FACES OVERRIDES */
+  
   #testdiv {
   	min-height: 150px;
   	width:250px;
@@ -151,5 +153,12 @@
   	color:darkblue;
 	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
  }
+ 
+ .ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 1px 1px #8F8F8F inset;
+    color: #313131;
+    max-height: 14px;
+}
  
 

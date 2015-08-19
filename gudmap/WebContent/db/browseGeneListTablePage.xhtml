@@ -38,13 +38,15 @@
 			<h:form id="focusform">
 				<h:outputText value="Gene List Results For Input: " styleClass="db_bold"/> 
 		    	<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />
-		    	<h:outputText value="#{genericTablePageBean.userInput}"/>	
+		    	<h:outputText value="&#160;&#160;#{genericTablePageBean.userInput}"/>	
 	    	</h:form>		
 	    </h:panelGrid>
 	     
 	    <ui:include src="/snippets/g_mixed_assay_dataform.xhtml"></ui:include>
  		
  		<ui:include src="/snippets/g_pagingForm.xhtml"></ui:include>
+ 		
+ 		#paramBean.setFocusGroup('reset');
 		
 	</ui:define>
 </ui:composition>

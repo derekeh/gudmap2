@@ -197,7 +197,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     			setUserInput(Globals.getParameterValue("expressionGene"),false);
     		if(Globals.getParameterValue("focusGroup")!=null)  {
 				paramBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
-				volatileSummaryBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
+				//volatileSummaryBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
 			}
     		
     		dataList = geneListAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),

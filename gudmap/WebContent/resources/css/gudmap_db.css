@@ -198,6 +198,7 @@
 	text-align:center;
 }
 
+
 .db_tooltip{
 	margin:8px;
 	padding:8px;
@@ -245,6 +246,10 @@
  	padding: 5px 5px 5px 10px;
  }
  
+ .db_outer_detail_right th {
+    padding-right: 20px;
+}
+ 
   .db_inner_detail_left {
  	font-weight:bold;
 /*  	font-size:110%; */
@@ -264,6 +269,10 @@
  	font-weight:normal;
  	vertical-align:top;
  }
+ 
+ .db_inner_detail_right td {
+    padding-right: 5px;
+}
  
  .db_inner_inner_title {
  	color:darkred;
@@ -389,10 +398,19 @@
 	border-bottom-right-radius: 5px;
 	border-top-right-radius: 5px;
 	margin: 1px 0;
-	padding:2px;
+	padding:3px;
 }
 
+.db_list_images{
+	
+}
 
+.db_list_images img {
+	border: 0;
+    border-radius: 0;
+    margin: 0;
+    padding: 2px;
+}
 
 .db_max_col_width {
 	table-layout: fixed;

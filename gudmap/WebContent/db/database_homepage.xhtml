@@ -17,6 +17,16 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
+	<style>
+		button, input, optgroup, select, textarea {
+		    margin: 0;;
+		}
+		
+		input[type="submit"] {
+		    margin: 0;
+		}
+	</style>
 	<ui:include src="/snippets/g_information_dialogs.xhtml"/>
 	<pr:dialog header="Gene Search Options" widgetVar="dialog2" width="650" style="position:absolute;left:-300px;" modal="true" > 
 		<h:form id="filterform"> 

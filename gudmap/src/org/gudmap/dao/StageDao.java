@@ -101,6 +101,7 @@ public class StageDao {
 						  " AND ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK " +
 						  " AND ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
 						  " AND APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = TRUE) ";
+					  
 				}
 				stageList[i] = stageDetailsFromDB(queryString);
 //				
