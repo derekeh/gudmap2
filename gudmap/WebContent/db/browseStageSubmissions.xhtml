@@ -17,6 +17,7 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	#{stageBean.setup()}
 	<!-- can use relative links on html tags -->
 		<h:outputText value ="Submissions by Stage&#160;&#160;" styleClass="db_bold" />
 	     <h:outputText value ="for Gene: #{stageBean.geneSymbol}" rendered="#{not empty stageBean.geneSymbol}" styleClass="db_bold" />	

@@ -846,6 +846,50 @@ public class AnatomyDao {
     	return componentSet;
 	
     }
+    
+    ////////////boolean search////////////////
+    
+    public int findSequencebyStageName(String stageName) {
+		int sequence = -1;
+		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(AnatomyQueries.STAGE_SEQUENCE); 
+			ps.setString(1, stageName);
+			result =  ps.executeQuery();
+			if(result.first()){
+				sequence = result.getInt(1);
+		    }						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}		
+		return sequence;
+			
+	}
+    
+    public ArrayList getAnatomyTreeByStages(String startStage, String endStage, boolean isForBooleanQ) {
+    	ArrayList treeStructure = null;
+    	try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(AnatomyQueries.QUERY_TREE_CONTENT); 
+			ps.setString(1, startStage);
+			ps.setString(2, endStage);
+			result =  ps.executeQuery();
+			// build the tree
+//			treeStructure = this.buildTreeStructure(resSet, false, "", isForBooleanQ);
+			
+		    						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+    	return treeStructure;
+    		
+    }
    
 
 }

@@ -38,6 +38,40 @@ public class Globals {
 		return null;
 	}
 	
+	public static void setParameterValue (String key, Object value) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		facesContext.getExternalContext().getRequestMap().put(key,value);
+		
+	}
+	
+	public static Object getSessionValue(String key) {
+		return FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(key);
+	}
+	
+	public static void setSessionValue(String key, Object value) {
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(key, value);
+	}
+	
+	public static String getRefererPage() {
+		String refererURI = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer"); 
+		if (refererURI==null)
+			return "database_homepage.jsp";		
+		else
+			return refererURI;
+	}
+	
+	/*public static String getFacesRequestParamValue(String key) {
+		Object value = FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get(key);	
+		if (value==null)
+			return null;
+		return String.valueOf(value);	
+	}
+	
+	
+	public static void setFacesRequestParamValue(String key, Object value) {
+		FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put(key, value);	
+	}*/
+	
 	
 	public static final String domainUrl="http://www.gudmap.org/";
     public static final String appUrl=domainUrl+"gudmap/";

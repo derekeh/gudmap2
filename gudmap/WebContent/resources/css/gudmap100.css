@@ -146,7 +146,7 @@ img {
 } */
 
 #gd_login {
-	width:250px;
+	width:100px;
 	float:left;
 	color:#D0DFE5;
 	padding-top:6px;
@@ -186,7 +186,8 @@ img {
 }
 
 #gd_bigmenu {
-	width:400px;
+	/* width:400px; */
+	width:200px;
 	margin-left:350px;
 	background-color:#c2d5dc;
 }

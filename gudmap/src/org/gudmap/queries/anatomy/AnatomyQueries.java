@@ -302,4 +302,58 @@ public class AnatomyQueries {
 		
 		public static String TOTAL_SEQUENCE_ANATOMY="SELECT 0 TOTAL_SEQUENCE";
 		
+	    public static String ANNOTATED_STAGE_RANGE = "SELECT DISPLAY.STG_NAME " +
+		                                "FROM ANA_STAGE DISPLAY " +
+		                                "WHERE DISPLAY.STG_SEQUENCE " +
+		                                "BETWEEN " +
+		                                " (SELECT MIN(RANGE1.STG_SEQUENCE) " +
+		                                "  FROM ANA_STAGE RANGE1, ANA_TIMED_NODE, ISH_EXPRESSION, ISH_SUBMISSION " +
+		                                "  WHERE RANGE1.STG_OID = ATN_STAGE_FK " +
+		                                "  AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+		                                "  AND EXP_SUBMISSION_FK = SUB_OID " +
+		                                "  AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
+		                                "  AND SUB_ASSAY_TYPE = 'ISH') " +
+		                                "AND " +
+		                                "  (SELECT MAX(RANGE2.STG_SEQUENCE) " +
+		                                "   FROM ANA_STAGE RANGE2, ANA_TIMED_NODE, ISH_EXPRESSION, ISH_SUBMISSION " +
+		                                "   WHERE RANGE2.STG_OID = ATN_STAGE_FK " +
+		                                "   AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+		                                "   AND EXP_SUBMISSION_FK = SUB_OID " +
+		                                "   AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
+		                                "   AND SUB_ASSAY_TYPE = 'ISH') " +
+		                                "ORDER BY STG_SEQUENCE ";
+	    
+	    public static String STAGE_SEQUENCE = "SELECT STG_SEQUENCE FROM ANA_STAGE WHERE STG_NAME = ?";
+	    
+	    public static String QUERY_TREE_CONTENT = "SELECT DISTINCT APO_DEPTH, APO_SEQUENCE, PARENT.ANO_OID,PARENT.ANO_COMPONENT_NAME, CONCAT(as1.STG_NAME,'-',as2.STG_NAME) as rnge, "+
+	                                   "(select count(*) "+
+	                                    "from ANA_RELATIONSHIP, ANA_NODE CHILD, ANA_TIMED_NODE CATN, ANA_STAGE CSTG "+
+	                                    "where REL_PARENT_FK = PARENT.ANO_OID "+
+	                                    "and REL_CHILD_FK  = CHILD.ANO_OID "+
+	                                    "and CATN.ATN_NODE_FK = CHILD.ANO_OID "+
+	                                    "and CSTG.STG_OID = CATN.ATN_STAGE_FK "+
+	                                    "and CSTG.STG_SEQUENCE BETWEEN qs1.STG_SEQUENCE AND qs2.STG_SEQUENCE) as kids,"+
+	                                    "case when !APO_IS_PRIMARY OR ANO_IS_GROUP THEN 1 ELSE 0 END AS IP, "+
+	                                    "'','', '', 0 "+
+	                                    "'', '', '', '', "+  
+	                                    "'', '' " +
+	                                "FROM ANA_NODE PARENT "+
+	                                 "JOIN ANAD_PART_OF "+
+	                                   "ON ANO_OID = APO_NODE_FK AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' "+
+	                                 "JOIN ANAD_PART_OF_PERSPECTIVE " +
+	                                 "ON POP_PERSPECTIVE_FK = 'Combined Perspective (GUDMAP)' "+
+	                                   " AND POP_APO_FK = APO_OID " +
+	                                 "JOIN ANA_STAGE qs1 "+
+	                                   "ON qs1.STG_NAME = ? "+
+	                                 "JOIN ANA_STAGE qs2 "+
+	                                   "ON qs2.STG_NAME = ? "+
+	                                 "JOIN ANA_STAGE as1 "+
+	                                   "ON as1.STG_OID = APO_PATH_START_STAGE_FK  "+
+	                                  "JOIN ANA_STAGE as2 "+
+	                                    "ON as2.STG_OID = APO_PATH_END_STAGE_FK "+
+	                                  "WHERE as1.STG_SEQUENCE BETWEEN qs1.STG_SEQUENCE   AND qs2.STG_SEQUENCE "+
+	                                  "OR as2.STG_SEQUENCE BETWEEN qs1.STG_SEQUENCE AND qs2.STG_SEQUENCE  "+
+	                                  "OR (as1.STG_SEQUENCE < qs1.STG_SEQUENCE AND as2.STG_SEQUENCE > qs2.STG_SEQUENCE ) "+
+	                                  "ORDER BY APO_SEQUENCE";
+		
 }

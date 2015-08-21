@@ -48,6 +48,16 @@ public class Utils {
 		return ResourceBundle.getBundle("org.gudmap.bundles.config");
 	}
 	
+	public static String getProject() {
+			return getConfigBundle().getString("project");
+	}
+	
+	public static String getValue(String value, String defaultValue) {
+		if (value==null || value=="")
+		    return defaultValue;
+		return value;
+	}
+	
 	public static String[] formatResultSetToStringArray(ResultSet resSet) throws SQLException {
 		String str = null;
 	    	if (resSet.first()) {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -14,7 +15,8 @@ import org.gudmap.globals.Globals;
 
 @Named
 //@RequestScoped
-@ViewScoped
+//@ViewScoped
+@SessionScoped
 public class StageBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -34,15 +36,14 @@ public class StageBean implements Serializable {
    	protected SessionBean sessionBean;
 	
 	public StageBean() {
-		//FacesContext facesContext = FacesContext.getCurrentInstance();
-        //this.geneSymbol = facesContext.getExternalContext().getRequestParameterMap().get("gene");
-        geneSymbol = Globals.getParameterValue("gene");
+		stageAssembler = new StageAssembler();
+		/*geneSymbol = Globals.getParameterValue("gene");
         geneId = Globals.getParameterValue("geneId");
         species = Globals.getParameterValue("species");
         if (species == null || species.equals(""))
 			species = "Mus musculus";
-        stageAssembler = new StageAssembler();
-        setup();		
+        
+        setup();*/		
 	}
 	
 	 public void setSessionBean(SessionBean sessionBean){
@@ -55,7 +56,11 @@ public class StageBean implements Serializable {
 	 }
 	
 	public void setup() {
-		//tableData=stageAssembler.retrieveData(stage, organ, geneSymbol);
+		geneSymbol = Globals.getParameterValue("gene");
+        geneId = Globals.getParameterValue("geneId");
+        species = Globals.getParameterValue("species");
+        if (species == null || species.equals(""))
+			species = "Mus musculus";
 		
 		stage = stageAssembler.getStages(species);
 		stageList = stageAssembler.getStageList(stage, organ, geneId);

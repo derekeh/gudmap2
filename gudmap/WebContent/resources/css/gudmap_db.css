@@ -137,6 +137,10 @@
 	border-collapse:collapse;
 }
 
+.db_order-table img {
+	max-height:40px;
+}
+
 .db_order-table-header{
 	text-align:center;
 	background:none repeat scroll 0 0 #E5E5E5;
@@ -416,6 +420,21 @@
 	table-layout: fixed;
     word-wrap: break-word;
 	max-width:130px;
+}
+
+.db_boolean_table {
+	vertical-align:top;
+}
+
+/* paging buttons override */
+
+#pagingform .ui-datalist-content.ui-widget-content {
+    margin: 10px;
+    border: 2px solid darkblue;
+}
+#pagingform input {
+    margin: 0 5px;
+    padding: 5px ;
 }
 
  

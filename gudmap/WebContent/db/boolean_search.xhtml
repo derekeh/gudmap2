@@ -17,41 +17,333 @@
 	</ui:define> 
 	
 	<ui:define name="content">
-	<h:outputStylesheet library="css" name="TSContainer.css"  />
-	<h:outputStylesheet library="css" name="TSGlossary.css"  />
-	<h:outputScript library="scripts/yahoo" name="yahoo.js" />
-	<h:outputScript library="scripts/yahoo" name="event.js" />
-	<h:outputScript library="scripts/yahoo" name="dom.js" />
-	<h:outputScript library="scripts/yahoo" name="dragdrop.js" />
-	<h:outputScript library="scripts/yahoo" name="animation.js" />
-	<h:outputScript library="scripts/yahoo" name="container.js" />
-	<h:outputScript library="scripts/yahoo" name="TSGlossary.js" />
+	<h:outputStylesheet library="css" name="my_jstree_style.css"  />
+	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1/_lib" name="jquery.cookie.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1/_lib" name="jquery.hotkeys.js"></h:outputScript>
+	<h:outputScript library="scripts/jstree_pre1.0_fix_1" name="jquery.jstree.js"></h:outputScript>
+	<h:outputScript library="scripts/old" name="ftiens4.js"></h:outputScript>
 	
-	<pr:dialog header="Gene Query" widgetVar="gene_dialog" width="250" style="position:absolute;left:-300px;"  > 
-		<h:outputText value="Search for genes with expression data in the database. &lt;br /&gt;
-		This search addresses all in situ, and micro-array expression data.&lt;br /&gt;
-Type gene symbol or gene name or synonym (&lt;a href='http://www.informatics.jax.org/genes.shtml' style='color:#0797F5';&gt;see MGI&lt;/a&gt;). &lt;br /&gt;
-Find gene symbols using predictive text. Note: Wnt* = starts with Wnt. &lt;a href='../pages/viewPage.jsf?docID=32'&gt;More...&lt;/a&gt;
-&lt;br /&gt;&lt;br /&gt;
-Choose the output format from the options dialogue." escape="false" styleClass="pr_dialog_link"/>
-	</pr:dialog>
+	<script type="text/javascript">
+	//<![CDATA[
+	           
+	jQuery(document).ready(function(){
+	    jQuery("#demo2_view").jstree({
+	        "themes": {
+	          "theme": "default",
+	          "line": true,
+	          "dots" : true,
+	          "icons": true,
+			  "url" : "../resources/scripts/jstree_pre1.0_fix_1/themes/anatomytree/style3.css"
+	        },
+	        "ui" : {
+	          //"select_limit" : -1,
+	          "select_limit" : 0,
+	          //"select_multiple_modifier" : "ctrl",
+	          //"select_range_modifier" :"shift",
+	          //selected_parent_open
+	          "selected_parent_close" : "select_parent"
+	        },
+	        "json_data" : {
+	          "progressive_render" : false,
+	          "selected_parent_open": true,
+	          "ajax" : {
+	        	  "data": function (n) { return { id: n.attr ? n.attr("id") : 0} },
+	          	"url" : "../resources/scripts/annotation_tree_json/abstract_tree_stages.json"
+	         }
+	        },
+	        "search" : {
+	        	"case_insensitive" : true, 
+	        	"ajax" : {
+	        		"url" : "../resources/scripts/annotation_tree_json/abstract_tree_stages.json" 
+	        	}
+	        },
+	        "plugins" : [ "themes", "json_data", "search", "ui", "crrm" ]
+	    })
+	    .bind("select_node.jstree", function (e, data) { 	
+	    	data.inst._fix_scroll(data.rslt.obj);  
+	    })
+	    .bind("loaded.jstree", function (e, data) { 	
+	 	    jQuery("#demo2_view").jstree("open_node", "#0--0");  
+	 	    jQuery("#demo2_view").jstree("open_node", "#1--0");  
+	 	    jQuery("#demo2_view").jstree("open_node", "#1--1");  
+	 	    jQuery("#demo2_view").jstree("open_node", "#2--0");  
+	 	    jQuery("#demo2_view").jstree("open_node", "#2--1");  
+	   })
+		.delegate("a", "click", function(e, data) {
+		    var node = $(e.target).closest("li");
+		    var data = node.data("jstree");
+		    
+			var ano_public_id = node.attr('ANO_PUBLIC_ID');
+			var ano_comp_name = node.attr('ANO_COMPONENT_NAME');
+			var apo_sequence = node.attr('APO_SEQUENCE');
+			
+			toggleParamGroup('',ano_comp_name,apo_sequence);
+		});
 	
-	<!-- can use relative links on html tags -->
-	    <h1>Boolean Search</h1>	
-	    <!-- all other content in here -->  
-	    <p>Original Version</p>
-	    <f:verbatim>
-	    <a href="#Link263891Context" name="Link263891Context" id="Link263891Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263891', 'Find Components in Tree', 'To find structures in the anatomy tree, expand the tree or type all or part of the name of the structure in the text box and click - \'Find components in tree\' box.   TS = Theiler Stage.', 'Link263891Context')"> 
-	    	<img src="/gudmap/resources/images/dbhome/n_information.png" alt="information" width="22" height="24" border="0" />
-	    </a> 
-	    </f:verbatim>
-	    <p>JSF2 VERSION</p>
-	    <h:link outcome="#Link263891Context" id="Link263891Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263891', 'Find Components in Tree', 'To find structures in the anatomy tree, expand the tree or type all or part of the name of the structure in the text box and click - \'Find components in tree\' box.   TS = Theiler Stage.', 'Link263891Context')">
-	    	<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24"></h:graphicImage>
-	    </h:link>
+	}); 
+	
+	function searchTree(v) {
+	//	alert("searchTree = " + v);
+	
+		// reset the tree
+		jQuery("#demo2_view").find("a.jstree-search").css("color",'#0066cc');
+		jQuery("#demo2_view").removeClass("a.jstree-search");
+		
+		// apply the search
+		jQuery("#demo2_view").jstree("search",v);
+		
+		// set the text colour for found entries - style sheet does not seem to work
+		jQuery("#demo2_view").find("a.jstree-search").css("color","red");
+		
+		//	get the id of the first node returned by the search
+	//	var node_id = jQuery("#demo2_view").find("a.jstree-search").eq(0).parent('li').attr("id");
+	//	alert(node_id);
+	
+	//	jQuery("#demo2_view").jstree('select_node',node_id);
+	//	var selnode = jQuery("#demo2_view").jstree._focused.get_selected();
+	//	alert(selnode);
+	//	jQuery("#demo2_view").getElementById( selnode ).scrollIntoView();
+		
+	//    jQuery("#demo2_view").jstree("deselect_node", node_id);
+	
+	//	var jstree1 = document.getElementById('#demo2_view');
+	//	alert(jstree1.offsetHeight/2);
+	//	jstree1.scrollTop = findPos( document.getElementById( uid ) );
+		
+		
+	//	jQuery("#demo2_view").getElementById( uid ).scrollIntoView()
+	}
+	
+	function disableFormElements() {
+		var queryForm = document.forms['booleanQForm'];
+		var qFormId = queryForm.id;
+		for(var i=0;i<queryForm.elements.length;i++){
+			if(queryForm.elements[i].id != qFormId+':resultFormat') {
+				queryForm.elements[i].disabled = true;
+			}
+			if(queryForm.elements[i].value == 'p') {
+				queryForm.elements[i].checked = true;
+			}
+		}
+		var queryForm2 = document.forms['booleanQForm2'];
+		var queryBuilder = queryForm2.elements['booleanQForm2:queryBuilder'];
+		var qbVal = queryBuilder.value;
+		if(qbVal == null && qbVal == "") {
+			queryForm2.elements['booleanQForm2:submitQBuilder'].disabled = true;
+			queryForm2.elements['booleanQForm2:saveQ'].disabled = true;
+		}
+	}
+	           
+	//]]>
+	</script>
+	<ui:include src="/snippets/g_information_dialogs.xhtml"/>
+	<p><h:message for="stagesCheck" styleClass="plainred" /></p>
+  <p class="plaintextbold">
+    Search gene expression patterns in selected anatomical components.
+  </p>
+  
+  <p><h:outputText styleClass="plaintext" value="Current anatomy display is for stage range #{booleanSearchBean.startStage} to #{booleanSearchBean.endStage}."/></p>
+  <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
+    <h:inputText id="componentSearchField" size="30" />
+    <h:commandButton onclick="searchTree(document.getElementById('componentSearchField').value)" value="Find Components in Tree" type="button" />
+    <h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('boolean_dialog').show();return false;"></h:graphicImage>                
+  </h:panelGrid>
+  
+  <h:panelGrid columns="2" width="100%" columnClasses="db_boolean_table">
+	  <h:panelGroup>
+	   <!-- <div style="overflow:auto;height:455px;width:100%;"> -->
+	
+	    <h:message for="searchCriteriaCheck" styleClass="plainred" /><br />
+	
+	    <h:panelGrid id="pg1" cellpadding="0" cellspacing="0" border="0" width="100%" columns="1" columnClasses="treeCol">
+	           <h:panelGroup id="g1">
+				<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('boolean_dialog').show();return false;"></h:graphicImage>                
+				<div id="demo2_view" class="demo" style="overflow: auto; align: left; min_height: 350px; width : 550px"></div>
+	           </h:panelGroup>
+	    </h:panelGrid>
+	 </h:panelGroup>
+  	<h:form id="booleanQForm">
+	    <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
+	      <h:outputText value="Search for: " styleClass="plaintext"/>
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="resultFormat" value="">
+	        <f:selectItems value="#{booleanSearchBean.resultFormat}" />
+	      </h:selectOneMenu>
+	      <h:panelGroup>
+	      	<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('boolean_dialog').show();return false;"></h:graphicImage>      
+	      </h:panelGroup>
+	    </h:panelGrid>
 	    
-	     <p>JSF2 VERSION with prime faces dialog</p>
-	    <h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('gene_dialog').show();" style="cursor:help;"></h:graphicImage>
+	    <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
+	      <h:outputText value="Expression is:" styleClass="plaintext" />
+	      <h:selectManyCheckbox id="annotTypes1" onchange="setQueryBuilderText()" value="#{booleanSearchBean.annotationTypes1}" styleClass="plaintext" layout="lineDirection" >
+	        <f:selectItems value="#{booleanSearchBean.annotationVals}" />
+	      </h:selectManyCheckbox>
+	      <h:panelGroup>
+	        <h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('boolean_dialog').show();return false;"></h:graphicImage>  
+	      </h:panelGroup>
+	    </h:panelGrid>
+	    
+	    <h:panelGrid columns="5">	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="location1" value="#{booleanSearchBean.location1}">
+	        <f:selectItems value="#{booleanSearchBean.locationVals}" />
+	      </h:selectOneMenu>
+	      
+	      <h:panelGroup>
+		      <div id="bool1">
+		      </div>
+	      </h:panelGroup>
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage1" value="#{booleanSearchBean.startStage1}">
+	        <f:selectItems value="#{booleanSearchBean.rangeOfSelectedStages}"/>
+	      </h:selectOneMenu>
+	      
+	      <h:outputText styleClass="plaintext" value=" to: " />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage1" value="#{booleanSearchBean.endStage1}">
+	        <f:selectItems value="#{booleanSearchBean.rangeOfSelectedStages}"/>
+	      </h:selectOneMenu>
+	      
+	    </h:panelGrid>
+	    
+	    <h:panelGrid columns="4" style="padding-bottom:10px">
+	    
+	      <h:outputText styleClass="plaintext" value="with" />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="pattern1" value="">
+	        <f:selectItems value="#{booleanSearchBean.patternVals}" />
+	      </h:selectOneMenu>
+	      
+	      <h:outputText styleClass="plaintext" value="at" />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="locations1" value="">
+	        <f:selectItems value="#{booleanSearchBean.locationsVals}" />
+	      </h:selectOneMenu>
+	      
+	    </h:panelGrid>
+	    
+	    <h:selectOneMenu onchange="setQueryBuilderText()" id="operator1" value="#{booleanSearchBean.operator1}">
+	      <f:selectItem itemValue="AND" itemLabel="AND" />
+	      <f:selectItem itemValue="OR" itemLabel="OR" />
+	    </h:selectOneMenu>
+	    
+	    <h:panelGrid columns="2">
+		    <h:outputText value="Expression is:" styleClass="plaintext" />
+		    <h:selectManyCheckbox onchange="setQueryBuilderText()" id="annotTypes2" value="#{booleanSearchBean.annotationTypes2}" styleClass="plaintext" layout="lineDirection" >
+		      <f:selectItems value="#{booleanSearchBean.annotationVals}" />
+		    </h:selectManyCheckbox>
+	    </h:panelGrid>
+	    
+	    <h:panelGrid columns="5">
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="location2" value="#{booleanSearchBean.location2}">
+	        <f:selectItems value="#{booleanSearchBean.locationVals}" />
+	      </h:selectOneMenu>
+	      
+	      <h:panelGroup>
+		      <div id="bool2">
+		      </div>
+	      </h:panelGroup>
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage2" value="#{booleanSearchBean.startStage2}">
+	        <f:selectItems value="#{booleanSearchBean.rangeOfSelectedStages}"/>
+	      </h:selectOneMenu>
+	      
+	      <h:outputText styleClass="plaintext" value=" to: " />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage2" value="#{booleanSearchBean.endStage2}">
+	        <f:selectItems value="#{booleanSearchBean.rangeOfSelectedStages}"/>
+	      </h:selectOneMenu>
+	      
+	    </h:panelGrid>
+	    
+	    <h:panelGrid columns="4" style="padding-bottom:10px">
+	    
+	      <h:outputText styleClass="plaintext" value="with" />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="pattern2" value="">
+	        <f:selectItems value="#{booleanSearchBean.patternVals}" />
+	      </h:selectOneMenu>
+	      
+	      <h:outputText styleClass="plaintext" value="at" />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="locations2" value="">
+	        <f:selectItems value="#{booleanSearchBean.locationsVals}" />
+	      </h:selectOneMenu>
+	      
+	    </h:panelGrid>
+	    
+	    <h:selectOneMenu onchange="setQueryBuilderText()" id="operator2" value="#{booleanSearchBean.operator2}">
+	      <f:selectItem itemValue="AND" itemLabel="AND" />
+	      <f:selectItem itemValue="OR" itemLabel="OR" />
+	    </h:selectOneMenu>
+	    
+	    <h:panelGrid columns="2">
+		    <h:outputText value="Expression is:" styleClass="plaintext" />
+		    
+		    <h:selectManyCheckbox onchange="setQueryBuilderText()" id="annotTypes3" value="#{booleanSearchBean.annotationTypes3}" styleClass="plaintext" layout="lineDirection" >
+		      <f:selectItems value="#{booleanSearchBean.annotationVals}" />
+		    </h:selectManyCheckbox>
+	    </h:panelGrid>
+	    
+	    <h:panelGrid columns="5">
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="location3" value="#{booleanSearchBean.location3}">
+	      	<f:selectItems value="#{booleanSearchBean.locationVals}" />
+	      </h:selectOneMenu>
+	      
+	      <h:panelGroup>
+		      <div id="bool3">
+		      </div>
+	      </h:panelGroup>
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage3" value="#{booleanSearchBean.startStage3}">
+	        <f:selectItems value="#{booleanSearchBean.rangeOfSelectedStages}"/>
+	      </h:selectOneMenu>
+	      
+	      <h:outputText styleClass="plaintext" value=" to: " />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage3" value="#{booleanSearchBean.endStage3}">
+	        <f:selectItems value="#{booleanSearchBean.rangeOfSelectedStages}"/>
+	      </h:selectOneMenu>
+	      
+	    </h:panelGrid>
+	    
+	    <h:panelGrid columns="4" style="padding-bottom:10px">
+	    
+	      <h:outputText styleClass="plaintext" value="with" />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="pattern3" value="">
+	        <f:selectItems value="#{booleanSearchBean.patternVals}" />
+	      </h:selectOneMenu>
+	      
+	      <h:outputText styleClass="plaintext" value="at" />
+	      
+	      <h:selectOneMenu onchange="setQueryBuilderText()" id="locations3" value="">
+	        <f:selectItems value="#{booleanSearchBean.locationsVals}" />
+	      </h:selectOneMenu>
+	      
+	    </h:panelGrid>
+	    <br /><br />
+    </h:form>
+  </h:panelGrid>
+  
+  <h:panelGrid>
+    <h:form id="booleanQForm2">
+      <h:panelGrid columns="5" cellpadding="2" cellspacing="2">
+        <h:inputText value="#{booleanSearchBean.input}"  onkeyup="checkButtonStatus()" size="70" id="queryBuilder" />
+        <h:commandButton value="Run Query" id="submitQBuilder" action="#{booleanSearchBean.goSearch}" />	
+        <h:commandButton value="Save Query" id="saveQ" actionListener="#{booleanSearchBean.saveQuery}" />
+        <h:commandButton value="Clear Query" id="clearQ" action="#{booleanSearchBean.clearQuery}" />       
+        <h:panelGroup>
+			<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('boolean_dialog').show();return false;"></h:graphicImage>        
+        </h:panelGroup>
+      </h:panelGrid>
+    </h:form>
+  </h:panelGrid>
+  <script type="text/javascript">
+    disableFormElements();
+  </script>
 	    
 	   
 	</ui:define>
