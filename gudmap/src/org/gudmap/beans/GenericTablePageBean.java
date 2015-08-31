@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import org.gudmap.assemblers.AccessionTablePageBeanAssembler;
 import org.gudmap.assemblers.AnatomyTablePageBeanAssembler;
+import org.gudmap.assemblers.BooleanResultAssembler;
 import org.gudmap.assemblers.CollectionEntriesAssembler;
 import org.gudmap.assemblers.GeneExpressionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneFunctionTablePageBeanAssembler;
@@ -50,6 +51,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	private AnatomyTablePageBeanAssembler anatomyAssembler;
 	private GeneFunctionTablePageBeanAssembler genefunctionAssembler;
 	private GeneExpressionTablePageBeanAssembler expressionAssembler;
+	private BooleanResultAssembler booleanResultAssembler;
 	private CollectionEntriesAssembler collectionEntriesAssembler;
 	private String whereclause = GenericQueries.WHERE_CLAUSE;
     private String specimenWhereclause="";
@@ -148,6 +150,9 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		if(specimenAssay.equals("expression")) {
     			//if(expressionAssembler==null)
     				expressionAssembler = new GeneExpressionTablePageBeanAssembler(GeneIndexQueries.GENES_BY_EXPRESSION, assayType) ;
+    		}
+    		else if(specimenAssay.equals("boolean")) {
+    			booleanResultAssembler = new BooleanResultAssembler() ;
     		}
     		//insitu data
     		else {
@@ -312,6 +317,14 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 				// Set currentPage, totalPages and pages.
 				//setTotalslist(assembler.getTotals());
 				totalRows = expressionAssembler.count();
+    		}
+    		else if(specimenAssay.equals("boolean")){
+    			dataList = booleanResultAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+    					paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+    					paramBean.getFocusGroupSpWhereclause());
+				// Set currentPage, totalPages and pages.
+				//setTotalslist(assembler.getTotals());
+				totalRows = booleanResultAssembler.count();
     		}
     		else {
 		    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
