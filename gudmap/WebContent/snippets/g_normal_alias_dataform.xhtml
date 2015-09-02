@@ -13,7 +13,7 @@
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
-    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row" id="il_datatable">
     		
  			<h:column >
     			<f:facet name="header">
@@ -30,8 +30,9 @@
     			<f:facet name="header">
     				<h:commandLink id="genelink" value="Gene" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="gene" />
-    					<f:ajax execute="@this genelink" render="@form"></f:ajax>
+    					<f:ajax execute="@this genelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> 
+                    
     			</f:facet>
 				<h:commandLink value="#{u.gene}"  action="viewGeneDetails">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
@@ -41,7 +42,7 @@
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
     			<h:commandLink id="accessionlink" value="Gudmap Accession" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="natural_sort(oid)" />
+    					<f:attribute name="sortField" value="oid" />
     					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
                     </h:commandLink> 
 				</f:facet>

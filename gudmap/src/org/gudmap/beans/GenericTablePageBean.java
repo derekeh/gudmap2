@@ -468,5 +468,10 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     public String getWildcard() {
     	return wildcard;
     }
+    
+    public String progress() throws Exception {
+    	Thread.sleep(6000);
+    	return null;
+    }
    
 }

@@ -19,7 +19,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	#{genericTablePageBean.init('ISH','expression',20,10,'natural_sort(gudmap_accession)',true)}
+	#{genericTablePageBean.init('ISH','expression',20,10,'oid',true)}
 	#{genericTablePageBean.loadDataList()}
 	
 	#{paramBean.setGenotypecol(false)}

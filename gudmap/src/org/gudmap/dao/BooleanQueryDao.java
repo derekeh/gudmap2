@@ -66,7 +66,7 @@ public class BooleanQueryDao {
             "QIC_SUB_ACCESSION_ID gudmap_accession,"+
             "'' col11,"+
             "(SELECT GROUP_CONCAT(DISTINCT B.QIC_EXP_STRENGTH) FROM QSC_ISH_CACHE B WHERE B.QIC_SUB_ACCESSION_ID=QIC_SUB_ACCESSION_ID) expression,"+
-            "SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid,"+
+            "CAST(SUBSTRING(QIC_SUB_ACCESSION_ID,8) AS UNSIGNED) oid,"+
             "QIC_SUB_ASSAY_TYPE assay_type, QIC_SPN_SEX sex, QIC_PRB_PROBE_NAME probe_name, QIC_SPN_WILDTYPE genotype, QIC_RPR_LOCUS_TAG gene_id ";
 
     // clause to find all parent of specified anatomy term(s)

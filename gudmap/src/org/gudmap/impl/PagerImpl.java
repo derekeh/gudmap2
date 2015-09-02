@@ -129,7 +129,7 @@ public class PagerImpl implements PagerAbs {
     
  // Sorting actions ----------------------------------------------------------------------------
 
-    public void sort(ActionEvent event) {
+    public void sort(ActionEvent event)  {
         String sortFieldAttribute = (String) event.getComponent().getAttributes().get("sortField");
 
         // If the same field is sorted, then reverse order, else sort the new field ascending.

@@ -18,8 +18,24 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
+	<script>
+	        function monitor(data){
+	        	//alert('source id: ' + data.source.id);
+	            //var loading = document.getElementById("dataform:il_datatable:spinner");
+	            var loading = document.getElementById("focusform:spinner");
+	            //alert('status: '+data.status);
+	            //alert('loading: ' + loading.style.display);
+	            if(data.status == "begin"){
+	                loading.style.display = "block";
+	            }
+	            else if(data.status == "success"){
+	                loading.style.display = "none";
+	            }
+	        }
+	  </script>
 	<!-- can use relative links on html tags -->
-	#{genericTablePageBean.init('ISH','boolean',20,10,'natural_sort(gudmap_accession)',true)}
+	#{genericTablePageBean.init('ISH','boolean',20,10,'oid',true)}
 	#{genericTablePageBean.loadDataList()}
 	
 	#{paramBean.setGenotypecol(false)}
@@ -32,8 +48,11 @@
 	<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
 			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
 			<h:form id="focusform">
+				<h:panelGrid columns="3">
 				<h:outputText value="Boolean Query Results&#160;&#160;" styleClass="db_bold"/> 
 				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />	
+				<h:graphicImage id="spinner" library="images/display" name="snail3.gif" style="display:none" />
+				</h:panelGrid>
 			</h:form>
 	</h:panelGrid>
 	

@@ -29,7 +29,8 @@ public class AnatomyStructureAssembler {
 			{
 				//con = ds.getConnection();
 				con=Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(AnatomyQueries.ANNOTATED_STAGE_RANGE); 
+				//ps = con.prepareStatement(AnatomyQueries.ANNOTATED_STAGE_RANGE); 
+				ps = con.prepareStatement(AnatomyQueries.ANATOMY_STAGES_IN_ENTRIES);				
 				result =  ps.executeQuery();
 				if(result.first()){
 					result.beforeFirst();
