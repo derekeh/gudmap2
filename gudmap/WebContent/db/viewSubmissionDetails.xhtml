@@ -94,7 +94,7 @@ jQuery(document).ready(function(){
           "progressive_render" : false,
           "selected_parent_open": true,
           "ajax" : {
-          	"url" : "../resources/scripts/annotation_tree_json/TS" + "${ishSubmissionBean.ishSubmissionModel.stage}" + ".json",
+          	"url" : "../resources/scripts/annotation_tree_json/" + "${ishSubmissionBean.ishSubmissionModel.stageAnatomy}" + ".json",
           	"data": function (n) { return { id: n.attr ? n.attr("id") : 0} }, 
           }
         },
@@ -284,19 +284,54 @@ function findPatterns(){
 }
 
 function findExpressionNotes(){
-//	alert("findExpressionNotes");
 	
-	var notes=String("${ishSubmissionBean.ishSubmissionModel.annotationTreeExpressionNotes}");
-//	alert(notes);
+	var notes=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressionNotes}");
+
 	var temparray = notes.split("|");
 	var count = temparray.length;
 	var notes_array = new Array(count-1);
 	for(var i = 0; i < count-1; i++){
 		notes_array[i] = new Array(2);
-		notes_array[i] = temparray[i].replace(":","").split(",");
+		var tmpstr = temparray[i].replace(":","");		
+		var idx = tmpstr.indexOf(",");
+		notes_array[i][0] = tmpstr.substring(0,idx);
+		notes_array[i][1] = tmpstr.substring(idx);
+//		alert(notes_array[i][0]);
+//		alert(notes_array[i][1]);
 	}
+/*
+	var dnotes=String("${ISHSingleSubmissionBean.submission.annotationTreeDensityNotes}");
+	var dtemparray = dnotes.split("|");
+	var dcount = dtemparray.length;
+	var dnotes_array = new Array(dcount-1);
+	for(var j = 0; j < 1; j++){
+		dnotes_array[j] = new Array(2);
+//		dnotes_array[j] = dtemparray[j].replace(":","").split(",");
+		dnotes_array[j][0] = "EMAPS2837028";
+		dnotes_array[j][1] = "density note test";
+	
+	}
+	
+	notes_array = notes_array.concat(dnotes_array);
+//	for(var i = 0; i < notes_array.length; i++){
+//		alert("n0 = " + notes_array[i][0]);
+//		alert("n1 = " + notes_array[i][1]);
+//	}
+	
+	notes_array = notes_array .reduce(function(ob, ar) {
+        if (!(ar[0] in ob.nums)) {
+            ob.nums[ar[0]] = ar
+            ob.result.push(ar);
+        } else
+            ob.nums[ar[0]][1] = (" Expression Note: " + ob.nums[ar[0]][1]) + "\r\n Density Note: " + ar[1];
 
-	return notes_array;	
+          return ob
+        }, {nums: {}, result: []}).result
+                .sort(function(a, b) {
+          return a[0] - b[0];
+        });
+*/	
+	return notes_array;
 }
 //]]>
 </script>

@@ -76,6 +76,7 @@ public class IshSubmissionAssembler {
 		ishSubmissionModel.setPublicFlag(submissionModel.getPublicFlag());
 		ishSubmissionModel.setDeletedFlag(submissionModel.getDeletedFlag());
 		ishSubmissionModel.setStage(submissionModel.getStage());
+		ishSubmissionModel.setStageAnatomy(submissionModel.getStageAnatomy());
 		ishSubmissionModel.setAssayType(assayType);
 		ishSubmissionModel.setArchiveId(submissionModel.getArchiveId());
 		ishSubmissionModel.setBatchId(submissionModel.getBatchId());

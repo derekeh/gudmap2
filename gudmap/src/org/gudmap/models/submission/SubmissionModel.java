@@ -10,6 +10,7 @@ public class SubmissionModel {
     protected PersonModel submitter;
     protected String stage;
     protected String stageOrder;
+    protected String stageAnatomy;
     protected String authors;
     protected ArrayList<ImageInfoModel> originalImages;
     protected int publicFlag;
@@ -482,6 +483,14 @@ public class SubmissionModel {
 
     public void setAcknowledgements(String[] acknowledgements) {
         this.acknowledgements = acknowledgements;
+    }
+
+    public void setStageAnatomy(String stageAnatomy) {
+        this.stageAnatomy = stageAnatomy;
+    }
+
+    public String getStageAnatomy() {
+        return stageAnatomy;
     }
 
 }
