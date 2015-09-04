@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<pr:dialog id="gfdlg" header="#{solrGeneFilter.dialogHeader}" widgetVar="dialogSolrGeneFilter" modal="true" width="500" position="50,250"  > 
+
+	<h:form id="genefilterform">	
+		 <h:panelGrid columns="3" columnClasses="gd_leftAlign,gd_leftAlign">
+		
+			<pr:selectBooleanCheckbox value="#{solrGeneFilter.anchorGeneCB}" >
+				<pr:ajax update="genefilterform" listener="#{solrGeneFilter.refresh}" />
+			</pr:selectBooleanCheckbox>
+			<h:outputText value="Anchor Genes (#{solrGeneFilter.anchorGeneCount})" />
+			<br/>
+	
+			<pr:selectBooleanCheckbox value="#{solrGeneFilter.markerGeneCB}">
+				<pr:ajax update="genefilterform" listener="#{solrGeneFilter.refresh}" />
+			</pr:selectBooleanCheckbox>
+			<h:outputText value="Marker Genes (#{solrGeneFilter.markerGeneCount})" />
+			<br/>
+			
+			<pr:selectBooleanCheckbox value="#{solrGeneFilter.sourceCB}">
+				<f:ajax execute="@form" render=":genefilterform" listener="#{solrGeneFilter.refresh}" />
+			</pr:selectBooleanCheckbox>
+			<h:outputText value="Source " />
+		 	<h:selectManyListbox size="5" value="#{solrGeneFilter.sourcevalues}">
+		 		<f:selectItems value="#{solrGeneFilter.sourcelist}" />
+		 	</h:selectManyListbox>
+	   		
+		</h:panelGrid>
+	</h:form>	
+	   
+	<h:form>	
+	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+	   	
+	   		<h:commandButton id="il_filter_submit" value="Submit" actionListener="#{solrGeneFilter.refresh()}">
+	   			<f:ajax execute="@form" render=":genefilterform" ></f:ajax> 
+	   		</h:commandButton>
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{solrGeneFilter.resetAll()}">
+	   			<f:ajax execute="@this il_filter_reset" render=":genefilterform" ></f:ajax> 
+	   		</h:commandButton>
+	   		
+	   	</h:panelGrid>	
+	</h:form>
+ 
+	   	
+	</pr:dialog> 
+		
+</ui:composition>

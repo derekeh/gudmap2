@@ -45,6 +45,7 @@ public class GeneStripDao {
 		  String arrayRange="";
 		  String ishRange="";
 		  String species="";
+		  String gene="";
 		  
 		  try
 			{
@@ -57,13 +58,14 @@ public class GeneStripDao {
 					result.beforeFirst();
 					geneStripModel = new GeneStripModel();
 					while (result.next()) {
-						geneStripModel.setGeneSymbol(result.getString("gene"));
+						gene = result.getString("gene");
+						geneStripModel.setGeneSymbol(gene);
 						geneStripModel.setSynonyms(result.getString("synonyms"));
 						geneStripModel.setMgiId(result.getString("mgi"));
 						arrayRange = (result.getString("arrayRange"));
 						ishRange = (result.getString("ishRange"));
 						species = (result.getString("species"));
-						geneStripModel.setExpressionProfile(buildExpressionProfile(result.getString("gene"),geneId));
+						geneStripModel.setExpressionProfile(buildExpressionProfile(gene,geneId));
 						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
 						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
@@ -438,6 +440,7 @@ public class GeneStripDao {
 						ps.setString(i+1, input[i].trim());
 					}
 				}
+				System.out.print(" prepared statement = " + ps);
 				result = ps.executeQuery();
 				if (result.first()) {
 					result.last();
@@ -516,6 +519,7 @@ public class GeneStripDao {
 				}
 					
 				result =  ps.executeQuery();
+				System.out.print(" prepared statement = " + ps);
 				String str = null;
 				if(result.first()){
 					result.last();
@@ -553,10 +557,10 @@ public class GeneStripDao {
 			  symbolsQ.append("(");
 			  for(int i=0; i<input.length;i++){
 	    			if(i==0){
-	    				symbolsQ.append(searchColumn+" LIKE ? ");
+	    				symbolsQ.append(searchColumn+" RLIKE ? ");
 	    			}
 	    			else {
-	    				symbolsQ.append("OR "+searchColumn+" LIKE ? ");
+	    				symbolsQ.append("OR "+searchColumn+" RLIKE ? ");
 	    			}
 	    		}
 	    		symbolsQ.append(")");
@@ -630,8 +634,9 @@ public class GeneStripDao {
 			  }
 		  }
 		  if(rangeList.size()>0) {
-			  java.util.Collections.sort(rangeList);			  
-			  if(species.startsWith("Mus")) {
+			  java.util.Collections.sort(rangeList);	
+
+			  if(species == null || species.startsWith("Mus")) {
 				  RET="TS"+rangeList.get(0).toString()+"-TS"+rangeList.get((rangeList.size()-1)).toString();
 			  }
 			  else if(species.startsWith("Hom")) {
@@ -669,6 +674,7 @@ public class GeneStripDao {
 				  /////////////
 			  }
 		  }
+
 		  
 		  return RET;
 	  }
