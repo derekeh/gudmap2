@@ -58,7 +58,7 @@ public class BooleanQueryDao {
             "(SELECT GROUP_CONCAT(DISTINCT a.ANO_COMPONENT_NAME SEPARATOR '; ')  FROM ISH_SP_TISSUE, ANA_TIMED_NODE t, ANA_NODE a WHERE IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) AND t.ATN_PUBLIC_ID = IST_COMPONENT AND t.ATN_NODE_FK = a.ANO_OID) as tissue, "+
             "QIC_STG_SPECIES species,"+
             "QIC_SUB_SOURCE source,"+
-            "DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date,"+
+            "DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date,"+
             "QIC_STG_STAGE_DISPLAY stage,"+
             "QIC_SPN_ASSAY_TYPE specimen,"+
             "QIC_STG_ALT_STAGE age,"+
