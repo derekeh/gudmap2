@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.gudmap.globals.Globals;
+import org.gudmap.models.submission.GeneModel;
 import org.gudmap.utils.Utils;
 
 public class BooleanQueryDao {
@@ -39,6 +40,8 @@ public class BooleanQueryDao {
     private String SUB_UNION_STR="UNION ( ";
     private String INTERSECT_STR_ENTRY="AND QIC_SUB_ACCESSION_ID IN ( ";
     private String ACCESSION_STR="QIC_SUB_ACCESSION_ID ";
+    private String INHERITANCE_INTRO =  " AND QIC_ATN_PUBLIC_ID IN ( ";
+    private String INHERITANCE_OUTRO = ") ";
    /* private String COLUMN_STR="QIC_RPR_SYMBOL col1,"+
             "(SELECT GROUP_CONCAT(DISTINCT a.ANO_COMPONENT_NAME SEPARATOR '; ')  FROM ISH_SP_TISSUE, ANA_TIMED_NODE t, ANA_NODE a WHERE IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) AND t.ATN_PUBLIC_ID = IST_COMPONENT AND t.ATN_NODE_FK = a.ANO_OID) as col2, "+
             "'' col3,"+
@@ -55,7 +58,7 @@ public class BooleanQueryDao {
             "QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15, QIC_PRB_PROBE_NAME col16, QIC_SPN_WILDTYPE col17, QIC_RPR_LOCUS_TAG col18 ";*/
     
     private String COLUMN_STR="QIC_RPR_SYMBOL gene,"+
-            "(SELECT GROUP_CONCAT(DISTINCT a.ANO_COMPONENT_NAME SEPARATOR '; ')  FROM ISH_SP_TISSUE, ANA_TIMED_NODE t, ANA_NODE a WHERE IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) AND t.ATN_PUBLIC_ID = IST_COMPONENT AND t.ATN_NODE_FK = a.ANO_OID) as tissue, "+
+            "(SELECT GROUP_CONCAT(DISTINCT a.ANO_COMPONENT_NAME SEPARATOR '; ')  FROM ISH_SP_TISSUE, ANA_TIMED_NODE t, ANA_NODE a WHERE IST_SUBMISSION_FK = CAST(SUBSTRING(QIC_SUB_ACCESSION_ID,8) AS UNSIGNED) AND t.ATN_PUBLIC_ID = IST_COMPONENT AND t.ATN_NODE_FK = a.ANO_OID) as tissue, "+
             "QIC_STG_SPECIES species,"+
             "QIC_SUB_SOURCE source,"+
             "DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date,"+
@@ -94,6 +97,30 @@ public class BooleanQueryDao {
 	"AND ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
 	"AND APO_NODE_FK = ANO_OID " +
 	"AND APO_IS_PRIMARY = 1) ";
+    
+ // clause to find all parent ids of specified anatomy term(s)
+    private String INHERITANCE_ANSCESTOR_IDS = "SELECT DISTINCT ANCES_ATN.ATN_PUBLIC_ID " +
+    		"FROM ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, " +
+    		"ANA_TIMED_NODE DESCEND_ATN, ANA_NODE, ANAD_PART_OF " +
+    		"WHERE ANO_COMPONENT_NAME " +
+    		"AND ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
+    		"AND ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
+    		"AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
+    		"AND ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
+    		"AND APO_NODE_FK = ANO_OID " +
+    		"AND APO_IS_PRIMARY = 1 ";
+
+    // clause to find children ids of given anatomy term
+    private String INHERITANCE_DESCENDANT_IDS = "SELECT DISTINCT DESCEND_ATN.ATN_PUBLIC_ID " +
+	"FROM ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, " +
+	"ANA_TIMED_NODE DESCEND_ATN, ANA_NODE, ANAD_PART_OF " +
+	"WHERE ANO_COMPONENT_NAME " +
+	"AND ANO_OID = ANCES_ATN.ATN_NODE_FK " +
+	"AND ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
+	"AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
+	"AND ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
+	"AND APO_NODE_FK = ANO_OID " +
+	"AND APO_IS_PRIMARY = 1 ";
 
     private String GENE_STR = "QIC_RPR_SYMBOL ";
     private String INTERSECT_STR_GENE="AND QIC_RPR_SYMBOL IN ( ";
@@ -236,8 +263,10 @@ public class BooleanQueryDao {
             		this.getExpressionValueFromInput(v_expression.get(0).toString());
                 subWhereClause.append(" AND ").append(expression_buf.toString())
                 .append("'").append(expValue).append("' ") ;
-                String inheritanceCiteriaString = ""; 
-                if (expValue.equalsIgnoreCase("present") || expValue.equalsIgnoreCase("uncertain")) {
+                String inheritanceCiteriaString = "";
+                String queryString="";
+                StringBuffer inheritance_buf = new StringBuffer();
+                /*if (expValue.equalsIgnoreCase("present") || expValue.equalsIgnoreCase("uncertain")) {
                     inheritanceCiteriaString += 
                     	this.INHERITANCE_CRITERIA_STR_DESCENDANT.replaceAll("ANO_COMPONENT_NAME", 
                     			("ANO_COMPONENT_NAME = '" + componentName + "' "));
@@ -247,7 +276,40 @@ public class BooleanQueryDao {
                     	this.INHERITANCE_CRITERIA_STR_ANSCESTOR.replaceAll("ANO_COMPONENT_NAME", 
                     			("ANO_COMPONENT_NAME = '" + componentName + "' "));
                 }
-                subWhereClause.append(inheritanceCiteriaString);
+                 subWhereClause.append(inheritanceCiteriaString);
+                */
+                /////////////////////////////////NEW/////////////////////
+                if (expValue.equalsIgnoreCase("present") || expValue.equalsIgnoreCase("uncertain")) {
+                    queryString = 
+                    	this.INHERITANCE_DESCENDANT_IDS.replaceAll("ANO_COMPONENT_NAME", 
+                    			("ANO_COMPONENT_NAME = '" + componentName + "' "));
+
+                } else if (expValue.equalsIgnoreCase("not detected")) {
+                    queryString = 
+                    	this.INHERITANCE_ANSCESTOR_IDS.replaceAll("ANO_COMPONENT_NAME", 
+                    			("ANO_COMPONENT_NAME = '" + componentName + "' "));
+                }
+                
+                try
+        		{
+        			//con = ds.getConnection();
+        			con=Globals.getDatasource().getConnection();
+        			ps = con.prepareStatement(queryString); 
+        			result =  ps.executeQuery();
+        			while (result.next()) {
+        				inheritance_buf.append("'"+result.getString(1)+"',");
+        			}
+        			//inheritanceCiteriaString = inheritance_buf.toString().substring(0,inheritance_buf.toString().length() -1);
+        			
+        		}
+        		catch(SQLException sqle){sqle.printStackTrace();}
+        		finally {
+        		    Globals.closeQuietly(con, ps, result);
+        		}
+                
+                subWhereClause.append(INHERITANCE_INTRO + inheritance_buf.toString().substring(0,inheritance_buf.toString().length() -1) + INHERITANCE_OUTRO);
+                /////////////////////////////////NEW END////////////////////////
+                
             } else { // more than one expression value
             	subWhereClause.append(" AND (");
             	String tempSwClause = "";
@@ -256,7 +318,9 @@ public class BooleanQueryDao {
             			this.getExpressionValueFromInput(this.v_expression.get(j).toString());
             		String expClause = expression_buf.toString() + "'" + expValue + "' ";
                     String inheritanceCiteriaString = ""; 
-                    if (expValue.equalsIgnoreCase("present") || expValue.equalsIgnoreCase("uncertain")) {
+                    String queryString="";
+                    StringBuffer inheritance_buf = new StringBuffer();
+                   /* if (expValue.equalsIgnoreCase("present") || expValue.equalsIgnoreCase("uncertain")) {
                         inheritanceCiteriaString += 
                         	this.INHERITANCE_CRITERIA_STR_DESCENDANT.replaceAll("ANO_COMPONENT_NAME", 
                         			("ANO_COMPONENT_NAME = '" + componentName + "' "));
@@ -266,7 +330,40 @@ public class BooleanQueryDao {
                         	this.INHERITANCE_CRITERIA_STR_ANSCESTOR.replaceAll("ANO_COMPONENT_NAME", 
                         			("ANO_COMPONENT_NAME = '" + componentName + "' "));
                     }
-            		tempSwClause += "(" + expClause + inheritanceCiteriaString + ") OR ";
+                    tempSwClause += "(" + expClause + inheritanceCiteriaString + ") OR ";
+                    */
+                    ///////////////////////////////////////NEW//////////////////////////////////////////
+                    if (expValue.equalsIgnoreCase("present") || expValue.equalsIgnoreCase("uncertain")) {
+                        queryString = 
+                        	this.INHERITANCE_DESCENDANT_IDS.replaceAll("ANO_COMPONENT_NAME", 
+                        			("ANO_COMPONENT_NAME = '" + componentName + "' "));
+
+                    } else if (expValue.equalsIgnoreCase("not detected")) {
+                        queryString = 
+                        	this.INHERITANCE_ANSCESTOR_IDS.replaceAll("ANO_COMPONENT_NAME", 
+                        			("ANO_COMPONENT_NAME = '" + componentName + "' "));
+                    }
+                    
+                    try
+            		{
+            			//con = ds.getConnection();
+            			con=Globals.getDatasource().getConnection();
+            			ps = con.prepareStatement(queryString); 
+            			result =  ps.executeQuery();
+            			while (result.next()) {
+            				inheritance_buf.append("'"+result.getString(1)+"',");
+            			}
+            			inheritanceCiteriaString = INHERITANCE_INTRO + inheritance_buf.toString().substring(0,inheritance_buf.toString().length() -1) + INHERITANCE_OUTRO;
+            			
+            		}
+            		catch(SQLException sqle){sqle.printStackTrace();}
+            		finally {
+            		    Globals.closeQuietly(con, ps, result);
+            		}
+                    
+                    tempSwClause += "(" + expClause + inheritanceCiteriaString + ") OR ";
+                    ////////////////////////////////////////NEW END/////////////////////////////////////////
+            		
             	}
             	tempSwClause = tempSwClause.substring(0, tempSwClause.length()-4);
                 subWhereClause.append(tempSwClause).append(")");
