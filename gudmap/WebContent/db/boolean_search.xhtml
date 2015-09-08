@@ -138,23 +138,31 @@
 	//]]>
 	</script>
 	<ui:include src="/snippets/g_information_dialogs.xhtml"/>
-	<p><h:message for="stagesCheck" styleClass="plainred" /></p>
-  <p class="plaintextbold">
-    Search gene expression patterns in selected anatomical components.
-  </p>
+	<p><h:message for="stagesCheck" styleClass="db_inner_inner_title" /></p>
+  <h:panelGrid columns="2" columnClasses="db_table_col_left,db_table_col_center" styleClass="db_panel_grid_width">	
+  	<h:outputText value="Search gene expression patterns in selected anatomical components." styleClass="db_bold" />
+  	<h:panelGroup id="spinner" style="display:none">
+	  		<h:outputText value="Page Loading " />
+	  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />
+  	</h:panelGroup>
+  	
+  	<h:outputText styleClass="plaintext" value="Current anatomy display is for stage range #{booleanSearchBean.startStage} to #{booleanSearchBean.endStage}."/>
+  	<h:panelGroup></h:panelGroup>
+	
+  </h:panelGrid>
   
-  <p><h:outputText styleClass="plaintext" value="Current anatomy display is for stage range #{booleanSearchBean.startStage} to #{booleanSearchBean.endStage}."/></p>
+  
   <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
     <h:inputText id="componentSearchField" size="30" />
     <h:commandButton onclick="searchTree(document.getElementById('componentSearchField').value)" value="Find Components in Tree" type="button" />
     <h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('boolean_dialog').show();return false;"></h:graphicImage>                
   </h:panelGrid>
   
-  <h:panelGrid columns="2" width="100%" columnClasses="db_boolean_table">
+  <h:panelGrid columns="2" width="100%" columnClasses="db_boolean_table,db_boolean_table">
 	  <h:panelGroup>
 	   <!-- <div style="overflow:auto;height:455px;width:100%;"> -->
 	
-	    <h:message for="searchCriteriaCheck" styleClass="plainred" /><br />
+	    <h:message for="searchCriteriaCheck" styleClass="db_inner_inner_title" /><br />
 	
 	    <h:panelGrid id="pg1" cellpadding="0" cellspacing="0" border="0" width="100%" columns="1" columnClasses="treeCol">
 	           <h:panelGroup id="g1">
@@ -332,7 +340,7 @@
     <h:form id="booleanQForm2">
       <h:panelGrid columns="5" cellpadding="2" cellspacing="2">
         <h:inputText value="#{booleanSearchBean.input}"  onkeyup="checkButtonStatus()" size="70" id="queryBuilder" />
-        <h:commandButton value="Run Query" id="submitQBuilder" action="#{booleanSearchBean.goSearch}" />	
+        <h:commandButton value="Run Query" id="submitQBuilder" action="#{booleanSearchBean.goSearch}" onclick="$('#spinner').show()"/>	
         <h:commandButton value="Save Query" id="saveQ" actionListener="#{booleanSearchBean.saveQuery}" />
         <h:commandButton value="Clear Query" id="clearQ" action="#{booleanSearchBean.clearQuery}" />       
         <h:panelGroup>

@@ -104,6 +104,20 @@ function monitor(data){
     }
 }
 
+function slow_monitor(data){
+	//alert('source id: ' + data.source.id);
+    //var loading = document.getElementById("dataform:il_datatable:spinner");
+    var loading = document.getElementById("focusform:slow_spinner");
+    //alert('status: '+data.status);
+    //alert('loading: ' + loading.style.display);
+    if(data.status == "begin"){
+        loading.style.display = "block";
+    }
+    else if(data.status == "success"){
+        loading.style.display = "none";
+    }
+}
+
 /*function showExpressionInformation() {
 	  var w = window.open('viewExpressionDetail.jsf','expressionPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=400');
 	  w.focus();

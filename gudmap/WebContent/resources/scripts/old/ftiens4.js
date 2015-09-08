@@ -1390,7 +1390,7 @@ function toggleParamGroup(id_to_display, text_to_display, row) {
     else {
         if(enabled < maxEnabled) {
           var boolId = document.getElementById('bool'+(enabled+1));
-          boolId.innerHTML = '<div class="plainred" id="comp'+row+'">'+text_to_display+'</div>';
+          boolId.innerHTML = '<div class="db_inner_inner_title" id="comp'+row+'">'+text_to_display+'</div>';
           toggleFields(false, qForm, queryFormId);
           enabled++;
           qForm2.elements[queryFormId+'2:submitQBuilder'].disabled = false;
