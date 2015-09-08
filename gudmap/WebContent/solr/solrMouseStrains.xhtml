@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr Mouse Strains
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+
+	<h:form>
+		<h:panelGrid columns="2">
+ 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> 
+			<h:outputText value="Mouse Strains Search Results ( #{solrTreeBean.mouseStrainsCount}) &gt; #{solrInsituBean.solrInput}" rendered="#{solrInsituBean.solrInput != null}" styleClass="db_bold" />    
+			<h:outputText value="Mouse Strains Search Results ( #{solrTreeBean.mouseStrainsCount}) &gt; * " rendered="#{solrInsituBean.solrInput == null}" styleClass="db_bold" />   
+		</h:panelGrid>
+	</h:form>
+
+	    <!-- all other content in here --> 
+	    <h:form id="form1"> 
+	    <h:inputHidden id="solrInput" value="#{solrMouseStrainsBean.solrInput}" />
+	    
+	     <h:dataTable value="#{solrMouseStrainsBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row"
+    		>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="ID" actionListener="#{solrMouseStrainsBean.sort}">
+                         <f:attribute name="sortField" value="ID" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.oid}
+    		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Gene" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="GENE" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.gene}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Reporter Allele" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="REPORTER_ALLELE" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.reporterAllele}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Allele Type" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="ALLELE_TYPE" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.alleleType}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Allele Verification" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="ALLELE_VER" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.alleleVerification}
+    		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">
+     				<h:commandLink value="Allele Characterisation" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="ALLELE_CHAR" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.alleleCharacterisation}
+    		</h:column>
+     		
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Strain Availability" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="STRAIN_AVA" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.strainAvailability}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Organ" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="ORGAN" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.organ}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Cell Type" actionListener="#{solrMouseStrainsBean.sort}">
+    					<f:attribute name="sortField" value="CELL_TYPE" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.cellType}
+    		</h:column>
+ 
+    		
+  
+ 		</h:dataTable> 
+	
+  
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{solrMouseStrainsBean.pageFirst}"
+                    disabled="#{solrMouseStrainsBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{solrMouseStrainsBean.pagePrevious}"
+                    disabled="#{solrMouseStrainsBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{solrMouseStrainsBean.pageNext}"
+                    disabled="#{solrMouseStrainsBean.firstRow + solrMouseStrainsBean.rowsPerPage >= solrMouseStrainsBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{solrMouseStrainsBean.pageLast}"
+                    disabled="#{solrMouseStrainsBean.firstRow + solrMouseStrainsBean.rowsPerPage >= solrMouseStrainsBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form" />
+                </h:commandButton>
+                <h:outputText value="Page #{solrMouseStrainsBean.currentPage} / #{solrMouseStrainsBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{solrMouseStrainsBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrMouseStrainsBean.page}"
+                        rendered="#{page != solrMouseStrainsBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == solrMouseStrainsBean.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{solrMouseStrainsBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrMouseStrainsBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+		</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{solrMouseStrainsBean.gotopage}" />
+		</h:form> 
+		
+	<ui:include src="/snippets/g_micSampleCols.xhtml"></ui:include>
+	<ui:include src="/snippets/g_solrIshFilter.xhtml"></ui:include>	
+
+	</ui:define>
+</ui:composition>
+</html>

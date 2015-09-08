@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr Gene Strip
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+	</ui:define>
+	
+	<ui:define name="content">
+	<pr:commandButton id="dialogSolrSearch" value="Search" onclick="PF('dialogSolrSearch').show();" type="button" renedered="#{solrFilterBean.isOpen}"></pr:commandButton>
+	
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<h:outputScript library="scripts" name="heatmap.js" ></h:outputScript>
+		<h:outputStylesheet library="css" name="heatmap.css" /> 	
+	
+	<!-- can use relative links on html tags -->
+		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
+	    <!-- all other content in here -->  
+	    
+	    
+	    
+	    
+	    <h:form>
+			<h:panelGrid columns="2">
+					<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
+			</h:panelGrid>
+		</h:form>
+		
+		<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
+	    
+	    
+	    <h:form id="focusform"><h1>Gene Query Results <h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" ></h:outputText></h1></h:form>		    
+	     <!-- all other content in here --> 
+
+
+	    
+	<h:form id="dataform"> 
+	    <h:dataTable rowIndexVar="row" value="#{solrGeneStripBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    		
+ 			<h:column >
+    			<f:facet name="header">
+    				<ui:remove><h:commandButton value="Check" action="#{solrGeneStripBean.checkboxSelections()}"></h:commandButton></ui:remove>
+    				<h:commandButton id="checkall" value="Check" action="#{solrGeneStripBean.checkAll}">
+    					<f:ajax execute="@this checkall" render="@form" />
+					</h:commandButton>
+    			</f:facet>
+    				<h:selectBooleanCheckbox id="cb_#{u.geneSymbol}" value="#{u.selected}"></h:selectBooleanCheckbox>
+    		</h:column>
+ 			
+    		<!-- <h:column rendered="#{paramBean.oidcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="oid" actionListener="#{geneStripBean.sort}">
+                         <f:attribute name="sortField" value="SUB_OID" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.oid}
+    		</h:column> -->
+    		
+    		<h:column rendered="#{paramBean.genecol == true}">
+    			<f:facet name="header">
+    				Gene 
+    			</f:facet>
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+				</h:commandLink>
+    		</h:column>
+ 
+    		<h:column rendered="#{paramBean.synonymcol == true}">
+    			<f:facet name="header">
+    				Synonyms
+				</f:facet>
+				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.omimcol == true}">
+    			<f:facet name="header">
+    				Disease
+				</f:facet>				
+				<h:outputLink value="viewDiseaseResult.jsf?type=gene&amp;diseaseGene=#{u.geneSymbol}&amp;isDirect=false" rendered="#{u.omimCount>0}">
+    				OMIM(#{u.omimCount})
+    			</h:outputLink>
+    			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.embryostagecol == true}">
+    			<f:facet name="header">
+    				Stage
+				</f:facet>
+				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}&amp;geneId=#{u.gene_id}&amp;species=#{u.species}">
+    				#{u.stageRange}
+    			</h:outputLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.ishexpressioncol == true}">
+    			<f:facet name="header">
+    				Expression Profile
+    				<div id="chartTableHeaders" style='text-align:center'></div>
+    				<script type='text/javascript'>prepareGraphTableHeaders(1, 2, "ASC");</script>
+				</f:facet>
+				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.imagescol == true}">
+    			<f:facet name="header">
+    				Expression Images
+				</f:facet>
+				
+    			<h:commandLink  action="viewImageMatrix">
+    					<img src="#{u.imageUrl}"  height="40"/>
+                        <f:setPropertyActionListener id="il_imageMatrix" target="#{imageMatrixBean.geneId}" value="#{u.gene_id}" />
+                 </h:commandLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.arrayexpressioncol == true}">
+    			<f:facet name="header">
+    				Microarray Expression Profile
+				</f:facet>
+				<div id="genestrip_#{u.geneSymbol}"></div>		
+				<script type="text/javascript">				   
+				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{u.geneSymbol}", 4, "#{u.geneSymbol}");
+				</script> 
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.rnaseqcol == true}">
+    			<f:facet name="header">
+    				RNA-SEQ
+				</f:facet>
+				<h:outputLink title="Click to see RNA-SEQ data on UCSC genome browser for #{u.geneSymbol}" 
+					value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&amp;hubUrl=http://www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&amp;position=#{u.geneSymbol}">
+					<h:outputText value="View on UCSC"></h:outputText>
+				</h:outputLink>
+				<br />
+				<h:outputLink title="Open IGV in Java Web Start to see GUDMAP sequencing data for #{u.geneSymbol}"
+					value="http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://www.gudmap.org/Gudmap/ngsData/gudmap_igv_seq_genes.xml&amp;locus=#{u.geneSymbol}">
+					<h:outputText value="View on IGV"></h:outputText>
+				</h:outputLink>
+				
+    		</h:column>
+
+    	 </h:dataTable>
+
+         </h:form> 
+    
+	<ui:include src="/snippets/g_solrSearch.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>
+</html>
