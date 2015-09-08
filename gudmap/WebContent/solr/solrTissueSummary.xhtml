@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr Tissue Summary
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+
+	
+	<h1>Solr Tissue Summary</h1>	
+	    <!-- all other content in here --> 
+	    <h:form id="form1"> 
+	    <h:inputHidden id="solrInput" value="#{solrTissueSummaryBean.solrInput}" />
+	     <h:dataTable value="#{solrTissueSummaryBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row"
+    		>
+ 
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="OID" actionListener="#{solrTissueSummaryBean.sort}">
+                         <f:attribute name="sortField" value="ID" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.oid}
+    		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">
+    				<h:commandLink value="Tissue Summary" actionListener="#{solrTissueSummaryBean.sort}">
+    					<f:attribute name="sortField" value="NAME" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.name}
+    		</h:column>
+ 
+    		<h:column>
+    			<f:facet name="header">
+     				<h:commandLink value="Reason" actionListener="#{solrTissueSummaryBean.sort}">
+                    </h:commandLink>
+				</f:facet>
+    				#{u.reason}
+    		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">
+     				<h:commandLink value="Stages" actionListener="#{solrTissueSummaryBean.sort}">
+    					<f:attribute name="sortField" value="STAGES" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.stages}
+    		</h:column>
+    		
+  
+ 		</h:dataTable> 
+ 		
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{solrTissueSummaryBean.pageFirst}"
+                    disabled="#{solrTissueSummaryBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{solrTissueSummaryBean.pagePrevious}"
+                    disabled="#{solrTissueSummaryBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{solrTissueSummaryBean.pageNext}"
+                    disabled="#{solrTissueSummaryBean.firstRow + solrTissueSummaryBean.rowsPerPage >= solrTissueSummaryBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{solrTissueSummaryBean.pageLast}"
+                    disabled="#{solrTissueSummaryBean.firstRow + solrTissueSummaryBean.rowsPerPage >= solrTissueSummaryBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form" />
+                </h:commandButton>
+                <h:outputText value="Page #{solrTissueSummaryBean.currentPage} / #{solrTissueSummaryBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{solrTissueSummaryBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrTissueSummaryBean.page}"
+                        rendered="#{page != solrTissueSummaryBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == solrTissueSummaryBean.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{solrTissueSummaryBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrTissueSummaryBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+		</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{solrTissueSummaryBean.gotopage}" />
+		</h:form> 
+	</ui:define>
+</ui:composition>
+</html>

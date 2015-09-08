@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr ISH Data
+	</ui:define>
+
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>> 
+
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.js"></h:outputScript>
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></h:outputScript>>
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></h:outputScript>
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/jquery.jstree.js"></h:outputScript> 
+	
+	
+	
+	
+	<h:form id="genelisttreeForm" >	
+	<h:outputText styleClass="plaintext" value="#{GeneListTreeBean.title}" rendered="true" escape="false" />
+<br/>
+<br/>
+	
+	<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
+	<div id="expanderContent" style="display:none">
+	
+	    <p>They are spilt into those lists that have been included in publications and those that are unpublished. Lists are further sub-divided by sample datasets, microarray chip platform and developmental stage. For more info, including protocols, please see the <a href="http://www.gudmap.org/Help/Analysis_Help.html" style="font-size:inherit;">analysis help page</a>.</p>
+	    <p>The number of microarray probes/genes in a list is displayed in brackets. Hover over a list name for more detailed information, or click on a list (bold) to view the lists in heatmap view.</p>
+	
+		<p>Protocols for published gene lists can be found in their respective publications:
+		<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19000842" style="font-size:inherit;">Brunskill et al. (2008)</a> Pubmed: 19000842<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19501082" style="font-size:inherit;">Georgas et al. (2009)</a> Pubmed: 19501082<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/21386911" style="font-size:inherit;" >Thiagarajan et al. (2011)</a> Pubmed: 21386911<br/>
+		</p>
+		<span class="collaps2"></span>
+	</div>
+	
+
+	 <f:verbatim>
+		<div id="genelist_tree" class="demo" style="overflow: auto; align: left; width: 600px; height: 560px;" >
+		</div>
+	</f:verbatim>	
+	<h:inputText id="genelistNode" value="#{TreeBean.selectedNode}" style="display:none; visibility: hidden; "/>	
+
+	<t:commandLink id="genelistLink" forceId="true" style="display:none; visibility: hidden;" action="#{TreeBean.findNode}">
+	</t:commandLink>
+		
+	</h:form> 
+
+
+<script type="text/javascript">
+//<![CDATA[
+	$(document).ready(function(){
+		$("#expanderHead").click(function(){
+			$("#expanderContent").slideToggle();
+			if ($("#expanderSign").text() == "(more...)"){
+				$("#expanderSign").html("(less...)")
+			}
+			else {
+				$("#expanderSign").text("(more...)")
+			}
+		});
+	});
+	
+	jQuery(document).ready(function(){
+
+		jQuery("#genelist_tree").jstree({ 	
+			"json_data" : {
+			    "progressive_render" : true,
+			    "correct_state" : true,
+			    "ajax" : {
+			    	"type": "POST",
+			    	"url" : "../scripts/genelist_tree.json",
+			    	"data": function (n) { return { id: n.attr ? n.attr("id") : 0} },
+			    }
+			},	
+			"themes" : {
+				"theme" : "classic",
+				"lines"  : true,
+				"dots"  : true,
+				"icons" : false,
+				"url"   : "../scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
+			},										
+			"plugins" : ["types", "themes", "json_data", "ui", "cookies" ]
+		})
+		.bind("loaded.jstree", function(event, data){
+//			$("#tree").jstree("open_all");
+//			$("#tree").jstree("open_node", $('#childNode'));
+			 var depth = 3;
+		        data.inst.get_container().find('li').each(function(i) {
+		                if(data.inst.get_path($(this)).length<=depth){
+		                        data.inst.open_node($(this));
+		                }
+		        }); 
+		})	
+		.bind("open_node.jstree", function(event, data){
+//			updateTree();
+		})	
+		.delegate("a", "click", function(e, data) {
+			var node = jQuery.jstree._focused().get_selected();
+			clickLink(node);
+		});
+
+	});
+
+	function clickLink(node){
+		
+		var page = node.attr("href");
+//		alert("page = "+ page);
+		if (page == "none")
+			return;
+		
+//		if (getCount(node) == 0)
+//			page = "pages/empty_search_result.jsp";
+		
+		//	alert("clickLink");
+		var path = jQuery.jstree._focused().get_path(node,true);
+//		alert("path = "+ path);	
+		var result = node.attr("solr") + "," +page + "," + node.attr("exp") + "," + node.attr("stage") + "," + node.attr("fg") + "," + node.attr("id") + "," + node.attr("table") + "," + node.attr("genelistId") + "," + node.attr("crumb");
+		
+			
+		var selectedNode =  document.getElementById('headersubview:genelisttreeForm:selNode');
+		selectedNode.value = result;
+			
+		var dummyLink = document.getElementById("hiddenLink");
+
+		if (document.createEvent){
+			var evObj = document.createEvent('MouseEvents');
+			evObj.initEvent( 'click', true, false );
+			dummyLink.dispatchEvent(evObj);
+		}
+		else if (document.createEventObject)
+			dummyLink.fireEvent('onclick');
+
+	}
+
+	function getCrumb(node){
+		alert("into crumb");
+		
+		var path =  jQuery.jstree._focused().get_parent(node, false);
+		alert("path = " + path);	
+		
+	}	
+	
+//]]>
+</script>
+
+	</ui:define>
+</ui:composition>
+</html>

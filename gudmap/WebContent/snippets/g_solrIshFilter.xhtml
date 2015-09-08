@@ -6,7 +6,10 @@
 	
 	<pr:dialog header="Insitu Filters" widgetVar="dialogSolrInsituFilter" modal="true" width="750" position="300,250"  > 
 	<h:form id="solrishfilterform"> 
+<ui:remove>
 		<h:outputText value="Result Count: (#{solrInsituFilter.insituCount})  page = #{view.viewId}" />
+</ui:remove>
+		<h:outputText value="Result Count: (#{solrInsituFilter.insituCount})" />
 		<br/>	
 		<h:panelGroup rendered="#{solrInsituFilter.filters.size() > 0}">	
 		<h:outputText value="Filter Settings: #{solrInsituFilter.filterString}" rendered="#{solrInsituFilter.filters.size() > 0}"/>		
@@ -100,7 +103,7 @@
 		<br/>		
 	</h:form> 
 	<h:form> 
-	   	<h:panelGrid columns="5" >
+	   	<h:panelGrid columns="4" >
 	   	
 	   		<pr:commandButton id="il_filter_submit" value="Submit"  >
 	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrInsituFilter.refresh}" />
@@ -110,6 +113,13 @@
 	   		<pr:commandButton id="il_filter_reset" value="Reset"  >
 	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrInsituFilter.reset}" />
 	   			<f:ajax render=" :solrsearchform" immediate="true"/>
+	   		</pr:commandButton>
+
+	   		<h:commandButton id="il_filter_submit2" value="Submit2" actionListener="#{solrInsituFilter.refresh2}">
+	   		</h:commandButton>
+
+	   		<pr:commandButton id="il_filter_submit3" value="Submit3"  >
+	   			<pr:ajax update="@parent" immediate="true" listener="#{solrInsituFilter.refresh}" />
 	   		</pr:commandButton>
 	   		
 <ui:remove>

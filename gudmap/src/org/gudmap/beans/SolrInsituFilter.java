@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.primefaces.context.RequestContext;
 
 @Named(value="solrInsituFilter")
 @SessionScoped
@@ -465,7 +466,24 @@ public class SolrInsituFilter implements Serializable {
 
 	}
 
-    
+	public void refresh2(){
+		
+		RequestContext context = RequestContext.getCurrentInstance();
+		page = FacesContext.getCurrentInstance().getViewRoot().getViewId(); 
+		
+		if (page.equalsIgnoreCase("/solr/solrInsitu.xhtml")){
+			context.execute("PF('dialogSolrInsituFilter').show();");
+		}
+			
+		if (page.equalsIgnoreCase("/db/database_homepage.xhtml")){
+			context.execute("PF('dialogSolrSearch').show();");
+			context.execute("PF('dialogSolrInsituFilter').show();");
+		}
+			
+//		context.update("solrsearchform");
+//		context.update(":solrinsitu_dataform");
+	};
+   
     public String getPage(String component){
     
 //    	UIViewRoot viewRoot =  FacesContext.getCurrentInstance().getViewRoot();
