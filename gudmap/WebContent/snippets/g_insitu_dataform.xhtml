@@ -19,7 +19,7 @@
     		
  			<h:column >
     			<f:facet name="header">
-    				<h:commandButton id="checkall" value="Check All" action="#{genericTablePageBean.checkAll}">
+    				<h:commandButton id="checkall" value="All" action="#{genericTablePageBean.checkAll}">
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
 					<br />
@@ -32,7 +32,7 @@
     			<f:facet name="header">
     				(<h:commandLink id="genelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GENE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="RPR_SYMBOL" />
-    					<f:ajax execute="@this genelink" render="@form"></f:ajax>
+    					<f:ajax execute="@this genelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> ) <br />
     				Gene 
     			</f:facet>
@@ -45,7 +45,7 @@
     			<f:facet name="header">
     			(<h:commandLink id="accessionlink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="SUB_OID" />
-    					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
+    					<f:ajax execute="@this accessionlink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> )
     				<br />
     				Gudmap Accession
@@ -60,7 +60,7 @@
     			<f:facet name="header">
     			(<h:commandLink id="sourcelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SOURCE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="PER_SURNAME" />
-    					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
+    					<f:ajax execute="@this sourcelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> )
     				 <br />
     				Source
@@ -96,7 +96,7 @@
     			<f:facet name="header">
     			(<h:commandLink id="stagelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_EMBRYO_STAGE')}" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="stage" />
-    					<f:ajax execute="@this stagelink" render="@form"></f:ajax>
+    					<f:ajax execute="@this stagelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> )
     				 <br />
     				Stage

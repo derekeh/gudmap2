@@ -200,7 +200,7 @@ public class AnatomyQueries {
 				"x.genotype, x.tissue, x.expression, x.specimen, x.image " +
 			"FROM " + 
 			"((select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
+			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
 			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
 			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " +
 			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -209,7 +209,7 @@ public class AnatomyQueries {
 			"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='present' ) " + 
 			"UNION " +
 			"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
+			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
 			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
 			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " + 
 			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -218,7 +218,7 @@ public class AnatomyQueries {
 			"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='not detected') " +
 			"UNION " + 
 			"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
+			"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_SUB_EMBRYO_STG stage, " +
 			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) age, QIC_SPN_SEX sex, " +
 			"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image " + 
 			"FROM QSC_ISH_CACHE LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -227,7 +227,7 @@ public class AnatomyQueries {
 			"(QIC_ATN_PUBLIC_ID in (%s))  AND QIC_EXP_STRENGTH not in('present', 'not detected') ) " + 
 			"UNION " +
 			"(select distinct SUBSTRING(QMC_SUB_ACCESSION_ID,8) oid, '' gene, QMC_SUB_ACCESSION_ID gudmap_accession, QMC_SUB_SOURCE source, " +
-			"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_SUB_EMBRYO_STG stage, " +
+			"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_SUB_EMBRYO_STG stage, " +
 			"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) age, QMC_SPN_SEX sex, " +
 			"QMC_SPN_WILDTYPE genotype, QMC_ANO_COMPONENT_NAME tissue, '' expression, QMC_SPN_ASSAY_TYPE specimen, '' image " +
 			"FROM " +
@@ -242,7 +242,7 @@ public class AnatomyQueries {
 		
 		
 		public static String BROWSE_ANATOMY_ISH_PARAM = "(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
+				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
 				"QIC_STG_SPECIES species, QIC_STG_ALT_STAGE age, QIC_SPN_SEX sex, " +
 				"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image, QIC_RPR_LOCUS_TAG gene_id " +
 				"FROM QSC_ISH_CACHE JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -251,7 +251,7 @@ public class AnatomyQueries {
 				"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='present' ) " + 
 				"UNION " +
 				"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
+				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
 				"QIC_STG_SPECIES species, QIC_STG_ALT_STAGE age, QIC_SPN_SEX sex, " +
 				"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image, QIC_RPR_LOCUS_TAG gene_id  " + 
 				"FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -260,7 +260,7 @@ public class AnatomyQueries {
 				"(QIC_ATN_PUBLIC_ID in (%s,%s))  AND QIC_EXP_STRENGTH='not detected') " +
 				"UNION " + 
 				"(select distinct SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, " +
-				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
+				"DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name,QIC_STG_STAGE_DISPLAY stage, " +
 				"QIC_STG_SPECIES species, QIC_STG_ALT_STAGE age, QIC_SPN_SEX sex, " +
 				"QIC_SPN_WILDTYPE genotype, ANO_COMPONENT_NAME tissue, QIC_EXP_STRENGTH expression, QIC_SPN_ASSAY_TYPE specimen, QIC_SUB_THUMBNAIL image, QIC_RPR_LOCUS_TAG gene_id  " + 
 				"FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -271,7 +271,7 @@ public class AnatomyQueries {
 		
 		public static String BROWSE_ANATOMY_MIC_PARAM = //"UNION " +
 				"(select distinct SUBSTRING(QMC_SUB_ACCESSION_ID,8) oid, '' gene, QMC_SUB_ACCESSION_ID gudmap_accession, QMC_SUB_SOURCE source, " +
-				"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_STG_STAGE_DISPLAY stage, " +
+				"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_STG_STAGE_DISPLAY stage, " +
 				"QMC_STG_SPECIES species, QMC_STG_ALT_STAGE age, QMC_SPN_SEX sex, " +
 				"QMC_SPN_WILDTYPE genotype, QMC_ANO_COMPONENT_NAME tissue, '' expression, QMC_SPN_ASSAY_TYPE specimen, '' image, '' gene_id " +
 				"FROM " +

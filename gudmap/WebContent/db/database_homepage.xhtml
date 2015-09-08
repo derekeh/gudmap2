@@ -26,6 +26,8 @@
 		input[type="submit"] {
 		    margin: 0;
 		}
+		
+		#gd_edit_area { height:500px;}
 	</style>
 	
 
@@ -224,10 +226,18 @@
 		//]]>
 		</script>
 
-   <h:form id="focusform">
+   <h:form id="focusform" prependId="false">
+   	<h:panelGrid columns="3" columnClasses="db_table_col_left,db_table_col_center,db_table_col_center" styleClass="db_panel_grid_width">
+   
 				<h:outputText id="il_focustext" value="Expression Database&#160;&#160;" styleClass="db_h1_indent"/> 
-				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />	
+				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />
+				<h:panelGroup id="spinner" style="display:none">
+				  		<h:outputText value="Page Loading " />
+				  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />
+			  	</h:panelGroup>	
+	</h:panelGrid>
    </h:form> 
+   
    	
    <div id="db_querybrowse_left">
 
@@ -517,7 +527,7 @@
           <tr>
             <td>All In Situ Hybridisation (ISH)</td>
             <td>
-            	<h:link value="#{volatileSummaryBean.getIshTotal()}" outcome="browseInsituTablePage"></h:link>
+            	<h:link  outcome="browseInsituTablePage" value="#{volatileSummaryBean.getIshTotal()}" onclick="$('#spinner').show()"/>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
             
@@ -525,35 +535,35 @@
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
-            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage"></h:link>
+            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage" onclick="$('#spinner').show()"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Section ISH (SISH)</td>
             <td>
-            	<h:link value="#{volatileSummaryBean.getSishTotal()}" outcome="browseSishTablePage"></h:link>
+            	<h:link value="#{volatileSummaryBean.getSishTotal()}" outcome="browseSishTablePage" onclick="$('#spinner').show()"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>OPT ISH</td>
             <td>
-            	<h:link value="#{volatileSummaryBean.getOptTotal()}" outcome="browseOptTablePage"></h:link>
+            	<h:link value="#{volatileSummaryBean.getOptTotal()}" outcome="browseOptTablePage" onclick="$('#spinner').show()"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Immunohistochemistry (IHC)</td>
             <td>
-            	<h:link value="#{volatileSummaryBean.getIhcTotal()}" outcome="browseIhcTablePage"></h:link>
+            	<h:link value="#{volatileSummaryBean.getIhcTotal()}" outcome="browseIhcTablePage" onclick="$('#spinner').show()"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
           </tr>
           <tr>
             <td>Transgenic Reporters</td>
             <td>
-            		<h:link value="#{volatileSummaryBean.getTgTotal()}" outcome="browseTgTablePage"></h:link>
+            		<h:link value="#{volatileSummaryBean.getTgTotal()}" outcome="browseTgTablePage" onclick="$('#spinner').show()"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
           </tr>
@@ -561,7 +571,7 @@
             <td>Microarray</td>
             <td>
             	
-            	<h:link value="#{volatileSummaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage"></h:link>
+            	<h:link value="#{volatileSummaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" onclick="$('#spinner').show()"></h:link>
             	
             </td>
             <td></td>
@@ -569,7 +579,7 @@
           <tr>
             <td>Sequence</td>
             <td>
-            		<h:link value="#{volatileSummaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage"></h:link>
+            		<h:link value="#{volatileSummaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" onclick="$('#spinner').show()"></h:link>
             </td>
             <td></td>
           </tr>

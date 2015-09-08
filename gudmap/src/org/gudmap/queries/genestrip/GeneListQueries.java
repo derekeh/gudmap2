@@ -6,7 +6,7 @@ public class GeneListQueries {
 	/*public static String BROWSE_GENELIST_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.age, x.sex, x.genotype, " +
 			   "GROUP_CONCAT(DISTINCT x.tissue) tissue, x.expression, x.specimen, x.image " +
 				"FROM ((" +
-				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " + 
+				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " + 
 				"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) assay_type, RPR_JAX_ACC probe_name, SUB_EMBRYO_STG stage,  " +
 				"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) age, SPN_SEX sex,  " +
 				"CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN  " +
@@ -23,7 +23,7 @@ public class GeneListQueries {
 				"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4  AND SUB_ASSAY_TYPE NOT IN ('Microarray','NextGen') %s  GROUP BY oid )  " +
 				"UNION " +
 				"(SELECT DISTINCT SUBSTRING(MBC_SUB_ACCESSION_ID,8) oid, MBC_GNF_SYMBOL gene, MBC_SUB_ACCESSION_ID gudmap_accession, MBC_SUB_SOURCE source , " +
-				"DATE_FORMAT(MBC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, 'Microarray' assay_type, '' probe_name, MBC_SUB_EMBRYO_STG stage, " +
+				"DATE_FORMAT(MBC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, 'Microarray' assay_type, '' probe_name, MBC_SUB_EMBRYO_STG stage, " +
 				"concat(TRIM(CASE MBC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(MBC_SPN_STAGE,' ',MBC_SPN_STAGE_FORMAT) ELSE " +
 				"CONCAT(MBC_SPN_STAGE_FORMAT,MBC_SPN_STAGE) END)) age, QMC_SPN_SEX sex, QMC_SPN_WILDTYPE genotype, MBC_ANO_COMPONENT_NAME tissue, " +
 				"'' expression,'' specimen,'' image " +
@@ -35,7 +35,7 @@ public class GeneListQueries {
 	public static String BROWSE_GENELIST_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.species, x.age, x.sex, x.genotype, " +
 			   "GROUP_CONCAT(DISTINCT x.tissue) tissue, x.expression, x.specimen, x.image, x.gene_id " +
 				"FROM ((" +
-				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " + 
+				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " + 
 				"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) assay_type, RPR_JAX_ACC probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, " +
 				"STG_ALT_STAGE age, SPN_SEX sex,  " +
 				"CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN  " +
@@ -69,7 +69,7 @@ public class GeneListQueries {
 	 public static String BROWSE_GENE_FUNCTION_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.species, x.age, x.sex, x.genotype, " +
 			 "GROUP_CONCAT(DISTINCT x.tissue) tissue, x.expression, x.specimen, x.image, x.gene_id " +
 			 "FROM ((" +
-			 "SELECT DISTINCT SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " +
+			 "SELECT DISTINCT SUBSTRING(QIC_SUB_ACCESSION_ID,8) oid, QIC_RPR_SYMBOL gene, QIC_SUB_ACCESSION_ID gudmap_accession, QIC_SUB_SOURCE source, DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " +
 			 "QIC_SUB_ASSAY_TYPE assay_type, QIC_PRB_PROBE_NAME probe_name, QIC_STG_STAGE_DISPLAY stage, QIC_STG_SPECIES species, " +
 			 "QIC_STG_ALT_STAGE age, " +
 			 "QIC_SPN_SEX sex, QIC_SPN_WILDTYPE genotype, " +

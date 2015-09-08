@@ -71,7 +71,7 @@ public class GenericQueries {
 			   "ORDER BY SUB_OID, NATURAL_SORT(RPR_SYMBOL), SUB_EMBRYO_STG, SPN_SEX";
 	   
 	   
-	   public final static String BROWSE_ISH_PARAM="SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " + 
+	   public final static String BROWSE_ISH_PARAM="SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " + 
 			   	"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) assay_type, RPR_JAX_ACC probe_name, STG_STAGE_DISPLAY stage, " +
 			    "STG_SPECIES species, STG_ALT_STAGE age, " +
 			   	"SPN_SEX sex, CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) " +
@@ -90,7 +90,7 @@ public class GenericQueries {
 			    "ORDER BY %s %s, natural_sort(TRIM(RPR_SYMBOL)), SUB_EMBRYO_STG LIMIT ?, ?";
 	   
 	   
-	   public final static String BROWSE_TG_PARAM = "SELECT DISTINCT SUB_OID oid, ALE_GENE gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " +
+	   public final static String BROWSE_TG_PARAM = "SELECT DISTINCT SUB_OID oid, ALE_GENE gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " +
 			   "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) assay_type, '' probe_name, STG_STAGE_DISPLAY stage, " +
 			   "STG_SPECIES species, STG_ALT_STAGE age, " +
 			   "SPN_SEX sex, CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) " +
@@ -132,7 +132,7 @@ public class GenericQueries {
 	   public final static String BROWSE_ACCESSION_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.species, x.age, x.sex, x.genotype, " +
 			   "GROUP_CONCAT(DISTINCT x.tissue) tissue, x.expression, x.specimen, x.image, x.gene_id " +
 				"FROM ((" +
-				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " + 
+				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " + 
 				"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) assay_type, RPR_JAX_ACC probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, " +
 				"STG_ALT_STAGE age, SPN_SEX sex,  " +
 				"CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN  " +
@@ -154,7 +154,7 @@ public class GenericQueries {
 				"OR RPR_ENSEMBL  IN (%s)  ) " +
 				"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4  AND SUB_ASSAY_TYPE NOT IN ('Microarray','NextGen') %s  GROUP BY oid )  " +
 				      
-				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " +
+				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " +
 				"'Microarray' assay_type, '' probe_name, STG_STAGE_DISPLAY stage,  STG_SPECIES species, STG_ALT_STAGE age, " +
 				"SPN_SEX sex, CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE 'NOVALUE' END AS genotype,  " +
 				"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') tissue, '' expression, " +
@@ -163,7 +163,7 @@ public class GenericQueries {
 				"%s SUB_ACCESSION_ID   IN (%s)   AND SUB_ASSAY_TYPE = 'Microarray' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND EXP_SUBMISSION_FK=SUB_OID AND " + 
 				"SPN_SUBMISSION_FK=SUB_OID AND STG_OID = SUB_STAGE_FK AND ATN_PUBLIC_ID = EXP_COMPONENT_ID AND ATN_NODE_FK = ANO_OID AND IST_SUBMISSION_FK=SUB_OID %s ) " +
 				
-				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date,  " +
+				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date,  " +
 				"'Sequence' assay_type, '' probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) age, " +
 				"NGS_SEX sex,  " +
 				"CASE NGS_GENOTYPE WHEN 'true' THEN 'wild type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME)  " +
@@ -206,7 +206,7 @@ public class GenericQueries {
        public final static String BROWSE_LOCAL_STORAGE_PARAM = "SELECT DISTINCT x.oid, x.gene, x.gudmap_accession, x.source, x.submission_date, x.assay_type, x.probe_name, x.stage, x.species, x.age, x.sex, x.genotype, " +
 			   "GROUP_CONCAT(DISTINCT x.tissue) tissue, x.expression, x.specimen, x.image, x.gene_id " +
 				"FROM ((" +
-				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " + 
+				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " + 
 				"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) assay_type, RPR_JAX_ACC probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, " +
 				"STG_ALT_STAGE age, SPN_SEX sex,  " +
 				"CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN  " +
@@ -224,7 +224,7 @@ public class GenericQueries {
 				"%s   SUB_OID IN (%s) " +
 				"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4  AND SUB_ASSAY_TYPE NOT IN ('Microarray','NextGen') %s  GROUP BY oid )  " +
 				      
-				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date, " +
+				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " +
 				"'Microarray' assay_type, '' probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, " +
 				"STG_ALT_STAGE age, SPN_SEX sex, CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE 'NOVALUE' END AS genotype,  " +
 				"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') tissue, '' expression, " +
@@ -233,7 +233,7 @@ public class GenericQueries {
 				"%s SUB_OID   IN (%s)   AND SUB_ASSAY_TYPE = 'Microarray' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND EXP_SUBMISSION_FK=SUB_OID AND " + 
 				"SPN_SUBMISSION_FK=SUB_OID AND STG_OID = SUB_STAGE_FK AND ATN_PUBLIC_ID = EXP_COMPONENT_ID AND ATN_NODE_FK = ANO_OID AND IST_SUBMISSION_FK=SUB_OID %s ) " +
 				
-				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%M %%Y') submission_date,  " +
+				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date,  " +
 				"'Sequence' assay_type, '' probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, " +
 				"STG_ALT_STAGE age, NGS_SEX sex,  " +
 				"CASE NGS_GENOTYPE WHEN 'true' THEN 'wild type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME)  " +
@@ -273,7 +273,7 @@ public class GenericQueries {
    				"WHERE STG_OID = SUB_STAGE_FK AND STG_SPECIES = ? ORDER BY STG_ORDER";
    		
    		//update statistics
-		public final static String GET_UPDATE_INFO = "SELECT DATE_FORMAT(MIS_SOFT_UPDATE,'%e %M %Y') software_update, DATE_FORMAT(MIS_EDIT_UPDATE,'%e %M %Y') editorial_update, MIS_SOFT_VERSION software_version FROM REF_MISC";
+		public final static String GET_UPDATE_INFO = "SELECT DATE_FORMAT(MIS_SOFT_UPDATE,'%e %b %Y') software_update, DATE_FORMAT(MIS_EDIT_UPDATE,'%e %b %Y') editorial_update, MIS_SOFT_VERSION software_version FROM REF_MISC";
 		 
 	   	public final static String GET_UPDATE_INFO_DB = "SELECT MIS_SOFT_UPDATE software_update, MIS_EDIT_UPDATE editorial_update FROM REF_MISC";
 	   	
