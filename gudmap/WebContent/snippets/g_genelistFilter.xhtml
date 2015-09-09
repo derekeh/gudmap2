@@ -97,7 +97,7 @@
 	   <h:form>	
 	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
 	   	
-	   		<h:commandButton id="il_filter_test" value="Test" action="result"></h:commandButton>
+	   		<h:commandButton id="il_filter_test" value="Test" action="result" rendered="#{paramBean.debug}"></h:commandButton>
 	   		
 	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{genericTablePageBean.resetAll()}">
 	   			<f:ajax execute="@this il_filter_reset" render=":filterform :dataform :pagingform :focusform :buttonform" ></f:ajax> 

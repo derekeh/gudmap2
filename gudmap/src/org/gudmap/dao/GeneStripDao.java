@@ -86,6 +86,91 @@ public class GeneStripDao {
 		  return geneStripModel;
 	  }
 	  
+	  public ArrayList<GeneStripModel> getData(ArrayList<String> geneIds,int firstRow, int rowsPerPage, String sortField, String sortDirection){
+		  ArrayList<GeneStripModel> geneStripModelList = null;
+		  GeneStripModel geneStripModel=null;
+		  String arrayRange="";
+		  String ishRange="";
+		  String species="";
+		  String gene="";
+		  String geneId="";
+		  String geneIdsForSql="";
+		  
+		  for(int i=0;i<geneIds.size();i++) {
+			  geneIdsForSql+="'"+geneIds.get(i)+"',";
+		  }
+		  geneIdsForSql = geneIdsForSql.substring(0,geneIdsForSql.lastIndexOf(","));
+		  try
+			{
+				con = Globals.getDatasource().getConnection();
+				ps = con.prepareStatement(String.format(GeneStripQueries.GENESTRIP_ROW_MINUS_PROFILES_2,geneIdsForSql,sortField,sortDirection)); 
+				ps.setInt(1, firstRow);
+				ps.setInt(2, rowsPerPage);
+				result =  ps.executeQuery();
+				
+				if (result.first()) {
+					result.beforeFirst();
+					geneStripModelList = new ArrayList<GeneStripModel>();
+					
+					while (result.next()) {
+						geneStripModel = new GeneStripModel();
+						gene = result.getString("gene");
+						geneId = result.getString("mgi");
+						geneStripModel.setGeneSymbol(gene);
+						geneStripModel.setSynonyms(result.getString("synonyms"));
+						geneStripModel.setMgiId(geneId);
+						arrayRange = (result.getString("arrayRange"));
+						ishRange = (result.getString("ishRange"));
+						species = (result.getString("species"));
+						geneStripModel.setExpressionProfile(buildExpressionProfile(gene,geneId));
+						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
+						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
+						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
+						geneStripModel.setImageUrl(getRepresentativeImage(geneId));
+						geneStripModel.setSelected(false);
+						geneStripModel.setGene_id(geneId);
+						geneStripModel.setSpecies(species);
+						
+						geneStripModelList.add(geneStripModel);
+					}
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+		  
+		  return geneStripModelList;
+	  }
+	  
+	  public int count(ArrayList<String> ids) {
+		  int count=0;
+		  String geneIdsForSql="";
+		  
+		  for(int i=0;i<ids.size();i++) {
+			  geneIdsForSql+="'"+ids.get(i)+"',";
+		  }
+		  geneIdsForSql = geneIdsForSql.substring(0,geneIdsForSql.lastIndexOf(","));
+		  String queryString=String.format(GeneStripQueries.GENESTRIP_TOTALS, geneIdsForSql);
+		    try
+			{
+					con = Globals.getDatasource().getConnection();
+					ps = con.prepareStatement(queryString);
+					result =  ps.executeQuery();
+					
+					while(result.next()){
+						count=result.getInt(1);
+					}
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+				    Globals.closeQuietly(con, ps, result);
+			}
+		    return count;
+	  }
+	  
 	private String buildExpressionProfile(String geneSymbol, String geneId) {
 		String RET="";
 		double[] insituExprofile = getInsituExprofile(geneId);

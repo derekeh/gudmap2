@@ -17,7 +17,6 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 
 import org.gudmap.globals.Globals;
-import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.GeneStripModel;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.models.MasterTableInfo;
@@ -29,7 +28,7 @@ import org.json.simple.JSONObject;
 @Named
 //@RequestScoped
 @SessionScoped
-public class GeneStripBean  extends PagerImpl implements Serializable {
+public class CopyOfGeneStripBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String oid;
@@ -57,7 +56,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     @Inject
    	protected ParamBean paramBean;
     
-    public GeneStripBean() {
+    public CopyOfGeneStripBean() {
         
         geneStripBeanAssembler = new GeneStripBeanAssembler();       
         microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
@@ -81,12 +80,9 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 		return paramBean;
 	}
     
-    public void init(int rowsperpage, int pagenumbers, String defaultOrderCol, boolean sortDirection) {
-		initPaging(rowsperpage,pagenumbers,defaultOrderCol,sortDirection);
-		setup(defaultOrderCol,sortDirection);
-	}
+    
   
-    public void setup(String defaultOrderCol, boolean sortDirection) {
+    public void setup() {
     	
         // check input string to decide wildcard value
     	inputString=sessionBean.getGeneParam();
@@ -102,8 +98,8 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	       			wildcard = "starts with";
 	       		}
 	       			       	 
-	       		//dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard,defaultOrderCol,sortDirection);
-	       		geneIds = geneStripBeanAssembler.getGeneIds(inputString,wildcard);         		
+	       		dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard);
+	       		geneIds = geneStripBeanAssembler.getGeneIds();         		
 	       	}
 	       	if(geneIds!=null) {
 		       	for (String geneId : geneIds){
@@ -356,44 +352,6 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 				
 		return data;
 	}
-	
-	///////////////////////////////
-	
-	@Override
-    public void loadDataList() {
-		if(geneIds==null) {
-			dataList=null;
-			return;
-		}
-		dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard,firstRow, rowsPerPage, sortField, sortAscending);
-		// Set currentPage, totalPages and pages.
-		//setTotalslist(assembler.getTotals());
-		totalRows = geneStripBeanAssembler.count();
-    	currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
-        totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
-        int pagesLength = Math.min(pageRange, totalPages);
-        pages = new Integer[pagesLength];
-
-        // firstPage must be greater than 0 and lesser than totalPages-pageLength.
-        int firstPage = Math.min(Math.max(0, currentPage - (pageRange / 2)), totalPages - pagesLength);
-
-        // Create pages (page numbers for page links).
-        for (int i = 0; i < pagesLength; i++) {
-            pages[i] = ++firstPage;
-        }
-    }
-    
-    public void refresh(){
-    	loadDataList();
-    }
-    
-    public void resetAll() {
-		paramBean.resetAll();
-		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
-		loadDataList();
-	}
-    
 	
 	
 }

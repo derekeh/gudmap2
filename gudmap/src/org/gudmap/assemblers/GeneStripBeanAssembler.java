@@ -14,27 +14,34 @@ public class GeneStripBeanAssembler {
 		geneStripDao = new GeneStripDao();
 	}
 	
-	public ArrayList<GeneStripModel> getData(String gene, String input, String wildcard) {
-		ArrayList<GeneStripModel> geneStripList = null;  
+	public ArrayList<GeneStripModel> getData(String gene, String input, String wildcard,int firstRow, int rowsPerPage, String sortField, boolean sortAscending) {
+		ArrayList<GeneStripModel> geneStripList = null; 
+		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-   		//ArrayList<String> geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
-   		geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
-   		if(geneIds==null  || geneIds.size() <1)
-   			return null;
-   		else
-   			geneStripList = new ArrayList<GeneStripModel>();
+   		//geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
+   		//if(geneIds==null  || geneIds.size() <1)
+   		//	return null;
+   		//else
+   		//	geneStripList = new ArrayList<GeneStripModel>();
    		
-   		for(String currentGeneId : geneIds) {
+   		/*for(String currentGeneId : geneIds) {
    			
    			geneStripList.add(geneStripDao.getGeneStripDataFromSymbol(currentGeneId));
-   		}
+   		}*/
+   		
+   		geneStripList = geneStripDao.getData(geneIds,firstRow,rowsPerPage,sortField,sortDirection);
    		
 		
 		return geneStripList;
 	}
 	
-	public ArrayList<String> getGeneIds() {
+	public ArrayList<String> getGeneIds(String input, String wildcard) {
+		geneIds = geneStripDao.getSymbolsFromGeneInput(input, wildcard);
 		return geneIds;
+	}
+	
+	public int count() {
+		return geneStripDao.count(geneIds);
 	}
 
 }

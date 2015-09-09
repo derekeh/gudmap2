@@ -31,7 +31,7 @@
 	</style>
 	
 
-	<pr:commandButton id="dialogSolrSearch" value="Search" onclick="PF('dialogSolrSearch').show();" type="button"></pr:commandButton>
+	<pr:commandButton id="dialogSolrSearch" value="Search" onclick="PF('dialogSolrSearch').show();" type="button" rendered="#{paramBean.debug}"></pr:commandButton>
 	
 	<ui:include src="/snippets/g_information_dialogs.xhtml"/>
 	<pr:dialog header="Gene Search Options" widgetVar="dialog2" width="650" style="position:absolute;left:-300px;" modal="true" > 
@@ -265,7 +265,7 @@
 	    	<pr:commandButton id="showdialog2" value="Options" onclick="PF('dialog2').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
 	    </h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_gene_go" action="#{paramBean.geneSearchRedirect}">
+	    	<h:commandLink id="il_gene_go" action="#{paramBean.geneSearchRedirect}" onclick="$('#spinner').show()">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
@@ -295,7 +295,7 @@
 	    </h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_anatomy_go" action="browseAnatomyTablePage">
+	    	<h:commandLink id="il_anatomy_go" action="browseAnatomyTablePage" onclick="$('#spinner').show()">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
@@ -310,7 +310,7 @@
 	    <h:panelGroup>
 	    	
 	    	<h:panelGrid columns="2" columnClasses="gd_celltextleft,gd_celltextleft" cellspacing="0" cellpadding="0">
-	    		<h:link outcome="boolean_search">
+	    		<h:link outcome="boolean_search" onclick="$('#spinner').show()">
 	    			<h:graphicImage library="images/dbhome" name="n_booleanAnatomy.png" id="il_boolean" width="130" height="24" alt=""></h:graphicImage>
 	    		</h:link>
 	    		<h:link style="cursor:help;">
@@ -349,7 +349,7 @@
 	    </h:panelGroup> 
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_accession_go" action="browseAccessionTablePage">
+	    	<h:commandLink id="il_accession_go" action="browseAccessionTablePage" onclick="$('#spinner').show()">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
@@ -381,7 +381,7 @@
 	    	<pr:commandButton id="showdialog3" value="Options" onclick="PF('dialog3').show();" type="button" style="font-size:14px !important;"></pr:commandButton>
 	    </h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
-	    	<h:commandLink id="il_gene_function_go" action="browseGeneFunctionTablePage">
+	    	<h:commandLink id="il_gene_function_go" action="browseGeneFunctionTablePage" onclick="$('#spinner').show()">
 		  	  	<h:graphicImage library="images/dbhome" name="n_go.png" width="20" height="20" alt=""/>
 		  	</h:commandLink>
 	    </h:panelGroup>
@@ -637,7 +637,7 @@
    
 //]]>
 </script>	
-<ui:include src="/snippets/g_solrSearch.xhtml"/>
+ <ui:include src="/snippets/g_solrSearch.xhtml"/> 
 </ui:define>
 </ui:composition>
 </html>

@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<h:form id="pagingform">
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{geneStripBean.pageFirst}"
+                    disabled="#{geneStripBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{geneStripBean.pagePrevious}"
+                    disabled="#{geneStripBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{geneStripBean.pageNext}"
+                    disabled="#{geneStripBean.firstRow + geneStripBean.rowsPerPage >= geneStripBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{geneStripBean.pageLast}"
+                    disabled="#{geneStripBean.firstRow + geneStripBean.rowsPerPage >= geneStripBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:outputText value="Page #{geneStripBean.currentPage} / #{geneStripBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <pr:dataList value="#{geneStripBean.pages}" var="page" type="none" itemStyleClass="display:inline;" rendered="#{geneStripBean.totalPages>0}">
+                    <h:commandLink id="pagelink" class="db_pagenum" value="#{page}" actionListener="#{geneStripBean.page}"
+                        rendered="#{page != geneStripBean.currentPage}">
+                        <f:ajax execute="@this pagelink" render="@form :dataform" />
+                        </h:commandLink>
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == geneStripBean.currentPage}" />
+                </pr:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{geneStripBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{geneStripBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :dataform" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+		</h:form> 
+		
+		<h:form id="gotoform">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{geneStripBean.gotopage}" />
+		</h:form> 
+	
+		
+</ui:composition>

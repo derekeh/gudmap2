@@ -26,7 +26,8 @@
 		<h:outputStylesheet library="css" name="heatmap.css" /> 	
 	
 	#{sessionBean.init()}
-	#{geneStripBean.setup()}
+	#{geneStripBean.init(20,10,'natural_sort(mgi)',true)}
+	#{geneStripBean.loadDataList()}
 	<!-- can use relative links on html tags -->
 		
 	    <!-- all other content in here --> 
@@ -62,6 +63,8 @@
 	    <!-- all other content in here --> 
 
 	     <ui:include src="/snippets/g_genestrip_dataform.xhtml"></ui:include>
+	     
+	     <ui:include src="/snippets/g_genestrip_pagingForm.xhtml"></ui:include>
 	    
     </h:panelGrid>
 

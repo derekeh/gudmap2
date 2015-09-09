@@ -19,15 +19,13 @@
 	
 	<ui:define name="content">
 	#{genericTablePageBean.init('ISH','',20,10,'SUB_OID',true)}
-	#{genericTablePageBean.loadDataList()}
-	<!-- can use relative links on html tags. next 2 lines were originally inside g_ColumnFilterButtons_insitu.xhtml form-->
-	#{paramBean.setGenotypecol(false)}
-	#{paramBean.setProbenamecol(true)}
 	
 	
-		<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
-		
+		<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>		
 		<ui:include src="/snippets/g_ishFilter.xhtml"></ui:include>
+		#{genericTablePageBean.loadDataList()}
+		#{paramBean.setGenotypecol(false)}
+		#{paramBean.setProbenamecol(true)}
 		<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
 			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
 			<h:form id="focusform">

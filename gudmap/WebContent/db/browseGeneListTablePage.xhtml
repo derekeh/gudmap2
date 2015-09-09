@@ -21,18 +21,17 @@
 	<!-- can use relative links on html tags -->
 	#{genericTablePageBean.setUserInput(sessionBean.getGeneParam(),false)}
 	#{genericTablePageBean.init('genelist','',20,10,'x.stage',true)}
-	
-	#{genericTablePageBean.loadDataList()}
-	
-	#{paramBean.setGenotypecol(false)}
-	#{paramBean.setProbenamecol(true)}	    
-	   
-	     
+	 
 	     <!-- all other content in here --> 
-	     
-	     <ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
-	
+   
+	     <ui:include src="/snippets/g_insituCols.xhtml"></ui:include>	
 		<ui:include src="/snippets/g_genelistFilter.xhtml"></ui:include>
+		 <!-- move loadDataList to here so that the parambean staging is preserved in the filter. loaddatalist resets the paramBean values via the whereclause -->
+		#{genericTablePageBean.loadDataList()}
+	
+		#{paramBean.setGenotypecol(false)}
+		#{paramBean.setProbenamecol(true)}
+		
 		<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
 			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
 			<h:form id="focusform">
