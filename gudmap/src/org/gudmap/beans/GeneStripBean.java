@@ -81,9 +81,12 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 		return paramBean;
 	}
     
-    public void init(int rowsperpage, int pagenumbers, String defaultOrderCol, boolean sortDirection) {
+    public void init(int rowsperpage, int pagenumbers, String defaultOrderCol, boolean sortDirection, boolean isStrip, String geneId) {
 		initPaging(rowsperpage,pagenumbers,defaultOrderCol,sortDirection);
-		setup(defaultOrderCol,sortDirection);
+		if(isStrip)
+			setup(defaultOrderCol,sortDirection);
+		else
+			setupGenePage(geneId);
 	}
   
     public void setup(String defaultOrderCol, boolean sortDirection) {
@@ -111,6 +114,14 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 		       	}
 	       	}
     	}
+    }
+    
+    public void setupGenePage(String geneId) {
+    	
+        geneIds = new <String>ArrayList();
+        geneIds.add(geneId);
+        geneStripBeanAssembler.setGeneIds(geneIds);
+        createJSONFile(geneId);
     }
     
     public void setOid(String oid) {

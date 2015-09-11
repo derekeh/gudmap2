@@ -64,6 +64,14 @@ public class GeneDetailsBean {
     	return geneSymbol;
     }
     
+    public void setGeneId(String geneId) {
+    	this.geneId = geneId;
+    }
+    
+    public String getGeneId() {
+    	return geneId;
+    }
+    
     public void setGeneModel(GeneModel geneModel){
     	this.geneModel = geneModel;
     }

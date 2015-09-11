@@ -82,7 +82,7 @@ public class CopyOfGeneStripBean implements Serializable {
     
     
   
-    public void setup() {
+  /*  public void setup() {
     	
         // check input string to decide wildcard value
     	inputString=sessionBean.getGeneParam();
@@ -107,7 +107,7 @@ public class CopyOfGeneStripBean implements Serializable {
 		       	}
 	       	}
     	}
-    }
+    }*/
     
     public void setOid(String oid) {
     	this.oid=oid;

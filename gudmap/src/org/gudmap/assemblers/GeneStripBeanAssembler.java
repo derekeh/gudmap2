@@ -43,5 +43,9 @@ public class GeneStripBeanAssembler {
 	public int count() {
 		return geneStripDao.count(geneIds);
 	}
+	
+	public void setGeneIds(ArrayList<String>geneIds) {
+		this.geneIds = geneIds;
+	}
 
 }

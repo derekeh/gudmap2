@@ -22,9 +22,11 @@
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
 		<h:outputScript library="scripts" name="heatmap.js" ></h:outputScript>
 		<h:outputStylesheet library="css" name="heatmap.css" /> 
-	#{sessionBean.init()}	
+
+	
+	#{sessionBean.init()}
 	#{sessionBean.setGeneParam(geneDetailsBean.geneModel.symbol)}
-	#{geneStripBean.setup()}
+	
 	
 	<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	<!-- can use relative links on html tags -->
@@ -62,7 +64,9 @@
 				<h:outputText value="#{geneDetailsBean.geneModel.genomeBuild}" />
 			</h:panelGrid>
 		</h:panelGrid> 
-
+		
+		#{geneStripBean.init(20,10,'natural_sort(mgi)',true,false,geneDetailsBean.geneId)}
+		#{geneStripBean.loadDataList()}
 		<ui:include src="/snippets/g_genestrip_dataform.xhtml"></ui:include>
       
       <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel != null and geneDetailsBean.geneModel.assocProbes != null}">
