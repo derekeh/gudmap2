@@ -96,7 +96,8 @@
 		   	rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.batchId and arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}">
 			
 				<h:outputText value="Batch ID:" rendered="#{arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}"/>
-				<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{arraySeqSubmissionBean.arraySubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}">
+				<h:outputLink value="browseMicSampleTablePage.jsf"  rendered="#{arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}">
+					<f:param name="batch" value="#{arraySeqSubmissionBean.arraySubmissionModel.batchId}"></f:param>
 					<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.arraySubmissionModel.batchId > 0}"/>
 				</h:outputLink>
           </h:panelGrid>

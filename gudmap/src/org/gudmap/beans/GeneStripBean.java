@@ -80,7 +80,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     public ParamBean getParamBean (){
 		return paramBean;
 	}
-    
+    //configured depending on whether the view is for the genestrip or the genedetails page
     public void init(int rowsperpage, int pagenumbers, String defaultOrderCol, boolean sortDirection, boolean isStrip, String geneId) {
 		initPaging(rowsperpage,pagenumbers,defaultOrderCol,sortDirection);
 		if(isStrip)

@@ -426,6 +426,10 @@
 	vertical-align:top;
 }
 
+.db_hide {
+	display:none;
+}
+
 /* paging buttons override */
 
 #pagingform .ui-datalist-content.ui-widget-content {

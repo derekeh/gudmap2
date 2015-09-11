@@ -231,7 +231,7 @@
    
 				<h:outputText id="il_focustext" value="Expression Database&#160;&#160;" styleClass="db_h1_indent"/> 
 				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />
-				<h:panelGroup id="spinner" style="display:none">
+				<h:panelGroup id="spinner" styleClass="db_hide">
 				  		<h:outputText value="Page Loading " />
 				  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />
 			  	</h:panelGroup>	
@@ -517,7 +517,7 @@
     
       <h2>Database Statistics</h2>
       <div>
-      <h:form id="formstats">
+      <h:form id="formstats" prependId="false">
          <table border="0" id="db_homestats">
           <tr>
             <th align="left" scope="col">Assay Type</th>
@@ -535,7 +535,7 @@
           <tr>
             <td>Wholemount ISH (WISH)</td>
             <td>
-            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage" onclick="$('#spinner').show()"></h:link>
+            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage" id="il_wishlink"></h:link>
             </td>
             <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
           </tr>
@@ -623,6 +623,11 @@
 <script type="text/javascript">
 //<![CDATA[
    $(document).ready(function() {
+	   
+	   $("#il_wishlink").click(function (e) {
+			$("#spinner").removeClass('db_hide');
+		});
+		
 
 		$( "#Accordion1" ).accordion({
 			collapsible:true,

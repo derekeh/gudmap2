@@ -106,7 +106,8 @@
 		   	rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.batchId and arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}">
 			
 				<h:outputText value="Batch ID:" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}"/>
-				<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{arraySeqSubmissionBean.seqSubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}">
+				<h:outputLink value="browseSeqSampleTablePage.jsf"  rendered="#{arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}">
+					<f:param name="batch" value="#{arraySeqSubmissionBean.seqSubmissionModel.batchId}"></f:param>
 					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.batchId}"  rendered="#{arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}"/>
 				</h:outputLink>
           </h:panelGrid>

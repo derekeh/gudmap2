@@ -41,6 +41,7 @@ public class MicSampleTablePageBeanAssembler {
 		
 		paramValue=(Globals.getParameterValue("arraySeriesID")!=null)?"AND SRM_SERIES_FK="+Globals.getParameterValue("arraySeriesID")+" ":"";
 		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND STG_STAGE_DISPLAY='"+Globals.getParameterValue("stage")+"' ":"";
+		paramValue+=(Globals.getParameterValue("batch")!=null)?" AND SUB_BATCH='"+Globals.getParameterValue("batch")+"' ":"";
 		
 		
 	}
