@@ -62,6 +62,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     private String userInput="";
     private String userInputQuery;
     private String wildcard="";
+    private String stage="";
     
     private String assayType="";
     private String specimenAssay="";
@@ -102,7 +103,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     public void setup(String assayType,String specimenAssay) {
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
     	//this.assayType=assayType;
-    	
+    	stage=null;
     	if(specimenAssay.equals("WISH"))
     		specimenWhereclause=GenericQueries.WHERE_WISH;
     	else if(specimenAssay.equals("SISH"))
@@ -162,6 +163,8 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     				paramBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
     				volatileSummaryBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
     			}
+    			if(Globals.getParameterValue("stage")!=null)
+    				stage=Globals.getParameterValue("stage");
     			
     			assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
     		}
@@ -327,6 +330,8 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 				totalRows = booleanResultAssembler.count();
     		}
     		else {
+    			if(specimenAssay.equals("stage"))
+    				paramBean.confirmStaging(getStage());
 		    	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
 		    									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause);
 		        // Set currentPage, totalPages and pages.
@@ -467,6 +472,14 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     
     public String getWildcard() {
     	return wildcard;
+    }
+    
+    public void setStage(String stage) {
+    	this.stage = stage;
+    }
+    
+    public String getStage() {
+    	return stage;
     }
     
     public String progress() throws Exception {

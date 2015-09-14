@@ -51,7 +51,8 @@
 					<h:outputText styleClass="plaintextbold" value="Number of In situ Submissions" />
 				</f:facet>
 				<h:commandLink value="#{submission[2]}" actionListener="#{paramBean.updateStaging(submission[0],stageBean.geneSymbol)}"  
-					action="browseInsituTablePage" rendered="#{submission[2]!='0'}">  	
+					action="browseInsituStageTablePage" rendered="#{submission[2]!='0'}"> 
+					<f:param name="stage" value="#{submission[0]}" /> 	
 				</h:commandLink>
 			
 			</h:column>

@@ -1482,6 +1482,8 @@ public class ParamBean implements Serializable {
 	
 	///////FROM browseStageSubmissions//////////////////
 	public void updateStaging(String stage, String geneSymbol){
+		if(stage==null)
+			return;
 		String species="";
 		if(stage.startsWith("TS0")){
 			stage=stage.substring(3);
@@ -1499,6 +1501,22 @@ public class ParamBean implements Serializable {
 		setSpecies(species);
 		if(!geneSymbol.equals(""))
 			setGenevalues(geneSymbol);
+		
+	}
+	
+	public void confirmStaging(String stage){
+		if(stage==null)
+			return;
+		if(stage.startsWith("TS0")){
+			stage=stage.substring(3);
+			species="Mouse";
+		}
+		else if(stage.startsWith("TS")){
+			stage=stage.substring(2);
+			species="Mouse";
+		}
+		setTheilerstagefromvalues(stage);
+		setTheilerstagetovalues(stage);
 		
 	}
 	

@@ -45,6 +45,7 @@ public class InsituTablePageBeanAssembler {
 		}*/
 		if(Globals.getParameterValue("batch")!=null)
 			batch=Integer.parseInt(Globals.getParameterValue("batch"));
+		
 
 		
 		this.paramSQL=paramSQL;
