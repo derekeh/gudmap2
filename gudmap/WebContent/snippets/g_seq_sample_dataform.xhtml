@@ -15,7 +15,10 @@
     		
     		<h:column rendered="#{paramBean.mic_gudmapaccessioncol == true}">
     			<f:facet name="header">
-    				GUDMAP Entry Details 
+    				<h:commandLink id="gudmapaccessionlink" value="GUDMAP Entry Details" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="NATURAL_SORT(gudmap_accession)" />
+                         <f:ajax execute="@this gudmapaccessionlink" render="@form"></f:ajax>
+                    </h:commandLink>
     			</f:facet>
     				
     			<h:commandLink value="#{u.gudmap_accession}"  action="viewSeqSubmissionDetails">
@@ -58,7 +61,7 @@
     				#{u.source}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.mic_librarystrategycol == true}">
+    		<h:column rendered="#{paramBean.mic_samplelibrarystrategycol == true}">
     			<f:facet name="header">
     				<h:commandLink id="librarystrategylink" value="Library Strategy" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="library_strategy" />

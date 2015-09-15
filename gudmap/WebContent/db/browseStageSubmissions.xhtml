@@ -19,9 +19,10 @@
 	<ui:define name="content">
 	#{stageBean.setup()}
 	<!-- can use relative links on html tags -->
-		<h:outputText value ="Submissions by Stage&#160;&#160;" styleClass="db_bold" />
+		<h:outputText value ="Data by Stage&#160;&#160;" styleClass="db_bold" />
 	     <h:outputText value ="for Gene: #{stageBean.geneSymbol}" rendered="#{not empty stageBean.geneSymbol}" styleClass="db_bold" />	
-	    <!-- all other content in here -->  
+	    <!-- all other content in here --> 
+	    <div style="min-height:8px;"></div>
 	    <h:form id="stageBrowseForm">
 		<h:dataTable styleClass="db_order-table"
     				 headerClass="db_order-table-header"
@@ -32,7 +33,8 @@
 					<h:outputText styleClass="plaintextbold" value="Stage" />
 				</f:facet>
 
-				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{submission[4]}definition.html" rendered="#{submission[0].startsWith('TS')}">
+				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{submission[4]}definition.html" 
+					rendered="#{submission[0].startsWith('TS')}" target="gud_new">
 					<h:outputText styleClass="plaintext" value="#{submission[0]}"/>
 				</h:outputLink>
 				<h:outputText value="#{submission[0]}" rendered="#{!submission[0].startsWith('TS')}"></h:outputText>

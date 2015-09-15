@@ -84,6 +84,7 @@ public class MicSampleTablePageBeanAssembler {
 				arraySeqmodel.setSpecimen_assay_type(result.getString("specimen_assay_type"));
 				arraySeqmodel.setPersonOid(result.getInt("person_oid"));
 				arraySeqmodel.setSeriesOid(result.getInt("series_oid"));
+				arraySeqmodel.setPlatformID(result.getString("platform"));
 				
 				arraySeqmodel.setSelected(false);
 				list.add(arraySeqmodel);

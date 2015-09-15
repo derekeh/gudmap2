@@ -12,6 +12,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.gudmap.queries.array.ArrayQueries;
+import org.gudmap.queries.array.SequenceQueries;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.generic.WebPageQueries;
 import org.gudmap.globals.Globals;
@@ -22,6 +24,7 @@ public class ParamBeanAssembler {
 	private PreparedStatement ps;
 	private ResultSet result;
 	private Map<String,String>sourcelist;
+	private Map<String,String>assaysourcelist;
 	private Map<String,String>assaytypeinsitulist;
 	private Map<String,String>allassaytypelist;
 	private Map<String,String>theilerstagelist;
@@ -35,6 +38,9 @@ public class ParamBeanAssembler {
 	private Map<String,String>pageCategorylist;
 	private Map<String,String>collectionTypeList;
 	private Map<String,String>speciesList;
+	private Map<String,String>arrayplatformlist;
+	private Map<String,String>seqlibstrategylist;
+	
 	
 	public ParamBeanAssembler() {
 			
@@ -57,6 +63,25 @@ public class ParamBeanAssembler {
 		    Globals.closeQuietly(con, ps, result);
 		}
 		return sourcelist;
+	}
+	
+	public Map<String,String> getAssaysourcelist(String assayType) {
+		assaysourcelist = new LinkedHashMap<String,String>();
+		String queryString=GenericQueries.ALL_SOURCES_PER_ASSAY;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, assayType);
+			result =  ps.executeQuery();
+			while(result.next())
+				assaysourcelist.put(result.getString(1), result.getString(1));
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return assaysourcelist;
 	}
 	
 	public Map<String,String> getAssaytypeinsitulist() {
@@ -256,6 +281,44 @@ public class ParamBeanAssembler {
 		speciesList.put("ALL","ALL");
 		
 		return speciesList;
+	}
+	
+	public Map<String,String> getArrayplatformlist() {
+		arrayplatformlist = new LinkedHashMap<String,String>();
+		arrayplatformlist.put("ALL","ALL");
+		String queryString=ArrayQueries.ARRAY_PLATFORM;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next())
+				arrayplatformlist.put(result.getString(1), result.getString(1));
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return arrayplatformlist;
+	}
+	
+	public Map<String,String> getSeqlibstrategylist() {
+		seqlibstrategylist = new LinkedHashMap<String,String>();
+		seqlibstrategylist.put("ALL","ALL");
+		String queryString=SequenceQueries.SEQUENCE_LIBRARY_STRATEGY;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next())
+				seqlibstrategylist.put(result.getString(1), result.getString(1));
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return seqlibstrategylist;
 	}
 
 	

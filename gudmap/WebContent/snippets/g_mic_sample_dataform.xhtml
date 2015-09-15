@@ -14,8 +14,11 @@
     		
     		
     		<h:column rendered="#{paramBean.mic_gudmapaccessioncol == true}">
-    			<f:facet name="header">
-    				GUDMAP Entry Details 
+    			<f:facet name="header">   				 
+    				<h:commandLink id="gudmapaccessionlink" value="GUDMAP Entry Details" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="NATURAL_SORT(gudmap_accession)" />
+                         <f:ajax execute="@this gudmapaccessionlink" render="@form"></f:ajax>
+                    </h:commandLink>
     			</f:facet>
     				
     			<h:commandLink value="#{u.gudmap_accession}"  action="viewArraySubmissionDetails">
@@ -46,6 +49,16 @@
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
 					<h:outputText value="#{u.geoSeriesID}"/>
 				</h:outputLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.mic_sampleplatformIDcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink id="platformlink" value="Platform" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="platform" />
+                          <f:ajax execute="@this platformlink" render="@form"></f:ajax>
+                    </h:commandLink>
+				</f:facet>
+    				#{u.platformID}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.mic_sourcecol == true}">

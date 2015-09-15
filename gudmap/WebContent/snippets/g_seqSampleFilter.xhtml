@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+		<pr:dialog header="Filter Results" widgetVar="dialog2" width="750" style="position:absolute;left:-300px;"  > 
+		<h:form id="filterform"> 
+		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+		 
+		 	<h:outputText value="Source:"></h:outputText>
+		 	<h:selectManyListbox size="5" value="#{paramBean.assaysourcevalues}">
+		 		<f:selectItems value="#{paramBean.getAssaysourcelist('NextGen')}" />
+		 	</h:selectManyListbox>
+		 	
+		 	<h:outputText value="Submission Date: "></h:outputText>
+		 	<h:panelGroup>
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.fromdatevalues}"></pr:calendar>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{paramBean.todatevalues}"></pr:calendar>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+		 	
+		 	<h:outputText value="Species: "></h:outputText>
+	    	<h:selectOneMenu value="#{paramBean.species}">
+		 				<f:selectItems value="#{paramBean.specieslist}" />
+		 				<f:ajax render="@form" />
+		 	</h:selectOneMenu>		 	
+	   		
+	   		<h:outputText value="Theiler Stage: " rendered="#{paramBean.species=='Mouse' || paramBean.species=='ALL'}"></h:outputText>
+	    	<h:panelGroup rendered="#{paramBean.species=='Mouse' || paramBean.species=='ALL'}" >
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagefromvalues}">
+		 				<f:selectItems value="#{paramBean.getTheilerstagelist(true)}"/>
+		 			</h:selectOneMenu>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.theilerstagetovalues}">
+		 				<f:selectItems value="#{paramBean.getTheilerstagelist(false)}"/>
+		 			</h:selectOneMenu>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+		 	
+		 	<h:outputText value="Carnegie Stage: " rendered="#{paramBean.species=='Human' || paramBean.species=='ALL'}"></h:outputText>
+	    	<h:panelGroup rendered="#{paramBean.species=='Human' || paramBean.species=='ALL'}">
+		 		<h:panelGrid columns="4">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.carnegiestagefromvalues}">
+		 				<f:selectItems value="#{paramBean.getCarnegiestagelist(true)}" />
+		 			</h:selectOneMenu>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<h:selectOneMenu value="#{paramBean.carnegiestagetovalues}">
+		 				<f:selectItems value="#{paramBean.getCarnegiestagelist(false)}" />
+		 			</h:selectOneMenu>
+		 		</h:panelGrid>
+		 	</h:panelGroup>
+		 	
+	   		<h:outputText value="Library Strategy "></h:outputText>
+	    	<h:selectOneMenu value="#{paramBean.seqlibstrategyvalues}">
+		 				<f:selectItems value="#{paramBean.seqlibstrategylist}" />
+		 				<f:ajax render="@form" />
+		 	</h:selectOneMenu>		 	
+	   		
+	   		<h:outputText value="Sex:"></h:outputText>
+	   		<h:selectOneRadio value="#{paramBean.sexvalues}">
+	   			<f:selectItems value="#{paramBean.sexlist}" />
+	   		</h:selectOneRadio>
+	   		
+	   		
+	   		<h:commandButton id="il_filter_submit" value="Submit" actionListener="#{genericTablePageBean.refresh()}">
+	   			<f:ajax execute="@form" render=":dataform :pagingform :buttonform" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>
+	   </h:form>
+	   
+	   <h:form>	
+	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+	   	
+	   		<h:commandButton id="il_filter_test" value="Test" action="result" rendered="#{paramBean.debug}"></h:commandButton>
+	   		
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{genericTablePageBean.resetAll()}">
+	   			<f:ajax execute="@this il_filter_reset" render=":filterform :dataform :pagingform :focusform :buttonform" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>	
+	  </h:form>    
+	   	
+	</pr:dialog> 
+		
+</ui:composition>

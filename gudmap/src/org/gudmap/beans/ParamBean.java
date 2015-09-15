@@ -59,6 +59,7 @@ public class ParamBean implements Serializable {
 	private String[] genestripcols;
 	private String[] micseriescols;
 	private String[] micsamplecols;
+	private String[] seqsamplecols;
 	private String[] micplatformcols;
 	private String[] seqseriescols;
 	private Map<String,Boolean> resultmap;
@@ -66,6 +67,7 @@ public class ParamBean implements Serializable {
 	private Map<String,Boolean> genestripresultmap;
 	private Map<String,Boolean> micseriesresultmap;
 	private Map<String,Boolean> micsampleresultmap;
+	private Map<String,Boolean> seqsampleresultmap;
 	private Map<String,Boolean> micplatformresultmap;
 	private Map<String,Boolean> seqseriesresultmap;
 	/*filter*/
@@ -84,6 +86,10 @@ public class ParamBean implements Serializable {
 	private String carnegiestagetovalues;
 	private String sexvalues="ALL";
 	private String specimentypevalues;
+	
+	private String[] assaysourcevalues;
+	private String seqlibstrategyvalues="ALL";
+	private String arrayplatformvalues="ALL";
 	
 	private ParamBeanAssembler assembler;
 	private String whereclause=" WHERE ";
@@ -118,6 +124,8 @@ public class ParamBean implements Serializable {
 	private boolean mic_componentscol=true;
 	private boolean mic_gudmapaccessioncol=true;
 	private boolean mic_librarystrategycol=true;
+	private boolean mic_sampleplatformIDcol=false;
+	private boolean mic_samplelibrarystrategycol = false;
 	
 
 	
@@ -158,6 +166,8 @@ public class ParamBean implements Serializable {
 		micseriescols= new String[]{"title","geoid","source","numsamples","platform","components"};
 		micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
 				"genotype","components"};
+		seqsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
+				"genotype","components"};
 		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};
 		seqseriescols= new String[]{"title","geoid","source","numsamples","librarystrategy","components"};
 		resultmap=new HashMap<String,Boolean>();
@@ -165,6 +175,7 @@ public class ParamBean implements Serializable {
 		genestripresultmap=new HashMap<String,Boolean>();
 		micseriesresultmap=new HashMap<String,Boolean>();
 		micsampleresultmap=new HashMap<String,Boolean>();
+		seqsampleresultmap=new HashMap<String,Boolean>();
 		micplatformresultmap=new HashMap<String,Boolean>();
 		seqseriesresultmap=new HashMap<String,Boolean>();
 		
@@ -509,6 +520,10 @@ public class ParamBean implements Serializable {
 		return assembler.getSourcelist(); 
 	}
 	
+	public Map<String,String> getAssaysourcelist(String assayType){
+		return assembler.getAssaysourcelist(assayType); 
+	}
+	
 	public Map<String,String> getAssaytypeinsitulist(){
 		return assembler.getAssaytypeinsitulist();
 	}
@@ -535,6 +550,14 @@ public class ParamBean implements Serializable {
 	
 	public Map<String,String> getSpecimentypelist(){
 		return assembler.getSpecimentypelist();
+	}
+	
+	public Map<String,String> getArrayplatformlist(){
+		return assembler.getArrayplatformlist();
+	}
+	
+	public Map<String,String> getSeqlibstrategylist(){
+		return assembler.getSeqlibstrategylist();
 	}
 	
 	/**gene search options***/
@@ -811,6 +834,32 @@ public class ParamBean implements Serializable {
 	
 	public String getProbenamevalues(){
 		return probenamevalues;
+	}
+	
+	
+	/**************array and seq ***************/
+	
+	public void setArrayplaformvalues(String arrayplatformvalues) {
+		this.arrayplatformvalues = arrayplatformvalues;
+	}
+	
+	public String getArrayplatformvalues () {
+		return arrayplatformvalues;
+	}
+	
+	public void setSeqlibstrategyvalues(String seqlibstrategyvalues) {
+		this.seqlibstrategyvalues = seqlibstrategyvalues;
+	}
+	
+	public String getSeqlibstrategyvalues () {
+		return seqlibstrategyvalues;
+	}
+	
+	public void setAssaysourcevalues(String[] assaysourcevalues) {
+		this.assaysourcevalues = assaysourcevalues;
+	}
+	public String[] getAssaysourcevalues(){
+		return assaysourcevalues;
 	}
 	
 	/*****gene search options**********/
@@ -1166,6 +1215,15 @@ public class ParamBean implements Serializable {
 		return mic_numsamplescol;
 	}
 	
+	
+	public void setMic_sampleplatformIDcol(boolean mic_sampleplatformIDcol){
+		this.mic_sampleplatformIDcol=mic_sampleplatformIDcol;
+	}
+	
+	public boolean getMic_sampleplatformIDcol() {
+		return mic_sampleplatformIDcol;
+	}
+	
 	public void setMic_platformIDcol(boolean mic_platformIDcol){
 		this.mic_platformIDcol=mic_platformIDcol;
 	}
@@ -1279,6 +1337,13 @@ public class ParamBean implements Serializable {
 	public boolean getMic_librarystrategycol() {
 		return mic_librarystrategycol;
 	}
+		
+	public void setMic_samplelibrarystrategycol(boolean mic_samplelibrarystrategycol) {
+		this.mic_samplelibrarystrategycol = mic_samplelibrarystrategycol;
+	}
+	public boolean getMic_samplelibrarystrategycol() {
+		return mic_samplelibrarystrategycol;
+	}
 	
 	
 	public void setMicseriescols(String[]micseriescols){
@@ -1320,7 +1385,7 @@ public class ParamBean implements Serializable {
 		return Arrays.toString(micseriescols);
 	}
 	
-	///////////sample///////////////
+	///////////mic sample///////////////
 	public void setMicsamplecols(String[]micsamplecols){
 		this.micsamplecols=micsamplecols;
 		micsampleresultmap.clear();
@@ -1330,6 +1395,7 @@ public class ParamBean implements Serializable {
 		mic_gudmapaccessioncol=micsampleresultmap.containsKey("gudmapaccession");
 		mic_geoSampleIDcol=micsampleresultmap.containsKey("geosampleid");
 		mic_geoSeriesIDcol=micsampleresultmap.containsKey("geoseriesid");
+		mic_sampleplatformIDcol=micsampleresultmap.containsKey("platform");
 		mic_sourcecol=micsampleresultmap.containsKey("source");
 		mic_stagecol=micsampleresultmap.containsKey("stage");
 		mic_agecol=micsampleresultmap.containsKey("age");
@@ -1354,6 +1420,7 @@ public class ParamBean implements Serializable {
 		micsamplecolmap.put("Gudmap Entry Details", "gudmapaccession");
 		micsamplecolmap.put("GEO Sample ID", "geosampleid");
 		micsamplecolmap.put("GEO Series ID", "geoseriesid");
+		micsamplecolmap.put("Platform", "platform");
 		micsamplecolmap.put("Source", "source");
 		micsamplecolmap.put("Stage", "stage");
 		micsamplecolmap.put("Age", "age");
@@ -1371,6 +1438,62 @@ public class ParamBean implements Serializable {
  
 	public String getMicsamplecolsInString() {
 		return Arrays.toString(micsamplecols);
+	}
+	
+	////////////////seq sample////////////////////
+	
+	public void setSeqsamplecols(String[]seqsamplecols){
+		this.seqsamplecols=seqsamplecols;
+		seqsampleresultmap.clear();
+		for(int i=0;i<seqsamplecols.length;i++){
+			seqsampleresultmap.put(seqsamplecols[i], true);	
+		}
+		mic_gudmapaccessioncol=seqsampleresultmap.containsKey("gudmapaccession");
+		mic_geoSampleIDcol=seqsampleresultmap.containsKey("geosampleid");
+		mic_geoSeriesIDcol=seqsampleresultmap.containsKey("geoseriesid");
+		mic_samplelibrarystrategycol=seqsampleresultmap.containsKey("librarystrategy");
+		mic_sourcecol=seqsampleresultmap.containsKey("source");
+		mic_stagecol=seqsampleresultmap.containsKey("stage");
+		mic_agecol=seqsampleresultmap.containsKey("age");
+		mic_submissiondatecol=seqsampleresultmap.containsKey("submissiondate");
+		mic_sexcol=seqsampleresultmap.containsKey("sex");
+		mic_sampledescriptioncol=seqsampleresultmap.containsKey("sampledescription");
+		mic_samplenamecol=seqsampleresultmap.containsKey("samplename");
+		mic_genotypecol=seqsampleresultmap.containsKey("genotype");
+		mic_componentscol=seqsampleresultmap.containsKey("components");
+	}
+	
+	
+	
+	public String[] getSeqsamplecols(){
+		return seqsamplecols;
+	}
+	
+	
+	private static Map<String,Object> seqsamplecolmap;
+	static{
+		seqsamplecolmap = new LinkedHashMap<String,Object>();	
+		seqsamplecolmap.put("Gudmap Entry Details", "gudmapaccession");
+		seqsamplecolmap.put("GEO Sample ID", "geosampleid");
+		seqsamplecolmap.put("GEO Series ID", "geoseriesid");
+		seqsamplecolmap.put("Library Strategy", "librarystrategy");
+		seqsamplecolmap.put("Source", "source");
+		seqsamplecolmap.put("Stage", "stage");
+		seqsamplecolmap.put("Age", "age");
+		seqsamplecolmap.put("Submission Date", "submissiondate");
+		seqsamplecolmap.put("Sex", "sex");
+		seqsamplecolmap.put("Sample Description", "sampledescription");
+		seqsamplecolmap.put("Sample Name", "samplename");
+		seqsamplecolmap.put("Genotype", "genotype");
+		seqsamplecolmap.put("Component(s) Sampled", "components");
+	}
+	
+	public Map<String,Object> getSeqsamplecolmap() {
+		return seqsamplecolmap;
+	}
+	
+	public String getSeqsamplecolsInString() {
+		return Arrays.toString(seqsamplecols);
 	}
 	
 	//////////////platform////////////////
