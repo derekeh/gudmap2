@@ -17,15 +17,13 @@
 	   		<h:outputText value="Platform: "></h:outputText>
 	    	<h:selectOneMenu value="#{paramBean.arrayplatformvalues}">
 		 				<f:selectItems value="#{paramBean.arrayplatformlist}" />
-		 				<f:ajax render="@form" />
 		 	</h:selectOneMenu>		 	
-	   		
-	   		
-	   		
 	   		
 	   		<h:commandButton id="il_filter_submit" value="Submit" actionListener="#{genericTablePageBean.refresh()}">
 	   			<f:ajax execute="@form" render=":dataform :pagingform :buttonform" ></f:ajax> 
 	   		</h:commandButton>
+	   		<h:panelGroup></h:panelGroup>
+	   		
 	   	</h:panelGrid>
 	   </h:form>
 	   

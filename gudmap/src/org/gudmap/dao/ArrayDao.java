@@ -23,12 +23,7 @@ public class ArrayDao {
 	private GeneModel geneModel;
 	
 	public ArrayDao() {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
+		
 	}
 	
 	public GeneModel findGeneInfoBySymbol(ArrayList<String> genes) {

@@ -838,9 +838,19 @@ public class ParamBean implements Serializable {
 	
 	
 	/**************array and seq ***************/
-	
-	public void setArrayplaformvalues(String arrayplatformvalues) {
+	private String platformvalueclause="";
+	private String cacheplatformvalueclause="";
+	public void setArrayplatformvalues(String arrayplatformvalues) {
 		this.arrayplatformvalues = arrayplatformvalues;
+		
+		if(!arrayplatformvalues.equals("")) {
+			platformvalueclause="PLT_GEO_ID = '"+arrayplatformvalues+"' AND ";
+			cacheplatformvalueclause=cacheprefix+platformvalueclause;
+	}
+	if(arrayplatformvalues.equals("ALL")) {
+		platformvalueclause="";	
+		cacheplatformvalueclause="";
+	}
 	}
 	
 	public String getArrayplatformvalues () {
@@ -857,6 +867,7 @@ public class ParamBean implements Serializable {
 	
 	public void setAssaysourcevalues(String[] assaysourcevalues) {
 		this.assaysourcevalues = assaysourcevalues;
+		setSourcevalues(assaysourcevalues);
 	}
 	public String[] getAssaysourcevalues(){
 		return assaysourcevalues;
@@ -892,8 +903,7 @@ public class ParamBean implements Serializable {
 		}
 		whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+stagebuffer.toString()+sexvalueclause+specimentypevalueclause+
 				genevalueclause+geneIdvalueclause+probenamevalueclause;
-		/*whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+theilerstagevalueclause+carnegiestagevalueclause+sexvalueclause+specimentypevalueclause+
-				genevalueclause+geneIdvalueclause+probenamevalueclause;*/
+		
 		if(!debug)
 			resetFilter();
 		return whereclause;
@@ -946,7 +956,11 @@ public class ParamBean implements Serializable {
 		this.micWhereClause = micWhereClause;
 	}
 	public String getMicWhereclause () {
-		micWhereClause = GenericQueries.WHERE_CLAUSE;
+		//micWhereClause = GenericQueries.WHERE_CLAUSE;
+		micWhereClause = getWhereclause() + platformvalueclause;
+		
+		if(!debug)
+			resetArraySeqFilter();
 		return micWhereClause;
 	}
 		 
@@ -972,6 +986,7 @@ public class ParamBean implements Serializable {
 		tempfromvalues="";
 		//DON'T RESET THE WHERECLAUSE HERE OTHERWISE THE PAGING WONT WORK!!!
 		//setWhereclause(GenericQueries.WHERE_CLAUSE);
+		
 	}
 	
 	public void resetClauses() {
@@ -987,6 +1002,8 @@ public class ParamBean implements Serializable {
 		setWhereclause(GenericQueries.WHERE_CLAUSE);
 		setCachewhereclause(GenericQueries.WHERE_CLAUSE);
 		setarrayCachewhereclause(GenericQueries.WHERE_CLAUSE);
+		
+		setMicWhereclause(GenericQueries.WHERE_CLAUSE);
 	}
 	//DONT RESET THE THEILER STAGES HERE BECAUSE THEY ARE SET IN THE OPTIONS AND PRESERVED FOR USE IN THE SUBSEQUENT FILTER
 	public String resetGeneSearchValues() {
@@ -1022,26 +1039,36 @@ public class ParamBean implements Serializable {
 		resetClauses();
 		resetWhereClauses();
 		//focusGroup="reset";
+		resetArraySeqValues();
+		resetArraySeqClauses();
 	}
 	
 	public void resetAllArraySeq() {
-		resetArraySeqValues();
+		
+		//resetArraySeqValues();
 		//resetClauses();
 		//resetWhereClauses();
 		//focusGroup="reset";
 	}
 	//TODO populate once array/seq filters are in place
 	public void resetArraySeqValues(){
-		//reset the parameterized values
-		
-		//DON'T RESET THE WHERECLAUSE HERE OTHERWISE THE PAGING WONT WORK!!!
-		setMicWhereclause(GenericQueries.WHERE_CLAUSE);
+		//array and sequence
+		setAssaysourcevalues(new String[0]);
+		setArrayplatformvalues("");
+	}
+	
+	public void resetArraySeqClauses() {
+		cacheplatformvalueclause="";platformvalueclause="";
 	}
 	
 	public void resetFilter() {
 		resetValues();
 		resetClauses();
-		
+	}
+	
+	public void resetArraySeqFilter() {
+		resetArraySeqValues();
+		resetArraySeqClauses();
 	}
 
 	/*******************focus groups****************/
