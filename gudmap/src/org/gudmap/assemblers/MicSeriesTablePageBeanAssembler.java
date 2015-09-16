@@ -32,21 +32,19 @@ public class MicSeriesTablePageBeanAssembler {
 	private String assayType;
 	private String whereclause;
 	private String focusGroupWhereclause;
+	private String platformID;
 	
 	public MicSeriesTablePageBeanAssembler(String paramSQL,String assayType) {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
-		this.paramSQL=paramSQL;
-		//this.assayType=assayType;
 		
+		this.paramSQL=paramSQL;
+		if(Globals.getParameterValue("platform")!=null)
+			platformID=Globals.getParameterValue("platform");
 	}
 	
 	public List<ArraySeqTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
 											String focusGroupWhereclause){
+		if(platformID!=null)
+			whereclause+="PLT_GEO_ID = '"+platformID+"' AND ";
 		this.whereclause=whereclause;
 		this.focusGroupWhereclause=focusGroupWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";

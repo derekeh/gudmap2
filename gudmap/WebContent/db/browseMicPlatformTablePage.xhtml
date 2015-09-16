@@ -83,7 +83,12 @@
                          <f:ajax execute="@this numserieslink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
-    				#{u.numSeries}
+				
+				<h:outputLink  value="browseMicSeriesTablePage.jsf">
+					<h:outputText value="#{u.numSeries}" />
+					<f:param name="platform" value="#{u.platformID}"/>
+				</h:outputLink>
+				
     		</h:column>
     		
 

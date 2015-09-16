@@ -65,6 +65,9 @@ public class InsituTablePageBeanAssembler {
 		
 		if(assayType.equals("TG"))
 			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");
+		if(assayType.equals("INSITU")){
+			paramSQL = paramSQL.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC','TG')");
+		}
 		
 		String sql = String.format(paramSQL, expressionJoin, whereclause, focusGroupWhereclause, sortField, sortDirection);
 		if(!expressionJoin.equals(""))
@@ -75,9 +78,16 @@ public class InsituTablePageBeanAssembler {
 		{
 			con = Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setString(1, assayType);
-			ps.setInt(2, firstRow);
-			ps.setInt(3, rowCount);
+			if(assayType.equals("INSITU")){
+				ps.setInt(1, firstRow);
+				ps.setInt(2, rowCount);
+			}
+			else
+			{
+				ps.setString(1, assayType);
+				ps.setInt(2, firstRow);
+				ps.setInt(3, rowCount);
+			}
 			result =  ps.executeQuery();
 			
 			while(result.next()){
@@ -116,10 +126,13 @@ public class InsituTablePageBeanAssembler {
 		int count=0;
 		
 		String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");
-		//String totalwhere=(whereclause.trim().equals("WHERE"))?"":Utils.removeWhere(whereclause, " WHERE ");
+		String queryString = GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION;
 		if(assayType.equals("TG"))
 			totalwhere = totalwhere.replace("RPR_SYMBOL", "ALE_GENE");
-		String sql = String.format(GenericQueries.ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION,expressionJoin,totalwhere,focusGroupWhereclause);
+		if(assayType.equals("INSITU")){
+			queryString = queryString.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC','TG')");
+		}
+		String sql = String.format(queryString,expressionJoin,totalwhere,focusGroupWhereclause);
 		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
 		if(batch>0)
 			sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
@@ -127,7 +140,8 @@ public class InsituTablePageBeanAssembler {
 		{
 				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
-				ps.setString(1, assayType);
+				if(!assayType.equals("INSITU"))
+					ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
@@ -169,8 +183,13 @@ public class InsituTablePageBeanAssembler {
 				if(batch>0)
 					sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
 				
+				if(assayType.equals("INSITU")){
+					sql = sql.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC','TG')");
+				}
+				
 				ps = con.prepareStatement(sql);
-				ps.setString(1, assayType);
+				if(!assayType.equals("INSITU"))
+					ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
 				while(result.next()){
