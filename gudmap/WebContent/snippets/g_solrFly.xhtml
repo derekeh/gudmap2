@@ -27,19 +27,15 @@
 	      
 	      <h:outputText class="gd_solr_text" value="Gudmap Search" rendered="#{viewSolrSearch.showSolrText}"> </h:outputText>
 	      
-	      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form" rendered="#{viewSolrSearch.showSolrInput}" >
+	      <h:panelGrid columns="2" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form" rendered="#{viewSolrSearch.showSolrInput}" >
 	      	<h:inputText id="gd_solr_textfield2" value="#{solrTreeBean.solrInput}" placeholder="Enter Text" event="valueChange"></h:inputText>
 	        <h:commandButton id="gd_solr_button2" value="Search" actionListener="#{solrTreeBean.goSearch}">
 	        	<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-	        	<f:ajax execute="@this" render=":panel" />
+	        	<f:ajax execute="@this" render="@form" />
 	        </h:commandButton>
-		 <h:commandLink id="gd_solr_filter" value="Filter Query" actionListener="#{viewSolrSearch.toggleFilter()}" type="button">
-	      	<f:ajax execute="@this" render=":panel0" />
-		 </h:commandLink>
 		 
 	    </h:panelGrid>
 
-	<h:panelGrid id="panel0" columns="2" border="0" cellpadding="10" cellspacing="1" rendered="#{viewSolrSearch.showSolrText}">
 
 	<h:panelGrid id="panel" columns="1" border="0" cellpadding="10" cellspacing="1" rendered="#{viewSolrSearch.showSolrText}">
 
@@ -103,57 +99,7 @@
 		 
 	</h:panelGrid> 
 
-
-
-
-	<h:panelGrid id="filter_part" columns="2" columnClasses="gd_leftAlign,gd_leftAlign" rendered="#{viewSolrSearch.showSolrFilter}">
-		 
-		
-		<h:selectManyCheckbox value="#{solrTreeBean.filter}" layout="pageDirection">
-		   <f:selectItem itemValue="ANCHOR:1" itemLabel="Anchor Genes (#{solrTreeBean.anchorGeneCount})" />
-		   <f:selectItem itemValue="MARKER:1" itemLabel="Marker Genes (#{solrTreeBean.markerGeneCount})" />
-		</h:selectManyCheckbox>	  
-		<br />
-
-
-
-		<h:selectManyCheckbox value="s" layout="pageDirection">
-		   <f:selectItem itemValue="ANCHOR:1" itemLabel="Assay Type" />
-		</h:selectManyCheckbox>	  
-		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
-		 		<f:selectItems value="#{solrTreeBean.assayTypeList}" />
-		 	</h:selectManyListbox>
-
-
-
-		<h:selectManyCheckbox value="s" layout="pageDirection">
-		   <f:selectItem itemValue="ANCHOR:1" itemLabel="Anatomy" />
-		</h:selectManyCheckbox>	  
-		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
-		 		<f:selectItems value="#{solrTreeBean.focusGroupList}" />
-		 	</h:selectManyListbox>
-
-		<h:selectManyCheckbox value="s" layout="pageDirection">
-		   <f:selectItem itemValue="ANCHOR:1" itemLabel="Platform" />
-		</h:selectManyCheckbox>	  
-		 	<h:selectManyListbox size="5" value="#{paramBean.sourcevalues}">
-		 		<f:selectItems value="#{solrTreeBean.platformList}" />
-		 	</h:selectManyListbox>
-
-		<h:selectManyCheckbox value="s" layout="pageDirection">
-		   <f:selectItem itemValue="ANCHOR:1" itemLabel="Theiler Stage" />
-		</h:selectManyCheckbox>	  
-		 	<h:selectManyListbox id="lbox" size="5" value="#{paramBean.sourcevalues}">
-		 		<f:selectItems value="#{solrTreeBean.theilerStageList}" />
-		 	</h:selectManyListbox>
-
-	   	</h:panelGrid>
-
-
-
-
-	 
-	</h:panelGrid>     
+  
 	   </div><!-- end gd_solrmenu -->
 	  </h:form>
 

@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" showEffect="slide" dismissable="false" appendToBody="false" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
+
+
+ 		<pr:accordionPanel activeIndex="-1">
+	 		<pr:tab title="Genes">
+			 	<h:outputText value="Gene: "></h:outputText>
+			 	<h:inputText value="#{solrInsituFilter.geneValue}" />
+			</pr:tab>
+			<pr:tab title="Submission Date">
+		 		<h:panelGrid columns="2">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.fromDateValue}">
+		 			</pr:calendar>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.toDateValue}">
+		 			</pr:calendar>
+		 		</h:panelGrid>
+			</pr:tab>
+			<pr:tab title="Sources">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sourceValues}">
+			 		<f:selectItems value="#{solrInsituFilter.sourceList}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+			<pr:tab title="Assay Types">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.assayTypeValues}">
+			 		<f:selectItems value="#{solrInsituFilter.assayTypeList}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+			<pr:tab title="Theiler Stages">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.theilerStageValues}">
+			 		<f:selectItems value="#{solrInsituFilter.theilerStageList}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+<ui:remove>	 			
+			<pr:tab title="Carnegie Stages">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.carnegieStageValues}">
+			 		<f:selectItems value="#{solrInsituFilter.carnegieStageList}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+</ui:remove>
+			<pr:tab title="Sex">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sexValues}">
+			 		<f:selectItems value="#{solrInsituFilter.sexList}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+			<pr:tab title="Specimen Type">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.specimenTypeValues}">
+			 		<f:selectItems value="#{solrInsituFilter.specimenTypeList}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+ 		</pr:accordionPanel>  
+
+
+	</pr:overlayPanel>
+		
+</ui:composition>

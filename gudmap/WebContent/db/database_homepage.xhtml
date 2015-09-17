@@ -13,7 +13,10 @@
 	</ui:define>
 <!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	 <ui:define name="solr">
-		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	 
+<ui:remove>
+	  <ui:include src="/snippets/g_solrFly5.xhtml"/>
+</ui:remove>		
 	</ui:define>
 	
 	<ui:define name="content">
@@ -31,8 +34,17 @@
 	</style>
 	
 
-	<pr:commandButton id="dialogSolrSearch" value="Search" onclick="PF('dialogSolrSearch').show();" type="button" rendered="#{paramBean.debug}"></pr:commandButton>
-	
+
+<ui:remove>
+<!--  
+	<pr:commandButton id="dialogSolrSearch" value="Search" onclick="PF('dialogSolrSearch').show();" type="button"></pr:commandButton>
+    <pr:commandButton id="solrSearchBtn" value="Search" type="button" />
+ -->   
+</ui:remove>
+	<ui:include src="/snippets/g_solrSearch.xhtml"/>
+	<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
+
+
 	<ui:include src="/snippets/g_information_dialogs.xhtml"/>
 	<pr:dialog header="Gene Search Options" widgetVar="dialog2" width="650" style="position:absolute;left:-300px;" modal="true" > 
 		<h:form id="filterform"> 
@@ -618,7 +630,8 @@
     <p></p> 
     <p></p> 
     
- 
+  
+
 
 <script type="text/javascript">
 //<![CDATA[
@@ -633,16 +646,15 @@
 			collapsible:true,
 			heightStyle:"content"
 		}); 
-		
-		
    });
-   
-  
-   
-   
 //]]>
 </script>	
+<<<<<<< HEAD
  <ui:include src="/snippets/g_solrSearch.xhtml"/> 
+=======
+
+
+>>>>>>> updates
 </ui:define>
 </ui:composition>
 </html>

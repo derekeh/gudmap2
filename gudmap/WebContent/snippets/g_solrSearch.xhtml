@@ -3,20 +3,106 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pr="http://primefaces.org/ui" >
+	
 
-	<pr:dialog header="Gudmap Search" widgetVar="dialogSolrSearch" modal="true" draggable="false" width="350" showEffect="slide" hideEffect="slide" position="1,100"  > 
+	
+    <pr:overlayPanel id="solrSearchPanel" for="solrSearchBtn" dismissable="false" appendToBody="true" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true">
+  	 
+     <h:form id="solrsearchform">  
+ <ui:remove>     
+	<ui:include src="/snippets/g_solrFilters.xhtml"/>    
+</ui:remove>
+ 
+      
+      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
+      	<h:inputText value="#{solrTreeBean.solrInput}" ></h:inputText>
+      	
+        <h:commandButton id="gd_solr_button2" value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
+        	<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+         	<f:ajax execute="@form" render=":solrsearchform" ></f:ajax>
+        </h:commandButton>
+ 
 
-	<h:form id="solrsearchform"> 
+ 		<pr:commandLink id="solrFilterBtn">
+ 			<h:graphicImage library="images/resources" name="filter.png"/>
+ 		</pr:commandLink>
+		
+ 	<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" dismissable="false" appendToBody="false" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
+ 
+ 		<pr:accordionPanel activeIndex="-1">
+	 		<pr:tab title="Genes">
+			 	<h:outputText value="Gene: "></h:outputText>
+			 	<h:inputText value="#{solrInsituFilter.geneValue}" >
+			 		<pr:ajax update=":solrsearchform " listener="#{solrInsituFilter.refresh}" />
+			 	</h:inputText>
+			</pr:tab>
+			<pr:tab title="Submission Date">
+		 		<h:panelGrid columns="2">
+		 			<h:outputText value="From:"></h:outputText>
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.fromDateValue}">
+		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+		 			</pr:calendar>
+		 			<h:outputText value="To:"></h:outputText>
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.toDateValue}">
+		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+		 			</pr:calendar>
+		 		</h:panelGrid>
+			</pr:tab>
+			<pr:tab title="Sources">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sourceValues}">
+			 		<f:selectItems value="#{solrInsituFilter.sourceList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+			<pr:tab title="Assay Types">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.assayTypeValues}">
+			 		<f:selectItems value="#{solrInsituFilter.assayTypeList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+			<pr:tab title="Theiler Stages">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.theilerStageValues}">
+			 		<f:selectItems value="#{solrInsituFilter.theilerStageList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+			<pr:tab title="Sex">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sexValues}">
+			 		<f:selectItems value="#{solrInsituFilter.sexList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+			<pr:tab title="Specimen Type">
+			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.specimenTypeValues}">
+			 		<f:selectItems value="#{solrInsituFilter.specimenTypeList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+			 	</h:selectManyListbox>
+			</pr:tab>
+ 		</pr:accordionPanel>  
+ 		
+			
+		
+  	</pr:overlayPanel> 	
+	    
+      </h:panelGrid>
+   
+<ui:remove> 
       <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
       	<pr:inputText value="#{solrTreeBean.solrInput}" placeholder="Enter Text" event="valueChange"></pr:inputText>
-        <pr:commandButton id="gd_solr_button2" value="Search" action="#{solrTreeBean.goSearch}">
+        <pr:commandButton id="gd_solr_button2" value="Search" action="#{solrTreeBean.goSearch}" >
         	<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-        	<f:ajax execute="@form" render=":solrsearchform :solrishfilterform" ></f:ajax> 
+        	<f:ajax execute="@form" render="solrsearchform2" ></f:ajax> 
         </pr:commandButton>
+           
+         <h:commandLink styleClass="plaintext" onclick="PF('dialogSolrInsituFilter').show(); return false;">
+   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
+		 </h:commandLink>
       </h:panelGrid>
+      
+  	<pr:commandButton id="solrFilterBtn" value="Filters" type="button" />    
+</ui:remove> 
 
-
-	<h:panelGrid id="panel" columns="2" border="0" cellpadding="10" cellspacing="1" >
+	  <h:panelGrid id="panel" columns="1" border="0" cellpadding="10" cellspacing="1" >
 
 
  
@@ -24,29 +110,18 @@
 			<h:outputText value="Genes (#{solrTreeBean.geneCount})" />
          </h:outputLink>
          <h:outputLabel value="Genes (#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.geneCount == 0}"/>         
-		 <h:commandLink styleClass="plaintext" onclick="PF('dialogSolrGeneFilter').show(); return false;">
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-   			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
-   			<f:ajax execute="@form" render=":solrsearchform" ></f:ajax> 
-		 </h:commandLink>
  
 
 		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrInsitu.xhtml" rendered="#{solrTreeBean.insituCount > 0}">
 			<h:outputText value="In Situ (#{solrTreeBean.insituCount})" />
 		 </h:outputLink>
          <h:outputLabel value="In Situ (#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.insituCount == 0}"/>
- 		 <h:commandLink styleClass="plaintext" onclick="PF('dialogSolrInsituFilter').show(); return false;">
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-		 </h:commandLink>
  
- 
+ <ui:remove>  
   		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMicroarray.jsf" rendered="#{solrTreeBean.microarrayCount > 0}">
          	<h:outputText  value="Microarray (#{solrTreeBean.microarrayCount})"/>
 		 </h:outputLink>
          <h:outputLabel value="Microarray (#{solrTreeBean.microarrayCount}) " rendered="#{solrTreeBean.microarrayCount == 0}"/>
- 		 <h:commandLink styleClass="plaintext" >
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-		 </h:commandLink>
  
       
 		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrGenelist.jsf" rendered="#{solrTreeBean.genelistCount > 0}">
@@ -55,9 +130,6 @@
 			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
 		 </h:outputLink>
         <h:outputLabel value="Gene Lists (#{solrTreeBean.genelistCount})"  rendered="#{solrTreeBean.genelistCount == 0}"/>
-		 <h:commandLink styleClass="plaintext" >
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-		 </h:commandLink>
 
 
  		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrTissueSummary.jsf" rendered="#{solrTreeBean.tissueCount > 0}">
@@ -66,24 +138,15 @@
 			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
 		 </h:outputLink>
          <h:outputLabel value="Tissue Summaries (#{solrTreeBean.tissueCount})" rendered="#{solrTreeBean.tissueCount == 0}"/>
-		 <h:commandLink styleClass="plaintext" >
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-		 </h:commandLink>
 
  
          <h:outputLabel value="Tutorials (0)" />
-		 <h:commandLink styleClass="plaintext" >
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-		 </h:commandLink>
     		
 		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMouseStrains.jsf" rendered="#{solrTreeBean.mouseStrainsCount > 0}">
          	<h:outputText  value="TG Mouse Strains (#{solrTreeBean.mouseStrainsCount})"/>
 			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
 		 </h:outputLink>
          <h:outputLabel value="TG Mouse Strains (#{solrTreeBean.mouseStrainsCount})" rendered="#{solrTreeBean.mouseStrainsCount == 0}"/>
-		 <h:commandLink styleClass="plaintext" >
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-		 </h:commandLink>
 
        
  		 <h:outputLink styleClass="plaintext" value="{appRoot}/solr/solrImagePage.jsf" rendered="#{solrTreeBean.imagesCount > 0}"> 
@@ -92,17 +155,13 @@
 			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
 		 </h:outputLink>
          <h:outputLabel value="Images (#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.imagesCount == 0}"/>
-		 <h:commandLink styleClass="plaintext" >
-   			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
-		 </h:commandLink>
-		 
+</ui:remove> 		 
 	</h:panelGrid> 
 
-   	</h:form>	 
-   	
-	</pr:dialog> 	
-		
-	<ui:include src="/snippets/g_solrGeneFilter.xhtml"></ui:include>	   	  
-	<ui:include src="/snippets/g_solrIshFilter.xhtml"></ui:include>		
+ 	</h:form>
+    </pr:overlayPanel>		
+ 	    
+   	  
+	
 		
 </ui:composition>

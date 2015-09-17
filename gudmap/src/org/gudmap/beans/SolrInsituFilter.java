@@ -6,6 +6,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -156,11 +157,11 @@ public class SolrInsituFilter implements Serializable {
 
 	}
 
-//	public void sourceChangeValues(ValueChangeEvent event){
-////		String sel = (String)event.getNewValue();
-////		sourceCB = false;
-//		refresh();
-//	}
+	public void sourceChangeValues(ValueChangeEvent event){
+		String sel = (String)event.getNewValue();
+//		sourceCB = false;
+		refresh();
+	}
 	
 	public String update(){
 		refresh();

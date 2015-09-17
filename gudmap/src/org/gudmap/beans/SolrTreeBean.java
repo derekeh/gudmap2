@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -53,12 +54,28 @@ public class SolrTreeBean implements Serializable {
 	}
 	
 	
-	public void goSearch() {
+	public String goSearch() {
+		
+		getSolrInput();
 		
 //		getAnchorGeneCount();
-
+		getGeneCount();
+		getInsituCount();
+		getMicroarrayCount();
+		getGenelistCount();
+		getTissueCount();
+//		getTutorialCount();
+		getMouseStrainsCount();
+		getImagesCount();
+		
+		return null;
 	}
 
+	public void goListen(ActionEvent event) {
+		
+		getSolrInput();
+		
+	}
 	
 	public String goInsitu() {
 		return "/solr/solrInsituTablePage";
