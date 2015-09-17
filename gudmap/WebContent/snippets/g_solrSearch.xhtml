@@ -6,26 +6,42 @@
 	
 
 	
-    <pr:overlayPanel id="solrSearchPanel" for="solrSearchBtn" dismissable="false" appendToBody="true" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true">
+    <pr:overlayPanel id="solrSearchPanel" for="solrSearchBtn" dismissable="false" appendToBody="true" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="font-size: 12px">
   	 
      <h:form id="solrsearchform">  
  <ui:remove>     
 	<ui:include src="/snippets/g_solrFilters.xhtml"/>    
 </ui:remove>
  
+		<h:panelGroup rendered="#{solrInsituFilter.filters.size() > 0}">	
+		<h:outputText value="Filter Settings: #{solrInsituFilter.filterString}" rendered="#{solrInsituFilter.filters.size() > 0}"/>		
+		<br/>
+		</h:panelGroup>
       
-      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
+      <h:panelGrid columns="4" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
       	<h:inputText value="#{solrTreeBean.solrInput}" ></h:inputText>
       	
-        <h:commandButton id="gd_solr_button2" value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
+        <h:commandButton value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
         	<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
          	<f:ajax execute="@form" render=":solrsearchform" ></f:ajax>
         </h:commandButton>
  
-
  		<pr:commandLink id="solrFilterBtn">
- 			<h:graphicImage library="images/resources" name="filter.png"/>
+ 			<h:graphicImage library="images/resources" name="filter_add.png" width="25" height="25"/>
  		</pr:commandLink>
+
+ 		<pr:commandLink>
+ 			<h:graphicImage library="images/resources" name="filter_delete.png"  width="25" height="25"/>
+ 			<pr:ajax update=":solrsearchform " listener="#{solrInsituFilter.reset}" />
+ 		</pr:commandLink>
+ 		
+  <ui:remove> 	
+        <h:commandButton value="Clear" image="/resources/images/resources/filter_delete.png">
+			 <pr:ajax update=":solrsearchform " listener="#{solrInsituFilter.reset}" />
+        </h:commandButton>
+    </ui:remove> 	  
+     </h:panelGrid>
+ 
 		
  	<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" dismissable="false" appendToBody="false" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
  
@@ -84,7 +100,7 @@
 		
   	</pr:overlayPanel> 	
 	    
-      </h:panelGrid>
+
    
 <ui:remove> 
       <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
@@ -117,12 +133,12 @@
 		 </h:outputLink>
          <h:outputLabel value="In Situ (#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.insituCount == 0}"/>
  
- <ui:remove>  
+
   		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMicroarray.jsf" rendered="#{solrTreeBean.microarrayCount > 0}">
          	<h:outputText  value="Microarray (#{solrTreeBean.microarrayCount})"/>
 		 </h:outputLink>
          <h:outputLabel value="Microarray (#{solrTreeBean.microarrayCount}) " rendered="#{solrTreeBean.microarrayCount == 0}"/>
- 
+
       
 		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrGenelist.jsf" rendered="#{solrTreeBean.genelistCount > 0}">
          	<h:outputText  value="Gene Lists (#{solrTreeBean.genelistCount})"/>
@@ -155,7 +171,7 @@
 			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
 		 </h:outputLink>
          <h:outputLabel value="Images (#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.imagesCount == 0}"/>
-</ui:remove> 		 
+		 
 	</h:panelGrid> 
 
  	</h:form>

@@ -972,7 +972,7 @@ public class SolrUtil {
     }
     
 	// method to retrieve the Genelist count for the results page
-    public int getGenelistCount(String queryString){
+    public int getGenelistCount(String queryString, ArrayList<String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -985,6 +985,12 @@ public class SolrUtil {
     		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
+	        parameters.setRows(0);
+	        
+	      	if (filters != null && !filters.isEmpty()){
+	      		for(String filter : filters)
+	      			parameters.addFilterQuery(filter);
+	      	}
 	        
             QueryResponse qr = genelists_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1061,7 +1067,7 @@ public class SolrUtil {
     //***************************** TISSUE METHODS *****************************************************
 
 	// method to retrieve the Tissues count for the results page
-    public int getTissueCount(String queryString){
+    public int getTissueCount(String queryString, ArrayList<String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1074,6 +1080,12 @@ public class SolrUtil {
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
+	        parameters.setRows(0);
+	        
+	      	if (filters != null && !filters.isEmpty()){
+	      		for(String filter : filters)
+	      			parameters.addFilterQuery(filter);
+	      	}
 	        
             QueryResponse qr = tissues_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1526,6 +1538,53 @@ public class SolrUtil {
         return count;    
     }
 
+    public int getMicroarrayFilteredCount(String queryString, ArrayList<String> filters){
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+
+    	int count = 0;
+
+        try
+        {
+//       		String cq = checkQuery(microarray_server,q);  
+
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setFacet(true);
+	      	parameters.setRows(0);	      
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(1000);
+	        	      	        
+	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
+	        
+	
+	        
+	      	if (filters != null || !filters.isEmpty()){
+		      	for (String filter : filters)
+		      		parameters.addFilterQuery(filter);
+	      	}
+	        
+            QueryResponse qr = microarray_server.query(parameters);
+            
+            NamedList<List<PivotField>> pivots = qr.getFacetPivot();
+
+            for(Map.Entry<String, List<PivotField>> entry : pivots ) {
+	  	          if (entry.getKey().equalsIgnoreCase("SAMPLE_GEO_ID,GUDMAP")){
+	  	        	  	count = entry.getValue().size();
+	  	          }
+            }  
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}        
+
+        return count;    
+    }
+    
 	// method to retrieve the Platform count for the results page
     public int getPlatformCount(String queryString){
 
@@ -1744,7 +1803,7 @@ public class SolrUtil {
     }
     
 	// method to retrieve the Tutorials count for the results page
-    public int getTutorialCount(String queryString, String filter){
+    public int getTutorialCount(String queryString, ArrayList<String> filters){
 
     	long count = 0;
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1756,8 +1815,12 @@ public class SolrUtil {
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
-	        if (filter != null)
-	        	parameters.addFilterQuery(filter);
+	        parameters.setRows(0);
+	        
+	      	if (filters != null && !filters.isEmpty()){
+	      		for(String filter : filters)
+	      			parameters.addFilterQuery(filter);
+	      	}
 	        
             QueryResponse qr = tutorial_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1798,7 +1861,7 @@ public class SolrUtil {
     //***************************** MOUSE STRAINS METHODS *****************************************************
     
     // method to retrieve the Mouse Strails count for the results page
-    public int getMouseStrainsCount(String queryString){
+    public int getMouseStrainsCount(String queryString, ArrayList<String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1811,6 +1874,12 @@ public class SolrUtil {
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
+	        parameters.setRows(0);
+	        
+	      	if (filters != null && !filters.isEmpty()){
+	      		for(String filter : filters)
+	      			parameters.addFilterQuery(filter);
+	      	}
 	        
             QueryResponse qr = mouse_strain_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1922,7 +1991,7 @@ public class SolrUtil {
 
 
     // method to retrieve the Images count for the results page
-    public int getImagesCount(String queryString){
+    public int getImagesCount(String queryString, ArrayList<String> filters){
 
     	long count = 0;
     	
@@ -1935,6 +2004,12 @@ public class SolrUtil {
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
+	        parameters.setRows(0);
+	        
+	      	if (filters != null && !filters.isEmpty()){
+	      		for(String filter : filters)
+	      			parameters.addFilterQuery(filter);
+	      	}
 	        
             QueryResponse qr = image_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
