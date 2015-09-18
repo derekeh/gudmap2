@@ -38,20 +38,20 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     private String inputString="";
     private String wildcard = "equals";
     private GeneStripBeanAssembler geneStripBeanAssembler;
-    private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
+    //private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
     private ArrayList<GeneStripModel> dataList;
-	private ArrayList<MasterTableInfo> tableinfo;	
+	//private ArrayList<MasterTableInfo> tableinfo;	
 	private ArrayList<String> geneIds;
 	private boolean areAllChecked;
 	private List<String> selectedItems;
    // private String tempParam="";
     String str;
     
-    private int maxColNumber = 0;
-    private String rowLabels;
-    private String microarrayLinks;
-    private String genelistAdjustedData;
-    private String genelistValueData;    
+    //private int maxColNumber = 0;
+    //private String rowLabels;
+    //private String microarrayLinks;
+    //private String genelistAdjustedData;
+    //private String genelistValueData;    
     @Inject
    	protected SessionBean sessionBean;
     @Inject
@@ -60,8 +60,8 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     public GeneStripBean() {
         
         geneStripBeanAssembler = new GeneStripBeanAssembler();       
-        microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
-        tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
+        //microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
+        //tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
         
     }
     
@@ -93,7 +93,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     	
         // check input string to decide wildcard value
     	inputString=sessionBean.getGeneParam();
-    	if(inputString.length()>2)
+    	if(inputString.length()>1)
     	{	
        	
 	       	if (inputString != null && !inputString.equals("")) {
@@ -108,12 +108,14 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	       		//dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard,defaultOrderCol,sortDirection);
 	       		geneIds = geneStripBeanAssembler.getGeneIds(inputString,wildcard);         		
 	       	}
-	       	if(geneIds!=null) {
+	       	//TODO ONLY CREATE JSON FILES FOR ROWS DISPLAYED ON PAGE.
+	       	/*if(geneIds!=null) {
 		       	for (String geneId : geneIds){
 		       		createJSONFile(geneId);
 		       	}
-	       	}
+	       	}*/
     	}
+    	else geneIds=null;
     }
     
     public void setupGenePage(String geneId) {
@@ -121,7 +123,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
         geneIds = new <String>ArrayList();
         geneIds.add(geneId);
         geneStripBeanAssembler.setGeneIds(geneIds);
-        createJSONFile(geneId);
+        //createJSONFile(geneId);
     }
     
     public void setOid(String oid) {
@@ -177,7 +179,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     }
 	
 
-	public String getRowLabels(){
+/*	public String getRowLabels(){
 		return rowLabels;
 	}
 
@@ -195,7 +197,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	
 	public String getGenelistAdjustedData(){
 		return genelistAdjustedData;
-	}
+	}*/
 
 	public void setGene_id(String gene_id){
 		this.gene_id = gene_id;
@@ -204,8 +206,8 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	public String getGene_id(){
 		return gene_id;
 	}
-	
-	private void createJSONFile(String geneId){
+//THIS HAS MOVED TO GENESTRIPDAO	
+/*	private void createJSONFile(String geneId){
 		
 		try{
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
@@ -366,7 +368,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     	}
 				
 		return data;
-	}
+	}*/
 	
 	///////////////////////////////
 	
