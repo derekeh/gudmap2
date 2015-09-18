@@ -60,11 +60,10 @@
 	   		<h:outputText value="Library Strategy "></h:outputText>
 	    	<h:selectOneMenu value="#{paramBean.seqlibstrategyvalues}">
 		 				<f:selectItems value="#{paramBean.seqlibstrategylist}" />
-		 				<f:ajax render="@form" />
 		 	</h:selectOneMenu>		 	
 	   		
 	   		<h:outputText value="Sex:"></h:outputText>
-	   		<h:selectOneRadio value="#{paramBean.sexvalues}">
+	   		<h:selectOneRadio value="#{paramBean.seqsexvalues}">
 	   			<f:selectItems value="#{paramBean.sexlist}" />
 	   		</h:selectOneRadio>
 	   		

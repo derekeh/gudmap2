@@ -90,6 +90,8 @@ public class ParamBean implements Serializable {
 	private String[] assaysourcevalues;
 	private String seqlibstrategyvalues="ALL";
 	private String arrayplatformvalues="ALL";
+	private String seqsexvalues="ALL";
+	private String arraysexvalues="ALL";
 	
 	private ParamBeanAssembler assembler;
 	private String whereclause=" WHERE ";
@@ -103,7 +105,7 @@ public class ParamBean implements Serializable {
     private String stagecondition=" AND ";
 	
 	//microarray
-	private String micWhereClause="";
+	private String micWhereclause="";
 	private boolean mic_titlecol=true;
 	private boolean mic_geoSeriesIDcol=true;
 	private boolean mic_numsamplescol=true;
@@ -182,6 +184,7 @@ public class ParamBean implements Serializable {
 		assembler = new ParamBeanAssembler();
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
+	
 	
 	public void setFocusGroup(String focusGroup){
 		this.focusGroup=focusGroup;
@@ -846,19 +849,30 @@ public class ParamBean implements Serializable {
 		if(!arrayplatformvalues.equals("")) {
 			platformvalueclause="PLT_GEO_ID = '"+arrayplatformvalues+"' AND ";
 			cacheplatformvalueclause=cacheprefix+platformvalueclause;
-	}
-	if(arrayplatformvalues.equals("ALL")) {
-		platformvalueclause="";	
-		cacheplatformvalueclause="";
-	}
+		}
+		if(arrayplatformvalues.equals("ALL")) {
+			platformvalueclause="";	
+			cacheplatformvalueclause="";
+		}
 	}
 	
 	public String getArrayplatformvalues () {
 		return arrayplatformvalues;
 	}
 	
+	private String libstrategyvalueclause="";
+	private String cachelibstrategyvalueclause="";
 	public void setSeqlibstrategyvalues(String seqlibstrategyvalues) {
 		this.seqlibstrategyvalues = seqlibstrategyvalues;
+		if(!seqlibstrategyvalues.equals("")) {
+			libstrategyvalueclause="NGP_LIBRARY_STRATEGY = '"+seqlibstrategyvalues+"' AND ";
+			cachelibstrategyvalueclause=cacheprefix+libstrategyvalueclause;
+		}
+		if(seqlibstrategyvalues.equals("ALL")) {
+			libstrategyvalueclause="";	
+			cachelibstrategyvalueclause="";
+		}
+		
 	}
 	
 	public String getSeqlibstrategyvalues () {
@@ -871,6 +885,42 @@ public class ParamBean implements Serializable {
 	}
 	public String[] getAssaysourcevalues(){
 		return assaysourcevalues;
+	}
+	
+	private String seqsexvalueclause="";
+	private String cacheseqsexvalueclause="";
+	public void setSeqsexvalues(String seqsexvalues){
+		this.seqsexvalues=seqsexvalues;
+		if(!seqsexvalues.equals("")) {
+			seqsexvalueclause="NGS_SEX = '"+seqsexvalues+"' AND ";
+			cacheseqsexvalueclause=cacheprefix+seqsexvalueclause;
+		}
+		if(seqsexvalues.equals("ALL")) {
+			seqsexvalueclause="";	
+			cacheseqsexvalueclause="";
+		}
+	}
+	
+	public String getSeqsexvalues(){
+		return seqsexvalues;
+	}
+	
+	private String arraysexvalueclause="";
+	private String cachearraysexvalueclause="";
+	public void setArraysexvalues(String arraysexvalues){
+		this.arraysexvalues=arraysexvalues;
+		if(!arraysexvalues.equals("")) {
+			arraysexvalueclause="SMP_SEX = '"+arraysexvalues+"' AND ";
+			cachearraysexvalueclause=cacheprefix+arraysexvalueclause;
+		}
+		if(arraysexvalues.equals("ALL")) {
+			arraysexvalueclause="";	
+			cachearraysexvalueclause="";
+		}
+	}
+	
+	public String getArraysexvalues(){
+		return arraysexvalues;
 	}
 	
 	/*****gene search options**********/
@@ -952,16 +1002,16 @@ public class ParamBean implements Serializable {
 		return arraycachewhereclause;
 	}
 	
-	public void setMicWhereclause(String micWhereClause) {
-		this.micWhereClause = micWhereClause;
+	public void setMicWhereclause(String micWhereclause) {
+		this.micWhereclause = micWhereclause;
 	}
 	public String getMicWhereclause () {
 		//micWhereClause = GenericQueries.WHERE_CLAUSE;
-		micWhereClause = getWhereclause() + platformvalueclause;
+		micWhereclause = getWhereclause() + platformvalueclause + libstrategyvalueclause + seqsexvalueclause + arraysexvalueclause;
 		
 		if(!debug)
 			resetArraySeqFilter();
-		return micWhereClause;
+		return micWhereclause;
 	}
 		 
 	/******************reset*******************/
@@ -1055,10 +1105,14 @@ public class ParamBean implements Serializable {
 		//array and sequence
 		setAssaysourcevalues(new String[0]);
 		setArrayplatformvalues("");
+		setSeqlibstrategyvalues("");
+		setSeqsexvalues("ALL");
+		setArraysexvalues("ALL");
 	}
 	
 	public void resetArraySeqClauses() {
-		cacheplatformvalueclause="";platformvalueclause="";
+		cacheplatformvalueclause="";platformvalueclause="";libstrategyvalueclause="";cachelibstrategyvalueclause="";
+		seqsexvalueclause="";cacheseqsexvalueclause="";arraysexvalueclause="";cachearraysexvalueclause="";
 	}
 	
 	public void resetFilter() {
