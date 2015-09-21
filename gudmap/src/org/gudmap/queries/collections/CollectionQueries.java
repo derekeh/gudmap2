@@ -2,28 +2,58 @@ package org.gudmap.queries.collections;
 
 public class CollectionQueries {
 	
-	  public final static String COLLECTION_BROWSE_EXCLUSIVE = "SELECT CLN_OID, CLN_NAME, CLN_DESCRIPTION, CLN_USER_FK, USR_UNAME, CLN_FOCUS_GROUP, COUNT(*) CLN_NUMBER, " +
-	  		"CLN_STATUS, CLN_LAST_UPDATED, CLN_TYPE " +
-	  		",CLN_FOCUS_GROUP_NAME " +
+	  public final static String COLLECTION_BROWSE_EXCLUSIVE = "SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
+			 "CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
+	  		"CLN_STATUS status, CLN_LAST_UPDATED modified, CLN_TYPE type, " +
+	  		"CLN_FOCUS_GROUP_NAME focusgroupname " +
 	  		"FROM CLN_COLLECTION " +
 	  		"JOIN REF_USER ON USR_OID = CLN_USER_FK " +
 	  		"JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
-	  		"WHERE CLN_TYPE = ? " +
+	  		"%s CLN_TYPE = ? " +
 	  		"AND CLN_USER_FK = ? " +
-	  		"GROUP BY CLN_OID";
+	  		"GROUP BY CLN_OID ORDER BY %s %s LIMIT ?,?";
 	  
-	  public final static String COLLECTION_BROWSE_OTHERS = "SELECT CLN_OID, CLN_NAME, CLN_DESCRIPTION, CLN_USER_FK, USR_UNAME, CLN_FOCUS_GROUP, COUNT(*) CLN_NUMBER, " +
-		"CLN_STATUS, CLN_LAST_UPDATED, CLN_TYPE " +
-			",CLN_FOCUS_GROUP_NAME " +
-		"FROM CLN_COLLECTION " +
-		"JOIN REF_USER ON USR_OID = CLN_USER_FK " +
-		"JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
-		"WHERE CLN_TYPE = ? " +
-		"AND CLN_USER_FK <> ? AND CLN_STATUS = 1 " +
-		"GROUP BY CLN_OID";
+	  public final static String COLLECTION_BROWSE_OTHERS = "SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
+			"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
+			"CLN_STATUS status, CLN_LAST_UPDATED modified, CLN_TYPE type, " +
+			"CLN_FOCUS_GROUP_NAME focusgroupname " +
+			"FROM CLN_COLLECTION " +
+			"JOIN REF_USER ON USR_OID = CLN_USER_FK " +
+			"JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
+			"%s CLN_TYPE = ? " +
+			"AND CLN_USER_FK <> ? AND CLN_STATUS = 1 " +
+			"GROUP BY CLN_OID ORDER BY %s %s LIMIT ?,?";
 	  
 	// retrieve both own and others' shared collection entries
-	  public final static String COLLECTION_BROWSE_ALL = "(" + COLLECTION_BROWSE_EXCLUSIVE + ")" + " UNION " + "(" + COLLECTION_BROWSE_OTHERS + ")";
+	  public final static String COLLECTION_BROWSE_ALL1 = "(" + COLLECTION_BROWSE_EXCLUSIVE + ")" + " UNION " + "(" + COLLECTION_BROWSE_OTHERS + ")";
+	  
+	  public final static String COLLECTION_BROWSE_ALL = "(SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
+			"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
+			"CLN_STATUS status, CLN_LAST_UPDATED modified, CLN_TYPE type, " +
+			"CLN_FOCUS_GROUP_NAME focusgroupname " +
+			  "FROM CLN_COLLECTION  JOIN REF_USER ON USR_OID = CLN_USER_FK  " +
+			  "JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID  " +
+			  "%s CLN_TYPE = ?  AND CLN_USER_FK = ?  GROUP BY CLN_OID) " +
+			  "UNION " +
+			  "(SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
+			"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
+			"CLN_STATUS status, CLN_LAST_UPDATED modified, CLN_TYPE type, " +
+			"CLN_FOCUS_GROUP_NAME focusgroupname " +
+			  "FROM CLN_COLLECTION  JOIN REF_USER ON USR_OID = CLN_USER_FK  JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
+			  "%s CLN_TYPE = ?  AND CLN_USER_FK <> ? AND CLN_STATUS = 1  GROUP BY CLN_OID) " +
+			  "ORDER BY %s %s LIMIT ?,?";
+	  
+	  /*public final static String COLLECTION_BROWSE_ALL = "(SELECT CLN_OID, CLN_NAME, CLN_DESCRIPTION, CLN_USER_FK, USR_UNAME, CLN_FOCUS_GROUP, COUNT(*) CLN_NUMBER, " +
+			  "CLN_STATUS, CLN_LAST_UPDATED, CLN_TYPE  ,CLN_FOCUS_GROUP_NAME  " +
+			  "FROM CLN_COLLECTION  JOIN REF_USER ON USR_OID = CLN_USER_FK  " +
+			  "JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID  " +
+			  "%s CLN_TYPE = ?  AND CLN_USER_FK = ?  GROUP BY CLN_OID) " +
+			  "UNION " +
+			  "(SELECT CLN_OID, CLN_NAME, CLN_DESCRIPTION, CLN_USER_FK, USR_UNAME, CLN_FOCUS_GROUP, COUNT(*) CLN_NUMBER, CLN_STATUS, CLN_LAST_UPDATED, " +
+			  "CLN_TYPE ,CLN_FOCUS_GROUP_NAME " +
+			  "FROM CLN_COLLECTION  JOIN REF_USER ON USR_OID = CLN_USER_FK  JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
+			  "%s CLN_TYPE = ?  AND CLN_USER_FK <> ? AND CLN_STATUS = 1  GROUP BY CLN_OID) " +
+			  "ORDER BY %s %s LIMIT ?,?";*/
 	  
 	  public final static String COLLECTION_DEFAULT_ORDER_BY_COL = " CLN_NAME ";
 	  

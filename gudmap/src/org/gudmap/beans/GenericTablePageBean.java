@@ -14,6 +14,7 @@ import org.gudmap.assemblers.AccessionTablePageBeanAssembler;
 import org.gudmap.assemblers.AnatomyTablePageBeanAssembler;
 import org.gudmap.assemblers.BooleanResultAssembler;
 import org.gudmap.assemblers.CollectionEntriesAssembler;
+import org.gudmap.assemblers.CollectionListAssembler;
 import org.gudmap.assemblers.GeneExpressionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneFunctionTablePageBeanAssembler;
 import org.gudmap.assemblers.GeneListTablePageBeanAssembler;
@@ -53,6 +54,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	private GeneExpressionTablePageBeanAssembler expressionAssembler;
 	private BooleanResultAssembler booleanResultAssembler;
 	private CollectionEntriesAssembler collectionEntriesAssembler;
+	private CollectionListAssembler collectionListAssembler;
 	private String whereclause = GenericQueries.WHERE_CLAUSE;
     private String specimenWhereclause="";
     private List<String> selectedItems;
@@ -113,8 +115,12 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	else
     		specimenWhereclause="";
     	
-    	if(assayType.equals("collections"))
-    		collectionEntriesAssembler=new CollectionEntriesAssembler(GenericQueries.BROWSE_LOCAL_STORAGE_PARAM);
+    	if(assayType.equals("collections")) {
+    		if(specimenAssay.equals("list"))
+    			collectionListAssembler = new CollectionListAssembler();
+    		else
+    			collectionEntriesAssembler=new CollectionEntriesAssembler(GenericQueries.BROWSE_LOCAL_STORAGE_PARAM);
+    	}
     	else if(assayType.equals("genelist"))
     		geneListAssembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM);
     	else if(assayType.equals("anatomy"))
@@ -193,14 +199,24 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	if(assayType.equals("collections")) {
-    		//reset whereclause for this search
-    		paramBean.setWhereclause(whereclause);
-    		dataList = collectionEntriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
-					paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
-					paramBean.getFocusGroupSpWhereclause());
-			totalRows = collectionEntriesAssembler.count();
-			
-			queryTotals=collectionEntriesAssembler.getQueryTotals();
+    		if(specimenAssay.equals("list")) {
+    			//reset whereclause for this search
+	    		paramBean.setWhereclause(whereclause);
+	    		dataList = collectionListAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause());
+				//totalRows = collectionListAssembler.count();
+				
+				//queryTotals=collectionListAssembler.getQueryTotals();
+    		}
+    		else {
+	    		//reset whereclause for this search
+	    		paramBean.setWhereclause(whereclause);
+	    		dataList = collectionEntriesAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
+						paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
+						paramBean.getFocusGroupSpWhereclause());
+				totalRows = collectionEntriesAssembler.count();
+				
+				queryTotals=collectionEntriesAssembler.getQueryTotals();
+    		}
     	}
     	else if(assayType.equals("genelist")) {
     		//parameters passed from genestrip ishexpression column

@@ -288,20 +288,16 @@ public class GeneStripDao {
 		// array to store expression profiles
 		// 1: present; -1: not detected; 0: not examined/uncertain
 		// need to include expression profile not related to given structures - others
-//		double[] expressionProfiles = new double[analen+1];
 		double[] insituExprofile = new double[analen];
 		ArrayList<String> componentsOfAllGivenStructures = new ArrayList<String>();
 					
 			/** calculate expression profile for all given structures */
 			for (int i=0;i<analen;i++) {
-	//			System.out.println("structure: " + i);
 				// get component ids new anatomy
-				//String[] componentIds = (String[])Globals.getEMAPID().get(interestedAnatomyStructures[i]);
 				String[] componentIds = (String[])Globals.getEMAPAID().get(interestedAnatomyStructures[i]);
 				
 				// put component ids into componentIdsInAll arrayList
 				int eLen = componentIds.length;
-	//			System.out.println("component id number: " + eLen);
 				for (int j=0;j<eLen;j++) {
 					componentsOfAllGivenStructures.add(componentIds[j]);
 				}
@@ -407,17 +403,6 @@ public class GeneStripDao {
 		return expressions;
 	}
 	
-/*	private String[] getInterestedAnatomyStructureIds() {
-		String[] interestedAnatomyStructures=null;
-		
-		return interestedAnatomyStructures;
-	}*/
-	
-/*	private String getExpressionHtmlCode(double[] insituExprofile, String[] interestedAnatomyStructures, String geneSymbol ) {
-		String RET="";
-		
-		return RET;
-	}*/
 	
 	public ArrayList<String> getSymbolsFromGeneInput(String input, String wildcard) {
 		String[] geneInput = input.split(":|;|,"); 
@@ -807,7 +792,6 @@ public class GeneStripDao {
 				// get the image and put the url into the string
 		 if (candidateSubmission != null) {
 					//thumbnail = this.getThumbnailURL(conn, candidateSubmission);
-					//data[i][5] = new DataItem(thumbnail, "Click to see image matrix for "+symbol, "image_matrix_browse.html?gene="+symbol, 13);
 			 queryString = IshSubmissionQueries.IMAGE_INFO_BY_ACCESSION_ID;
 			 try
 				{
@@ -1021,7 +1005,6 @@ public class GeneStripDao {
 			
 					    submissionId = result.getString(1);
 					    imageInfoModel.setAccessionId(submissionId);
-					    //imageInfoModel.setStage("TS"+result.getString(2));
 					    imageInfoModel.setStage(result.getString(2));
 					    imageInfoModel.setSpecimenType(result.getString(3));
 					    imageInfoModel.setFilePath(result.getString(4));

@@ -15,6 +15,7 @@ public class CollectionInfoModel {
 	private String focusGroupName;
 	private String lastUpdate;
 	private int entries;
+	private boolean selected=false;
 
 	private String tutorial;
 	
@@ -117,7 +118,14 @@ public class CollectionInfoModel {
 	public void setEntries(int entries) {
 		this.entries = entries;
 	}
+	
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 
+	public boolean getSelected() {
+		return selected;
+	}
 	
 	public String getTutorial() {
 		return tutorial;

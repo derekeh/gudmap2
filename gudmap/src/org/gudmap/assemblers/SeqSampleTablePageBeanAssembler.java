@@ -31,7 +31,7 @@ public class SeqSampleTablePageBeanAssembler {
 	private String paramSQL;
 	private String assayType;
 	private String paramValue;
-	//private String whereclause;
+	private String whereclause;
 	//private String focusGroupWhereclause;
 	
 	public SeqSampleTablePageBeanAssembler(String paramSQL,String assayType) {
@@ -44,7 +44,7 @@ public class SeqSampleTablePageBeanAssembler {
 	}
 	
 	public List<ArraySeqTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause){
-		//this.whereclause=whereclause;
+		this.whereclause=whereclause;
 		//this.focusGroupWhereclause=focusGroupWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
@@ -95,8 +95,8 @@ public class SeqSampleTablePageBeanAssembler {
 	public int count() {
 		int count=0;
 		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");*/
-		//String totalwhere=whereclause;
-		String sql = String.format(SequenceQueries.TOTAL_SEQUENCE_SAMPLE,paramValue);
+		String totalwhere=whereclause;
+		String sql = String.format(SequenceQueries.TOTAL_SEQUENCE_SAMPLE,totalwhere,paramValue);
 		try
 		{
 				con = Globals.getDatasource().getConnection();
