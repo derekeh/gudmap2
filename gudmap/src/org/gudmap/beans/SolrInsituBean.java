@@ -3,6 +3,7 @@ package org.gudmap.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 //import javax.faces.context.FacesContext;
+
 
 
 import org.gudmap.assemblers.SolrInsituAssembler;
@@ -39,10 +41,10 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
    	private SolrTreeBean solrTreeBean;
 
     @Inject
-   	private SolrInsituFilter solrFilter;
+   	private SolrFilter solrFilter;
     
 	private String solrInput;
-	private ArrayList<String> filters;
+	private HashMap<String,String> filters;
     
 	
     
@@ -61,7 +63,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		this.solrTreeBean=solrTreeBean;
 	}
 	
-	public void setSolrInsituFilter(SolrInsituFilter solrFilter){
+	public void setSolrInsituFilter(SolrFilter solrFilter){
 		this.solrFilter = solrFilter;
 	}
 	
@@ -94,7 +96,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
         totalRows = assembler.getCount(solrInput, "");
     	filters = solrFilter.getFilters();
     	
-     	dataList = assembler.getData(solrInput, "", filters, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -158,13 +160,13 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	    	if (solrInput != null && solrInput != "")
 	    		str += "(" + solrTreeBean.getInsituCount() + ") > " + solrInput;
 	    	else
-	    		str += "(" + solrTreeBean.getInsituCount() + ") > *";
+	    		str += "(" + solrTreeBean.getInsituCount() + ") > ALL";
     	}
     	else{
         	if (solrInput != null && solrInput != "")
         		str += "(" + solrTreeBean.getInsituFilteredCount(filters) + ") > " + solrInput;
         	else
-        		str += "(" + solrTreeBean.getInsituFilteredCount(filters) + ") > *";
+        		str += "(" + solrTreeBean.getInsituFilteredCount(filters) + ") > ALL";
     		
     	}
     	return str;

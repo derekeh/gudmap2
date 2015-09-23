@@ -2,6 +2,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pr="http://primefaces.org/ui" >
 	
 
@@ -10,15 +11,19 @@
   	 
      <h:form id="solrsearchform">  
  <ui:remove>     
-	<ui:include src="/snippets/g_solrFilters.xhtml"/>    
+	<ui:include src="/snippets/g_solrFilters.xhtml"/>   
 </ui:remove>
- 
-		<h:panelGroup rendered="#{solrInsituFilter.filters.size() > 0}">	
-		<h:outputText value="Filter Settings: #{solrInsituFilter.filterString}" rendered="#{solrInsituFilter.filters.size() > 0}"/>		
-		<br/>
-		</h:panelGroup>
-      
-      <h:panelGrid columns="4" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
+
+     <c:forEach items="#{solrFilter.filters}" var="filter">
+		<h:panelGrid columns="2" >	
+			<h:outputText value="#{filter.key}:#{filter.value}" />	
+ 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
+	 			<pr:ajax event="click" update=":solrsearchform" listener="#{solrFilter.removeFilter}" />
+			</h:graphicImage>
+		</h:panelGrid>
+    </c:forEach>  
+    
+      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
       	<h:inputText value="#{solrTreeBean.solrInput}" ></h:inputText>
       	
         <h:commandButton value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
@@ -29,17 +34,7 @@
  		<pr:commandLink id="solrFilterBtn">
  			<h:graphicImage library="images/resources" name="filter_add.png" width="25" height="25"/>
  		</pr:commandLink>
-
- 		<pr:commandLink>
- 			<h:graphicImage library="images/resources" name="filter_delete.png"  width="25" height="25"/>
- 			<pr:ajax update=":solrsearchform " listener="#{solrInsituFilter.reset}" />
- 		</pr:commandLink>
- 		
-  <ui:remove> 	
-        <h:commandButton value="Clear" image="/resources/images/resources/filter_delete.png">
-			 <pr:ajax update=":solrsearchform " listener="#{solrInsituFilter.reset}" />
-        </h:commandButton>
-    </ui:remove> 	  
+ 			  
      </h:panelGrid>
  
 		
@@ -48,51 +43,53 @@
  		<pr:accordionPanel activeIndex="-1">
 	 		<pr:tab title="Genes">
 			 	<h:outputText value="Gene: "></h:outputText>
-			 	<h:inputText value="#{solrInsituFilter.geneValue}" >
-			 		<pr:ajax update=":solrsearchform " listener="#{solrInsituFilter.refresh}" />
+			 	<h:inputText value="#{solrFilter.geneValue}" >
+			 		<pr:ajax update=":solrsearchform " listener="#{solrFilter.refresh}" />
 			 	</h:inputText>
 			</pr:tab>
 			<pr:tab title="Submission Date">
 		 		<h:panelGrid columns="2">
 		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.fromDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
+		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
 		 			</pr:calendar>
 		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.toDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
+		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
 		 			</pr:calendar>
 		 		</h:panelGrid>
 			</pr:tab>
 			<pr:tab title="Sources">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sourceValues}">
-			 		<f:selectItems value="#{solrInsituFilter.sourceList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
-			 	</h:selectManyListbox>
+			<h:panelGrid columns="3">
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.sourceList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
+		 	</h:panelGrid>
 			</pr:tab>
 			<pr:tab title="Assay Types">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.assayTypeValues}">
-			 		<f:selectItems value="#{solrInsituFilter.assayTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.assayTypeList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
 			<pr:tab title="Theiler Stages">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.theilerStageValues}">
-			 		<f:selectItems value="#{solrInsituFilter.theilerStageList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.theilerStageList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
 			<pr:tab title="Sex">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sexValues}">
-			 		<f:selectItems value="#{solrInsituFilter.sexList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.sexList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
 			<pr:tab title="Specimen Type">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.specimenTypeValues}">
-			 		<f:selectItems value="#{solrInsituFilter.specimenTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrInsituFilter.refresh}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
  		</pr:accordionPanel>  
  		
@@ -110,7 +107,7 @@
         	<f:ajax execute="@form" render="solrsearchform2" ></f:ajax> 
         </pr:commandButton>
            
-         <h:commandLink styleClass="plaintext" onclick="PF('dialogSolrInsituFilter').show(); return false;">
+         <h:commandLink styleClass="plaintext" onclick="PF('dialogsolrFilter').show(); return false;">
    			<h:graphicImage library="images/resources" name="filter.png" alt="Filter"></h:graphicImage>
 		 </h:commandLink>
       </h:panelGrid>

@@ -20,7 +20,7 @@ public class SolrMouseStrainsAssembler {
 	
 	public int getCount(String solrInput, String solrFilter) {
 
-		int n = solrUtil.getMouseStrainsCount(solrInput);
+		int n = solrUtil.getMouseStrainsCount(solrInput, null);
 
 		return n;
 	}

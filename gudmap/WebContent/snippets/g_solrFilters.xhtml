@@ -10,51 +10,56 @@
  		<pr:accordionPanel activeIndex="-1">
 	 		<pr:tab title="Genes">
 			 	<h:outputText value="Gene: "></h:outputText>
-			 	<h:inputText value="#{solrInsituFilter.geneValue}" />
+			 	<h:inputText value="#{solrFilter.geneValue}" >
+			 		<pr:ajax update=":solrsearchform " listener="#{solrFilter.refresh}" />
+			 	</h:inputText>
 			</pr:tab>
 			<pr:tab title="Submission Date">
 		 		<h:panelGrid columns="2">
 		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.fromDateValue}">
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
+		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
 		 			</pr:calendar>
 		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.toDateValue}">
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
+		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
 		 			</pr:calendar>
 		 		</h:panelGrid>
 			</pr:tab>
 			<pr:tab title="Sources">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sourceValues}">
-			 		<f:selectItems value="#{solrInsituFilter.sourceList}" />
-			 	</h:selectManyListbox>
+			<h:panelGrid columns="3">
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.sourceList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
+		 	</h:panelGrid>
 			</pr:tab>
 			<pr:tab title="Assay Types">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.assayTypeValues}">
-			 		<f:selectItems value="#{solrInsituFilter.assayTypeList}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.assayTypeList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
 			<pr:tab title="Theiler Stages">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.theilerStageValues}">
-			 		<f:selectItems value="#{solrInsituFilter.theilerStageList}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.theilerStageList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
-<ui:remove>	 			
-			<pr:tab title="Carnegie Stages">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.carnegieStageValues}">
-			 		<f:selectItems value="#{solrInsituFilter.carnegieStageList}" />
-			 	</h:selectManyListbox>
-			</pr:tab>
-</ui:remove>
 			<pr:tab title="Sex">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sexValues}">
-			 		<f:selectItems value="#{solrInsituFilter.sexList}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.sexList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
 			<pr:tab title="Specimen Type">
-			 	<h:selectManyListbox size="5" value="#{solrInsituFilter.specimenTypeValues}">
-			 		<f:selectItems value="#{solrInsituFilter.specimenTypeList}" />
-			 	</h:selectManyListbox>
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
+			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
 			</pr:tab>
  		</pr:accordionPanel>  
+
 
 
 	</pr:overlayPanel>

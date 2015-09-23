@@ -2,11 +2,10 @@ package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
+
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
+//import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,35 +14,31 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.primefaces.context.RequestContext;
 
-@Named(value="solrInsituFilter")
+@Named(value="solrFilter")
 @SessionScoped
-public class SolrInsituFilter implements Serializable {
+public class SolrFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<String> filters;
-	
+	private HashMap<String,String> filters;	
 	
 	private String geneValue;
 	private Date fromDateValue;
-	private String fromDateString;
 	private Date toDateValue;
-	private String toDateString;
 	private ArrayList<String> sexValues;	
 	private ArrayList<String> assayTypeValues;	
-	private ArrayList<String> personValues;
 	private ArrayList<String> sourceValues;	
 	private ArrayList<String> specimenTypeValues;
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
 	
-	private String filterstring;
 	private String page;
 	
 	@Inject
@@ -53,8 +48,8 @@ public class SolrInsituFilter implements Serializable {
    	private SolrTreeBean solrTreeBean;
 
 	
-	public SolrInsituFilter() {
-		filters = new ArrayList<String>();
+	public SolrFilter() {
+		filters = new HashMap<String,String>();
 	}
 	
 	public void setParamBean(ParamBean paramBean){
@@ -65,31 +60,15 @@ public class SolrInsituFilter implements Serializable {
 		this.solrTreeBean=solrTreeBean;
 	}		
 
-	public ArrayList<String> getFilters(){
+	public HashMap<String,String> getFilters(){
 		return filters;		
 	}
-	public void setFilters(ArrayList<String> val){
+	public void setFilters(HashMap<String,String> val){
 		filters = val;	
 	}
-   
 
 /************************ set controls *************************************/
 	
-	public String getFilterString(){
-		filterstring = "";
-		int index;
-		String item;
-		if (filters != null && !filters.isEmpty()){
-			for (String filter :filters){
-				index = filter.indexOf(":");
-				item = filter.substring(index+2,filter.length()-1);
-				filterstring += item + ",";
-			}
-			filterstring = filterstring.substring(0, filterstring.length() - 1);
-		}
-		return filterstring;
-	}
-
 	public int getInsituCount(){
 		
 		if (filters != null || !filters.isEmpty())
@@ -132,20 +111,11 @@ public class SolrInsituFilter implements Serializable {
 		Map<String,String> sourcemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  paramBean.getSourcelist(); 
-	    Iterator it = map.entrySet().iterator();
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-	        
-	        ArrayList<String> countfilter = new ArrayList<String>();
-	        countfilter.add("SOURCE:" + key);
-	        
-	        if (filters != null && !filters.isEmpty())
-	        	countfilter.addAll(filters);
-
-	        int count = solrTreeBean.getInsituFilteredCount(countfilter);
-			String title = key + "(" + count + ")";
-			sourcemap.put(title, key);
+			sourcemap.put(key, key);
 		}
 		return sourcemap;
 	}
@@ -157,48 +127,17 @@ public class SolrInsituFilter implements Serializable {
 
 	}
 
-	public void sourceChangeValues(ValueChangeEvent event){
-		String sel = (String)event.getNewValue();
+//	public void sourceChangeValues(ValueChangeEvent event){
+//		String sel = (String)event.getNewValue();
 //		sourceCB = false;
-		refresh();
-	}
+//		refresh();
+//	}
 	
 	public String update(){
 		refresh();
 		return "";
 	}
 
-/*
-	public Map<String,String> getPersonList(){
-		
-		Map<String,String> pimap = new LinkedHashMap<String,String>();
-
-		Map<String, String> map =  paramBean.getPilist(); 
-	    Iterator it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
-	        String key = (String)pair.getKey();
-	        
-	        ArrayList<String> countfilter = new ArrayList<String>();
-	        countfilter.add("PI_NAME:" + key);
-	        
-	        if (filters != null && !filters.isEmpty())
-	        	countfilter.addAll(filters);
-	        
-	        int count = solrTreeBean.getInsituFilteredCount(countfilter);
-			String title = key + "(" + count + ")";
-			pimap.put(title, key);
-		}
-
-		return pimap;
-	}	
-	public ArrayList<String> getPersonValues(){
-		return personValues;
-	}	
-	public void getPersonValues(ArrayList<String> val){
-		personValues = val;
-	}	
-*/
 	public Map<String,String> getSexList(){
 		
 		Map<String,String> sexmap = new LinkedHashMap<String,String>();
@@ -208,20 +147,11 @@ public class SolrInsituFilter implements Serializable {
 		map.put("male", "male");
 		map.put("unknown", "unknown");
 		
-	    Iterator it = map.entrySet().iterator();
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-
-	        ArrayList<String> countfilter = new ArrayList<String>();
-	        countfilter.add("SEX:" + key);
-	        
-	        if (filters != null && !filters.isEmpty())
-	        	countfilter.addAll(filters);
-	        
-	        int count = solrTreeBean.getInsituFilteredCount(countfilter);
-			String title = key + "(" + count + ")";
-			sexmap.put(title, key);
+			sexmap.put(key, key);
 		}
 
 		return sexmap;
@@ -239,22 +169,12 @@ public class SolrInsituFilter implements Serializable {
 		Map<String,String> assaytypemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  paramBean.getAssaytypeinsitulist(); 
-	    Iterator it = map.entrySet().iterator();
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
+			assaytypemap.put(key, key);
 
-	        ArrayList<String> countfilter = new ArrayList<String>();
-	        countfilter.add("ASSAY_TYPE:" + key);
-	        
-	        if (filters != null && !filters.isEmpty())
-	        	countfilter.addAll(filters);
-	        
-	        int count = solrTreeBean.getInsituFilteredCount(countfilter);
-//	        if (count > 0){
-				String title = key + "(" + count + ")";
-				assaytypemap.put(title, key);
-//	        }
 		}
 
 		return assaytypemap;
@@ -271,22 +191,11 @@ public class SolrInsituFilter implements Serializable {
 		Map<String,String> assaytypemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  paramBean.getSpecimentypelist(); 
-	    Iterator it = map.entrySet().iterator();
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-
-	        ArrayList<String> countfilter = new ArrayList<String>();
-	        countfilter.add("SPECIMEN_ASSAY_TYPE:" + key);
-	        
-	        if (filters != null && !filters.isEmpty())
-	        	countfilter.addAll(filters);
-	        
-	        int count = solrTreeBean.getInsituFilteredCount(countfilter);
-//	        if (count > 0){
-				String title = key + "(" + count + ")";
-				assaytypemap.put(title, key);
-//	        }
+			assaytypemap.put(key, key);
 		}
 
 		return assaytypemap;
@@ -307,22 +216,11 @@ public class SolrInsituFilter implements Serializable {
 			map.put("TS"+i, "TS"+i);
 		}
 
-		Iterator it = map.entrySet().iterator();
+		Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-
-	        ArrayList<String> countfilter = new ArrayList<String>();
-	        countfilter.add("THEILER_STAGE:" + key);
-	        
-	        if (filters != null && !filters.isEmpty())
-	        	countfilter.addAll(filters);
-	        
-	        int count = solrTreeBean.getInsituFilteredCount(countfilter);
-//	        if (count > 0){
-				String title = key + "(" + count + ")";
-				theilerstagemap.put(title, key);
-//	        }
+			theilerstagemap.put(key, key);
 		}
 
 		return theilerstagemap;
@@ -347,22 +245,11 @@ public class SolrInsituFilter implements Serializable {
 			map.put(s, s);
 		}
 
-		Iterator it = map.entrySet().iterator();
+		Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-
-	        ArrayList<String> countfilter = new ArrayList<String>();
-	        countfilter.add("CARNEGIE_STAGE:" + key);
-	        
-	        if (filters != null && !filters.isEmpty())
-	        	countfilter.addAll(filters);
-	        
-	        int count = solrTreeBean.getInsituFilteredCount(countfilter);
-//	        if (count > 0){
-				String title = key + "(" + count + ")";
-				carnegiestagemap.put(title, key);
-//	        }
+			carnegiestagemap.put(key, key);
 		}
 
 		return carnegiestagemap;
@@ -377,71 +264,106 @@ public class SolrInsituFilter implements Serializable {
 	/************************ refresh and set/rest filters *************************************/
 	
 	public void refresh(){
-		filters = new ArrayList<String>();
+		filters = new HashMap<String,String>();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
 		if (geneValue != null && geneValue != "") {
-			String filter = "GENE:(" + geneValue + ")";
-			filters.add(filter);
+			String filter = "(" + geneValue + ")";
+			filters.put("GENE",filter);			
 		}
 
 		if (toDateValue != null) {
 			if (fromDateValue != null) {
-				String filter = "DATE:[" + df.format(fromDateValue) +  " TO " +  df.format(toDateValue) + "]";
-				filters.add(filter);
+				String filter = "[" + df.format(fromDateValue) +  " TO " +  df.format(toDateValue) + "]";
+				filters.put("DATE",filter);				
 			}
 			else {
-				String filter = "DATE:[ * TO " + df.format(toDateValue) + "]";
-				filters.add(filter);
+				String filter = "[ * TO " + df.format(toDateValue) + "]";
+				filters.put("DATE",filter);				
 			}				
 		}
 		else if (fromDateValue != null) {
-			String filter = "DATE:[" + df.format(fromDateValue) + " TO * ]";
-			filters.add(filter);
+			String filter = "[" + df.format(fromDateValue) + " TO * ]";
+			filters.put("DATE",filter);				
 		}
 		
 		if (sourceValues != null && !sourceValues.isEmpty()) {
-			String filter = "SOURCE:(";
-			for (String item : sourceValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filters.add(filter);
+			if (sourceValues.size() == 1){
+				filters.put("SOURCE",sourceValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : sourceValues) 
+					filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("SOURCE",filter);
+			}
 		}
 
 		if (sexValues != null && !sexValues.isEmpty()) {
-			String filter = "SEX:(";
-			for (String item : sexValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filters.add(filter);
+			if (sexValues.size() == 1){
+				filters.put("SEX",sexValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : sexValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("SEX",filter);
+			}
 		}
 		
 		if (assayTypeValues != null && !assayTypeValues.isEmpty()) {
-			String filter = "ASSAY_TYPE:(";
-			for (String item : assayTypeValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filters.add(filter);
+			if (assayTypeValues.size() == 1){
+				filters.put("ASSAY_TYPE",assayTypeValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : assayTypeValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("ASSAY_TYPE",filter);
+			}
 		}
 		
 		if (specimenTypeValues != null && !specimenTypeValues.isEmpty()) {
-			String filter = "SPECIMEN_ASSAY_TYPE:(";
-			for (String item : specimenTypeValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filters.add(filter);
+			if (specimenTypeValues.size() == 1){
+				filters.put("SPECIMEN_ASSAY_TYPE",specimenTypeValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : specimenTypeValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("SPECIMEN_ASSAY_TYPE",filter);
+			}
 		}
 		
 		if (theilerStageValues != null && !theilerStageValues.isEmpty()) {
-			String filter = "THEILER_STAGE:(";
-			for (String item : theilerStageValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filters.add(filter);
+			if (theilerStageValues.size() == 1){
+				filters.put("THEILER_STAGE",theilerStageValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : theilerStageValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("THEILER_STAGE",filter);
+			}
 		}
-	}
 
-	public void submit(){
-		refresh();
+		if (carnegieStageValues != null && !carnegieStageValues.isEmpty()) {
+			if (carnegieStageValues.size() == 1){
+				filters.put("CARNEGIE_STAGE",carnegieStageValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : carnegieStageValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("CARNEGIE_STAGE",filter);
+			}
+		}
+	
 	}
 	
 	public void reset(){
-		filters = new ArrayList<String>();
+		filters = new HashMap<String,String>();
 		
 		geneValue = "";
 		sourceValues = new ArrayList<String>();			
@@ -449,22 +371,9 @@ public class SolrInsituFilter implements Serializable {
 		sexValues = new ArrayList<String>();
 		specimenTypeValues = new ArrayList<String>();
 		theilerStageValues = new ArrayList<String>();
+		carnegieStageValues = new ArrayList<String>();
 		fromDateValue = null;
 		toDateValue = null;		
-	}
-
-	public void resetAll(){
-		filters = new ArrayList<String>();
-		
-		geneValue = "";
-		sourceValues = new ArrayList<String>();			
-		assayTypeValues = new ArrayList<String>();
-		sexValues = new ArrayList<String>();
-		specimenTypeValues = new ArrayList<String>();
-		theilerStageValues = new ArrayList<String>();
-		fromDateValue = null;
-		toDateValue = null;		
-
 	}
 
 	public void refresh2(){
@@ -497,6 +406,11 @@ public class SolrInsituFilter implements Serializable {
 		page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
 		return page;
     }
-	
+    
+    public void removeFilter(AjaxBehaviorEvent event) {
+    	UIComponent source = (UIComponent)event.getSource();
+    	String prefix = source.getId();    	
+    	filters.remove(prefix);
+	}	
 }
 

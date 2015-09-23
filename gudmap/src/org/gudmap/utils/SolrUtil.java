@@ -1,30 +1,32 @@
 package org.gudmap.utils;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.Map.Entry;
+//import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
 
-import javax.faces.context.FacesContext;
-import javax.xml.parsers.ParserConfigurationException;
+//import javax.faces.context.FacesContext;
+//import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.core.CoreContainer;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
-import org.apache.solr.client.solrj.SolrServer;
+//import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+//import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.request.LukeRequest;
@@ -32,7 +34,7 @@ import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.PivotField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.xml.sax.SAXException;
+//import org.xml.sax.SAXException;
 
 
 /**
@@ -67,14 +69,24 @@ public class SolrUtil {
 	public HttpSolrClient mouse_strain_server;
 	public HttpSolrClient image_server;
 
+	public Set<String> insitu_schema;
+	public Set<String> genes_schema;
+	public Set<String> genelists_schema;
+	public Set<String> microarray_schema;
+	public Set<String> series_schema;
+	public Set<String> samples_schema;
+	public Set<String> tissues_schema;
+	public Set<String> mouse_strain_schema;
+	public Set<String> image_schema;
+	
 	public HttpSolrClient tutorial_server;
 	
 	public String searchString = null;
 	
 	public SolrUtil(){
 		
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String solr_home = facesContext.getExternalContext().getInitParameter( "SOLR_HOME" );
+//		FacesContext facesContext = FacesContext.getCurrentInstance();
+//		String solr_home = facesContext.getExternalContext().getInitParameter( "SOLR_HOME" );
 //		String solr_home = "/export/data0/bernardh/qq/solr";
 //    	File home = new File(solr_home);
 //    	File f = new File( home, "solr.xml" );
@@ -98,6 +110,46 @@ public class SolrUtil {
 		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/core_mouse_strains" );		
 		image_server = new HttpSolrClient( "http://localhost:8983/solr/core_images" );		
 //		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/core_tutorials");
+		
+		
+		
+        LukeRequest lukeRequest = new LukeRequest();
+        LukeResponse lukeResponse;
+        lukeRequest.setNumTerms(0);
+        try {
+			lukeResponse = lukeRequest.process(insitu_server);
+			insitu_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(genes_server);
+			genes_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(genelists_server);
+			genelists_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(microarray_server);
+			microarray_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(series_server);
+			series_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(samples_server);
+			samples_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(tissues_server);
+			tissues_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(mouse_strain_server);
+			mouse_strain_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(image_server);
+			image_schema = lukeResponse.getFieldInfo().keySet();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SolrServerException e) {
+			e.printStackTrace();
+		}
+
 		
 	}
 	
@@ -125,7 +177,33 @@ public class SolrUtil {
     	return fs;
 	}
 
-	
+	public ArrayList<String> checkSchema(HttpSolrClient server, ArrayList<String> filters){
+		
+		ArrayList<String> updatedfilters = new ArrayList<String>();
+		
+        LukeRequest lukeRequest = new LukeRequest();
+        LukeResponse lukeResponse;
+        lukeRequest.setNumTerms(0);
+        try {
+			lukeResponse = lukeRequest.process(server);
+			Set<String> keys = lukeResponse.getFieldInfo().keySet();
+			System.out.println("schema fields = "+keys);
+			for (String filter: filters){
+				int index = filter.indexOf(":");
+				String prefix = filter.substring(0, index);
+				if (keys.contains(prefix))
+					updatedfilters.add(filter);
+			}
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SolrServerException e) {
+			e.printStackTrace();
+		}
+		
+		return updatedfilters;		
+	}
     //***************************** INSITU METHODS *****************************************************
 
 
@@ -212,23 +290,25 @@ public class SolrUtil {
        return count;    
     }
     
-    public int getInsituFilteredCount(String queryString, ArrayList<String> filters)
+    public int getInsituFilteredCount(String queryString, HashMap<String,String> filters)
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
    	
 		int count = 0;
 		try{
-//	     	String cq = checkQuery(genes_server,q);        	
-	    	
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);	
 	        
-	      	if (filters != null || !filters.isEmpty()){
-		      	for (String filter : filters)
-		      		parameters.addFilterQuery(filter);
-	      	}
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	      	
 	        QueryResponse qr = insitu_server.query(parameters);                      
 	        
@@ -407,7 +487,7 @@ public class SolrUtil {
     }
     
     	// method to retrieve the Insitu data for the results page
-    public SolrDocumentList getInsituData(String queryString, List<String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
+    public SolrDocumentList getInsituData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -474,11 +554,14 @@ public class SolrUtil {
 //	            	parameters.addFilterQuery(fs);
 //	            }
 //        	}
-        	if (filters != null){
-		        for (String fs : filters){
-		        	parameters.addFilterQuery(fs);
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
-        	}
+	        }
 	        
 // 	        query.setParam("debugQuery", "on");
 //	        query.setHighlight(true);  
@@ -605,7 +688,7 @@ public class SolrUtil {
     }
     
     
-    public int getGeneCount(String queryString, ArrayList<String> filters)
+    public int getGeneCount(String queryString, HashMap<String,String> filters)
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -616,11 +699,16 @@ public class SolrUtil {
 	    	
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
-	        parameters.setRows(0);	 
-	      	if (filters != null && !filters.isEmpty()){
-	      		for(String filter : filters)
-	      			parameters.addFilterQuery(filter);
-	      	}
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (genes_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	
 	        QueryResponse qr = genes_server.query(parameters);                      
 	        
@@ -972,7 +1060,7 @@ public class SolrUtil {
     }
     
 	// method to retrieve the Genelist count for the results page
-    public int getGenelistCount(String queryString, ArrayList<String> filters){
+    public int getGenelistCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -987,10 +1075,14 @@ public class SolrUtil {
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
 	        
-	      	if (filters != null && !filters.isEmpty()){
-	      		for(String filter : filters)
-	      			parameters.addFilterQuery(filter);
-	      	}
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (genelists_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
             QueryResponse qr = genelists_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1067,7 +1159,7 @@ public class SolrUtil {
     //***************************** TISSUE METHODS *****************************************************
 
 	// method to retrieve the Tissues count for the results page
-    public int getTissueCount(String queryString, ArrayList<String> filters){
+    public int getTissueCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1082,10 +1174,14 @@ public class SolrUtil {
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
 	        
-	      	if (filters != null && !filters.isEmpty()){
-	      		for(String filter : filters)
-	      			parameters.addFilterQuery(filter);
-	      	}
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (tissues_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
             QueryResponse qr = tissues_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1538,7 +1634,7 @@ public class SolrUtil {
         return count;    
     }
 
-    public int getMicroarrayFilteredCount(String queryString, ArrayList<String> filters){
+    public int getMicroarrayFilteredCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1559,11 +1655,14 @@ public class SolrUtil {
 	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
 	        
 	
-	        
-	      	if (filters != null || !filters.isEmpty()){
-		      	for (String filter : filters)
-		      		parameters.addFilterQuery(filter);
-	      	}
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (microarray_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
             QueryResponse qr = microarray_server.query(parameters);
             
@@ -1803,7 +1902,7 @@ public class SolrUtil {
     }
     
 	// method to retrieve the Tutorials count for the results page
-    public int getTutorialCount(String queryString, ArrayList<String> filters){
+    public int getTutorialCount(String queryString, HashMap<String,String> filters){
 
     	long count = 0;
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1816,11 +1915,15 @@ public class SolrUtil {
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
-	        
-	      	if (filters != null && !filters.isEmpty()){
-	      		for(String filter : filters)
-	      			parameters.addFilterQuery(filter);
-	      	}
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//		            if (tutorial_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
             QueryResponse qr = tutorial_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1838,30 +1941,27 @@ public class SolrUtil {
     }
 
     public int getTutorialOverviewCount(String queryString){
-        String filter = "title:Tutorial overview";
-        String[] ffields = filter.split(":");
-    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+        HashMap<String,String> filter = new HashMap<String,String>();
+        filter.put("title","Tutorial overview"); 	
     	return getTutorialCount(queryString, filter);
     }
 
     public int getTutorialDevMRSCount(String queryString){
-        String filter = "title:Dev MRS Tutorial";
-        String[] ffields = filter.split(":");
-    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+        HashMap<String,String> filter = new HashMap<String,String>();
+        filter.put("title","Dev MRS Tutorial");
     	return getTutorialCount(queryString, filter);
     }
 
     public int getTutorialDevMUSCount(String queryString){
-        String filter = "title:Dev MUS Tutorial";
-        String[] ffields = filter.split(":");
-    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+        HashMap<String,String> filter = new HashMap<String,String>();
+        filter.put("title","Dev MUS Tutorial");
     	return getTutorialCount(queryString, filter);
     }
     
     //***************************** MOUSE STRAINS METHODS *****************************************************
     
     // method to retrieve the Mouse Strails count for the results page
-    public int getMouseStrainsCount(String queryString, ArrayList<String> filters){
+    public int getMouseStrainsCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1875,11 +1975,15 @@ public class SolrUtil {
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
-	        
-	      	if (filters != null && !filters.isEmpty()){
-	      		for(String filter : filters)
-	      			parameters.addFilterQuery(filter);
-	      	}
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (mouse_strain_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
             QueryResponse qr = mouse_strain_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1991,7 +2095,7 @@ public class SolrUtil {
 
 
     // method to retrieve the Images count for the results page
-    public int getImagesCount(String queryString, ArrayList<String> filters){
+    public int getImagesCount(String queryString, HashMap<String,String> filters){
 
     	long count = 0;
     	
@@ -2005,11 +2109,15 @@ public class SolrUtil {
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
-	        
-	      	if (filters != null && !filters.isEmpty()){
-	      		for(String filter : filters)
-	      			parameters.addFilterQuery(filter);
-	      	}
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (image_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
             QueryResponse qr = image_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();

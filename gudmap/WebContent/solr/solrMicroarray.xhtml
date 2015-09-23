@@ -20,12 +20,12 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 	
-	<h:form>
-		<h:panelGrid columns="3">
+	<h:form id="solrmicroarray_dataform">
+		<h:panelGrid columns="2">
 			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> 
 			<h:outputText value="Microarray Search Results ( #{solrTreeBean.microarrayCount}) &gt; #{solrInsituBean.solrInput}" rendered="#{solrInsituBean.solrInput != null}" styleClass="db_bold" />    
 			<h:outputText value="Microarray Search Results ( #{solrTreeBean.microarrayCount}) &gt; * " rendered="#{solrInsituBean.solrInput == null}" styleClass="db_bold" />   
+	    </c:forEach>  
 		</h:panelGrid>
 	</h:form>
 
@@ -208,7 +208,6 @@
 		</h:form> 	
 		
 	<ui:include src="/snippets/g_micSampleCols.xhtml"></ui:include>
-	<ui:include src="/snippets/g_solrIshFilter.xhtml"></ui:include>	
 	</ui:define>			
 
 </ui:composition>

@@ -22,7 +22,7 @@ public class SolrTissueSummaryAssembler {
 	
 	public int getCount(String solrInput, String solrFilter) {
 
-		int n = solrUtil.getTissueCount(solrInput);
+		int n = solrUtil.getTissueCount(solrInput, null);
 
 		return n;
 	}
