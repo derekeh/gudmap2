@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CollectionInfoModel {
 	
-	private int id;
+	private int oid;
 	private String name;
 	private int owner;
 	private String ownerName;
@@ -31,12 +31,12 @@ public class CollectionInfoModel {
 		focusGroup = -1;
 	}
 	
-	public int getId() {
-		return id;
+	public int getOid() {
+		return oid;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	public void setOid(int oid) {
+		this.oid = oid;
 	}
 	
 	public String getName() {

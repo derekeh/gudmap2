@@ -18,6 +18,10 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
+	<f:metadata>
+		<f:event listener="#{authenticator.check(e)}" type="preRenderView" />
+	</f:metadata>
 	 
 	<!-- can use relative links on html tags -->
 	#{genericTablePageBean.init('collections','list',20,10,'name',true)}
@@ -43,10 +47,11 @@
     			
  			<h:column >
     			<f:facet name="header">
-    				<ui:remove><h:commandButton value="Check" action="#{genericTablePageBean.checkboxSelections()}"></h:commandButton></ui:remove>
-    				<h:commandButton id="checkall" value="Check" action="#{genericTablePageBean.checkAll}">
+    				<h:commandButton id="checkall" value="All" action="#{genericTablePageBean.checkAllCollections}">
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
+					<br />
+    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
@@ -54,127 +59,92 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="genelink" value="Gene" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="x.gene" />
-    					<f:ajax execute="@this genelink" render="@form"></f:ajax>
+    				<h:commandLink id="namelink" value="Name" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="name" />
+    					<f:ajax execute="@this namelink" render="@form"></f:ajax>
                     </h:commandLink> 
     			</f:facet>
-    			<h:commandLink value="#{u.gene}"  action="viewGeneStrip">
-					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+    			<h:commandLink value="#{u.name}"  action="viewCollection">
+					<f:param name="collectionId" value="#{u.oid}"></f:param>
 				</h:commandLink>
     		</h:column>
  
-    		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    			<h:commandLink id="accessionlink" value="Gudmap Accession" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="natural_sort(x.gudmap_accession)" />
-    					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
+    			<h:commandLink id="descriptionlink" value="Description" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="description" />
+    					<f:ajax execute="@this descriptionlink" render="@form"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="#{paramBean.returnDetailsPage(u.assay_type)}" >
-					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
-					<f:param name="isArray" value="#{u.assay_type == 'Microarray'?true:false}"></f:param>
-					
-				</h:commandLink>
+    			#{u.description}
     				
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.sourcecol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    			<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="x.source" />
-    					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
+    			<h:commandLink id="ownerlink" value="Owner" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="username" />
+    					<f:ajax execute="@this ownerlink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
-    				#{u.source}
+    				#{u.ownerName}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.submissiondatecol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				Submission Date
+    				<h:commandLink id="focusgrouplink" value="Focus Group" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="focusgroupname" />
+    					<f:ajax execute="@this focusgrouplink" render="@form"></f:ajax>
+                    </h:commandLink>
 				</f:facet>
-    				#{u.submission_date}
+    				#{u.focusGroupName}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.assaytypecol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="assaylink" value="Assay Type" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="x.assay_type" />
-    					<f:ajax execute="@this assaylink" render="@form"></f:ajax>
+    				<h:commandLink id="entitycountlink" value="Entity Count" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="entitycount" />
+    					<f:ajax execute="@this entitycountlink" render="@form"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
-    				#{u.assay_type}
+    				#{u.entries}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.probenamecol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				Probe Name
+    				<h:commandLink id="statuslink" value="Status" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="status" />
+    					<f:ajax execute="@this statuslink" render="@form"></f:ajax>
+                    </h:commandLink> 
 				</f:facet>
-    				#{u.probe_name}
+    				#{u.status}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.embryostagecol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    			<h:commandLink id="stagelink" value="Theiler Stage" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="x.stage" />
-    					<f:ajax execute="@this stagelink" render="@form"></f:ajax>
+    			<h:commandLink id="modifiedlink" value="Last Modified" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="modified" />
+    					<f:ajax execute="@this modifiedlink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
-				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage}#{applicationBean.theilerUrl2}" target="_blank">#{u.stage}</h:outputLink>
+				#{u.lastUpdate}
     				
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.agecol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				Age
+    				Download
 				</f:facet>
-    				#{u.age}
+    				Download
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.sexcol == true}">
+    		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				Sex
+    				Share
 				</f:facet>
-    				#{u.sex}
+    				Send
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genotypecol == true}">
-    			<f:facet name="header">
-    				Genotype
-				</f:facet>
-    				#{u.genotype}
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.tissuecol == true}">
-    			<f:facet name="header">
-    				Tissue
-				</f:facet>
-    				#{u.tissue}
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.expressioncol == true}">
-    			<f:facet name="header">
-    				Expression
-				</f:facet>
-    				#{u.expression}
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.specimentypecol == true}">
-    			<f:facet name="header">
-    				Specimen Type
-				</f:facet>
-    				#{u.specimen}
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.imagescol == true}">
-    			<f:facet name="header">
-    				Images
-				</f:facet>
-    			<h:commandLink  action="viewSubmissionDetails">
-					<img src="#{u.image}" height="40" />
-					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
-				</h:commandLink>
-    		</h:column>
  
  		</h:dataTable> 
  		</h:form>

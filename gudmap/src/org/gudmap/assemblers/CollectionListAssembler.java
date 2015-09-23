@@ -19,9 +19,9 @@ public class CollectionListAssembler {
 	private PreparedStatement ps;
 	private ResultSet result;
 	private CollectionInfoModel collectionInfoModel=null;
-	private int userId;
-	private int collectionType; // 0 - submission collections; 1 - gene collections; 2 - query collections
-	private int status; // 0 - own collections; 1 - others' collections; 2 - both
+	private int userId=1;
+	private int collectionType=0; // 0 - submission collections; 1 - gene collections; 2 - query collections
+	private int status=1; // 0 - own collections; 1 - others' collections; 2 - both
 	private String queryString="";
 	
 	public CollectionListAssembler() {
@@ -50,65 +50,64 @@ public class CollectionListAssembler {
 		 else if (status == 2) { // both own and others' shared collection required
 	        	paramSQL = CollectionQueries.COLLECTION_BROWSE_ALL;
 	     }
-		String sql=(status==2)?String.format(paramSQL,whereclause,sortField, sortDirection):String.format(paramSQL,whereclause,whereclause,sortField, sortDirection);
+		String sql=(status==2)?String.format(paramSQL,whereclause,whereclause,sortField, sortDirection):String.format(paramSQL,whereclause,sortField, sortDirection);
 		
 		
 		List<CollectionInfoModel> list = new ArrayList<CollectionInfoModel>();
 		try
 		{
-		con = Globals.getDatasource().getConnection();
-		ps = con.prepareStatement(sql);
-		if (status == 0 || status == 1) { // own or others' shared collections
-			ps.setInt(1, collectionType);
-			ps.setInt(2, userId);
-			ps.setInt(3, firstRow);
-			ps.setInt(4, rowCount);
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(sql);
+			if (status == 0 || status == 1) { // own or others' shared collections
+				ps.setInt(1, collectionType);
+				ps.setInt(2, userId);
+				ps.setInt(3, firstRow);
+				ps.setInt(4, rowCount);
+				
+	        } 
+			else if (status == 2) { // both own and others' shared collections
+	        	ps.setInt(1, collectionType);
+	        	ps.setInt(2, userId);
+	        	ps.setInt(3, collectionType);
+	        	ps.setInt(4, userId);
+	        	ps.setInt(5, firstRow);
+				ps.setInt(6, rowCount);
+	        }
+			result =  ps.executeQuery();
 			
-        } 
-		else if (status == 2) { // both own and others' shared collections
-        	ps.setInt(1, collectionType);
-        	ps.setInt(2, userId);
-        	ps.setInt(3, collectionType);
-        	ps.setInt(4, userId);
-        	ps.setInt(5, firstRow);
-			ps.setInt(6, rowCount);
-        }
-		result =  ps.executeQuery();
-		
-		//group_concat returning no value will return a null row so don't get those!
-		while(result.next()){
-			//while(result.next() && result.getString(1)!=null){
-			if(result.getString(1)!=null)
-			{
-			collectionInfoModel=new CollectionInfoModel();
-			collectionInfoModel.setId(result.getInt("id"));
-			collectionInfoModel.setName(result.getString("name"));
-			collectionInfoModel.setDescription(result.getString("description"));
-			collectionInfoModel.setOwner(result.getInt("userid"));
-			collectionInfoModel.setOwnerName(result.getString("username"));
-			collectionInfoModel.setFocusGroup(result.getInt("focusgroupid"));
-			collectionInfoModel.setEntries(result.getInt("entitycount"));
-			collectionInfoModel.setStatus(result.getInt("status"));
-			collectionInfoModel.setLastUpdate(result.getString("modified"));
-			collectionInfoModel.setType(result.getInt("type"));
-			collectionInfoModel.setFocusGroupName(result.getString("focusgroupname"));
-
-			//collectionInfoModel.setSelected(false);
-			list.add(collectionInfoModel);
+			//group_concat returning no value will return a null row so don't get those!
+			while(result.next()){
+				//while(result.next() && result.getString(1)!=null){
+				
+				collectionInfoModel=new CollectionInfoModel();
+				collectionInfoModel.setOid(result.getInt("oid"));
+				collectionInfoModel.setName(result.getString("name"));
+				collectionInfoModel.setDescription(result.getString("description"));
+				collectionInfoModel.setOwner(result.getInt("userid"));
+				collectionInfoModel.setOwnerName(result.getString("username"));
+				collectionInfoModel.setFocusGroup(result.getInt("focusgroupid"));
+				collectionInfoModel.setEntries(result.getInt("entitycount"));
+				collectionInfoModel.setStatus(result.getInt("status"));
+				collectionInfoModel.setLastUpdate(result.getString("modified"));
+				collectionInfoModel.setType(result.getInt("type"));
+				collectionInfoModel.setFocusGroupName(result.getString("focusgroupname"));
+	
+				collectionInfoModel.setSelected(false);
+				list.add(collectionInfoModel);
+				
 			}
-		}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
-		Globals.closeQuietly(con, ps, result);
+			Globals.closeQuietly(con, ps, result);
 		}
 		return list;
-		}
+	}
 		
 		public int count() {
 			int count=0;
 			String countsql = paramSQL.replace("ORDER BY %s %s LIMIT ?,?", "");
-			countsql=(status==2)?String.format(countsql,whereclause):String.format(countsql,whereclause,whereclause);
+			countsql=(status==2)?String.format(countsql,whereclause,whereclause):String.format(countsql,whereclause);
 						
 			try
 			{

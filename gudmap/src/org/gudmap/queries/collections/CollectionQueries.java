@@ -15,7 +15,7 @@ public class CollectionQueries {
 	  
 	  public final static String COLLECTION_BROWSE_OTHERS = "SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
 			"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
-			"CLN_STATUS status, CLN_LAST_UPDATED modified, CLN_TYPE type, " +
+			"CLN_STATUS status, DATE_FORMAT(CLN_LAST_UPDATED,'%%e %%b %%Y') modified, CLN_TYPE type, " +
 			"CLN_FOCUS_GROUP_NAME focusgroupname " +
 			"FROM CLN_COLLECTION " +
 			"JOIN REF_USER ON USR_OID = CLN_USER_FK " +
@@ -29,7 +29,7 @@ public class CollectionQueries {
 	  
 	  public final static String COLLECTION_BROWSE_ALL = "(SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
 			"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
-			"CLN_STATUS status, CLN_LAST_UPDATED modified, CLN_TYPE type, " +
+			"CLN_STATUS status, DATE_FORMAT(CLN_LAST_UPDATED,'%%e %%b %%Y') modified, CLN_TYPE type, " +
 			"CLN_FOCUS_GROUP_NAME focusgroupname " +
 			  "FROM CLN_COLLECTION  JOIN REF_USER ON USR_OID = CLN_USER_FK  " +
 			  "JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID  " +
@@ -37,7 +37,7 @@ public class CollectionQueries {
 			  "UNION " +
 			  "(SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
 			"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
-			"CLN_STATUS status, CLN_LAST_UPDATED modified, CLN_TYPE type, " +
+			"CLN_STATUS status, DATE_FORMAT(CLN_LAST_UPDATED,'%%e %%b %%Y') modified, CLN_TYPE type, " +
 			"CLN_FOCUS_GROUP_NAME focusgroupname " +
 			  "FROM CLN_COLLECTION  JOIN REF_USER ON USR_OID = CLN_USER_FK  JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
 			  "%s CLN_TYPE = ?  AND CLN_USER_FK <> ? AND CLN_STATUS = 1  GROUP BY CLN_OID) " +

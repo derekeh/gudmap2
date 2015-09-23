@@ -37,12 +37,6 @@ public class InsituTablePageBeanAssembler {
 	private int batch=0;
 	
 	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
 		if(Globals.getParameterValue("batch")!=null)
 			batch=Integer.parseInt(Globals.getParameterValue("batch"));
 		

@@ -26,6 +26,7 @@ import org.gudmap.assemblers.SeqSampleTablePageBeanAssembler;
 import org.gudmap.assemblers.SeqSeriesTablePageBeanAssembler;
 import org.gudmap.globals.Globals;
 import org.gudmap.impl.PagerImpl;
+import org.gudmap.models.CollectionInfoModel;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.queries.array.ArrayQueries;
 import org.gudmap.queries.array.SequenceQueries;
@@ -203,7 +204,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     			//reset whereclause for this search
 	    		paramBean.setWhereclause(whereclause);
 	    		dataList = collectionListAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause());
-				//totalRows = collectionListAssembler.count();
+				totalRows = collectionListAssembler.count();
 				
 				//queryTotals=collectionListAssembler.getQueryTotals();
     		}
@@ -436,6 +437,13 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	areAllChecked=(areAllChecked)?false:true;
     	for (int i=0;i<dataList.size();i++) { 
     		((InsituTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
+    	} 
+    }
+    
+    public void checkAllCollections() { 
+    	areAllChecked=(areAllChecked)?false:true;
+    	for (int i=0;i<dataList.size();i++) { 
+    		((CollectionInfoModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
     }
     
