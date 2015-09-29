@@ -9,9 +9,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 //import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 //import javax.faces.context.FacesContext;
+
+
 
 
 
@@ -63,7 +67,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		this.solrTreeBean=solrTreeBean;
 	}
 	
-	public void setSolrInsituFilter(SolrFilter solrFilter){
+	public void setSolrFilter(SolrFilter solrFilter){
 		this.solrFilter = solrFilter;
 	}
 	
@@ -88,7 +92,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     public void setRemoteWhereclause(){
     	paramBean.setWhereclause(whereclause);
     	solrInput = solrTreeBean.getSolrInput();
-    }
+     }
 
     
     @Override
@@ -112,6 +116,17 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
         }
 
     }
+//	public HashMap<String,String> getFilters(){
+//		return filters;		
+//	}
+//	public void setFilters(HashMap<String,String> val){
+//		filters = val;	
+//	}
+//    public void removeFilter(AjaxBehaviorEvent event) {
+//    	UIComponent source = (UIComponent)event.getSource();
+//    	String prefix = source.getId();    	
+//    	filters.remove(prefix);
+//	}	
 
     public String refresh(){
  //   	sortField = "RELEVANCE";

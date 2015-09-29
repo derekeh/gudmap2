@@ -5,7 +5,6 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pr="http://primefaces.org/ui" >
 	
-
 	
     <pr:overlayPanel id="solrSearchPanel" for="solrSearchBtn" dismissable="false" appendToBody="true" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="font-size: 12px">
   	 
@@ -35,94 +34,88 @@
 </h:panelGrid> 
 </ui:remove>   
  
-<h:panelGrid id="id_filters" columns="1">
-    <c:forEach items="#{solrFilter.filters}" var="filter">
-		<h:panelGrid columns="2" >	
-			<h:outputText value="#{filter.key}:#{filter.value} " />	
- 			<h:commandButton id="#{filter.key}" image="/resources/images/resources/cancel.png" immediate="true" actionListener="#{solrFilter.removeFilter2}" width="10" height="10">
-         		<f:ajax  execute="@form" render=":solrsearchform" ></f:ajax>
+		 <h:panelGrid id="id_filters" columns="1">
+		     <c:forEach items="#{solrFilter.filters}" var="filter">
+				<h:panelGrid columns="2" >	
+					<h:outputText value="#{filter.key}:#{filter.value} " />	
+		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
+			 			<pr:ajax event="click" update=":solrsearchform " listener="#{solrFilter.removeFilter}" />
+					</h:graphicImage>
+				</h:panelGrid>
+		    </c:forEach>  
+		</h:panelGrid>    
+ 
+		<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
+			<h:inputText value="#{solrTreeBean.solrInput}" ></h:inputText>
+			<h:commandButton value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
+				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+				<f:ajax execute="@form" render=":solrsearchform" ></f:ajax>
 			</h:commandButton>
+				
+			<pr:commandLink id="solrFilterBtn"  actionListener="#{solrFilter.refresh}">
+				<h:graphicImage library="images/resources" name="filter_add.png" width="25" height="25"/>
+			</pr:commandLink>
 		</h:panelGrid>
-    </c:forEach> 
-</h:panelGrid> 
- 
- 
-   
-      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
-      	<h:inputText value="#{solrTreeBean.solrInput}" ></h:inputText>
-      	
-        <h:commandButton value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
-        	<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-         	<f:ajax execute="@form" render=":solrsearchform" ></f:ajax>
-        </h:commandButton>
 
-
- 		<pr:commandLink id="solrFilterBtn"  actionListener="#{solrFilter.refresh}">
- 			<h:graphicImage library="images/resources" name="filter_add.png" width="25" height="25"/>
- 		</pr:commandLink>
-
- 			  
-     </h:panelGrid>
- 
 		
- 	<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" dismissable="false" appendToBody="false" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
+ 		<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" dismissable="false" appendToBody="false" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
  
- 		<pr:accordionPanel activeIndex="-1" >
-	 		<pr:tab title="Genes">
-			 	<h:outputText value="Gene: "></h:outputText>
-			 	<h:inputText value="#{solrFilter.geneValue}" >
-			 		<pr:ajax update=":solrsearchform " listener="#{solrFilter.refresh}" />
-			 	</h:inputText>
-			</pr:tab>
-			<pr:tab title="Submission Date">
-		 		<h:panelGrid columns="2">
-		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
-		 			</pr:calendar>
-		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
-		 			</pr:calendar>
-		 		</h:panelGrid>
-			</pr:tab>
-			<pr:tab title="Sources">
-			<h:panelGrid columns="3">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.sourceList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-		 	</h:panelGrid>
-			</pr:tab>
-			<pr:tab title="Assay Types">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.assayTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Theiler Stages">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.theilerStageList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Sex">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.sexList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Specimen Type">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
- 		</pr:accordionPanel>  
+	 		<pr:accordionPanel id="id_accordion" activeIndex="-1" >
+	 	 		<pr:tab title="Genes">
+				 	<h:outputText value="Gene: "></h:outputText>
+				 	<h:inputText value="#{solrFilter.geneValue}" >
+				 		<pr:ajax update=":solrsearchform " listener="#{solrFilter.refresh}" />
+				 	</h:inputText>
+				</pr:tab>
+				<pr:tab title="Submission Date">
+			 		<h:panelGrid columns="2">
+			 			<h:outputText value="From:"></h:outputText>
+			 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
+			 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 			</pr:calendar>
+			 			<h:outputText value="To:"></h:outputText>
+			 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
+			 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
+			 			</pr:calendar>
+			 		</h:panelGrid>
+				</pr:tab>
+				<pr:tab title="Sources">
+				<h:panelGrid columns="3">
+				 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
+				 		<f:selectItems value="#{solrFilter.sourceList}" />
+				 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+				 	</h:selectManyCheckbox>
+			 	</h:panelGrid>
+				</pr:tab>
+				<pr:tab title="Assay Types">
+				 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
+				 		<f:selectItems value="#{solrFilter.assayTypeList}" />
+				 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+				 	</h:selectManyCheckbox>
+				</pr:tab>
+				<pr:tab title="Theiler Stages">
+				 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
+				 		<f:selectItems value="#{solrFilter.theilerStageList}" />
+				 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+				 	</h:selectManyCheckbox>
+				</pr:tab>
+				<pr:tab title="Sex">
+				 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
+				 		<f:selectItems value="#{solrFilter.sexList}" />
+				 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+				 	</h:selectManyCheckbox>
+				</pr:tab>
+				<pr:tab title="Specimen Type">
+				 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
+				 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
+				 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
+				 	</h:selectManyCheckbox>
+				</pr:tab>
+	 		</pr:accordionPanel>  
  		
 			
 		
-  	</pr:overlayPanel> 	
+		</pr:overlayPanel> 	
 	    
 
 
@@ -189,3 +182,4 @@
 	
 		
 </ui:composition>
+

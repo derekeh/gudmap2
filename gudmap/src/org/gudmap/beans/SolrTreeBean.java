@@ -28,15 +28,14 @@ public class SolrTreeBean implements Serializable {
 	private String filter;
 	
     @Inject
-   	private SolrFilter solrInsituFilter;
+   	private SolrFilter solrFilter;
 	
 	public SolrTreeBean(){
 		solrUtil = new SolrUtil();
-//		insitufilters = new ArrayList<String>();
 	}
 	
-	public void setSolrInsituFilter(SolrFilter filter){
-		this.solrInsituFilter = filter;
+	public void setSolrFilter(SolrFilter filter){
+		this.solrFilter = filter;
 	}
 
 	public SolrUtil getSolrUtil(){
@@ -103,7 +102,7 @@ public class SolrTreeBean implements Serializable {
 	
 	public int getGeneCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getGeneCount(solrInput, filters);
 	}
 	
@@ -117,7 +116,7 @@ public class SolrTreeBean implements Serializable {
 	public int getInsituCount(){
 
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getInsituFilteredCount(solrInput,filters);
 	}
 	
@@ -138,7 +137,7 @@ public class SolrTreeBean implements Serializable {
 	
 	public int getMicroarrayCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getMicroarrayFilteredCount(solrInput, filters);
 	}
 
@@ -150,7 +149,7 @@ public class SolrTreeBean implements Serializable {
 	
 	public int getGenelistCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getGenelistCount(solrInput, filters);
 	}
 
@@ -158,7 +157,7 @@ public class SolrTreeBean implements Serializable {
 	
 	public int getTissueCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getTissueCount(solrInput, filters);
 	}
 
@@ -166,7 +165,7 @@ public class SolrTreeBean implements Serializable {
 	
 	public int getTutorialCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getTutorialCount(solrInput, filters);
 	}
 
@@ -174,7 +173,7 @@ public class SolrTreeBean implements Serializable {
 	
 	public int getMouseStrainsCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getMouseStrainsCount(solrInput, filters);
 	}
 
@@ -182,7 +181,7 @@ public class SolrTreeBean implements Serializable {
 	
 	public int getImagesCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrInsituFilter.getFilters();
+		filters = solrFilter.getFilters();
 		return solrUtil.getImagesCount(solrInput, filters);
 	}
 

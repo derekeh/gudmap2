@@ -9,31 +9,6 @@
 	
     <pr:overlayPanel id="solrSearchPanel" for="solrSearchBtn" dismissable="false" appendToBody="true" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="font-size: 12px">
   	 
-     <h:form id="solrsearchform">  
-<ui:remove>      
- <h:panelGrid id="id_filters" columns="1">
-     <c:forEach items="#{solrFilter.filters}" var="filter">
-		<h:panelGrid columns="2" >	
-			<h:outputText value="#{filter.key}:#{filter.value} " />	
- 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-	 			<pr:ajax event="click" update=":solrsearchform " listener="#{solrFilter.removeFilter}" />
-			</h:graphicImage>
-		</h:panelGrid>
-    </c:forEach>  
-</h:panelGrid>    
-
-  
-<h:panelGrid id="id_filters" columns="1">
-    <c:forEach items="#{solrFilter.filters}" var="filter">
-		<h:panelGrid columns="2" >	
-			<h:outputText value="#{filter.key}:#{filter.value} " />	
- 			<h:commandButton id="#{filter.key}" image="/resources/images/resources/cancel.png" immediate="true" actionListener="#{solrFilter.removeFilter2}" width="10" height="10">
-         		<f:ajax  execute="@form" render=":solrsearchform" ></f:ajax>
-			</h:commandButton>
-		</h:panelGrid>
-    </c:forEach> 
-</h:panelGrid> 
-</ui:remove>   
  
 <h:panelGrid id="id_filters" columns="1">
     <c:forEach items="#{solrFilter.filters}" var="filter">
@@ -67,58 +42,103 @@
 		
  	<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" dismissable="false" appendToBody="false" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
  
- 		<pr:accordionPanel activeIndex="-1" >
-	 		<pr:tab title="Genes">
-			 	<h:outputText value="Gene: "></h:outputText>
-			 	<h:inputText value="#{solrFilter.geneValue}" >
-			 		<pr:ajax update=":solrsearchform " listener="#{solrFilter.refresh}" />
-			 	</h:inputText>
-			</pr:tab>
-			<pr:tab title="Submission Date">
-		 		<h:panelGrid columns="2">
-		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
-		 			</pr:calendar>
-		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
-		 			</pr:calendar>
-		 		</h:panelGrid>
-			</pr:tab>
-			<pr:tab title="Sources">
-			<h:panelGrid columns="3">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.sourceList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-		 	</h:panelGrid>
-			</pr:tab>
-			<pr:tab title="Assay Types">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.assayTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Theiler Stages">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.theilerStageList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Sex">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.sexList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Specimen Type">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
- 		</pr:accordionPanel>  
+ 
+     <div id="Accordion1">   
+      <h2>Database Statistics</h2>
+      <div>
+
+         <table border="0" id="db_homestats">
+          <tr>
+            <th align="left" scope="col">Assay Type</th>
+            <th align="left" scope="col">Entries</th>
+            <th align="left" scope="col">Genes</th>
+          </tr>
+          <tr>
+            <td>All In Situ Hybridisation (ISH)</td>
+            <td>
+            	<h:link  outcome="browseInsituTablePage" value="#{volatileSummaryBean.getIshTotal()}" onclick="$('#spinner').show()"/>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
+            
+          </tr>
+          <tr>
+            <td>Wholemount ISH (WISH)</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Section ISH (SISH)</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getSishTotal()}" outcome="browseSishTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>OPT ISH</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getOptTotal()}" outcome="browseOptTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Immunohistochemistry (IHC)</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getIhcTotal()}" outcome="browseIhcTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Transgenic Reporters</td>
+            <td>
+            		<h:link value="#{volatileSummaryBean.getTgTotal()}" outcome="browseTgTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Microarray</td>
+            <td>
+            	
+            	<h:link value="#{volatileSummaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" onclick="$('#spinner').show()"></h:link>
+            	
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Sequence</td>
+            <td>
+            		<h:link value="#{volatileSummaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><a href="http://www.gudmap.org/Website_Reports/Stats/gudmap_stats.html">More...</a></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+
+      </div>
+      <h2>Updates</h2>
+      <div>
+         <table border="0" id="db_updates">
+          <tr>
+            <td width="58%"><strong>Last Editorial Update:</strong></td>
+            <td width="42%"><h:outputText value="#{sessionBean.editorialUpdate}"/></td>
+          </tr>
+          <tr>
+            <td><strong>Last Software Update:</strong></td>
+            <td><h:outputText value="#{sessionBean.softwareUpdate}"/><br />
+        		<h:outputText value="#{sessionBean.softwareVersion}"/>
+        	</td>
+          </tr>
+        </table>
+      </div>
+      
+    </div><!-- end accordion 1 -->
+ 
+
  		
 			
 		
@@ -185,7 +205,17 @@
  	</h:form>
     </pr:overlayPanel>		
  	    
-   	  
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+
+		$( "#Accordion1" ).accordion({
+			collapsible:true,
+			heightStyle:"content"
+		}); 
+   });
+//]]>
+</script>   	  
 	
 		
 </ui:composition>
