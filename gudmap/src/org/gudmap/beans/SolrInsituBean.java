@@ -49,7 +49,8 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
-    
+	private boolean showPageDetails = true;
+   
 	
     
     // Constructors -------------------------------------------------------------------------------
@@ -71,7 +72,6 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		this.solrFilter = solrFilter;
 	}
 	
-
 	public void setSolrInput(String solrInput){
 		solrInput = solrTreeBean.getSolrInput();
 		refresh();
@@ -114,19 +114,12 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
-
-    }
-//	public HashMap<String,String> getFilters(){
-//		return filters;		
-//	}
-//	public void setFilters(HashMap<String,String> val){
-//		filters = val;	
-//	}
-//    public void removeFilter(AjaxBehaviorEvent event) {
-//    	UIComponent source = (UIComponent)event.getSource();
-//    	String prefix = source.getId();    	
-//    	filters.remove(prefix);
-//	}	
+        
+        if (dataList.size() > rowsPerPage)
+        	showPageDetails = true;
+        else
+        	showPageDetails = false;
+   }
 
     public String refresh(){
  //   	sortField = "RELEVANCE";
@@ -179,11 +172,16 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     	}
     	else{
         	if (solrInput != null && solrInput != "")
-        		str += "(" + solrTreeBean.getInsituFilteredCount(filters) + ") > " + solrInput;
+        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > " + solrInput;
         	else
-        		str += "(" + solrTreeBean.getInsituFilteredCount(filters) + ") > ALL";
+        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > ALL";
     		
     	}
     	return str;
     }
+    
+    public boolean getShowPageDetails(){
+    	return showPageDetails;
+    }
+    
 }

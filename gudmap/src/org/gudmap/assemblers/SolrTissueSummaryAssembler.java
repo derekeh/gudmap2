@@ -1,6 +1,7 @@
 package org.gudmap.assemblers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,11 +28,11 @@ public class SolrTissueSummaryAssembler {
 		return n;
 	}
 
-	public List<TissueSummaryTableBeanModel> getData(String solrInput, String filter, List<String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<TissueSummaryTableBeanModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<TissueSummaryTableBeanModel> list = new ArrayList<TissueSummaryTableBeanModel>();
 
-    	QueryResponse qr  = solrUtil.getTissueData(solrInput, sortColumn,ascending,offset,num);
+    	QueryResponse qr  = solrUtil.getTissueData(solrInput, filterlist, sortColumn,ascending,offset,num);
 		list = formatTableData(qr);
 
 		return list;

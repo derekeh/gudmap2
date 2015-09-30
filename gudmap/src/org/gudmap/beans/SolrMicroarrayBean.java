@@ -29,7 +29,6 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     
     @Inject
    	private ParamBean paramBean;
-
    
     @Inject
    	private SolrTreeBean solrTreeBean;
@@ -39,7 +38,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
-    
+	private boolean showPageDetails = true;
+
 	
     
     // Constructors -------------------------------------------------------------------------------
@@ -53,9 +53,9 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 		this.paramBean=paramBean;
 	}
 	
-//	public void setSolrFilterBean(SolrFilterBean solrFilterBean){
-//		this.solrFilterBean=solrFilterBean;
-//	}
+	public void setSolrFilter(SolrFilter solrFilter){
+		this.solrFilter = solrFilter;
+	}
  
 	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
 		this.solrTreeBean=solrTreeBean;
@@ -103,6 +103,11 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
+        
+        if (dataList.size() > rowsPerPage)
+        	showPageDetails = true;
+        else
+        	showPageDetails = false;
     }
 
     public String refresh(){
@@ -155,12 +160,16 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     	}
     	else{
         	if (solrInput != null && solrInput != "")
-        		str += "(" + solrTreeBean.getMicroarrayFilteredCount(filters) + ") > " + solrInput;
+        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > " + solrInput;
         	else
-        		str += "(" + solrTreeBean.getMicroarrayFilteredCount(filters) + ") > ALL";
+        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > ALL";
     		
     	}
     	return str;
+    }
+    
+    public boolean getShowPageDetails(){
+    	return showPageDetails;
     }
     
 }

@@ -1,6 +1,7 @@
 package org.gudmap.assemblers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.solr.common.SolrDocument;
@@ -25,11 +26,11 @@ public class SolrMouseStrainsAssembler {
 		return n;
 	}
 
-	public List<MouseStrainsTableBeanModel> getData(String solrInput, String filter, List<String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<MouseStrainsTableBeanModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<MouseStrainsTableBeanModel> list = new ArrayList<MouseStrainsTableBeanModel>();
 
-		SolrDocumentList sdl = solrUtil.getMouseStrainsData(solrInput,sortColumn,ascending,offset,num);
+		SolrDocumentList sdl = solrUtil.getMouseStrainsData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
 
 		return list;

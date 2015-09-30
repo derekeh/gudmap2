@@ -19,6 +19,7 @@ import java.util.Set;
 //import javax.xml.parsers.ParserConfigurationException;
 
 
+
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.util.NamedList;
@@ -877,7 +878,7 @@ public class SolrUtil {
     }
 
     // returns a list of genes from solr for a given query and filter setting   
-    public SolrDocumentList getGudmapGenes(String queryString, String filter, List<String> filterlist, String column, boolean ascending, int offset, int rows){
+    public SolrDocumentList getGudmapGenes(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -905,10 +906,13 @@ public class SolrUtil {
 	        	parameters.setSort(column, order);
 
 	        
-	        if (filter != null){
-	            String[] ffields = filter.split(":");
-	            if (ffields.length > 1)
-	            	parameters.addFilterQuery(filter);
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
 	        }
 	        
             QueryResponse qr = genes_server.query(parameters);
@@ -1238,7 +1242,7 @@ public class SolrUtil {
     }
 
     // method to retrieve the Tissues data for the results page
-    public QueryResponse getTissueData(String queryString, String column, boolean ascending, int offset, int rows){
+    public QueryResponse getTissueData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1267,7 +1271,17 @@ public class SolrUtil {
 
 	        parameters.setParam("debugparameters", "on");
 	        parameters.setHighlight(true);  
-	        parameters.setParam("hl.fl", "*");	       
+	        parameters.setParam("hl.fl", "*");	 
+	        
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (tissues_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
             qr = tissues_server.query(parameters);
         }
@@ -2043,7 +2057,7 @@ public class SolrUtil {
     }
 
     // method to retrieve the Mouse Strains data for the results page
-    public SolrDocumentList getMouseStrainsData(String queryString, String column, boolean ascending, int offset, int rows){
+    public SolrDocumentList getMouseStrainsData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -2081,6 +2095,15 @@ public class SolrUtil {
         	parameters.addField("CELL_TYPE");
 
 	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (mouse_strain_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+        	
 	        QueryResponse qr = mouse_strain_server.query(parameters);
             sdl = qr.getResults();
 
@@ -2183,7 +2206,7 @@ public class SolrUtil {
     }
 
     // method to retrieve the Mouse Strains data for the results page
-    public SolrDocumentList getImagesData(String queryString, String column, boolean ascending, int offset, int rows){
+    public SolrDocumentList getImagesData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -2218,6 +2241,14 @@ public class SolrUtil {
            	parameters.addField("IMAGE_CLICK_PATH");
            	parameters.addField("IMAGE_TYPE");
 
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (image_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
 	        
 	        QueryResponse qr = image_server.query(parameters);
             sdl = qr.getResults();

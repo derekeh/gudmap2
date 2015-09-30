@@ -21,19 +21,30 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 
-	<h:form id="solrmousestrains_dataform">
 		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		<h:panelGrid columns="2">	
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />	
-			<h:outputText value="Mouse Strains Search Results ( #{solrTreeBean.mouseStrainsCount}) &gt; #{solrInsituBean.solrInput}" rendered="#{solrInsituBean.solrInput != null}" styleClass="db_bold" />    
-			<h:outputText value="Mouse Strains Search Results ( #{solrTreeBean.mouseStrainsCount}) &gt; * " rendered="#{solrInsituBean.solrInput == null}" styleClass="db_bold" />   
-
-		    
+		
+		<h:panelGrid id="id_filters" columns="1">
+		     <c:forEach items="#{solrFilter.filters}" var="filter">
+				<h:panelGrid columns="2" >	
+					<h:outputText value="#{filter.key}:#{filter.value} " />	
+		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
+			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
+					</h:graphicImage>
+				</h:panelGrid>
+		    </c:forEach>  
+		</h:panelGrid>    
+	
+		
+		<h:panelGrid columns="3">
+			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
+			<h:form id="solr_title">		
+			<h:outputText value="#{solrMouseStrainsBean.title}" styleClass="db_bold" />   
+			</h:form>	
 		</h:panelGrid>
-	</h:form>
+		
+	
+		<h:form id="solr_dataform">
 
-	    <!-- all other content in here --> 
-	    <h:form id="form1"> 
 	    <h:inputHidden id="solrInput" value="#{solrMouseStrainsBean.solrInput}" />
 	    
 	     <h:dataTable value="#{solrMouseStrainsBean.dataList}" var="u"
@@ -170,6 +181,7 @@
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
 	             </h:panelGrid>
            </h:panelGroup>
+           
          </h:panelGrid>    
 		</h:form> 
 		<h:form id="form2">

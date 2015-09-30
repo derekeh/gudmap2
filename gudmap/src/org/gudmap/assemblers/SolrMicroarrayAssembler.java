@@ -27,11 +27,11 @@ public class SolrMicroarrayAssembler {
 		return n;
 	}
 
-	public List<ArraySeqTableBeanModel> getData(String solrInput, HashMap<String,String> filters, String sortColumn, boolean ascending, int offset, int num){
+	public List<ArraySeqTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 
-		List<String> ids = solrUtil.getMicroarrayData(solrInput,filters,sortColumn,ascending,offset,num);
+		List<String> ids = solrUtil.getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		SolrDocumentList sdl = solrUtil.getMicroarrayViewData(ids,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
 

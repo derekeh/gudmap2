@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -31,10 +32,13 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     
     @Inject
    	private SolrTreeBean solrTreeBean;
+
+    @Inject
+   	private SolrFilter solrFilter;
     
 	private String solrInput;
-    
-	
+	private HashMap<String,String> filters;
+	private boolean showPageDetails = true;
     
     // Constructors -------------------------------------------------------------------------------
 
@@ -49,6 +53,10 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
  
 	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
 		this.solrTreeBean=solrTreeBean;
+	}
+	
+	public void setSolrFilter(SolrFilter solrFilter){
+		this.solrFilter = solrFilter;
 	}
 	
 	public void setSolrInput(String solrInput){
@@ -76,8 +84,9 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
         totalRows = assembler.getCount(solrInput, "");
+    	filters = solrFilter.getFilters();
     	
-     	dataList = assembler.getData(solrInput, "", null, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -91,6 +100,11 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
+        
+        if (dataList.size() > rowsPerPage)
+        	showPageDetails = true;
+        else
+        	showPageDetails = false;
     }
 
     public String refresh(){
@@ -117,5 +131,28 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     		((MouseStrainsTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
     }
-   
+
+    
+    public String getTitle(){
+    	String str="Mousestrains Search Results ";
+    	filters = solrFilter.getFilters();
+    	if (filters == null){
+	    	if (solrInput != null && solrInput != "")
+	    		str += "(" + solrTreeBean.getMouseStrainsCount() + ") > " + solrInput;
+	    	else
+	    		str += "(" + solrTreeBean.getMouseStrainsCount() + ") > ALL";
+    	}
+    	else{
+        	if (solrInput != null && solrInput != "")
+        		str += "(" + solrTreeBean.getMouseStrainsCount(filters) + ") > " + solrInput;
+        	else
+        		str += "(" + solrTreeBean.getMouseStrainsCount(filters) + ") > ALL";
+    		
+    	}
+    	return str;
+    }  
+    
+    public boolean getShowPageDetails(){
+    	return showPageDetails;
+    }
 }

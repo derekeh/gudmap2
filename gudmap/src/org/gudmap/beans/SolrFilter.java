@@ -113,7 +113,7 @@ public class SolrFilter implements Serializable {
 	public int getInsituCount(){
 		
 		if (filters != null || !filters.isEmpty())
-			return solrTreeBean.getInsituFilteredCount(filters);
+			return solrTreeBean.getInsituCount(filters);
 		else
 			return solrTreeBean.getInsituCount();
 	}

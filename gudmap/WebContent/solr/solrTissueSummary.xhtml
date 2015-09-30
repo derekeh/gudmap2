@@ -7,6 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pr="http://primefaces.org/ui" >
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
@@ -19,11 +20,29 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-
+		<ui:include src="/snippets/g_solrSearch.xhtml"/>
+		
+		<h:panelGrid id="id_filters" columns="1">
+		     <c:forEach items="#{solrFilter.filters}" var="filter">
+				<h:panelGrid columns="2" >	
+					<h:outputText value="#{filter.key}:#{filter.value} " />	
+		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
+			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
+					</h:graphicImage>
+				</h:panelGrid>
+		    </c:forEach>  
+		</h:panelGrid>    
 	
-	<h1>Solr Tissue Summary</h1>	
-	    <!-- all other content in here --> 
-	    <h:form id="form1"> 
+		
+		<h:panelGrid columns="2">
+			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
+			<h:form id="solr_title">		
+			<h:outputText value="#{solrTissueSummaryBean.title}" styleClass="db_bold" />   
+			</h:form>	
+		</h:panelGrid>
+		
+	
+		<h:form id="solr_dataform">
 	    <h:inputHidden id="solrInput" value="#{solrTissueSummaryBean.solrInput}" />
 	     <h:dataTable value="#{solrTissueSummaryBean.dataList}" var="u"
 	    		styleClass="db_order-table"
