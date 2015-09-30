@@ -9,30 +9,6 @@
     <pr:overlayPanel id="solrSearchPanel" for="solrSearchBtn" dismissable="false" appendToBody="true" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="font-size: 12px">
   	 
      <h:form id="solrsearchform">  
-<ui:remove>      
- <h:panelGrid id="id_filters" columns="1">
-     <c:forEach items="#{solrFilter.filters}" var="filter">
-		<h:panelGrid columns="2" >	
-			<h:outputText value="#{filter.key}:#{filter.value} " />	
- 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-	 			<pr:ajax event="click" update=":solrsearchform " listener="#{solrFilter.removeFilter}" />
-			</h:graphicImage>
-		</h:panelGrid>
-    </c:forEach>  
-</h:panelGrid>    
-
-  
-<h:panelGrid id="id_filters" columns="1">
-    <c:forEach items="#{solrFilter.filters}" var="filter">
-		<h:panelGrid columns="2" >	
-			<h:outputText value="#{filter.key}:#{filter.value} " />	
- 			<h:commandButton id="#{filter.key}" image="/resources/images/resources/cancel.png" immediate="true" actionListener="#{solrFilter.removeFilter2}" width="10" height="10">
-         		<f:ajax  execute="@form" render=":solrsearchform" ></f:ajax>
-			</h:commandButton>
-		</h:panelGrid>
-    </c:forEach> 
-</h:panelGrid> 
-</ui:remove>   
  
 		 <h:panelGrid id="id_filters" columns="1">
 		     <c:forEach items="#{solrFilter.filters}" var="filter">

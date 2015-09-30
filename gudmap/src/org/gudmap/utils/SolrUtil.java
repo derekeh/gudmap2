@@ -18,6 +18,7 @@ import java.util.Set;
 //import javax.faces.context.FacesContext;
 //import javax.xml.parsers.ParserConfigurationException;
 
+
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.util.NamedList;
@@ -1791,7 +1792,7 @@ public class SolrUtil {
     }
 
     // method to retrieve the Microarray data for the results page
-    public List<String> getMicroarrayData(String queryString, String filter, String column, boolean ascending, int offset, int rows){
+    public List<String> getMicroarrayData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
  
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1813,10 +1814,13 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
       
-	        if (filter != null){
-	        	String[] fields = filter.split(":");
-	            if (fields.length > 1)
-	            	parameters.addFilterQuery(filter);
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
 	        }
 
             QueryResponse qr = microarray_server.query(parameters);

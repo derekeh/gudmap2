@@ -145,6 +145,10 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getMicroarrayCount(solrInput, filter);
 	}
 
+	public int getMicroarrayFilteredCount(HashMap<String,String> filter){
+		return solrUtil.getMicroarrayFilteredCount(solrInput, filter);
+	}
+	
 	////////////////// GENELIST ////////////////////////////
 	
 	public int getGenelistCount(){

@@ -3,6 +3,7 @@ package org.gudmap.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,14 +30,15 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     @Inject
    	private ParamBean paramBean;
 
- //   @Inject
-//   	private SolrFilterBean solrFilterBean;
-   
    
     @Inject
    	private SolrTreeBean solrTreeBean;
     
+    @Inject
+   	private SolrFilter solrFilter;
+    
 	private String solrInput;
+	private HashMap<String,String> filters;
     
 	
     
@@ -85,9 +87,9 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
         totalRows = assembler.getCount(solrInput, "");
-       	ArrayList<String> filter = new ArrayList<String>(); //olrFilterBean.getFilters();
+    	filters = solrFilter.getFilters();
     	
-     	dataList = assembler.getData(solrInput, "", filter, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -141,5 +143,24 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     	}
     	return str;
     }
-     
+
+    public String getTitle(){
+    	String str="Microarray Search Results ";
+    	filters = solrFilter.getFilters();
+    	if (filters == null){
+	    	if (solrInput != null && solrInput != "")
+	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > " + solrInput;
+	    	else
+	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > ALL";
+    	}
+    	else{
+        	if (solrInput != null && solrInput != "")
+        		str += "(" + solrTreeBean.getMicroarrayFilteredCount(filters) + ") > " + solrInput;
+        	else
+        		str += "(" + solrTreeBean.getMicroarrayFilteredCount(filters) + ") > ALL";
+    		
+    	}
+    	return str;
+    }
+    
 }
