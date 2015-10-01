@@ -1104,29 +1104,19 @@ public class SolrUtil {
     }
 
 	// method to retrieve the Genelist data for the results page
-     public SolrDocumentList getGenelistData(String queryString, String column, boolean ascending, int offset, int rows){
+     public SolrDocumentList getGenelistData(String queryString, HashMap<String,String> filters){
 
  		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
 
  		SolrDocumentList sdl = null;
-    	
-    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
-    	    	
+    	   	    	
         try
-        {
-//    		String cq = checkQuery(genelists_server,q);  
-    		
+        {   		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        
-	        parameters.setIncludeScore(true);
 	        
-	        parameters.setStart(offset);
-	        parameters.setRows(rows);
-	        if (!column.equalsIgnoreCase("RELEVANCE"))
-	        	parameters.setSort(column, order);
-
 	      	parameters.addField("ID");
         	parameters.addField("NAME");
         	parameters.addField("DESCRIPTION");
@@ -1148,6 +1138,16 @@ public class SolrUtil {
         	parameters.addField("REF");
         	parameters.addField("EMAP_TERM");
 
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (genelists_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+       	
+        	
             QueryResponse qr = genelists_server.query(parameters);
             sdl = qr.getResults();    
         }

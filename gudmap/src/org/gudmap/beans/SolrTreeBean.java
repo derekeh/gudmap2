@@ -6,6 +6,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.utils.SolrUtil;
 
 import java.io.Serializable;
@@ -157,6 +158,11 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getGenelistCount(solrInput, filters);
 	}
 
+	
+	public SolrDocumentList getGenelistData(String query, HashMap<String,String> filters){
+		return solrUtil.getGenelistData(solrInput, filters);
+	}
+	
 	////////////////// TISSUE ////////////////////////////
 	
 	public int getTissueCount(){
