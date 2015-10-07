@@ -49,5 +49,16 @@ public class Authenticator implements Serializable{
         }
 		
     }
+	
+	/*public void checkOptions(ComponentSystemEvent event) throws IOException {
+		
+		if (!loggedin) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/gudmap/db/login.jsf");
+        }
+		else {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/gudmap/db/options.jsf");
+		}
+		
+    }*/
 
 }

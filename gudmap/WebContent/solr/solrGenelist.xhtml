@@ -64,13 +64,13 @@ jQuery(document).ready(function(){
 			return;
 		}
 		
-		var selectedNode =  document.getElementById('solr_dataform:analysisitem');
+		var selectedNode =  document.getElementById('dataform:analysisitem');
 		selectedNode.value = result;
 
-//		selectedNode =  document.getElementById('solr_dataform:genelist_crumb');
+//		selectedNode =  document.getElementById('dataform:genelist_crumb');
 //		selectedNode.value = node.attr("crumb");
 					
-		selectedNode =  document.getElementById('solr_dataform:analysis_mastertableId');
+		selectedNode =  document.getElementById('dataform:analysis_mastertableId');
 		selectedNode.value = node.attr("table");
 
 		
@@ -126,7 +126,7 @@ $(document).ready(function(){
 				<h:panelGrid columns="2" >	
 					<h:outputText value="#{filter.key}:#{filter.value} " />	
 		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
+			 			<pr:ajax event="click" update=":solrsearchform :dataform :pagingform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
 					</h:graphicImage>
 				</h:panelGrid>
 		    </c:forEach>  
@@ -140,7 +140,7 @@ $(document).ready(function(){
 			</h:form>	
 		</h:panelGrid>
 
-	<h:form id="solr_dataform">
+	<h:form id="dataform">
 	<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
 	<div id="expanderContent" style="display:none">
 	
@@ -172,7 +172,7 @@ $(document).ready(function(){
 		
 	</h:form> 
 
-
+	<h:form id="pagingform"></h:form>
 	</ui:define>
 </ui:composition>
 </html>

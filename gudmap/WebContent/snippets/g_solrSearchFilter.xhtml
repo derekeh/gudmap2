@@ -25,7 +25,7 @@
 			<h:inputText value="#{solrTreeBean.solrInput}" ></h:inputText>
 			<h:commandButton value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-				<f:ajax execute="@form" render=":solrsearchform :solrFilterPanel" ></f:ajax>
+				<f:ajax execute="@form" render=":solrsearchform"></f:ajax>
 			</h:commandButton>
 				
 			<pr:commandLink id="solrFilterBtn"  actionListener="#{solrFilter.refresh}">

@@ -27,7 +27,7 @@
 				<h:panelGrid columns="2" >	
 					<h:outputText value="#{filter.key}:#{filter.value} " />	
 		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
+			 			<pr:ajax event="click" update=":solrsearchform :dataform :pagingform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
 					</h:graphicImage>
 				</h:panelGrid>
 		    </c:forEach>  
@@ -42,7 +42,7 @@
 		</h:panelGrid>
 		
 	
-		<h:form id="solr_dataform">
+		<h:form id="dataform">
 	    <h:inputHidden id="solrInput" value="#{solrTissueSummaryBean.solrInput}" />
 	     <h:dataTable value="#{solrTissueSummaryBean.dataList}" var="u"
 	    		styleClass="db_order-table"
@@ -87,7 +87,9 @@
     		
   
  		</h:dataTable> 
+ 		</h:form>
  		
+ 		<h:form id="pagingform">
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
@@ -132,7 +134,8 @@
            </h:panelGroup>
          </h:panelGrid>    
 		</h:form> 
-		<h:form id="form2">
+		
+		<h:form id="gotoform">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrTissueSummaryBean.gotopage}" />
 		</h:form> 
