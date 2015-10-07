@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 //import javax.enterprise.context.RequestScoped;
@@ -28,9 +29,14 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
     
     @Inject
    	private SolrTreeBean solrTreeBean;
+
+    @Inject
+   	private SolrFilter solrFilter;
     
 	private String solrInput;
-    
+	private HashMap<String,String> filters;
+	private boolean showPageDetails = true;
+   
 	    
     // Constructors -------------------------------------------------------------------------------
 
@@ -45,6 +51,10 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
  
 	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
 		this.solrTreeBean=solrTreeBean;
+	}
+	
+	public void setSolrFilter(SolrFilter solrFilter){
+		this.solrFilter = solrFilter;
 	}
 	
 	public void setSolrInput(String solrInput){
@@ -72,8 +82,9 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
         totalRows = assembler.getCount(solrInput, "");
+    	filters = solrFilter.getFilters();
     	
-     	dataList = assembler.getData(solrInput, "", null, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -87,6 +98,11 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
+        
+        if (dataList.size() > rowsPerPage)
+        	showPageDetails = true;
+        else
+        	showPageDetails = false;
     }
 
     public String refresh(){
@@ -94,6 +110,29 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
     	loadDataList();
     	paramBean.resetValues();
     	return "solrTissueSummaryTablePage";
+    }
+    
+    public String getTitle(){
+    	String str="Tissue Search Results ";
+    	filters = solrFilter.getFilters();
+    	if (filters == null){
+	    	if (solrInput != null && solrInput != "")
+	    		str += "(" + solrTreeBean.getTissueCount() + ") > " + solrInput;
+	    	else
+	    		str += "(" + solrTreeBean.getTissueCount() + ") > ALL";
+    	}
+    	else{
+        	if (solrInput != null && solrInput != "")
+        		str += "(" + solrTreeBean.getTissueCount(filters) + ") > " + solrInput;
+        	else
+        		str += "(" + solrTreeBean.getTissueCount(filters) + ") > ALL";
+    		
+    	}
+    	return str;
+    }
+
+    public boolean getShowPageDetails(){
+    	return showPageDetails;
     }
     
 }

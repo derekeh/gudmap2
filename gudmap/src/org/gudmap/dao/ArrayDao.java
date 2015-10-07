@@ -61,15 +61,23 @@ public class ArrayDao {
 		}
         return geneModel;
     }
-
+	
 	public ArrayList<GenelistTreeInfo> getRefGenelists(){
+		return getRefGenelists(null);
+	}
+
+	public ArrayList<GenelistTreeInfo> getRefGenelists(String whereclause){
 		
 		ArrayList<GenelistTreeInfo> genelists = null;
 		String queryString = ArrayQueries.GET_ALL_REF_GENELISTS;
         try
 		{
 			con = Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(queryString); 
+			if (whereclause == null)
+				ps = con.prepareStatement(queryString); 
+			else {
+				queryString += " " + whereclause;
+			}
 			result =  ps.executeQuery();
 
         	if (result.first()) {

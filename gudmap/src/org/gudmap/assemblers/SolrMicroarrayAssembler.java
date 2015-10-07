@@ -1,6 +1,7 @@
 package org.gudmap.assemblers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,11 +27,11 @@ public class SolrMicroarrayAssembler {
 		return n;
 	}
 
-	public List<ArraySeqTableBeanModel> getData(String solrInput, String filter, List<String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<ArraySeqTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 
-		List<String> ids = solrUtil.getMicroarrayData(solrInput,filter,sortColumn,ascending,offset,num);
+		List<String> ids = solrUtil.getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		SolrDocumentList sdl = solrUtil.getMicroarrayViewData(ids,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
 

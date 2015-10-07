@@ -3,6 +3,7 @@ package org.gudmap.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,16 +29,17 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     
     @Inject
    	private ParamBean paramBean;
-
- //   @Inject
-//   	private SolrFilterBean solrFilterBean;
-   
    
     @Inject
    	private SolrTreeBean solrTreeBean;
     
-	private String solrInput;
+    @Inject
+   	private SolrFilter solrFilter;
     
+	private String solrInput;
+	private HashMap<String,String> filters;
+	private boolean showPageDetails = true;
+
 	
     
     // Constructors -------------------------------------------------------------------------------
@@ -51,9 +53,9 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 		this.paramBean=paramBean;
 	}
 	
-//	public void setSolrFilterBean(SolrFilterBean solrFilterBean){
-//		this.solrFilterBean=solrFilterBean;
-//	}
+	public void setSolrFilter(SolrFilter solrFilter){
+		this.solrFilter = solrFilter;
+	}
  
 	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
 		this.solrTreeBean=solrTreeBean;
@@ -85,9 +87,9 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
         totalRows = assembler.getCount(solrInput, "");
-       	ArrayList<String> filter = new ArrayList<String>(); //olrFilterBean.getFilters();
+    	filters = solrFilter.getFilters();
     	
-     	dataList = assembler.getData(solrInput, "", filter, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -101,6 +103,11 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
+        
+        if (dataList.size() > rowsPerPage)
+        	showPageDetails = true;
+        else
+        	showPageDetails = false;
     }
 
     public String refresh(){
@@ -141,5 +148,28 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     	}
     	return str;
     }
-     
+
+    public String getTitle(){
+    	String str="Microarray Search Results ";
+    	filters = solrFilter.getFilters();
+    	if (filters == null){
+	    	if (solrInput != null && solrInput != "")
+	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > " + solrInput;
+	    	else
+	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > ALL";
+    	}
+    	else{
+        	if (solrInput != null && solrInput != "")
+        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > " + solrInput;
+        	else
+        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > ALL";
+    		
+    	}
+    	return str;
+    }
+    
+    public boolean getShowPageDetails(){
+    	return showPageDetails;
+    }
+    
 }

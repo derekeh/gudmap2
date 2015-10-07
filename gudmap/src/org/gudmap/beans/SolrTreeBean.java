@@ -2,14 +2,17 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.utils.SolrUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
+//import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,19 +28,15 @@ public class SolrTreeBean implements Serializable {
 	private SolrUtil solrUtil;
 	private String filter;
 	
-	private ArrayList<String> genefilters;
-//	private ArrayList<String> insitufilters;
-
     @Inject
-   	private SolrInsituFilter solrInsituFilter;
+   	private SolrFilter solrFilter;
 	
 	public SolrTreeBean(){
 		solrUtil = new SolrUtil();
-//		insitufilters = new ArrayList<String>();
 	}
 	
-	public void setSolrInsituFilter(SolrInsituFilter filter){
-		this.solrInsituFilter = filter;
+	public void setSolrFilter(SolrFilter filter){
+		this.solrFilter = filter;
 	}
 
 	public SolrUtil getSolrUtil(){
@@ -53,12 +52,27 @@ public class SolrTreeBean implements Serializable {
 	}
 	
 	
-	public void goSearch() {
+	public String goSearch() {
 		
-//		getAnchorGeneCount();
-
+		getSolrInput();
+		
+		getGeneCount();
+		getInsituCount();
+		getMicroarrayCount();
+		getGenelistCount();
+		getTissueCount();
+//		getTutorialCount();
+		getMouseStrainsCount();
+		getImagesCount();
+		
+		return null;
 	}
 
+	public void goListen(ActionEvent event) {
+		
+		getSolrInput();
+		
+	}
 	
 	public String goInsitu() {
 		return "/solr/solrInsituTablePage";
@@ -85,38 +99,15 @@ public class SolrTreeBean implements Serializable {
 	}
 
 	////////////////// GENE ////////////////////////////	
-	
-	public ArrayList<String> getGeneFilters() {
-		return genefilters;
-	}
-	public void setGeneFilters(ArrayList<String> filters) {
-		this.genefilters = filters;
-	}
-	
-	public HashSet<String> getSourceList(){
-		return solrUtil.getSourceList(solrInput, null);
-	}
-	public int getGeneFilteredCount(String filter){
-		return solrUtil.getGeneFilteredCount(solrInput, filter);
-	}
-	
-	public int getAnchorGeneCount(){
-		ArrayList<String> filters = new ArrayList<String>();
-		filters.add("ANCHOR:1");
-		return solrUtil.getGeneCount(solrInput, filters);
-	}
-
-	public int getMarkerGeneCount(){
-		ArrayList<String> filters = new ArrayList<String>();
-		filters.add("MARKER:1");
-		return solrUtil.getGeneCount(solrInput, filters);
-	}
+		
 	
 	public int getGeneCount(){
-			return solrUtil.getGeneCount(solrInput, genefilters);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getGeneCount(solrInput, filters);
 	}
 	
-	public int getGeneCount(ArrayList<String> filters){
+	public int getGeneCount(HashMap<String,String> filters){
 		return solrUtil.getGeneCount(solrInput, filters);
 	}
 	
@@ -124,9 +115,10 @@ public class SolrTreeBean implements Serializable {
 	////////////////// INSITU ////////////////////////////
 	
 	public int getInsituCount(){
-		ArrayList<String> insitufilters = new ArrayList<String>();
-		insitufilters = solrInsituFilter.getFilters();
-		return solrUtil.getInsituFilteredCount(solrInput,insitufilters);
+
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getInsituFilteredCount(solrInput,filters);
 	}
 	
 	public int getInsituCount(String filter){
@@ -138,65 +130,87 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getInsituCount(solrInput, filter);
 	}
 	
-	public int getInsituFilteredCount(ArrayList<String> filter){
-		return solrUtil.getInsituFilteredCount(solrInput, filter);
+	public int getInsituCount(HashMap<String,String> filters){
+		return solrUtil.getInsituFilteredCount(solrInput, filters);
 	}
 	
 	////////////////// MICROARRAY ////////////////////////////
 	
 	public int getMicroarrayCount(){
-		return solrUtil.getMicroarrayCount(solrInput);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getMicroarrayFilteredCount(solrInput, filters);
 	}
 
 	public int getMicroarrayCount(String filter){
 		return solrUtil.getMicroarrayCount(solrInput, filter);
 	}
 
+	public int getMicroarrayCount(HashMap<String,String> filters){
+		return solrUtil.getMicroarrayFilteredCount(solrInput, filters);
+	}
+	
 	////////////////// GENELIST ////////////////////////////
 	
 	public int getGenelistCount(){
-		if (solrInput == "" || solrInput == null)
-			return solrUtil.getGenelistCount("*:*");
-		else
-			return solrUtil.getGenelistCount(solrInput);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getGenelistCount(solrInput, filters);
 	}
 
+	
+	public SolrDocumentList getGenelistData(String query, HashMap<String,String> filters){
+		return solrUtil.getGenelistData(solrInput, filters);
+	}
+	
 	////////////////// TISSUE ////////////////////////////
 	
 	public int getTissueCount(){
-		if (solrInput == "" || solrInput == null)
-			return solrUtil.getTissueCount("*:*");
-		else
-			return solrUtil.getTissueCount(solrInput);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getTissueCount(solrInput, filters);
 	}
 
+	public int getTissueCount(HashMap<String,String> filters){
+		return solrUtil.getTissueCount(solrInput, filters);
+	}
+	
 	////////////////// TUTORIAL ////////////////////////////
 	
 	public int getTutorialCount(){
-		if (solrInput == "" || solrInput == null)
-			return solrUtil.getTutorialCount("*:*");
-		else
-			return solrUtil.getTutorialCount(solrInput);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getTutorialCount(solrInput, filters);
 	}
 
+	public int getTutorialCount(HashMap<String,String> filters){
+		return solrUtil.getTutorialCount(solrInput, filters);
+	}
+	
 	////////////////// MOUSESTRAINS ////////////////////////////
 	
 	public int getMouseStrainsCount(){
-		if (solrInput == "" || solrInput == null)
-			return solrUtil.getMouseStrainsCount("*:*");
-		else
-			return solrUtil.getMouseStrainsCount(solrInput);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getMouseStrainsCount(solrInput, filters);
+	}
+	
+	public int getMouseStrainsCount(HashMap<String,String> filters){
+		return solrUtil.getMouseStrainsCount(solrInput, filters);
 	}
 
 	////////////////// IMAGES ////////////////////////////
 	
 	public int getImagesCount(){
-		if (solrInput == "" || solrInput == null)
-			return solrUtil.getImagesCount("*:*");
-		else
-			return solrUtil.getImagesCount(solrInput);
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getImagesCount(solrInput, filters);
 	}
 
+	public int getImagesCount(HashMap<String,String> filters){
+		return solrUtil.getImagesCount(solrInput, filters);
+	}
+	
 	public ArrayList<String> getTop5Genes(){
 		if (solrInput == "" || solrInput == null)
 			return null;

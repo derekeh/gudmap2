@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,19 +47,22 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     
     @Inject
    	private ParamBean paramBean;
-    
+   
     @Inject
    	private SolrTreeBean solrTreeBean;
-
-//    @Inject
-//   	private SolrFilterBean solrFilterBean;
+    
+    @Inject
+   	private SolrFilter solrFilter;
     
 	private String solrInput;
+	private HashMap<String,String> filters;
+    
     
     private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
 	private ArrayList<MasterTableInfo> tableinfo;		
     private int maxColNumber = 0;
-    
+	private boolean showPageDetails = true;
+   
     // Constructors -------------------------------------------------------------------------------
 
     public SolrGeneStripBean() {
@@ -74,9 +78,9 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		this.solrTreeBean=solrTreeBean;
 	}
 	
-//	public void setSolrFilterBean(SolrFilterBean solrFilterBean){
-//		this.solrFilterBean=solrFilterBean;
-//	}
+	public void setSolrFilter(SolrFilter solrFilter){
+		this.solrFilter = solrFilter;
+	}
 	
 
 	public void setSolrInput(String solrInput){
@@ -109,17 +113,15 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
         totalRows = assembler.getCount(solrInput, "");
-//    	ArrayList<String> filter = solrFilterBean.getFilters();
+    	filters = solrFilter.getFilters();
     	
-     	dataList = assembler.getData(solrInput, "", null, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
 
    		ArrayList<String> geneIds = assembler.getGeneIds();         		
 
 	   	for (String geneId : geneIds){
 	   		createJSONFile(geneId);
 	   	}     	
-     	
-     	
      	
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
@@ -134,7 +136,12 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
         for (int i = 0; i < pagesLength; i++) {
             pages[i] = ++firstPage;
         }
-    }
+        
+        if (dataList.size() > rowsPerPage)
+        	showPageDetails = true;
+        else
+        	showPageDetails = false;
+   }
 
     public String refresh(){
  //   	sortField = "RELEVANCE";
@@ -337,5 +344,29 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     	}
 				
 		return data;
-	}   
+	} 
+	
+    public String getTitle(){
+    	String str="Genestrip Search Results ";
+    	filters = solrFilter.getFilters();
+    	if (filters == null){
+	    	if (solrInput != null && solrInput != "")
+	    		str += "(" + solrTreeBean.getGeneCount() + ") > " + solrInput;
+	    	else
+	    		str += "(" + solrTreeBean.getGeneCount() + ") > ALL";
+    	}
+    	else{
+        	if (solrInput != null && solrInput != "")
+        		str += "(" + solrTreeBean.getGeneCount(filters) + ") > " + solrInput;
+        	else
+        		str += "(" + solrTreeBean.getGeneCount(filters) + ") > ALL";
+    		
+    	}
+    	return str;
+    }
+    
+    public boolean getShowPageDetails(){
+    	return showPageDetails;
+    }
+    
 }

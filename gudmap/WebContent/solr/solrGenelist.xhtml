@@ -7,31 +7,140 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pr="http://primefaces.org/ui" >
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    Solr ISH Data
+	    Solr Analysis Data
 	</ui:define>
 
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>> 
+	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
 
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.js"></h:outputScript>
-	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></h:outputScript>>
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/jquery.jstree.js"></h:outputScript> 
 	
+<script type="text/javascript">
+//<![CDATA[
+jQuery(document).ready(function(){
+	jQuery("#analysis_tree").jstree({ 	
+		"json_data" : {
+		    "progressive_render" : true,
+		    "ajax" : {
+		    	"url" : "../resources/scripts/genelist.json"
+		    }
+		},	
+		"types": {
+            "types": {
+                "Role": {
+                },
+            }
+		},
+        themes : {
+			theme : "classic",
+			dots  : true,
+			icons : false,
+			url   : "../resources/scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
+		},	
+		plugins : ["types", "themes", "json_data", "ui", "cookies"]												
+
+	})  		
+	.delegate("a", "click", function(e, data) {
+		//alert("click node");
+		var node = jQuery.jstree._focused().get_selected();
+		jQuery.jstree._focused( ).save_selected( ) ;
+		
+		var result = node.attr("id");
+
+		
+		jQuery.cookie("save_selected", result);
+		if (result <= '0'){
+			jQuery.jstree._focused().toggle_node(node);
+			return;
+		}
+		
+		var selectedNode =  document.getElementById('solr_dataform:analysisitem');
+		selectedNode.value = result;
+
+//		selectedNode =  document.getElementById('solr_dataform:genelist_crumb');
+//		selectedNode.value = node.attr("crumb");
+					
+		selectedNode =  document.getElementById('solr_dataform:analysis_mastertableId');
+		selectedNode.value = node.attr("table");
+
+		
+		var dummyLink = document.getElementById("analysisLink");
+		if (document.createEvent)
+		{
+		    var evObj = document.createEvent('MouseEvents');
+		    evObj.initEvent( 'click', true, false );
+		    dummyLink.dispatchEvent(evObj);
+		}
+		else if (document.createEventObject)
+		{
+		    dummyLink.fireEvent('onclick');
+		}
+
+	});
+  		
+});
+
+function getCrumb(node){
+	alert("into crumb");
 	
+	var path =  jQuery.jstree._focused().get_parent(node, false);
+	alert("path = " + path);	
 	
+}	
+
+
+</script>	
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#expanderHead").click(function(){
+		$("#expanderContent").slideToggle();
+		if ($("#expanderSign").text() == "(more...)"){
+			$("#expanderSign").html("(less...)")
+		}
+		else {
+			$("#expanderSign").text("(more...)")
+		}
+	});
+});
+
 	
-	<h:form id="genelisttreeForm" >	
-	<h:outputText styleClass="plaintext" value="#{GeneListTreeBean.title}" rendered="true" escape="false" />
-<br/>
-<br/>
+//]]>
+</script>
+
+		<ui:include src="/snippets/g_solrSearch.xhtml"/>
+		
+		<h:panelGrid id="id_filters" columns="1">
+		     <c:forEach items="#{solrFilter.filters}" var="filter">
+				<h:panelGrid columns="2" >	
+					<h:outputText value="#{filter.key}:#{filter.value} " />	
+		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
+			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
+					</h:graphicImage>
+				</h:panelGrid>
+		    </c:forEach>  
+		</h:panelGrid>    
 	
+		
+		<h:panelGrid columns="2">
+			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
+			<h:form id="solr_title">		
+			<h:outputText value="#{solrAnalysisBean.title}" styleClass="db_bold" />   
+			</h:form>	
+		</h:panelGrid>
+
+	<h:form id="solr_dataform">
 	<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
 	<div id="expanderContent" style="display:none">
 	
@@ -47,115 +156,22 @@
 		<span class="collaps2"></span>
 	</div>
 	
-
+	 <h:inputText id="analysisitem" value="#{solrAnalysisBean.selectedItem}" style="display:none; visibility: hidden; "/>
+<ui:remove>	 
+ 	 <h:inputText id="analysis_crumb" value="#{solrAnalysisBean.crumb}" style="display:none; visibility: hidden; "/>
+</ui:remove> 	
+	 <h:inputText id="analysis_mastertableId" value="#{solrAnalysisBean.masterTableId}" style="display:none; visibility: hidden; "/>
 	 <f:verbatim>
-		<div id="genelist_tree" class="demo" style="overflow: auto; align: left; width: 600px; height: 560px;" >
+		<div id="analysis_tree" class="demo" style="overflow: auto; align: left; height: 540px;">
 		</div>
-	</f:verbatim>	
-	<h:inputText id="genelistNode" value="#{TreeBean.selectedNode}" style="display:none; visibility: hidden; "/>	
-
-	<t:commandLink id="genelistLink" forceId="true" style="display:none; visibility: hidden;" action="#{TreeBean.findNode}">
+	</f:verbatim>
+	
+	<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{solrAnalysisBean.findNode}" actionListener="#{solrAnalysisBean.processAction}" >
 	</t:commandLink>
+	<t:commandLink id="createChildren" forceId="true" style="display:none" action="#{solrAnalysisBean.createChildren}"/> 
 		
 	</h:form> 
 
-
-<script type="text/javascript">
-//<![CDATA[
-	$(document).ready(function(){
-		$("#expanderHead").click(function(){
-			$("#expanderContent").slideToggle();
-			if ($("#expanderSign").text() == "(more...)"){
-				$("#expanderSign").html("(less...)")
-			}
-			else {
-				$("#expanderSign").text("(more...)")
-			}
-		});
-	});
-	
-	jQuery(document).ready(function(){
-
-		jQuery("#genelist_tree").jstree({ 	
-			"json_data" : {
-			    "progressive_render" : true,
-			    "correct_state" : true,
-			    "ajax" : {
-			    	"type": "POST",
-			    	"url" : "../scripts/genelist_tree.json",
-			    	"data": function (n) { return { id: n.attr ? n.attr("id") : 0} },
-			    }
-			},	
-			"themes" : {
-				"theme" : "classic",
-				"lines"  : true,
-				"dots"  : true,
-				"icons" : false,
-				"url"   : "../scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
-			},										
-			"plugins" : ["types", "themes", "json_data", "ui", "cookies" ]
-		})
-		.bind("loaded.jstree", function(event, data){
-//			$("#tree").jstree("open_all");
-//			$("#tree").jstree("open_node", $('#childNode'));
-			 var depth = 3;
-		        data.inst.get_container().find('li').each(function(i) {
-		                if(data.inst.get_path($(this)).length<=depth){
-		                        data.inst.open_node($(this));
-		                }
-		        }); 
-		})	
-		.bind("open_node.jstree", function(event, data){
-//			updateTree();
-		})	
-		.delegate("a", "click", function(e, data) {
-			var node = jQuery.jstree._focused().get_selected();
-			clickLink(node);
-		});
-
-	});
-
-	function clickLink(node){
-		
-		var page = node.attr("href");
-//		alert("page = "+ page);
-		if (page == "none")
-			return;
-		
-//		if (getCount(node) == 0)
-//			page = "pages/empty_search_result.jsp";
-		
-		//	alert("clickLink");
-		var path = jQuery.jstree._focused().get_path(node,true);
-//		alert("path = "+ path);	
-		var result = node.attr("solr") + "," +page + "," + node.attr("exp") + "," + node.attr("stage") + "," + node.attr("fg") + "," + node.attr("id") + "," + node.attr("table") + "," + node.attr("genelistId") + "," + node.attr("crumb");
-		
-			
-		var selectedNode =  document.getElementById('headersubview:genelisttreeForm:selNode');
-		selectedNode.value = result;
-			
-		var dummyLink = document.getElementById("hiddenLink");
-
-		if (document.createEvent){
-			var evObj = document.createEvent('MouseEvents');
-			evObj.initEvent( 'click', true, false );
-			dummyLink.dispatchEvent(evObj);
-		}
-		else if (document.createEventObject)
-			dummyLink.fireEvent('onclick');
-
-	}
-
-	function getCrumb(node){
-		alert("into crumb");
-		
-		var path =  jQuery.jstree._focused().get_parent(node, false);
-		alert("path = " + path);	
-		
-	}	
-	
-//]]>
-</script>
 
 	</ui:define>
 </ui:composition>

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -48,11 +49,11 @@ public class SolrGeneStripAssembler {
 		return n;
 	}
 
-	public List<GeneStripModel> getData(String solrInput, String filter, List<String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<GeneStripModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
 					
-    	SolrDocumentList sdl  = solrUtil.getGudmapGenes(solrInput, filter, filterlist, sortColumn,ascending,offset,num);
+    	SolrDocumentList sdl  = solrUtil.getGudmapGenes(solrInput, filterlist, sortColumn,ascending,offset,num);
 		if (sdl==null){
 			return null;
 		}

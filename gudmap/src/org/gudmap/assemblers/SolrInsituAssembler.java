@@ -1,6 +1,7 @@
 package org.gudmap.assemblers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -32,7 +33,7 @@ public class SolrInsituAssembler {
 		return n;
 	}
 
-	public List<InsituTableBeanModel> getData(String solrInput, String filter, List<String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<InsituTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 					

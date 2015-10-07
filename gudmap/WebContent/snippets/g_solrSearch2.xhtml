@@ -1,0 +1,221 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+
+	
+    <pr:overlayPanel id="solrSearchPanel" for="solrSearchBtn" dismissable="false" appendToBody="true" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="font-size: 12px">
+  	 
+ 
+<h:panelGrid id="id_filters" columns="1">
+    <c:forEach items="#{solrFilter.filters}" var="filter">
+		<h:panelGrid columns="2" >	
+			<h:outputText value="#{filter.key}:#{filter.value} " />	
+ 			<h:commandButton id="#{filter.key}" image="/resources/images/resources/cancel.png" immediate="true" actionListener="#{solrFilter.removeFilter2}" width="10" height="10">
+         		<f:ajax  execute="@form" render=":solrsearchform" ></f:ajax>
+			</h:commandButton>
+		</h:panelGrid>
+    </c:forEach> 
+</h:panelGrid> 
+ 
+ 
+   
+      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
+      	<h:inputText value="#{solrTreeBean.solrInput}" ></h:inputText>
+      	
+        <h:commandButton value="Search" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
+        	<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+         	<f:ajax execute="@form" render=":solrsearchform" ></f:ajax>
+        </h:commandButton>
+
+
+ 		<pr:commandLink id="solrFilterBtn"  actionListener="#{solrFilter.refresh}">
+ 			<h:graphicImage library="images/resources" name="filter_add.png" width="25" height="25"/>
+ 		</pr:commandLink>
+
+ 			  
+     </h:panelGrid>
+ 
+		
+ 	<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" dismissable="false" appendToBody="false" showEffect="slide" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
+ 
+ 
+     <div id="Accordion1">   
+      <h2>Database Statistics</h2>
+      <div>
+
+         <table border="0" id="db_homestats">
+          <tr>
+            <th align="left" scope="col">Assay Type</th>
+            <th align="left" scope="col">Entries</th>
+            <th align="left" scope="col">Genes</th>
+          </tr>
+          <tr>
+            <td>All In Situ Hybridisation (ISH)</td>
+            <td>
+            	<h:link  outcome="browseInsituTablePage" value="#{volatileSummaryBean.getIshTotal()}" onclick="$('#spinner').show()"/>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
+            
+          </tr>
+          <tr>
+            <td>Wholemount ISH (WISH)</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Section ISH (SISH)</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getSishTotal()}" outcome="browseSishTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>OPT ISH</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getOptTotal()}" outcome="browseOptTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Immunohistochemistry (IHC)</td>
+            <td>
+            	<h:link value="#{volatileSummaryBean.getIhcTotal()}" outcome="browseIhcTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Transgenic Reporters</td>
+            <td>
+            		<h:link value="#{volatileSummaryBean.getTgTotal()}" outcome="browseTgTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Microarray</td>
+            <td>
+            	
+            	<h:link value="#{volatileSummaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" onclick="$('#spinner').show()"></h:link>
+            	
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Sequence</td>
+            <td>
+            		<h:link value="#{volatileSummaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" onclick="$('#spinner').show()"></h:link>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><a href="http://www.gudmap.org/Website_Reports/Stats/gudmap_stats.html">More...</a></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+
+      </div>
+      <h2>Updates</h2>
+      <div>
+         <table border="0" id="db_updates">
+          <tr>
+            <td width="58%"><strong>Last Editorial Update:</strong></td>
+            <td width="42%"><h:outputText value="#{sessionBean.editorialUpdate}"/></td>
+          </tr>
+          <tr>
+            <td><strong>Last Software Update:</strong></td>
+            <td><h:outputText value="#{sessionBean.softwareUpdate}"/><br />
+        		<h:outputText value="#{sessionBean.softwareVersion}"/>
+        	</td>
+          </tr>
+        </table>
+      </div>
+      
+    </div><!-- end accordion 1 -->
+ 
+
+ 		
+			
+		
+  	</pr:overlayPanel> 	
+	    
+
+
+	  <h:panelGrid id="panel" columns="1" border="0" cellpadding="10" cellspacing="1" >
+
+
+ 
+		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrGeneStrip.xhtml" rendered="#{solrTreeBean.geneCount > 0}">
+			<h:outputText value="Genes (#{solrTreeBean.geneCount})" />
+         </h:outputLink>
+         <h:outputLabel value="Genes (#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.geneCount == 0}"/>         
+ 
+
+		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrInsitu.xhtml" rendered="#{solrTreeBean.insituCount > 0}">
+			<h:outputText value="In Situ (#{solrTreeBean.insituCount})" />
+		 </h:outputLink>
+         <h:outputLabel value="In Situ (#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.insituCount == 0}"/>
+ 
+
+  		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMicroarray.jsf" rendered="#{solrTreeBean.microarrayCount > 0}">
+         	<h:outputText  value="Microarray (#{solrTreeBean.microarrayCount})"/>
+		 </h:outputLink>
+         <h:outputLabel value="Microarray (#{solrTreeBean.microarrayCount}) " rendered="#{solrTreeBean.microarrayCount == 0}"/>
+
+      
+		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrGenelist.jsf" rendered="#{solrTreeBean.genelistCount > 0}">
+         	<h:outputText  value="Gene Lists (#{solrTreeBean.genelistCount})"/>
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Genelist" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+        <h:outputLabel value="Gene Lists (#{solrTreeBean.genelistCount})"  rendered="#{solrTreeBean.genelistCount == 0}"/>
+
+
+ 		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrTissueSummary.jsf" rendered="#{solrTreeBean.tissueCount > 0}">
+            <h:outputText  value="Tissue Summaries (#{solrTreeBean.tissueCount})"/>
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Tissue Summary" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+         <h:outputLabel value="Tissue Summaries (#{solrTreeBean.tissueCount})" rendered="#{solrTreeBean.tissueCount == 0}"/>
+
+ 
+         <h:outputLabel value="Tutorials (0)" />
+    		
+		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMouseStrains.jsf" rendered="#{solrTreeBean.mouseStrainsCount > 0}">
+         	<h:outputText  value="TG Mouse Strains (#{solrTreeBean.mouseStrainsCount})"/>
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+         <h:outputLabel value="TG Mouse Strains (#{solrTreeBean.mouseStrainsCount})" rendered="#{solrTreeBean.mouseStrainsCount == 0}"/>
+
+       
+ 		 <h:outputLink styleClass="plaintext" value="{appRoot}/solr/solrImagePage.jsf" rendered="#{solrTreeBean.imagesCount > 0}"> 
+         	<h:outputText  value="Images (#{solrTreeBean.imagesCount})"/>
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Images" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+         <h:outputLabel value="Images (#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.imagesCount == 0}"/>
+		 
+	</h:panelGrid> 
+
+ 	</h:form>
+    </pr:overlayPanel>		
+ 	    
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+
+		$( "#Accordion1" ).accordion({
+			collapsible:true,
+			heightStyle:"content"
+		}); 
+   });
+//]]>
+</script>   	  
+	
+		
+</ui:composition>

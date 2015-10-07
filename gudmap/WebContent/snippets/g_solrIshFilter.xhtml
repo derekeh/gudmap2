@@ -4,15 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pr="http://primefaces.org/ui" >
 	
-	<pr:dialog header="Insitu Filters" widgetVar="dialogSolrInsituFilter" modal="true" width="750" position="300,250"  > 
+	<pr:dialog header="Insitu Filters" widgetVar="dialogsolrFilter" modal="true" width="750" position="300,250"  > 
 	<h:form id="solrishfilterform"> 
 <ui:remove>
-		<h:outputText value="Result Count: (#{solrInsituFilter.insituCount})  page = #{view.viewId}" />
+		<h:outputText value="Result Count: (#{solrFilter.insituCount})  page = #{view.viewId}" />
 </ui:remove>
-		<h:outputText value="Result Count: (#{solrInsituFilter.insituCount})" />
+		<h:outputText value="Result Count: (#{solrFilter.insituCount})" />
 		<br/>	
-		<h:panelGroup rendered="#{solrInsituFilter.filters.size() > 0}">	
-		<h:outputText value="Filter Settings: #{solrInsituFilter.filterString}" rendered="#{solrInsituFilter.filters.size() > 0}"/>		
+		<h:panelGroup rendered="#{solrFilter.filters.size() > 0}">	
+		<h:outputText value="Filter Settings: #{solrFilter.filterString}" rendered="#{solrFilter.filters.size() > 0}"/>		
 		<br/>
 		</h:panelGroup>
 		<br/>
@@ -20,8 +20,8 @@
 		 
 			<h:panelGroup>
 			 	<h:outputText value="Gene: "></h:outputText>
-			 	<h:inputText value="#{solrInsituFilter.geneValue}" >
-			 		<pr:ajax update="solrishfilterform " listener="#{solrInsituFilter.refresh}" />
+			 	<h:inputText value="#{solrFilter.geneValue}" >
+			 		<pr:ajax update="solrishfilterform " listener="#{solrFilter.refresh}" />
 			 	</h:inputText>
 			</h:panelGroup>
 		<br/>	
@@ -29,72 +29,72 @@
 		 		<h:panelGrid columns="5">
 		 			<h:outputText value="Submission Date: "></h:outputText>
 		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.fromDateValue}">
-		 			<pr:ajax event="dateSelect" update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
+		 			<pr:ajax event="dateSelect" update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 			</pr:calendar>
 		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrInsituFilter.toDateValue}">
-		 			<pr:ajax event="dateSelect" update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
+		 			<pr:ajax event="dateSelect" update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 			</pr:calendar>
 		 		</h:panelGrid>
 		 	</h:panelGroup>
 		<br/>	
-		 	<pr:selectCheckboxMenu  size="5" value="#{solrInsituFilter.sourceValues}" label="Sources " panelStyle="width:320px">
-		 		<f:selectItems value="#{solrInsituFilter.sourceList}" />
-		 		<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<pr:selectCheckboxMenu  size="5" value="#{solrFilter.sourceValues}" label="Sources " panelStyle="width:320px">
+		 		<f:selectItems value="#{solrFilter.sourceList}" />
+		 		<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</pr:selectCheckboxMenu >
 		<br/>	
 		
 <ui:remove>		
-			<pr:selectBooleanCheckbox value="#{solrInsituFilter.sourceCB}">
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+			<pr:selectBooleanCheckbox value="#{solrFilter.sourceCB}">
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 			</pr:selectBooleanCheckbox>
 			<h:outputText value="Source " />
-		 	<h:selectManyListbox size="5" value="#{solrInsituFilter.sourceValues}">
-		 		<f:selectItems value="#{solrInsituFilter.sourceList}" />
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<h:selectManyListbox size="5" value="#{solrFilter.sourceValues}">
+		 		<f:selectItems value="#{solrFilter.sourceList}" />
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</h:selectManyListbox>
 	 	
 		 			 		 		 	
-			<pr:selectBooleanCheckbox value="#{solrInsituFilter.personCB}" >
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+			<pr:selectBooleanCheckbox value="#{solrFilter.personCB}" >
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 			</pr:selectBooleanCheckbox>
 		 	<h:outputText size="4" value="PI:"></h:outputText>
-		 	<h:selectManyListbox value="#{solrInsituFilter.personValues}">
-		 		<f:selectItems value="#{solrInsituFilter.personList}" />
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<h:selectManyListbox value="#{solrFilter.personValues}">
+		 		<f:selectItems value="#{solrFilter.personList}" />
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</h:selectManyListbox>	   		
 </ui:remove>	
 	 	
 
 
-		 	<pr:selectCheckboxMenu value="#{solrInsituFilter.assayTypeValues}" label="Assay Types ">
-		 		<f:selectItems value="#{solrInsituFilter.assayTypeList}" />
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<pr:selectCheckboxMenu value="#{solrFilter.assayTypeValues}" label="Assay Types ">
+		 		<f:selectItems value="#{solrFilter.assayTypeList}" />
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</pr:selectCheckboxMenu>	   		
 		<br/>	 
 
-		 	<pr:selectCheckboxMenu value="#{solrInsituFilter.theilerStageValues}" label="Theiler Stages ">
-		 		<f:selectItems value="#{solrInsituFilter.theilerStageList}" />
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<pr:selectCheckboxMenu value="#{solrFilter.theilerStageValues}" label="Theiler Stages ">
+		 		<f:selectItems value="#{solrFilter.theilerStageList}" />
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</pr:selectCheckboxMenu>	   		
 		<br/>	 
 <ui:remove>	
-		 	<pr:selectCheckboxMenu value="#{solrInsituFilter.carnegieStageValues}" label="Carnegie Stages ">
-		 		<f:selectItems value="#{solrInsituFilter.carnegieStageList}" />
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<pr:selectCheckboxMenu value="#{solrFilter.carnegieStageValues}" label="Carnegie Stages ">
+		 		<f:selectItems value="#{solrFilter.carnegieStageList}" />
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</pr:selectCheckboxMenu>	   		
 		<br/>	 
 </ui:remove>
-		 	<pr:selectCheckboxMenu value="#{solrInsituFilter.sexValues}" label="Sex ">
-		 		<f:selectItems value="#{solrInsituFilter.sexList}" />
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<pr:selectCheckboxMenu value="#{solrFilter.sexValues}" label="Sex ">
+		 		<f:selectItems value="#{solrFilter.sexList}" />
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</pr:selectCheckboxMenu>	   		
  		<br/>	
 		 	  		
-		 	<pr:selectCheckboxMenu value="#{solrInsituFilter.specimenTypeValues}" label="Specimen Type ">
-		 		<f:selectItems value="#{solrInsituFilter.specimenTypeList}" />
-				<pr:ajax update="solrishfilterform" listener="#{solrInsituFilter.refresh}" />
+		 	<pr:selectCheckboxMenu value="#{solrFilter.specimenTypeValues}" label="Specimen Type ">
+		 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
+				<pr:ajax update="solrishfilterform" listener="#{solrFilter.refresh}" />
 		 	</pr:selectCheckboxMenu>	   		
  
 	   		
@@ -106,32 +106,32 @@
 	   	<h:panelGrid columns="4" >
 	   	
 	   		<pr:commandButton id="il_filter_submit" value="Submit"  >
-	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrInsituFilter.refresh}" />
+	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrFilter.refresh}" />
 	   			<f:ajax render=" :solrsearchform" immediate="true"/>
 	   		</pr:commandButton>
 	   		
 	   		<pr:commandButton id="il_filter_reset" value="Reset"  >
-	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrInsituFilter.reset}" />
+	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrFilter.reset}" />
 	   			<f:ajax render=" :solrsearchform" immediate="true"/>
 	   		</pr:commandButton>
 
-	   		<h:commandButton id="il_filter_submit2" value="Submit2" actionListener="#{solrInsituFilter.refresh2}">
+	   		<h:commandButton id="il_filter_submit2" value="Submit2" actionListener="#{solrFilter.refresh2}">
 	   		</h:commandButton>
 
 	   		<pr:commandButton id="il_filter_submit3" value="Submit3"  >
-	   			<pr:ajax update="@parent" immediate="true" listener="#{solrInsituFilter.refresh}" />
+	   			<pr:ajax update="@parent" immediate="true" listener="#{solrFilter.refresh}" />
 	   		</pr:commandButton>
 	   		
 <ui:remove>
 
 	   		<pr:commandButton id="il_filter_reset" value="Reset"  >
-	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrInsituFilter.reset}" />
+	   			<pr:ajax update=" :solrishfilterform" immediate="true" listener="#{solrFilter.reset}" />
 	   			<f:ajax render=" :solrsearchform" immediate="true"/>
 	   		</pr:commandButton>
 
 
 
-	   		<h:commandButton id="il_filter_submit2" value="Submit" actionListener="#{solrInsituFilter.refresh()}">
+	   		<h:commandButton id="il_filter_submit2" value="Submit" actionListener="#{solrFilter.refresh()}">
 	   			<f:ajax execute="@form" render=":solrfilterform :solrinsitu_dataform :solrsearchform" ></f:ajax> 
 	   		</h:commandButton>
 	   			   		
