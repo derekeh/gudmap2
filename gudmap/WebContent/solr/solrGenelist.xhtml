@@ -32,7 +32,7 @@ jQuery(document).ready(function(){
 		"json_data" : {
 		    "progressive_render" : true,
 		    "ajax" : {
-		    	"url" : "../resources/scripts/genelist.json"
+		    	"url" : "../resources/scripts/solrgenelist.json"
 		    }
 		},	
 		"types": {
@@ -98,11 +98,6 @@ function getCrumb(node){
 	
 }	
 
-
-</script>	
-
-
-<script type="text/javascript">
 $(document).ready(function(){
 	$("#expanderHead").click(function(){
 		$("#expanderContent").slideToggle();
@@ -118,7 +113,6 @@ $(document).ready(function(){
 	
 //]]>
 </script>
-
 		<ui:include src="/snippets/g_solrSearch.xhtml"/>
 		
 		<h:panelGrid id="id_filters" columns="1">
@@ -157,14 +151,11 @@ $(document).ready(function(){
 	</div>
 	
 	 <h:inputText id="analysisitem" value="#{solrAnalysisBean.selectedItem}" style="display:none; visibility: hidden; "/>
-<ui:remove>	 
- 	 <h:inputText id="analysis_crumb" value="#{solrAnalysisBean.crumb}" style="display:none; visibility: hidden; "/>
-</ui:remove> 	
 	 <h:inputText id="analysis_mastertableId" value="#{solrAnalysisBean.masterTableId}" style="display:none; visibility: hidden; "/>
-	 <f:verbatim>
+
 		<div id="analysis_tree" class="demo" style="overflow: auto; align: left; height: 540px;">
 		</div>
-	</f:verbatim>
+
 	
 	<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{solrAnalysisBean.findNode}" actionListener="#{solrAnalysisBean.processAction}" >
 	</t:commandLink>
