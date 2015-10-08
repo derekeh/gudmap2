@@ -22,9 +22,9 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 
-
-	<h:commandButton id="id_solr_index" value="Index Database" action="#{solrIndexBean.update}"/>
-
+<h:form>
+	<h:commandButton id="id_solr_index" value="Index Database" action="#{solrIndexBean.update()}"/>
+</h:form>
 
 	</ui:define>	
 </ui:composition>

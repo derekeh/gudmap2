@@ -155,6 +155,34 @@ public class SolrUtil {
 		
 	}
 	
+	public HttpSolrClient getInsituServer(){
+		return insitu_server;
+	}
+	public HttpSolrClient getGenesServer(){
+		return genes_server;
+	}
+	public HttpSolrClient getGenelistsServer(){
+		return genelists_server;
+	}
+	public HttpSolrClient getMicroarrayServer(){
+		return microarray_server;
+	}
+	public HttpSolrClient getSeriesServer(){
+		return series_server;
+	}
+	public HttpSolrClient getSamplesServer(){
+		return samples_server;
+	}
+	public HttpSolrClient getTissuesServer(){
+		return tissues_server;
+	}
+	public HttpSolrClient getMouseStrainServer(){
+		return mouse_strain_server;
+	}
+	public HttpSolrClient getImageServer(){
+		return image_server;
+	}
+	
 	public String getExpressionFilter(String filter) {
 		
 		String fs = "";
