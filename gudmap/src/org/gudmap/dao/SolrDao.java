@@ -23,11 +23,11 @@ public class SolrDao {
 	public SolrDao() {
 	}
 	
-	public ArrayList<SolrInputDocument> getSolrGeneData() {
+	public ArrayList<SolrInputDocument> getSolrGeneIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_GENE_DATA;
+        String queryString = SolrQueries.GET_GENE_INDEX_DATA;
         
         try
 		{
@@ -35,6 +35,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				doc.addField("id", result.getString(1)); 
@@ -72,11 +74,11 @@ public class SolrDao {
         return docs;
     }
 
-	public ArrayList<SolrInputDocument> getSolrGenelistsData() {
+	public ArrayList<SolrInputDocument> getSolrGenelistsIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_GENELISTS_DATA;
+        String queryString = SolrQueries.GET_GENELISTS_INDEX_DATA;
         
         try
 		{
@@ -84,6 +86,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				doc.addField("id", result.getString(1)); 
@@ -120,11 +124,11 @@ public class SolrDao {
         return docs;
     }
 	
-	public ArrayList<SolrInputDocument> getSolrInsituData() {
+	public ArrayList<SolrInputDocument> getSolrInsituIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_INSITU_DATA;
+        String queryString = SolrQueries.GET_INSITU_INDEX_DATA;
         
         try
 		{
@@ -132,6 +136,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				doc.addField("id", result.getString(1)); 
@@ -206,11 +212,11 @@ public class SolrDao {
         return docs;
     }
 
-	public ArrayList<SolrInputDocument> getSolrMicroarrayData() {
+	public ArrayList<SolrInputDocument> getSolrMicroarrayIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_MICROARRAY_DATA;
+        String queryString = SolrQueries.GET_MICROARRAY_INDEX_DATA;
         
         try
 		{
@@ -218,6 +224,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				doc.addField("id", result.getString(1)); 
@@ -271,11 +279,11 @@ public class SolrDao {
         return docs;
     }
 	
-	public ArrayList<SolrInputDocument> getSolrSamplesData() {
+	public ArrayList<SolrInputDocument> getSolrSamplesIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_SAMPLES_DATA;
+        String queryString = SolrQueries.GET_SAMPLES_INDEX_DATA;
         
         try
 		{
@@ -283,6 +291,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				doc.addField("id", result.getString(1)); 
@@ -314,11 +324,11 @@ public class SolrDao {
         return docs;
     }
 
-	public ArrayList<SolrInputDocument> getSolrSeriesData() {
+	public ArrayList<SolrInputDocument> getSolrSeriesIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_SERIES_DATA;
+        String queryString = SolrQueries.GET_SERIES_INDEX_DATA;
         
         try
 		{
@@ -326,6 +336,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				doc.addField("id", result.getString(1)); 
@@ -361,11 +373,11 @@ public class SolrDao {
         return docs;
     }
 	
-	public ArrayList<SolrInputDocument> getSolrTissueData() {
+	public ArrayList<SolrInputDocument> getSolrTissueIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_TISSUE_DATA;
+        String queryString = SolrQueries.GET_TISSUE_INDEX_DATA;
         
         try
 		{
@@ -373,6 +385,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				doc.addField("id", result.getString(1)); 
@@ -409,11 +423,11 @@ public class SolrDao {
         return docs;
     }
 
-	public ArrayList<SolrInputDocument> getSolrMouseStrainsData() {
+	public ArrayList<SolrInputDocument> getSolrMouseStrainsIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_MOUSE_STRAINS_DATA;
+        String queryString = SolrQueries.GET_MOUSE_STRAINS_INDEX_DATA;
         
         try
 		{
@@ -421,6 +435,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				String tmp = result.getString(1);
@@ -448,11 +464,11 @@ public class SolrDao {
         return docs;
     }
 	
-	public ArrayList<SolrInputDocument> getSolrImageData() {
+	public ArrayList<SolrInputDocument> getSolrImageIndexData() {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
-        String queryString = SolrQueries.GET_IMAGE_DATA;
+        String queryString = SolrQueries.GET_IMAGE_INDEX_DATA;
         
         try
 		{
@@ -460,6 +476,8 @@ public class SolrDao {
 			con=Globals.getDatasource().getConnection();
 			ps = con.prepareStatement(queryString); 
 			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				String tmp = result.getString(1);

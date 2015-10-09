@@ -24,130 +24,118 @@ public class SolrIndexAssembler {
 
 	}
 	
-	public void getGenesData(HttpSolrClient server){
+	public void updateGenesIndex(HttpSolrClient server){
 
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrGeneData();
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrGeneIndexData();
 		
 		try {
-			UpdateResponse resp = server.add(docs);
+			server.add(docs);			
+			server.commit();
 		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         docs.clear();
 	}
 
-	public void getGenelists(HttpSolrClient server){
+	public void updateGenelistsIndex(HttpSolrClient server){
 
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrGenelistsData();
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrGenelistsIndexData();
 		
 		try {
-			UpdateResponse resp = server.add(docs);
+			server.add(docs);			
+			server.commit();
 		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         docs.clear();
 	}
 	
-	public void getInsituData(HttpSolrClient server){
+	public void updateInsituIndex(HttpSolrClient server){
 
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrInsituData();
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrInsituIndexData();
 		
 		try {
-			UpdateResponse resp = server.add(docs);
+			server.add(docs);			
+			server.commit();
 		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         docs.clear();
 	}
 
-	public void getMicroarrayData(HttpSolrClient server){
+	public void updateMicroarrayIndex(HttpSolrClient server){
 
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMicroarrayData();
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMicroarrayIndexData();
 		
 		try {
-			UpdateResponse resp = server.add(docs);
-			
+			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        docs.clear();
-	}
-	
-	public void getSamplesData(HttpSolrClient server){
-
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSamplesData();
-		
-		try {
-			UpdateResponse resp = server.add(docs);
-			
-			server.commit();
-		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        docs.clear();
-	}
-
-	public void getSeriesData(HttpSolrClient server){
-
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSeriesData();
-		
-		try {
-			UpdateResponse resp = server.add(docs);
-			
-			server.commit();
-		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         docs.clear();
 	}
 	
-	public void getTissueData(HttpSolrClient server){
+	public void updateSamplesIndex(HttpSolrClient server){
 
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrTissueData();
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSamplesIndexData();
 		
 		try {
-			UpdateResponse resp = server.add(docs);
-			
+			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         docs.clear();
 	}
 
-	public void getMouseStrainsData(HttpSolrClient server){
+	public void updateSeriesIndex(HttpSolrClient server){
 
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMouseStrainsData();
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSeriesIndexData();
 		
 		try {
-			UpdateResponse resp = server.add(docs);
-			
+			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         docs.clear();
 	}
 	
-	public void getImageData(HttpSolrClient server){
+	public void updateTissueIndex(HttpSolrClient server){
 
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrImageData();
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrTissueIndexData();
 		
 		try {
-			UpdateResponse resp = server.add(docs);
-			
+			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        docs.clear();
+	}
+
+	public void updateMouseStrainsIndex(HttpSolrClient server){
+
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMouseStrainsIndexData();
+		
+		try {
+			server.add(docs);			
+			server.commit();
+		} catch (SolrServerException | IOException e) {
+			e.printStackTrace();
+		}
+        docs.clear();
+	}
+	
+	public void updateImageIndex(HttpSolrClient server){
+
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrImageIndexData();
+		
+		try {
+			server.add(docs);			
+			server.commit();
+		} catch (SolrServerException | IOException e) {
 			e.printStackTrace();
 		}
         docs.clear();

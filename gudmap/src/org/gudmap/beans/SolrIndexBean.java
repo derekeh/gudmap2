@@ -31,35 +31,36 @@ public class SolrIndexBean implements Serializable {
 		solrUtil = new SolrUtil();
 		assembler = new SolrIndexAssembler();
 	}
-	
+
+	// methods to update the solr indexes used for searching
 	public String indexAll(){
 		
 		HttpSolrClient server = solrUtil.getGenesServer();
-//		assembler.getGenesData(server);
+		assembler.updateGenesIndex(server);
 
 		server = solrUtil.getGenelistsServer();
-//		assembler.getGenelistsData(server);
+		assembler.updateGenelistsIndex(server);
 		
 		server = solrUtil.getInsituServer();
-//		assembler.getInsituData(server);
+		assembler.updateInsituIndex(server);
 
 		server = solrUtil.getMicroarrayServer();
-//		assembler.getMicroarrayData(server);
+		assembler.updateMicroarrayIndex(server);
 
 		server = solrUtil.getSamplesServer();
-//		assembler.getSamplesData(server);
+		assembler.updateSamplesIndex(server);
 
 		server = solrUtil.getSeriesServer();
-//		assembler.getSeriesData(server);
+		assembler.updateSeriesIndex(server);
 		
 		server = solrUtil.getTissuesServer();
-//		assembler.getTissueData(server);
+		assembler.updateTissueIndex(server);
 
 		server = solrUtil.getMouseStrainServer();
-		assembler.getMouseStrainsData(server);
+		assembler.updateMouseStrainsIndex(server);
 		
 		server = solrUtil.getImageServer();
-//		assembler.getImageData(server);
+		assembler.updateImageIndex(server);
 		
 		return null;
 		
@@ -68,49 +69,56 @@ public class SolrIndexBean implements Serializable {
 	public String indexGenes(){
 		
 		HttpSolrClient server = solrUtil.getGenesServer();
-		assembler.getGenesData(server);
+		assembler.updateGenesIndex(server);
 		return null;		
 	}
 
 	public String indexInsitu(){
 		
 		HttpSolrClient server = solrUtil.getInsituServer();
-		assembler.getInsituData(server);
+		assembler.updateInsituIndex(server);
 		return null;		
 	}
 
 	public String indexMicroarray(){
 		
 		HttpSolrClient server = solrUtil.getMicroarrayServer();
-		assembler.getMicroarrayData(server);
+		assembler.updateMicroarrayIndex(server);
+		
+//		server = solrUtil.getSamplesServer();
+//		assembler.updateSamplesIndex(server);
+//
+//		server = solrUtil.getSeriesServer();
+//		assembler.updateSeriesIndex(server);
+		
 		return null;		
 	}
 
 	public String indexGenelists(){
 		
 		HttpSolrClient server = solrUtil.getGenelistsServer();
-//		assembler.getGenelistsData(server);
+		assembler.updateGenelistsIndex(server);
 		return null;		
 	}
 
 	public String indexTissues(){
 		
 		HttpSolrClient server = solrUtil.getTissuesServer();
-		assembler.getTissueData(server);
+		assembler.updateGenelistsIndex(server);
 		return null;		
 	}
 
 	public String indexMouseStrains(){
 		
 		HttpSolrClient server = solrUtil.getMouseStrainServer();
-		assembler.getMouseStrainsData(server);
+		assembler.updateMouseStrainsIndex(server);
 		return null;		
 	}
 	
 	public String indexImages(){
 		
 		HttpSolrClient server = solrUtil.getImageServer();
-		assembler.getImageData(server);
+		assembler.updateImageIndex(server);
 		return null;		
 	}
 	
