@@ -22,10 +22,19 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 
-<h:form>
-	<h:commandButton id="id_solr_index" value="Index Database" action="#{solrIndexBean.update()}"/>
-</h:form>
-
+	<h:form>
+		<h:panelGrid columns="1">
+			<h:commandButton  value="Index All" action="#{solrIndexBean.indexAll()}"/>	
+			<h:commandButton  value="Index Genes" action="#{solrIndexBean.indexGenes()}"/>
+			<h:commandButton  value="Index Insitu" action="#{solrIndexBean.indexInsitu()}"/>
+			<h:commandButton  value="Index Microarray" action="#{solrIndexBean.indexMicroarray()}"/>
+			<h:commandButton  value="Index Genelists" action="#{solrIndexBean.indexGenelists()}"/>
+			<h:commandButton  value="Index Tissues" action="#{solrIndexBean.indexTissues()}"/>	
+			<h:commandButton  value="Index Mouse Strains" action="#{solrIndexBean.indexMouseStrains()}"/>
+			<h:commandButton  value="Index Images" action="#{solrIndexBean.indexImages()}"/>
+		</h:panelGrid>
+	</h:form>
+	
 	</ui:define>	
 </ui:composition>
 </html>
