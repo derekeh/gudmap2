@@ -193,6 +193,12 @@ public class SolrUtil {
 	public HttpSolrClient getImageServer(){
 		return image_server;
 	}
+	public HttpSolrClient getNextGenSamplesServer(){
+		return ng_samples_server;
+	}
+	public HttpSolrClient getNextGenSeriesServer(){
+		return ng_series_server;
+	}
 	public HttpSolrClient getTutorialServer(){
 		return tutorial_server;
 	}

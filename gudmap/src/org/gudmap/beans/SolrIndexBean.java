@@ -131,69 +131,23 @@ public class SolrIndexBean implements Serializable {
 
 	public String indexNextGenSeries(){
 		
-		HttpSolrClient server = solrUtil.getImageServer();
-//		HttpSolrClient server = solrUtil.getNextGenSeriesServer();
+		HttpSolrClient server = solrUtil.getNextGenSeriesServer();
 		assembler.updateNextGenSeriesIndex(server);
 		return null;		
 	}
 	
 	public String indexNextGenSamples(){
 		
-		HttpSolrClient server = solrUtil.getImageServer();
-//		HttpSolrClient server = solrUtil.getNextGenSamplesServer();
+		HttpSolrClient server = solrUtil.getNextGenSamplesServer();
 		assembler.updateNextGenSamplesIndex(server);
 		return null;		
 	}
-	
-	
+		
 	public String indexTutorials(){
 		
 		HttpSolrClient server = solrUtil.getTutorialServer();
 		assembler.updateTutorialIndex(server);
 		return null;		
 	}
-
-	public String  indexTutorials1(){
-		SolrClient client = new HttpSolrClient("http://localhost:8983/solr/bhtemp"); 
 		
-		String name = "bhtemp";
-		String instanceDir = "cores/bhtemp";
-		String config = "conf/solrconfig.xml";
-		String schema = "conf/schema.xml";
-		try {
-			CoreAdminResponse e = CoreAdminRequest.createCore(name,instanceDir, client, config, schema);
-		} catch (SolrServerException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public String indexDemo(){
-		try {
-			HttpSolrClient server = new HttpSolrClient("http://localhost:8983/solr/core_demo");
-			ContentStreamUpdateRequest req = new ContentStreamUpdateRequest("/update/extract");
-			
-			String fileName= "/export/data0/bernardh/solr-5.2.1/solr-5.2.1/docs/index.html"; 
-
-						
-			req.addFile(new File(fileName),"html");
-			req.setParam(ExtractingParams.EXTRACT_ONLY, "true");
-			NamedList<Object> result = server.request(req);
-		
-			System.out.println("Result: " + result);
-
-			server.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
 }
