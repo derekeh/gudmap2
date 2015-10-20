@@ -67,22 +67,25 @@ public class SolrUtil {
 	public HttpSolrClient microarray_server;
 	public HttpSolrClient series_server;
 	public HttpSolrClient samples_server;
+	public HttpSolrClient ng_series_server;
+	public HttpSolrClient ng_samples_server;
 	public HttpSolrClient tissues_server;
 	public HttpSolrClient mouse_strain_server;
 	public HttpSolrClient image_server;
-
+	public HttpSolrClient tutorial_server;
+	
 	public Set<String> insitu_schema;
 	public Set<String> genes_schema;
 	public Set<String> genelists_schema;
 	public Set<String> microarray_schema;
 	public Set<String> series_schema;
 	public Set<String> samples_schema;
+	public Set<String> ng_series_schema;
+	public Set<String> ng_samples_schema;
 	public Set<String> tissues_schema;
 	public Set<String> mouse_strain_schema;
 	public Set<String> image_schema;
-	
-	public HttpSolrClient tutorial_server;
-	
+		
 	public String searchString = null;
 	
 	public SolrUtil(){
@@ -102,16 +105,18 @@ public class SolrUtil {
 //			e.printStackTrace();
 //		}
 		
-		insitu_server = new HttpSolrClient( "http://localhost:8983/solr/core_insitu" );
-		genes_server = new HttpSolrClient( "http://localhost:8983/solr/core_genes" );
-		genelists_server = new HttpSolrClient( "http://localhost:8983/solr/core_genelists" );
-		microarray_server = new HttpSolrClient( "http://localhost:8983/solr/core_microarray" );
-		series_server = new HttpSolrClient( "http://localhost:8983/solr/core_series" );
-		samples_server = new HttpSolrClient( "http://localhost:8983/solr/core_samples" );		
-		tissues_server = new HttpSolrClient( "http://localhost:8983/solr/core_tissues" );		
-		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/core_mouse_strains" );		
-		image_server = new HttpSolrClient( "http://localhost:8983/solr/core_images" );		
-//		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/core_tutorials");
+		insitu_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_insitu" );
+		genes_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genes" );
+		genelists_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genelists" );
+		microarray_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_microarray" );
+		series_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_series" );
+		samples_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_samples" );		
+		ng_series_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_nextgen_series" );
+		ng_samples_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_nextgen_samples" );		
+		tissues_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_tissues" );		
+		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_mousestrains" );		
+		image_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_images" );		
+		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorials");
 		
 		
 		
@@ -135,6 +140,12 @@ public class SolrUtil {
 			series_schema = lukeResponse.getFieldInfo().keySet();
 			
 			lukeResponse = lukeRequest.process(samples_server);
+			ng_samples_schema = lukeResponse.getFieldInfo().keySet();
+
+			lukeResponse = lukeRequest.process(ng_series_server);
+			ng_series_schema = lukeResponse.getFieldInfo().keySet();
+			
+			lukeResponse = lukeRequest.process(ng_samples_server);
 			samples_schema = lukeResponse.getFieldInfo().keySet();
 			
 			lukeResponse = lukeRequest.process(tissues_server);
@@ -181,6 +192,9 @@ public class SolrUtil {
 	}
 	public HttpSolrClient getImageServer(){
 		return image_server;
+	}
+	public HttpSolrClient getTutorialServer(){
+		return tutorial_server;
 	}
 	
 	public String getExpressionFilter(String filter) {
@@ -548,8 +562,8 @@ public class SolrUtil {
 	        parameters.addField("GUDMAP");
 	        parameters.addField("GUDMAP_ID");
 	        parameters.addField("GENE");
-	        parameters.addField("THEILER_STAGE");
 	        parameters.addField("STAGE");
+	        parameters.addField("DEV_STAGE");
 	        parameters.addField("SOURCE");
 	        parameters.addField("DATE");
 	        parameters.addField("ASSAY_TYPE");
@@ -664,7 +678,7 @@ public class SolrUtil {
 	        parameters.set("group", true);
 	        parameters.set("group.ngroups", true);
 	        
-	        String[] groupFields = {"GENE","GUDMAP","SOURCE","DATE","ASSAY_TYPE","PROBE_NAME","THEILER_STAGE","STAGE","SEX","GENOTYPE","TISSUE_TYPE","PRESENT","SPECIMEN_ASSAY_TYPE","IMAGE_PATH"};
+	        String[] groupFields = {"GENE","GUDMAP","SOURCE","DATE","ASSAY_TYPE","PROBE_NAME","THEILER","DEV_STAGE","SEX","GENOTYPE","TISSUE_TYPE","PRESENT","SPECIMEN_ASSAY_TYPE","IMAGE_PATH"};
 
         	if (filter == null || filter.contentEquals("undefined")){
         	}
@@ -677,7 +691,7 @@ public class SolrUtil {
         	}
             
             for (String fs : filters){
-            	if (fs.contains("THEILER_STAGE"))
+            	if (fs.contains("STAGE"))
             		fs = fs.replace(":", ":TS");
             	
             	if (fs.contains("EXP_STRENGTH"))

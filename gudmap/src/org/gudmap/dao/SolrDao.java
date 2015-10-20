@@ -39,7 +39,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("GENE", result.getString(1)); 
 				doc.addField("GENE_NAME", result.getString(2)); 
 				doc.addField("MGI_GENE_ID", result.getString(3)); 
@@ -57,7 +57,7 @@ public class SolrDao {
 				doc.addField("DIR_PRESENT", result.getString(15)); 
 				doc.addField("NOT_DETECTED", result.getString(16)); 
 				doc.addField("UNCERTAIN", result.getString(17)); 
-				doc.addField("EMAP", result.getString(18)); 
+				doc.addField("EMAPS", result.getString(18)); 
 				doc.addField("SOURCE", result.getString(19)); 
 				doc.addField("PI_NAME", result.getString(20)); 
 				doc.addField("LAB", result.getString(21)); 
@@ -90,7 +90,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("ID", result.getString(1)); 
 				doc.addField("NAME", result.getString(2)); 
 				doc.addField("DESCRIPTION", result.getString(3)); 	
@@ -140,7 +140,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("GUDMAP", result.getString(1)); 
 				doc.addField("GUDMAP_ID", result.getString(2)); 
 				doc.addField("GENE", result.getString(3)); 
@@ -154,53 +154,53 @@ public class SolrDao {
 				doc.addField("LAB", result.getString(11)); 
 				doc.addField("AUTHORS", result.getString(12)); 
 				doc.addField("DATE", result.getString(13)); 
-				doc.addField("THEILER_STAGE", result.getString(14)); 
-				doc.addField("THEILER_STAGE_FILTER", result.getString(15)); 
-				doc.addField("PROBE_NAME", result.getString(16)); 
-				doc.addField("CLONE_NAME", result.getString(17)); 
-				doc.addField("PROBE_TISSUE", result.getString(18)); 
-				doc.addField("PROBE_ID", result.getString(19)); 
-				doc.addField("maprobe", result.getString(20)); 
-				doc.addField("MAPROBE_ID", result.getString(21)); 
-				doc.addField("PROBE_STRAIN", result.getString(22)); 
-				doc.addField("PROBE_GENE_TYPE", result.getString(23)); 
-				doc.addField("PROBE_TYPE", result.getString(24)); 
-				doc.addField("PROBE_VISUAL_METHOD", result.getString(25)); 
-				doc.addField("PROBE_NOTE", result.getString(26)); 
-				doc.addField("CURATOR_NOTE", result.getString(27)); 
-				doc.addField("RESULT_NOTE", result.getString(28)); 
-				doc.addField("EXPERIMENT_NOTE", result.getString(29)); 
-				doc.addField("IMAGE_WITH_NOTE", result.getString(30)); 
-				doc.addField("IMAGE_NOTE", result.getString(31)); 
-				doc.addField("IMAGE", result.getString(32)); 
-				doc.addField("IMAGE_PATH", result.getString(33)); 
-				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(34)); 
-				doc.addField("FIXATION_METHOD", result.getString(35)); 
-				doc.addField("STRAIN", result.getString(36)); 
-				doc.addField("SEX", result.getString(37)); 
-				doc.addField("STAGE", result.getString(38)); 
-				doc.addField("GENOTYPE", result.getString(39)); 
-				doc.addField("ASSAY_TYPE", result.getString(40)); 
-				doc.addField("PROJECT", result.getString(41)); 
-				doc.addField("ALT_ID", result.getString(42)); 
-				doc.addField("SOURCE", result.getString(43)); 
-				doc.addField("ANCHOR_GENE", result.getString(4)); 
+				doc.addField("STAGE", result.getString(14)); 
+				doc.addField("PROBE_NAME", result.getString(15)); 
+				doc.addField("CLONE_NAME", result.getString(16)); 
+				doc.addField("PROBE_TISSUE", result.getString(17)); 
+				doc.addField("PROBE_ID", result.getString(18)); 
+				doc.addField("maprobe", result.getString(19)); 
+				doc.addField("MAPROBE_ID", result.getString(20)); 
+				doc.addField("PROBE_STRAIN", result.getString(21)); 
+				doc.addField("PROBE_GENE_TYPE", result.getString(22)); 
+				doc.addField("PROBE_TYPE", result.getString(23)); 
+				doc.addField("PROBE_VISUAL_METHOD", result.getString(24)); 
+				doc.addField("PROBE_NOTE", result.getString(25)); 
+				doc.addField("CURATOR_NOTE", result.getString(26)); 
+				doc.addField("RESULT_NOTE", result.getString(27)); 
+				doc.addField("EXPERIMENT_NOTE", result.getString(28)); 
+				doc.addField("IMAGE_WITH_NOTE", result.getString(29)); 
+				doc.addField("IMAGE_NOTE", result.getString(30)); 
+				doc.addField("IMAGE", result.getString(31)); 
+				doc.addField("IMAGE_PATH", result.getString(32)); 
+				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(33)); 
+				doc.addField("FIXATION_METHOD", result.getString(34)); 
+				doc.addField("STRAIN", result.getString(35)); 
+				doc.addField("SEX", result.getString(36)); 
+				doc.addField("DEV_STAGE", result.getString(37)); 
+				doc.addField("GENOTYPE", result.getString(38)); 
+				doc.addField("ASSAY_TYPE", result.getString(39)); 
+				doc.addField("PROJECT", result.getString(40)); 
+				doc.addField("ALT_ID", result.getString(41)); 
+				doc.addField("SOURCE", result.getString(42)); 
+				doc.addField("ANCHOR_GENE", result.getString(43)); 
 				doc.addField("MARKER_GENE", result.getString(44)); 
 				doc.addField("FOCUS_GROUPS", result.getString(45)); 
-				doc.addField("PRESENT", result.getString(46)); 
-				doc.addField("DIR_PRESENT", result.getString(47)); 
-				doc.addField("INF_PRESENT", result.getString(48)); 
-				doc.addField("NOT_DETECTED", result.getString(49)); 
-				doc.addField("INF_NOT_DETECTED", result.getString(50)); 
-				doc.addField("UNCERTAIN", result.getString(51)); 
-				doc.addField("EMAP", result.getString(52)); 
-				doc.addField("EXP_NOTES", result.getString(53)); 	
-				doc.addField("EXPRESSION_NOTES", result.getString(54)); 	
-				doc.addField("ANNOTATION", result.getString(55)); 				
-				doc.addField("TISSUE_TYPE", result.getString(56)); 
-				doc.addField("ALLELE_MGI_ID", result.getString(57)); 
-				doc.addField("ALLELE_NAME", result.getString(58)); 	
-				doc.addField("ALLELE_TYPE", result.getString(59)); 	
+				doc.addField("ALLELE_MGI_ID", result.getString(46)); 
+				doc.addField("ALLELE_NAME", result.getString(47)); 	
+				doc.addField("ALLELE_TYPE", result.getString(48)); 					
+				doc.addField("PRESENT", result.getString(49)); 
+				doc.addField("DIR_PRESENT", result.getString(50)); 
+				doc.addField("INF_PRESENT", result.getString(51)); 
+				doc.addField("NOT_DETECTED", result.getString(52)); 
+				doc.addField("INF_NOT_DETECTED", result.getString(53)); 
+				doc.addField("UNCERTAIN", result.getString(54)); 
+				doc.addField("EMAPS", result.getString(55)); 
+				doc.addField("EXP_NOTES", result.getString(56)); 	
+				doc.addField("EXPRESSION_NOTES", result.getString(57)); 	
+				doc.addField("ANNOTATION", result.getString(58)); 				
+				doc.addField("TISSUE_TYPE", result.getString(59)); 
+ 	
 				
 				docs.add(doc);
 			}
@@ -228,7 +228,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("GUDMAP", result.getString(1)); 
 				doc.addField("GUDMAP_ID", result.getString(2)); 
 				doc.addField("PLATFORM_GEO_ID", result.getString(3)); 
@@ -257,17 +257,23 @@ public class SolrDao {
 				doc.addField("LAB", result.getString(26));	
 				doc.addField("SOURCE", result.getString(27));					
 				doc.addField("DATE", result.getString(28));	
-				doc.addField("THEILER_STAGE", result.getString(29));					
+				doc.addField("STAGE", result.getString(29));					
 				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(30));	
 				doc.addField("FIXATION_METHOD", result.getString(31));					
 				doc.addField("STRAIN", result.getString(32));					
 				doc.addField("SEX", result.getString(33));					
-				doc.addField("STAGE", result.getString(34));					
+				doc.addField("DEV_STAGE", result.getString(34));					
 				doc.addField("STAGE_FORMAT", result.getString(35));					
-				doc.addField("GENOTYPE", result.getString(36));					
-				doc.addField("GENE", result.getString(37));					
-				doc.addField("MGI_IDS", result.getString(38));					
-				doc.addField("MGI", result.getString(39));					
+				doc.addField("GENOTYPE", result.getString(36));				
+				doc.addField("FIRST_CHROMATID", result.getString(37));
+				doc.addField("SECOND_CHROMATID", result.getString(38));
+				doc.addField("ALLELE_MGI_ID", result.getString(39));
+				doc.addField("ALLELE_LAB_NAME", result.getString(40));
+				doc.addField("ALLELE_NAME", result.getString(41));
+				doc.addField("ALLELE_TYPE", result.getString(42));
+				doc.addField("GENE", result.getString(43));					
+				doc.addField("MGI_IDS", result.getString(44));					
+				doc.addField("MGI", result.getString(45));					
 				
 				docs.add(doc);
 			}
@@ -295,7 +301,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("GUDMAP", result.getString(1)); 
 				doc.addField("SAMPLE_GEO_ID", result.getString(2)); 
 				doc.addField("THEILER_STAGE", result.getString(3)); 
@@ -340,7 +346,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("SERIES_GEO_ID", result.getString(1)); 				
 				doc.addField("TITLE", result.getString(2)); 	
 				doc.addField("SAMPLE_NUMBER", result.getString(3)); 				
@@ -389,7 +395,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("ID", result.getString(1)); 
 				doc.addField("NAME", result.getString(2)); 
 				doc.addField("SYNONYM", result.getString(3)); 
@@ -440,7 +446,7 @@ public class SolrDao {
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				String tmp = result.getString(1);
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("ID", result.getString(1)); 
 				doc.addField("GENE", result.getString(2)); 
 				doc.addField("REPORTER_ALLELE", result.getString(3)); 
@@ -481,7 +487,7 @@ public class SolrDao {
 			while (result.next()) {
 				doc = new SolrInputDocument();
 				String tmp = result.getString(1);
-				doc.addField("id", result.getString(1)); 
+//				doc.addField("id", result.getString(1)); 
 				doc.addField("IMAGE_ID", result.getString(1)); 
 				doc.addField("IMAGE", result.getString(2)); 
 				doc.addField("IMAGE_PATH", result.getString(3)); 
@@ -501,37 +507,129 @@ public class SolrDao {
 				doc.addField("SYNONYMS", result.getString(17)); 				
 				doc.addField("PI_NAME", result.getString(18)); 
 				doc.addField("DATE", result.getString(19)); 				
+				doc.addField("STAGE", result.getString(20)); 
+				doc.addField("PROBE_NAME", result.getString(21)); 
+				doc.addField("CLONE_NAME", result.getString(22)); 				
+				doc.addField("PROBE_TISSUE", result.getString(23)); 
+				doc.addField("PROBE_ID", result.getString(24)); 				
+				doc.addField("MAPROBE_ID", result.getString(25)); 
+				doc.addField("maprobe", result.getString(26)); 				
+				doc.addField("PROBE_STRAIN", result.getString(27)); 
+				doc.addField("PROBE_GENE_TYPE", result.getString(28)); 				
+				doc.addField("PROBE_TYPE", result.getString(29)); 
+				doc.addField("PROBE_VISUAL_METHOD", result.getString(30)); 				
+				doc.addField("PROBE_NOTE", result.getString(31)); 
+				doc.addField("CURATOR_NOTE", result.getString(32)); 				
+				doc.addField("RESULT_NOTE", result.getString(33)); 
+				doc.addField("EXPERIMENT_NOTE", result.getString(34)); 				
+				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(35)); 
+				doc.addField("FIXATION_METHOD", result.getString(36)); 				
+				doc.addField("STRAIN", result.getString(37)); 
+				doc.addField("SEX", result.getString(38)); 				
+				doc.addField("DEV_STAGE", result.getString(39)); 
+				doc.addField("GENOTYPE", result.getString(40)); 				
+				doc.addField("ASSAY_TYPE", result.getString(41)); 
+				doc.addField("PROJECT", result.getString(42)); 				
+				doc.addField("ALT_ID", result.getString(43)); 
+				doc.addField("SOURCE", result.getString(44)); 				
+				doc.addField("PRESENT", result.getString(45)); 
+				doc.addField("INF_PRESENT", result.getString(46)); 				
+				doc.addField("EMAPS", result.getString(47)); 
+				doc.addField("EXPRESSION_NOTES", result.getString(48)); 
+				doc.addField("EXP_NOTES", result.getString(49)); 
+				
+				docs.add(doc);
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return docs;
+    }
+
+	public ArrayList<SolrInputDocument> getSolrNextGenSeriesIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_NEXTGEN_SERIES_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String tmp = result.getString(2);
+//				doc.addField("id", result.getString(1)); 
+				doc.addField("SERIES_GEO_ID", result.getString(1)); 
+				doc.addField("TITLE", result.getString(2)); 
+				doc.addField("SAMPLE_NUMBER", result.getString(3)); 
+				doc.addField("SOURCE", result.getString(4)); 
+				doc.addField("PI_NAME", result.getString(5)); 
+				doc.addField("PLATFORM_GEO_ID", result.getString(6)); 
+				doc.addField("SERIES_OID", result.getString(7)); 
+				doc.addField("COMPONENT", result.getString(8)); 
+				doc.addField("GENE", result.getString(9)); 
+				doc.addField("EMAP", result.getString(10)); 
+				doc.addField("MGI", result.getString(11)); 
+				doc.addField("PRESENT", result.getString(12)); 
+				doc.addField("NOT_DETECTED", result.getString(13)); 
+				doc.addField("UNCERTAIN", result.getString(14)); 
+				doc.addField("FOCUS_GROUPS", result.getString(15)); 
+				doc.addField("SEX", result.getString(16)); 
+				doc.addField("LAB", result.getString(17)); 
+				doc.addField("maprobe", result.getString(18)); 
+				doc.addField("GUDMAP", result.getString(19)); 
 				doc.addField("THEILER_STAGE", result.getString(20)); 
-				doc.addField("THEILER_STAGE_FILTER", result.getString(21)); 				
-				doc.addField("PROBE_NAME", result.getString(22)); 
-				doc.addField("CLONE_NAME", result.getString(23)); 				
-				doc.addField("PROBE_TISSUE", result.getString(24)); 
-				doc.addField("PROBE_ID", result.getString(25)); 				
-				doc.addField("MAPROBE_ID", result.getString(26)); 
-				doc.addField("maprobe", result.getString(27)); 				
-				doc.addField("PROBE_STRAIN", result.getString(28)); 
-				doc.addField("PROBE_GENE_TYPE", result.getString(29)); 				
-				doc.addField("PROBE_TYPE", result.getString(30)); 
-				doc.addField("PROBE_VISUAL_METHOD", result.getString(31)); 				
-				doc.addField("PROBE_NOTE", result.getString(32)); 
-				doc.addField("CURATOR_NOTE", result.getString(33)); 				
-				doc.addField("RESULT_NOTE", result.getString(34)); 
-				doc.addField("EXPERIMENT_NOTE", result.getString(35)); 				
-				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(36)); 
-				doc.addField("FIXATION_METHOD", result.getString(37)); 				
-				doc.addField("STRAIN", result.getString(38)); 
-				doc.addField("SEX", result.getString(39)); 				
-				doc.addField("STAGE", result.getString(40)); 
-				doc.addField("GENOTYPE", result.getString(41)); 				
-				doc.addField("ASSAY_TYPE", result.getString(42)); 
-				doc.addField("PROJECT", result.getString(43)); 				
-				doc.addField("ALT_ID", result.getString(44)); 
-				doc.addField("SOURCE", result.getString(45)); 				
-				doc.addField("PRESENT", result.getString(46)); 
-				doc.addField("INF_PRESENT", result.getString(47)); 				
-				doc.addField("EMAP", result.getString(48)); 
-				doc.addField("EXPRESSION_NOTES", result.getString(49)); 
-				doc.addField("EXP_NOTES", result.getString(50)); 
+				doc.addField("AUTHORS", result.getString(21)); 
+				
+				docs.add(doc);
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return docs;
+    }
+
+	public ArrayList<SolrInputDocument> getSolrNextGenSamplesIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_NEXTGEN_SAMPLES_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String tmp = result.getString(1);
+//				doc.addField("id", result.getString(2)); 
+				doc.addField("GUDMAP", result.getString(1)); 
+				doc.addField("SAMPLE_GEO_ID", result.getString(2)); 
+				doc.addField("SERIES_GEO_ID", result.getString(3)); 
+				doc.addField("SOURCE", result.getString(4)); 
+				doc.addField("LIBRARY_STRATEGY", result.getString(5)); 
+				doc.addField("STAGE", result.getString(6)); 
+				doc.addField("PI_NAME", result.getString(7)); 
+				doc.addField("AGE", result.getString(8)); 
+				doc.addField("DATE", result.getString(9)); 
+				doc.addField("SEX", result.getString(10)); 
+				doc.addField("SAMPLE_DESCRIPTION", result.getString(11)); 
+				doc.addField("SAMPLE_NAME", result.getString(12)); 
+				doc.addField("GENOTYPE", result.getString(13)); 
+				doc.addField("COMPONENT", result.getString(14)); 
 				
 				docs.add(doc);
 			}

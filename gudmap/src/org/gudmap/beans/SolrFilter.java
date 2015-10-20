@@ -32,7 +32,8 @@ public class SolrFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<String,String> filters;	
-	private ArrayList<String> filterlist;	
+	private ArrayList<ArrayList<String>> filters2;
+//	private ArrayList<String> filterlist;	
 	
 	private String geneValue;
 	private Date fromDateValue;
@@ -59,6 +60,8 @@ public class SolrFilter implements Serializable {
 	public SolrFilter() {
 		filters = new HashMap<String,String>();
 		showFilter = false;
+		
+		filters2 = new ArrayList<ArrayList<String>>();
 	}
 	
 	public void setParamBean(ParamBean paramBean){
@@ -75,15 +78,21 @@ public class SolrFilter implements Serializable {
 	public void setFilters(HashMap<String,String> val){
 		filters = val;	
 	}	
-	
-	public ArrayList<String> getFilterlist(){
-		
-		return filterlist;		
+	public ArrayList<ArrayList<String>> getFilters2(){
+		return filters2;		
 	}
+	public void setFilters2(ArrayList<ArrayList<String>> val){
+		filters2 = val;	
+	}	
 	
-	public void setFilterlist(ArrayList<String>  val){
-		filterlist = val;	
-	}
+//	public ArrayList<String> getFilterlist(){
+//		
+//		return filterlist;		
+//	}
+//	
+//	public void setFilterlist(ArrayList<String>  val){
+//		filterlist = val;	
+//	}
 
 	
 	public boolean getShowFilter(){		
@@ -307,6 +316,7 @@ public class SolrFilter implements Serializable {
 	public void refresh(){
 		showFilter = !showFilter;
 		
+		filters2 = new ArrayList<ArrayList<String>>();
 		filters = new HashMap<String,String>();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -342,6 +352,12 @@ public class SolrFilter implements Serializable {
 				filters.put("SOURCE",filter);
 			}
 		}
+//		if (sourceValues != null && !sourceValues.isEmpty()) {
+//			ArrayList<String> al = new ArrayList<String>();
+//			for (String item : sourceValues) 
+//				al.add("SOURCE:"+item);
+//			filters2.add(al);
+//		}
 
 		if (sexValues != null && !sexValues.isEmpty()) {
 			if (sexValues.size() == 1){
@@ -407,6 +423,7 @@ public class SolrFilter implements Serializable {
 	}
 	
 	public void reset(){
+		filters2 = new ArrayList<ArrayList<String>>();
 		filters = new HashMap<String,String>();
 		
 		geneValue = "";
@@ -420,23 +437,23 @@ public class SolrFilter implements Serializable {
 		toDateValue = null;		
 	}
 
-	public void refresh2(){
-		
-		RequestContext context = RequestContext.getCurrentInstance();
-		page = FacesContext.getCurrentInstance().getViewRoot().getViewId(); 
-		
-		if (page.equalsIgnoreCase("/solr/solrInsitu.xhtml")){
-			context.execute("PF('dialogSolrInsituFilter').show();");
-		}
-			
-		if (page.equalsIgnoreCase("/db/database_homepage.xhtml")){
-			context.execute("PF('dialogSolrSearch').show();");
-			context.execute("PF('dialogSolrInsituFilter').show();");
-		}
-			
-//		context.update("solrsearchform");
-//		context.update(":solrinsitu_dataform");
-	};
+//	public void refresh2(){
+//		
+//		RequestContext context = RequestContext.getCurrentInstance();
+//		page = FacesContext.getCurrentInstance().getViewRoot().getViewId(); 
+//		
+//		if (page.equalsIgnoreCase("/solr/solrInsitu.xhtml")){
+//			context.execute("PF('dialogSolrInsituFilter').show();");
+//		}
+//			
+//		if (page.equalsIgnoreCase("/db/database_homepage.xhtml")){
+//			context.execute("PF('dialogSolrSearch').show();");
+//			context.execute("PF('dialogSolrInsituFilter').show();");
+//		}
+//			
+////		context.update("solrsearchform");
+////		context.update(":solrinsitu_dataform");
+//	};
    
     public String getPage(String component){
     
@@ -490,126 +507,126 @@ public class SolrFilter implements Serializable {
     	refresh();
 	}	
     
-    public void removeFilter2(ActionEvent event) {
-    	UIComponent source = (UIComponent)event.getSource();
-    	String prefix = source.getId();    	
-    	filters.remove(prefix);
-		
-    	switch(prefix){
-    	case "GENE":
-    		geneValue = "";
-    		break;    	
-    	case "DATE":
-    		fromDateValue = null;
-    		toDateValue = null;	
-    		break;
-    	case "SOURCE":
-    		sourceValues.clear();
-    		break;
-    	case "SEX":
-    		sexValues.clear();
-    		break;
-    	case "ASSAY_TYPE":
-    		assayTypeValues.clear();
-    		break;
-    	case "SPECIMEN_ASSAY_TYPE":
-    		specimenTypeValues.clear();
-    		break;
-    	case "THEILER_STAGE":
-    		theilerStageValues.clear();
-    		break;
-    	case "CARNEGIE_STAGE":
-    		carnegieStageValues.clear();
-    		break;
-    	default:
-    		break;
-    	}
-    	
-    	refresh();
-	}	
+//    public void removeFilter2(ActionEvent event) {
+//    	UIComponent source = (UIComponent)event.getSource();
+//    	String prefix = source.getId();    	
+//    	filters.remove(prefix);
+//		
+//    	switch(prefix){
+//    	case "GENE":
+//    		geneValue = "";
+//    		break;    	
+//    	case "DATE":
+//    		fromDateValue = null;
+//    		toDateValue = null;	
+//    		break;
+//    	case "SOURCE":
+//    		sourceValues.clear();
+//    		break;
+//    	case "SEX":
+//    		sexValues.clear();
+//    		break;
+//    	case "ASSAY_TYPE":
+//    		assayTypeValues.clear();
+//    		break;
+//    	case "SPECIMEN_ASSAY_TYPE":
+//    		specimenTypeValues.clear();
+//    		break;
+//    	case "THEILER_STAGE":
+//    		theilerStageValues.clear();
+//    		break;
+//    	case "CARNEGIE_STAGE":
+//    		carnegieStageValues.clear();
+//    		break;
+//    	default:
+//    		break;
+//    	}
+//    	
+//    	refresh();
+//	}	
 
-    public void removeFilterlist(ActionEvent event) {
-    	UIComponent source = (UIComponent)event.getSource();
-    	String prefix = source.getId();    	
-    	filterlist.remove(prefix);
-		
-    	if (prefix.contains("SOURCE"))
-    		sourceValues.clear();
-
-    	if (prefix.contains("SEX"))
-    		sexValues.clear();
-        	
-    	if (prefix.contains("ASSAY_TYPE"))
-    		assayTypeValues.clear();
-
-    	
-    	refresh();
-	}	
+//    public void removeFilterlist(ActionEvent event) {
+//    	UIComponent source = (UIComponent)event.getSource();
+//    	String prefix = source.getId();    	
+//    	filterlist.remove(prefix);
+//		
+//    	if (prefix.contains("SOURCE"))
+//    		sourceValues.clear();
+//
+//    	if (prefix.contains("SEX"))
+//    		sexValues.clear();
+//        	
+//    	if (prefix.contains("ASSAY_TYPE"))
+//    		assayTypeValues.clear();
+//
+//    	
+//    	refresh();
+//	}	
 
     
-	public void refreshlist(){
-		filterlist = new ArrayList<String>();
- 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
- 		String filter = "";
- 		
- 		if (geneValue != null && geneValue != "") {
-			filter = "GENE:(" + geneValue + ")";
-			filterlist.add(filter);
- 		}
- 
- 		if (toDateValue != null) {
- 			if (fromDateValue != null) {
-				filter = "DATE:[" + df.format(fromDateValue) +  " TO " +  df.format(toDateValue) + "]";
-				filterlist.add(filter);
- 			}
- 			else {
-				filter = "DATE:[ * TO " + df.format(toDateValue) + "]";
-				filterlist.add(filter);
-			}				
- 		}
- 		else if (fromDateValue != null) {
-			filter = "DATE:[" + df.format(fromDateValue) + " TO * ]";
-			filterlist.add(filter);
- 		}
- 		
- 		if (sourceValues != null && !sourceValues.isEmpty()) {
-			filter = "SOURCE:(";
-			for (String item : sourceValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filterlist.add(filter);
- 		}
- 
- 		if (sexValues != null && !sexValues.isEmpty()) {
-			filter = "SEX:(";
-			for (String item : sexValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filterlist.add(filter);
-
- 		}
- 		
- 		if (assayTypeValues != null && !assayTypeValues.isEmpty()) {
-			filter = "ASSAY_TYPE:(";
-			for (String item : assayTypeValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filterlist.add(filter);
-
- 		}
- 		
- 		if (specimenTypeValues != null && !specimenTypeValues.isEmpty()) {
-			filter = "SPECIMEN_ASSAY_TYPE:(";
-			for (String item : specimenTypeValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filterlist.add(filter);
- 		}
- 		
- 		if (theilerStageValues != null && !theilerStageValues.isEmpty()) {
-			filter = "THEILER_STAGE:(";
-			for (String item : theilerStageValues) filter += item + " OR ";
-			filter = filter.substring(0, filter.length()-3) + ")";
-			filterlist.add(filter);
- 		}
- 
-	}
+//	public void refreshlist(){
+//		filterlist = new ArrayList<String>();
+// 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+// 		String filter = "";
+// 		
+// 		if (geneValue != null && geneValue != "") {
+//			filter = "GENE:(" + geneValue + ")";
+//			filterlist.add(filter);
+// 		}
+// 
+// 		if (toDateValue != null) {
+// 			if (fromDateValue != null) {
+//				filter = "DATE:[" + df.format(fromDateValue) +  " TO " +  df.format(toDateValue) + "]";
+//				filterlist.add(filter);
+// 			}
+// 			else {
+//				filter = "DATE:[ * TO " + df.format(toDateValue) + "]";
+//				filterlist.add(filter);
+//			}				
+// 		}
+// 		else if (fromDateValue != null) {
+//			filter = "DATE:[" + df.format(fromDateValue) + " TO * ]";
+//			filterlist.add(filter);
+// 		}
+// 		
+// 		if (sourceValues != null && !sourceValues.isEmpty()) {
+//			filter = "SOURCE:(";
+//			for (String item : sourceValues) filter += item + " OR ";
+//			filter = filter.substring(0, filter.length()-3) + ")";
+//			filterlist.add(filter);
+// 		}
+// 
+// 		if (sexValues != null && !sexValues.isEmpty()) {
+//			filter = "SEX:(";
+//			for (String item : sexValues) filter += item + " OR ";
+//			filter = filter.substring(0, filter.length()-3) + ")";
+//			filterlist.add(filter);
+//
+// 		}
+// 		
+// 		if (assayTypeValues != null && !assayTypeValues.isEmpty()) {
+//			filter = "ASSAY_TYPE:(";
+//			for (String item : assayTypeValues) filter += item + " OR ";
+//			filter = filter.substring(0, filter.length()-3) + ")";
+//			filterlist.add(filter);
+//
+// 		}
+// 		
+// 		if (specimenTypeValues != null && !specimenTypeValues.isEmpty()) {
+//			filter = "SPECIMEN_ASSAY_TYPE:(";
+//			for (String item : specimenTypeValues) filter += item + " OR ";
+//			filter = filter.substring(0, filter.length()-3) + ")";
+//			filterlist.add(filter);
+// 		}
+// 		
+// 		if (theilerStageValues != null && !theilerStageValues.isEmpty()) {
+//			filter = "THEILER_STAGE:(";
+//			for (String item : theilerStageValues) filter += item + " OR ";
+//			filter = filter.substring(0, filter.length()-3) + ")";
+//			filterlist.add(filter);
+// 		}
+//
+//	}
 
 }
 

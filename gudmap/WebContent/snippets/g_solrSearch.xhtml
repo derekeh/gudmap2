@@ -135,7 +135,7 @@
          <h:outputLabel value="Tissue Summaries (#{solrTreeBean.tissueCount})" rendered="#{solrTreeBean.tissueCount == 0}"/>
 
  
-         <h:outputLabel value="Tutorials (0)" />
+         <h:outputLabel value="Tutorials (#{solrTreeBean.tutorialCount})" />
     		
 		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMouseStrains.xhtml" rendered="#{solrTreeBean.mouseStrainsCount > 0}">
          	<h:outputText  value="TG Mouse Strains (#{solrTreeBean.mouseStrainsCount})"/>

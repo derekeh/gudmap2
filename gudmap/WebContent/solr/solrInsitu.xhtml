@@ -24,7 +24,7 @@
 
 
 		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		
+
 		<h:panelGrid id="id_filters" columns="1">
 		     <c:forEach items="#{solrFilter.filters}" var="filter">
 				<h:panelGrid columns="2" >	
@@ -34,8 +34,24 @@
 					</h:graphicImage>
 				</h:panelGrid>
 		    </c:forEach>  
+		</h:panelGrid>  
+
+<ui:remove>			  
+		<h:panelGrid id="id_filters" columns="1">
+		     <c:forEach items="#{solrFilter.filters2}" var="filter2">
+		     	<h:panelGrid columns="3" >
+		     	<c:forEach items="#{filter2}" var="filter" varStatus="vs">
+					<h:outputText value="#{filter} " />	
+		 			<h:graphicImage  library="images/resources" name="cancel.png" width="10" height="10">
+			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
+					</h:graphicImage>
+					<h:outputText value=" #{vs.last ? '' : ' OR '} " />
+
+				</c:forEach>
+				</h:panelGrid>
+				</c:forEach>  
 		</h:panelGrid>    
-	
+</ui:remove>	
 		
 		<h:panelGrid columns="3">
 			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
