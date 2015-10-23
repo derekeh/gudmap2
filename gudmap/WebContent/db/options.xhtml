@@ -24,7 +24,7 @@
 	    <p>You can only view the content of this page if you are logged in.</p>	
 	    <!-- all other content in here --> 
 	  <h:panelGrid columns="1" columnClasses="gd_leftAlign" rendered="#{not empty loginBean.username}">
-	        <h:outputLink value="#">
+	        <h:outputLink value="browseCollectionListTablePage.jsf">
             	<h:outputText value="View Collections"></h:outputText>
             </h:outputLink>
             <h:outputLink value="#">

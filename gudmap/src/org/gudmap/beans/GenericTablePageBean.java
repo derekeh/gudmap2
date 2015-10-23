@@ -203,7 +203,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		if(specimenAssay.equals("list")) {
     			//reset whereclause for this search
 	    		paramBean.setWhereclause(whereclause);
-	    		dataList = collectionListAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause());
+	    		dataList = collectionListAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getCol_statusvalues(), paramBean.getWhereclause());
 				totalRows = collectionListAssembler.count();
 				
 				//queryTotals=collectionListAssembler.getQueryTotals();

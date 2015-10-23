@@ -14,6 +14,17 @@ public class CollectionQueries {
 	  		"GROUP BY CLN_OID ORDER BY %s %s LIMIT ?,?";
 	  
 	  public final static String COLLECTION_BROWSE_OTHERS = "SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
+				"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
+				"CLN_STATUS status, DATE_FORMAT(CLN_LAST_UPDATED,'%%e %%b %%Y') modified, CLN_TYPE type, " +
+				"CLN_FOCUS_GROUP_NAME focusgroupname " +
+				"FROM CLN_COLLECTION " +
+				"JOIN REF_USER ON USR_OID = CLN_USER_FK " +
+				"JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
+				"%s CLN_TYPE = ? " +
+				"AND CLN_USER_FK <> ? " +
+				"GROUP BY CLN_OID ORDER BY %s %s LIMIT ?,?";
+	  
+	  /*public final static String COLLECTION_BROWSE_OTHERS = "SELECT CLN_OID oid, CLN_NAME name, CLN_DESCRIPTION description, CLN_USER_FK userid, USR_UNAME username, " +
 			"CLN_FOCUS_GROUP focusgroupid, COUNT(*) entitycount, " +
 			"CLN_STATUS status, DATE_FORMAT(CLN_LAST_UPDATED,'%%e %%b %%Y') modified, CLN_TYPE type, " +
 			"CLN_FOCUS_GROUP_NAME focusgroupname " +
@@ -22,7 +33,7 @@ public class CollectionQueries {
 			"JOIN CLN_COLLECTION_ITEM ON CLI_COLLECTION_FK = CLN_OID " +
 			"%s CLN_TYPE = ? " +
 			"AND CLN_USER_FK <> ? AND CLN_STATUS = 1 " +
-			"GROUP BY CLN_OID ORDER BY %s %s LIMIT ?,?";
+			"GROUP BY CLN_OID ORDER BY %s %s LIMIT ?,?";*/
 	  
 	// retrieve both own and others' shared collection entries
 	  public final static String COLLECTION_BROWSE_ALL1 = "(" + COLLECTION_BROWSE_EXCLUSIVE + ")" + " UNION " + "(" + COLLECTION_BROWSE_OTHERS + ")";

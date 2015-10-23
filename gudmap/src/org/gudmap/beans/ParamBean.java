@@ -28,6 +28,9 @@ public class ParamBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	//false=production
 	private boolean debug=false;
+	
+	private ParamBeanAssembler assembler;
+	
 	private String focusGroup="reset";
 	private boolean isLoggedIn=false;
 	private String assayType="ISH";
@@ -62,6 +65,7 @@ public class ParamBean implements Serializable {
 	private String[] seqsamplecols;
 	private String[] micplatformcols;
 	private String[] seqseriescols;
+	private String[] collectioncols;
 	private Map<String,Boolean> resultmap;
 	private Map<String,Boolean> tgresultmap;
 	private Map<String,Boolean> genestripresultmap;
@@ -70,6 +74,8 @@ public class ParamBean implements Serializable {
 	private Map<String,Boolean> seqsampleresultmap;
 	private Map<String,Boolean> micplatformresultmap;
 	private Map<String,Boolean> seqseriesresultmap;
+	private Map<String,Boolean> collectionresultmap;
+	
 	/*filter*/
 	private String genevalues;
 	private String geneIdvalues;
@@ -93,7 +99,8 @@ public class ParamBean implements Serializable {
 	private String seqsexvalues="ALL";
 	private String arraysexvalues="ALL";
 	
-	private ParamBeanAssembler assembler;
+	private int col_statusvalues=2;
+	
 	private String whereclause=" WHERE ";
 	private String cachewhereclause=" WHERE ";
 	private String cacheprefix="QIC_";
@@ -158,6 +165,15 @@ public class ParamBean implements Serializable {
 	private String localStorage="";
 	private String totalLocalStorage="";
 	private String species="ALL";
+	private boolean col_namecol=true;
+	private boolean col_descriptioncol=true;
+	private boolean col_ownercol=true;
+	private boolean col_focusgroupcol=true;
+	private boolean col_countcol=true;
+	private boolean col_statuscol=true;
+	private boolean col_modifiedcol=true;
+	private boolean col_downloadcol=true;
+	private boolean col_sharecol=true;
 	
 		
 	public ParamBean() {
@@ -172,6 +188,8 @@ public class ParamBean implements Serializable {
 				"genotype","components"};
 		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};
 		seqseriescols= new String[]{"title","geoid","source","numsamples","librarystrategy","components"};
+		collectioncols= new String[]{"name","description","owner","count","focusgroup","status","modified","download","share"};
+		
 		resultmap=new HashMap<String,Boolean>();
 		tgresultmap=new HashMap<String,Boolean>();
 		genestripresultmap=new HashMap<String,Boolean>();
@@ -180,6 +198,7 @@ public class ParamBean implements Serializable {
 		seqsampleresultmap=new HashMap<String,Boolean>();
 		micplatformresultmap=new HashMap<String,Boolean>();
 		seqseriesresultmap=new HashMap<String,Boolean>();
+		collectionresultmap=new HashMap<String,Boolean>();
 		
 		assembler = new ParamBeanAssembler();
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
@@ -563,6 +582,10 @@ public class ParamBean implements Serializable {
 		return assembler.getSeqlibstrategylist();
 	}
 	
+	public Map<String,Integer> getCollectionstatuslist(){
+		return assembler.getCollectionstatuslist();
+	}
+	
 	/**gene search options***/
 	public Map<String,String> getGeneoptionlist(){
 		return assembler.getGeneoptionlist();
@@ -932,6 +955,24 @@ public class ParamBean implements Serializable {
 		return geneoptionvalues;
 	}
 	
+	/**********************collection filter*************/
+	
+	private String col_statusvalueclause="";
+	public void setCol_statusvalues(int col_statusvalues){
+		this.col_statusvalues=col_statusvalues;
+		if(col_statusvalues<2) {
+			col_statusvalueclause="CLN_STATUS = "+col_statusvalues+" AND ";
+		}
+		if(col_statusvalues==2) {
+			col_statusvalueclause="";	
+		}
+	}
+	
+	public int getCol_statusvalues(){
+		return col_statusvalues;
+	}
+	
+	
 	/*****************today*******************/
 	public Date getMaxDate() {
 	    // wherever you want the date to come from
@@ -952,7 +993,8 @@ public class ParamBean implements Serializable {
 			stagebuffer.replace(stagebuffer.lastIndexOf("STG_SPECIES")-4, stagebuffer.lastIndexOf("STG_SPECIES")-1, ") OR (");			
 		}
 		whereclause=GenericQueries.WHERE_CLAUSE+sourcevalueclause+datevalueclause+assaytypevalueclause+stagebuffer.toString()+sexvalueclause+specimentypevalueclause+
-				genevalueclause+geneIdvalueclause+probenamevalueclause;
+				genevalueclause+geneIdvalueclause+probenamevalueclause+col_statusvalueclause;
+		//+col_statusvalueclause
 		
 		if(!debug)
 			resetFilter();
@@ -1033,7 +1075,9 @@ public class ParamBean implements Serializable {
 		setCarnegiestagetovalues("");
 		setSexvalues("ALL");
 		setSpecimentypevalues("");
+		col_statusvalues=2;
 		tempfromvalues="";
+		
 		//DON'T RESET THE WHERECLAUSE HERE OTHERWISE THE PAGING WONT WORK!!!
 		//setWhereclause(GenericQueries.WHERE_CLAUSE);
 		
@@ -1045,7 +1089,7 @@ public class ParamBean implements Serializable {
 		genevalueclause="";geneIdvalueclause="";probenamevalueclause="";
 		cachesourcevalueclause="";
 		cachedatevalueclause="";cacheassaytypevalueclause="";cachetheilerstagevalueclause="";cachecarnegiestagevalueclause="";cachesexvalueclause="";cachespecimentypevalueclause="";
-		cachegenevalueclause="";cachegeneIdvalueclause="";cacheprobenamevalueclause="";
+		cachegenevalueclause="";cachegeneIdvalueclause="";cacheprobenamevalueclause="";col_statusvalueclause="";
 	}
 	
 	public void resetWhereClauses() {
@@ -1426,6 +1470,78 @@ public class ParamBean implements Serializable {
 		return mic_samplelibrarystrategycol;
 	}
 	
+	public void setCol_namecol(boolean col_namecol) {
+		this.col_namecol = col_namecol;
+	}
+	
+	public boolean getCol_namecol() {
+		return col_namecol;
+	}
+	
+	public void setCol_descriptioncol(boolean col_descriptioncol) {
+		this.col_descriptioncol = col_descriptioncol;
+	}
+	
+	public boolean getCol_descriptioncol() {
+		return col_descriptioncol;
+	}
+	
+	public void setCol_ownercol(boolean col_ownercol) {
+		this.col_ownercol = col_ownercol;
+	}
+	
+	public boolean getCol_ownercol() {
+		return col_ownercol;
+	}
+	
+	public void setCol_focusgroupcol(boolean col_focusgroupcol) {
+		this.col_focusgroupcol = col_focusgroupcol;
+	}
+	
+	public boolean getCol_focusgroupcol() {
+		return col_focusgroupcol;
+	}
+	
+	public void setCol_countcol(boolean col_countcol) {
+		this.col_countcol = col_countcol;
+	}
+	
+	public boolean getCol_countcol() {
+		return col_countcol;
+	}
+	
+	public void setCol_statuscol(boolean col_statuscol) {
+		this.col_statuscol = col_statuscol;
+	}
+	
+	public boolean getCol_statuscol() {
+		return col_statuscol;
+	}
+	
+	public void setCol_modifiedcol(boolean col_modifiedcol) {
+		this.col_modifiedcol = col_modifiedcol;
+	}
+	
+	public boolean getCol_modifiedcol() {
+		return col_modifiedcol;
+	}
+	
+	public void setCol_downloadcol(boolean col_downloadcol) {
+		this.col_downloadcol = col_downloadcol;
+	}
+	
+	public boolean getCol_downloadcol() {
+		return col_downloadcol;
+	}
+	
+	public void setCol_sharecol(boolean col_sharecol) {
+		this.col_sharecol = col_sharecol;
+	}
+	
+	public boolean getCol_sharecol() {
+		return col_sharecol;
+	}
+	
 	
 	public void setMicseriescols(String[]micseriescols){
 		this.micseriescols=micseriescols;
@@ -1652,6 +1768,52 @@ public class ParamBean implements Serializable {
  
 	public String getSeqseriescolsInString() {
 		return Arrays.toString(seqseriescols);
+	}
+	
+	//////////collections/////////////
+	public void setCollectioncols(String[]collectioncols){
+		this.collectioncols=collectioncols;
+		collectionresultmap.clear();
+		for(int i=0;i<collectioncols.length;i++){
+			collectionresultmap.put(collectioncols[i], true);	
+		}
+		col_namecol=collectionresultmap.containsKey("name");
+		col_descriptioncol=collectionresultmap.containsKey("description");
+		col_ownercol=collectionresultmap.containsKey("owner");
+		col_focusgroupcol=collectionresultmap.containsKey("focusgroup");
+		col_countcol=collectionresultmap.containsKey("count");
+		col_statuscol=collectionresultmap.containsKey("status");
+		col_modifiedcol=collectionresultmap.containsKey("modified");
+		col_downloadcol=collectionresultmap.containsKey("download");
+		col_sharecol=collectionresultmap.containsKey("share");
+	}
+	
+	
+	public String[] getCollectioncols(){
+		return collectioncols;
+	}
+	
+	
+	private static Map<String,Object> collectioncolmap;
+	static{
+		collectioncolmap = new LinkedHashMap<String,Object>();
+		collectioncolmap.put("Name", "name");
+		collectioncolmap.put("Description", "description");
+		collectioncolmap.put("Owner", "owner");
+		collectioncolmap.put("Focus Group", "focusgroup");
+		collectioncolmap.put("Entity Count", "count");
+		collectioncolmap.put("Status", "status");
+		collectioncolmap.put("Last Modified", "modified");
+		collectioncolmap.put("Download", "download");
+		collectioncolmap.put("Share", "share");
+	}
+	
+	public Map<String,Object> getCollectioncolmap() {
+		return collectioncolmap;
+	}
+	
+	public String getCollectioncolsInString() {
+		return Arrays.toString(collectioncols);
 	}
 	
 	//////////////REDIRECTIONS////////////////

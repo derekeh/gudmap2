@@ -21,24 +21,25 @@ public class CollectionListAssembler {
 	private CollectionInfoModel collectionInfoModel=null;
 	private int userId=1;
 	private int collectionType=0; // 0 - submission collections; 1 - gene collections; 2 - query collections
-	private int status=1; // 0 - own collections; 1 - others' collections; 2 - both
+	private int status; // 0 - own  collections; 1 - others collections; 2 - both
 	private String queryString="";
 	
 	public CollectionListAssembler() {
-		if(Globals.getParameterValue("userId")!=null)
+		/*if(Globals.getParameterValue("userId")!=null)
 			userId = Integer.parseInt(Globals.getParameterValue("userId"));
 		if(Globals.getParameterValue("collectionType")!=null)
 			collectionType = Integer.parseInt(Globals.getParameterValue("collectionType"));
 		if(Globals.getParameterValue("status")!=null)
-			status = Integer.parseInt(Globals.getParameterValue("status"));
+			status = Integer.parseInt(Globals.getParameterValue("status"));*/
 	}
 	
 	public CollectionListAssembler(String paramSQL) {
-		this.paramSQL = paramSQL;
+		//this.paramSQL = paramSQL;
 	}
 	
-	public List<CollectionInfoModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause){
+	public List<CollectionInfoModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, int status, String whereclause){
 		this.whereclause=whereclause;
+		this.status=status;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
 		 if (status == 0) { // own collection required

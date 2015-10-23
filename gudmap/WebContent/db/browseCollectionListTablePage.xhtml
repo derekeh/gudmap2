@@ -27,8 +27,8 @@
 	#{genericTablePageBean.init('collections','list',20,10,'name',true)}
 	#{genericTablePageBean.loadDataList()}
 	
-	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>	
-	<ui:include src="/snippets/g_genelistFilter.xhtml"></ui:include>
+	<ui:include src="/snippets/g_collectionCols.xhtml"></ui:include>	
+	<ui:include src="/snippets/g_collectionFilter.xhtml"></ui:include>
 	
 	<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
 			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
@@ -57,7 +57,7 @@
     		</h:column>
  			
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_namecol == true}">
     			<f:facet name="header">
     				<h:commandLink id="namelink" value="Name" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="name" />
@@ -69,7 +69,7 @@
 				</h:commandLink>
     		</h:column>
  
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_descriptioncol == true}">
     			<f:facet name="header">
     			<h:commandLink id="descriptionlink" value="Description" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="description" />
@@ -80,7 +80,7 @@
     				
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_ownercol == true}">
     			<f:facet name="header">
     			<h:commandLink id="ownerlink" value="Owner" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="username" />
@@ -90,7 +90,7 @@
     				#{u.ownerName}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_focusgroupcol == true}">
     			<f:facet name="header">
     				<h:commandLink id="focusgrouplink" value="Focus Group" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="focusgroupname" />
@@ -100,7 +100,7 @@
     				#{u.focusGroupName}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_countcol == true}">
     			<f:facet name="header">
     				<h:commandLink id="entitycountlink" value="Entity Count" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="entitycount" />
@@ -110,7 +110,7 @@
     				#{u.entries}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_statuscol == true}">
     			<f:facet name="header">
     				<h:commandLink id="statuslink" value="Status" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="status" />
@@ -120,7 +120,7 @@
     				#{u.status}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_modifiedcol == true}">
     			<f:facet name="header">
     			<h:commandLink id="modifiedlink" value="Last Modified" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="modified" />
@@ -131,14 +131,14 @@
     				
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_downloadcol == true}">
     			<f:facet name="header">
     				Download
 				</f:facet>
     				Download
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.genecol == true}">
+    		<h:column rendered="#{paramBean.col_sharecol == true}">
     			<f:facet name="header">
     				Share
 				</f:facet>

@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+		<pr:dialog header="Filter Results" widgetVar="dialog2" width="750" style="position:absolute;left:-300px;"  > 
+		<h:form id="filterform"> 
+		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+		 
+		 	
+	   		
+	   		<h:outputText value="Collection Status:"></h:outputText>
+	   		<h:selectOneRadio value="#{paramBean.col_statusvalues}">
+	   			<f:selectItems value="#{paramBean.collectionstatuslist}" />
+	   		</h:selectOneRadio>
+	   		
+	   		
+	   		<h:commandButton id="il_filter_submit" value="Submit" actionListener="#{genericTablePageBean.refresh()}">
+	   			<f:ajax execute="@form" render=":dataform :pagingform :buttonform" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>
+	   </h:form>
+	   
+	   <h:form>	
+	   	<h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+	   	
+	   		<h:commandButton id="il_filter_test" value="Test" action="result" rendered="#{paramBean.debug}"></h:commandButton>
+	   		
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{genericTablePageBean.resetAll()}">
+	   			<f:ajax execute="@this il_filter_reset" render=":filterform :dataform :pagingform :focusform :buttonform" ></f:ajax> 
+	   		</h:commandButton>
+	   	</h:panelGrid>	
+	  </h:form>    
+	   	
+	</pr:dialog> 
+		
+</ui:composition>

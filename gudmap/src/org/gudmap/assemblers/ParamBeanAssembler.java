@@ -40,7 +40,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>speciesList;
 	private Map<String,String>arrayplatformlist;
 	private Map<String,String>seqlibstrategylist;
-	
+	private Map<String,Integer>collectionstatuslist;
 	
 	public ParamBeanAssembler() {
 			
@@ -319,6 +319,15 @@ public class ParamBeanAssembler {
 		    Globals.closeQuietly(con, ps, result);
 		}
 		return seqlibstrategylist;
+	}
+	
+	public Map<String,Integer> getCollectionstatuslist() {
+		collectionstatuslist = new LinkedHashMap<String,Integer>();
+		collectionstatuslist.put("Private",0);
+		collectionstatuslist.put("Public",1);
+		collectionstatuslist.put("ALL",2);
+		
+		return collectionstatuslist;
 	}
 
 	
