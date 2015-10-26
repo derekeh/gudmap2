@@ -1,28 +1,11 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" >	
-
-
- <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"></link>
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >	
 	
 	<aside>
 	<article>
-<script type="text/javascript">
-//<![CDATA[
-   $(document).ready(function() {
-		
-		$( "#Accordion1" ).accordion({
-			collapsible:true,
-			heightStyle:"content"
-		}); 
-   });
-   
-   
-//]]>
-</script>		           
 
 
 	  
@@ -44,69 +27,79 @@
 	      
 	      <h:outputText class="gd_solr_text" value="Gudmap Search" rendered="#{viewSolrSearch.showSolrText}"> </h:outputText>
 	      
-	      <h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form" rendered="#{viewSolrSearch.showSolrInput}" >
+	      <h:panelGrid columns="2" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form" rendered="#{viewSolrSearch.showSolrInput}" >
 	      	<h:inputText id="gd_solr_textfield2" value="#{solrTreeBean.solrInput}" placeholder="Enter Text" event="valueChange"></h:inputText>
 	        <h:commandButton id="gd_solr_button2" value="Search" actionListener="#{solrTreeBean.goSearch}">
 	        	<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+	        	<f:ajax execute="@this" render="@form" />
 	        </h:commandButton>
-	 
+		 
 	    </h:panelGrid>
-	    
-	      
+
+
 	<h:panelGrid id="panel" columns="1" border="0" cellpadding="10" cellspacing="1" rendered="#{viewSolrSearch.showSolrText}">
 
+   
 
-<div id="db_organstats_right">
-		<div id="Accordion1" style="width:300px">
-		<h3>Genes (#{solrTreeBean.geneCount})</h3>
-		<div>
-		<ul>
-		<li>Anchor Genes (#{solrTreeBean.anchorGeneCount})</li>
-		<li>Marker Genes (#{solrTreeBean.markerGeneCount})</li>
-		</ul>
-		</div>
-		<h3>In situ</h3>
-		<div>
-		<p>
-		Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-		purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-		velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
-		suscipit faucibus urna.
-		</p>
-		</div>
-		<h3>Microarray</h3>
-		<div>
-		<p>
-		Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
-		Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
-		ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
-		lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
-		</p>
-		<ul>
-		<li>List item one</li>
-		<li>List item two</li>
-		<li>List item three</li>
-		</ul>
-		</div>
-		<h3>Gene Lists</h3>
-		<div>
-		<p>
-		Cras dictum. Pellentesque habitant morbi tristique senectus et netus
-		et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
-		faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
-		mauris vel est.
-		</p>
-		<p>
-		Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
-		Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
-		inceptos himenaeos.
-		</p>
-		</div>
-		</div>
-		</div>
+		 <h:outputLink styleClass="plaintext" value="solrGeneStripTablePage.html" rendered="#{solrTreeBean.geneCount > 0}">
+			<h:outputText value="Genes (#{solrTreeBean.geneCount})" />
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Genes" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+			<f:param name="gsfilter" value="GENE" />
+		 </h:outputLink>
+         <h:outputLabel value="Genes (#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.geneCount == 0}"/>              
 
 
-</h:panelGrid> 	      
+		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrInsituTablePage.jsf" rendered="#{solrTreeBean.insituCount > 0}">
+			<h:outputText value="In Situ (#{solrTreeBean.insituCount})" />
+		 </h:outputLink>
+         <h:outputLabel value="In Situ (#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.insituCount == 0}"/>
+
+
+  		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMicroarrayTablePage.jsf" rendered="#{solrTreeBean.microarrayCount > 0}">
+         	<h:outputText  value="Microarray (#{solrTreeBean.microarrayCount == 0})"/>
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Microarray" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+         <h:outputLabel value="Microarray (#{solrTreeBean.microarrayCount == 0})" rendered="#{solrTreeBean.microarrayCount == 0}"/>
+      
+      
+		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrGenelistTreePage.jsf" rendered="#{solrTreeBean.genelistCount > 0}">
+         	<h:outputText  value="Gene Lists (#{solrTreeBean.genelistCount})"/>
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Genelist" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+        <h:outputLabel value="Gene Lists (#{solrTreeBean.genelistCount})"  rendered="#{solrTreeBean.genelistCount == 0}"/>
+
+
+ 		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrTissueSummaryTablePage.jsf" rendered="#{solrTreeBean.tissueCount > 0}">
+            <h:outputText  value="Tissue Summaries (#{solrTreeBean.tissueCount > 0 })"/>
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Tissue Summary" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+         <h:outputLabel value="Tissue Summaries (#{solrTreeBean.tissueCount > 0 })" rendered="#{solrTreeBean.tissueCount == 0}"/>
+
+
+         <h:outputLabel value="Tutorials (0)" />
+  		
+  		
+		 <h:outputLink styleClass="plaintext" value="#{appRoot}/solr/solrMouseStrainsTablePage.jsf" rendered="#{solrTreeBean.mouseStrainsCount > 0}">
+         	<h:outputText  value="TG Mouse Strains (#{solrTreeBean.mouseStrainsCount})"/>
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+         <h:outputLabel value="TG Mouse Strains (#{solrTreeBean.mouseStrainsCount})" rendered="#{solrTreeBean.mouseStrainsCount == 0}"/>
+        
+        
+ 		 <h:outputLink styleClass="plaintext" value="{appRoot}/solr/solrImagePage.jsf" rendered="#{solrTreeBean.imagesCount > 0}"> 
+         	<h:outputText  value="Images (#{solrTreeBean.imagesCount})"/>
+			<f:param name="crumb" value="#{solrTreeBean.solrInput} &gt; Images" />
+			<f:param name="gsinput" value="#{solrTreeBean.solrInput}" />
+		 </h:outputLink>
+         <h:outputLabel value="Images (#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.imagesCount == 0}"/>
+		 
+	</h:panelGrid> 
+
+  
 	   </div><!-- end gd_solrmenu -->
 	  </h:form>
 

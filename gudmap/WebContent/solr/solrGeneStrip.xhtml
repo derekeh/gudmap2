@@ -13,8 +13,9 @@
 	<ui:define name="title">
 	    Solr Gene Strip
 	</ui:define>
-<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
 	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>
 	</ui:define>
 	
 	<ui:define name="content">
@@ -27,7 +28,8 @@
 	<!-- can use relative links on html tags -->
 		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	    <!-- all other content in here -->  
-	    
+
+<ui:remove>	    
 		<ui:include src="/snippets/g_solrSearch.xhtml"/>
 		
 		<h:panelGrid id="id_filters" columns="1">
@@ -51,7 +53,7 @@
 		</h:panelGrid>
 		
 		<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
-
+</ui:remove>	
 	     <!-- all other content in here --> 
 
 

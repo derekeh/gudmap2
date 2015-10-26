@@ -78,8 +78,8 @@ public class SolrInsituAssembler {
 			model.setSubmission_date(doc.getFieldValue("DATE").toString());
 			model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
 			model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
-			model.setStage(doc.getFieldValue("THEILER_STAGE").toString());
-			model.setAge(doc.getFieldValue("STAGE").toString());
+			model.setStage(doc.getFieldValue("STAGE").toString());
+			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 			model.setSex(doc.getFieldValue("SEX").toString());
 			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
 			model.setTissue(doc.getFieldValue("TISSUE_TYPE").toString());

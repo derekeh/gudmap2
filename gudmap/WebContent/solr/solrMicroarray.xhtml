@@ -14,13 +14,14 @@
 	<ui:define name="title">
 	    Solr Microarray
 	</ui:define>
-<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
 	<ui:define name="solr">
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>
 	</ui:define>
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	
+<ui:remove>		
 		<ui:include src="/snippets/g_solrSearch.xhtml"/>
 		
 		<h:panelGrid id="id_filters" columns="1">
@@ -41,6 +42,7 @@
 			<h:outputText value="#{solrMicroarrayBean.title}" styleClass="db_bold" />   
 			</h:form>	
 		</h:panelGrid>
+</ui:remove>	
 
 		<h:form id="solr_dataform">
 	    <h:inputHidden id="solrInput" value="#{solrMicroarrayBean.solrInput}" />

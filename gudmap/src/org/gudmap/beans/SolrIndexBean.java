@@ -51,8 +51,8 @@ public class SolrIndexBean implements Serializable {
 		server = solrUtil.getInsituServer();
 		assembler.updateInsituIndex(server);
 
-		server = solrUtil.getMicroarrayServer();
-		assembler.updateMicroarrayIndex(server);
+//		server = solrUtil.getMicroarrayServer();
+//		assembler.updateMicroarrayIndex(server);
 
 		server = solrUtil.getSamplesServer();
 		assembler.updateSamplesIndex(server);
@@ -89,8 +89,8 @@ public class SolrIndexBean implements Serializable {
 
 	public String indexMicroarray(){
 		
-		HttpSolrClient server = solrUtil.getMicroarrayServer();
-		assembler.updateMicroarrayIndex(server);
+//		HttpSolrClient server = solrUtil.getMicroarrayServer();
+//		assembler.updateMicroarrayIndex(server);
 		
 //		server = solrUtil.getSamplesServer();
 //		assembler.updateSamplesIndex(server);

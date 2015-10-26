@@ -36,6 +36,8 @@ import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.PivotField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+
+
 //import org.xml.sax.SAXException;
 
 
@@ -124,6 +126,9 @@ public class SolrUtil {
         LukeResponse lukeResponse;
         lukeRequest.setNumTerms(0);
         try {
+        	
+
+
 			lukeResponse = lukeRequest.process(insitu_server);
 			insitu_schema = lukeResponse.getFieldInfo().keySet();
 			
@@ -133,8 +138,8 @@ public class SolrUtil {
 			lukeResponse = lukeRequest.process(genelists_server);
 			genelists_schema = lukeResponse.getFieldInfo().keySet();
 			
-			lukeResponse = lukeRequest.process(microarray_server);
-			microarray_schema = lukeResponse.getFieldInfo().keySet();
+//			lukeResponse = lukeRequest.process(microarray_server);
+//			microarray_schema = lukeResponse.getFieldInfo().keySet();
 			
 			lukeResponse = lukeRequest.process(series_server);
 			series_schema = lukeResponse.getFieldInfo().keySet();
@@ -958,7 +963,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (insitu_schema.contains(pair.getKey()))
+		            if (genes_schema.contains(pair.getKey()))
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
@@ -966,12 +971,12 @@ public class SolrUtil {
             QueryResponse qr = genes_server.query(parameters);
                        
             sdl = qr.getResults();
-    		int rowNum = sdl.size();
-    		for(int i=0; i<rowNum; i++) { 
-    			SolrDocument doc = sdl.get(i);
-    			String id = doc.getFieldValue("GENE").toString();
-    			genes.add(id);
-    		}
+//    		int rowNum = sdl.size();
+//    		for(int i=0; i<rowNum; i++) { 
+//    			SolrDocument doc = sdl.get(i);
+//    			String id = doc.getFieldValue("GENE").toString();
+//    			genes.add(id);
+//    		}
         }
         catch (SolrServerException e)
         {
