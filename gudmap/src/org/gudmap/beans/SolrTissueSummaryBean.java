@@ -41,7 +41,7 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public SolrTissueSummaryBean() {
-    	super(100,10,"RELEVANCE",true);
+    	super(20,10,"RELEVANCE",true);
     	setup();
     }
     

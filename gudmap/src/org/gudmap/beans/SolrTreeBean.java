@@ -2,6 +2,9 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -73,6 +76,15 @@ public class SolrTreeBean implements Serializable {
 		getSolrInput();
 		
 	}
+	
+    public String getPage(){
+        
+    	UIViewRoot viewRoot =  FacesContext.getCurrentInstance().getViewRoot();
+    	List<UIComponent> components = viewRoot.getChildren();
+    	
+		String page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
+		return page;
+    }
 	
 	public String goInsitu() {
 		return "/solr/solrInsituTablePage";

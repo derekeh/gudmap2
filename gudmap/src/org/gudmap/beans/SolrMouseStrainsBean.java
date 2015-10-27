@@ -43,7 +43,7 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public SolrMouseStrainsBean() {
-    	super(50,10,"RELEVANCE",true);
+    	super(10,10,"RELEVANCE",true);
     	setup();
     }
     

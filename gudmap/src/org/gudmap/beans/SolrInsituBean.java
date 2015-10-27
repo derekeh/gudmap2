@@ -56,7 +56,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public SolrInsituBean() {
-    	super(20,10,"RELEVANCE",true);
+    	super(10,10,"RELEVANCE",true);
     	setup();
     }
     
