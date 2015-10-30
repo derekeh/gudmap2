@@ -87,19 +87,22 @@ public class SolrTreeBean implements Serializable {
     }
 	
 	public String goInsitu() {
-		return "/solr/solrInsituTablePage";
+		return "/solr/solrInsitu";
 	}
 	public String goSeries() {
-		return "/solr/solrSeriesTablePage";
+		return "/solr/solrSeries";
 	}
 	public String goSamples() {
-		return "/solr/solrSamplesTablePage";
+		return "/solr/solrSamples";
 	}
 	public String goTissues() {
-		return "/solr/solrTissueSummaryTablePage";
+		return "/solr/solrTissueSummary";
 	}
 	public String goMicroarray() {
-		return "/solr/solrMicroarrayTablePage";
+		return "/solr/solrMicroarray";
+	}
+	public String goSequences() {
+		return "/solr/solrSequences";
 	}
 
 	public String getFilter(){
@@ -145,6 +148,15 @@ public class SolrTreeBean implements Serializable {
 	public int getInsituCount(HashMap<String,String> filters){
 		return solrUtil.getInsituFilteredCount(solrInput, filters);
 	}
+
+	////////////////// SEQUENCES ////////////////////////////
+	
+	public int getSequencesCount(){
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getSequencesCount(solrInput, filters);
+	}
+
 	
 	////////////////// MICROARRAY ////////////////////////////
 	

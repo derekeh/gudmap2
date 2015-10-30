@@ -9,7 +9,8 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pr="http://primefaces.org/ui" >
-
+	
+	
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
 	    Solr ISH Data
@@ -19,51 +20,16 @@
 		<ui:include src="/snippets/g_solrMenu.xhtml"/>			
 	</ui:define>
 
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+		<ui:include src="/snippets/g_solrFilters.xhtml"/>
+	</ui:define>		
+		
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-
-<ui:remove>	
-		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters}" var="filter">
-				<h:panelGrid columns="2" >	
-					<h:outputText value="#{filter.key}:#{filter.value} " />	
-		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-				</h:panelGrid>
-		    </c:forEach>  
-		</h:panelGrid>  
-
-		  
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters2}" var="filter2">
-		     	<h:panelGrid columns="3" >
-		     	<c:forEach items="#{filter2}" var="filter" varStatus="vs">
-					<h:outputText value="#{filter} " />	
-		 			<h:graphicImage  library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-					<h:outputText value=" #{vs.last ? '' : ' OR '} " />
-
-				</c:forEach>
-				</h:panelGrid>
-				</c:forEach>  
-		</h:panelGrid>    
-	
-		
-		<h:panelGrid columns="3">
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
-			<h:form id="solr_title">		
-			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-			<h:outputText value="#{solrInsituBean.title}" styleClass="db_bold" />   
-			</h:form>	
-		</h:panelGrid>
-</ui:remove>		
-	
-		<h:form id="solr_dataform">
+		<h:form  style="float:left"  id="solr_dataform">
 	    <h:inputHidden id="solrInput" value="#{solrInsituBean.solrInput}" />
 	     <h:dataTable value="#{solrInsituBean.dataList}" var="u"
 	    		styleClass="db_order-table"
@@ -79,16 +45,7 @@
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
-<!--  
-    		<h:column rendered="#{paramBean.oidcol == true}">
-    			<f:facet name="header">
-    				<h:commandLink value="OID" actionListener="#{solrInsituBean.sort}">
-                         <f:attribute name="sortField" value="GUDMAP" />
-                    </h:commandLink>
-    			</f:facet>
-    				#{u.oid}
-    		</h:column>
--->    		
+ 		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
     				<h:commandLink value="Gene" actionListener="#{solrInsituBean.sort}">
@@ -265,8 +222,6 @@
 	             </h:panelGrid>
            </h:panelGroup>
          </h:panelGrid>    
-		</h:form> 
-		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrInsituBean.gotopage}" />
 		</h:form> 

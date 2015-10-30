@@ -4,64 +4,99 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pr="http://primefaces.org/ui" >
 	
-	<pr:overlayPanel id="solrFilterPanel" for="solrFilterBtn" showEffect="slide" dismissable="false" appendToBody="false" hideEffect="slide" dynamic="false" showCloseIcon="true" style="width:500px">
 
-
- 		<pr:accordionPanel activeIndex="-1">
-	 		<pr:tab title="Genes">
-			 	<h:outputText value="Gene: "></h:outputText>
-			 	<h:inputText value="#{solrFilter.geneValue}" >
-			 		<pr:ajax update=":solrsearchform " listener="#{solrFilter.refresh}" />
-			 	</h:inputText>
-			</pr:tab>
-			<pr:tab title="Submission Date">
-		 		<h:panelGrid columns="2">
-		 			<h:outputText value="From:"></h:outputText>
-		 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
-		 			</pr:calendar>
-		 			<h:outputText value="To:"></h:outputText>
-		 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
-		 				<pr:ajax event="dateSelect" update=":solrsearchform" listener="#{solrFilter.refresh}" />
-		 			</pr:calendar>
-		 		</h:panelGrid>
-			</pr:tab>
-			<pr:tab title="Sources">
-			<h:panelGrid columns="3">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.sourceList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-		 	</h:panelGrid>
-			</pr:tab>
-			<pr:tab title="Assay Types">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.assayTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Theiler Stages">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.theilerStageList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Sex">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.sexList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
-			<pr:tab title="Specimen Type">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
-			 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
-			 		<pr:ajax update=":solrsearchform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
-			</pr:tab>
- 		</pr:accordionPanel>  
-
-
-
-	</pr:overlayPanel>
+<style>
+#toggle {
+	width: 270px;
+	height: 100%;
+	background: #ccc;
+}
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>	
+	
+<script type="text/javascript">
+//<![CDATA[
+           
+	$( document ).click(function() {
+		$( "#toggle" ).toggle( "slide" );
+	});
 		
+//]]>
+</script>	
+			
+		<div style="float:left" id="toggle">
+		
+
+
+    <div id="Accordion1">
+    
+      <h2>Genes</h2>
+      <div>
+	 	<h:outputText value="Gene: "></h:outputText>
+	 	<h:inputText value="#{solrFilter.geneValue}" >
+	 	</h:inputText>
+      </div>
+      <h2>Submission Date</h2>
+      <div>
+ 		<h:panelGrid columns="2">
+ 			<h:outputText value="From:"></h:outputText>
+ 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
+ 			</pr:calendar>
+ 			<h:outputText value="To:"></h:outputText>
+ 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
+ 			</pr:calendar>
+ 		</h:panelGrid>
+      </div>
+      <h2>Sources</h2>
+      <div>
+		<h:panelGrid columns="3">
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.sourceList}" />
+		 	</h:selectManyCheckbox>
+	 	</h:panelGrid>
+      </div>
+      <h2>Assay Types</h2>
+      <div>
+	 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
+	 		<f:selectItems value="#{solrFilter.assayTypeList}" />
+	 	</h:selectManyCheckbox>
+      </div>
+      <h2>Theiler Stages</h2>
+      <div>
+	 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
+	 		<f:selectItems value="#{solrFilter.theilerStageList}" />
+	 	</h:selectManyCheckbox>
+      </div>
+       <h2>Sex</h2>
+      <div>
+	 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
+	 		<f:selectItems value="#{solrFilter.sexList}" />
+	 	</h:selectManyCheckbox>
+      </div>
+      <h2>Specimen Type</h2>
+      <div>
+	 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
+	 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
+	 	</h:selectManyCheckbox>
+      </div>
+      
+    </div><!-- end accordion 1 -->
+
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+		
+
+		$( "#Accordion1" ).accordion({
+			collapsible:true,
+			heightStyle:"content"
+		}); 
+   });
+//]]>
+</script>	
+
+
+
+</div>		
 </ui:composition>

@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+#toggle {
+	float:left;
+	width:500px;
+
+}
+
+#gd_filter_area {
+	float:left;
+	width:500px;
+}
+
+#gd_edit_area {
+	float:left;
+}
+
+#gd_footer {
+	float:none;
+} 

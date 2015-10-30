@@ -1068,6 +1068,118 @@ public class SolrUtil {
        
     	return sources;    
     }
+
+    //***************************** SEQUENCES METHODS *****************************************************
+    
+    public int getSequencesCount(String query){ 
+    	return getSequencesCount(query, null);
+    }
+    
+    
+    public int getSequencesCount(String queryString, HashMap<String,String> filters)
+    {    			
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+   	
+		int count = 0;
+		try{
+//	     	String cq = checkQuery(genes_server,q);        	
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (ng_samples_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+	
+	        QueryResponse qr = ng_samples_server.query(parameters);                      
+	        
+	        SolrDocumentList sdl = qr.getResults();
+	        count = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return count;
+    }
+
+    public SolrDocumentList getSequencesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+
+    	if (column.contentEquals("GUDMAP_ID"))
+    		column = "GUDMAP";
+    	
+        SolrDocumentList sdl = new SolrDocumentList();
+        
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+        try
+        {
+
+//    		String cq = checkQuery(insitu_server,q);        	
+			   		    		
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setFacet(true);
+	        parameters.setFacetLimit(12000);
+	        parameters.setFacetMinCount(0);
+	        parameters.setIncludeScore(true);
+	        parameters.setStart(offset);
+	        parameters.setRows(rows); //(1000);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+	        
+	        parameters.addFacetField("GUDMAP");
+	        parameters.addField("AGE");
+	        parameters.addField("COMPONENT");
+	        parameters.addField("DATE");
+	        parameters.addField("GENOTYPE");
+	        parameters.addField("GUDMAP");
+	        parameters.addField("LIBRARY_STRATEGY");
+	        parameters.addField("PI_NAME");
+	        parameters.addField("SAMPLE_DESCRIPTION");
+	        parameters.addField("SAMPLE_GEO_ID");
+	        parameters.addField("SAMPLE_NAME");
+	        parameters.addField("SERIES_GEO_ID");
+	        parameters.addField("SOURCE");
+	        parameters.addField("STAGE");
+	        parameters.addField("SEX");
+
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (ng_samples_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+
+
+            QueryResponse qr = ng_samples_server.query(parameters);
+            sdl = qr.getResults();
+            
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+
+        return sdl;
+    }
     
     //***************************** GENELISTS METHODS *****************************************************
 
