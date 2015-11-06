@@ -23,7 +23,8 @@
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
 					<br />
-    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />				
+    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />
+    				<pr:commandButton id="showoptions" value="++" onclick="PF('dialog3').show();" type="button"></pr:commandButton>				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>

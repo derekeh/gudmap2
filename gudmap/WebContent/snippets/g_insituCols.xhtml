@@ -4,24 +4,24 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pr="http://primefaces.org/ui" >
 	
-	<h:form>
+	
 	<pr:dialog header="Column Selection" widgetVar="dialog1" width="350" style="position:absolute;left:-100px;" >  
+	<h:form id="il_colselectform">
 	 <h:panelGrid columns="2">
-    	<h:selectManyCheckbox binding="#{il_insitucheckbox}" id="il_insitucheckbox" layout="pageDirection" value="#{paramBean.insitucols}">
-   			<f:selectItems value="#{paramBean.insitucolmap}" />
-   			<f:validator validatorId="insituCheckboxColumnsValidator" />
-   			<f:attribute name="checkboxType" value="insitu"></f:attribute>
+    	<h:selectManyCheckbox  id="il_insitucheckbox" layout="pageDirection" value="#{paramBean.insitucols}" validator="insituCheckboxColumnsValidator">
+   			<f:selectItems value="#{paramBean.insitucolmap}" />  			
    			<f:ajax execute="il_insitucheckbox" render="checkboxmessage il_columnSubmit"></f:ajax> 
    		</h:selectManyCheckbox>
    		
    		<h:panelGroup></h:panelGroup>
-   		<h:commandButton id="il_columnSubmit" value="Submit" disabled="#{not il_insitucheckbox.valid}">
+   		<h:commandButton id="il_columnSubmit" value="Submit">
    			<f:ajax execute="@form" render=":dataform :pagingform" ></f:ajax>
    		</h:commandButton>
-	    <h:commandButton value="Reset" type="reset" />
+	    <h:commandButton id="il_reset" value="Reset" type="reset" />
    	</h:panelGrid>
    	<h:message id="checkboxmessage" for="il_insitucheckbox" /> 
+   	</h:form>
 	</pr:dialog> 
 
-	</h:form>	
+		
 </ui:composition>

@@ -10,12 +10,13 @@ import javax.faces.validator.ValidatorException;
 
 @FacesValidator("insituCheckboxColumnsValidator")
 public class InsituColumns implements Validator {
+	
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         //UIInput selectManyCheckbox = ((UIInput) component.getAttributes().get("checkboxType"));
         //String checkboxType = (String) checkboxTypeComponent.getValue();
-        String[] insitucols = (String[]) value;
+    	String[] insitucols = (String[]) value;
         
         if (insitucols.length > 9) {
             throw new ValidatorException(new FacesMessage("Max 9 columns allowed"));
@@ -25,5 +26,7 @@ public class InsituColumns implements Validator {
         }*/
         
     }
+    
+    
 
 }

@@ -100,6 +100,7 @@ public class ParamBean implements Serializable {
 	private String arraysexvalues="ALL";
 	
 	private int col_statusvalues=2;
+	private int col_optionvalues=0;
 	
 	private String whereclause=" WHERE ";
 	private String cachewhereclause=" WHERE ";
@@ -414,6 +415,7 @@ public class ParamBean implements Serializable {
 	}
 	
 	
+	
 	private static Map<String,Object> insitucolmap;
 	static{
 		insitucolmap = new LinkedHashMap<String,Object>();
@@ -584,6 +586,10 @@ public class ParamBean implements Serializable {
 	
 	public Map<String,Integer> getCollectionstatuslist(){
 		return assembler.getCollectionstatuslist();
+	}
+	
+	public Map<String,Integer> getCollectionoptionlist(){
+		return assembler.getCollectionoptionlist();
 	}
 	
 	/**gene search options***/
@@ -953,6 +959,16 @@ public class ParamBean implements Serializable {
 	
 	public String getGeneoptionvalues() {
 		return geneoptionvalues;
+	}
+	
+	/********************collection save options************/
+	
+	public void setCol_optionvalues(int col_optionvalues) {
+		this.col_optionvalues = col_optionvalues;
+	}
+	
+	public int getCol_optionvalues() {
+		return col_optionvalues;
 	}
 	
 	/**********************collection filter*************/
@@ -1957,6 +1973,13 @@ public class ParamBean implements Serializable {
 		
 		
 	}
+	
+	public String collectionSaveOption() {
+		 if(getCol_optionvalues()==0)
+			 return "newCollection";
+		 else
+			 return "browseCollectionListTablePage";
+	 }
 	
 	/////////////debug//////////////////
 	

@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+		<pr:dialog header="Save Option" widgetVar="dialog3" width="750" style="position:absolute;left:-300px;" modal="true" > 
+		<h:form id="saveoptionform"> 
+		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
+		 
+		 	
+	   		
+	   		<h:outputText value="Save Collection As: "></h:outputText>
+	   		<h:selectOneRadio value="#{paramBean.col_optionvalues}">
+	   			<f:selectItems value="#{paramBean.collectionoptionlist}" />
+	   		</h:selectOneRadio>
+	   		
+	   		
+	   		<h:commandButton id="il_save_option" value="Save" action="#{genericTablePageBean.checkboxSelections()}">
+	   			
+	   		</h:commandButton>
+	   	</h:panelGrid>
+	   </h:form>
+	   
+	   <h:form id="testform">	
+	   	<h:panelGrid columns="1" columnClasses="gd_leftAlign">	   	
+	   		<h:commandButton id="il_save_option_test" value="Test" action="result" rendered="#{paramBean.debug}"></h:commandButton>
+	   	</h:panelGrid>	
+	  </h:form>    
+	   	
+	</pr:dialog> 
+		
+</ui:composition>

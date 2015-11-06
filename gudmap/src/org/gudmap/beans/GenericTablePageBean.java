@@ -413,7 +413,8 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		} 
     	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
     	//return "browseCollectionEntriesTablePage";
-    	return "result";
+    	//return "result";
+    	return collectionSaveOption();
     }
     
     public String clearCheckboxSelections() {
@@ -523,5 +524,14 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	Thread.sleep(6000);
     	return null;
     }
+    
+    public String collectionSaveOption() {
+    	int i = paramBean.getCol_optionvalues();
+		 if(paramBean.getCol_optionvalues()==0)
+			 return "newCollection";
+		 else
+			 return "browseCollectionListTablePage";
+		// return "browseCollectionListTablePage";
+	 }
    
 }

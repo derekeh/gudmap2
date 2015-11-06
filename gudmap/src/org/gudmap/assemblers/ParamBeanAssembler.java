@@ -41,6 +41,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>arrayplatformlist;
 	private Map<String,String>seqlibstrategylist;
 	private Map<String,Integer>collectionstatuslist;
+	private Map<String,Integer>collectionoptionlist;
 	
 	public ParamBeanAssembler() {
 			
@@ -328,6 +329,14 @@ public class ParamBeanAssembler {
 		collectionstatuslist.put("ALL",2);
 		
 		return collectionstatuslist;
+	}
+	
+	public Map<String,Integer> getCollectionoptionlist() {
+		collectionoptionlist = new LinkedHashMap<String,Integer>();
+		collectionoptionlist.put("New",0);
+		collectionoptionlist.put("Existing",1);
+		
+		return collectionoptionlist;
 	}
 
 	
