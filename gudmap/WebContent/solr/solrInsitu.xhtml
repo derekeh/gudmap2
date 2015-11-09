@@ -8,28 +8,33 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:pr="http://primefaces.org/ui" >
-	
+	xmlns:pr="http://primefaces.org/ui" >	
 	
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
 	    Solr ISH Data
 	</ui:define>
+	
+
+
+	
+	
 <!-- 	comment out the following section if you don't want the solr menu displayed -->
 	<ui:define name="solr">	
-		<ui:include src="/snippets/g_solrMenu.xhtml"/>			
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
 	</ui:define>
 
 
 <!-- 	comment out the following section if you don't want the filter menu displayed -->	
 	<ui:define name="filters">	
-		<ui:include src="/snippets/g_solrFilters.xhtml"/>
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 		
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-		<h:form  style="float:left"  id="solr_dataform">
+		<h:form  id="solr_dataform">
 	    <h:inputHidden id="solrInput" value="#{solrInsituBean.solrInput}" />
 	     <h:dataTable value="#{solrInsituBean.dataList}" var="u"
 	    		styleClass="db_order-table"
@@ -46,6 +51,15 @@
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
  		
+    		<h:column rendered="#{paramBean.oidcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="OID" actionListener="#{solrInsituBean.sort}">
+                         <f:attribute name="sortField" value="GUDMAP" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.oid}
+    		</h:column>
+
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
     				<h:commandLink value="Gene" actionListener="#{solrInsituBean.sort}">
@@ -56,7 +70,7 @@
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
     		</h:column>
- 
+
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
      				<h:commandLink value="Gudmap Accession" actionListener="#{solrInsituBean.sort}">
@@ -67,7 +81,7 @@
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
     		</h:column>
-    		
+   		
     		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
      				<h:commandLink value="Source" actionListener="#{solrInsituBean.sort}">
@@ -176,9 +190,10 @@
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
     		</h:column>
- 
+
  		</h:dataTable> 
- 		
+      	</h:form> 
+	<h:form id="pagingform">	
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
@@ -222,12 +237,14 @@
 	             </h:panelGrid>
            </h:panelGroup>
          </h:panelGrid>    
+      	</h:form> 
+		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrInsituBean.gotopage}" />
 		</h:form> 
 
 	
-	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
+
 
 	</ui:define>	
 </ui:composition>

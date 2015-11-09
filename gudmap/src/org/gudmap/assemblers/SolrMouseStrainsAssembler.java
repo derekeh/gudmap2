@@ -19,9 +19,9 @@ public class SolrMouseStrainsAssembler {
 		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, String solrFilter) {
+	public int getCount(String solrInput, HashMap<String, String> filterlist) {
 
-		int n = solrUtil.getMouseStrainsCount(solrInput, null);
+		int n = solrUtil.getMouseStrainsCount(solrInput, filterlist);
 
 		return n;
 	}

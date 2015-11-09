@@ -5,98 +5,100 @@
 	xmlns:pr="http://primefaces.org/ui" >
 	
 
-<style>
-#toggle {
-	width: 270px;
-	height: 100%;
-	background: #ccc;
-}
+
+ <style>
+	.myCalander input{
+	    width: 100px;
+	}	
 </style>
+
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>	
+
 	
 <script type="text/javascript">
 //<![CDATA[
            
 	$( document ).click(function() {
-		$( "#toggle" ).toggle( "slide" );
+//		$( "#toggle" ).toggle( "slide" );
 	});
 		
 //]]>
 </script>	
+
 			
-		<div style="float:left" id="toggle">
+	<div style="font-size:10px; float:left" class="slide-menu">
 		
 
-
-    <div id="Accordion1">
-    
-      <h2>Genes</h2>
-      <div>
-	 	<h:outputText value="Gene: "></h:outputText>
-	 	<h:inputText value="#{solrFilter.geneValue}" >
-	 	</h:inputText>
-      </div>
-      <h2>Submission Date</h2>
-      <div>
- 		<h:panelGrid columns="2">
- 			<h:outputText value="From:"></h:outputText>
- 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
- 			</pr:calendar>
- 			<h:outputText value="To:"></h:outputText>
- 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
- 			</pr:calendar>
- 		</h:panelGrid>
-      </div>
-      <h2>Sources</h2>
-      <div>
-		<h:panelGrid columns="3">
-		 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
-		 		<f:selectItems value="#{solrFilter.sourceList}" />
-		 	</h:selectManyCheckbox>
-	 	</h:panelGrid>
-      </div>
-      <h2>Assay Types</h2>
-      <div>
-	 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
-	 		<f:selectItems value="#{solrFilter.assayTypeList}" />
-	 	</h:selectManyCheckbox>
-      </div>
-      <h2>Theiler Stages</h2>
-      <div>
-	 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
-	 		<f:selectItems value="#{solrFilter.theilerStageList}" />
-	 	</h:selectManyCheckbox>
-      </div>
-       <h2>Sex</h2>
-      <div>
-	 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
-	 		<f:selectItems value="#{solrFilter.sexList}" />
-	 	</h:selectManyCheckbox>
-      </div>
-      <h2>Specimen Type</h2>
-      <div>
-	 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
-	 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
-	 	</h:selectManyCheckbox>
-      </div>
+	<h3>Select Filter here</h3>
+		<h:panelGrid style="padding-bottom:10px">
+		 	<h:outputText style="font-weight:bold" value="Gene: "></h:outputText>
+		 	<h:inputText value="#{solrFilter.geneValue}" >
+		 	</h:inputText>
+		</h:panelGrid>
+ 
+  		<h:panelGrid style="padding-bottom:10px" columns="1">
+	     	<h:outputText style="font-weight:bold" value="Gene Expression:"></h:outputText>
+	      	<h:selectManyListbox size="4" value="#{solrFilter.geneExpressionValues}">
+		 		<f:selectItems value="#{solrFilter.geneExpressionList}" />
+		 	</h:selectManyListbox>
+		</h:panelGrid>
       
-    </div><!-- end accordion 1 -->
+	    <h:panelGrid style="padding-bottom:10px" columns="1">
+			<h:outputText style="font-weight:bold" value="Submission Date:"></h:outputText>
+	 		<h:panelGrid columns="2">
+	 			<h:outputText value="From:"></h:outputText>
+	 			<pr:calendar styleClass="myCalander" widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
+	 			</pr:calendar>
+	 			<h:outputText value="To:"></h:outputText>
+	 			<pr:calendar styleClass="myCalander" widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
+	 			</pr:calendar>
+	 		</h:panelGrid>
+		</h:panelGrid>
+				
+ 		<h:panelGrid style="padding-bottom:10px" columns="1">
+			<h:outputText style="font-weight:bold" value="Sources:"></h:outputText>
+		 	<h:selectManyListbox size="4" value="#{solrFilter.sourceValues}" >
+		 		<f:selectItems value="#{solrFilter.sourceList}" />
+		 		<f:ajax event="change"  listener="#{solrFilter.sourceChangeListener}" render=":solr_dataform"  />
+		 	</h:selectManyListbox>
+		</h:panelGrid>
+	
+ 		<h:panelGrid style="padding-bottom:10px" columns="1">
+	     	<h:outputText style="font-weight:bold" value="Assay Types:"></h:outputText>
+	      	<h:selectManyListbox size="4" value="#{solrFilter.assayTypeValues}">
+		 		<f:selectItems value="#{solrFilter.assayTypeList}" />
+		 	</h:selectManyListbox>
+		</h:panelGrid>
+			
 
-<script type="text/javascript">
-//<![CDATA[
-   $(document).ready(function() {
-		
-
-		$( "#Accordion1" ).accordion({
-			collapsible:true,
-			heightStyle:"content"
-		}); 
-   });
-//]]>
-</script>	
-
-
+ 		<h:panelGrid style="padding-bottom:10px" columns="1">     	
+	 		<h:outputText style="font-weight:bold" value="Theiler Stages:"></h:outputText>
+		 	<h:selectManyListbox size="5" value="#{solrFilter.theilerStageValues}">
+		 		<f:selectItems value="#{solrFilter.theilerStageList}" />
+		 	</h:selectManyListbox>
+      	</h:panelGrid>
+      	
+ 		<h:panelGrid style="padding-bottom:10px" columns="1">     	
+	 		<h:outputText style="font-weight:bold" value="Human Stages:"></h:outputText>
+		 	<h:selectManyListbox size="5" value="#{solrFilter.carnegieStageValues}">
+		 		<f:selectItems value="#{solrFilter.carnegieStageList}" />
+		 	</h:selectManyListbox>
+      	</h:panelGrid>
+      	            	
+ 		<h:panelGrid style="padding-bottom:10px" columns="1">
+	     	<h:outputText style="font-weight:bold" value="Sex:"></h:outputText>
+		 	<h:selectManyListbox size="3" value="#{solrFilter.sexValues}">
+		 		<f:selectItems value="#{solrFilter.sexList}" />
+		 	</h:selectManyListbox>
+        </h:panelGrid>
+	     
+ 		<h:panelGrid style="padding-bottom:10px" columns="1">
+	     	<h:outputText style="font-weight:bold" value="Specimen Type:"></h:outputText>
+		 	<h:selectManyListbox size="5" value="#{solrFilter.specimenTypeValues}">
+		 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
+		 	</h:selectManyListbox>
+        </h:panelGrid>
 
 </div>		
 </ui:composition>

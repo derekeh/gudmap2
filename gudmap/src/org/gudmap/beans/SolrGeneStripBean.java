@@ -112,8 +112,8 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
-        totalRows = assembler.getCount(solrInput, "");
     	filters = solrFilter.getFilters();
+        totalRows = assembler.getCount(solrInput, filters);
     	
      	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
 

@@ -13,10 +13,18 @@
 	<ui:define name="title">
 	    Solr Gene Strip
 	</ui:define>
+	
 <!-- 	comment out the following section if you don't want the solr menu displayed -->
-	<ui:define name="solr">
-		<ui:include src="/snippets/g_solrMenu.xhtml"/>
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
 	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
 	
@@ -29,31 +37,6 @@
 		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	    <!-- all other content in here -->  
 
-<ui:remove>	    
-		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters}" var="filter">
-				<h:panelGrid columns="2" >	
-					<h:outputText value="#{filter.key}:#{filter.value} " />	
-		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :solr_dataform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-				</h:panelGrid>
-		    </c:forEach>  
-		</h:panelGrid>    
-	
-		
-		<h:panelGrid columns="3">
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
-			<h:form id="solr_title">		
-			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-			<h:outputText value="#{solrGeneStripBean.title}" styleClass="db_bold" />   
-			</h:form>	
-		</h:panelGrid>
-		
-		<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
-</ui:remove>	
 	     <!-- all other content in here --> 
 
 

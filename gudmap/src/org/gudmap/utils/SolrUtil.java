@@ -20,6 +20,8 @@ import java.util.Set;
 
 
 
+
+
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.util.NamedList;
@@ -28,6 +30,7 @@ import org.apache.solr.client.solrj.SolrQuery.ORDER;
 //import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
 //import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
@@ -36,6 +39,7 @@ import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.PivotField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.response.SolrQueryResponse;
 
 
 //import org.xml.sax.SAXException;
@@ -108,7 +112,9 @@ public class SolrUtil {
 //		}
 		
 		insitu_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_insitu" );
+		
 		genes_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genes" );
+		
 		genelists_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genelists" );
 		microarray_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_microarray" );
 		series_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_series" );
@@ -121,46 +127,55 @@ public class SolrUtil {
 		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorials");
 		
 		
-		
         LukeRequest lukeRequest = new LukeRequest();
         LukeResponse lukeResponse;
         lukeRequest.setNumTerms(0);
         try {
         	
-
-
-			lukeResponse = lukeRequest.process(insitu_server);
-			insitu_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(genes_server);
-			genes_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(genelists_server);
-			genelists_schema = lukeResponse.getFieldInfo().keySet();
-			
 //			lukeResponse = lukeRequest.process(microarray_server);
 //			microarray_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(series_server);
-			series_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(samples_server);
-			ng_samples_schema = lukeResponse.getFieldInfo().keySet();
+        	microarray_schema = getMicroarraySchema();
 
-			lukeResponse = lukeRequest.process(ng_series_server);
-			ng_series_schema = lukeResponse.getFieldInfo().keySet();
+
+//			lukeResponse = lukeRequest.process(insitu_server);
+//			insitu_schema = lukeResponse.getFieldInfo().keySet();
+        	insitu_schema = getInsituSchema();
 			
-			lukeResponse = lukeRequest.process(ng_samples_server);
-			samples_schema = lukeResponse.getFieldInfo().keySet();
+//			lukeResponse = lukeRequest.process(genes_server);
+//			genes_schema = lukeResponse.getFieldInfo().keySet();
+			genes_schema = getGeneSchema();
+			
+//			lukeResponse = lukeRequest.process(genelists_server);
+//			genelists_schema = lukeResponse.getFieldInfo().keySet();
+			genelists_schema = getGeneListsSchema();
+			
+			
+//			lukeResponse = lukeRequest.process(series_server);
+//			series_schema = lukeResponse.getFieldInfo().keySet();
+			series_schema = getSeriesSchema();
+			
+//			lukeResponse = lukeRequest.process(samples_server);
+//			samples_schema = lukeResponse.getFieldInfo().keySet();
+			samples_schema = getSamplesSchema();
+
+//			lukeResponse = lukeRequest.process(ng_series_server);
+//			ng_series_schema = lukeResponse.getFieldInfo().keySet();
+			ng_series_schema = getSequenceSeriesSchema();
+			
+//			lukeResponse = lukeRequest.process(ng_samples_server);
+//			ng_samples_schema = lukeResponse.getFieldInfo().keySet();
+			ng_samples_schema = getSequenceSamplesSchema();
 			
 			lukeResponse = lukeRequest.process(tissues_server);
 			tissues_schema = lukeResponse.getFieldInfo().keySet();
 			
-			lukeResponse = lukeRequest.process(mouse_strain_server);
-			mouse_strain_schema = lukeResponse.getFieldInfo().keySet();
+//			lukeResponse = lukeRequest.process(mouse_strain_server);
+//			mouse_strain_schema = lukeResponse.getFieldInfo().keySet();
+			mouse_strain_schema = getMouseStrainsSchema();
 			
-			lukeResponse = lukeRequest.process(image_server);
-			image_schema = lukeResponse.getFieldInfo().keySet();
+//			lukeResponse = lukeRequest.process(image_server);
+//			image_schema = lukeResponse.getFieldInfo().keySet();
+			image_schema = getImagesSchema();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -561,7 +576,7 @@ public class SolrUtil {
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setFacet(true);
-	        parameters.setFacetLimit(12000);
+//	        parameters.setFacetLimit(12000);
 	        parameters.setFacetMinCount(0);
 	        parameters.setIncludeScore(true);
 	        parameters.setStart(offset);
@@ -586,29 +601,6 @@ public class SolrUtil {
 	        parameters.addField("IMAGE");
 	        parameters.addField("MGI_GENE_ID");
 	        
-//        	if (filter == null || filter.contentEquals("undefined")){
-//        	}
-//        	else{
-//	            String[] fields = filter.split(":");
-//	            if (fields.length > 1){
-//	            	filter = fields[0] + ":" + '"' + fields[1] + '"';
-//	            	parameters.addFilterQuery(filter);
-//	            }
-//        	}
-//        	
-//        	if(filters == null){
-//        	}
-//        	else{
-//	            for (String fs : filters){
-//	            	if (fs.contains("THEILER_STAGE"))
-//	            		fs = fs.replace(":", ":TS");
-//	            	
-//	            	if (fs.contains("EXP_STRENGTH"))
-//	            		fs = getExpressionFilter(fs);            	
-//	            	
-//	            	parameters.addFilterQuery(fs);
-//	            }
-//        	}
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
@@ -618,47 +610,10 @@ public class SolrUtil {
 		        }
 	        }
 	        
-// 	        query.setParam("debugQuery", "on");
-//	        query.setHighlight(true);  
-//	        query.setParam("hl.fl", "*");
 
             QueryResponse qr = insitu_server.query(parameters);
             sdl = qr.getResults();
             
-            // get explanation field
-//            Map<String,String> explainMap = qr.getExplainMap();
-//            Set<String> keys = explainMap.keySet();
-//            System.out.println("keys = " + keys);
-//            for(String key : keys){
-//            	String reason = explainMap.get(key);
-//            	System.out.println("key = " + key);
-//            	System.out.println("reason = " + reason);
-//            }
-            // get highlighting info
-//            Map<String,Map<String,List<String>>> highlightMap = qr.getHighlighting();
-//            keys = highlightMap.keySet();
-//            System.out.println("keys = " + keys);
-//            for(String key : keys){
-//                System.out.println("key = " + key);
-////            	Map highlight = highlightMap.get(key);
-////            	Set entries = highlight.entrySet();
-////                for(Object entry : entries){
-////	            	System.out.println("entry = " + entry);
-////                }
-//                
-//                Set<String> fields = qr.getHighlighting().get(key).keySet();
-//                 for(String field :fields){
-//                    System.out.println("field = " + field);
-//                    List<String> result = qr.getHighlighting().get(key).get(field);
-//                	System.out.println("res = "+ result);
-//                 }
-////                if (qr.getHighlighting().get(key) != null) {
-////                	Collection<List<String>> c = qr.getHighlighting().get(key).values();
-////                    for(List<String> l : c){
-////    	            	System.out.println("l = " + l);
-////                    }
-////                }                
-//            }
             
         }
         catch (SolrServerException e)
@@ -1093,8 +1048,14 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (ng_samples_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+// fix until index and schema are changed		            
+		            String key = "";
+		            if (pair.getKey() == "THEILER_STAGE")
+		            	key = "STAGE";
+		            else
+		            	key = pair.getKey();
+		            if (ng_samples_schema.contains(key))
+		            	parameters.addFilterQuery(key + ":" + pair.getValue());
 		        }
 	        }
 	
@@ -1161,8 +1122,14 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (ng_samples_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+// fix until index and schema are changed		            
+		            String key = "";
+		            if (pair.getKey() == "THEILER_STAGE")
+		            	key = "STAGE";
+		            else
+		            	key = pair.getKey();
+		            if (ng_samples_schema.contains(key))
+		            	parameters.addFilterQuery(key + ":" + pair.getValue());
 		        }
 	        }
 
@@ -1839,7 +1806,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (microarray_schema.contains(pair.getKey()))
+//		            if (microarray_schema.contains(pair.getKey()))
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
@@ -1997,7 +1964,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (insitu_schema.contains(pair.getKey()))
+//		            if (microarray_schema.contains(pair.getKey()))
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
@@ -2465,7 +2432,384 @@ public class SolrUtil {
 
     }
 
+    public  Set<String> getGeneSchema() {
+    	
+    	Set<String> schema = new HashSet<String>();
+    
+    	schema.add("GENE");
+    	schema.add("GENE_NAME");
+    	schema.add("MGI_GENE_ID");
+    	schema.add("MGI");
+    	schema.add("ENSEMBL_ID");
+    	schema.add("SYNONYMS");
+    	schema.add("PROBESETS");
+    	schema.add( "ENTREZ_ID");
+    	schema.add( "GENBANK_ID");
+    	schema.add( "INSITU_ASSAY");
+    	schema.add( "MA_ASSAY");
+    	schema.add( "GUDMAP");
+	    schema.add("GUDMAP_IDS");
+	    schema.add("PRESENT");
+	    schema.add("DIR_PRESENT");
+	    schema.add( "NOT_DETECTED");
+	    schema.add( "UNCERTAIN");
+	    schema.add("EMAPS");
+	    schema.add("SOURCE");
+	    schema.add("PI_NAME");
+	    schema.add("LAB");
+	    schema.add("ANCHOR");
+	    schema.add("MARKER");   
+	    
+	    return schema;
+     }
+    
+   public  Set<String> getMouseStrainsSchema() {
+    	
+    	Set<String> schema = new HashSet<String>();
+    
+		   schema.add("ID");
+		   schema.add("GENE");
+		   schema.add("REPORTER_ALLELE"); 
+		   schema.add("ALLELE_TYPE");
+		   schema.add("ALLELE_VER");
+		   schema.add("ALLELE_VER_URL");
+		   schema.add("ALLELE_CHAR");
+		   schema.add("ALLELE_CHAR_URL");   
+		   schema.add("STRAIN_AVA");
+		   schema.add("STRAIN_AVA_URL");   
+		   schema.add("ORGAN");   
+		   schema.add("CELL_TYPE");
+	    
+	    return schema;
+     }
 
+   public  Set<String> getInsituSchema() {
+   	
+   	Set<String> schema = new HashSet<String>();
+   
 
+		   schema.add("GUDMAP"); 
+		   schema.add("GUDMAP_ID"); 
+		   schema.add("GENE"); 
+		   schema.add("GENE_NAME");
+		   schema.add("MGI");
+		   schema.add("MGI_GENE_ID");
+		   schema.add("GENBANK_ID");
+		   schema.add("ENSEMBL_ID");
+		   schema.add("SYNONYMS");
+		   schema.add("PI_NAME");   
+		   schema.add("LAB");   
+		   schema.add("AUTHORS");
+		   schema.add("DATE");
+		   schema.add("STAGE");
+		   schema.add("PROBE_NAME");
+		   schema.add("CLONE_NAME");
+		   schema.add("PROBE_TISSUE");
+		   schema.add("PROBE_ID");
+		   schema.add("maprobe");
+		   schema.add("MAPROBE_ID");
+		   schema.add("PROBE_STRAIN");
+		   schema.add("PROBE_GENE_TYPE");
+		   schema.add("PROBE_TYPE");
+		   schema.add("PROBE_VISUAL_METHOD");
+		   schema.add("PROBE_NOTE");
+		   schema.add("CURATOR_NOTE");
+		   schema.add("RESULT_NOTE");
+		   schema.add("EXPERIMENT_NOTE");   
+		   schema.add("IMAGE_WITH_NOTE");
+		   schema.add("IMAGE_NOTE");
+		   schema.add("IMAGE");
+		   schema.add("IMAGE_PATH");
+		   schema.add("SPECIMEN_ASSAY_TYPE");
+		   schema.add("FIXATION_METHOD");
+		   schema.add("STRAIN");
+		   schema.add("SEX");
+		   schema.add("DEV_STAGE");
+		   schema.add("GENOTYPE");
+		   schema.add("ASSAY_TYPE");
+		   schema.add("PROJECT");
+		   schema.add("ALT_ID");
+		   schema.add("SOURCE");
+		   schema.add("ANCHOR_GENE");
+		   schema.add("MARKER_GENE");
+		   schema.add("FOCUS_GROUPS");
+		   schema.add("ALLELE_MGI_ID");
+		   schema.add("ALLELE_NAME");
+		   schema.add("ALLELE_TYPE");
+		   schema.add("PRESENT");
+		   schema.add("DIR_PRESENT");
+		   schema.add("INF_PRESENT");
+		   schema.add("NOT_DETECTED");
+		   schema.add("INF_NOT_DETECTED");
+		   schema.add("UNCERTAIN");
+		   schema.add("EMAPS");
+		   schema.add("EXP_NOTES");
+		   schema.add("EXPRESSION_NOTES");
+		   schema.add("ANNOTATION");
+		   schema.add("TISSUE_TYPE");
+	    
+	    return schema;
+    }
 
+   public  Set<String> getMicroarraySchema() {
+   	
+   	Set<String> schema = new HashSet<String>();
+   
+		   schema.add("GUDMAP"); 
+		   schema.add("GUDMAP_ID"); 
+		   schema.add("PLATFORM_GEO_ID");
+		   schema.add("PLATFORM_TITLE");
+		   schema.add("PLATFORM_NAME");
+		   schema.add("SAMPLE_GEO_ID");
+		   schema.add("SAMPLE_STRAIN");
+		   schema.add("SAMPLE_SEX");
+		   schema.add("DEVELOPMENT_STAGE");
+		   schema.add("SAMPLE_THEILER_STAGE");
+		   schema.add("SAMPLE_MOLECULE");
+		   schema.add("SAMPLE_RNA_EXTRACT_PROTOCOL");
+		   schema.add("SAMPLE_DISSECTION_METHOD");
+		   schema.add("SAMPLE_EXPERIMENTAL_DESIGN");
+		   schema.add("SAMPLE_ARRAY_HYB_PROTOCOL");
+		   schema.add("SAMPLE_DATA_ANALYSIS_METHOD");
+		   schema.add("SAMPLE_REFERENCE_USED");
+		   schema.add("SAMPLE_TARGET_AMPLIFICATION_MANUFACTURER");
+		   schema.add("SAMPLE_SCAN_PROTOCOL");
+		   schema.add("SAMPLE_LABEL_PROTOCOL");
+		   schema.add("SERIES_GEO_ID");
+		   schema.add("SERIES_TITLE");
+		   schema.add("COMPONENT");
+		   schema.add("EMAP");
+		   schema.add("PI_NAME");
+		   schema.add("LAB");
+		   schema.add("SOURCE");
+		   schema.add("DATE");
+		   schema.add("STAGE");
+		   schema.add("SPECIMEN_ASSAY_TYPE");
+		   schema.add("FIXATION_METHOD");
+		   schema.add("STRAIN");
+		   schema.add("SEX");
+		   schema.add("DEV_STAGE");
+		   schema.add("STAGE_FORMAT");
+		   schema.add("GENOTYPE");
+		   schema.add("FIRST_CHROMATID");
+		   schema.add("SECOND_CHROMATID");
+		   schema.add("ALLELE_MGI_ID");
+		   schema.add("ALLELE_LAB_NAME");
+		   schema.add("ALLELE_NAME");
+		   schema.add("ALLELE_TYPE");
+		   schema.add("GENE");
+		   schema.add("MGI_IDS");
+		   schema.add("MGI");
+	    
+	    return schema;
+    }
+
+   public  Set<String> getSequenceSamplesSchema() {
+   	
+   	Set<String> schema = new HashSet<String>();
+   
+    schema.add("GUDMAP");
+    schema.add("SAMPLE_GEO_ID");
+    schema.add("SERIES_GEO_ID");
+    schema.add("SOURCE");
+    schema.add("LIBRARY_STRATEGY");
+    schema.add("STAGE");
+    schema.add("PI_NAME");
+    schema.add("AGE");
+    schema.add("DATE");
+    schema.add("SEX");
+    schema.add("SAMPLE_DESCRIPTION");
+    schema.add("SAMPLE_NAME");
+    schema.add("GENOTYPE");
+    schema.add("COMPONENT");
+	    
+	    return schema;
+    }
+
+   public  Set<String> getSamplesSchema() {
+	   	
+	   	Set<String> schema = new HashSet<String>();
+	   
+	    schema.add("GUDMAP");
+	    schema.add("SAMPLE_GEO_ID");
+	    schema.add("THEILER_STAGE");
+	    schema.add("STAGE");
+	    schema.add("SOURCE");
+	    schema.add("PI_NAME");
+	    schema.add("DATE");
+	    schema.add("SEX");
+	    schema.add("DESCRIPTION");
+	    schema.add("TITLE");
+	    schema.add("SERIES_GEO_ID");
+	    schema.add("COMPONENT");
+	    schema.add("QMC_ALE_GENE");
+	    schema.add("ASSAY_TYPE");
+	    schema.add("SPECIMEN_ASSAY_TYPE");
+	    schema.add("PER_OID");
+	    schema.add("PLATFORM_GEO_ID"); 
+		    
+		    return schema;
+   }
+
+   public  Set<String> getSequenceSeriesSchema() {
+	   	
+	   	Set<String> schema = new HashSet<String>();
+	   
+	    schema.add("TITLE");
+	    schema.add("SERIES_GEO_ID");
+	    schema.add("SOURCE");
+	    schema.add("SAMPLE_NUMBER");
+	    schema.add("SOURCE");
+	    schema.add("LIBRARY_STRATEGY");
+	    schema.add("COMPONENT");
+		    
+		    return schema;
+	    }
+
+	   public  Set<String> getSeriesSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("SERIES_GEO_ID");
+		    schema.add("TITLE");
+		    schema.add("SAMPLE_NUMBER");
+		    schema.add("SOURCE");
+		    schema.add("PI_NAME");
+		    schema.add("PLATFORM_GEO_ID");
+		    schema.add("SERIES_OID");
+		    schema.add("COMPONENT");
+		    schema.add("GENE");
+		    schema.add("EMAP");
+		    schema.add("MGI");
+		    schema.add("PRESENT");
+		    schema.add("NOT_DETECTED");
+		    schema.add("UNCERTAIN");
+		    schema.add("FOCUS_GROUPS");
+		    schema.add("SEX");
+		    schema.add("LAB");
+		    schema.add("maprobe");
+		    schema.add("GUDMAP");
+		    schema.add("THEILER_STAGE");
+		    schema.add("LAB");
+			    
+			    return schema;
+	   }  
+	   
+	   public  Set<String> getTissuesSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("ID");
+		    schema.add("NAME");
+		    schema.add("SYNONYM");
+		    schema.add("STAGES");
+		    schema.add("FOCUS_GROUPS");
+		    schema.add("GENELIST_IDS");
+		    schema.add("GENELIST_NAMES");
+		    schema.add("IMAGE_URL");
+		    schema.add("IMAGE_NAME");
+		    schema.add("SEC_NAMES");
+		    schema.add("LINK_TYPES");
+		    schema.add("GUDMAP");
+		    schema.add("EMAP");
+		    schema.add("EMAPIDS");
+		    schema.add("COMPONENT");
+		    schema.add("MGI");
+		    schema.add("GENE_MGI_ID");
+		    schema.add("GENE");
+		    schema.add("PROBE_IDS");
+		    schema.add("MA_PROBES_ID");
+		    schema.add("maprobe");
+		    schema.add("THEILER_STAGE");  
+			    
+			    return schema;
+	   }   
+
+	   public  Set<String> getGeneListsSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("ID");
+		    schema.add("NAME");
+		    schema.add("DESCRIPTION"); 
+		    schema.add("PLATFORM");
+		    schema.add("KEY_SAMPLE");
+		    schema.add("MA_DATASET");
+		    schema.add("MA_DATASET_ID");
+		    schema.add("TOT_ENTITIES");   
+		    schema.add("TOT_GENES");
+		    schema.add("AUTHOR");
+		    schema.add("DATE");   
+		    schema.add("THEILER_STAGE");   
+		    schema.add("SEX");
+		    schema.add("GENELIST_TYPE");
+		    schema.add("ENTITIES");   
+		    schema.add("GENE");
+		    schema.add("GUDMAP_ID");
+		    schema.add("GUDMAP");
+		    schema.add("REF");   
+		    schema.add("EMAP_IDS");   
+		    schema.add("EMAP");   
+		    schema.add("EMAP_TERM");   
+			    
+			    return schema;
+	   }   
+	   
+	   public  Set<String> getImagesSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("IMAGE_ID");
+		    schema.add("IMAGE");
+		    schema.add("IMAGE_PATH");
+		    schema.add("THUMBNAIL_PATH");
+		    schema.add("IMAGE_CLICK_PATH");
+		    schema.add("CLICK_FILENAME");
+		    schema.add("IMAGE_NOTE");
+		    schema.add("IMAGE_TYPE");
+		    schema.add("GUDMAP");
+		    schema.add("GUDMAP_ID");
+		    schema.add("GENE");
+		    schema.add("GENE_NAME");
+		    schema.add("MGI");
+		    schema.add("MGI_GENE_ID");
+		    schema.add("GENBANK_ID");
+		    schema.add("ENSEMBL_ID");
+		    schema.add("SYNONYMS");
+		    schema.add("PI_NAME");
+		    schema.add("DATE");
+		    schema.add("STAGE");
+		    schema.add("PROBE_NAME");
+		    schema.add("CLONE_NAME");
+		    schema.add("PROBE_TISSUE");
+		    schema.add("PROBE_ID");
+		    schema.add("MAPROBE_ID");
+		    schema.add("maprobe");
+		    schema.add("PROBE_STRAIN");
+		    schema.add("PROBE_GENE_TYPE");
+		    schema.add("PROBE_TYPE");
+		    schema.add("PROBE_VISUAL_METHOD");
+		    schema.add("PROBE_NOTE");
+		    schema.add("CURATOR_NOTE");
+		    schema.add("RESULT_NOTE");
+		    schema.add("EXPERIMENT_NOTE"); 
+		    schema.add("SPECIMEN_ASSAY_TYPE");
+		    schema.add("FIXATION_METHOD");
+		    schema.add("STRAIN");
+		    schema.add("SEX");
+		    schema.add("DEV_STAGE");
+		    schema.add("GENOTYPE");
+		    schema.add("ASSAY_TYPE");
+		    schema.add("PROJECT");
+		    schema.add("ALT_ID");
+		    schema.add("SOURCE");
+		    schema.add("PRESENT");
+		    schema.add("INF_PRESENT");
+		    schema.add("EMAPS");
+		    schema.add("EXPRESSION_NOTES");
+		    schema.add("EXP_NOTES");
+			    
+			    return schema;
+	   }   
+	   
 }

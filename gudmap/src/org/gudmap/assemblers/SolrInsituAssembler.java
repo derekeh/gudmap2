@@ -19,16 +19,10 @@ public class SolrInsituAssembler {
 		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, String solrFilter) {
+	public int getCount(String solrInput, HashMap<String,String> filterlist) {
 
 		int n = 0;
-		try {
-
-	    	n = solrUtil.getInsituCount(solrInput,solrFilter,null);
-		} 
-		catch (SolrServerException e) {
-			e.printStackTrace();
-		}
+		n = solrUtil.getInsituFilteredCount(solrInput,filterlist);
 		
 		return n;
 	}

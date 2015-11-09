@@ -49,7 +49,7 @@
         searchInit();
     });
 </script> -->
-<div class="gd_container">
+<div class="gd_container" id="gd_container">
 <!-- <ui:debug hotkey="x" rendered="#{initParam['javax.faces.FACELETS_DEVELOPMENT']}"/> -->
 
 <header>
@@ -68,10 +68,9 @@
 				<!-- snippets/g_solrFly if required to show -->
 		</ui:insert>
 		<section>
-			<div>
+			<div id="container">
 				<div id="gd_filter_area">
 					<ui:insert name="filters">					
-						<h1>Filter</h1>
 					</ui:insert>
 		  	 	</div><!-- END gd_filter_area -->
 				<div id="gd_edit_area">

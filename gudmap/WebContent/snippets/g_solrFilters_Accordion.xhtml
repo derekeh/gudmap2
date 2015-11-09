@@ -1,0 +1,174 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+ <style>
+input[type="checkbox"]{
+  width: 8px; /*Desired width*/
+  height: 8px; /*Desired height*/
+  font-size:8px;
+}
+</style>
+
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>	
+
+	
+<script type="text/javascript">
+//<![CDATA[
+           
+	$( document ).click(function() {
+//		$( "#toggle" ).toggle( "slide" );
+	});
+		
+//]]>
+</script>	
+			
+	<div style="border: 1px solid grey;font-size:10px; float:left; overflow: auto;" class="slide-menu">		
+	<h3>Select Filter here</h3>
+
+    <h:form id="solr_filterform">
+	<div class="accordion">
+		<h2>Genes</h2>
+		<div>
+		 	<h:outputText value="Gene: "></h:outputText>
+		 	<h:inputText value="#{solrFilter.geneValue}" >
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:inputText>
+		</div>
+ 	</div>
+ 	
+	<div class="accordion">
+		<h2>Gene Expression</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.geneExpressionValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.geneExpressionList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
+		</div>  		
+	</div>
+             
+	<div class="accordion">
+		<h2>Theiler Stages</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.theilerStageList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
+      	</div>
+	</div>
+      
+	<div class="accordion">
+		<h2>Human Stages</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.carnegieStageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.carnegieStageList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+   	
+	<div class="accordion">
+		<h2>Sex</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.sexList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+
+      
+	<div class="accordion">
+		<h2>Specimen Type</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+             
+	<div class="accordion">
+		<h2>Assay Types</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.assayTypeList}" />
+			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
+		</div>
+	</div>
+            
+	<div class="accordion">
+		<h2>Sources</h2>
+		<div>
+			<h:panelGrid columns="3">
+			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
+			 		<f:selectItems value="#{solrFilter.sourceList}" />
+			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+			 	</h:selectManyCheckbox>
+		 	</h:panelGrid>
+		</div>
+	</div>
+      		
+	<div class="accordion">		
+		<h2>Submission Date</h2>
+		<div>
+       		<h:panelGrid columns="2">
+	 			<h:outputText value="From:"></h:outputText>
+	 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
+			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+	 			</pr:calendar>
+	 			<h:outputText value="To:"></h:outputText>
+	 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
+			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+	 			</pr:calendar>
+			</h:panelGrid>
+		</div>
+	</div>
+             
+</h:form>
+      
+
+
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+		
+
+		$( ".accordion" ).accordion({
+			collapsible:true,
+			heightStyle:"content",
+			active:false,
+		}); 
+   });
+//]]>
+</script>	
+
+
+
+</div>		
+</ui:composition>

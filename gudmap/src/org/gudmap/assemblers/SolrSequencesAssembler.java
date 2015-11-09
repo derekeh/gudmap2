@@ -21,9 +21,9 @@ public class SolrSequencesAssembler {
 		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, String solrFilter) {
+	public int getCount(String solrInput, HashMap<String,String> filterlist) {
 
-		int n = solrUtil.getSamplesCount(solrInput);
+		int n = solrUtil.getSequencesCount(solrInput,filterlist);
 
 		return n;
 	}

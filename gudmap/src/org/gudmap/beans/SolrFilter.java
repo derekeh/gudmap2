@@ -3,9 +3,11 @@ package org.gudmap.beans;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 //import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -44,6 +46,7 @@ public class SolrFilter implements Serializable {
 	private ArrayList<String> specimenTypeValues;
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
+	private ArrayList<String> expressionValues;
 	private String page;
 	private boolean showFilter = false;
 	private int filterWidth = 300;
@@ -62,6 +65,15 @@ public class SolrFilter implements Serializable {
 		showFilter = false;
 		
 		filters2 = new ArrayList<ArrayList<String>>();
+		
+		// init filter selection
+//		sexValues = new ArrayList<String>(); sexValues.add("All");
+//		assayTypeValues = new ArrayList<String>(); assayTypeValues.add("All");
+//		sourceValues = new ArrayList<String>(); sourceValues.add("All");
+//		specimenTypeValues = new ArrayList<String>(); specimenTypeValues.add("All");
+//		theilerStageValues = new ArrayList<String>(); theilerStageValues.add("All");
+//		carnegieStageValues = new ArrayList<String>(); carnegieStageValues.add("All");
+//		expressionValues = new ArrayList<String>(); expressionValues.add("All");
 	}
 	
 	public void setParamBean(ParamBean paramBean){
@@ -177,11 +189,10 @@ public class SolrFilter implements Serializable {
 
 	}
 
-//	public void sourceChangeValues(ValueChangeEvent event){
+	public void sourceChanged(AjaxBehavior event){
 //		String sel = (String)event.getNewValue();
-//		sourceCB = false;
-//		refresh();
-//	}
+		refresh();
+	}
 	
 	public String update(){
 		refresh();
@@ -196,7 +207,7 @@ public class SolrFilter implements Serializable {
 		map.put("female", "female");
 		map.put("male", "male");
 		map.put("unknown", "unknown");
-		
+			
 	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
@@ -218,7 +229,7 @@ public class SolrFilter implements Serializable {
 		
 		Map<String,String> assaytypemap = new LinkedHashMap<String,String>();
 
-		Map<String, String> map =  paramBean.getAssaytypeinsitulist(); 
+		Map<String, String> map =  paramBean.getAllassaytypelist(); 
 	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
@@ -238,17 +249,17 @@ public class SolrFilter implements Serializable {
 
 	public Map<String,String> getSpecimenTypeList(){
 		
-		Map<String,String> assaytypemap = new LinkedHashMap<String,String>();
+		Map<String,String> specimentypemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  paramBean.getSpecimentypelist(); 
 	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-			assaytypemap.put(key, key);
+	        specimentypemap.put(key, key);
 		}
 
-		return assaytypemap;
+		return specimentypemap;
 	}	
 	public ArrayList<String> getSpecimenTypeValues(){
 		return specimenTypeValues;
@@ -261,10 +272,7 @@ public class SolrFilter implements Serializable {
 		
 		Map<String,String> theilerstagemap = new LinkedHashMap<String,String>();
 
-		Map<String, String> map =  new LinkedHashMap<String, String>(); 
-		for (int i = 17; i < 29; i++){
-			map.put("TS"+i, "TS"+i);
-		}
+		Map<String, String> map =  paramBean.getTheilerstagelist(true); 
 
 		Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
@@ -294,6 +302,7 @@ public class SolrFilter implements Serializable {
 			String s = "Fetal Stage - " + j + "th week post-fertilization";
 			map.put(s, s);
 		}
+//		Map<String, String> map =  paramBean.getCarnegiestagelist(true);
 
 		Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
@@ -309,6 +318,24 @@ public class SolrFilter implements Serializable {
 	}	
 	public void setCarnegieStageValues(ArrayList<String> val){
 		carnegieStageValues = val;
+	}	
+
+	
+	public Map<String,String> getGeneExpressionList(){
+		
+		Map<String,String> expressionstagemap = new LinkedHashMap<String,String>();
+		expressionstagemap.put("Gene expressed", "detected");
+		expressionstagemap.put("Gene undetected", "undetected");
+		expressionstagemap.put("Uncertain", "Uncertain");
+
+
+		return expressionstagemap;
+	}	
+	public ArrayList<String> getGeneExpressionValues(){
+		return expressionValues;
+	}	
+	public void setGeneExpressionValues(ArrayList<String> val){
+		expressionValues = val;
 	}	
 	
 	/************************ refresh and set/rest filters *************************************/
@@ -339,7 +366,7 @@ public class SolrFilter implements Serializable {
 			String filter = "[" + df.format(fromDateValue) + " TO * ]";
 			filters.put("DATE",filter);				
 		}
-		
+//		sourceValues = getSourceValues();
 		if (sourceValues != null && !sourceValues.isEmpty()) {
 			if (sourceValues.size() == 1){
 				filters.put("SOURCE",sourceValues.get(0));
@@ -419,7 +446,7 @@ public class SolrFilter implements Serializable {
 			}
 		}
 	
-		getPage("ss");
+//		getPage("ss");
 	}
 	
 	public void reset(){

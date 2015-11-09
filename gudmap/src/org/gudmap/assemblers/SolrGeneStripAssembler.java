@@ -41,10 +41,10 @@ public class SolrGeneStripAssembler {
 		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, String solrFilter) {
+	public int getCount(String solrInput, HashMap<String,String> filterlist) {
 
 		int n = 0;
-		n = solrUtil.getGeneCount(solrInput);
+		n = solrUtil.getGeneCount(solrInput,filterlist);
 		
 		return n;
 	}

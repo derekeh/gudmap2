@@ -21,9 +21,9 @@ public class SolrTissueSummaryAssembler {
 		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, String solrFilter) {
+	public int getCount(String solrInput, HashMap<String, String> filterlist) {
 
-		int n = solrUtil.getTissueCount(solrInput, null);
+		int n = solrUtil.getTissueCount(solrInput, filterlist);
 
 		return n;
 	}
