@@ -66,7 +66,7 @@
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
     			</f:facet>
-     			<h:commandLink value="#{u.gene}"  action="viewGeneDetails">
+     			<h:commandLink value="#{u.gene}"  action="/db/viewGeneDetails.xhtml">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
     		</h:column>
@@ -77,7 +77,7 @@
     					<f:attribute name="sortField" value="GUDMAP_ID" />
                     </h:commandLink>
 				</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+    			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSubmissionDetails.xhtml">
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
     		</h:column>

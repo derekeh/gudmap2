@@ -54,7 +54,9 @@
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
     			</f:facet>
-    				#{u.gene}
+     			<h:commandLink value="#{u.gene}"  action="/db/viewGeneDetails.xhtml">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+				</h:commandLink>
     		</h:column>
  
     		<h:column>

@@ -15,12 +15,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 //import javax.faces.context.FacesContext;
 
-
-
-
-
-import org.gudmap.assemblers.SolrInsituAssembler;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
+//import org.gudmap.assemblers.SolrInsituAssembler;
 import org.gudmap.impl.PagerImpl;
+import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.models.SolrInsituTableBeanModel;
 
 
@@ -33,7 +33,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-	private SolrInsituAssembler assembler;
+//	private SolrInsituAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -84,7 +84,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	}
     
     public void setup() {
-    	assembler=new SolrInsituAssembler();
+//    	assembler=new SolrInsituAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -98,9 +98,11 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-        totalRows = assembler.getCount(solrInput, filters);
+//        totalRows = assembler.getCount(solrInput, filters);
+        totalRows = solrTreeBean.getSolrUtil().getInsituFilteredCount(solrInput,filters);
     	
-     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+//     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -183,5 +185,66 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     public boolean getShowPageDetails(){
     	return showPageDetails;
     }
+    
+	public List<InsituTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+
+		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
+					
+    	try {
+    		
+			SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getInsituData(solrInput, filterlist, sortColumn,ascending,offset,num);
+			if (sdl==null){
+				return null;
+			}
+			list = formatTableData(sdl);
+			
+    	} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	private List<InsituTableBeanModel> formatTableData(SolrDocumentList sdl){
+		
+		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
+		InsituTableBeanModel model = null;
+		int rowNum = sdl.size();
+		
+		for(int i=0; i<rowNum; i++) { 
+			SolrDocument doc = sdl.get(i);
+
+			String insituExpression = "";			
+			if (doc.getFieldValue("PRESENT").toString() != "")
+				insituExpression = "present";
+			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
+				insituExpression = "uncertain";
+			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
+				insituExpression = "not detected";
+			
+			model = new InsituTableBeanModel();
+			model.setOid(doc.getFieldValue("GUDMAP").toString());
+			model.setGene(doc.getFieldValue("GENE").toString());
+			model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
+			model.setSource(doc.getFieldValue("SOURCE").toString());
+			model.setSubmission_date(doc.getFieldValue("DATE").toString());
+			model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
+			model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
+			model.setStage(doc.getFieldValue("STAGE").toString());
+			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
+			model.setSex(doc.getFieldValue("SEX").toString());
+			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
+			model.setTissue(doc.getFieldValue("TISSUE_TYPE").toString());
+			model.setExpression(insituExpression);
+			model.setSpecimen(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
+			model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
+			model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
+			
+			list.add(model);			
+		}
+			
+		return list;
+	 }	
     
 }

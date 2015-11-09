@@ -59,14 +59,15 @@ public class SolrTreeBean implements Serializable {
 		
 		getSolrInput();
 		
-		getGeneCount();
-		getInsituCount();
-		getMicroarrayCount();
-		getGenelistCount();
-		getTissueCount();
-//		getTutorialCount();
-		getMouseStrainsCount();
-		getImagesCount();
+//		getGeneCount();
+//		getInsituCount();
+////		getMicroarrayCount();
+//		getGenelistCount();
+//		getGenelistCount();
+//		getTissueCount();
+////		getTutorialCount();
+//		getMouseStrainsCount();
+//		getImagesCount();
 		
 		return null;
 	}

@@ -24,8 +24,10 @@ import javax.inject.Named;
 
 import javax.servlet.ServletContext;
 
+import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.assemblers.SolrGeneStripAssembler;
 import org.gudmap.impl.PagerImpl;
+import org.gudmap.models.GeneStripModel;
 import org.gudmap.models.MasterTableInfo;
 import org.gudmap.models.SolrInsituTableBeanModel;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
@@ -113,9 +115,11 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-        totalRows = assembler.getCount(solrInput, filters);
+//        totalRows = assembler.getCount(solrInput, filters);
+        totalRows = solrTreeBean.getSolrUtil().getGeneCount(solrInput, filters);
     	
-     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+//     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
 
    		ArrayList<String> geneIds = assembler.getGeneIds();         		
 
@@ -368,5 +372,19 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     public boolean getShowPageDetails(){
     	return showPageDetails;
     }
+
+	public List<GeneStripModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+
+		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
+					
+    	SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getGudmapGenes(solrInput, filterlist, sortColumn,ascending,offset,num);
+		if (sdl==null){
+			return null;
+		}
+		list = assembler.formatTableData(sdl);
+
+		return list;
+	}
+    
     
 }

@@ -34,35 +34,35 @@ public class SolrGeneStripAssembler {
 	
 	
 	private GeneStripModel model;
-	private SolrUtil solrUtil;
+//	private SolrUtil solrUtil;
 	private ArrayList<String> geneIds;
 
 	public SolrGeneStripAssembler() {
-		solrUtil = new SolrUtil();
+//		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, HashMap<String,String> filterlist) {
+//	public int getCount(String solrInput, HashMap<String,String> filterlist) {
+//
+//		int n = 0;
+//		n = solrUtil.getGeneCount(solrInput,filterlist);
+//		
+//		return n;
+//	}
 
-		int n = 0;
-		n = solrUtil.getGeneCount(solrInput,filterlist);
-		
-		return n;
-	}
+//	public List<GeneStripModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+//
+//		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
+//					
+//    	SolrDocumentList sdl  = solrUtil.getGudmapGenes(solrInput, filterlist, sortColumn,ascending,offset,num);
+//		if (sdl==null){
+//			return null;
+//		}
+//		list = formatTableData(sdl);
+//
+//		return list;
+//	}
 
-	public List<GeneStripModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
-
-		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
-					
-    	SolrDocumentList sdl  = solrUtil.getGudmapGenes(solrInput, filterlist, sortColumn,ascending,offset,num);
-		if (sdl==null){
-			return null;
-		}
-		list = formatTableData(sdl);
-
-		return list;
-	}
-
-	private List<GeneStripModel> formatTableData(SolrDocumentList sdl){
+	public List<GeneStripModel> formatTableData(SolrDocumentList sdl){
 		
 		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
 		geneIds = new ArrayList<String>();

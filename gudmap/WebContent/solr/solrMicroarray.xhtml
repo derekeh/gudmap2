@@ -65,7 +65,7 @@
     			<f:facet name="header">
     				GUDMAP Entry Details 
     			</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="viewArraySubmissionDetails">
+    			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewArraySubmissionDetails.xhtml">
 						<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 						<f:param name="isArray" value="true"></f:param>
 				</h:commandLink>
@@ -111,8 +111,7 @@
     				<h:commandLink id="stagelink" value="Stage" actionListener="#{genericTablePageBean.sort}">
                          <f:attribute name="sortField" value="stage" />
                          <f:ajax execute="@this stagelink" render="@form"></f:ajax>
-                    </h:commandLink>
-    				
+                    </h:commandLink>  				
 				</f:facet>
     			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
 				 	<h:outputText value="#{u.stage}" />

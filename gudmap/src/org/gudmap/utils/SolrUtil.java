@@ -127,10 +127,10 @@ public class SolrUtil {
 		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorials");
 		
 		
-        LukeRequest lukeRequest = new LukeRequest();
-        LukeResponse lukeResponse;
-        lukeRequest.setNumTerms(0);
-        try {
+//        LukeRequest lukeRequest = new LukeRequest();
+//        LukeResponse lukeResponse;
+//        lukeRequest.setNumTerms(0);
+//        try {
         	
 //			lukeResponse = lukeRequest.process(microarray_server);
 //			microarray_schema = lukeResponse.getFieldInfo().keySet();
@@ -166,8 +166,9 @@ public class SolrUtil {
 //			ng_samples_schema = lukeResponse.getFieldInfo().keySet();
 			ng_samples_schema = getSequenceSamplesSchema();
 			
-			lukeResponse = lukeRequest.process(tissues_server);
-			tissues_schema = lukeResponse.getFieldInfo().keySet();
+//			lukeResponse = lukeRequest.process(tissues_server);
+//			tissues_schema = lukeResponse.getFieldInfo().keySet();
+			tissues_schema = getTissuesSchema();
 			
 //			lukeResponse = lukeRequest.process(mouse_strain_server);
 //			mouse_strain_schema = lukeResponse.getFieldInfo().keySet();
@@ -177,11 +178,11 @@ public class SolrUtil {
 //			image_schema = lukeResponse.getFieldInfo().keySet();
 			image_schema = getImagesSchema();
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SolrServerException e) {
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (SolrServerException e) {
+//			e.printStackTrace();
+//		}
 
 		
 	}
@@ -903,11 +904,11 @@ public class SolrUtil {
 	        parameters.set("q",queryString);
 	        parameters.setFacet(true);        	      	        
 	        parameters.addFacetField("GENE");        	        
-	        parameters.addFacetField("MGI_GENE_ID");        	        
-	        parameters.addFacetField("SYNONYMS");        	        
+//	        parameters.addFacetField("MGI_GENE_ID");        	        
+//	        parameters.addFacetField("SYNONYMS");        	        
 	        parameters.setFacetMinCount(0);
 	        parameters.setIncludeScore(true);
-	        parameters.setFacetLimit(100000);
+//	        parameters.setFacetLimit(100000);
 	        parameters.setStart(offset);
 	        parameters.setRows(rows); //(25000);
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
