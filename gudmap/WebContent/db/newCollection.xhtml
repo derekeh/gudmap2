@@ -18,7 +18,38 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 	    <h1>New Collection</h1>	
-	    <!-- all other content in here -->     
+	    <p>Please complete the following information</p>
+	    <!-- all other content in here --> 
+		<h:form id="il_newcollectionform">
+	
+			<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0">
+		        <h:outputText value="Collection Name:"  />
+				<h:inputText value="#{newCollectionBean.collection_name}"></h:inputText>
+				
+				<h:outputText value="Description:" />
+				<h:inputText value="#{newCollectionBean.collection_description}"></h:inputText>
+				
+				<h:outputText value="Status:" />
+				<h:selectOneRadio value="#{newCollectionBean.collection_status}">
+	   				<f:selectItem itemValue="private" itemLabel="private" />
+	   				<f:selectItem itemValue="public" itemLabel="public" />
+	   			</h:selectOneRadio>
+	   			
+				<h:outputText value="Type:" />
+				<h:inputText value="#{newCollectionBean.collection_type}"></h:inputText>
+				
+				<h:panelGroup></h:panelGroup>
+				<h:panelGroup>
+					<h:commandButton id="il_collection_submit" value="Submit" action="#{newCollectionBean.submit(genericTablePageBean.selectedItems)}" />
+	   				<h:commandButton id="il_collection_reset" value="Reset" actionListener="#{newCollectionBean.reset()}" >
+	   					<f:ajax execute="@form" render="@form"></f:ajax> 
+	   				</h:commandButton>
+	   				<h:commandButton id="il_collection_cancel" value="Cancel" action="#{newCollectionBean.cancel()}" />	   					 
+				</h:panelGroup>
+				
+						
+       	  </h:panelGrid>
+      </h:form>    
 	</ui:define>
 </ui:composition>
 </html>

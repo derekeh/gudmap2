@@ -1,6 +1,7 @@
 package org.gudmap.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CollectionInfoModel {
 	
@@ -19,6 +20,8 @@ public class CollectionInfoModel {
 
 	private String tutorial;
 	
+	private List<String> selectedList;
+	
 	//TODO fix getAllInfo method
 	
 	// constructor
@@ -29,6 +32,7 @@ public class CollectionInfoModel {
 		type = -1;
 		status = -1;
 		focusGroup = -1;
+		selectedList = new ArrayList<String>();
 	}
 	
 	public int getOid() {

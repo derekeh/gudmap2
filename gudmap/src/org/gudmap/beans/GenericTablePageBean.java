@@ -417,6 +417,10 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	return collectionSaveOption();
     }
     
+    public List<String> getSelectedItems() {
+    	return selectedItems;
+    }
+    
     public String clearCheckboxSelections() {
     	selectedItems.clear();
     	return "result";
