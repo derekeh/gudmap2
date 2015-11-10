@@ -128,5 +128,10 @@ public class CollectionQueries {
 				"ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID), IMG_ORDER";
 	 
 	public final static String REMOVE_COLLECTION_ITEMS = "DELETE FROM CLN_COLLECTION_ITEM WHERE CLI_COLLECTION_FK = ? AND CLI_VALUE = ?";
+	
+	public final static String COLLECTION_NAMES_BY_OWNER = "SELECT CLN_OID oid, CLN_NAME name " +
+	  		"FROM CLN_COLLECTION " +
+	  		"WHERE CLN_USER_FK = ? " +
+	  		"ORDER BY CLN_NAME";
 
 }

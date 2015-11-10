@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 import org.gudmap.queries.array.ArrayQueries;
 import org.gudmap.queries.array.SequenceQueries;
+import org.gudmap.queries.collections.CollectionQueries;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.generic.WebPageQueries;
 import org.gudmap.globals.Globals;
@@ -42,6 +43,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>seqlibstrategylist;
 	private Map<String,Integer>collectionstatuslist;
 	private Map<String,Integer>collectionoptionlist;
+	private Map<String,Integer>collectionlist;
 	
 	public ParamBeanAssembler() {
 			
@@ -337,6 +339,25 @@ public class ParamBeanAssembler {
 		collectionoptionlist.put("Existing",1);
 		
 		return collectionoptionlist;
+	}
+	
+	public Map<String,Integer> getCollectionlist(int userId) {
+		collectionlist = new LinkedHashMap<String,Integer>();
+		String queryString=CollectionQueries.COLLECTION_NAMES_BY_OWNER;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString);
+			ps.setInt(1, userId);
+			result =  ps.executeQuery();
+			while(result.next())
+				collectionlist.put(result.getString("name"), result.getInt("oid"));
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return collectionlist;
 	}
 
 	

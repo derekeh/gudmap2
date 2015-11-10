@@ -413,7 +413,20 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		} 
     	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
     	//return "browseCollectionEntriesTablePage";
-    	//return "result";
+    	return "result";
+    	//return collectionSaveOption();
+    }
+    
+    public String saveSelections(int userId, int col_optionvalues, int col_idvalues) { 
+    	selectedItems.clear();
+    	for (int i=0;i<dataList.size();i++) { 
+    		if (((InsituTableBeanModel) dataList.get(i)).getSelected()) { 
+    			if(paramBean.getCollectionType().equalsIgnoreCase("Entries"))
+    				selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getOid());
+    			else if(paramBean.getCollectionType().equalsIgnoreCase("Genes"))
+    				selectedItems.add(((InsituTableBeanModel) dataList.get(i)).getGene_id());
+    		} 
+    	} 
     	return collectionSaveOption();
     }
     

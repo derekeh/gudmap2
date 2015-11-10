@@ -5,7 +5,8 @@
 	xmlns:pr="http://primefaces.org/ui" >
 	
 		<pr:dialog header="Save Option" widgetVar="dialog3" width="750" style="position:absolute;left:-300px;" modal="true" > 
-		<h:form id="saveoptionform"> 
+		<h:outputText value="You have to be logged in to use this function" rendered="#{empty loginBean.username}"></h:outputText>
+		<h:form id="saveoptionform" rendered="#{not empty loginBean.username}"> 
 		 <h:panelGrid columns="2" columnClasses="gd_leftAlign,gd_leftAlign">
 		 
 		 	
@@ -13,10 +14,16 @@
 	   		<h:outputText value="Save Collection As: "></h:outputText>
 	   		<h:selectOneRadio value="#{paramBean.col_optionvalues}">
 	   			<f:selectItems value="#{paramBean.collectionoptionlist}" />
+	   			<f:ajax render="saveoptionform" />
 	   		</h:selectOneRadio>
 	   		
+	   		<h:outputText value="Select Collection: " rendered="#{paramBean.col_optionvalues > 0 }"></h:outputText>
+	    	<h:selectOneMenu value="#{paramBean.col_idvalues}" rendered="#{paramBean.col_optionvalues > 0 }">
+		 				<f:selectItems value="#{paramBean.getCollectionlist(loginBean.userID)}" />
+		 	</h:selectOneMenu>	
 	   		
-	   		<h:commandButton id="il_save_option" value="Save" action="#{genericTablePageBean.checkboxSelections()}">
+	   		
+	   		<h:commandButton id="il_save_option" value="Save" action="#{genericTablePageBean.saveSelections(loginBean.userID,paramBean.col_optionvalues,paramBean.col_idvalues)}">
 	   			
 	   		</h:commandButton>
 	   	</h:panelGrid>

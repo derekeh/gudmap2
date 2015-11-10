@@ -101,6 +101,7 @@ public class ParamBean implements Serializable {
 	
 	private int col_statusvalues=2;
 	private int col_optionvalues=0;
+	private int col_idvalues=-1;
 	
 	private String whereclause=" WHERE ";
 	private String cachewhereclause=" WHERE ";
@@ -1903,6 +1904,17 @@ public class ParamBean implements Serializable {
 	}
 	
 /////////////////COLLECTIONS////////////////////////////
+	
+	public Map<String,Integer>getCollectionlist(int userId) {
+		return assembler.getCollectionlist(userId);
+	}
+	public void setCol_idvalues(int col_idvalues) {
+		this.col_idvalues = col_idvalues;
+	}
+	public int getCol_idvalues() {
+		return col_idvalues;
+	}
+	
 	public Map<String,String> getCollectionTypelist(){
 	return assembler.getCollectionTypelist();
 	}
