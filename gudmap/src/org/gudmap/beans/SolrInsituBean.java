@@ -127,7 +127,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
  //   	sortField = "RELEVANCE";
     	loadDataList();
 //    	paramBean.resetValues();
-    	return "solrInsituTablePage";
+    	return "solrInsitu";
     }
 
     public void resetAll() {

@@ -44,12 +44,11 @@
     	    		
     		<h:column rendered="#{paramBean.mic_gudmapaccessioncol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="gudmapaccessionlink" value="GUDMAP Entry Details" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="NATURAL_SORT(gudmap_accession)" />
+    				<h:commandLink id="gudmapaccessionlink" value="GUDMAP Entry Details" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="GUDMAP" />
                          <f:ajax execute="@this gudmapaccessionlink" render="@form"></f:ajax>
                     </h:commandLink>
-    			</f:facet>
-    				
+    			</f:facet>    				
     			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSeqSubmissionDetails.xhtml">
 						<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 						<f:param name="isArray" value="false"></f:param>
@@ -58,8 +57,8 @@
     		
     		<h:column rendered="#{paramBean.mic_geoSampleIDcol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="geosamplelink" value="GEO Sample ID" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="NATURAL_SORT(geo_sample_id)" />
+    				<h:commandLink id="geosamplelink" value="GEO Sample ID" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SAMPLE_GEO_ID" />
                          <f:ajax execute="@this geosamplelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
@@ -70,8 +69,8 @@
  
     		<h:column rendered="#{paramBean.mic_geoSeriesIDcol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="geoserieslink" value="GEO Series ID" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="NATURAL_SORT(geo_series_id)" />
+    				<h:commandLink id="geoserieslink" value="GEO Series ID" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SERIES_GEO_ID" />
                          <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
@@ -82,8 +81,8 @@
     		
     		<h:column rendered="#{paramBean.mic_sourcecol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="source" />
+    				<h:commandLink id="sourcelink" value="Source" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SOURCE" />
                           <f:ajax execute="@this sourcelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
@@ -92,8 +91,8 @@
     		
     		<h:column rendered="#{paramBean.mic_samplelibrarystrategycol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="librarystrategylink" value="Library Strategy" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="library_strategy" />
+    				<h:commandLink id="librarystrategylink" value="Library Strategy" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="LIBRARY_STRATEGY" />
                          <f:ajax execute="@this librarystrategylink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
@@ -103,8 +102,8 @@
     		
     		<h:column rendered="#{paramBean.mic_stagecol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="stagelink" value="Stage" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="stage" />
+    				<h:commandLink id="stagelink" value="Stage" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="STAGE" />
                          <f:ajax execute="@this stagelink" render="@form"></f:ajax>
                     </h:commandLink>
     				
@@ -117,7 +116,10 @@
     		
     		<h:column rendered="#{paramBean.mic_agecol == true}">
     			<f:facet name="header">
-    				Age
+    				<h:commandLink id="agelink" value="Age" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="AGE" />
+                         <f:ajax execute="@this agelink" render="@form"></f:ajax>
+                    </h:commandLink>
 				</f:facet>
     				#{u.age}
     		</h:column>
@@ -131,7 +133,10 @@
     		
     		<h:column rendered="#{paramBean.mic_sexcol == true}">
     			<f:facet name="header">
-    				Sex
+    				<h:commandLink id="sexlink" value="Sex" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SEX" />
+                         <f:ajax execute="@this sexlink" render="@form"></f:ajax>
+                    </h:commandLink>
 				</f:facet>
     				#{u.sex}
     		</h:column>

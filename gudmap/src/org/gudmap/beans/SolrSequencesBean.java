@@ -120,7 +120,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     public String refresh(){
  //   	sortField = "RELEVANCE";
     	loadDataList();
-    	return "solrMicroarrayTablePage";
+    	return "solrSequences";
     }
 
     public void resetAll() {

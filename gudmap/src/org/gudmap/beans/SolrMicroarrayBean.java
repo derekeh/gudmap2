@@ -118,7 +118,7 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     public String refresh(){
  //   	sortField = "RELEVANCE";
     	loadDataList();
-    	return "solrMicroarrayTablePage";
+    	return "solrMicroarray";
     }
 
     public void resetAll() {

@@ -106,7 +106,7 @@ public class SolrGeneStripAssembler {
 			model.setGeneSymbol(gene);
 			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
 			model.setMgiId(geneId);
-			
+			model.setGene_id(geneId);
 //				arrayRange = (result.getString("arrayRange"));
 //				ishRange = (result.getString("ishRange"));
 //				species = (result.getString("species"));
@@ -133,7 +133,7 @@ public class SolrGeneStripAssembler {
 		return geneIds;
 	}
 	
-	private String buildExpressionProfile(String geneSymbol, String geneId) {
+	public String buildExpressionProfile(String geneSymbol, String geneId) {
 		String RET="";
 		double[] insituExprofile = getInsituExprofile(geneId);
 		String[] interestedAnatomyStructures = Globals.getInterestedAnatomyStructureIds();
@@ -297,7 +297,7 @@ public class SolrGeneStripAssembler {
 	}
 	
 	
-	private MasterTableInfo[] buildMicroarrayProfile(String geneSymbol) {
+	public MasterTableInfo[] buildMicroarrayProfile(String geneSymbol) {
 		ArrayList<MasterTableInfo> masterTableInfoList=null;
 		String queryString=GeneStripQueries.MASTER_SECTION_LIST;
 		boolean found=false;
@@ -348,7 +348,7 @@ public class SolrGeneStripAssembler {
 			return null;*/
 	}
 	
-  private String getRepresentativeImage(String geneSymbol){
+  public String getRepresentativeImage(String geneSymbol){
 	  if (geneSymbol == null || geneSymbol.equals("")) {
 	    return null;
 	  }

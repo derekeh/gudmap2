@@ -115,7 +115,7 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
  //   	sortField = "RELEVANCE";
     	loadDataList();
     	paramBean.resetValues();
-    	return "solrTissueSummaryTablePage";
+    	return "solrTissueSummary";
     }
     
     public String getTitle(){

@@ -119,7 +119,7 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
  //   	sortField = "RELEVANCE";
     	loadDataList();
 //   	paramBean.resetValues();
-    	return "solrMouseStrainsTablePage";
+    	return "solrMouseStrains";
     }
 
     public String checkboxSelections() { 
