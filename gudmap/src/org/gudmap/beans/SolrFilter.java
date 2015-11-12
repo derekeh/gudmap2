@@ -424,25 +424,25 @@ public class SolrFilter implements Serializable {
 		
 		if (theilerStageValues != null && !theilerStageValues.isEmpty()) {
 			if (theilerStageValues.size() == 1){
-				filters.put("THEILER_STAGE",theilerStageValues.get(0));
+				filters.put("STAGE",theilerStageValues.get(0));
 			}
 			else {
 				String filter = "(";
 				for (String item : theilerStageValues) filter += item + " OR ";
 				filter = filter.substring(0, filter.length()-3) + ")";
-				filters.put("THEILER_STAGE",filter);
+				filters.put("STAGE",filter);
 			}
 		}
 
 		if (carnegieStageValues != null && !carnegieStageValues.isEmpty()) {
 			if (carnegieStageValues.size() == 1){
-				filters.put("CARNEGIE_STAGE",carnegieStageValues.get(0));
+				filters.put("STAGE",carnegieStageValues.get(0));
 			}
 			else {
 				String filter = "(";
 				for (String item : carnegieStageValues) filter += item + " OR ";
 				filter = filter.substring(0, filter.length()-3) + ")";
-				filters.put("CARNEGIE_STAGE",filter);
+				filters.put("STAGE",filter);
 			}
 		}
 	

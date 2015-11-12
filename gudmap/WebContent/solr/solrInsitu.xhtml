@@ -121,7 +121,7 @@
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
      				<h:commandLink value="Stage" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="THEILER_STAGE" />
+    					<f:attribute name="sortField" value="STAGE" />
                     </h:commandLink>
 				</f:facet>
     				#{u.stage}
@@ -130,7 +130,7 @@
     		<h:column rendered="#{paramBean.agecol == true}">
     			<f:facet name="header">
      				<h:commandLink value="age" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="STAGE" />
+    					<f:attribute name="sortField" value="DEV_STAGE" />
                     </h:commandLink>
 				</f:facet>
     				#{u.age}

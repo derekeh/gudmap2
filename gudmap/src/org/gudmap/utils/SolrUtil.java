@@ -338,7 +338,7 @@ public class SolrUtil {
 	        }
 	        if (filters != null){    
 	            for (String fs : filters){
-	            	if (fs.contains("THEILER_STAGE"))
+	            	if (fs.contains("STAGE"))
 	            		fs = fs.replace(":", ":TS");
 	            		            	
 	            	if (fs.contains("EXP_STRENGTH"))
@@ -1049,12 +1049,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-// fix until index and schema are changed		            
-		            String key = "";
-		            if (pair.getKey() == "THEILER_STAGE")
-		            	key = "STAGE";
-		            else
-		            	key = pair.getKey();
+		            String key = pair.getKey();
 		            if (ng_samples_schema.contains(key))
 		            	parameters.addFilterQuery(key + ":" + pair.getValue());
 		        }
@@ -1103,7 +1098,7 @@ public class SolrUtil {
 	        	parameters.setSort(column, order);
 	        
 	        parameters.addFacetField("GUDMAP");
-	        parameters.addField("AGE");
+	        parameters.addField("DEV_STAGE");
 	        parameters.addField("COMPONENT");
 	        parameters.addField("DATE");
 	        parameters.addField("GENOTYPE");
@@ -1123,12 +1118,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-// fix until index and schema are changed		            
-		            String key = "";
-		            if (pair.getKey() == "THEILER_STAGE")
-		            	key = "STAGE";
-		            else
-		            	key = pair.getKey();
+		            String key = pair.getKey();
 		            if (ng_samples_schema.contains(key))
 		            	parameters.addFilterQuery(key + ":" + pair.getValue());
 		        }
@@ -1262,7 +1252,7 @@ public class SolrUtil {
 	      	parameters.addField("TOT_GENES");
         	parameters.addField("AUTHOR");
         	parameters.addField("DATE");
-	      	parameters.addField("THEILER_STAGE");
+	      	parameters.addField("STAGE");
         	parameters.addField("SEX");
         	parameters.addField("GENELIST_TYPE");
         	parameters.addField("ENTITIES");
@@ -1678,8 +1668,8 @@ public class SolrUtil {
       
 	      	parameters.addField("GUDMAP");
         	parameters.addField("SAMPLE_GEO_ID");
-        	parameters.addField("THEILER_STAGE");
         	parameters.addField("STAGE");
+        	parameters.addField("DEV_STAGE");
         	parameters.addField("SOURCE");
 //        	parameters.addField("PI_NAME");
         	parameters.addField("DATE");
@@ -1874,7 +1864,7 @@ public class SolrUtil {
             NamedList<List<PivotField>> pivots = qr.getFacetPivot();
 
             for (int i = 17; i < 29; i ++){                
-		        parameters.addFilterQuery("THEILER_STAGE:ts"+i);
+		        parameters.addFilterQuery("STAGE:ts"+i);
 	            qr = microarray_server.query(parameters);
 	            pivots = qr.getFacetPivot();
 
@@ -1884,7 +1874,7 @@ public class SolrUtil {
 		  	        	  microarrayStages.set(i-17, count);
 		  	          }
 	            }         	
-	            parameters.removeFilterQuery("THEILER_STAGE:ts"+i);
+	            parameters.removeFilterQuery("STAGE:ts"+i);
             }
         }
         catch (SolrServerException e)
@@ -2015,8 +2005,8 @@ public class SolrUtil {
       
 	      	parameters.addField("GUDMAP");
         	parameters.addField("SAMPLE_GEO_ID");
-        	parameters.addField("THEILER_STAGE");
         	parameters.addField("STAGE");
+        	parameters.addField("DEV_STAGE");
         	parameters.addField("PI_NAME");
         	parameters.addField("DATE");
         	parameters.addField("SEX");
@@ -2367,7 +2357,7 @@ public class SolrUtil {
         	parameters.addField("SPECIMEN_ASSAY_TYPE");
         	parameters.addField("SOURCE");
         	parameters.addField("SEX");
-        	parameters.addField("THEILER_STAGE");
+        	parameters.addField("STAGE");
         	parameters.addField("IMAGE_NOTE");
         	parameters.addField("IMAGE_PATH");
         	parameters.addField("THUMBNAIL_PATH");
@@ -2444,16 +2434,16 @@ public class SolrUtil {
     	schema.add("ENSEMBL_ID");
     	schema.add("SYNONYMS");
     	schema.add("PROBESETS");
-    	schema.add( "ENTREZ_ID");
-    	schema.add( "GENBANK_ID");
-    	schema.add( "INSITU_ASSAY");
-    	schema.add( "MA_ASSAY");
-    	schema.add( "GUDMAP");
+    	schema.add("ENTREZ_ID");
+    	schema.add("GENBANK_ID");
+    	schema.add("INSITU_ASSAY");
+    	schema.add("MA_ASSAY");
+    	schema.add("GUDMAP");
 	    schema.add("GUDMAP_IDS");
 	    schema.add("PRESENT");
 	    schema.add("DIR_PRESENT");
-	    schema.add( "NOT_DETECTED");
-	    schema.add( "UNCERTAIN");
+	    schema.add("NOT_DETECTED");
+	    schema.add("UNCERTAIN");
 	    schema.add("EMAPS");
 	    schema.add("SOURCE");
 	    schema.add("PI_NAME");
@@ -2616,7 +2606,7 @@ public class SolrUtil {
     schema.add("LIBRARY_STRATEGY");
     schema.add("STAGE");
     schema.add("PI_NAME");
-    schema.add("AGE");
+    schema.add("DEV_STAGE");
     schema.add("DATE");
     schema.add("SEX");
     schema.add("SAMPLE_DESCRIPTION");
@@ -2633,8 +2623,8 @@ public class SolrUtil {
 	   
 	    schema.add("GUDMAP");
 	    schema.add("SAMPLE_GEO_ID");
-	    schema.add("THEILER_STAGE");
 	    schema.add("STAGE");
+	    schema.add("DEV_STAGE");
 	    schema.add("SOURCE");
 	    schema.add("PI_NAME");
 	    schema.add("DATE");
@@ -2679,19 +2669,19 @@ public class SolrUtil {
 		    schema.add("PLATFORM_GEO_ID");
 		    schema.add("SERIES_OID");
 		    schema.add("COMPONENT");
-		    schema.add("GENE");
-		    schema.add("EMAP");
-		    schema.add("MGI");
-		    schema.add("PRESENT");
-		    schema.add("NOT_DETECTED");
-		    schema.add("UNCERTAIN");
-		    schema.add("FOCUS_GROUPS");
-		    schema.add("SEX");
-		    schema.add("LAB");
-		    schema.add("maprobe");
-		    schema.add("GUDMAP");
-		    schema.add("THEILER_STAGE");
-		    schema.add("LAB");
+//		    schema.add("GENE");
+//		    schema.add("EMAP");
+//		    schema.add("MGI");
+//		    schema.add("PRESENT");
+//		    schema.add("NOT_DETECTED");
+//		    schema.add("UNCERTAIN");
+//		    schema.add("FOCUS_GROUPS");
+//		    schema.add("SEX");
+//		    schema.add("LAB");
+//		    schema.add("maprobe");
+//		    schema.add("GUDMAP");
+//		    schema.add("THEILER_STAGE");
+//		    schema.add("LAB");
 			    
 			    return schema;
 	   }  
@@ -2721,7 +2711,7 @@ public class SolrUtil {
 		    schema.add("PROBE_IDS");
 		    schema.add("MA_PROBES_ID");
 		    schema.add("maprobe");
-		    schema.add("THEILER_STAGE");  
+		    schema.add("STAGE");  
 			    
 			    return schema;
 	   }   
@@ -2741,7 +2731,7 @@ public class SolrUtil {
 		    schema.add("TOT_GENES");
 		    schema.add("AUTHOR");
 		    schema.add("DATE");   
-		    schema.add("THEILER_STAGE");   
+		    schema.add("STAGE");   
 		    schema.add("SEX");
 		    schema.add("GENELIST_TYPE");
 		    schema.add("ENTITIES");   

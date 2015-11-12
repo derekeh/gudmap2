@@ -216,7 +216,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 			model.setStage(stage);
 			model.setStage_order(stage.substring(2));
 //arraySeqmodel.setSpecies(result.getString("species"));
-			model.setAge(doc.getFieldValue("AGE").toString());
+			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 			model.setSource(doc.getFieldValue("PI_NAME").toString());
 			model.setLibraryStrategy(doc.getFieldValue("LIBRARY_STRATEGY").toString());
 			model.setSubmission_date(doc.getFieldValue("DATE").toString());
