@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pr="http://primefaces.org/ui" >	
+	
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr Images
+	</ui:define>
+	
+
+
+	
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
+	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
+		
+	
+	<ui:define name="content">
+	<f:metadata>
+		<f:viewParam name="gene" value="sessionBean.geneParam" />
+	</f:metadata>
+	<style>
+		.gd_container {max-width:3000px;}
+	</style>
+	
+	
+	
+	<!-- can use relative links on html tags -->
+		<h:form  id="solr_dataform">
+		
+	    <h:inputHidden id="solrInput" value="#{solrInsituBean.solrInput}" />
+	    
+	      <pr:dataTable  id="imagerow" value="#{imageMatrixBean.imageInfoModelArray}" var="row" draggableColumns="true" paginator="true" rows="10"
+		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                 rowsPerPageTemplate="10,50,100">
+                 
+                 
+			    <pr:columns  columnIndexVar="index" var="columnNames" value="#{imageMatrixBean.imageMatrixHeaders}">
+				    <f:facet name="header">
+				    	<h:outputText value="#{columnNames}"/>  <!-- rendered="#{columnNames == 'TS23'}" --> 
+				    </f:facet>
+				    	<h:panelGroup> <!-- rendered="#{columnNames == 'TS23'}" -->
+				    		<h:outputLink value="viewSubmissionDetails.jsf" >    	
+				            	<h:outputText value="#{row[index].accessionId}"/>
+				            	<f:param name="accId" value="#{row[index].accessionId}" />
+				            </h:outputLink>  
+				            <br />
+				            <h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{row[index].stage.toLowerCase()}definition.html">
+				            	<h:outputText value="#{row[index].stage}"/>	
+				            </h:outputLink>
+				            <br />
+				            <h:outputLink value="#{row[index].clickFilePath}">
+				            	<img src="#{row[index].filePath}" />
+				            </h:outputLink>	
+				            <br />
+				            <h:selectBooleanCheckbox id="cb_#{row[index].oid}" value="#{row[index].selected}" rendered="#{row[index] != null}" ></h:selectBooleanCheckbox>	            
+						</h:panelGroup>
+			    </pr:columns>
+		</pr:dataTable> 
+      	</h:form> 
+
+	
+
+
+	</ui:define>	
+</ui:composition>
+</html>

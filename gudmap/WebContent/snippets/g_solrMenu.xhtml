@@ -77,7 +77,7 @@
 	         <h:outputText value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page != '/solr/solrInsitu.xhtml'}"/>
 	         <h:outputText style="color:black" value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page == '/solr/solrInsitu.xhtml'}"/>
 		</h:panelGrid>
-<ui:remove> 
+
 		<h:panelGrid columns="1" style="text-align:center">
 			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrMicroarray.xhtml" >
 				<h:outputText style="color:grey" value="Microarray" rendered="#{solrTreeBean.page != '/solr/solrMicroarray.xhtml'}"/>
@@ -86,6 +86,7 @@
 	         <h:outputText value="(#{solrTreeBean.microarrayCount})" rendered="#{solrTreeBean.page != '/solr/solrMicroarray.xhtml'}"/>
 	         <h:outputText style="color:black" value="(#{solrTreeBean.microarrayCount})" rendered="#{solrTreeBean.page == '/solr/solrMicroarray.xhtml'}"/>
 		</h:panelGrid>
+<ui:remove> 		
 </ui:remove>		        		 
  		<h:panelGrid columns="1" style="text-align:center">
 			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrSequences.xhtml" >

@@ -77,7 +77,7 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 	}
 
 	public void setup() {
-     	assembler=new SolrMicroarrayAssembler();
+//     	assembler=new SolrMicroarrayAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -91,8 +91,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-//        totalRows = assembler.getCount(solrInput, filters);
         totalRows = solrTreeBean.getSolrUtil().getMicroarrayFilteredCount(solrInput, filters);
+//        totalRows = solrTreeBean.getSolrUtil().getSamplesFilteredCount(solrInput, filters);
     	
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
@@ -181,7 +181,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 
-		List<String> ids = solrTreeBean.getSolrUtil().getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
+//		List<String> ids = solrTreeBean.getSolrUtil().getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
+		List<String> ids = solrTreeBean.getSolrUtil().getSamplesData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMicroarrayViewData(ids,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
 
@@ -207,8 +208,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 				model.setOid(doc.getFieldValue("GUDMAP").toString());
 				model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
 				model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
-				model.setStage(doc.getFieldValue("THEILER_STAGE").toString());
-				model.setAge(doc.getFieldValue("STAGE").toString());
+				model.setStage(doc.getFieldValue("STAGE").toString());
+				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 				model.setSource(doc.getFieldValue("PI_NAME").toString());
 				model.setSubmission_date(doc.getFieldValue("DATE").toString());
 				model.setSex(doc.getFieldValue("SEX").toString());

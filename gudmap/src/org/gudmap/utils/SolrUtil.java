@@ -1443,7 +1443,7 @@ public class SolrUtil {
 	        parameters.addFacetPivotField("SERIES_GEO_ID,GUDMAP"); 	        
 	        parameters.addFacetPivotField("GUDMAP,SERIES_GEO_ID"); 
 
-            QueryResponse qr = microarray_server.query(parameters);
+            QueryResponse qr = series_server.query(parameters);
 
             NamedList<List<PivotField>> pivots = qr.getFacetPivot();
 
@@ -1489,7 +1489,7 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);  
 	        
-            QueryResponse qr = microarray_server.query(parameters);
+            QueryResponse qr = series_server.query(parameters);
         	SolrDocumentList sdl = qr.getResults();
                         
     	    for(SolrDocument doc : sdl)
@@ -1557,7 +1557,7 @@ public class SolrUtil {
     //***************************** SAMPLE METHODS *****************************************************
 
     // method to retrieve the Samples count for the results page
-    public int getSamplesCount(String queryString){
+    public int getSamplesFilteredCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1576,9 +1576,18 @@ public class SolrUtil {
 	        parameters.setIncludeScore(true);
 	        parameters.setFacetLimit(1000);
 	        	      	        
-	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
+	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	    
 	        
-            QueryResponse qr = microarray_server.query(parameters);
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//		            if (microarray_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+	       	        
+            QueryResponse qr = samples_server.query(parameters);
             
             NamedList<List<PivotField>> pivots = qr.getFacetPivot();
 
@@ -1600,7 +1609,7 @@ public class SolrUtil {
     }
 
 	// method to retrieve the sample geo ids for the results page
-    public List<String> getSamplesData(String queryString, String column, boolean ascending, int offset, int rows){
+    public List<String> getSamplesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
  
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1622,8 +1631,16 @@ public class SolrUtil {
 	        parameters.setRows(1000);
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
-      
-            QueryResponse qr = microarray_server.query(parameters);
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+	        
+            QueryResponse qr = samples_server.query(parameters);
         	SolrDocumentList sdl = qr.getResults();
                         
     	    for(SolrDocument doc : sdl)
@@ -1700,77 +1717,62 @@ public class SolrUtil {
 
     //***************************** MICROARRAY METHODS *****************************************************
 
-//    public int getGPL81Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL81");
+
+//	// method to retrieve the Microarray count for the results page
+//    public int getMicroarrayCount(String queryString)
+//    {
+//    	return getMicroarrayCount(queryString, null);
 //    }
+//    
+//	// method to retrieve the Microarray count for the results page
+//    public int getMicroarrayCount(String queryString, String filter){
 //
-//    public int getGPL339Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL3391");
-//    }
+//		if (queryString == "" || queryString == null || queryString == "*")
+//			queryString = "*:*";
 //
-//    public int getGPL1261Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL1261");
-//    }
+//    	int count = 0;
 //
-//    public int getGPL6246Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL6246");
+//        try
+//        {
+////       		String cq = checkQuery(microarray_server,q);  
+//
+//            SolrQuery parameters = new SolrQuery();
+//	        parameters.set("q",queryString);
+//	        parameters.setFacet(true);
+//	      	parameters.setRows(0);	      
+//	        parameters.setFacetMinCount(0);
+//	        parameters.setIncludeScore(true);
+//	        parameters.setFacetLimit(1000);
+//	        	      	        
+//	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
+//	        
+//	        if (filter != null){
+//	            String[] fields = filter.split(":");
+//	            if (fields.length > 1){
+//	            	filter = fields[0] + "," + '"' + fields[1] + '"';
+//	            	parameters.addFilterQuery(filter);
+//	            }
+//            }
+//	        
+//            QueryResponse qr = microarray_server.query(parameters);
+//            
+//            NamedList<List<PivotField>> pivots = qr.getFacetPivot();
+//
+//            for(Map.Entry<String, List<PivotField>> entry : pivots ) {
+//	  	          if (entry.getKey().equalsIgnoreCase("SAMPLE_GEO_ID,GUDMAP")){
+//	  	        	  	count = entry.getValue().size();
+//	  	          }
+//            }  
+//        }
+//        catch (SolrServerException e)
+//        {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//			e.printStackTrace();
+//		}        
+//
+//        return count;    
 //    }
-
-	// method to retrieve the Microarray count for the results page
-    public int getMicroarrayCount(String queryString)
-    {
-    	return getMicroarrayCount(queryString, null);
-    }
-    
-	// method to retrieve the Microarray count for the results page
-    public int getMicroarrayCount(String queryString, String filter){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-    	int count = 0;
-
-        try
-        {
-//       		String cq = checkQuery(microarray_server,q);  
-
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-	      	parameters.setRows(0);	      
-	        parameters.setFacetMinCount(0);
-	        parameters.setIncludeScore(true);
-	        parameters.setFacetLimit(1000);
-	        	      	        
-	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
-	        
-	        if (filter != null){
-	            String[] fields = filter.split(":");
-	            if (fields.length > 1){
-	            	filter = fields[0] + "," + '"' + fields[1] + '"';
-	            	parameters.addFilterQuery(filter);
-	            }
-            }
-	        
-            QueryResponse qr = microarray_server.query(parameters);
-            
-            NamedList<List<PivotField>> pivots = qr.getFacetPivot();
-
-            for(Map.Entry<String, List<PivotField>> entry : pivots ) {
-	  	          if (entry.getKey().equalsIgnoreCase("SAMPLE_GEO_ID,GUDMAP")){
-	  	        	  	count = entry.getValue().size();
-	  	          }
-            }  
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}        
-
-        return count;    
-    }
 
     public int getMicroarrayFilteredCount(String queryString, HashMap<String,String> filters){
 
@@ -1822,111 +1824,111 @@ public class SolrUtil {
         return count;    
     }
     
-	// method to retrieve the Platform count for the results page
-    public int getPlatformCount(String queryString){
+//	// method to retrieve the Platform count for the results page
+//    public int getPlatformCount(String queryString){
+//
+//		return getMicroarrayCount(queryString);
+//    }
+//
+//    public int getMicroarrayStageCount(String queryString){
+//
+//		return getMicroarrayCount(queryString);
+//    }
 
-		return getMicroarrayCount(queryString);
-    }
-
-    public int getMicroarrayStageCount(String queryString){
-
-		return getMicroarrayCount(queryString);
-    }
-
-	// method to retrieve the Microarray count for the results page
-    public List<Integer> getMicroarrayStages(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-   	
-    	
-    	List<Integer> microarrayStages = new ArrayList<Integer>();
-		for (int i= 0; i < 12; i++){
-			microarrayStages.add(0);
-		}
-
-        try
-        {
-//       		String cq = checkQuery(microarray_server,q);  
-
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-	      	parameters.setRows(0);	      
-	        parameters.setFacetMinCount(0);
-	        parameters.setIncludeScore(true);
-	        parameters.setFacetLimit(1000);
-	        	      	        
-	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
-	        
-            QueryResponse qr = microarray_server.query(parameters);
-            
-            NamedList<List<PivotField>> pivots = qr.getFacetPivot();
-
-            for (int i = 17; i < 29; i ++){                
-		        parameters.addFilterQuery("STAGE:ts"+i);
-	            qr = microarray_server.query(parameters);
-	            pivots = qr.getFacetPivot();
-
-	            for(Map.Entry<String, List<PivotField>> entry : pivots ) {
-		  	          if (entry.getKey().equalsIgnoreCase("SAMPLE_GEO_ID,GUDMAP")){
-		  	        	  int count = entry.getValue().size();
-		  	        	  microarrayStages.set(i-17, count);
-		  	          }
-	            }         	
-	            parameters.removeFilterQuery("STAGE:ts"+i);
-            }
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}        
-        return microarrayStages;    
-    }
+//	// method to retrieve the Microarray count for the results page
+//    public List<Integer> getMicroarrayStages(String queryString){
+//
+//		if (queryString == "" || queryString == null || queryString == "*")
+//			queryString = "*:*";
+//   	
+//    	
+//    	List<Integer> microarrayStages = new ArrayList<Integer>();
+//		for (int i= 0; i < 12; i++){
+//			microarrayStages.add(0);
+//		}
+//
+//        try
+//        {
+////       		String cq = checkQuery(microarray_server,q);  
+//
+//            SolrQuery parameters = new SolrQuery();
+//	        parameters.set("q",queryString);
+//	        parameters.setFacet(true);
+//	      	parameters.setRows(0);	      
+//	        parameters.setFacetMinCount(0);
+//	        parameters.setIncludeScore(true);
+//	        parameters.setFacetLimit(1000);
+//	        	      	        
+//	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
+//	        
+//            QueryResponse qr = microarray_server.query(parameters);
+//            
+//            NamedList<List<PivotField>> pivots = qr.getFacetPivot();
+//
+//            for (int i = 17; i < 29; i ++){                
+//		        parameters.addFilterQuery("STAGE:ts"+i);
+//	            qr = microarray_server.query(parameters);
+//	            pivots = qr.getFacetPivot();
+//
+//	            for(Map.Entry<String, List<PivotField>> entry : pivots ) {
+//		  	          if (entry.getKey().equalsIgnoreCase("SAMPLE_GEO_ID,GUDMAP")){
+//		  	        	  int count = entry.getValue().size();
+//		  	        	  microarrayStages.set(i-17, count);
+//		  	          }
+//	            }         	
+//	            parameters.removeFilterQuery("STAGE:ts"+i);
+//            }
+//        }
+//        catch (SolrServerException e)
+//        {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//			e.printStackTrace();
+//		}        
+//        return microarrayStages;    
+//    }
     
-    public ArrayList<String> getTop5Microarray(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-		ArrayList<String> gumapIds = new ArrayList<String>();                       
-        try
-        {
-
-//    		String cq = checkQuery(microarray_server,q);        	
-			   		    		
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-            parameters.setRows(50);
-
-	      	parameters.addField("GUDMAP");
-	        
-            QueryResponse qr = microarray_server.query(parameters);                                 
-            SolrDocumentList sdl = qr.getResults();
-            String id = null;
-    	    for(SolrDocument doc : sdl)
-    	    {
-    	    	// remove duplicate GUDMAP entries
-    	    	id = doc.getFieldValue("GUDMAP").toString();
-    	    	id = "GUDMAP:" + doc.getFieldValue("GUDMAP").toString();
-    	    	if (!gumapIds.contains(id)){
-    	    		gumapIds.add(id);
-	    		if (gumapIds.size() == 5)
-	    			break;
-    	    	}    	    	
-    		}
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}  
-       
-    	return gumapIds;    
-    }
+//    public ArrayList<String> getTop5Microarray(String queryString){
+//
+//		if (queryString == "" || queryString == null || queryString == "*")
+//			queryString = "*:*";
+//
+//		ArrayList<String> gumapIds = new ArrayList<String>();                       
+//        try
+//        {
+//
+////    		String cq = checkQuery(microarray_server,q);        	
+//			   		    		
+//            SolrQuery parameters = new SolrQuery();
+//	        parameters.set("q",queryString);
+//            parameters.setRows(50);
+//
+//	      	parameters.addField("GUDMAP");
+//	        
+//            QueryResponse qr = microarray_server.query(parameters);                                 
+//            SolrDocumentList sdl = qr.getResults();
+//            String id = null;
+//    	    for(SolrDocument doc : sdl)
+//    	    {
+//    	    	// remove duplicate GUDMAP entries
+//    	    	id = doc.getFieldValue("GUDMAP").toString();
+//    	    	id = "GUDMAP:" + doc.getFieldValue("GUDMAP").toString();
+//    	    	if (!gumapIds.contains(id)){
+//    	    		gumapIds.add(id);
+//	    		if (gumapIds.size() == 5)
+//	    			break;
+//    	    	}    	    	
+//    		}
+//        }
+//        catch (SolrServerException e)
+//        {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//			e.printStackTrace();
+//		}  
+//       
+//    	return gumapIds;    
+//    }
 
     // method to retrieve the Microarray data for the results page
     public List<String> getMicroarrayData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
