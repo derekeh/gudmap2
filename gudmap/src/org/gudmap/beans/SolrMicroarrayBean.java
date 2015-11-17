@@ -181,8 +181,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 
-//		List<String> ids = solrTreeBean.getSolrUtil().getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
-		List<String> ids = solrTreeBean.getSolrUtil().getSamplesData(solrInput,filterlist,sortColumn,ascending,offset,num);
+		List<String> ids = solrTreeBean.getSolrUtil().getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
+//		List<String> ids = solrTreeBean.getSolrUtil().getSamplesData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMicroarrayViewData(ids,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
 

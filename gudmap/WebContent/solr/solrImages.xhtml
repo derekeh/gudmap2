@@ -15,9 +15,6 @@
 	    Solr Images
 	</ui:define>
 	
-
-
-	
 	
 <!-- 	comment out the following section if you don't want the solr menu displayed -->
 	<ui:define name="solr">	
@@ -33,48 +30,72 @@
 		
 	
 	<ui:define name="content">
-	<f:metadata>
-		<f:viewParam name="gene" value="sessionBean.geneParam" />
-	</f:metadata>
-	<style>
-		.gd_container {max-width:3000px;}
-	</style>
+
+	<h:outputStylesheet library="css" name="gallerie.css"  />
+	<h:outputStylesheet library="css" name="gallerie-effects.css"  />
+	<h:outputScript library="scripts" name="jquery.gallerie.js"></h:outputScript>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#gallery').gallerie(
+    	wrapAround: true;
+	);
+});
+</script>	
 	
+<style>
+	body {
+		background-color: black;
+	}
 	
+	#gallery {
+		margin-left: auto;
+		margin-right: auto;
+	}
 	
+	#gallery > a {
+		margin: 15px;
+	}
+	
+	#gallery > a img {
+		border: 2px solid #fff;
+		border-radius: 5px;
+		opacity: 0.9;
+	
+		transition: all 500ms;
+		-webkit-transition: all 500ms;
+		-moz-transition: all 500ms;
+		-ms-transition: all 500ms;
+		-o-transition: all 500ms;
+		z-index: 1;
+		position: relative;
+	}
+
+	#gallery > a img:hover {
+		border-color: yellow;
+		opacity: 1.0;
+		transform: scale(1.5);
+		-webkit-transform: scale(1.5);
+		-moz-transform: scale(1.5);
+		-ms-transform: scale(1.5);
+		-o-transform: scale(1.5);
+		z-index: 10;
+	}</style>	
 	<!-- can use relative links on html tags -->
-		<h:form  id="solr_dataform">
-		
-	    <h:inputHidden id="solrInput" value="#{solrInsituBean.solrInput}" />
+
+<div id="gallery">
+	<h:form  id="solr_dataform">
+
+	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
+	
+	    	<a href="#{u.clickFilePath}"><img src="#{u.filePath}"/></a>
+	    </c:forEach>
 	    
-	      <pr:dataTable  id="imagerow" value="#{imageMatrixBean.imageInfoModelArray}" var="row" draggableColumns="true" paginator="true" rows="10"
-		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                 rowsPerPageTemplate="10,50,100">
-                 
-                 
-			    <pr:columns  columnIndexVar="index" var="columnNames" value="#{imageMatrixBean.imageMatrixHeaders}">
-				    <f:facet name="header">
-				    	<h:outputText value="#{columnNames}"/>  <!-- rendered="#{columnNames == 'TS23'}" --> 
-				    </f:facet>
-				    	<h:panelGroup> <!-- rendered="#{columnNames == 'TS23'}" -->
-				    		<h:outputLink value="viewSubmissionDetails.jsf" >    	
-				            	<h:outputText value="#{row[index].accessionId}"/>
-				            	<f:param name="accId" value="#{row[index].accessionId}" />
-				            </h:outputLink>  
-				            <br />
-				            <h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{row[index].stage.toLowerCase()}definition.html">
-				            	<h:outputText value="#{row[index].stage}"/>	
-				            </h:outputLink>
-				            <br />
-				            <h:outputLink value="#{row[index].clickFilePath}">
-				            	<img src="#{row[index].filePath}" />
-				            </h:outputLink>	
-				            <br />
-				            <h:selectBooleanCheckbox id="cb_#{row[index].oid}" value="#{row[index].selected}" rendered="#{row[index] != null}" ></h:selectBooleanCheckbox>	            
-						</h:panelGroup>
-			    </pr:columns>
-		</pr:dataTable> 
-      	</h:form> 
+    </h:form>
+   	<h:form id="pagingform"> 
+   	</h:form>
+</div>
 
 	
 

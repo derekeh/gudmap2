@@ -6,6 +6,7 @@ public class ImageDetailModel extends ImageInfoModel{
 	
 	 protected String geneSymbol;
 	  protected String geneName;
+	  protected String mgiGeneId;
 	  protected String age;
 	  protected ArrayList<String[]> allImageNotesInSameSubmission;
 	  protected ArrayList<String> allPublicImagesInSameSubmission;
@@ -24,6 +25,14 @@ public class ImageDetailModel extends ImageInfoModel{
 
      public void setGeneName(String geneName) {
 		this.geneName = geneName;
+	  }
+
+     public String getMgiGeneId() {
+		return mgiGeneId;
+     }
+
+     public void setMgiGeneId(String mgiGeneId) {
+		this.mgiGeneId = mgiGeneId;
 	  }
 
 	  public String getAge() {
