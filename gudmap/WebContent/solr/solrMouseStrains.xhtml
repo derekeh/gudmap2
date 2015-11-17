@@ -29,34 +29,11 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-<<<<<<< HEAD
+		
+	
 
-		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters}" var="filter">
-				<h:panelGrid columns="2" >	
-					<h:outputText value="#{filter.key}:#{filter.value} " />	
-		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :dataform :pagingform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-				</h:panelGrid>
-		    </c:forEach>  
-		</h:panelGrid>    
-	
-		
-		<h:panelGrid columns="3">
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
-			<h:form id="solr_title">		
-			<h:outputText value="#{solrMouseStrainsBean.title}" styleClass="db_bold" />   
-			</h:form>	
-		</h:panelGrid>
-		
-	
-		<h:form id="dataform">
-=======
 		<h:form id="solr_dataform">
->>>>>>> gudmap_Oct1
+
 
 	    <h:inputHidden id="solrInput" value="#{solrMouseStrainsBean.solrInput}" />
 	    
