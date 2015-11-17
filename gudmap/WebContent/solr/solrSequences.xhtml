@@ -12,70 +12,53 @@
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
-	    Solr Microarray
+	    Solr Sequences
 	</ui:define>
+	
 <!-- 	comment out the following section if you don't want the solr menu displayed -->
-	<ui:define name="solr">
-		<ui:include src="/snippets/g_solrMenu.xhtml"/>
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
 	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-<ui:remove>		
-		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters}" var="filter">
-				<h:panelGrid columns="2" >	
-					<h:outputText value="#{filter.key}:#{filter.value} " />	
-		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :dataform  :pagingform:solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-				</h:panelGrid>
-		    </c:forEach>  
-		</h:panelGrid>    
+	
 
-		<h:panelGrid columns="3">
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
-			<h:form id="solr_title">		
-			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-			<h:outputText value="#{solrMicroarrayBean.title}" styleClass="db_bold" />   
-			</h:form>	
-		</h:panelGrid>
-</ui:remove>	
-
-		<h:form id="dataform">
-	    <h:inputHidden id="solrInput" value="#{solrMicroarrayBean.solrInput}" />
-	     <h:dataTable value="#{solrMicroarrayBean.dataList}" var="u"
+		<h:form id="solr_dataform">
+	    <h:inputHidden id="solrInput" value="#{solrSequencesBean.solrInput}" />
+	    
+	    
+	     <h:dataTable value="#{solrSequencesBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row"
     		>
  
-    		<h:column rendered="#{microarrayParamBean.oidcol == true}">
-    			<f:facet name="header">
-    				<h:commandLink value="OID" actionListener="#{solrMicroarrayBean.sort}">
-                         <f:attribute name="sortField" value="GUDMAP" />
-                    </h:commandLink>
-    			</f:facet>
-    				#{u.oid}
-    		</h:column>
-    		
+    	    		
     		<h:column rendered="#{paramBean.mic_gudmapaccessioncol == true}">
     			<f:facet name="header">
-    				GUDMAP Entry Details 
-    			</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewArraySubmissionDetails.xhtml">
+    				<h:commandLink id="gudmapaccessionlink" value="GUDMAP Entry Details" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="GUDMAP" />
+                         <f:ajax execute="@this gudmapaccessionlink" render="@form"></f:ajax>
+                    </h:commandLink>
+    			</f:facet>    				
+    			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSeqSubmissionDetails.xhtml">
 						<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
-						<f:param name="isArray" value="true"></f:param>
+						<f:param name="isArray" value="false"></f:param>
 				</h:commandLink>
     		</h:column>
     		
- 
     		<h:column rendered="#{paramBean.mic_geoSampleIDcol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="geosamplelink" value="GEO Sample ID" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="NATURAL_SORT(geo_sample_id)" />
+    				<h:commandLink id="geosamplelink" value="GEO Sample ID" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SAMPLE_GEO_ID" />
                          <f:ajax execute="@this geosamplelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
@@ -86,8 +69,8 @@
  
     		<h:column rendered="#{paramBean.mic_geoSeriesIDcol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="geoserieslink" value="GEO Series ID" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="NATURAL_SORT(geo_series_id)" />
+    				<h:commandLink id="geoserieslink" value="GEO Series ID" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SERIES_GEO_ID" />
                          <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
@@ -98,20 +81,32 @@
     		
     		<h:column rendered="#{paramBean.mic_sourcecol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="source" />
+    				<h:commandLink id="sourcelink" value="Source" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SOURCE" />
                           <f:ajax execute="@this sourcelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
     				#{u.source}
     		</h:column>
     		
+    		<h:column rendered="#{paramBean.mic_samplelibrarystrategycol == true}">
+    			<f:facet name="header">
+    				<h:commandLink id="librarystrategylink" value="Library Strategy" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="LIBRARY_STRATEGY" />
+                         <f:ajax execute="@this librarystrategylink" render="@form"></f:ajax>
+                    </h:commandLink>
+				</f:facet>
+				#{u.libraryStrategy}
+    				
+    		</h:column>
+    		
     		<h:column rendered="#{paramBean.mic_stagecol == true}">
     			<f:facet name="header">
-    				<h:commandLink id="stagelink" value="Stage" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="stage" />
+    				<h:commandLink id="stagelink" value="Stage" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="STAGE" />
                          <f:ajax execute="@this stagelink" render="@form"></f:ajax>
-                    </h:commandLink>  				
+                    </h:commandLink>
+    				
 				</f:facet>
     			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
 				 	<h:outputText value="#{u.stage}" />
@@ -121,7 +116,10 @@
     		
     		<h:column rendered="#{paramBean.mic_agecol == true}">
     			<f:facet name="header">
-    				Age
+    				<h:commandLink id="agelink" value="Age" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="AGE" />
+                         <f:ajax execute="@this agelink" render="@form"></f:ajax>
+                    </h:commandLink>
 				</f:facet>
     				#{u.age}
     		</h:column>
@@ -135,7 +133,10 @@
     		
     		<h:column rendered="#{paramBean.mic_sexcol == true}">
     			<f:facet name="header">
-    				Sex
+    				<h:commandLink id="sexlink" value="Sex" actionListener="#{solrSequencesBean.sort}">
+                         <f:attribute name="sortField" value="SEX" />
+                         <f:ajax execute="@this sexlink" render="@form"></f:ajax>
+                    </h:commandLink>
 				</f:facet>
     				#{u.sex}
     		</h:column>
@@ -166,50 +167,49 @@
     				Component(s) Sampled
 				</f:facet>
     				#{u.sampleComponents}
-    		</h:column>
-    		
-  
+    		</h:column> 
  		</h:dataTable> 
- 		</h:form>
+	</h:form>	
+	
+	<h:form id="pagingform">  
  		
- 		<h:form id="pagingform">
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
-                <h:commandButton id="firstbutton" value="first" action="#{solrMicroarrayBean.pageFirst}"
-                    disabled="#{solrMicroarrayBean.firstRow == 0}" >
+                <h:commandButton id="firstbutton" value="first" action="#{solrSequencesBean.pageFirst}"
+                    disabled="#{solrSequencesBean.firstRow == 0}" >
                     <f:ajax execute="@this firstbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="prevbutton" value="prev" action="#{solrMicroarrayBean.pagePrevious}"
-                    disabled="#{solrMicroarrayBean.firstRow == 0}" >
+                <h:commandButton id="prevbutton" value="prev" action="#{solrSequencesBean.pagePrevious}"
+                    disabled="#{solrSequencesBean.firstRow == 0}" >
                     <f:ajax execute="@this prevbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="nextbutton" value="next" action="#{solrMicroarrayBean.pageNext}"
-                    disabled="#{solrMicroarrayBean.firstRow + solrMicroarrayBean.rowsPerPage >= solrMicroarrayBean.totalRows}" >
+                <h:commandButton id="nextbutton" value="next" action="#{solrSequencesBean.pageNext}"
+                    disabled="#{solrSequencesBean.firstRow + solrSequencesBean.rowsPerPage >= solrSequencesBean.totalRows}" >
                     <f:ajax execute="@this nextbutton" render="@form" />
                 </h:commandButton>
-                <h:commandButton id="lastbutton" value="last" action="#{solrMicroarrayBean.pageLast}"
-                    disabled="#{solrMicroarrayBean.firstRow + solrMicroarrayBean.rowsPerPage >= solrMicroarrayBean.totalRows}" >
+                <h:commandButton id="lastbutton" value="last" action="#{solrSequencesBean.pageLast}"
+                    disabled="#{solrSequencesBean.firstRow + solrSequencesBean.rowsPerPage >= solrSequencesBean.totalRows}" >
                     <f:ajax execute="@this lastbutton" render="@form" />
                 </h:commandButton>
-                <h:outputText value="Page #{solrMicroarrayBean.currentPage} / #{solrMicroarrayBean.totalPages}" />
+                <h:outputText value="Page #{solrSequencesBean.currentPage} / #{solrSequencesBean.totalPages}" />
                </h:panelGrid>
 			</h:panelGroup>
 			
 			
 			<h:panelGroup>
-                <t:dataList value="#{solrMicroarrayBean.pages}" var="page">
-                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrMicroarrayBean.page}"
-                        rendered="#{page != solrMicroarrayBean.currentPage}" />
+                <t:dataList value="#{solrSequencesBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrSequencesBean.page}"
+                        rendered="#{page != solrSequencesBean.currentPage}" />
                     <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-                        rendered="#{page == solrMicroarrayBean.currentPage}" />
+                        rendered="#{page == solrSequencesBean.currentPage}" />
                 </t:dataList>
            </h:panelGroup>
            <h:panelGroup>
 				<h:panelGrid columns="4">
 	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
-	                <h:inputText id="rowsPerPage" value="#{solrMicroarrayBean.rowsPerPage}" size="3" maxlength="3" />
-	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrMicroarrayBean.pageFirst}" >
+	                <h:inputText id="rowsPerPage" value="#{solrSequencesBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrSequencesBean.pageFirst}" >
 	                	<f:ajax execute="@form" render="@form" />
 	                </h:commandButton>               
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
@@ -217,13 +217,12 @@
            </h:panelGroup>
          </h:panelGrid>    
 		</h:form> 
-		
-		<h:form id="gotoform">
+		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
-			<h:inputText id="gotopage" value="#{solrMicroarrayBean.gotopage}" />
+			<h:inputText id="gotopage" value="#{solrSequencesBean.gotopage}" />
 		</h:form> 	
 		
-	<ui:include src="/snippets/g_micSampleCols.xhtml"></ui:include>
+	<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
 	</ui:define>			
 
 </ui:composition>

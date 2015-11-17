@@ -24,12 +24,17 @@ import javax.inject.Named;
 
 import javax.servlet.ServletContext;
 
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.assemblers.SolrGeneStripAssembler;
+import org.gudmap.globals.Globals;
 import org.gudmap.impl.PagerImpl;
+import org.gudmap.models.GeneStripModel;
 import org.gudmap.models.MasterTableInfo;
 import org.gudmap.models.SolrInsituTableBeanModel;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 import org.json.simple.JSONObject;
+
 
 
 
@@ -44,6 +49,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
+    private ArrayList<String> geneIds;
     
     @Inject
    	private ParamBean paramBean;
@@ -66,7 +72,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public SolrGeneStripBean() {
-    	super(20,10,"RELEVANCE",true);
+    	super(5,10,"RELEVANCE",true);
     	setup();
     }
     
@@ -112,12 +118,12 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
-        totalRows = assembler.getCount(solrInput, "");
     	filters = solrFilter.getFilters();
+        totalRows = solrTreeBean.getSolrUtil().getGeneCount(solrInput, filters);
     	
-     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
 
-   		ArrayList<String> geneIds = assembler.getGeneIds();         		
+   		ArrayList<String> geneIds = getGeneIds();         		
 
 	   	for (String geneId : geneIds){
 	   		createJSONFile(geneId);
@@ -147,7 +153,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
  //   	sortField = "RELEVANCE";
     	loadDataList();
 //    	paramBean.resetValues();
-    	return "solrGeneStripTablePage";
+    	return "solrGeneStrip";
     }
 
     public void resetAll() {
@@ -188,8 +194,10 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		try{
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String path = ctx.getRealPath("/");
-				
+			
 			path += "/resources/scripts/genestrip_" + geneId + ".json";
+//			geneId = geneId.replaceAll(":", "_");
+//			String path = "/export/data0/bernardh/MAWWW/Public/html/AppFiles/heatmaps/genestrip_" + geneId + ".json";
 			File f = new File(path);
 			if (!f.exists()){
 				FileWriter writer = new FileWriter(f);
@@ -368,5 +376,66 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     public boolean getShowPageDetails(){
     	return showPageDetails;
     }
+
+	public List<GeneStripModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+
+		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
+					
+    	SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getGudmapGenes(solrInput, filterlist, sortColumn,ascending,offset,num);
+		if (sdl==null){
+			return null;
+		}
+		
+		
+		list = this.formatTableData(sdl);
+
+		return list;
+	}
+	
+	public ArrayList<String> getGeneIds(){
+
+		return geneIds;
+	}
+	
+	public List<GeneStripModel> formatTableData(SolrDocumentList sdl){
+		
+		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
+		GeneStripModel model = null;
+		geneIds = new ArrayList<String>();
+		
+		for(SolrDocument doc : sdl) { 
+
+			String insituExpression = "";			
+			if (doc.getFieldValue("PRESENT").toString() != "")
+				insituExpression = "present";
+			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
+				insituExpression = "uncertain";
+			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
+				insituExpression = "not detected";
+			
+			model = new GeneStripModel();
+
+			
+
+			String geneId = doc.getFieldValue("MGI_GENE_ID").toString();		
+			String gene = doc.getFieldValue("GENE").toString();		
+
+			model.setGeneSymbol(gene);
+			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
+			model.setGene_id(geneId);
+			model.setMgiId(geneId);
+			model.setExpressionProfile(assembler.buildExpressionProfile(gene,geneId));
+			model.setMicroarrayProfile(assembler.buildMicroarrayProfile(geneId));
+			model.setImageUrl(assembler.getRepresentativeImage(geneId));
+
+			list.add(model);
+			
+			geneIds.add(geneId);
+		
+		}
+			
+		return list;
+	 }	
+    
     
 }

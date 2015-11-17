@@ -14,12 +14,22 @@
 	<ui:define name="title">
 	    Solr Mouse Strains
 	</ui:define>
-<!-- 	comment out the following section if you don't want the solr flyin displayed -->
-	<ui:define name="solr">
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
 	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+<<<<<<< HEAD
 
 		<ui:include src="/snippets/g_solrSearch.xhtml"/>
 		
@@ -44,6 +54,9 @@
 		
 	
 		<h:form id="dataform">
+=======
+		<h:form id="solr_dataform">
+>>>>>>> gudmap_Oct1
 
 	    <h:inputHidden id="solrInput" value="#{solrMouseStrainsBean.solrInput}" />
 	    
@@ -68,8 +81,8 @@
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
     			</f:facet>
-    				#{u.gene}
-    		</h:column>
+    			#{u.gene}
+     		</h:column>
  
     		<h:column>
     			<f:facet name="header">
@@ -137,9 +150,9 @@
     		
   
  		</h:dataTable> 
-		</h:form>
-		
-  		<h:form id="pagingform">
+	</h:form>	
+	<h:form id="pagingform">  
+
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">

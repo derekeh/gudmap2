@@ -23,10 +23,24 @@
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.accordion.min.css" />
 		<h:outputStylesheet library="css" name="override_vertical.css" /> 
 		
+		<!-- use this script to simulate RETURN on input fields -->
+		<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='homeform:solr_search')
+				                	document.getElementById('homeform:il_gene_go').click();
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		//]]>
+		</script>
 		
 	 <div id="gd_dbstats">
     <h:form id="homeform">
-    	<h:inputText p:placeholder="Search GUDMAP..." styleClass="gd_input_large" />
+    	<h:inputText id="solr_search" p:placeholder="Search GUDMAP..." styleClass="gd_input_large" value="#{solrTreeBean.solrInput}"/>
     </h:form>
     <br />
     <h:outputText styleClass="gd_webfont_title" value="GUDMAP DATA" />

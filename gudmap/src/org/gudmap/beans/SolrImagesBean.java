@@ -9,26 +9,39 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 //import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+//import javax.faces.context.FacesContext;
+
+
+
 
 
 
 
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-//import org.gudmap.assemblers.SolrMouseStrainsAssembler;
+import org.gudmap.dao.GeneDetailsDao;
+import org.gudmap.globals.Globals;
 import org.gudmap.impl.PagerImpl;
-import org.gudmap.models.MouseStrainsTableBeanModel;
+import org.gudmap.models.SolrInsituTableBeanModel;
+import org.gudmap.models.submission.ImageDetailModel;
 
-@Named (value="solrMouseStrainsBean")
+
+
+
+
+
+@Named (value="solrImagesBean")
 @SessionScoped
-public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
+public class SolrImagesBean extends PagerImpl implements Serializable  {
 	
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-//	private SolrMouseStrainsAssembler assembler;
+//	private SolrInsituAssembler assembler;
+	private GeneDetailsDao geneDetailsDao;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -45,11 +58,13 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 	private String solrInput;
 	private HashMap<String,String> filters;
 	private boolean showPageDetails = true;
+   
+	private String geneId;
     
     // Constructors -------------------------------------------------------------------------------
 
-    public SolrMouseStrainsBean() {
-    	super(10,10,"RELEVANCE",true);
+    public SolrImagesBean() {
+    	super(1000,10,"RELEVANCE",true);
     	setup();
     }
     
@@ -75,27 +90,29 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 		refresh();
 		return solrInput;
 	}
-	
-   public void setup() {
-//     	assembler=new SolrMouseStrainsAssembler();
-     }
+    
+    public void setup() {
+//    	assembler=new SolrInsituAssembler();
+    	geneDetailsDao = new GeneDetailsDao();
+        selectedItems = new ArrayList<String>(); 
+    }
     
     @PostConstruct
     public void setRemoteWhereclause(){
     	paramBean.setWhereclause(whereclause);
-    	solrTreeBean.getSolrInput();
-    }
+    	solrInput = solrTreeBean.getSolrInput();
+     }
 
     
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
 //        totalRows = assembler.getCount(solrInput, filters);
-        totalRows = solrTreeBean.getSolrUtil().getMouseStrainsCount(solrInput, filters);
-   	
+        totalRows = solrTreeBean.getSolrUtil().getImagesCount(solrInput,filters);
+    	
 //     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
-       // Set currentPage, totalPages and pages.
+        // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
         int pagesLength = Math.min(pageRange, totalPages);
@@ -113,21 +130,28 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
         	showPageDetails = true;
         else
         	showPageDetails = false;
-    }
+   }
 
     public String refresh(){
  //   	sortField = "RELEVANCE";
     	loadDataList();
-//   	paramBean.resetValues();
-    	return "solrMouseStrains";
+//    	paramBean.resetValues();
+    	return "solrInsitu";
     }
 
+    public void resetAll() {
+		paramBean.resetAll();
+//		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
+		//paramBean.setFocusGroup("reset");
+		loadDataList();
+	}
+    
     public String checkboxSelections() { 
     	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
     	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
-    		if (((MouseStrainsTableBeanModel) dataList.get(i)).getSelected()) { 
-    			selectedItems.add(((MouseStrainsTableBeanModel) dataList.get(i)).getOid()); 
+    		if (((SolrInsituTableBeanModel) dataList.get(i)).getSelected()) { 
+    			selectedItems.add(((SolrInsituTableBeanModel) dataList.get(i)).getOid()); 
     		} 
     	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
     	return "result";
@@ -136,69 +160,69 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     public void checkAll() { 
     	areAllChecked=(areAllChecked)?false:true;
     	for (int i=0;i<dataList.size();i++) { 
-    		((MouseStrainsTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
+    		((SolrInsituTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
     }
-
     
-    public String getTitle(){
-    	String str="Mousestrains Search Results ";
-    	filters = solrFilter.getFilters();
-    	if (filters == null){
-	    	if (solrInput != null && solrInput != "")
-	    		str += "(" + solrTreeBean.getMouseStrainsCount() + ") > " + solrInput;
-	    	else
-	    		str += "(" + solrTreeBean.getMouseStrainsCount() + ") > ALL";
-    	}
-    	else{
-        	if (solrInput != null && solrInput != "")
-        		str += "(" + solrTreeBean.getMouseStrainsCount(filters) + ") > " + solrInput;
-        	else
-        		str += "(" + solrTreeBean.getMouseStrainsCount(filters) + ") > ALL";
-    		
+    public String getSelectedItemstoString(){
+    	String str="";
+    	for(String s : selectedItems){
+    		str+=s + ", ";
     	}
     	return str;
-    }  
+    }
+    
+    public String getTitle(){
+    	String str="Images Search Results ";
+    	filters = solrFilter.getFilters();
+    	return str;
+    }
     
     public boolean getShowPageDetails(){
     	return showPageDetails;
     }
     
-	public List<MouseStrainsTableBeanModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<ImageDetailModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
-		List<MouseStrainsTableBeanModel> list = new ArrayList<MouseStrainsTableBeanModel>();
+		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();
 
-		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMouseStrainsData(solrInput,filterlist,sortColumn,ascending,offset,num);
+    		
+		SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getImagesData(solrInput, filterlist, sortColumn,ascending,offset,num);
+		if (sdl==null){
+			return null;
+		}
 		list = formatTableData(sdl);
+			
+
 
 		return list;
 	}
 
-	private List<MouseStrainsTableBeanModel> formatTableData(SolrDocumentList sdl){
+	private List<ImageDetailModel> formatTableData(SolrDocumentList sdl){
 		
-		List<MouseStrainsTableBeanModel> list = new ArrayList<MouseStrainsTableBeanModel>();
-		MouseStrainsTableBeanModel model = null;
-		
+		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();
+		ImageDetailModel model = null;
 		int rowNum = sdl.size();
 		
 		for(int i=0; i<rowNum; i++) { 
 			SolrDocument doc = sdl.get(i);
 
-			model = new MouseStrainsTableBeanModel();
-			model.setOid(doc.getFieldValue("ID").toString());
-			model.setGene(doc.getFieldValue("GENE").toString());
-			model.setReporterAllele(doc.getFieldValue("REPORTER_ALLELE").toString());
-			model.setAlleleType(doc.getFieldValue("ALLELE_TYPE").toString());
-			model.setAlleleVerification(doc.getFieldValue("ALLELE_VER").toString());
-			model.setAlleleCharacterisation(doc.getFieldValue("ALLELE_CHAR").toString());
-			model.setStrainAvailability(doc.getFieldValue("STRAIN_AVA").toString());
-			model.setOrgan(doc.getFieldValue("ORGAN").toString());
-			model.setCellType(doc.getFieldValue("CELL_TYPE").toString());
+			
+			model = new ImageDetailModel();
+			model.setAccessionId(doc.getFieldValue("GUDMAP_ID").toString());
+			model.setGeneSymbol(doc.getFieldValue("GENE").toString());
+			model.setSpecimenType(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
+			model.setStage(doc.getFieldValue("STAGE").toString());
+			model.setFilePath(doc.getFieldValue("THUMBNAIL_PATH").toString());
+			model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
+			model.setAssayType(doc.getFieldValue("ASSAY_TYPE").toString());
+			model.setMgiGeneId(doc.getFieldValue("MGI_GENE_ID").toString());
 			
 			list.add(model);			
 		}
-		
+
+			
 		return list;
 	}	
-   
+
 }

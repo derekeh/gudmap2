@@ -20,9 +20,10 @@ public class SolrMicroarrayAssembler {
 		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, String solrFilter) {
+	public int getCount(String solrInput, HashMap<String,String> filterlist) {
 
-		int n = solrUtil.getSamplesCount(solrInput);
+//		int n = solrUtil.getSamplesCount(solrInput);
+		int n = solrUtil.getMicroarrayFilteredCount(solrInput,filterlist);
 
 		return n;
 	}
@@ -77,8 +78,8 @@ public class SolrMicroarrayAssembler {
 				model.setOid(doc.getFieldValue("GUDMAP").toString());
 				model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
 				model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
-				model.setStage(doc.getFieldValue("THEILER_STAGE").toString());
-				model.setAge(doc.getFieldValue("STAGE").toString());
+				model.setStage(doc.getFieldValue("STAGE").toString());
+				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 				model.setSource(doc.getFieldValue("PI_NAME").toString());
 				model.setSubmission_date(doc.getFieldValue("DATE").toString());
 				model.setSex(doc.getFieldValue("SEX").toString());

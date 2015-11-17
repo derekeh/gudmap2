@@ -496,8 +496,10 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
 	   .style("position", "absolute")
 	   .style("visibility", "hidden");
 
-	   var url =  "../resources/scripts/genestrip_" + geneid + ".json"
-
+	   var url =  "../resources/scripts/genestrip_" + geneid + ".json";
+//	   var url =  "localhost:8080/MAWWW/Public/html/AppFiles/heatmaps/genestrip_" + geneId + ".json";
+//	   geneId = geneId.replace(":","_");
+// 	   var url ="http://glenelgin.hgu.mrc.ac.uk/Appfiles/heatmaps/genestrip_" + geneId + ".json";
     //==================================================
     d3.json(url, function(error, data) {
 

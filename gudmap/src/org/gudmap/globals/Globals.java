@@ -78,6 +78,8 @@ public class Globals {
     public static final String applicationRoot="/gudmap/";
     public static final String imagePath="/opt/MAWWW/Public/html/Appfiles/images/";
     public static final String documentPath="/opt/MAWWW/Public/html/Appfiles/docs/";
+    public static final String heatmapPath="/opt/MAWWW/Public/html/Appfiles/heatmaps/";
+
     
 	
 	public static void closeQuietly(Connection connection, PreparedStatement statement, ResultSet resultSet) {

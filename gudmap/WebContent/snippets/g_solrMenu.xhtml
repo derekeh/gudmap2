@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	 xmlns:pr="http://primefaces.org/ui" >
+
+
+		<!-- use this script to simulate RETURN on input field -->
+		<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='solr_menuform:solr_input')
+				                	document.getElementById('solr_menuform:solr_search_btn').click();
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		//]]>
+		</script>
+
+	<div id="gd_solrmenu">
+	<h:form id="solr_menuform" >
+	<h:panelGrid columns="14">
+	
+<ui:remove>
+	<input class="slide-input" id="toggle" type="checkbox"/>
+
+			<pr:commandLink id="solrFilterBtn"  actionListener="#{solrFilter.refresh}">
+				<h:graphicImage library="images/resources" name="slider.png" width="25" height="25"/>
+			</pr:commandLink>
+</ui:remove>	
+
+		<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
+			<h:inputText id="solr_input" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event)"></h:inputText>
+			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
+				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+				<f:ajax execute="@form" render=":solr_dataform :solr_title :solr_menuform" ></f:ajax>
+			</h:commandButton>
+		</h:panelGrid>	
+
+	
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrGeneStrip.xhtml" >
+				<h:outputText style="color:grey; " value="Genes" rendered="#{solrTreeBean.page != '/solr/solrGeneStrip.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Genes" rendered="#{solrTreeBean.page == '/solr/solrGeneStrip.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page != '/solr/solrGeneStrip.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page == '/solr/solrGeneStrip.xhtml'}"/>
+		</h:panelGrid>
+
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrImages.xhtml" >
+				<h:outputText style="color:grey" value="Images" rendered="#{solrTreeBean.page != '/solr/solrImages.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Images" rendered="#{solrTreeBean.page == '/solr/solrImages.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.page != '/solr/solrImages.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.page == '/solr/solrImages.xhtml'}"/>
+		</h:panelGrid>
+		
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrTissueSummary.xhtml" >
+				<h:outputText style="color:grey" value="Tissues" rendered="#{solrTreeBean.page != '/solr/solrTissueSummary.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Tissues" rendered="#{solrTreeBean.page == '/solr/solrTissueSummary.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.tissueCount})" rendered="#{solrTreeBean.page != '/solr/solrTissueSummary.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.tissueCount})" rendered="#{solrTreeBean.page == '/solr/solrTissueSummary.xhtml'}"/>
+		</h:panelGrid>
+
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrInsitu.xhtml" >
+				<h:outputText style="color:grey" value="In Situ" rendered="#{solrTreeBean.page != '/solr/solrInsitu.xhtml'}" />
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="In Situ" rendered="#{solrTreeBean.page == '/solr/solrInsitu.xhtml'}" />
+	         </h:outputLink> 	          
+	         <h:outputText value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page != '/solr/solrInsitu.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page == '/solr/solrInsitu.xhtml'}"/>
+		</h:panelGrid>
+<ui:remove> 
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrMicroarray.xhtml" >
+				<h:outputText style="color:grey" value="Microarray" rendered="#{solrTreeBean.page != '/solr/solrMicroarray.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Microarray" rendered="#{solrTreeBean.page == '/solr/solrMicroarray.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.microarrayCount})" rendered="#{solrTreeBean.page != '/solr/solrMicroarray.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.microarrayCount})" rendered="#{solrTreeBean.page == '/solr/solrMicroarray.xhtml'}"/>
+		</h:panelGrid>
+		
+</ui:remove>		        		 
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrSequences.xhtml" >
+				<h:outputText style="color:grey" value="Sequences" rendered="#{solrTreeBean.page != '/solr/solrSequences.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Sequences" rendered="#{solrTreeBean.page == '/solr/solrSequences.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.sequencesCount})" rendered="#{solrTreeBean.page != '/solr/solrSequences.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.sequencesCount})" rendered="#{solrTreeBean.page == '/solr/solrSequences.xhtml'}"/>
+		</h:panelGrid>
+ 
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrMouseStrains.xhtml" >
+				<h:outputText style="color:grey" value="Mouse Strains" rendered="#{solrTreeBean.page != '/solr/solrMouseStrains.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Mouse Strains" rendered="#{solrTreeBean.page == '/solr/solrMouseStrains.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.mouseStrainsCount})" rendered="#{solrTreeBean.page != '/solr/solrMouseStrains.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.mouseStrainsCount})" rendered="#{solrTreeBean.page == '/solr/solrMouseStrains.xhtml'}"/>
+		</h:panelGrid>
+
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrGenelist.xhtml" >
+				<h:outputText style="color:grey" value="Genelists" rendered="#{solrTreeBean.page != '/solr/solrGenelist.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Genelists" rendered="#{solrTreeBean.page == '/solr/solrGenelist.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.genelistCount})" rendered="#{solrTreeBean.page != '/solr/solrGenelist.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.genelistCount})" rendered="#{solrTreeBean.page == '/solr/solrGenelist.xhtml'}"/>
+		</h:panelGrid>
+
+
+
+<ui:remove> 
+         <h:outputLabel value="Tutorials (#{solrTreeBean.tutorialCount})" />
+</ui:remove>
+
+	  
+	  </h:panelGrid>
+	  
+ 
+    
+	  </h:form>
+	  </div><!-- end gd_solrmenu -->
+
+</ui:composition>

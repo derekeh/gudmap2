@@ -2,6 +2,9 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -56,14 +59,15 @@ public class SolrTreeBean implements Serializable {
 		
 		getSolrInput();
 		
-		getGeneCount();
-		getInsituCount();
-		getMicroarrayCount();
-		getGenelistCount();
-		getTissueCount();
-//		getTutorialCount();
-		getMouseStrainsCount();
-		getImagesCount();
+//		getGeneCount();
+//		getInsituCount();
+////		getMicroarrayCount();
+//		getGenelistCount();
+//		getGenelistCount();
+//		getTissueCount();
+////		getTutorialCount();
+//		getMouseStrainsCount();
+//		getImagesCount();
 		
 		return null;
 	}
@@ -74,20 +78,32 @@ public class SolrTreeBean implements Serializable {
 		
 	}
 	
+    public String getPage(){
+        
+    	UIViewRoot viewRoot =  FacesContext.getCurrentInstance().getViewRoot();
+    	List<UIComponent> components = viewRoot.getChildren();
+    	
+		String page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
+		return page;
+    }
+	
 	public String goInsitu() {
-		return "/solr/solrInsituTablePage";
+		return "/solr/solrInsitu";
 	}
 	public String goSeries() {
-		return "/solr/solrSeriesTablePage";
+		return "/solr/solrSeries";
 	}
 	public String goSamples() {
-		return "/solr/solrSamplesTablePage";
+		return "/solr/solrSamples";
 	}
 	public String goTissues() {
-		return "/solr/solrTissueSummaryTablePage";
+		return "/solr/solrTissueSummary";
 	}
 	public String goMicroarray() {
-		return "/solr/solrMicroarrayTablePage";
+		return "/solr/solrMicroarray";
+	}
+	public String goSequences() {
+		return "/solr/solrSequences";
 	}
 
 	public String getFilter(){
@@ -133,6 +149,15 @@ public class SolrTreeBean implements Serializable {
 	public int getInsituCount(HashMap<String,String> filters){
 		return solrUtil.getInsituFilteredCount(solrInput, filters);
 	}
+
+	////////////////// SEQUENCES ////////////////////////////
+	
+	public int getSequencesCount(){
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getSequencesCount(solrInput, filters);
+	}
+
 	
 	////////////////// MICROARRAY ////////////////////////////
 	
@@ -142,9 +167,9 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getMicroarrayFilteredCount(solrInput, filters);
 	}
 
-	public int getMicroarrayCount(String filter){
-		return solrUtil.getMicroarrayCount(solrInput, filter);
-	}
+//	public int getMicroarrayCount(String filter){
+//		return solrUtil.getMicroarrayCount(solrInput, filter);
+//	}
 
 	public int getMicroarrayCount(HashMap<String,String> filters){
 		return solrUtil.getMicroarrayFilteredCount(solrInput, filters);
@@ -210,88 +235,7 @@ public class SolrTreeBean implements Serializable {
 	public int getImagesCount(HashMap<String,String> filters){
 		return solrUtil.getImagesCount(solrInput, filters);
 	}
-	
-	public ArrayList<String> getTop5Genes(){
-		if (solrInput == "" || solrInput == null)
-			return null;
 		
-		ArrayList<String> topFive =  solrUtil.getTop5Genes(solrInput);	
-		return topFive;
-	}
-
-	public ArrayList<String> getTop5Insitu(){
-		if (solrInput == "" || solrInput == null)
-			return null;
-
-		ArrayList<String> topFive =  solrUtil.getTop5Insitu(solrInput);
-		return topFive;
-	}
-
-	public ArrayList<String> getTop5Microarray(){
-		if (solrInput == "" || solrInput == null)
-			return null;
-
-		ArrayList<String> topFive = solrUtil.getTop5Microarray(solrInput);					
-		return topFive;
-	}
-
-	public LinkedHashMap<String,String> getTop5Tissues(){
-		if (solrInput == "" || solrInput == null)
-			return null;
-		
-		LinkedHashMap<String,String> topFive = new LinkedHashMap<String,String>();
-		LinkedHashMap<String,String> map =  solrUtil.getTop5Tissues(solrInput);
-		List<String> keys = new ArrayList<String>(map.keySet());
-		int count = keys.size();
-		for (int i = 0; i < count; i++){
-			String key = keys.get(i);
-//			topFive.put(key+", ", map.get(key));
-			topFive.put(key, map.get(key));
-		}
-		return topFive;
-	}
-	
-	public ArrayList<String> getTop5MouseStrains(){
-		if (solrInput == "" || solrInput == null)
-			return null;
-
-		ArrayList<String> topFive =  solrUtil.getTop5MouseStrains(solrInput);
-		return topFive;
-	}
-	
-	public LinkedHashMap<String,String> getTop5Images(){
-		if (solrInput == "" || solrInput == null)
-			return null;
-
-		LinkedHashMap<String,String> topFive = solrUtil.getTop5Images(solrInput);
-		
-		return topFive;
-	}
-
-	public LinkedHashMap<String,String> getTop5Tutorials(){
-		if (solrInput == "" || solrInput == null)
-			return null;
-		
-		LinkedHashMap<String,String> map =  new LinkedHashMap<String,String>(); 
-		int overviewCount = solrUtil.getTutorialOverviewCount(solrInput);
-		int mrsCount = solrUtil.getTutorialDevMRSCount(solrInput);
-		int musCount = solrUtil.getTutorialDevMUSCount(solrInput);
-//		int totalCount = overviewCount + mrsCount + musCount;
-		
-		if (overviewCount > 0){
-			map.put("Overview","http://www.gudmap.org/About/Tutorial/Overview.html");				
-		}
-		if (mrsCount > 0){
-			map.put("Reproductive Development","http://www.gudmap.org/About/Tutorial/DevMRS.html");
-		}
-		if (musCount > 0){
-			map.put("Urinary Development","http://www.gudmap.org/About/Tutorial/DevMUS.html");
-		}
-		
-		return map;
-	}
-	
-	
 	public Map<String,String> getAssayTypeList(){
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
@@ -333,25 +277,25 @@ public class SolrTreeBean implements Serializable {
 		return map;
 	}
 
-	public Map<String,String> getPlatformList(){
-		
-		Map<String,String> map = new LinkedHashMap<String,String>();
-		
-		String label = "GPL81 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL81") + ")";
-		map.put(label, "PLATFORM_GEO_ID:GPL81");
-		
-		label = "GPL339 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL339") + ")";
-		map.put(label, "PLATFORM_GEO_ID:GPL339");
-		
-		label = "GPL1261 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL1261") + ")";
-		map.put(label, "PLATFORM_GEO_ID:GPL1261");
-		
-		label = "GPL6246 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL6246") + ")";
-		map.put(label, "PLATFORM_GEO_ID:GPL6246");
-
-		
-		return map;
-	}
+//	public Map<String,String> getPlatformList(){
+//		
+//		Map<String,String> map = new LinkedHashMap<String,String>();
+//		
+//		String label = "GPL81 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL81") + ")";
+//		map.put(label, "PLATFORM_GEO_ID:GPL81");
+//		
+//		label = "GPL339 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL339") + ")";
+//		map.put(label, "PLATFORM_GEO_ID:GPL339");
+//		
+//		label = "GPL1261 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL1261") + ")";
+//		map.put(label, "PLATFORM_GEO_ID:GPL1261");
+//		
+//		label = "GPL6246 (" + this.getMicroarrayCount("PLATFORM_GEO_ID:GPL6246") + ")";
+//		map.put(label, "PLATFORM_GEO_ID:GPL6246");
+//
+//		
+//		return map;
+//	}
 
 	
 	public Map<String,String> getTheilerStageList(){
