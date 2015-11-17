@@ -29,11 +29,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-		
-	
-
 		<h:form id="solr_dataform">
-
 
 	    <h:inputHidden id="solrInput" value="#{solrMouseStrainsBean.solrInput}" />
 	    
@@ -129,7 +125,6 @@
  		</h:dataTable> 
 	</h:form>	
 	<h:form id="pagingform">  
-
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
@@ -175,7 +170,7 @@
            
          </h:panelGrid>    
 		</h:form> 
-		<h:form id="gotoform">
+		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrMouseStrainsBean.gotopage}" />
 		</h:form> 
