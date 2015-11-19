@@ -37,7 +37,7 @@
 			<h:inputText id="solr_input" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event)"></h:inputText>
 			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-				<f:ajax execute="@form" render=":solr_dataform :solr_title :solr_menuform" ></f:ajax>
+				<f:ajax execute="@form" render=":solr_dataform :solr_menuform" ></f:ajax>
 			</h:commandButton>
 		</h:panelGrid>	
 

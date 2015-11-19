@@ -37,12 +37,12 @@
 		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	    <!-- all other content in here -->  
 
-
 	     <!-- all other content in here --> 
 
 
 	    
-	<h:form id="dataform"> 
+	<h:form id="solr_dataform"> 
+	    <h:inputHidden id="solrInput" value="#{solrGeneStripBean.solrInput}" />
 	    <h:dataTable rowIndexVar="row" value="#{solrGeneStripBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
@@ -83,37 +83,9 @@
 				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.omimcol == true}">
-    			<f:facet name="header">
-    				Disease
-				</f:facet>				
-				<h:outputLink value="viewDiseaseResult.jsf?type=gene&amp;diseaseGene=#{u.geneSymbol}&amp;isDirect=false" rendered="#{u.omimCount>0}">
-    				OMIM(#{u.omimCount})
-    			</h:outputLink>
-    			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.embryostagecol == true}">
-    			<f:facet name="header">
-    				Stage
-				</f:facet>
-				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}&amp;geneId=#{u.gene_id}&amp;species=#{u.species}">
-    				#{u.stageRange}
-    			</h:outputLink>
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.ishexpressioncol == true}">
-    			<f:facet name="header">
-    				Expression Profile
-    				<div id="chartTableHeaders" style='text-align:center'></div>
-    				<script type='text/javascript'>prepareGraphTableHeaders(1, 2, "ASC");</script>
-				</f:facet>
-				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
-    		</h:column>
-    		
     		<h:column rendered="#{paramBean.imagescol == true}">
     			<f:facet name="header">
-    				Expression Images
+    				Images
 				</f:facet>				
     			<h:commandLink  action="viewImageMatrix">
     					<img src="#{u.imageUrl}"  height="40"/>
@@ -121,9 +93,18 @@
                  </h:commandLink>
     		</h:column>
     		
+    		<h:column rendered="#{paramBean.ishexpressioncol == true}">
+    			<f:facet name="header">
+    				Insitu Expression
+    				<div id="chartTableHeaders" style='text-align:center'></div>
+    				<script type='text/javascript'>prepareGraphTableHeaders(1, 2, "ASC");</script>
+				</f:facet>
+				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
+    		</h:column>
+    		
     		<h:column rendered="#{paramBean.arrayexpressioncol == true}">
     			<f:facet name="header">
-    				Microarray Expression Profile
+    				Microarray Expression
 				</f:facet>
 				<div id="genestrip_#{u.geneSymbol}"></div>		
 				<script type="text/javascript">				   
@@ -133,7 +114,7 @@
     		
     		<h:column rendered="#{paramBean.rnaseqcol == true}">
     			<f:facet name="header">
-    				RNA-SEQ
+    				SEQ
 				</f:facet>
 				<h:outputLink title="Click to see RNA-SEQ data on UCSC genome browser for #{u.geneSymbol}" 
 					value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&amp;hubUrl=http://www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&amp;position=#{u.geneSymbol}">
@@ -145,17 +126,33 @@
 					<h:outputText value="View on IGV"></h:outputText>
 				</h:outputLink>
 				
+    		</h:column>    
+    		
+    		<h:column rendered="#{paramBean.embryostagecol == true}">
+    			<f:facet name="header">
+    				Stages
+				</f:facet>
+				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}&amp;geneId=#{u.gene_id}&amp;species=#{u.species}">
+    				#{u.stageRange}
+    			</h:outputLink>
     		</h:column>
+    				
+    		<h:column rendered="#{paramBean.omimcol == true}">
+    			<f:facet name="header">
+    				Disease
+				</f:facet>				
+				<h:outputLink value="viewDiseaseResult.jsf?type=gene&amp;diseaseGene=#{u.geneSymbol}&amp;isDirect=false" rendered="#{u.omimCount>0}">
+    				OMIM(#{u.omimCount})
+    			</h:outputLink>
+    			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
+    		</h:column>
+    		
+
 
     	 </h:dataTable>
 
          </h:form> 
          
-<<<<<<< HEAD
-         <h:form id="pagingform"></h:form>
-         
- 		<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
-=======
 	<h:form id="pagingform">	
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
@@ -206,7 +203,6 @@
 			<h:inputText id="gotopage" value="#{solrGeneStripBean.gotopage}" />
 		</h:form> 
 
->>>>>>> gudmap_Oct1
 	</ui:define>
 </ui:composition>
 </html>

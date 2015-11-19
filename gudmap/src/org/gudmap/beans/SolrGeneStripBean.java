@@ -105,8 +105,6 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
         microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
         tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
         selectedItems = new ArrayList<String>(); 
-        
-        
     }
     
     @PostConstruct
