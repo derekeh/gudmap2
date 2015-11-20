@@ -14,7 +14,9 @@
 	<ui:define name="title">
 	    Solr Analysis Data
 	</ui:define>
-
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>			
+	</ui:define>
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
@@ -32,7 +34,7 @@ jQuery(document).ready(function(){
 		"json_data" : {
 		    "progressive_render" : true,
 		    "ajax" : {
-		    	"url" : "../resources/scripts/genelist.json"
+		    	"url" : "../resources/scripts/solrgenelist.json"
 		    }
 		},	
 		"types": {
@@ -64,13 +66,13 @@ jQuery(document).ready(function(){
 			return;
 		}
 		
-		var selectedNode =  document.getElementById('dataform:analysisitem');
+		var selectedNode =  document.getElementById('solr_dataform:analysisitem');
 		selectedNode.value = result;
 
-//		selectedNode =  document.getElementById('dataform:genelist_crumb');
+//		selectedNode =  document.getElementById('solr_dataform:genelist_crumb');
 //		selectedNode.value = node.attr("crumb");
 					
-		selectedNode =  document.getElementById('dataform:analysis_mastertableId');
+		selectedNode =  document.getElementById('solr_dataform:analysis_mastertableId');
 		selectedNode.value = node.attr("table");
 
 		
@@ -98,11 +100,6 @@ function getCrumb(node){
 	
 }	
 
-
-</script>	
-
-
-<script type="text/javascript">
 $(document).ready(function(){
 	$("#expanderHead").click(function(){
 		$("#expanderContent").slideToggle();
@@ -119,28 +116,8 @@ $(document).ready(function(){
 //]]>
 </script>
 
-		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters}" var="filter">
-				<h:panelGrid columns="2" >	
-					<h:outputText value="#{filter.key}:#{filter.value} " />	
-		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :dataform :pagingform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-				</h:panelGrid>
-		    </c:forEach>  
-		</h:panelGrid>    
-	
-		
-		<h:panelGrid columns="2">
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
-			<h:form id="solr_title">		
-			<h:outputText value="#{solrAnalysisBean.title}" styleClass="db_bold" />   
-			</h:form>	
-		</h:panelGrid>
 
-	<h:form id="dataform">
+	<h:form id="solr_dataform">
 	<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
 	<div id="expanderContent" style="display:none">
 	
@@ -157,14 +134,11 @@ $(document).ready(function(){
 	</div>
 	
 	 <h:inputText id="analysisitem" value="#{solrAnalysisBean.selectedItem}" style="display:none; visibility: hidden; "/>
-<ui:remove>	 
- 	 <h:inputText id="analysis_crumb" value="#{solrAnalysisBean.crumb}" style="display:none; visibility: hidden; "/>
-</ui:remove> 	
 	 <h:inputText id="analysis_mastertableId" value="#{solrAnalysisBean.masterTableId}" style="display:none; visibility: hidden; "/>
-	 <f:verbatim>
+
 		<div id="analysis_tree" class="demo" style="overflow: auto; align: left; height: 540px;">
 		</div>
-	</f:verbatim>
+
 	
 	<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{solrAnalysisBean.findNode}" actionListener="#{solrAnalysisBean.processAction}" >
 	</t:commandLink>
@@ -172,7 +146,7 @@ $(document).ready(function(){
 		
 	</h:form> 
 
-	<h:form id="pagingform"></h:form>
+
 	</ui:define>
 </ui:composition>
 </html>

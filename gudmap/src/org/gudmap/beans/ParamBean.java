@@ -38,20 +38,20 @@ public class ParamBean implements Serializable {
 	private boolean oidcol=false;
 	private boolean genecol=true;
 	private boolean gudmapaccessioncol=true;
-	private boolean sourcecol=true;
-	private boolean submissiondatecol=true;
+	private boolean sourcecol=false;
+	private boolean submissiondatecol=false;
 	private boolean assaytypecol=true;
-	private boolean probenamecol=true;
+	private boolean probenamecol=false;
 	private boolean embryostagecol=true;
 	private boolean agecol=true;
-	private boolean sexcol=false;
-	private boolean genotypecol=false;
-	private boolean tissuecol=false;
+	private boolean sexcol=true;
+	private boolean genotypecol=true;
+	private boolean tissuecol=true;
 	private boolean expressioncol=false;
-	private boolean specimentypecol=false;
-	private boolean imagescol=true;
+	private boolean specimentypecol=true;
+	private boolean imagescol=false;
 	/*genestrip cols*/
-	private boolean synonymcol=true;
+	private boolean synonymcol=false;
 	private boolean omimcol=true;
 	private boolean rnaseqcol=true;
 	private boolean ishexpressioncol=true;
@@ -116,7 +116,7 @@ public class ParamBean implements Serializable {
 	//microarray
 	private String micWhereclause="";
 	private boolean mic_titlecol=true;
-	private boolean mic_geoSeriesIDcol=true;
+	private boolean mic_geoSeriesIDcol=false;
 	private boolean mic_numsamplescol=true;
 	private boolean mic_platformIDcol=true;
 	private boolean mic_platformnamecol=true;
@@ -125,9 +125,9 @@ public class ParamBean implements Serializable {
 	private boolean mic_numseriescol=true;
 	private boolean mic_sourcecol=true;
 	private boolean mic_stagecol=true;
-	private boolean mic_agecol=false;
+	private boolean mic_agecol=true;
 	private boolean mic_submissiondatecol=false;
-	private boolean mic_sexcol=false;
+	private boolean mic_sexcol=true;
 	private boolean mic_genotypecol=true;
 	private boolean mic_geoSampleIDcol=true;
 	private boolean mic_sampledescriptioncol=true;

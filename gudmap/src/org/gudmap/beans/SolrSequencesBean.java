@@ -4,72 +4,66 @@ package org.gudmap.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
-//import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-//import javax.faces.context.FacesContext;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-//import org.gudmap.assemblers.SolrInsituAssembler;
+//import org.gudmap.assemblers.SolrSequencesAssembler;
 import org.gudmap.impl.PagerImpl;
-import org.gudmap.models.InsituTableBeanModel;
-import org.gudmap.models.SolrInsituTableBeanModel;
+import org.gudmap.models.ArraySeqTableBeanModel;
 
-
-
-
-@Named (value="solrInsituBean")
+@Named (value="solrSequencesBean")
 @SessionScoped
-public class SolrInsituBean extends PagerImpl implements Serializable  {
+public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-//	private SolrInsituAssembler assembler;
+//	private SolrSequencesAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
     
     @Inject
    	private ParamBean paramBean;
-    
+   
     @Inject
    	private SolrTreeBean solrTreeBean;
-
+    
     @Inject
    	private SolrFilter solrFilter;
     
 	private String solrInput;
 	private HashMap<String,String> filters;
 	private boolean showPageDetails = true;
-   
+
 	
     
     // Constructors -------------------------------------------------------------------------------
 
-    public SolrInsituBean() {
-    	super(10,10,"RELEVANCE",true);
+    public SolrSequencesBean() {
+    	super(20,10,"RELEVANCE",true);
     	setup();
     }
     
 	public void setParamBean(ParamBean paramBean){
 		this.paramBean=paramBean;
 	}
- 
-	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
-		this.solrTreeBean=solrTreeBean;
-	}
 	
 	public void setSolrFilter(SolrFilter solrFilter){
 		this.solrFilter = solrFilter;
+	}
+ 
+	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
+		this.solrTreeBean=solrTreeBean;
 	}
 	
 	public void setSolrInput(String solrInput){
@@ -82,24 +76,24 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		refresh();
 		return solrInput;
 	}
-    
-    public void setup() {
-//    	assembler=new SolrInsituAssembler();
+
+	public void setup() {
+//     	assembler=new SolrSequencesAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
     @PostConstruct
     public void setRemoteWhereclause(){
     	paramBean.setWhereclause(whereclause);
-    	solrInput = solrTreeBean.getSolrInput();
-     }
+    	solrTreeBean.getSolrInput();
+    }
 
     
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
 //        totalRows = assembler.getCount(solrInput, filters);
-        totalRows = solrTreeBean.getSolrUtil().getInsituFilteredCount(solrInput,filters);
+        totalRows = solrTreeBean.getSolrUtil().getSequencesCount(solrInput, filters);
     	
 //     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
@@ -121,13 +115,12 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
         	showPageDetails = true;
         else
         	showPageDetails = false;
-   }
+    }
 
     public String refresh(){
  //   	sortField = "RELEVANCE";
     	loadDataList();
-//    	paramBean.resetValues();
-    	return "solrInsitu";
+    	return "solrSequences";
     }
 
     public void resetAll() {
@@ -135,14 +128,14 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 //		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
 		//paramBean.setFocusGroup("reset");
 		loadDataList();
-	}
-    
+    }
+   
     public String checkboxSelections() { 
     	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
     	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
-    		if (((SolrInsituTableBeanModel) dataList.get(i)).getSelected()) { 
-    			selectedItems.add(((SolrInsituTableBeanModel) dataList.get(i)).getOid()); 
+    		if (((ArraySeqTableBeanModel) dataList.get(i)).getSelected()) { 
+    			selectedItems.add(((ArraySeqTableBeanModel) dataList.get(i)).getOid()); 
     		} 
     	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
     	return "result";
@@ -151,7 +144,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     public void checkAll() { 
     	areAllChecked=(areAllChecked)?false:true;
     	for (int i=0;i<dataList.size();i++) { 
-    		((SolrInsituTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
+    		((ArraySeqTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
     }
     
@@ -162,21 +155,21 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     	}
     	return str;
     }
-    
+
     public String getTitle(){
-    	String str="Insitu Search Results ";
+    	String str="Sequences Search Results ";
     	filters = solrFilter.getFilters();
     	if (filters == null){
 	    	if (solrInput != null && solrInput != "")
-	    		str += "(" + solrTreeBean.getInsituCount() + ") > " + solrInput;
+	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > " + solrInput;
 	    	else
-	    		str += "(" + solrTreeBean.getInsituCount() + ") > ALL";
+	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > ALL";
     	}
     	else{
         	if (solrInput != null && solrInput != "")
-        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > " + solrInput;
+        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > " + solrInput;
         	else
-        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > ALL";
+        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > ALL";
     		
     	}
     	return str;
@@ -185,20 +178,18 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     public boolean getShowPageDetails(){
     	return showPageDetails;
     }
-    
-	public List<InsituTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
-		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
-					
-    	try {
-    		
-			SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getInsituData(solrInput, filterlist, sortColumn,ascending,offset,num);
-			if (sdl==null){
-				return null;
-			}
+	public List<ArraySeqTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+
+		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
+
+		SolrDocumentList sdl;
+		try {
+			
+			sdl = solrTreeBean.getSolrUtil().getSequencesData(solrInput,filterlist,sortColumn,ascending,offset,num);
 			list = formatTableData(sdl);
 			
-    	} catch (SolrServerException e) {
+		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -206,46 +197,45 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
-	private List<InsituTableBeanModel> formatTableData(SolrDocumentList sdl){
+	private List<ArraySeqTableBeanModel> formatTableData(SolrDocumentList sdl){
 		
-		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
-		InsituTableBeanModel model = null;
+		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
+		ArraySeqTableBeanModel model = null;
+		
 		int rowNum = sdl.size();
-		
+		Set<String> gudmapset = new HashSet<String>();
 		for(int i=0; i<rowNum; i++) { 
 			SolrDocument doc = sdl.get(i);
-
-			String insituExpression = "";			
-			if (doc.getFieldValue("PRESENT").toString() != "")
-				insituExpression = "present";
-			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
-				insituExpression = "uncertain";
-			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
-				insituExpression = "not detected";
 			
-			model = new InsituTableBeanModel();
+			model = new ArraySeqTableBeanModel();
 			model.setOid(doc.getFieldValue("GUDMAP").toString());
-			model.setGene(doc.getFieldValue("GENE").toString());
-			model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
-			model.setSource(doc.getFieldValue("SOURCE").toString());
-			model.setSubmission_date(doc.getFieldValue("DATE").toString());
-			model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
-			model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
-			model.setStage(doc.getFieldValue("STAGE").toString());
+			model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
+			String gid = doc.getFieldValue("SAMPLE_GEO_ID").toString();
+			model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
+			String stage = doc.getFieldValue("STAGE").toString();
+			model.setStage(stage);
+			model.setStage_order(stage.substring(2));
+//arraySeqmodel.setSpecies(result.getString("species"));
 			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
+			model.setSource(doc.getFieldValue("PI_NAME").toString());
+			model.setLibraryStrategy(doc.getFieldValue("LIBRARY_STRATEGY").toString());
+			model.setSubmission_date(doc.getFieldValue("DATE").toString());
 			model.setSex(doc.getFieldValue("SEX").toString());
-			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
-			model.setTissue(doc.getFieldValue("TISSUE_TYPE").toString());
-			model.setExpression(insituExpression);
-			model.setSpecimen(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
-			model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
-			model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
-			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
+			model.setSampleDescription(doc.getFieldValue("SAMPLE_DESCRIPTION").toString());
+			model.setTitle(doc.getFieldValue("SAMPLE_NAME").toString());
+			model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
+			model.setSampleComponents(doc.getFieldValue("COMPONENT").toString());
+			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());				
+//arraySeqmodel.setAssay_type(result.getString("assay_type"));
+			model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
 			
-			list.add(model);			
+			list.add(model);	
+			
+			gudmapset.add(doc.getFieldValue("GUDMAP").toString());
+
 		}
-			
+		
 		return list;
-	 }	
+	}	
     
 }

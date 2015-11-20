@@ -3,7 +3,7 @@ package org.gudmap.models;
 import java.util.List;
 
 public class GenericTableBeanModel {
-protected String oid,gudmap_accession,source,submission_date,assay_type,specimen_assay_type,stage,stage_order,age,sex,genotype,image=null,gene_id,species;
+protected String oid,gudmap_accession,source,submission_date,assay_type,specimen_assay_type,stage,stage_order,age,sex,genotype,image=null,gene_id,species,synonyms;
 protected int personOid=0;
 protected List<String> totals=null;
 protected boolean selected;
@@ -97,6 +97,12 @@ protected boolean selected;
 	}
 	public String getSpecies(){
 		return species;
+	}
+	public void setSynonyms(String synonyms){
+		this.synonyms=synonyms;
+	}
+	public String getSynonyms(){
+		return synonyms;
 	}
 	
 	/////////////////////////////////////////////////////////

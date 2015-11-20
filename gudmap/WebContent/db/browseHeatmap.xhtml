@@ -80,6 +80,7 @@
 			<div id="chart" style='overflow:auto; width:1100px; height:400px;' ></div>
 		</h:panelGroup>
 		
+<ui:remove>			
   		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0" rendered="#{microarrayHeatmapBean.dataAvailable}">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
@@ -103,7 +104,7 @@
                </h:panelGrid>
 			</h:panelGroup>
 			
-			
+	
 			<h:panelGroup>
                 <t:dataList value="#{microarrayHeatmapBean.pages}" var="page">
                     <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{microarrayHeatmapBean.page}"
@@ -123,9 +124,9 @@
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
 	             </h:panelGrid>
            </h:panelGroup>
-           
+	           
          </h:panelGrid>    
-		
+</ui:remove>		
 	
 	
 
@@ -152,10 +153,13 @@
 
 
 	</h:form>  
+	
+<ui:remove>	
 		<h:form id="form2" rendered="#{microarrayHeatmapBean.dataAvailable}">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{microarrayHeatmapBean.gotopage}" />
 		</h:form> 
+</ui:remove>
 
 	</ui:define>
 </ui:composition>

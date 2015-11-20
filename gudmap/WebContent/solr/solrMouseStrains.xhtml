@@ -14,36 +14,22 @@
 	<ui:define name="title">
 	    Solr Mouse Strains
 	</ui:define>
-<!-- 	comment out the following section if you don't want the solr flyin displayed -->
-	<ui:define name="solr">
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
 	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-
-		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters}" var="filter">
-				<h:panelGrid columns="2" >	
-					<h:outputText value="#{filter.key}:#{filter.value} " />	
-		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :dataform :pagingform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-				</h:panelGrid>
-		    </c:forEach>  
-		</h:panelGrid>    
-	
-		
-		<h:panelGrid columns="3">
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
-			<h:form id="solr_title">		
-			<h:outputText value="#{solrMouseStrainsBean.title}" styleClass="db_bold" />   
-			</h:form>	
-		</h:panelGrid>
-		
-	
-		<h:form id="dataform">
+		<h:form id="solr_dataform">
 
 	    <h:inputHidden id="solrInput" value="#{solrMouseStrainsBean.solrInput}" />
 	    
@@ -68,8 +54,8 @@
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
     			</f:facet>
-    				#{u.gene}
-    		</h:column>
+    			#{u.gene}
+     		</h:column>
  
     		<h:column>
     			<f:facet name="header">
@@ -137,9 +123,8 @@
     		
   
  		</h:dataTable> 
-		</h:form>
-		
-  		<h:form id="pagingform">
+	</h:form>	
+	<h:form id="pagingform">  
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
@@ -185,7 +170,7 @@
            
          </h:panelGrid>    
 		</h:form> 
-		<h:form id="gotoform">
+		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrMouseStrainsBean.gotopage}" />
 		</h:form> 

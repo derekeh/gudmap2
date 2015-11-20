@@ -19,16 +19,10 @@ public class SolrInsituAssembler {
 		solrUtil = new SolrUtil();
 	}
 	
-	public int getCount(String solrInput, String solrFilter) {
+	public int getCount(String solrInput, HashMap<String,String> filterlist) {
 
 		int n = 0;
-		try {
-
-	    	n = solrUtil.getInsituCount(solrInput,solrFilter,null);
-		} 
-		catch (SolrServerException e) {
-			e.printStackTrace();
-		}
+		n = solrUtil.getInsituFilteredCount(solrInput,filterlist);
 		
 		return n;
 	}
@@ -78,8 +72,8 @@ public class SolrInsituAssembler {
 			model.setSubmission_date(doc.getFieldValue("DATE").toString());
 			model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
 			model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
-			model.setStage(doc.getFieldValue("THEILER_STAGE").toString());
-			model.setAge(doc.getFieldValue("STAGE").toString());
+			model.setStage(doc.getFieldValue("STAGE").toString());
+			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 			model.setSex(doc.getFieldValue("SEX").toString());
 			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
 			model.setTissue(doc.getFieldValue("TISSUE_TYPE").toString());

@@ -8,45 +8,36 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:pr="http://primefaces.org/ui" >
-
+	xmlns:pr="http://primefaces.org/ui" >	
+	
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
 	    Solr ISH Data
 	</ui:define>
-<!-- 	comment out the following section if you don't want the solr flyin displayed -->
-	<ui:define name="solr">
+	
+
+
+
+	
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
 	</ui:define>
 
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
+		
 	
+
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+		<h:form  id="solr_dataform">
 
-
-		<ui:include src="/snippets/g_solrSearch.xhtml"/>
-		
-		<h:panelGrid id="id_filters" columns="1">
-		     <c:forEach items="#{solrFilter.filters}" var="filter">
-				<h:panelGrid columns="2" >	
-					<h:outputText value="#{filter.key}:#{filter.value} " />	
-		 			<h:graphicImage id="#{filter.key}" library="images/resources" name="cancel.png" width="10" height="10">
-			 			<pr:ajax event="click" update=":solrsearchform :dataform :pagingform :solr_title :id_filters" listener="#{solrFilter.removeFilter}" />
-					</h:graphicImage>
-				</h:panelGrid>
-		    </c:forEach>  
-		</h:panelGrid>    
-	
-		
-		<h:panelGrid columns="3">
-			<pr:commandButton id="solrSearchBtn" value="Search" type="button" />
-			<h:form id="solr_title">		
-			<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
-			<h:outputText value="#{solrInsituBean.title}" styleClass="db_bold" />   
-			</h:form>	
-		</h:panelGrid>
-		
-	
-		<h:form id="dataform">
 	    <h:inputHidden id="solrInput" value="#{solrInsituBean.solrInput}" />
 	     <h:dataTable value="#{solrInsituBean.dataList}" var="u"
 	    		styleClass="db_order-table"
@@ -62,7 +53,7 @@
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>
-<!--  
+ 		
     		<h:column rendered="#{paramBean.oidcol == true}">
     			<f:facet name="header">
     				<h:commandLink value="OID" actionListener="#{solrInsituBean.sort}">
@@ -71,47 +62,42 @@
     			</f:facet>
     				#{u.oid}
     		</h:column>
--->    		
+
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
     				<h:commandLink value="Gene" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
     			</f:facet>
-     			<h:commandLink value="#{u.gene}"  action="viewGeneDetails">
+     			<h:commandLink value="#{u.gene}"  action="/db/viewGeneDetails.xhtml">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
     		</h:column>
- 
+    		
+    		<h:column rendered="#{paramBean.synonymcol == true}">
+    			<f:facet name="header">
+    				Synonyms
+				</f:facet>
+				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
+
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-     				<h:commandLink value="Gudmap Accession" actionListener="#{solrInsituBean.sort}">
+     				<h:commandLink value="Assay Detail" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="GUDMAP_ID" />
                     </h:commandLink>
 				</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="viewSubmissionDetails">
+				<h:panelGrid columns="2">
+    			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSubmissionDetails.xhtml">
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
+    			<h:commandLink action="/db/viewSubmissionDetails.xhtml">
+    				<img src="#{u.image}" height="40" style="padding-left:10px"/>
+					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+				</h:commandLink>
+				</h:panelGrid>
     		</h:column>
-    		
-    		<h:column rendered="#{paramBean.sourcecol == true}">
-    			<f:facet name="header">
-     				<h:commandLink value="Source" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="SOURCE" />
-                    </h:commandLink>
-				</f:facet>
-    				#{u.source}
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.submissiondatecol == true}">
-    			<f:facet name="header">
-      				<h:commandLink value="Submission Date" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="DATE" />
-                    </h:commandLink>
-				</f:facet>
-    				#{u.submission_date}
-    		</h:column>
-    		
+
     		<h:column rendered="#{paramBean.assaytypecol == true}">
     			<f:facet name="header">
      				<h:commandLink value="Assay Type" actionListener="#{solrInsituBean.sort}">
@@ -121,31 +107,31 @@
     				#{u.assay_type}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.probenamecol == true}">
+    		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
-     				<h:commandLink value="Probe Name" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="PROBE_NAME" />
+    				<h:commandLink value="Specimen Type" actionListener="#{solrInsituBean.sort}">
+    					<f:attribute name="sortField" value="SPECIMEN_ASSAY_TYPE" />
                     </h:commandLink>
 				</f:facet>
-    				#{u.probe_name}
+    				#{u.specimen}
+    		</h:column> 
+    		
+    		<h:column rendered="#{paramBean.agecol == true}">
+    			<f:facet name="header">
+     				<h:commandLink value="Age" actionListener="#{solrInsituBean.sort}">
+    					<f:attribute name="sortField" value="DEV_STAGE" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.age}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
      				<h:commandLink value="Stage" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="THEILER_STAGE" />
-                    </h:commandLink>
-				</f:facet>
-    				#{u.stage}
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.agecol == true}">
-    			<f:facet name="header">
-     				<h:commandLink value="age" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="STAGE" />
                     </h:commandLink>
 				</f:facet>
-    				#{u.age}
+    				#{u.stage}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sexcol == true}">
@@ -184,29 +170,38 @@
     				#{u.expression}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.specimentypecol == true}">
+    		<h:column rendered="#{paramBean.probenamecol == true}">
     			<f:facet name="header">
-    				<h:commandLink value="Specimen Type" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="SPECIMEN_ASSAY_TYPE" />
+     				<h:commandLink value="Probe Name" actionListener="#{solrInsituBean.sort}">
+    					<f:attribute name="sortField" value="PROBE_NAME" />
                     </h:commandLink>
 				</f:facet>
-    				#{u.specimen}
-    		</h:column> 
-    		
-    		<h:column rendered="#{paramBean.imagescol == true}">
-    			<f:facet name="header">
-    				Images
-				</f:facet>
-     			<h:commandLink  action="viewSubmissionDetails">
-					<img src="#{u.image}" height="40" />
-					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
-				</h:commandLink>
+    				#{u.probe_name}
     		</h:column>
- 
+   		
+    		<h:column rendered="#{paramBean.sourcecol == true}">
+    			<f:facet name="header">
+     				<h:commandLink value="Source" actionListener="#{solrInsituBean.sort}">
+    					<f:attribute name="sortField" value="SOURCE" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.source}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.submissiondatecol == true}">
+    			<f:facet name="header">
+      				<h:commandLink value="Submission Date" actionListener="#{solrInsituBean.sort}">
+    					<f:attribute name="sortField" value="DATE" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.submission_date}
+    		</h:column>
+
  		</h:dataTable> 
- 		</h:form>
- 		
- 		<h:form id="pagingform">
+      	</h:form> 
+      	
+	<h:form id="pagingform">	
+
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
@@ -250,15 +245,14 @@
 	             </h:panelGrid>
            </h:panelGroup>
          </h:panelGrid>    
-		</h:form> 
-		
-		<h:form id="gotoform">
+      	</h:form> 
+		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrInsituBean.gotopage}" />
 		</h:form> 
 
 	
-	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
+
 
 	</ui:define>	
 </ui:composition>

@@ -9,31 +9,39 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 //import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 //import javax.faces.context.FacesContext;
 
-import org.apache.solr.client.solrj.SolrServerException;
+
+
+
+
+
+
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-//import org.gudmap.assemblers.SolrInsituAssembler;
+import org.gudmap.dao.GeneDetailsDao;
+import org.gudmap.globals.Globals;
 import org.gudmap.impl.PagerImpl;
-import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.models.SolrInsituTableBeanModel;
+import org.gudmap.models.submission.ImageDetailModel;
 
 
 
 
-@Named (value="solrInsituBean")
+
+
+@Named (value="solrImagesBean")
 @SessionScoped
-public class SolrInsituBean extends PagerImpl implements Serializable  {
+public class SolrImagesBean extends PagerImpl implements Serializable  {
 	
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
 //	private SolrInsituAssembler assembler;
+	private GeneDetailsDao geneDetailsDao;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -51,12 +59,12 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	private HashMap<String,String> filters;
 	private boolean showPageDetails = true;
    
-	
+	private String geneId;
     
     // Constructors -------------------------------------------------------------------------------
 
-    public SolrInsituBean() {
-    	super(10,10,"RELEVANCE",true);
+    public SolrImagesBean() {
+    	super(1000,10,"RELEVANCE",true);
     	setup();
     }
     
@@ -85,6 +93,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     
     public void setup() {
 //    	assembler=new SolrInsituAssembler();
+    	geneDetailsDao = new GeneDetailsDao();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -99,7 +108,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     public void loadDataList() {
     	filters = solrFilter.getFilters();
 //        totalRows = assembler.getCount(solrInput, filters);
-        totalRows = solrTreeBean.getSolrUtil().getInsituFilteredCount(solrInput,filters);
+        totalRows = solrTreeBean.getSolrUtil().getImagesCount(solrInput,filters);
     	
 //     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
@@ -164,21 +173,8 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     }
     
     public String getTitle(){
-    	String str="Insitu Search Results ";
+    	String str="Images Search Results ";
     	filters = solrFilter.getFilters();
-    	if (filters == null){
-	    	if (solrInput != null && solrInput != "")
-	    		str += "(" + solrTreeBean.getInsituCount() + ") > " + solrInput;
-	    	else
-	    		str += "(" + solrTreeBean.getInsituCount() + ") > ALL";
-    	}
-    	else{
-        	if (solrInput != null && solrInput != "")
-        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > " + solrInput;
-        	else
-        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > ALL";
-    		
-    	}
     	return str;
     }
     
@@ -186,66 +182,47 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
     
-	public List<InsituTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<ImageDetailModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
-		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
-					
-    	try {
+		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();
+
     		
-			SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getInsituData(solrInput, filterlist, sortColumn,ascending,offset,num);
-			if (sdl==null){
-				return null;
-			}
-			list = formatTableData(sdl);
-			
-    	} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getImagesData(solrInput, filterlist, sortColumn,ascending,offset,num);
+		if (sdl==null){
+			return null;
 		}
+		list = formatTableData(sdl);
+			
+
 
 		return list;
 	}
 
-	private List<InsituTableBeanModel> formatTableData(SolrDocumentList sdl){
+	private List<ImageDetailModel> formatTableData(SolrDocumentList sdl){
 		
-		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
-		InsituTableBeanModel model = null;
+		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();
+		ImageDetailModel model = null;
 		int rowNum = sdl.size();
 		
 		for(int i=0; i<rowNum; i++) { 
 			SolrDocument doc = sdl.get(i);
 
-			String insituExpression = "";			
-			if (doc.getFieldValue("PRESENT").toString() != "")
-				insituExpression = "present";
-			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
-				insituExpression = "uncertain";
-			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
-				insituExpression = "not detected";
 			
-			model = new InsituTableBeanModel();
-			model.setOid(doc.getFieldValue("GUDMAP").toString());
-			model.setGene(doc.getFieldValue("GENE").toString());
-			model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
-			model.setSource(doc.getFieldValue("SOURCE").toString());
-			model.setSubmission_date(doc.getFieldValue("DATE").toString());
-			model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
-			model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
+			model = new ImageDetailModel();
+			model.setAccessionId(doc.getFieldValue("GUDMAP_ID").toString());
+			model.setGeneSymbol(doc.getFieldValue("GENE").toString());
+			model.setSpecimenType(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
 			model.setStage(doc.getFieldValue("STAGE").toString());
-			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
-			model.setSex(doc.getFieldValue("SEX").toString());
-			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
-			model.setTissue(doc.getFieldValue("TISSUE_TYPE").toString());
-			model.setExpression(insituExpression);
-			model.setSpecimen(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
-			model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
-			model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
-			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
+			model.setFilePath(doc.getFieldValue("THUMBNAIL_PATH").toString());
+			model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
+			model.setAssayType(doc.getFieldValue("ASSAY_TYPE").toString());
+			model.setMgiGeneId(doc.getFieldValue("MGI_GENE_ID").toString());
 			
 			list.add(model);			
 		}
+
 			
 		return list;
-	 }	
-    
+	}	
+
 }

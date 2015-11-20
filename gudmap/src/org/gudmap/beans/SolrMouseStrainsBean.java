@@ -2,6 +2,7 @@ package org.gudmap.beans;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,7 +12,12 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.gudmap.assemblers.SolrMouseStrainsAssembler;
+
+
+
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
+//import org.gudmap.assemblers.SolrMouseStrainsAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.MouseStrainsTableBeanModel;
 
@@ -22,7 +28,7 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-	private SolrMouseStrainsAssembler assembler;
+//	private SolrMouseStrainsAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -43,7 +49,7 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public SolrMouseStrainsBean() {
-    	super(50,10,"RELEVANCE",true);
+    	super(10,10,"RELEVANCE",true);
     	setup();
     }
     
@@ -71,7 +77,7 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 	}
 	
    public void setup() {
-     	assembler=new SolrMouseStrainsAssembler();
+//     	assembler=new SolrMouseStrainsAssembler();
      }
     
     @PostConstruct
@@ -83,11 +89,13 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
-        totalRows = assembler.getCount(solrInput, "");
     	filters = solrFilter.getFilters();
-    	
-     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
-        // Set currentPage, totalPages and pages.
+//        totalRows = assembler.getCount(solrInput, filters);
+        totalRows = solrTreeBean.getSolrUtil().getMouseStrainsCount(solrInput, filters);
+   	
+//     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+     	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+       // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
         int pagesLength = Math.min(pageRange, totalPages);
@@ -111,7 +119,7 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
  //   	sortField = "RELEVANCE";
     	loadDataList();
 //   	paramBean.resetValues();
-    	return "solrMouseStrainsTablePage";
+    	return "solrMouseStrains";
     }
 
     public String checkboxSelections() { 
@@ -155,4 +163,42 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     public boolean getShowPageDetails(){
     	return showPageDetails;
     }
+    
+	public List<MouseStrainsTableBeanModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+
+		List<MouseStrainsTableBeanModel> list = new ArrayList<MouseStrainsTableBeanModel>();
+
+		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMouseStrainsData(solrInput,filterlist,sortColumn,ascending,offset,num);
+		list = formatTableData(sdl);
+
+		return list;
+	}
+
+	private List<MouseStrainsTableBeanModel> formatTableData(SolrDocumentList sdl){
+		
+		List<MouseStrainsTableBeanModel> list = new ArrayList<MouseStrainsTableBeanModel>();
+		MouseStrainsTableBeanModel model = null;
+		
+		int rowNum = sdl.size();
+		
+		for(int i=0; i<rowNum; i++) { 
+			SolrDocument doc = sdl.get(i);
+
+			model = new MouseStrainsTableBeanModel();
+			model.setOid(doc.getFieldValue("ID").toString());
+			model.setGene(doc.getFieldValue("GENE").toString());
+			model.setReporterAllele(doc.getFieldValue("REPORTER_ALLELE").toString());
+			model.setAlleleType(doc.getFieldValue("ALLELE_TYPE").toString());
+			model.setAlleleVerification(doc.getFieldValue("ALLELE_VER").toString());
+			model.setAlleleCharacterisation(doc.getFieldValue("ALLELE_CHAR").toString());
+			model.setStrainAvailability(doc.getFieldValue("STRAIN_AVA").toString());
+			model.setOrgan(doc.getFieldValue("ORGAN").toString());
+			model.setCellType(doc.getFieldValue("CELL_TYPE").toString());
+			
+			list.add(model);			
+		}
+		
+		return list;
+	}	
+   
 }

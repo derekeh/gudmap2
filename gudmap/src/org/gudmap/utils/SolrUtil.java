@@ -20,6 +20,8 @@ import java.util.Set;
 
 
 
+
+
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.util.NamedList;
@@ -28,6 +30,7 @@ import org.apache.solr.client.solrj.SolrQuery.ORDER;
 //import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
 //import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
@@ -36,6 +39,9 @@ import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.PivotField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.response.SolrQueryResponse;
+
+
 //import org.xml.sax.SAXException;
 
 
@@ -67,22 +73,25 @@ public class SolrUtil {
 	public HttpSolrClient microarray_server;
 	public HttpSolrClient series_server;
 	public HttpSolrClient samples_server;
+	public HttpSolrClient ng_series_server;
+	public HttpSolrClient ng_samples_server;
 	public HttpSolrClient tissues_server;
 	public HttpSolrClient mouse_strain_server;
 	public HttpSolrClient image_server;
-
+	public HttpSolrClient tutorial_server;
+	
 	public Set<String> insitu_schema;
 	public Set<String> genes_schema;
 	public Set<String> genelists_schema;
 	public Set<String> microarray_schema;
 	public Set<String> series_schema;
 	public Set<String> samples_schema;
+	public Set<String> ng_series_schema;
+	public Set<String> ng_samples_schema;
 	public Set<String> tissues_schema;
 	public Set<String> mouse_strain_schema;
 	public Set<String> image_schema;
-	
-	public HttpSolrClient tutorial_server;
-	
+		
 	public String searchString = null;
 	
 	public SolrUtil(){
@@ -102,57 +111,73 @@ public class SolrUtil {
 //			e.printStackTrace();
 //		}
 		
-		insitu_server = new HttpSolrClient( "http://localhost:8983/solr/core_insitu" );
-		genes_server = new HttpSolrClient( "http://localhost:8983/solr/core_genes" );
-		genelists_server = new HttpSolrClient( "http://localhost:8983/solr/core_genelists" );
-		microarray_server = new HttpSolrClient( "http://localhost:8983/solr/core_microarray" );
-		series_server = new HttpSolrClient( "http://localhost:8983/solr/core_series" );
-		samples_server = new HttpSolrClient( "http://localhost:8983/solr/core_samples" );		
-		tissues_server = new HttpSolrClient( "http://localhost:8983/solr/core_tissues" );		
-		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/core_mouse_strains" );		
-		image_server = new HttpSolrClient( "http://localhost:8983/solr/core_images" );		
-//		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/core_tutorials");
+		insitu_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_insitu" );
+		
+		genes_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genes" );
+		
+		genelists_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genelists" );
+		microarray_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_microarray" );
+		series_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_series" );
+		samples_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_samples" );		
+		ng_series_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_nextgen_series" );
+		ng_samples_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_nextgen_samples" );		
+		tissues_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_tissues" );		
+		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_mousestrains" );		
+		image_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_images" );		
+		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorials");
 		
 		
-		
-        LukeRequest lukeRequest = new LukeRequest();
-        LukeResponse lukeResponse;
-        lukeRequest.setNumTerms(0);
-        try {
-			lukeResponse = lukeRequest.process(insitu_server);
-			insitu_schema = lukeResponse.getFieldInfo().keySet();
+    	microarray_schema = getMicroarraySchema();
+    	insitu_schema = getInsituSchema();
+		genes_schema = getGeneSchema();
+		genelists_schema = getGeneListsSchema();
+		series_schema = getSeriesSchema();
+		samples_schema = getSamplesSchema();
+		ng_series_schema = getSequenceSeriesSchema();
+		ng_samples_schema = getSequenceSamplesSchema();
+		tissues_schema = getTissuesSchema();
+		mouse_strain_schema = getMouseStrainsSchema();
+		image_schema = getImagesSchema();
 			
-			lukeResponse = lukeRequest.process(genes_server);
-			genes_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(genelists_server);
-			genelists_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(microarray_server);
-			microarray_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(series_server);
-			series_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(samples_server);
-			samples_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(tissues_server);
-			tissues_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(mouse_strain_server);
-			mouse_strain_schema = lukeResponse.getFieldInfo().keySet();
-			
-			lukeResponse = lukeRequest.process(image_server);
-			image_schema = lukeResponse.getFieldInfo().keySet();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SolrServerException e) {
-			e.printStackTrace();
-		}
 
 		
+	}
+	
+	public HttpSolrClient getInsituServer(){
+		return insitu_server;
+	}
+	public HttpSolrClient getGenesServer(){
+		return genes_server;
+	}
+	public HttpSolrClient getGenelistsServer(){
+		return genelists_server;
+	}
+	public HttpSolrClient getMicroarrayServer(){
+		return microarray_server;
+	}
+	public HttpSolrClient getSeriesServer(){
+		return series_server;
+	}
+	public HttpSolrClient getSamplesServer(){
+		return samples_server;
+	}
+	public HttpSolrClient getTissuesServer(){
+		return tissues_server;
+	}
+	public HttpSolrClient getMouseStrainServer(){
+		return mouse_strain_server;
+	}
+	public HttpSolrClient getImageServer(){
+		return image_server;
+	}
+	public HttpSolrClient getNextGenSamplesServer(){
+		return ng_samples_server;
+	}
+	public HttpSolrClient getNextGenSeriesServer(){
+		return ng_series_server;
+	}
+	public HttpSolrClient getTutorialServer(){
+		return tutorial_server;
 	}
 	
 	public String getExpressionFilter(String filter) {
@@ -218,7 +243,6 @@ public class SolrUtil {
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
     	
-//		String cq = checkQuery(insitu_server,q);
         int insituCount = 0;
       	insitu_server.setParser(new XMLResponseParser());
         
@@ -252,8 +276,7 @@ public class SolrUtil {
 
         try
         {
-//         	String cq = checkQuery(insitu_server,q);        	
-    		
+   		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 
@@ -269,7 +292,7 @@ public class SolrUtil {
 	        }
 	        if (filters != null){    
 	            for (String fs : filters){
-	            	if (fs.contains("THEILER_STAGE"))
+	            	if (fs.contains("STAGE"))
 	            		fs = fs.replace(":", ":TS");
 	            		            	
 	            	if (fs.contains("EXP_STRENGTH"))
@@ -420,7 +443,6 @@ public class SolrUtil {
 
         try
         {
-//       		String cq = checkQuery(insitu_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -449,44 +471,6 @@ public class SolrUtil {
         return ishStages;    
     }
     
-    public ArrayList<String> getTop5Insitu(String queryString){
-    	
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-        ArrayList<String> gumapIds = new ArrayList<String>();                       
-        try
-        {
-
-//    		String cq = checkQuery(insitu_server,q);        	
-			   		    		
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-	        parameters.setRows(5);
-            
-	        parameters.addField("GUDMAP");
-	        
-            QueryResponse qr = insitu_server.query(parameters);                                 
-            SolrDocumentList sdl = qr.getResults();
-
-            String id = null;
-    	    for(SolrDocument doc : sdl){
-	    		id = "GUDMAP:" + doc.getFieldValue("GUDMAP").toString();
-	    		gumapIds.add(id);
-	    		if (gumapIds.size() == 5)
-	    			break;
-    		}
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}  
-       
-    	return gumapIds;    
-    }
     
     	// method to retrieve the Insitu data for the results page
     public SolrDocumentList getInsituData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
@@ -503,12 +487,11 @@ public class SolrUtil {
         try
         {
 
-//    		String cq = checkQuery(insitu_server,q);        	
 			   		    		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setFacet(true);
-	        parameters.setFacetLimit(12000);
+//	        parameters.setFacetLimit(12000);
 	        parameters.setFacetMinCount(0);
 	        parameters.setIncludeScore(true);
 	        parameters.setStart(offset);
@@ -520,8 +503,8 @@ public class SolrUtil {
 	        parameters.addField("GUDMAP");
 	        parameters.addField("GUDMAP_ID");
 	        parameters.addField("GENE");
-	        parameters.addField("THEILER_STAGE");
 	        parameters.addField("STAGE");
+	        parameters.addField("DEV_STAGE");
 	        parameters.addField("SOURCE");
 	        parameters.addField("DATE");
 	        parameters.addField("ASSAY_TYPE");
@@ -533,29 +516,6 @@ public class SolrUtil {
 	        parameters.addField("IMAGE");
 	        parameters.addField("MGI_GENE_ID");
 	        
-//        	if (filter == null || filter.contentEquals("undefined")){
-//        	}
-//        	else{
-//	            String[] fields = filter.split(":");
-//	            if (fields.length > 1){
-//	            	filter = fields[0] + ":" + '"' + fields[1] + '"';
-//	            	parameters.addFilterQuery(filter);
-//	            }
-//        	}
-//        	
-//        	if(filters == null){
-//        	}
-//        	else{
-//	            for (String fs : filters){
-//	            	if (fs.contains("THEILER_STAGE"))
-//	            		fs = fs.replace(":", ":TS");
-//	            	
-//	            	if (fs.contains("EXP_STRENGTH"))
-//	            		fs = getExpressionFilter(fs);            	
-//	            	
-//	            	parameters.addFilterQuery(fs);
-//	            }
-//        	}
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
@@ -565,47 +525,10 @@ public class SolrUtil {
 		        }
 	        }
 	        
-// 	        query.setParam("debugQuery", "on");
-//	        query.setHighlight(true);  
-//	        query.setParam("hl.fl", "*");
 
             QueryResponse qr = insitu_server.query(parameters);
             sdl = qr.getResults();
             
-            // get explanation field
-//            Map<String,String> explainMap = qr.getExplainMap();
-//            Set<String> keys = explainMap.keySet();
-//            System.out.println("keys = " + keys);
-//            for(String key : keys){
-//            	String reason = explainMap.get(key);
-//            	System.out.println("key = " + key);
-//            	System.out.println("reason = " + reason);
-//            }
-            // get highlighting info
-//            Map<String,Map<String,List<String>>> highlightMap = qr.getHighlighting();
-//            keys = highlightMap.keySet();
-//            System.out.println("keys = " + keys);
-//            for(String key : keys){
-//                System.out.println("key = " + key);
-////            	Map highlight = highlightMap.get(key);
-////            	Set entries = highlight.entrySet();
-////                for(Object entry : entries){
-////	            	System.out.println("entry = " + entry);
-////                }
-//                
-//                Set<String> fields = qr.getHighlighting().get(key).keySet();
-//                 for(String field :fields){
-//                    System.out.println("field = " + field);
-//                    List<String> result = qr.getHighlighting().get(key).get(field);
-//                	System.out.println("res = "+ result);
-//                 }
-////                if (qr.getHighlighting().get(key) != null) {
-////                	Collection<List<String>> c = qr.getHighlighting().get(key).values();
-////                    for(List<String> l : c){
-////    	            	System.out.println("l = " + l);
-////                    }
-////                }                
-//            }
             
         }
         catch (SolrServerException e)
@@ -628,7 +551,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(insitu_server,q);        	
 			   		    		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -636,7 +558,7 @@ public class SolrUtil {
 	        parameters.set("group", true);
 	        parameters.set("group.ngroups", true);
 	        
-	        String[] groupFields = {"GENE","GUDMAP","SOURCE","DATE","ASSAY_TYPE","PROBE_NAME","THEILER_STAGE","STAGE","SEX","GENOTYPE","TISSUE_TYPE","PRESENT","SPECIMEN_ASSAY_TYPE","IMAGE_PATH"};
+	        String[] groupFields = {"GENE","GUDMAP","SOURCE","DATE","ASSAY_TYPE","PROBE_NAME","THEILER","DEV_STAGE","SEX","GENOTYPE","TISSUE_TYPE","PRESENT","SPECIMEN_ASSAY_TYPE","IMAGE_PATH"};
 
         	if (filter == null || filter.contentEquals("undefined")){
         	}
@@ -649,7 +571,7 @@ public class SolrUtil {
         	}
             
             for (String fs : filters){
-            	if (fs.contains("THEILER_STAGE"))
+            	if (fs.contains("STAGE"))
             		fs = fs.replace(":", ":TS");
             	
             	if (fs.contains("EXP_STRENGTH"))
@@ -697,7 +619,6 @@ public class SolrUtil {
    	
 		int count = 0;
 		try{
-//	     	String cq = checkQuery(genes_server,q);        	
 	    	
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -734,7 +655,6 @@ public class SolrUtil {
    	
 		int count = 0;
 		try{
-//	     	String cq = checkQuery(genes_server,q);        	
 	    	
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -767,7 +687,7 @@ public class SolrUtil {
 		ArrayList<String> genelist = new ArrayList<String>();  
 		
 		try{
-//	     	String cq = checkQuery(genes_server,q);        	
+
 			int fetchSize = 1000;
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -817,65 +737,6 @@ public class SolrUtil {
         return count;
     }       
     
-//    public int getAnchorGeneCount(String queryString){
-//    	String filter = "ANCHOR:1";
-//    	return getGeneCount(queryString, filter);
-//    }
-//    
-//    public int getMarkerGeneCount(String queryString){
-//    	String filter = "MARKER:1";
-//    	return getGeneCount(queryString, filter);
-//    }
-//    
-//    public int getInsituGeneCount(String queryString){
-//    	String filter = "INSITU_ASSAY:1";
-//    	return getGeneCount(queryString, filter);
-//    }
-//
-//    public int getMicroarrayGeneCount(String queryString){
-//    	String filter = "MA_ASSAY:1";
-//    	return getGeneCount(queryString, filter);
-//    }
-    
-    public ArrayList<String> getTop5Genes(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-		ArrayList<String> genelist = new ArrayList<String>();                       
-        try
-        {
-
-//    		String cq = checkQuery(genes_server,q);        	
-			   		    		
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-	        parameters.setRows(50);
-            
-	        parameters.addField("GENE");
-	        
-            QueryResponse qr = genes_server.query(parameters);                                 
-            SolrDocumentList sdl = qr.getResults();
-
-            String id = null;
-    	    for(SolrDocument doc : sdl){
-	    		id = doc.getFieldValue("GENE").toString();
-	    		if(!genelist.contains(id) && (id.length() != 0))
-	    			genelist.add(id);
-	    		if (genelist.size() == 5)
-	    			break;
-    		}
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}  
-       
-    	return genelist;    
-    }
 
     // returns a list of genes from solr for a given query and filter setting   
     public SolrDocumentList getGudmapGenes(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
@@ -889,17 +750,16 @@ public class SolrUtil {
     	
         try
         {
-//    		String cq = checkQuery(genes_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setFacet(true);        	      	        
 	        parameters.addFacetField("GENE");        	        
-	        parameters.addFacetField("MGI_GENE_ID");        	        
-	        parameters.addFacetField("SYNONYMS");        	        
+//	        parameters.addFacetField("MGI_GENE_ID");        	        
+//	        parameters.addFacetField("SYNONYMS");        	        
 	        parameters.setFacetMinCount(0);
 	        parameters.setIncludeScore(true);
-	        parameters.setFacetLimit(100000);
+//	        parameters.setFacetLimit(100000);
 	        parameters.setStart(offset);
 	        parameters.setRows(rows); //(25000);
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
@@ -910,7 +770,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (insitu_schema.contains(pair.getKey()))
+		            if (genes_schema.contains(pair.getKey()))
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
@@ -918,12 +778,12 @@ public class SolrUtil {
             QueryResponse qr = genes_server.query(parameters);
                        
             sdl = qr.getResults();
-    		int rowNum = sdl.size();
-    		for(int i=0; i<rowNum; i++) { 
-    			SolrDocument doc = sdl.get(i);
-    			String id = doc.getFieldValue("GENE").toString();
-    			genes.add(id);
-    		}
+//    		int rowNum = sdl.size();
+//    		for(int i=0; i<rowNum; i++) { 
+//    			SolrDocument doc = sdl.get(i);
+//    			String id = doc.getFieldValue("GENE").toString();
+//    			genes.add(id);
+//    		}
         }
         catch (SolrServerException e)
         {
@@ -947,7 +807,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(genelists_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -987,8 +846,6 @@ public class SolrUtil {
 		HashSet<String> sources = new HashSet<String>();                       
         try
         {
-
-//    		String cq = checkQuery(genes_server,q);        	
 			   		    		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1015,6 +872,117 @@ public class SolrUtil {
        
     	return sources;    
     }
+
+    //***************************** SEQUENCES METHODS *****************************************************
+    
+    public int getSequencesCount(String query){ 
+    	return getSequencesCount(query, null);
+    }
+    
+    
+    public int getSequencesCount(String queryString, HashMap<String,String> filters)
+    {    			
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+   	
+		int count = 0;
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            String key = pair.getKey();
+		            if (ng_samples_schema.contains(key))
+		            	parameters.addFilterQuery(key + ":" + pair.getValue());
+		        }
+	        }
+	
+	        QueryResponse qr = ng_samples_server.query(parameters);                      
+	        
+	        SolrDocumentList sdl = qr.getResults();
+	        count = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return count;
+    }
+
+    public SolrDocumentList getSequencesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+
+    	if (column.contentEquals("GUDMAP_ID"))
+    		column = "GUDMAP";
+    	
+        SolrDocumentList sdl = new SolrDocumentList();
+        
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+        try
+        {
+			   		    		
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setFacet(true);
+	        parameters.setFacetLimit(12000);
+	        parameters.setFacetMinCount(0);
+	        parameters.setIncludeScore(true);
+	        parameters.setStart(offset);
+	        parameters.setRows(rows); //(1000);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+	        
+	        parameters.addFacetField("GUDMAP");
+	        parameters.addField("DEV_STAGE");
+	        parameters.addField("COMPONENT");
+	        parameters.addField("DATE");
+	        parameters.addField("GENOTYPE");
+	        parameters.addField("GUDMAP");
+	        parameters.addField("LIBRARY_STRATEGY");
+	        parameters.addField("PI_NAME");
+	        parameters.addField("SAMPLE_DESCRIPTION");
+	        parameters.addField("SAMPLE_GEO_ID");
+	        parameters.addField("SAMPLE_NAME");
+	        parameters.addField("SERIES_GEO_ID");
+	        parameters.addField("SOURCE");
+	        parameters.addField("STAGE");
+	        parameters.addField("SEX");
+
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            String key = pair.getKey();
+		            if (ng_samples_schema.contains(key))
+		            	parameters.addFilterQuery(key + ":" + pair.getValue());
+		        }
+	        }
+
+
+            QueryResponse qr = ng_samples_server.query(parameters);
+            sdl = qr.getResults();
+            
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+
+        return sdl;
+    }
     
     //***************************** GENELISTS METHODS *****************************************************
 
@@ -1026,7 +994,6 @@ public class SolrUtil {
 
 		try
         {
-//    		String cq = checkQuery(genelists_server,queryString);        	
             
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1074,7 +1041,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(genelists_server,q);  
     		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1129,7 +1095,7 @@ public class SolrUtil {
 	      	parameters.addField("TOT_GENES");
         	parameters.addField("AUTHOR");
         	parameters.addField("DATE");
-	      	parameters.addField("THEILER_STAGE");
+	      	parameters.addField("STAGE");
         	parameters.addField("SEX");
         	parameters.addField("GENELIST_TYPE");
         	parameters.addField("ENTITIES");
@@ -1173,7 +1139,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(tissues_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1202,44 +1167,6 @@ public class SolrUtil {
         return (int)count;    
     }
  
-    public LinkedHashMap<String,String> getTop5Tissues(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-		LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();                       
-        try
-        {
-
-//    		String cq = checkQuery(tissues_server,q);        	
-			   		    		
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-            parameters.setFacet(true);
-            parameters.setRows(5);
-            
-	      	parameters.addField("ID");
-        	parameters.addField("NAME");
-	        
-            QueryResponse qr = tissues_server.query(parameters);                                 
-            SolrDocumentList sdl = qr.getResults();
-            String id = null;
-            String name = null;
-    	    for(SolrDocument doc : sdl){
-	    		name = doc.getFieldValue("NAME").toString();
-	    		id = doc.getFieldValue("ID").toString();
-	    		map.put(name,id);
-    		}
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}  
-       
-    	return map;    
-    }
 
     // method to retrieve the Tissues data for the results page
     public QueryResponse getTissueData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
@@ -1253,7 +1180,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(tissues_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1307,7 +1233,6 @@ public class SolrUtil {
 
         try
         {      	
-//    		String cq = checkQuery(microarray_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1320,7 +1245,7 @@ public class SolrUtil {
 	        parameters.addFacetPivotField("SERIES_GEO_ID,GUDMAP"); 	        
 	        parameters.addFacetPivotField("GUDMAP,SERIES_GEO_ID"); 
 
-            QueryResponse qr = microarray_server.query(parameters);
+            QueryResponse qr = series_server.query(parameters);
 
             NamedList<List<PivotField>> pivots = qr.getFacetPivot();
 
@@ -1353,7 +1278,6 @@ public class SolrUtil {
 
         try
         {
-//       		String cq = checkQuery(microarray_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1366,7 +1290,7 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);  
 	        
-            QueryResponse qr = microarray_server.query(parameters);
+            QueryResponse qr = series_server.query(parameters);
         	SolrDocumentList sdl = qr.getResults();
                         
     	    for(SolrDocument doc : sdl)
@@ -1434,7 +1358,7 @@ public class SolrUtil {
     //***************************** SAMPLE METHODS *****************************************************
 
     // method to retrieve the Samples count for the results page
-    public int getSamplesCount(String queryString){
+    public int getSamplesFilteredCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1443,7 +1367,6 @@ public class SolrUtil {
 
 		try
         {
-//       		String cq = checkQuery(microarray_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1453,9 +1376,18 @@ public class SolrUtil {
 	        parameters.setIncludeScore(true);
 	        parameters.setFacetLimit(1000);
 	        	      	        
-	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
+	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	    
 	        
-            QueryResponse qr = microarray_server.query(parameters);
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//		            if (microarray_schema.contains(pair.getKey()))
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+	       	        
+            QueryResponse qr = samples_server.query(parameters);
             
             NamedList<List<PivotField>> pivots = qr.getFacetPivot();
 
@@ -1477,7 +1409,7 @@ public class SolrUtil {
     }
 
 	// method to retrieve the sample geo ids for the results page
-    public List<String> getSamplesData(String queryString, String column, boolean ascending, int offset, int rows){
+    public List<String> getSamplesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
  
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -1487,7 +1419,6 @@ public class SolrUtil {
     	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);    	    	
         try
         {
-//       		String cq = checkQuery(microarray_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1499,8 +1430,16 @@ public class SolrUtil {
 	        parameters.setRows(1000);
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
-      
-            QueryResponse qr = microarray_server.query(parameters);
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		        }
+	        }
+	        
+            QueryResponse qr = samples_server.query(parameters);
         	SolrDocumentList sdl = qr.getResults();
                         
     	    for(SolrDocument doc : sdl)
@@ -1545,8 +1484,8 @@ public class SolrUtil {
       
 	      	parameters.addField("GUDMAP");
         	parameters.addField("SAMPLE_GEO_ID");
-        	parameters.addField("THEILER_STAGE");
         	parameters.addField("STAGE");
+        	parameters.addField("DEV_STAGE");
         	parameters.addField("SOURCE");
 //        	parameters.addField("PI_NAME");
         	parameters.addField("DATE");
@@ -1577,78 +1516,6 @@ public class SolrUtil {
 
     //***************************** MICROARRAY METHODS *****************************************************
 
-//    public int getGPL81Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL81");
-//    }
-//
-//    public int getGPL339Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL3391");
-//    }
-//
-//    public int getGPL1261Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL1261");
-//    }
-//
-//    public int getGPL6246Count(String queryString){
-//        return getMicroarrayCount(queryString,"PLATFORM_GEO_ID:GPL6246");
-//    }
-
-	// method to retrieve the Microarray count for the results page
-    public int getMicroarrayCount(String queryString)
-    {
-    	return getMicroarrayCount(queryString, null);
-    }
-    
-	// method to retrieve the Microarray count for the results page
-    public int getMicroarrayCount(String queryString, String filter){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-    	int count = 0;
-
-        try
-        {
-//       		String cq = checkQuery(microarray_server,q);  
-
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-	      	parameters.setRows(0);	      
-	        parameters.setFacetMinCount(0);
-	        parameters.setIncludeScore(true);
-	        parameters.setFacetLimit(1000);
-	        	      	        
-	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
-	        
-	        if (filter != null){
-	            String[] fields = filter.split(":");
-	            if (fields.length > 1){
-	            	filter = fields[0] + "," + '"' + fields[1] + '"';
-	            	parameters.addFilterQuery(filter);
-	            }
-            }
-	        
-            QueryResponse qr = microarray_server.query(parameters);
-            
-            NamedList<List<PivotField>> pivots = qr.getFacetPivot();
-
-            for(Map.Entry<String, List<PivotField>> entry : pivots ) {
-	  	          if (entry.getKey().equalsIgnoreCase("SAMPLE_GEO_ID,GUDMAP")){
-	  	        	  	count = entry.getValue().size();
-	  	          }
-            }  
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}        
-
-        return count;    
-    }
-
     public int getMicroarrayFilteredCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1658,8 +1525,6 @@ public class SolrUtil {
 
         try
         {
-//       		String cq = checkQuery(microarray_server,q);  
-
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setFacet(true);
@@ -1699,111 +1564,6 @@ public class SolrUtil {
         return count;    
     }
     
-	// method to retrieve the Platform count for the results page
-    public int getPlatformCount(String queryString){
-
-		return getMicroarrayCount(queryString);
-    }
-
-    public int getMicroarrayStageCount(String queryString){
-
-		return getMicroarrayCount(queryString);
-    }
-
-	// method to retrieve the Microarray count for the results page
-    public List<Integer> getMicroarrayStages(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-   	
-    	
-    	List<Integer> microarrayStages = new ArrayList<Integer>();
-		for (int i= 0; i < 12; i++){
-			microarrayStages.add(0);
-		}
-
-        try
-        {
-//       		String cq = checkQuery(microarray_server,q);  
-
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-	      	parameters.setRows(0);	      
-	        parameters.setFacetMinCount(0);
-	        parameters.setIncludeScore(true);
-	        parameters.setFacetLimit(1000);
-	        	      	        
-	        parameters.addFacetPivotField("SAMPLE_GEO_ID,GUDMAP"); 	        
-	        
-            QueryResponse qr = microarray_server.query(parameters);
-            
-            NamedList<List<PivotField>> pivots = qr.getFacetPivot();
-
-            for (int i = 17; i < 29; i ++){                
-		        parameters.addFilterQuery("THEILER_STAGE:ts"+i);
-	            qr = microarray_server.query(parameters);
-	            pivots = qr.getFacetPivot();
-
-	            for(Map.Entry<String, List<PivotField>> entry : pivots ) {
-		  	          if (entry.getKey().equalsIgnoreCase("SAMPLE_GEO_ID,GUDMAP")){
-		  	        	  int count = entry.getValue().size();
-		  	        	  microarrayStages.set(i-17, count);
-		  	          }
-	            }         	
-	            parameters.removeFilterQuery("THEILER_STAGE:ts"+i);
-            }
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}        
-        return microarrayStages;    
-    }
-    
-    public ArrayList<String> getTop5Microarray(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-		ArrayList<String> gumapIds = new ArrayList<String>();                       
-        try
-        {
-
-//    		String cq = checkQuery(microarray_server,q);        	
-			   		    		
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-            parameters.setRows(50);
-
-	      	parameters.addField("GUDMAP");
-	        
-            QueryResponse qr = microarray_server.query(parameters);                                 
-            SolrDocumentList sdl = qr.getResults();
-            String id = null;
-    	    for(SolrDocument doc : sdl)
-    	    {
-    	    	// remove duplicate GUDMAP entries
-    	    	id = doc.getFieldValue("GUDMAP").toString();
-    	    	id = "GUDMAP:" + doc.getFieldValue("GUDMAP").toString();
-    	    	if (!gumapIds.contains(id)){
-    	    		gumapIds.add(id);
-	    		if (gumapIds.size() == 5)
-	    			break;
-    	    	}    	    	
-    		}
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}  
-       
-    	return gumapIds;    
-    }
 
     // method to retrieve the Microarray data for the results page
     public List<String> getMicroarrayData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
@@ -1817,7 +1577,7 @@ public class SolrUtil {
     	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);    	    	
         try
         {
-//       		String cq = checkQuery(microarray_server,q);  
+
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -1832,14 +1592,17 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (insitu_schema.contains(pair.getKey()))
+		            if (microarray_schema.contains(pair.getKey()))
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
 
             QueryResponse qr = microarray_server.query(parameters);
          	SolrDocumentList sdl = qr.getResults();
-                        
+
+         	
+         	
+         	
     	    for(SolrDocument doc : sdl)
     	    {
     	    	// remove duplicate GEO entries
@@ -1882,8 +1645,8 @@ public class SolrUtil {
       
 	      	parameters.addField("GUDMAP");
         	parameters.addField("SAMPLE_GEO_ID");
-        	parameters.addField("THEILER_STAGE");
         	parameters.addField("STAGE");
+        	parameters.addField("DEV_STAGE");
         	parameters.addField("PI_NAME");
         	parameters.addField("DATE");
         	parameters.addField("SEX");
@@ -1928,8 +1691,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(tutorial_server,q);  
-
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
@@ -1988,7 +1749,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(mouse_strain_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -2019,42 +1779,6 @@ public class SolrUtil {
         return (int)count;    
     }
 
-    public ArrayList<String> getTop5MouseStrains(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-
-		ArrayList<String> reporterAlleles = new ArrayList<String>();                       
-        try
-        {
-
-//    		String cq = checkQuery(mouse_strain_server,q);        	
-			   		    		
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-            parameters.setFacet(true);
-            parameters.setRows(5);
-            
-        	parameters.addField("REPORTER_ALLELE");
-	        
-            QueryResponse qr = mouse_strain_server.query(parameters);                                 
-            SolrDocumentList sdl = qr.getResults();
-
-            String item = null;
-    	    for(SolrDocument doc : sdl){
-    	    	item = doc.getFieldValue("REPORTER_ALLELE").toString();
-    	    	reporterAlleles.add(item);
-    		}
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}  
-       
-    	return reporterAlleles;    
-    }
 
     // method to retrieve the Mouse Strains data for the results page
     public SolrDocumentList getMouseStrainsData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
@@ -2069,7 +1793,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(mouse_strain_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -2131,7 +1854,6 @@ public class SolrUtil {
 
         try
         {
-//    		String cq = checkQuery(image_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -2161,49 +1883,6 @@ public class SolrUtil {
         return (int)count;    
     }
 
-    public LinkedHashMap<String,String> getTop5Images(String queryString){
-
-		if (queryString.equalsIgnoreCase("*"))
-			queryString = "*:*";
-
-		ArrayList<String> gumapIds = new ArrayList<String>();                       
-    	LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();                       
-        try
-        {
-
-//    		String cq = checkQuery(image_server,q);        	
-			   		    		
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-            parameters.setFacet(true);
-            parameters.setRows(50);
-            
-        	parameters.addField("GUDMAP_ID");
-        	parameters.addField("THUMBNAIL_PATH");
-	        
-            QueryResponse qr = image_server.query(parameters);                                 
-            SolrDocumentList sdl = qr.getResults();
-
-            String id = null;
-    	    for(SolrDocument doc : sdl){
-	    		id = doc.getFieldValue("GUDMAP_ID").toString();
-	    		if(!gumapIds.contains(id)){
-	    			gumapIds.add(id);
-	    			map.put(id,doc.getFieldValue("THUMBNAIL_PATH").toString());
-	    		}
-	    		if (gumapIds.size() == 5)
-	    			break;
-    		}
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}  
-       
-    	return map;    
-    }
 
     // method to retrieve the Mouse Strains data for the results page
     public SolrDocumentList getImagesData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
@@ -2212,12 +1891,11 @@ public class SolrUtil {
 			queryString = "*:*";
 
 		SolrDocumentList sdl = null;
-    	
+
     	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
 
         try
         {
-//    		String cq = checkQuery(image_server,q);  
 
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -2234,7 +1912,7 @@ public class SolrUtil {
         	parameters.addField("SPECIMEN_ASSAY_TYPE");
         	parameters.addField("SOURCE");
         	parameters.addField("SEX");
-        	parameters.addField("THEILER_STAGE");
+        	parameters.addField("STAGE");
         	parameters.addField("IMAGE_NOTE");
         	parameters.addField("IMAGE_PATH");
         	parameters.addField("THUMBNAIL_PATH");
@@ -2252,7 +1930,17 @@ public class SolrUtil {
 	        
 	        QueryResponse qr = image_server.query(parameters);
             sdl = qr.getResults();
-
+            
+            SolrDocumentList docs = new SolrDocumentList();
+            ArrayList<String> genes = new ArrayList<String>();
+            for(SolrDocument doc:sdl){
+            	if (!genes.contains(doc.getFieldValue("GUDMAP_ID").toString())){
+            		genes.add(doc.getFieldValue("GUDMAP_ID").toString());
+            		docs.add(doc);
+            		
+            	}
+            }
+            sdl = docs;
         }
         catch (SolrServerException e)
         {
@@ -2300,7 +1988,384 @@ public class SolrUtil {
 
     }
 
+    public  Set<String> getGeneSchema() {
+    	
+    	Set<String> schema = new HashSet<String>();
+    
+    	schema.add("GENE");
+    	schema.add("GENE_NAME");
+    	schema.add("MGI_GENE_ID");
+    	schema.add("MGI");
+    	schema.add("ENSEMBL_ID");
+    	schema.add("SYNONYMS");
+    	schema.add("PROBESETS");
+    	schema.add("ENTREZ_ID");
+    	schema.add("GENBANK_ID");
+    	schema.add("INSITU_ASSAY");
+    	schema.add("MA_ASSAY");
+    	schema.add("GUDMAP");
+	    schema.add("GUDMAP_IDS");
+	    schema.add("PRESENT");
+	    schema.add("DIR_PRESENT");
+	    schema.add("NOT_DETECTED");
+	    schema.add("UNCERTAIN");
+	    schema.add("EMAPS");
+	    schema.add("SOURCE");
+	    schema.add("PI_NAME");
+	    schema.add("LAB");
+	    schema.add("ANCHOR");
+	    schema.add("MARKER");   
+	    
+	    return schema;
+     }
+    
+   public  Set<String> getMouseStrainsSchema() {
+    	
+    	Set<String> schema = new HashSet<String>();
+    
+		   schema.add("ID");
+		   schema.add("GENE");
+		   schema.add("REPORTER_ALLELE"); 
+		   schema.add("ALLELE_TYPE");
+		   schema.add("ALLELE_VER");
+		   schema.add("ALLELE_VER_URL");
+		   schema.add("ALLELE_CHAR");
+		   schema.add("ALLELE_CHAR_URL");   
+		   schema.add("STRAIN_AVA");
+		   schema.add("STRAIN_AVA_URL");   
+		   schema.add("ORGAN");   
+		   schema.add("CELL_TYPE");
+	    
+	    return schema;
+     }
 
+   public  Set<String> getInsituSchema() {
+   	
+   	Set<String> schema = new HashSet<String>();
+   
 
+		   schema.add("GUDMAP"); 
+		   schema.add("GUDMAP_ID"); 
+		   schema.add("GENE"); 
+		   schema.add("GENE_NAME");
+		   schema.add("MGI");
+		   schema.add("MGI_GENE_ID");
+		   schema.add("GENBANK_ID");
+		   schema.add("ENSEMBL_ID");
+		   schema.add("SYNONYMS");
+		   schema.add("PI_NAME");   
+		   schema.add("LAB");   
+		   schema.add("AUTHORS");
+		   schema.add("DATE");
+		   schema.add("STAGE");
+		   schema.add("PROBE_NAME");
+		   schema.add("CLONE_NAME");
+		   schema.add("PROBE_TISSUE");
+		   schema.add("PROBE_ID");
+		   schema.add("maprobe");
+		   schema.add("MAPROBE_ID");
+		   schema.add("PROBE_STRAIN");
+		   schema.add("PROBE_GENE_TYPE");
+		   schema.add("PROBE_TYPE");
+		   schema.add("PROBE_VISUAL_METHOD");
+		   schema.add("PROBE_NOTE");
+		   schema.add("CURATOR_NOTE");
+		   schema.add("RESULT_NOTE");
+		   schema.add("EXPERIMENT_NOTE");   
+		   schema.add("IMAGE_WITH_NOTE");
+		   schema.add("IMAGE_NOTE");
+		   schema.add("IMAGE");
+		   schema.add("IMAGE_PATH");
+		   schema.add("SPECIMEN_ASSAY_TYPE");
+		   schema.add("FIXATION_METHOD");
+		   schema.add("STRAIN");
+		   schema.add("SEX");
+		   schema.add("DEV_STAGE");
+		   schema.add("GENOTYPE");
+		   schema.add("ASSAY_TYPE");
+		   schema.add("PROJECT");
+		   schema.add("ALT_ID");
+		   schema.add("SOURCE");
+		   schema.add("ANCHOR_GENE");
+		   schema.add("MARKER_GENE");
+		   schema.add("FOCUS_GROUPS");
+		   schema.add("ALLELE_MGI_ID");
+		   schema.add("ALLELE_NAME");
+		   schema.add("ALLELE_TYPE");
+		   schema.add("PRESENT");
+		   schema.add("DIR_PRESENT");
+		   schema.add("INF_PRESENT");
+		   schema.add("NOT_DETECTED");
+		   schema.add("INF_NOT_DETECTED");
+		   schema.add("UNCERTAIN");
+		   schema.add("EMAPS");
+		   schema.add("EXP_NOTES");
+		   schema.add("EXPRESSION_NOTES");
+		   schema.add("ANNOTATION");
+		   schema.add("TISSUE_TYPE");
+	    
+	    return schema;
+    }
 
+   public  Set<String> getMicroarraySchema() {
+   	
+   	Set<String> schema = new HashSet<String>();
+   
+		   schema.add("GUDMAP"); 
+		   schema.add("GUDMAP_ID"); 
+		   schema.add("PLATFORM_GEO_ID");
+		   schema.add("PLATFORM_TITLE");
+		   schema.add("PLATFORM_NAME");
+		   schema.add("SAMPLE_GEO_ID");
+		   schema.add("SAMPLE_STRAIN");
+		   schema.add("SAMPLE_SEX");
+		   schema.add("DEVELOPMENT_STAGE");
+		   schema.add("SAMPLE_THEILER_STAGE");
+		   schema.add("SAMPLE_MOLECULE");
+		   schema.add("SAMPLE_RNA_EXTRACT_PROTOCOL");
+		   schema.add("SAMPLE_DISSECTION_METHOD");
+		   schema.add("SAMPLE_EXPERIMENTAL_DESIGN");
+		   schema.add("SAMPLE_ARRAY_HYB_PROTOCOL");
+		   schema.add("SAMPLE_DATA_ANALYSIS_METHOD");
+		   schema.add("SAMPLE_REFERENCE_USED");
+		   schema.add("SAMPLE_TARGET_AMPLIFICATION_MANUFACTURER");
+		   schema.add("SAMPLE_SCAN_PROTOCOL");
+		   schema.add("SAMPLE_LABEL_PROTOCOL");
+		   schema.add("SERIES_GEO_ID");
+		   schema.add("SERIES_TITLE");
+		   schema.add("COMPONENT");
+		   schema.add("EMAP");
+		   schema.add("PI_NAME");
+		   schema.add("LAB");
+		   schema.add("SOURCE");
+		   schema.add("DATE");
+		   schema.add("STAGE");
+		   schema.add("SPECIMEN_ASSAY_TYPE");
+		   schema.add("FIXATION_METHOD");
+		   schema.add("STRAIN");
+		   schema.add("SEX");
+		   schema.add("DEV_STAGE");
+		   schema.add("STAGE_FORMAT");
+		   schema.add("GENOTYPE");
+		   schema.add("FIRST_CHROMATID");
+		   schema.add("SECOND_CHROMATID");
+		   schema.add("ALLELE_MGI_ID");
+		   schema.add("ALLELE_LAB_NAME");
+		   schema.add("ALLELE_NAME");
+		   schema.add("ALLELE_TYPE");
+		   schema.add("GENE");
+		   schema.add("MGI_IDS");
+		   schema.add("MGI");
+	    
+	    return schema;
+    }
+
+   public  Set<String> getSequenceSamplesSchema() {
+   	
+   	Set<String> schema = new HashSet<String>();
+   
+    schema.add("GUDMAP");
+    schema.add("SAMPLE_GEO_ID");
+    schema.add("SERIES_GEO_ID");
+    schema.add("SOURCE");
+    schema.add("LIBRARY_STRATEGY");
+    schema.add("STAGE");
+    schema.add("PI_NAME");
+    schema.add("DEV_STAGE");
+    schema.add("DATE");
+    schema.add("SEX");
+    schema.add("SAMPLE_DESCRIPTION");
+    schema.add("SAMPLE_NAME");
+    schema.add("GENOTYPE");
+    schema.add("COMPONENT");
+	    
+	    return schema;
+    }
+
+   public  Set<String> getSamplesSchema() {
+	   	
+	   	Set<String> schema = new HashSet<String>();
+	   
+	    schema.add("GUDMAP");
+	    schema.add("SAMPLE_GEO_ID");
+	    schema.add("STAGE");
+	    schema.add("DEV_STAGE");
+	    schema.add("SOURCE");
+	    schema.add("PI_NAME");
+	    schema.add("DATE");
+	    schema.add("SEX");
+	    schema.add("DESCRIPTION");
+	    schema.add("TITLE");
+	    schema.add("SERIES_GEO_ID");
+	    schema.add("COMPONENT");
+	    schema.add("QMC_ALE_GENE");
+	    schema.add("ASSAY_TYPE");
+	    schema.add("SPECIMEN_ASSAY_TYPE");
+	    schema.add("PER_OID");
+	    schema.add("PLATFORM_GEO_ID"); 
+		    
+		    return schema;
+   }
+
+   public  Set<String> getSequenceSeriesSchema() {
+	   	
+	   	Set<String> schema = new HashSet<String>();
+	   
+	    schema.add("TITLE");
+	    schema.add("SERIES_GEO_ID");
+	    schema.add("SOURCE");
+	    schema.add("SAMPLE_NUMBER");
+	    schema.add("SOURCE");
+	    schema.add("LIBRARY_STRATEGY");
+	    schema.add("COMPONENT");
+		    
+		    return schema;
+	    }
+
+	   public  Set<String> getSeriesSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("SERIES_GEO_ID");
+		    schema.add("TITLE");
+		    schema.add("SAMPLE_NUMBER");
+		    schema.add("SOURCE");
+		    schema.add("PI_NAME");
+		    schema.add("PLATFORM_GEO_ID");
+		    schema.add("SERIES_OID");
+		    schema.add("COMPONENT");
+//		    schema.add("GENE");
+//		    schema.add("EMAP");
+//		    schema.add("MGI");
+//		    schema.add("PRESENT");
+//		    schema.add("NOT_DETECTED");
+//		    schema.add("UNCERTAIN");
+//		    schema.add("FOCUS_GROUPS");
+//		    schema.add("SEX");
+//		    schema.add("LAB");
+//		    schema.add("maprobe");
+//		    schema.add("GUDMAP");
+//		    schema.add("THEILER_STAGE");
+//		    schema.add("LAB");
+			    
+			    return schema;
+	   }  
+	   
+	   public  Set<String> getTissuesSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("ID");
+		    schema.add("NAME");
+		    schema.add("SYNONYM");
+		    schema.add("STAGES");
+		    schema.add("FOCUS_GROUPS");
+		    schema.add("GENELIST_IDS");
+		    schema.add("GENELIST_NAMES");
+		    schema.add("IMAGE_URL");
+		    schema.add("IMAGE_NAME");
+		    schema.add("SEC_NAMES");
+		    schema.add("LINK_TYPES");
+		    schema.add("GUDMAP");
+		    schema.add("EMAP");
+		    schema.add("EMAPIDS");
+		    schema.add("COMPONENT");
+		    schema.add("MGI");
+		    schema.add("GENE_MGI_ID");
+		    schema.add("GENE");
+		    schema.add("PROBE_IDS");
+		    schema.add("MA_PROBES_ID");
+		    schema.add("maprobe");
+		    schema.add("STAGE");  
+			    
+			    return schema;
+	   }   
+
+	   public  Set<String> getGeneListsSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("ID");
+		    schema.add("NAME");
+		    schema.add("DESCRIPTION"); 
+		    schema.add("PLATFORM");
+		    schema.add("KEY_SAMPLE");
+		    schema.add("MA_DATASET");
+		    schema.add("MA_DATASET_ID");
+		    schema.add("TOT_ENTITIES");   
+		    schema.add("TOT_GENES");
+		    schema.add("AUTHOR");
+		    schema.add("DATE");   
+		    schema.add("STAGE");   
+		    schema.add("SEX");
+		    schema.add("GENELIST_TYPE");
+		    schema.add("ENTITIES");   
+		    schema.add("GENE");
+		    schema.add("GUDMAP_ID");
+		    schema.add("GUDMAP");
+		    schema.add("REF");   
+		    schema.add("EMAP_IDS");   
+		    schema.add("EMAP");   
+		    schema.add("EMAP_TERM");   
+			    
+			    return schema;
+	   }   
+	   
+	   public  Set<String> getImagesSchema() {
+		   	
+		   	Set<String> schema = new HashSet<String>();
+		   
+		    schema.add("IMAGE_ID");
+		    schema.add("IMAGE");
+		    schema.add("IMAGE_PATH");
+		    schema.add("THUMBNAIL_PATH");
+		    schema.add("IMAGE_CLICK_PATH");
+		    schema.add("CLICK_FILENAME");
+		    schema.add("IMAGE_NOTE");
+		    schema.add("IMAGE_TYPE");
+		    schema.add("GUDMAP");
+		    schema.add("GUDMAP_ID");
+		    schema.add("GENE");
+		    schema.add("GENE_NAME");
+		    schema.add("MGI");
+		    schema.add("MGI_GENE_ID");
+		    schema.add("GENBANK_ID");
+		    schema.add("ENSEMBL_ID");
+		    schema.add("SYNONYMS");
+		    schema.add("PI_NAME");
+		    schema.add("DATE");
+		    schema.add("STAGE");
+		    schema.add("PROBE_NAME");
+		    schema.add("CLONE_NAME");
+		    schema.add("PROBE_TISSUE");
+		    schema.add("PROBE_ID");
+		    schema.add("MAPROBE_ID");
+		    schema.add("maprobe");
+		    schema.add("PROBE_STRAIN");
+		    schema.add("PROBE_GENE_TYPE");
+		    schema.add("PROBE_TYPE");
+		    schema.add("PROBE_VISUAL_METHOD");
+		    schema.add("PROBE_NOTE");
+		    schema.add("CURATOR_NOTE");
+		    schema.add("RESULT_NOTE");
+		    schema.add("EXPERIMENT_NOTE"); 
+		    schema.add("SPECIMEN_ASSAY_TYPE");
+		    schema.add("FIXATION_METHOD");
+		    schema.add("STRAIN");
+		    schema.add("SEX");
+		    schema.add("DEV_STAGE");
+		    schema.add("GENOTYPE");
+		    schema.add("ASSAY_TYPE");
+		    schema.add("PROJECT");
+		    schema.add("ALT_ID");
+		    schema.add("SOURCE");
+		    schema.add("PRESENT");
+		    schema.add("INF_PRESENT");
+		    schema.add("EMAPS");
+		    schema.add("EXPRESSION_NOTES");
+		    schema.add("EXP_NOTES");
+			    
+			    return schema;
+	   }   
+	   
 }
