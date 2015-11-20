@@ -20,6 +20,14 @@
 	margin-top:-10px;
 }
 
+.db_align_right {
+	text-align:right;
+}
+
+.db_align_left {
+	text-align:left;
+}
+
 #db_querybrowse_left {
 	float:left;
 	margin-left:2%;
@@ -175,6 +183,10 @@
 	text-align:center;
 	background:none repeat scroll 0 0 #F9F9F9;
 	border-top:1px solid #BBBBBB;
+}
+
+.db_order-table-odd-row td,  .db_order-table-even-row td {
+    padding:0 7px;
 }
 
 .db_table-header{

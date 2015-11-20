@@ -51,34 +51,23 @@
  
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">
-    			<h:commandLink id="accessionlink" value="Gudmap Accession" actionListener="#{genericTablePageBean.sort}">
+    			<h:commandLink id="accessionlink" value="Assay Detail" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="natural_sort(x.oid)" />
     					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
-    			<h:commandLink value="#{u.gudmap_accession}"  action="#{paramBean.returnDetailsPage(u.assay_type)}" >
+				<h:panelGrid columns="3">
+				<h:commandLink value="#{u.gudmap_accession}"  action="#{paramBean.returnDetailsPage(u.assay_type)}" >
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
-					<f:param name="isArray" value="#{u.assay_type == 'Microarray'?true:false}"></f:param>
-					
+					<f:param name="isArray" value="#{u.assay_type == 'Microarray'?true:false}"></f:param>	
+				</h:commandLink> 
+				<h:panelGroup>&#160;&#160;</h:panelGroup>
+				<h:commandLink action="#{paramBean.returnDetailsPage(u.assay_type)}" >
+					<img src="#{u.image}" />
+					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+					<f:param name="isArray" value="#{u.assay_type == 'Microarray'?true:false}"></f:param>					
 				</h:commandLink>
-    				
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.sourcecol == true}">
-    			<f:facet name="header">
-    			<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="x.source" />
-    					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
-                    </h:commandLink>
-				</f:facet>
-    				#{u.source}
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.submissiondatecol == true}">
-    			<f:facet name="header">
-    				Submission Date
-				</f:facet>
-    				#{u.submission_date}
+				</h:panelGrid>  				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.assaytypecol == true}">
@@ -91,11 +80,18 @@
     				#{u.assay_type}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.probenamecol == true}">
+    		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
-    				Probe Name
+    				Specimen Type
 				</f:facet>
-    				#{u.probe_name}
+    				#{u.specimen}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.agecol == true}">
+    			<f:facet name="header">
+    				Age
+				</f:facet>
+    				#{u.age}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">
@@ -110,13 +106,6 @@
 				</h:outputLink>
 				<h:outputText value="#{u.stage}" rendered="#{u.species != 'Mus musculus'}"/>
     				
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.agecol == true}">
-    			<f:facet name="header">
-    				Age
-				</f:facet>
-    				#{u.age}
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sexcol == true}">
@@ -147,25 +136,30 @@
     				#{u.expression}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.specimentypecol == true}">
+    		<h:column rendered="#{paramBean.probenamecol == true}">
     			<f:facet name="header">
-    				Specimen Type
+    				Probe Name
 				</f:facet>
-    				#{u.specimen}
+    				#{u.probe_name}
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.imagescol == true}">
+    		<h:column rendered="#{paramBean.sourcecol == true}">
     			<f:facet name="header">
-    				Images
+    			<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.source" />
+    					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
+                    </h:commandLink>
 				</f:facet>
-    			
-				<h:commandLink action="#{paramBean.returnDetailsPage(u.assay_type)}" >
-					<img src="#{u.image}" />
-					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
-					<f:param name="isArray" value="#{u.assay_type == 'Microarray'?true:false}"></f:param>
-					
-				</h:commandLink>
+    				#{u.source}
     		</h:column>
+    		
+    		<h:column rendered="#{paramBean.submissiondatecol == true}">
+    			<f:facet name="header">
+    				Submission Date
+				</f:facet>
+    				#{u.submission_date}
+    		</h:column>
+    		
  
  		</h:dataTable> 
  		</h:form>	

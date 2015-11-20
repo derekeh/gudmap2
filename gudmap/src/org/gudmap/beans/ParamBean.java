@@ -48,8 +48,8 @@ public class ParamBean implements Serializable {
 	private boolean genotypecol=true;
 	private boolean tissuecol=true;
 	private boolean expressioncol=false;
-	private boolean specimentypecol=true;
-	private boolean imagescol=false;
+	private boolean specimentypecol=false;
+	private boolean imagescol=true;
 	/*genestrip cols*/
 	private boolean synonymcol=false;
 	private boolean omimcol=true;
@@ -118,23 +118,23 @@ public class ParamBean implements Serializable {
 	private boolean mic_titlecol=true;
 	private boolean mic_geoSeriesIDcol=false;
 	private boolean mic_numsamplescol=true;
-	private boolean mic_platformIDcol=true;
+	private boolean mic_platformIDcol=false;
 	private boolean mic_platformnamecol=true;
 	private boolean mic_platformtechnologycol=true;
 	private boolean mic_platformmanufacturercol=true;
 	private boolean mic_numseriescol=true;
-	private boolean mic_sourcecol=true;
+	private boolean mic_sourcecol=false;
 	private boolean mic_stagecol=true;
 	private boolean mic_agecol=true;
 	private boolean mic_submissiondatecol=false;
 	private boolean mic_sexcol=true;
 	private boolean mic_genotypecol=true;
-	private boolean mic_geoSampleIDcol=true;
+	private boolean mic_geoSampleIDcol=false;
 	private boolean mic_sampledescriptioncol=true;
 	private boolean mic_samplenamecol=false;
 	private boolean mic_componentscol=true;
 	private boolean mic_gudmapaccessioncol=true;
-	private boolean mic_librarystrategycol=true;
+	private boolean mic_librarystrategycol=false;
 	private boolean mic_sampleplatformIDcol=false;
 	private boolean mic_samplelibrarystrategycol = false;
 	
@@ -180,16 +180,22 @@ public class ParamBean implements Serializable {
 		
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
-		insitucols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","probename","embryostage","age","images"};
-		tgcols= new String[]{"gene","gudmapaccession","source","submissiondate","assaytype","embryostage","age","genotype","images"};
-		genestripcols= new String[]{"gene","synonym","omim","stagerange","expressionprofile","images","microarrayprofile","rnaseq"};
-		micseriescols= new String[]{"title","geoid","source","numsamples","platform","components"};
-		micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
-				"genotype","components"};
-		seqsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
-				"genotype","components"};
+		insitucols= new String[]{"gene","gudmapaccession","assaytype","age","embryostage","sex","genotype","tissue"};
+		tgcols= new String[]{"gene","gudmapaccession","assaytype","embryostage","age","sex","genotype","tissue"};
+		genestripcols= new String[]{"gene","expressionprofile","images","microarrayprofile","rnaseq","stagerange","omim"};
+		//micseriescols= new String[]{"title","geoid","source","numsamples","platform","components"};
+		micseriescols= new String[]{"title","numsamples","components"};
+		micsamplecols= new String[]{"gudmapaccession","sampledescription","age","stage","sex","genotype","components"};
+		//micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
+		//		"genotype","components"};
+		//seqsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
+				//"genotype","components"};
+		seqsamplecols= new String[]{"gudmapaccession","sampledescription","age","stage","sex","genotype","components"};
+		seqseriescols= new String[]{"title","numsamples","components"};
+		//seqseriescols= new String[]{"title","geoid","source","numsamples","librarystrategy","components"};
+		
 		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};
-		seqseriescols= new String[]{"title","geoid","source","numsamples","librarystrategy","components"};
+		
 		collectioncols= new String[]{"name","description","owner","count","focusgroup","status","modified","download","share"};
 		
 		resultmap=new HashMap<String,Boolean>();
@@ -407,7 +413,7 @@ public class ParamBean implements Serializable {
 		tissuecol=resultmap.containsKey("tissue");
 		expressioncol=resultmap.containsKey("expression");
 		specimentypecol=resultmap.containsKey("specimentype");
-		imagescol=resultmap.containsKey("images");
+		//imagescol=resultmap.containsKey("images");
 	}
 	
 	
@@ -422,19 +428,19 @@ public class ParamBean implements Serializable {
 		insitucolmap = new LinkedHashMap<String,Object>();
 		//insitucolmap.put("Oid", "oid"); //label, value
 		insitucolmap.put("Gene", "gene");
-		insitucolmap.put("Gudmap Accession", "gudmapaccession");
-		insitucolmap.put("Source", "source");
-		insitucolmap.put("Submission Date", "submissiondate");
+		insitucolmap.put("Assay Detail", "gudmapaccession");
+		//insitucolmap.put("Images", "images");
 		insitucolmap.put("Assay Type", "assaytype");
-		insitucolmap.put("Probe Name", "probename");
-		insitucolmap.put("Theiler Stage", "embryostage");
+		insitucolmap.put("Specimen Type", "specimentype");
 		insitucolmap.put("Age", "age");
+		insitucolmap.put("Stage", "embryostage");
 		insitucolmap.put("Sex", "sex");
 		insitucolmap.put("Genotype", "genotype");
 		insitucolmap.put("Tissue", "tissue");
 		insitucolmap.put("Expression", "expression");
-		insitucolmap.put("Specimen Type", "specimentype");
-		insitucolmap.put("Images", "images");
+		insitucolmap.put("Probe Name", "probename");
+		insitucolmap.put("Source", "source");
+		insitucolmap.put("Submission Date", "submissiondate");
 	}
  
 	public Map<String,Object> getInsitucolmap() {
@@ -465,7 +471,7 @@ public class ParamBean implements Serializable {
 		tissuecol=tgresultmap.containsKey("tissue");
 		expressioncol=tgresultmap.containsKey("expression");
 		specimentypecol=tgresultmap.containsKey("specimentype");
-		imagescol=tgresultmap.containsKey("images");
+		//imagescol=tgresultmap.containsKey("images");
 	}
 	
 	
@@ -478,19 +484,20 @@ public class ParamBean implements Serializable {
 		tgcolmap = new LinkedHashMap<String,Object>();
 		//tgcolmap.put("Oid", "oid"); //label, value
 		tgcolmap.put("Gene", "gene");
-		tgcolmap.put("Gudmap Accession", "gudmapaccession");
-		tgcolmap.put("Source", "source");
-		tgcolmap.put("Submission Date", "submissiondate");
+		tgcolmap.put("Assay Detail", "gudmapaccession");		
 		tgcolmap.put("Assay Type", "assaytype");
+		tgcolmap.put("Specimen Type", "specimentype");
 		//tgcolmap.put("Probe Name", "probename");
-		tgcolmap.put("Theiler Stage", "embryostage");
 		tgcolmap.put("Age", "age");
+		tgcolmap.put("Stage", "embryostage");		
 		tgcolmap.put("Sex", "sex");
 		tgcolmap.put("Genotype", "genotype");
 		tgcolmap.put("Tissue", "tissue");
 		tgcolmap.put("Expression", "expression");
-		tgcolmap.put("Specimen Type", "specimentype");
-		tgcolmap.put("Images", "images");
+		tgcolmap.put("Source", "source");
+		tgcolmap.put("Submission Date", "submissiondate");
+		
+		//tgcolmap.put("Images", "images");
 	}
  
 	public Map<String,Object> getTgcolmap() {
@@ -525,12 +532,13 @@ public class ParamBean implements Serializable {
 		//insitucolmap.put("Oid", "oid"); //label, value
 		genestripcolmap.put("Gene", "gene");
 		genestripcolmap.put("Synonyms", "synonym");
+		genestripcolmap.put("In situ Expression", "expressionprofile");
+		genestripcolmap.put("Images", "images");
+		genestripcolmap.put("Microarray Profile", "microarrayprofile");
+		genestripcolmap.put("Sequence", "rnaseq");
+		genestripcolmap.put("Stages", "stagerange");
 		genestripcolmap.put("Disease", "omim");
-		genestripcolmap.put("Theiler Stage", "stagerange");
-		genestripcolmap.put("Expression Profile", "expressionprofile");
-		genestripcolmap.put("Expression Images", "images");
-		genestripcolmap.put("Microarray Expression Profile", "microarrayprofile");
-		genestripcolmap.put("RNA-SEQ", "rnaseq");
+		
 	}
  
 	public Map<String,Object> getGenestripcolmap() {
@@ -1584,11 +1592,11 @@ public class ParamBean implements Serializable {
 	static{
 		micseriescolmap = new LinkedHashMap<String,Object>();
 		micseriescolmap.put("Title", "title");
-		micseriescolmap.put("GEO Series ID", "geoid");
-		micseriescolmap.put("Source", "source");
 		micseriescolmap.put("Number of Samples", "numsamples");
+		micseriescolmap.put("Component", "components");
+		micseriescolmap.put("GEO Series ID", "geoid");
 		micseriescolmap.put("Platform", "platform");
-		micseriescolmap.put("Component(s) Sampled", "components");
+		micseriescolmap.put("Source", "source");
 	}
  
 	public Map<String,Object> getMicseriescolmap() {
@@ -1631,19 +1639,21 @@ public class ParamBean implements Serializable {
 	private static Map<String,Object> micsamplecolmap;
 	static{
 		micsamplecolmap = new LinkedHashMap<String,Object>();	
-		micsamplecolmap.put("Gudmap Entry Details", "gudmapaccession");
+		micsamplecolmap.put("Assay Detail", "gudmapaccession");
+		micsamplecolmap.put("Sample Description", "sampledescription");
+		micsamplecolmap.put("Sample Name", "samplename");
+		micsamplecolmap.put("Component", "components");
+		micsamplecolmap.put("Age", "age");
+		micsamplecolmap.put("Stage", "stage");
+		micsamplecolmap.put("Sex", "sex");
+		micsamplecolmap.put("Genotype", "genotype");
 		micsamplecolmap.put("GEO Sample ID", "geosampleid");
 		micsamplecolmap.put("GEO Series ID", "geoseriesid");
 		micsamplecolmap.put("Platform", "platform");
 		micsamplecolmap.put("Source", "source");
-		micsamplecolmap.put("Stage", "stage");
-		micsamplecolmap.put("Age", "age");
 		micsamplecolmap.put("Submission Date", "submissiondate");
-		micsamplecolmap.put("Sex", "sex");
-		micsamplecolmap.put("Sample Description", "sampledescription");
-		micsamplecolmap.put("Sample Name", "samplename");
-		micsamplecolmap.put("Genotype", "genotype");
-		micsamplecolmap.put("Component(s) Sampled", "components");
+		
+		
 	}
  
 	public Map<String,Object> getMicsamplecolmap() {
@@ -1687,19 +1697,20 @@ public class ParamBean implements Serializable {
 	private static Map<String,Object> seqsamplecolmap;
 	static{
 		seqsamplecolmap = new LinkedHashMap<String,Object>();	
-		seqsamplecolmap.put("Gudmap Entry Details", "gudmapaccession");
+		seqsamplecolmap.put("Assay Detail", "gudmapaccession");
+		seqsamplecolmap.put("Sample Description", "sampledescription");
+		seqsamplecolmap.put("Sample Name", "samplename");
+		seqsamplecolmap.put("Component", "components");
+		seqsamplecolmap.put("Age", "age");
+		seqsamplecolmap.put("Stage", "stage");
+		seqsamplecolmap.put("Sex", "sex");
+		seqsamplecolmap.put("Genotype", "genotype");
 		seqsamplecolmap.put("GEO Sample ID", "geosampleid");
 		seqsamplecolmap.put("GEO Series ID", "geoseriesid");
 		seqsamplecolmap.put("Library Strategy", "librarystrategy");
 		seqsamplecolmap.put("Source", "source");
-		seqsamplecolmap.put("Stage", "stage");
-		seqsamplecolmap.put("Age", "age");
 		seqsamplecolmap.put("Submission Date", "submissiondate");
-		seqsamplecolmap.put("Sex", "sex");
-		seqsamplecolmap.put("Sample Description", "sampledescription");
-		seqsamplecolmap.put("Sample Name", "samplename");
-		seqsamplecolmap.put("Genotype", "genotype");
-		seqsamplecolmap.put("Component(s) Sampled", "components");
+		
 	}
 	
 	public Map<String,Object> getSeqsamplecolmap() {
@@ -1772,11 +1783,11 @@ public class ParamBean implements Serializable {
 	static{
 		seqseriescolmap = new LinkedHashMap<String,Object>();
 		seqseriescolmap.put("Title", "title");
-		seqseriescolmap.put("GEO Series ID", "geoid");
-		seqseriescolmap.put("Source", "source");
 		seqseriescolmap.put("Number of Samples", "numsamples");
+		seqseriescolmap.put("Component", "components");
+		seqseriescolmap.put("GEO Series ID", "geoid");
 		seqseriescolmap.put("Library Strategy", "librarystrategy");
-		seqseriescolmap.put("Component(s) Sampled", "components");
+		seqseriescolmap.put("Source", "source");
 	}
  
 	public Map<String,Object> getSeqseriescolmap() {

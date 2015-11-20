@@ -55,28 +55,6 @@
     			</f:facet>
     				<h:outputText value="#{u.title}"/>
     		</h:column>
- 
-    		<h:column rendered="#{paramBean.mic_geoSeriesIDcol == true}">
-    			<f:facet name="header">
-    				<h:commandLink id="geoserieslink" value="GEO Series ID" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="NATURAL_SORT(geo_series_id)" />
-                         <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
-                    </h:commandLink>
-				</f:facet>
-				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
-					<h:outputText value="#{u.geoSeriesID}"/>
-				</h:outputLink>
-    		</h:column>
-    		
-    		<h:column rendered="#{paramBean.mic_sourcecol == true}">
-    			<f:facet name="header">
-    				<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
-                         <f:attribute name="sortField" value="source" />
-                         <f:ajax execute="@this sourcelink" render="@form"></f:ajax>
-                    </h:commandLink>
-				</f:facet>
-    				#{u.source}
-    		</h:column>
     		
     		<h:column rendered="#{paramBean.mic_numsamplescol == true}">
     			<f:facet name="header">
@@ -92,6 +70,25 @@
 				</h:outputLink>
     		</h:column>
     		
+    		<h:column rendered="#{paramBean.mic_componentscol == true}">
+    			<f:facet name="header">
+    				Component
+				</f:facet>
+    				#{u.seriesComponents}
+    		</h:column>
+ 
+    		<h:column rendered="#{paramBean.mic_geoSeriesIDcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink id="geoserieslink" value="GEO Series ID" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="NATURAL_SORT(geo_series_id)" />
+                         <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
+                    </h:commandLink>
+				</f:facet>
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
+					<h:outputText value="#{u.geoSeriesID}"/>
+				</h:outputLink>
+    		</h:column>
+    		
     		<h:column rendered="#{paramBean.mic_librarystrategycol == true}">
     			<f:facet name="header">
     				<h:commandLink id="librarystrategylink" value="Library Strategy" actionListener="#{genericTablePageBean.sort}">
@@ -103,13 +100,16 @@
     				
     		</h:column>
     		
-    		<h:column rendered="#{paramBean.mic_componentscol == true}">
+    		<h:column rendered="#{paramBean.mic_sourcecol == true}">
     			<f:facet name="header">
-    				Component(s) Sampled
+    				<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
+                         <f:attribute name="sortField" value="source" />
+                         <f:ajax execute="@this sourcelink" render="@form"></f:ajax>
+                    </h:commandLink>
 				</f:facet>
-    				#{u.seriesComponents}
+    				#{u.source}
     		</h:column>
-
+    		
  		</h:dataTable> 
  		</h:form>
  		

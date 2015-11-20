@@ -25,8 +25,7 @@
 		<ui:include src="/snippets/g_ishFilter.xhtml"></ui:include>
 		
 		#{genericTablePageBean.loadDataList()}
-		#{paramBean.setGenotypecol(false)}
-		#{paramBean.setProbenamecol(true)}
+		
 		<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
 			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
 			<h:form id="focusform">
