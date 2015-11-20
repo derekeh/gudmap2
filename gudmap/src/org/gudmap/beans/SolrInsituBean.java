@@ -240,6 +240,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 			model.setSpecimen(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
 			model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
 			model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
+			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
 			
 			list.add(model);			
 		}

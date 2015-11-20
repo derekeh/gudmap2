@@ -73,6 +73,13 @@
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
     		</h:column>
+    		
+    		<h:column rendered="#{paramBean.synonymcol == true}">
+    			<f:facet name="header">
+    				Synonyms
+				</f:facet>
+				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
 
     		<h:column rendered="#{paramBean.gudmapaccessioncol == true}">
     			<f:facet name="header">

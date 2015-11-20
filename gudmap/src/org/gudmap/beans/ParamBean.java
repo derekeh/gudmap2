@@ -51,7 +51,7 @@ public class ParamBean implements Serializable {
 	private boolean specimentypecol=true;
 	private boolean imagescol=false;
 	/*genestrip cols*/
-	private boolean synonymcol=true;
+	private boolean synonymcol=false;
 	private boolean omimcol=true;
 	private boolean rnaseqcol=true;
 	private boolean ishexpressioncol=true;
