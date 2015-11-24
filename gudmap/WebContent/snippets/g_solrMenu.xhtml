@@ -43,12 +43,12 @@
 
 	
 		<h:panelGrid columns="1" style="text-align:center">
-			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrGeneStrip.xhtml" >
-				<h:outputText style="color:grey; " value="Genes" rendered="#{solrTreeBean.page != '/solr/solrGeneStrip.xhtml'}"/>
-				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Genes" rendered="#{solrTreeBean.page == '/solr/solrGeneStrip.xhtml'}"/>
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrGeneStrip.xhtml" >
+				<h:outputText style="color:grey; " value="Genes" rendered="#{solrTreeBean.page != '/db/solrGeneStrip.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Genes" rendered="#{solrTreeBean.page == '/db/solrGeneStrip.xhtml'}"/>
 	         </h:outputLink>  
-	         <h:outputText value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page != '/solr/solrGeneStrip.xhtml'}"/>
-	         <h:outputText style="color:black" value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page == '/solr/solrGeneStrip.xhtml'}"/>
+	         <h:outputText value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page != '/db/solrGeneStrip.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page == '/db/solrGeneStrip.xhtml'}"/>
 		</h:panelGrid>
 
 		<h:panelGrid columns="1" style="text-align:center">

@@ -61,7 +61,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //    var viewerHeight = $(document).height();
 //    var viewerPosTop = 200;
 //    var viewerPosLeft = 100;
-    var cellSize = 14;
+    var cellSize = 20;//14;
 //    var svg;
 
     //==================================================
@@ -221,6 +221,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			.attr("height", cellSize)
 //			.style("fill", function(d) { return getHeatmapColor(d.adjvalue); })
 			.style("fill", function(d) { return getHeatmapColor(d); })
+//			.append("text")
+//			.text(function(d) { return d; })
 			.on('mouseover', function(d, i, j) {
 		        d3.select(this).classed("cell-hover",true);
 		        d3.selectAll(".geneLabel").classed("text-highlight",function(r,ri){ return ri==j;});
