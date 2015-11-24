@@ -35,12 +35,11 @@
 
 		<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
 			<h:inputText id="solr_input" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event)"></h:inputText>
-			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
+			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/header/mag_glass.png" style="width:26px; height:26px" action="#{solrTreeBean.goSearch}" >
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-				<f:ajax execute="@form" render=":solr_dataform :solr_menuform" ></f:ajax>
+				<f:ajax execute="@form" render=":solr_dataform :solr_menuform :gd_searchform" ></f:ajax>
 			</h:commandButton>
 		</h:panelGrid>	
-
 	
 		<h:panelGrid columns="1" style="text-align:center">
 			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrGeneStrip.xhtml" >

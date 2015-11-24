@@ -50,6 +50,7 @@ input[type="text"], textarea {
   background-color:#D0DFE5; 
   border-radius: 5px;
   border: 2px solid lightblue;
+  color:#436482;
 
 }
 
@@ -133,6 +134,14 @@ img {
 	background-size:20px 20px;
 }
 
+.gd_input_large_empty {
+	width:250px;
+	padding:10px 10px;
+	line-height:30px;
+	background-color:white !important;
+	font-size: 20px;
+}
+
 /* .gd_input_large::after {
 	content: "";
   background:url(/gudmap/resources/images/header/mag_glass.png) right no-repeat;
@@ -170,7 +179,7 @@ img {
 }
 
 #gd_quicksearch {
-	color:#D0DFE5;
+	color:#D0DFE5; 
 	padding-top:4px;
 	font-size:15px;
 	float:right;
