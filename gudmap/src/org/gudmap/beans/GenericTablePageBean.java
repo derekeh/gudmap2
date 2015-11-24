@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -60,6 +61,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     private String specimenWhereclause="";
     private List<String> selectedItems;
     private boolean areAllChecked;
+    private boolean toggleCheck=false;
     
     private String queryTotals;
     private String userInput="";
@@ -456,6 +458,22 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	for (int i=0;i<dataList.size();i++) { 
     		((InsituTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
+    }
+    
+    public void toggleAll(ValueChangeEvent e) { 
+    	boolean temp = (Boolean) e.getNewValue();
+    	areAllChecked=(areAllChecked)?false:true;
+    	for (int i=0;i<dataList.size();i++) { 
+    		((InsituTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
+    	} 
+    }
+    
+    public void setToggleCheck(boolean toggleCheck){
+    	this.toggleCheck = toggleCheck;
+    }
+    
+    public boolean getToggleCheck() {
+    	return toggleCheck;
     }
     
     public void checkAllCollections() { 
