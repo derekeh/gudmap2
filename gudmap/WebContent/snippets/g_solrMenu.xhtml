@@ -24,20 +24,12 @@
 	<div id="gd_solrmenu">
 	<h:form id="solr_menuform" >
 	<h:panelGrid columns="14">
-	
-<ui:remove>
-	<input class="slide-input" id="toggle" type="checkbox"/>
-
-			<pr:commandLink id="solrFilterBtn"  actionListener="#{solrFilter.refresh}">
-				<h:graphicImage library="images/resources" name="slider.png" width="25" height="25"/>
-			</pr:commandLink>
-</ui:remove>	
 
 		<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
 			<h:inputText id="solr_input" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event)"></h:inputText>
 			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/header/mag_glass.png" style="width:26px; height:26px" action="#{solrTreeBean.goSearch}" >
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-				<f:ajax execute="@form" render=":solr_dataform :solr_menuform :gd_searchform" ></f:ajax>
+				<f:ajax execute="@form" render=":dataform :solr_menuform :gd_searchform" ></f:ajax>
 			</h:commandButton>
 		</h:panelGrid>	
 	

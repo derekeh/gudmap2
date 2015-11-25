@@ -417,6 +417,16 @@
 	padding:3px;
 }
 
+#dataform img, .db_outer_detail_right img {
+	border:1px solid #c2d5dc;
+	border-bottom-left-radius: 5px;
+	border-top-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	margin: 1px 0;
+	padding:3px;
+}
+
 .db_list_images{
 	
 }

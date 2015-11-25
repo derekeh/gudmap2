@@ -66,13 +66,13 @@ jQuery(document).ready(function(){
 			return;
 		}
 		
-		var selectedNode =  document.getElementById('solr_dataform:analysisitem');
+		var selectedNode =  document.getElementById('dataform:analysisitem');
 		selectedNode.value = result;
 
-//		selectedNode =  document.getElementById('solr_dataform:genelist_crumb');
+//		selectedNode =  document.getElementById('dataform:genelist_crumb');
 //		selectedNode.value = node.attr("crumb");
 					
-		selectedNode =  document.getElementById('solr_dataform:analysis_mastertableId');
+		selectedNode =  document.getElementById('dataform:analysis_mastertableId');
 		selectedNode.value = node.attr("table");
 
 		
@@ -117,7 +117,7 @@ $(document).ready(function(){
 </script>
 
 
-	<h:form id="solr_dataform">
+	<h:form id="dataform">
 	<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
 	<div id="expanderContent" style="display:none">
 	
