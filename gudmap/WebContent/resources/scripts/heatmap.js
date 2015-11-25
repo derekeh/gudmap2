@@ -498,7 +498,7 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
 	   .style("position", "absolute")
 	   .style("visibility", "hidden");
 
-	   var url =  "../resources/scripts/genestrips_" + geneid + ".json";
+	   var url =  "../resources/genestrips/genestrips_" + geneid + ".json";
 //	   var url =  "/MAWWW/Public/html/AppFiles/genestrips/genestrip_" + geneid + ".json";
 //	   geneId = geneId.replace(":","_");
 // 	   var url ="http://glenelgin.hgu.mrc.ac.uk/Appfiles/heatmaps/genestrip_" + geneId + ".json";
