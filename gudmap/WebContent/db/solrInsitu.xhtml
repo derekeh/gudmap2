@@ -87,12 +87,13 @@
     					<f:attribute name="sortField" value="GUDMAP_ID" />
                     </h:commandLink>
 				</f:facet>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="3" columnClasses="db_align_left,db_align_right,db_align_right">
     			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSubmissionDetails.xhtml">
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
+				<h:panelGroup>&#160;&#160;</h:panelGroup>
     			<h:commandLink action="/db/viewSubmissionDetails.xhtml">
-    				<img src="#{u.image}" height="40" style="padding-left:10px"/>
+    				<img src="#{u.image}"/>
 					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
 				</h:commandLink>
 				</h:panelGrid>

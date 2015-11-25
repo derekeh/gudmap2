@@ -18,11 +18,10 @@
     		
  			<h:column >
     			<f:facet name="header">
-    				<h:commandButton id="checkall" value="Check All" action="#{genericTablePageBean.checkAll}">
-    					<f:ajax execute="@this checkall" render="@form" />
-					</h:commandButton>
-					<br />
-    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />
+    				<h:selectBooleanCheckbox id="cb_toggle" value="#{genericTablePageBean.toggleCheck}" valueChangeListener="#{genericTablePageBean.toggleAll}">
+						<f:ajax event="click" execute="@this cb_toggle"  render="@form" />
+					</h:selectBooleanCheckbox>
+				
     				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>

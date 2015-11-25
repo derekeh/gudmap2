@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -43,6 +44,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	//private ArrayList<MasterTableInfo> tableinfo;	
 	private ArrayList<String> geneIds;
 	private boolean areAllChecked;
+	private boolean toggleCheck=false;
 	private List<String> selectedItems;
    // private String tempParam="";
     String str;
@@ -163,6 +165,22 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     	for (int i=0;i<dataList.size();i++) { 
     		((GeneStripModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
+    }
+    
+    public void toggleAll(ValueChangeEvent e) { 
+    	boolean temp = (Boolean) e.getNewValue();
+    	areAllChecked=(areAllChecked)?false:true;
+    	for (int i=0;i<dataList.size();i++) { 
+    		((GeneStripModel)dataList.get(i)).setSelected(areAllChecked);
+    	} 
+    }
+    
+    public void setToggleCheck(boolean toggleCheck){
+    	this.toggleCheck = toggleCheck;
+    }
+    
+    public boolean getToggleCheck() {
+    	return toggleCheck;
     }
     
     

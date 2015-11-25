@@ -19,11 +19,9 @@
     		
  			<h:column >
     			<f:facet name="header">
-    				<h:commandButton id="checkall" value="Check All" action="#{geneStripBean.checkAll}">
-    					<f:ajax execute="@this checkall" render="@form" />
-					</h:commandButton>
-					<br />
-    				<h:commandButton  id="tocart" value="+" action="#{geneStripBean.checkboxSelections()}" />
+    				<h:selectBooleanCheckbox id="cb_toggle" value="#{geneStripBean.toggleCheck}" valueChangeListener="#{geneStripBean.toggleAll}">
+						<f:ajax event="click" execute="@this cb_toggle"  render="@form" />
+					</h:selectBooleanCheckbox>
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.geneSymbol}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>

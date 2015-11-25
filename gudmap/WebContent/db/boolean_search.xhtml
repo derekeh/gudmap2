@@ -140,7 +140,7 @@
 	<ui:include src="/snippets/g_information_dialogs.xhtml"/>
 	<p><h:message for="stagesCheck" styleClass="db_inner_inner_title" /></p>
   <h:panelGrid columns="2" columnClasses="db_table_col_left,db_table_col_center" styleClass="db_panel_grid_width">	
-  	<h:outputText value="Search gene expression patterns in selected anatomical components." styleClass="db_bold" />
+  	<h:outputText value="Search for more than one anatomical component. (Use the tree on the left to create your query.)" styleClass="db_bold" />
   	<h:panelGroup id="spinner" style="display:none">
 	  		<h:outputText value="Page Loading " />
 	  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />
@@ -154,7 +154,7 @@
   
   <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
     <h:inputText id="componentSearchField" size="30" />
-    <h:commandButton onclick="searchTree(document.getElementById('componentSearchField').value)" value="Find Components in Tree" type="button" />
+    <h:commandButton onclick="searchTree(document.getElementById('componentSearchField').value)" value="Find Components in the tree below" type="button" />
     <h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" onclick="PF('boolean_dialog').show();return false;"></h:graphicImage>                
   </h:panelGrid>
   
@@ -336,7 +336,7 @@
     </h:form>
   </h:panelGrid>
   
-  <h:panelGrid>
+  <h:panelGrid style="float:right;">
     <h:form id="booleanQForm2">
       <h:panelGrid columns="5" cellpadding="2" cellspacing="2">
         <h:inputText value="#{booleanSearchBean.input}"  onkeyup="checkButtonStatus()" size="70" id="queryBuilder" />
