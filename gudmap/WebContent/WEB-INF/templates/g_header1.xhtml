@@ -11,6 +11,21 @@
     
 <!--       	<a href="#"><h:graphicImage library="images/header" name="gudmap_logo.png" alt="GUDMAP" width="334" height="56" id="gudmap_logo"/></a> 
  -->    </div>
+ 
+		<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput1 (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='gd_quicksearch:gd_search_value')
+				                	document.getElementById('gd_quicksearch:gd_search_go').click();
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		//]]>
+		</script>
+ 
     <div id="gd_stripe_strip">
           <div id="gd_login" class="gd_webfont_header">
           <h:panelGrid columns="3" columnClasses="gd_cellTextRight,gd_cellTextLeft">
@@ -31,8 +46,8 @@
           <h:form id="gd_searchform">
           <h:panelGrid columns="3" columnClasses="gd_cellTextRight,gd_cellTextLeft,gd_cellTextLeft">			  
 			  <h:outputLabel for="il_search_value" value="Search "></h:outputLabel>
-			  <h:inputText id="il_search_value" required="true" value="#{solrTreeBean.solrInput}"></h:inputText>
-	    	<h:commandLink id="il_search_go" action="solrInsitu">
+			  <h:inputText id="gd_search_value" required="true" value="#{solrTreeBean.solrInput}" onkeypress="handleInput1(this,event);"></h:inputText>
+	    	<h:commandLink id="gd_search_go" action="solrInsitu">
 				  <h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt=""></h:graphicImage>
 					<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
 		  	</h:commandLink>
