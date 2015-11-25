@@ -69,12 +69,12 @@
 		</h:panelGrid>
 
 		<h:panelGrid columns="1" style="text-align:center">
-			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrInsitu.xhtml" >
-				<h:outputText style="color:grey" value="In Situ" rendered="#{solrTreeBean.page != '/solr/solrInsitu.xhtml'}" />
-				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="In Situ" rendered="#{solrTreeBean.page == '/solr/solrInsitu.xhtml'}" />
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrInsitu.xhtml" >
+				<h:outputText style="color:grey" value="In Situ" rendered="#{solrTreeBean.page != '/db/solrInsitu.xhtml'}" />
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="In Situ" rendered="#{solrTreeBean.page == '/db/solrInsitu.xhtml'}" />
 	         </h:outputLink> 	          
-	         <h:outputText value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page != '/solr/solrInsitu.xhtml'}"/>
-	         <h:outputText style="color:black" value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page == '/solr/solrInsitu.xhtml'}"/>
+	         <h:outputText value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page != '/db/solrInsitu.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page == '/db/solrInsitu.xhtml'}"/>
 		</h:panelGrid>
 <ui:remove> 
 		<h:panelGrid columns="1" style="text-align:center">
