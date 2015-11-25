@@ -47,6 +47,7 @@ public class SolrFilter implements Serializable {
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
 	private ArrayList<String> expressionValues;
+	private String expressionValue;
 	private String page;
 	private boolean showFilter = false;
 	private int filterWidth = 300;
@@ -326,16 +327,25 @@ public class SolrFilter implements Serializable {
 		Map<String,String> expressionstagemap = new LinkedHashMap<String,String>();
 		expressionstagemap.put("Gene expressed", "detected");
 		expressionstagemap.put("Gene undetected", "undetected");
-		expressionstagemap.put("Uncertain", "Uncertain");
+		expressionstagemap.put("Uncertain", "uncertain");
 
 
 		return expressionstagemap;
 	}	
+	
 	public ArrayList<String> getGeneExpressionValues(){
 		return expressionValues;
 	}	
 	public void setGeneExpressionValues(ArrayList<String> val){
+		expressionValues = null;// for single selection
 		expressionValues = val;
+	}	
+
+	public String getGeneExpressionValue(){
+		return expressionValue;
+	}	
+	public void setGeneExpressionValue(String val){
+		expressionValue = val;
 	}	
 	
 	/************************ refresh and set/rest filters *************************************/
@@ -445,8 +455,15 @@ public class SolrFilter implements Serializable {
 				filters.put("STAGE",filter);
 			}
 		}
-	
-//		getPage("ss");
+
+		if (expressionValue != null && !expressionValue.isEmpty()) {
+				if (expressionValue.contains("detected"))
+					filters.put("PRESENT","['' TO *]");
+				if (expressionValue.contains("undetected"))
+					filters.put("NOT_DETECTED","['' TO *]");
+				if (expressionValue.contains("uncertain"))
+					filters.put("UNCERTAIN","['' TO *]");
+		}
 	}
 	
 	public void reset(){
