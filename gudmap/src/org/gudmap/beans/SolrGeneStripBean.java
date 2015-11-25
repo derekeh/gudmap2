@@ -192,7 +192,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		try{
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String path = ctx.getRealPath("/");			
-			path += "/resources/genestrips/genestrip_" + geneId + ".json";
+			path += "/resources/genestrips/genestrips_" + geneId + ".json";
 			
 //			String geneIdn = geneId.replaceAll(":", "_");
 //			String path = "/export/data0/bernardh/MAWWW/Public/html/AppFiles/heatmaps/genestrip_" + geneIdn + ".json";
