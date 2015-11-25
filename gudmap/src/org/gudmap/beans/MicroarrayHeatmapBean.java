@@ -241,7 +241,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			if (genelistId != null){
 				// cache the analysis json files
 				
-				path += "/resources/scripts/" + genelistId + "heatmap.json";
+				path += "/resources/genestrips/" + genelistId + "heatmap.json";
 				
 				File f = new File(path);
 				if (!f.exists()){
@@ -259,7 +259,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			else {
 				// write over any browsed json files
 				
-				path += "/resources/scripts/heatmap.json";
+				path += "/resources/genestrips/heatmap.json";
 								
 				FileWriter writer = new FileWriter(path);
 				

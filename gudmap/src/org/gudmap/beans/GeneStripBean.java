@@ -213,7 +213,7 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String path = ctx.getRealPath("/");
 				
-			path += "/resources/scripts/genestrip_" + geneId + ".json";
+			path += "/resources/scripts/genestrips_" + geneId + ".json";
 			File f = new File(path);
 			if (!f.exists()){
 				FileWriter writer = new FileWriter(f);

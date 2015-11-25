@@ -1,5 +1,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 	
 <div class="gd_header">
@@ -27,11 +28,14 @@
           </h:panelGrid>
     	  </div>
           <div id="gd_quicksearch"  class="gd_webfont_header">
-          <h:form>
+          <h:form id="gd_searchform">
           <h:panelGrid columns="3" columnClasses="gd_cellTextRight,gd_cellTextLeft,gd_cellTextLeft">			  
 			  <h:outputLabel for="il_search_value" value="Search "></h:outputLabel>
-			  <h:inputText id="il_search_value" required="true"></h:inputText>
-			  <h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt=""></h:graphicImage>
+			  <h:inputText id="il_search_value" required="true" value="#{solrTreeBean.solrInput}"></h:inputText>
+	    	<h:commandLink id="il_search_go" action="solrInsitu">
+				  <h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt=""></h:graphicImage>
+					<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+		  	</h:commandLink>
 			</h:panelGrid>
 			</h:form>
           </div>
