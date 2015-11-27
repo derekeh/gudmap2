@@ -44,32 +44,11 @@ input[type="checkbox"]{
  	</div>
 <ui:remove>	
 	<div class="accordion">
-		<h2>Gene Expression</h2>
+		<h2>Expression</h2>
 		<div>
-		 	<h:selectManyCheckbox size="5" value="#{solrFilter.geneExpressionValues}" layout="pageDirection">
-		 		<f:selectItems value="#{solrFilter.geneExpressionList}" />
-		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
-		 	</h:selectManyCheckbox>
-		</div>  		
-	</div>
-		
-	<div class="accordion">
-		<h2>Gene Expression</h2>
-		<div>
-		 	<h:selectOneListbox size="5" value="#{solrFilter.geneExpressionValue}" layout="pageDirection">
-		 		<f:selectItems value="#{solrFilter.geneExpressionList}" />
-		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
-		 	</h:selectOneListbox>
-		</div>  		
-	</div>
-</ui:remove> 
-	<div class="accordion">
-		<h2>Gene Expression</h2>
-		<div>
+			<pr:outputLabel value="Anatomy:" for="anatomy_input" />
+	    	<pr:autoComplete  id="anatomy_input" value="#{solrFilter.anatomy}" completeMethod="#{autocompleteBean.completeAnatomy}"
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
 		 	<h:selectOneRadio size="5" value="#{solrFilter.geneExpressionValue}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.geneExpressionList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
@@ -78,7 +57,7 @@ input[type="checkbox"]{
 		 	</h:selectOneRadio>
 		</div>  		
 	</div>
-             
+</ui:remove>              
 	<div class="accordion">
 		<h2>Theiler Stages</h2>
 		<div>
@@ -144,7 +123,7 @@ input[type="checkbox"]{
 		<h2>Sources</h2>
 		<div>
 			<h:panelGrid columns="3">
-			 	<h:selectManyListbox size="8" value="#{solrFilter.sourceValues}" layout="pageDirection">
+			 	<h:selectManyListbox size="10" value="#{solrFilter.sourceValues}" layout="pageDirection">
 			 		<f:selectItems value="#{solrFilter.sourceList}" />
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />

@@ -48,6 +48,7 @@ public class SolrFilter implements Serializable {
 	private ArrayList<String> carnegieStageValues;
 	private ArrayList<String> expressionValues;
 	private String expressionValue;
+	private String anatomy;
 	private String page;
 	private boolean showFilter = false;
 	private int filterWidth = 300;
@@ -325,8 +326,9 @@ public class SolrFilter implements Serializable {
 	public Map<String,String> getGeneExpressionList(){
 		
 		Map<String,String> expressionstagemap = new LinkedHashMap<String,String>();
-		expressionstagemap.put("Gene expressed", "detected");
-		expressionstagemap.put("Gene undetected", "undetected");
+		expressionstagemap.put("All", "");
+		expressionstagemap.put("Present", "detected");
+		expressionstagemap.put("Not detected", "undetected");
 		expressionstagemap.put("Uncertain", "uncertain");
 
 
@@ -346,6 +348,13 @@ public class SolrFilter implements Serializable {
 	}	
 	public void setGeneExpressionValue(String val){
 		expressionValue = val;
+	}	
+
+	public String getAnatomy(){
+		return anatomy;
+	}	
+	public void setAnatomy(String val){
+		anatomy = val;
 	}	
 	
 	/************************ refresh and set/rest filters *************************************/
@@ -458,11 +467,11 @@ public class SolrFilter implements Serializable {
 
 		if (expressionValue != null && !expressionValue.isEmpty()) {
 				if (expressionValue.contains("detected"))
-					filters.put("PRESENT","['' TO *]");
+					filters.put("PRESENT", anatomy);
 				if (expressionValue.contains("undetected"))
-					filters.put("NOT_DETECTED","['' TO *]");
+					filters.put("NOT_DETECTED", anatomy);
 				if (expressionValue.contains("uncertain"))
-					filters.put("UNCERTAIN","['' TO *]");
+					filters.put("UNCERTAIN", anatomy);
 		}
 	}
 	
