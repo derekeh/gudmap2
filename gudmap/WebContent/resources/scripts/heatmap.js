@@ -61,7 +61,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //    var viewerHeight = $(document).height();
 //    var viewerPosTop = 200;
 //    var viewerPosLeft = 100;
-    var cellSize = 14;
+    var cellSize = 20;//14;
 //    var svg;
 
     //==================================================
@@ -221,6 +221,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			.attr("height", cellSize)
 //			.style("fill", function(d) { return getHeatmapColor(d.adjvalue); })
 			.style("fill", function(d) { return getHeatmapColor(d); })
+//			.append("text")
+//			.text(function(d) { return d; })
 			.on('mouseover', function(d, i, j) {
 		        d3.select(this).classed("cell-hover",true);
 		        d3.selectAll(".geneLabel").classed("text-highlight",function(r,ri){ return ri==j;});
@@ -496,10 +498,11 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
 	   .style("position", "absolute")
 	   .style("visibility", "hidden");
 
-	   var url =  "../resources/scripts/genestrip_" + geneid + ".json";
-//	   var url =  "localhost:8080/MAWWW/Public/html/AppFiles/heatmaps/genestrip_" + geneId + ".json";
+	   var url =  "../resources/genestrips/genestrips_" + geneid + ".json";
+//	   var url =  "/MAWWW/Public/html/AppFiles/genestrips/genestrip_" + geneid + ".json";
 //	   geneId = geneId.replace(":","_");
 // 	   var url ="http://glenelgin.hgu.mrc.ac.uk/Appfiles/heatmaps/genestrip_" + geneId + ".json";
+//	    var url = "http://glenelgin.hgu.mrc.ac.uk/Appfiles/heatmaps/genestrip_" + geneid + ".json";
     //==================================================
     d3.json(url, function(error, data) {
 

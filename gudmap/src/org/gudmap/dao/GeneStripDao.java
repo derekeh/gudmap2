@@ -1044,7 +1044,7 @@ public class GeneStripDao {
 				ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 				String path = ctx.getRealPath("/");
 					
-				path += "/resources/scripts/genestrip_" + geneId + ".json";
+				path += "/resources/genestrips/genestrips_" + geneId + ".json";
 				File f = new File(path);
 				if (!f.exists()){
 					FileWriter writer = new FileWriter(f);

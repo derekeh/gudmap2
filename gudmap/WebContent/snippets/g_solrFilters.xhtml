@@ -60,7 +60,7 @@
 			<h:outputText style="font-weight:bold" value="Sources:"></h:outputText>
 		 	<h:selectManyListbox size="4" value="#{solrFilter.sourceValues}" >
 		 		<f:selectItems value="#{solrFilter.sourceList}" />
-		 		<f:ajax event="change"  listener="#{solrFilter.sourceChangeListener}" render=":solr_dataform"  />
+		 		<f:ajax event="change"  listener="#{solrFilter.sourceChangeListener}" render=":dataform"  />
 		 	</h:selectManyListbox>
 		</h:panelGrid>
 	

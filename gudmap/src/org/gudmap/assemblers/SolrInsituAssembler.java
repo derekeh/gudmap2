@@ -88,4 +88,6 @@ public class SolrInsituAssembler {
 		return list;
 	 }	
 
+	
+	
 }

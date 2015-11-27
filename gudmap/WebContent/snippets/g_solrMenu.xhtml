@@ -24,31 +24,22 @@
 	<div id="gd_solrmenu">
 	<h:form id="solr_menuform" >
 	<h:panelGrid columns="14">
-	
-<ui:remove>
-	<input class="slide-input" id="toggle" type="checkbox"/>
-
-			<pr:commandLink id="solrFilterBtn"  actionListener="#{solrFilter.refresh}">
-				<h:graphicImage library="images/resources" name="slider.png" width="25" height="25"/>
-			</pr:commandLink>
-</ui:remove>	
 
 		<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
 			<h:inputText id="solr_input" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event)"></h:inputText>
-			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/resources/search2.png" action="#{solrTreeBean.goSearch}" >
+			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/header/mag_glass.png" style="width:26px; height:26px" action="#{solrTreeBean.goSearch}" >
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-				<f:ajax execute="@form" render=":solr_dataform :solr_menuform" ></f:ajax>
+				<f:ajax execute="@form" render=":dataform :solr_menuform :gd_searchform" ></f:ajax>
 			</h:commandButton>
 		</h:panelGrid>	
-
 	
 		<h:panelGrid columns="1" style="text-align:center">
-			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrGeneStrip.xhtml" >
-				<h:outputText style="color:grey; " value="Genes" rendered="#{solrTreeBean.page != '/solr/solrGeneStrip.xhtml'}"/>
-				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Genes" rendered="#{solrTreeBean.page == '/solr/solrGeneStrip.xhtml'}"/>
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrGeneStrip.xhtml" >
+				<h:outputText style="color:grey; " value="Genes" rendered="#{solrTreeBean.page != '/db/solrGeneStrip.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Genes" rendered="#{solrTreeBean.page == '/db/solrGeneStrip.xhtml'}"/>
 	         </h:outputLink>  
-	         <h:outputText value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page != '/solr/solrGeneStrip.xhtml'}"/>
-	         <h:outputText style="color:black" value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page == '/solr/solrGeneStrip.xhtml'}"/>
+	         <h:outputText value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page != '/db/solrGeneStrip.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.geneCount})" rendered="#{solrTreeBean.page == '/db/solrGeneStrip.xhtml'}"/>
 		</h:panelGrid>
 
 		<h:panelGrid columns="1" style="text-align:center">
@@ -70,12 +61,12 @@
 		</h:panelGrid>
 
 		<h:panelGrid columns="1" style="text-align:center">
-			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrInsitu.xhtml" >
-				<h:outputText style="color:grey" value="In Situ" rendered="#{solrTreeBean.page != '/solr/solrInsitu.xhtml'}" />
-				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="In Situ" rendered="#{solrTreeBean.page == '/solr/solrInsitu.xhtml'}" />
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrInsitu.xhtml" >
+				<h:outputText style="color:grey" value="In Situ" rendered="#{solrTreeBean.page != '/db/solrInsitu.xhtml'}" />
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="In Situ" rendered="#{solrTreeBean.page == '/db/solrInsitu.xhtml'}" />
 	         </h:outputLink> 	          
-	         <h:outputText value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page != '/solr/solrInsitu.xhtml'}"/>
-	         <h:outputText style="color:black" value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page == '/solr/solrInsitu.xhtml'}"/>
+	         <h:outputText value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page != '/db/solrInsitu.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.insituCount})" rendered="#{solrTreeBean.page == '/db/solrInsitu.xhtml'}"/>
 		</h:panelGrid>
 <ui:remove> 
 		<h:panelGrid columns="1" style="text-align:center">

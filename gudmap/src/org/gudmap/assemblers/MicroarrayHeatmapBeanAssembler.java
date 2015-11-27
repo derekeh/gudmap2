@@ -551,6 +551,37 @@ public class MicroarrayHeatmapBeanAssembler {
 		return averages;
 	}
 
+	public ArrayList<String> getGeneIds(int firstRow,int rowsPerPage) {
+		
+		ArrayList<String> geneIds = new ArrayList<String>(); 
+    	String sql = String.format(MicroarrayHeatmapQueries.GENE_IDS);
+    	sql += " WHERE GNF_ID != 'null' LIMIT " + Integer.toString(firstRow) + " ," + Integer.toString(rowsPerPage);
+    	              
+		try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(sql);
+
+			resSet =  ps.executeQuery();
+		    if (resSet.first()) {
+		    	resSet.beforeFirst();
+				while (resSet.next()) {
+					String item = resSet.getString(1);
+					if (item.length() > 1)
+						geneIds.add(item);
+				}
+		    }
+        	
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, resSet);
+		}
+		
+		return geneIds;
+	}
+	
    
     
     

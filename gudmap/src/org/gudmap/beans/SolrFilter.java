@@ -47,6 +47,8 @@ public class SolrFilter implements Serializable {
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
 	private ArrayList<String> expressionValues;
+	private String expressionValue;
+	private String anatomy;
 	private String page;
 	private boolean showFilter = false;
 	private int filterWidth = 300;
@@ -324,18 +326,35 @@ public class SolrFilter implements Serializable {
 	public Map<String,String> getGeneExpressionList(){
 		
 		Map<String,String> expressionstagemap = new LinkedHashMap<String,String>();
-		expressionstagemap.put("Gene expressed", "detected");
-		expressionstagemap.put("Gene undetected", "undetected");
-		expressionstagemap.put("Uncertain", "Uncertain");
+		expressionstagemap.put("All", "");
+		expressionstagemap.put("Present", "detected");
+		expressionstagemap.put("Not detected", "undetected");
+		expressionstagemap.put("Uncertain", "uncertain");
 
 
 		return expressionstagemap;
 	}	
+	
 	public ArrayList<String> getGeneExpressionValues(){
 		return expressionValues;
 	}	
 	public void setGeneExpressionValues(ArrayList<String> val){
+		expressionValues = null;// for single selection
 		expressionValues = val;
+	}	
+
+	public String getGeneExpressionValue(){
+		return expressionValue;
+	}	
+	public void setGeneExpressionValue(String val){
+		expressionValue = val;
+	}	
+
+	public String getAnatomy(){
+		return anatomy;
+	}	
+	public void setAnatomy(String val){
+		anatomy = val;
 	}	
 	
 	/************************ refresh and set/rest filters *************************************/
@@ -445,8 +464,15 @@ public class SolrFilter implements Serializable {
 				filters.put("STAGE",filter);
 			}
 		}
-	
-//		getPage("ss");
+
+		if (expressionValue != null && !expressionValue.isEmpty()) {
+				if (expressionValue.contains("detected"))
+					filters.put("PRESENT", anatomy);
+				if (expressionValue.contains("undetected"))
+					filters.put("NOT_DETECTED", anatomy);
+				if (expressionValue.contains("uncertain"))
+					filters.put("UNCERTAIN", anatomy);
+		}
 	}
 	
 	public void reset(){
@@ -464,23 +490,6 @@ public class SolrFilter implements Serializable {
 		toDateValue = null;		
 	}
 
-//	public void refresh2(){
-//		
-//		RequestContext context = RequestContext.getCurrentInstance();
-//		page = FacesContext.getCurrentInstance().getViewRoot().getViewId(); 
-//		
-//		if (page.equalsIgnoreCase("/solr/solrInsitu.xhtml")){
-//			context.execute("PF('dialogSolrInsituFilter').show();");
-//		}
-//			
-//		if (page.equalsIgnoreCase("/db/database_homepage.xhtml")){
-//			context.execute("PF('dialogSolrSearch').show();");
-//			context.execute("PF('dialogSolrInsituFilter').show();");
-//		}
-//			
-////		context.update("solrsearchform");
-////		context.update(":solrinsitu_dataform");
-//	};
    
     public String getPage(String component){
     
@@ -534,126 +543,5 @@ public class SolrFilter implements Serializable {
     	refresh();
 	}	
     
-//    public void removeFilter2(ActionEvent event) {
-//    	UIComponent source = (UIComponent)event.getSource();
-//    	String prefix = source.getId();    	
-//    	filters.remove(prefix);
-//		
-//    	switch(prefix){
-//    	case "GENE":
-//    		geneValue = "";
-//    		break;    	
-//    	case "DATE":
-//    		fromDateValue = null;
-//    		toDateValue = null;	
-//    		break;
-//    	case "SOURCE":
-//    		sourceValues.clear();
-//    		break;
-//    	case "SEX":
-//    		sexValues.clear();
-//    		break;
-//    	case "ASSAY_TYPE":
-//    		assayTypeValues.clear();
-//    		break;
-//    	case "SPECIMEN_ASSAY_TYPE":
-//    		specimenTypeValues.clear();
-//    		break;
-//    	case "THEILER_STAGE":
-//    		theilerStageValues.clear();
-//    		break;
-//    	case "CARNEGIE_STAGE":
-//    		carnegieStageValues.clear();
-//    		break;
-//    	default:
-//    		break;
-//    	}
-//    	
-//    	refresh();
-//	}	
-
-//    public void removeFilterlist(ActionEvent event) {
-//    	UIComponent source = (UIComponent)event.getSource();
-//    	String prefix = source.getId();    	
-//    	filterlist.remove(prefix);
-//		
-//    	if (prefix.contains("SOURCE"))
-//    		sourceValues.clear();
-//
-//    	if (prefix.contains("SEX"))
-//    		sexValues.clear();
-//        	
-//    	if (prefix.contains("ASSAY_TYPE"))
-//    		assayTypeValues.clear();
-//
-//    	
-//    	refresh();
-//	}	
-
-    
-//	public void refreshlist(){
-//		filterlist = new ArrayList<String>();
-// 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-// 		String filter = "";
-// 		
-// 		if (geneValue != null && geneValue != "") {
-//			filter = "GENE:(" + geneValue + ")";
-//			filterlist.add(filter);
-// 		}
-// 
-// 		if (toDateValue != null) {
-// 			if (fromDateValue != null) {
-//				filter = "DATE:[" + df.format(fromDateValue) +  " TO " +  df.format(toDateValue) + "]";
-//				filterlist.add(filter);
-// 			}
-// 			else {
-//				filter = "DATE:[ * TO " + df.format(toDateValue) + "]";
-//				filterlist.add(filter);
-//			}				
-// 		}
-// 		else if (fromDateValue != null) {
-//			filter = "DATE:[" + df.format(fromDateValue) + " TO * ]";
-//			filterlist.add(filter);
-// 		}
-// 		
-// 		if (sourceValues != null && !sourceValues.isEmpty()) {
-//			filter = "SOURCE:(";
-//			for (String item : sourceValues) filter += item + " OR ";
-//			filter = filter.substring(0, filter.length()-3) + ")";
-//			filterlist.add(filter);
-// 		}
-// 
-// 		if (sexValues != null && !sexValues.isEmpty()) {
-//			filter = "SEX:(";
-//			for (String item : sexValues) filter += item + " OR ";
-//			filter = filter.substring(0, filter.length()-3) + ")";
-//			filterlist.add(filter);
-//
-// 		}
-// 		
-// 		if (assayTypeValues != null && !assayTypeValues.isEmpty()) {
-//			filter = "ASSAY_TYPE:(";
-//			for (String item : assayTypeValues) filter += item + " OR ";
-//			filter = filter.substring(0, filter.length()-3) + ")";
-//			filterlist.add(filter);
-//
-// 		}
-// 		
-// 		if (specimenTypeValues != null && !specimenTypeValues.isEmpty()) {
-//			filter = "SPECIMEN_ASSAY_TYPE:(";
-//			for (String item : specimenTypeValues) filter += item + " OR ";
-//			filter = filter.substring(0, filter.length()-3) + ")";
-//			filterlist.add(filter);
-// 		}
-// 		
-// 		if (theilerStageValues != null && !theilerStageValues.isEmpty()) {
-//			filter = "THEILER_STAGE:(";
-//			for (String item : theilerStageValues) filter += item + " OR ";
-//			filter = filter.substring(0, filter.length()-3) + ")";
-//			filterlist.add(filter);
-// 		}
-//
-//	}
-
 }
 

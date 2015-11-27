@@ -37,31 +37,34 @@ input[type="checkbox"]{
 		 	<h:outputText value="Gene: "></h:outputText>
 		 	<h:inputText value="#{solrFilter.geneValue}" >
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:inputText>
 		</div>
  	</div>
- 	
+<ui:remove>	
 	<div class="accordion">
-		<h2>Gene Expression</h2>
+		<h2>Expression</h2>
 		<div>
-		 	<h:selectManyCheckbox size="5" value="#{solrFilter.geneExpressionValues}" layout="pageDirection">
+			<pr:outputLabel value="Anatomy:" for="anatomy_input" />
+	    	<pr:autoComplete  id="anatomy_input" value="#{solrFilter.anatomy}" completeMethod="#{autocompleteBean.completeAnatomy}"
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+		 	<h:selectOneRadio size="5" value="#{solrFilter.geneExpressionValue}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.geneExpressionList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
-		 	</h:selectManyCheckbox>
+		 	</h:selectOneRadio>
 		</div>  		
 	</div>
-             
+</ui:remove>              
 	<div class="accordion">
 		<h2>Theiler Stages</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.theilerStageList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:selectManyCheckbox>
       	</div>
@@ -73,7 +76,7 @@ input[type="checkbox"]{
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.carnegieStageValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.carnegieStageList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:selectManyCheckbox>
       	</div>
@@ -85,7 +88,7 @@ input[type="checkbox"]{
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.sexList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:selectManyCheckbox>
       	</div>
@@ -98,7 +101,7 @@ input[type="checkbox"]{
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:selectManyCheckbox>
       	</div>
@@ -110,7 +113,7 @@ input[type="checkbox"]{
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.assayTypeList}" />
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:selectManyCheckbox>
 		</div>
@@ -120,12 +123,12 @@ input[type="checkbox"]{
 		<h2>Sources</h2>
 		<div>
 			<h:panelGrid columns="3">
-			 	<h:selectManyCheckbox size="5" value="#{solrFilter.sourceValues}" layout="pageDirection">
+			 	<h:selectManyListbox size="10" value="#{solrFilter.sourceValues}" layout="pageDirection">
 			 		<f:selectItems value="#{solrFilter.sourceList}" />
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
-			 	</h:selectManyCheckbox>
+			 	</h:selectManyListbox>
 		 	</h:panelGrid>
 		</div>
 	</div>
@@ -137,13 +140,13 @@ input[type="checkbox"]{
 	 			<h:outputText value="From:"></h:outputText>
 	 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 	 			</pr:calendar>
 	 			<h:outputText value="To:"></h:outputText>
 	 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":solr_dataform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 	 			</pr:calendar>
 			</h:panelGrid>
