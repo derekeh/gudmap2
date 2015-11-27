@@ -5,10 +5,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
-//import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,10 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.primefaces.component.tabview.Tab;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.TabChangeEvent;
 
 @Named(value="solrFilter")
 @SessionScoped
@@ -46,8 +39,7 @@ public class SolrFilter implements Serializable {
 	private ArrayList<String> specimenTypeValues;
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
-	private ArrayList<String> expressionValues;
-	private String expressionValue;
+	private String expressionValue = "";
 	private String anatomy;
 	private String page;
 	private boolean showFilter = false;
@@ -67,15 +59,6 @@ public class SolrFilter implements Serializable {
 		showFilter = false;
 		
 		filters2 = new ArrayList<ArrayList<String>>();
-		
-		// init filter selection
-//		sexValues = new ArrayList<String>(); sexValues.add("All");
-//		assayTypeValues = new ArrayList<String>(); assayTypeValues.add("All");
-//		sourceValues = new ArrayList<String>(); sourceValues.add("All");
-//		specimenTypeValues = new ArrayList<String>(); specimenTypeValues.add("All");
-//		theilerStageValues = new ArrayList<String>(); theilerStageValues.add("All");
-//		carnegieStageValues = new ArrayList<String>(); carnegieStageValues.add("All");
-//		expressionValues = new ArrayList<String>(); expressionValues.add("All");
 	}
 	
 	public void setParamBean(ParamBean paramBean){
@@ -323,30 +306,22 @@ public class SolrFilter implements Serializable {
 	}	
 
 	
-	public Map<String,String> getGeneExpressionList(){
+	public Map<String,String> getExpressionList(){
 		
-		Map<String,String> expressionstagemap = new LinkedHashMap<String,String>();
-		expressionstagemap.put("All", "");
-		expressionstagemap.put("Present", "detected");
-		expressionstagemap.put("Not detected", "undetected");
-		expressionstagemap.put("Uncertain", "uncertain");
+		Map<String,String> expressionmap = new LinkedHashMap<String,String>();
+		expressionmap.put("All", "");
+		expressionmap.put("Present", "detected");
+		expressionmap.put("Not detected", "undetected");
+		expressionmap.put("Uncertain", "uncertain");
 
 
-		return expressionstagemap;
-	}	
-	
-	public ArrayList<String> getGeneExpressionValues(){
-		return expressionValues;
-	}	
-	public void setGeneExpressionValues(ArrayList<String> val){
-		expressionValues = null;// for single selection
-		expressionValues = val;
+		return expressionmap;
 	}	
 
-	public String getGeneExpressionValue(){
+	public String getExpressionValue(){
 		return expressionValue;
 	}	
-	public void setGeneExpressionValue(String val){
+	public void setExpressionValue(String val){
 		expressionValue = val;
 	}	
 
@@ -465,7 +440,7 @@ public class SolrFilter implements Serializable {
 			}
 		}
 
-		if (expressionValue != null && !expressionValue.isEmpty()) {
+		if (expressionValue != null && !expressionValue.isEmpty() && anatomy != null && !anatomy.isEmpty()) {
 				if (expressionValue.contains("detected"))
 					filters.put("PRESENT", anatomy);
 				if (expressionValue.contains("undetected"))
