@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP Gene Expression Resource
+	</ui:define>
+	
+	<ui:define name="solr">
+		<!--  <ui:include src="/snippets/g_solrFly.xhtml"/>  -->
+	</ui:define>
+	
+	<ui:define name="content">
+		<h:outputScript library="scripts" name="jquery-ui-1.9.2.accordion.custom.min.js"></h:outputScript>  
+	    <!-- need to use this type of linking if the stylesheet references other stylesheets or relative icon directories -->
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.core.min.css" />
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.theme.min.css" />
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.accordion.min.css" />
+		<h:outputStylesheet library="css" name="override_vertical.css" /> 
+		
+		<!-- use this script to simulate RETURN on input fields -->
+		<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='il_homeform:il_solr_search'){
+				                	document.getElementById('il_homeform:il_search_go').click();
+								}								
+				            }
+							return false;
+				        }
+		//]]>
+		</script>
+		
+	 <div id="gd_dbstats">
+    <h:form id="il_homeform">
+    	<h:inputText id="il_solr_search" p:placeholder="Search GUDMAP..." styleClass="gd_input_large_empty" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event);"/>
+    	<h:commandLink id="il_search_go" action="solrInsitu" onclick="$('#spinner').show()">
+			<h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt=""></h:graphicImage>
+			<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+	  	</h:commandLink>
+     </h:form>
+    <br />
+    <h:outputText styleClass="gd_webfont_title" value="GUDMAP DATA" />
+    <h:form>
+    	<table border="0" width="98%">
+          <tr>
+            <th align="left" scope="col">Assay Type</th>
+            <th align="left" scope="col">Entries</th>
+            <th align="left" scope="col">Genes</th>
+          </tr>
+          <tr>
+            <td>All In Situ Hybridisation (ISH)</td>
+            <td>
+            	<h:link value="#{summaryBean.getIshTotal()}" outcome="browseInsituTablePage" />
+            	
+            </td>
+            <td><h:outputText value="#{summaryBean.getIshGeneTotal()}"></h:outputText></td>
+            
+          </tr>
+          <tr>
+            <td>Wholemount ISH (WISH)</td>
+            <td>
+            	<h:link value="#{summaryBean.getWishTotal()}" outcome="browseWishTablePage" />
+            </td>
+            <td><h:outputText value="#{summaryBean.getWishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Section ISH (SISH)</td>
+            <td>
+            	<h:link value="#{summaryBean.getSishTotal()}" outcome="browseSishTablePage" />
+            </td>
+            <td><h:outputText value="#{summaryBean.getSishGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>OPT ISH</td>
+            <td>
+            	<h:link value="#{summaryBean.getOptTotal()}" outcome="browseOptTablePage" />
+            </td>
+            <td><h:outputText value="#{summaryBean.getOptGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Immunohistochemistry (IHC)</td>
+            <td>
+            	<h:link value="#{summaryBean.getIhcTotal()}" outcome="browseIhcTablePage" />
+            </td>
+            <td><h:outputText value="#{summaryBean.getIhcGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Transgenic Reporters</td>
+            <td>
+            	<h:link value="#{summaryBean.getTgTotal()}" outcome="browseTgTablePage" />
+            </td>
+            <td><h:outputText value="#{summaryBean.getTgGeneTotal()}"></h:outputText></td>
+          </tr>
+          <tr>
+            <td>Microarray</td>
+            <td>
+            	<h:link value="#{summaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Sequence</td>
+            <td>
+            	<h:link value="#{summaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><a href="#">More...</a></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        </h:form>
+        <br /><br />
+        <h:panelGrid columns="1" styleClass="gd_webfont_header">
+	        <h:outputText value="PUBLICATIONS" styleClass="gd_webfont_title"/>
+	        <h:outputText value="Publication list from GUDMAP Consortium" />
+	        <div style="min-height:20px;"/>
+	        <h:outputText value="WEBSITE TUTORIALS" styleClass="gd_webfont_title" />
+	        <h:outputText value="Watch videos..." />
+	        <h:outputText value="Finding gene expression profiles" />
+	        <h:outputText value="Genes associated to disease" />
+        </h:panelGrid>
+    </div>
+    <!--<p><img id="gd_dbstats" src="../images/tests/dbstats_placeholder.png"  alt=""/></p>-->
+   
+    
+	        
+    <div id="gd_slideshow_home">
+    
+	    <div id="Accordion1">
+	    
+	      <h2>Gene Expression Database</h2>
+	      <div>
+	      	
+		      	<h:link outcome="database_homepage"><h:graphicImage library="images/gudmap" name="gene_expression_database_big.jpg" /></h:link>
+		        <h:outputText value="Some text in here" />
+	       
+	      </div>
+	      
+	      <h2>Microarray/Seq Analysis</h2>
+	      <div>
+	         <h:link outcome="viewGenelistTree"><h:graphicImage library="images/gudmap" name="microarray_seq_big.jpg" /></h:link>
+	         <h:outputText value="Some text in here" />
+	      </div>
+	      
+	      <h2>Developmental Tutorials</h2>
+	      <div>
+	         <h:link outcome="/pages/viewPage.jsf?docID=22"><h:graphicImage library="images/gudmap" name="dev_tutorials_big.jpg" /></h:link>
+	         <h:outputText value="Some text in here" />
+	      </div>
+	      
+	      <h2>Schematics</h2>
+	      <div>
+	         <h:outputLink value="http://www.gudmap.org/Schematics/index.php"><h:graphicImage library="images/gudmap" name="schematics_big.jpg" /></h:outputLink>
+	         <h:outputText value="Some text in here" />
+	      </div>
+	      
+	      <h2>Mouse/Cell Lines</h2>
+	      <div>
+	      	<h:outputLink value="http://www.gudmap.org/Resources/MouseStrains/index.html"><h:graphicImage library="images/gudmap" name="mouse_lines_big.jpg" /></h:outputLink>
+	         <h:outputText value="Some text in here" />
+	      </div>
+	      
+	      <h2>Ontology</h2>
+	      <div>
+	      	<h:outputLink value="http://www.gudmap.org/Resources/Ontologies.html"><h:graphicImage library="images/gudmap" name="ontology_big.jpg" /></h:outputLink>
+	         <h:outputText value="Some text in here" />
+	      </div>
+	      
+	      <h2>Tissue Summaries</h2>
+	      <div>
+	      	<h:outputLink value="http://www.gudmap.org/Organ_Summaries/index.php"><h:graphicImage library="images/gudmap" name="tissue_summaries_big.jpg" /></h:outputLink>
+	         <h:outputText value="Some text in here" />
+	      </div>
+	      
+	      <h2>3D Atlas - Genital Tubercle</h2>
+	      <div>
+	      	<h:outputLink value="http://www.gudmap.org/Resources/OPT/index.php"><h:graphicImage library="images/gudmap" name="3D_atlas_big.jpg" /></h:outputLink>
+	         <h:outputText value="Some text in here" />
+	      </div>
+	      
+	    </div><!-- end accordion 1 -->
+      
+  </div><!-- end gd_slideshow_home-->
+    
+   <div style="clear:both;" />
+
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+
+		$( "#Accordion1" ).accordion({
+			collapsible:true,
+			heightStyle:"content"
+		}); 
+		
+		
+   });
+   
+  
+   
+   
+//]]>
+</script>   
+	    
+	</ui:define>
+</ui:composition>
+</html>

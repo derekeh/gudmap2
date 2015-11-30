@@ -1,0 +1,398 @@
+@charset "UTF-8";
+
+/*Rules in here are meant for the website layout in general. Classes and IDs are prefixed with gd_ or il_ */
+
+/* from new template */
+
+#il_header  {
+	/* background-image: url(images/header/gudmap_logo.png); */
+	background-image: url("#{resource['images/header/gudmap_logo.png']}");
+	background-repeat: no-repeat;
+	min-width:334px;
+}
+
+.gd_header {
+	font-family: droid-sans, molengo;
+	font-style: normal;
+	font-weight: 200;
+	margin-top: -16px;
+	padding-top: 0;
+	font-size: 20px;
+	padding-left: 10px;
+	color: #25496D;
+	
+}
+
+.gd_sub_header {
+	font-family: droid-sans, molengo;
+	font-style:normal;
+	font-weight:200;
+  padding-top:0;
+  font-size:22px;
+  /*padding-left:10px;*/
+  color:#25496D;
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.gd_h3 {
+	font-family: droid-sans, molengo;
+	font-style:normal;
+	font-weight:200;
+  padding-top:0;
+  font-size:17px;
+  /*padding-left:10px;*/
+  color:#25496D;
+}
+
+#gd_header_home {
+	margin-bottom:15px;
+}
+
+#gd_search_form {
+	/*border: 1px solid #25496D;
+	padding-top: 22px;
+	padding-right: 53px;
+	padding-bottom: 0px;
+	padding-left: 20px;*/
+	
+}
+
+.gd_input_large {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: white !important;
+    background-image:url("#{resource['images/header/mag_glass.png']}");
+    background-origin: padding-box;
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    font-size: 20px;
+    line-height: 30px;
+    padding: 10px;
+    width: 350px;
+	margin-bottom:5px
+}
+
+.gd_horizontal_list_no_image {
+	padding:0px !important;
+	margin-left:0px;
+}
+
+.gd_horizontal_list_no_image li {
+ 	list-style-image:none;
+	list-style:none;
+	display:inline;
+	padding-right:14px
+}
+
+#gd_login_list {
+	list-style-image:url("#{resource['images/header/login_icon.png']}");
+	float:left;
+}
+
+#gd_contact_list {
+	list-style-image:url("#{resource['images/header/feedback_icon.png']}");
+	float:left;
+}
+
+#gd_login {	
+	/* background:url(images/header/login_icon.png) 50% 50% no-repeat no-repeat; */
+	background:url("#{resource['images/header/login_icon.png']}") 50% 50% no-repeat no-repeat;
+   	padding-left: 65px;
+}
+
+#gd_feedback {	
+	/* background:url(images/header/feedback_icon.png) 50% 50% no-repeat no-repeat; */
+	background:url("#{resource['images/header/feedback_icon.png']}") 50% 50% no-repeat no-repeat;
+   	padding-left: 95px;
+}
+
+.gd_inline {
+	padding-top:10px;
+	margin-right:7px;
+}
+
+
+
+/* end from new template */
+.gd_content {
+	/* padding: 10px 0;
+	font-size:14px; */
+	color:#6C6C6C;
+	font-size:0.9em;
+	line-height:20px;
+}
+
+/* ~~ This grouped selector gives the lists in the .content area space ~~ */
+.gd_content ul, .gd_content ol { 
+	padding: 0 15px 15px 40px; /* this padding mirrors the right padding in the headings and paragraph rule above. Padding was placed on the bottom for space between other elements on the lists and on the left to create the indention. These may be adjusted as you wish. */
+}
+
+.gd_content h1, h2, h3 {
+	color:#436482;
+}
+
+.gd_content h2 {
+	background-color:#E3E3E3;
+}
+
+#gd_edit_area {
+	/* use with solr flyin margin-left:35px; */
+	margin-left:5px;	
+	min-height:350px;
+}
+
+#editorForm:theEditor a {
+	color:red;
+}
+
+/* ~~ The footer ~~ */
+.gd_footer {
+	padding: 10px 0;
+	background-color: #c2d5dc;
+	color:#6C6C6C;
+	margin-top:7px;
+}
+
+
+.gd_footerimage {
+	border-radius: 5px;
+	-webkit-box-shadow: 3px 3px #939393;
+	box-shadow: 3px 3px #939393;
+}
+
+/* ~~ miscellaneous float/clear classes ~~ */
+.gd_fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.gd_fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+	float: left;
+	margin-right: 8px;
+}
+.gd_clearfloat { /* this class can be placed on a <br /> or empty div as the final element following the last floated div (within the #container) if the #footer is removed or taken out of the #container */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+	
+}
+
+
+#gd_disclaimer {
+	text-align:center;
+	font-style:italic;	
+	font-size:80%;
+}
+
+.gd_list ul {
+	margin-left:40px;
+	
+}
+
+.gd_list ul li{
+	list-style-image:url(../images/resources/gudmap_list.png);
+	font-style:italic;
+	color:#939393;
+	padding-bottom:5px;
+}
+
+.gd_solrmenu {
+	border: 1px solid #476885;
+	/*min-width:250px;*/
+	min-height: 300px;
+	position: absolute;
+	background-color:#476885;
+	margin-top: 40px;
+	border-top-right-radius: 8px;	/*-webkit-transition: all 1s ease-in 0s;
+	-o-transition: all 1s ease-in 0s;
+	transition: all 1s ease-in 0s;*/
+	border-bottom-right-radius: 8px;
+	z-index:99999;
+}
+
+.gd_solarmenuexpand {
+	width:350px;
+}
+.gd_solarmenucollapse {
+	
+	width:30px;
+}
+
+.gd_expand_search {
+	float:right;
+	margin-top:30px;
+	margin-right:3px;
+	clear:both;
+}
+
+.gd_close_search {
+	float:right;
+	margin-right:5px;
+	margin-top:5px;
+	
+}
+
+.gd_solr_text {
+	color:#ffffff;
+}
+
+.gd_solr_form {
+	margin-left:7px;
+}
+.gd_solr_image {
+	margin-left:10px;
+}
+
+.gd_solr_image {
+	padding-bottom:10px;
+}
+
+#gd_dbstats {
+	
+	float: left;
+	width: 40%;
+	margin-left: 2%;
+	margin-bottom: 2%;
+	/* float: left;
+	margin-right: 7px;
+	width: 48%;
+	margin-left: 15px;
+	margin-bottom: 2%; */
+	
+	/*background-color: #D0DFE5;
+	border-radius: 8px;
+	-webkit-box-shadow: 3px 3px #D5D5D5;
+	box-shadow: 3px 3px #D5D5D5;*/
+}
+
+#gd_slideshow_home {
+	
+	float: left;
+	width:48%;
+	margin-left:5%;
+	/* float: left;
+	width:48%;
+	margin-right:2%; */
+	
+	/* width: 340px;
+	width: 650px;	
+	min-height: 250px;
+	background-color: #D0DFE5;
+	padding-top: 20px;
+	border-radius: 8px;*/
+	
+}
+
+.gd_table98center {
+	width:98%;
+	margin:0 auto 0 auto;
+}
+
+.gd_celltextcenter {
+	text-align: center;
+}
+
+.gd_celltextleft {
+	text-align:left;
+	padding:0;
+	margin:0;
+	vertical-align:top;
+}
+
+.gd_cellcollapseleft {
+	padding:0;
+	margin:0;
+	border-left-color: #6FAEC4;
+	border-left-style: solid;
+	vertical-align:top;
+}
+
+.gd_cellcollapsetop {
+	padding-left:1px;
+	padding-right:1px;
+	margin:0;
+	border-top-color: #6FAEC4;
+	border-top-style: solid;
+	width:100%;
+}
+
+
+.gd_celltextright {
+	text-align: right;
+}
+
+.gd_celltextjustify {
+	text-align: justify;
+}
+
+.gd_citing_gudmap {
+	color: #6C6C6C;
+	background-image: -webkit-linear-gradient(270deg,rgba(255,255,255,1.00) 0%,rgba(171,171,171,1.00) 100%);
+	background-image: linear-gradient(180deg,rgba(255,255,255,1.00) 0%,rgba(171,171,171,1.00) 100%);
+	padding-top: 3px;
+	padding-right: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+	border-radius: 5px;
+	font-size: 12px;
+	margin-left:10px;
+}
+
+.gd_citing_gudmap a {
+	color: #6C6C6C;
+	underline:none;
+}
+
+.gd_citing_gudmap a:visited {
+	color: #6C6C6C;
+}
+
+.gd_citing_gudmap a:hover, .gd_citing_gudmap a:active {
+	color:#347982;
+}
+.gd_gudmap_contacts {
+	margin-left:20px;
+}
+
+.gd_leftAlign {
+  text-align: left;
+}
+
+.gd_rightAlign {
+  text-align: right;
+}
+
+.gd_leftMargin {
+  margin-left:10px;
+}
+
+.pr_hyperlink {
+	text-decoration: underline;
+	color:#6ABCE6;
+}
+
+.gd_datatable_header {
+	background-color: #E0E0E0;
+}
+
+/* Tablet Layout: 481px to 768px. Inherits styles from: Mobile Layout. */
+
+/* @media only screen and (min-width: 481px) {
+	.gd_container {
+		max-width: 768px;a max-width may be desirable to keep this layout from getting too wide on a large monitor. This keeps line length more readable. IE6 does not respect this declaration.
+	
+	}
+} */
+
+/* Desktop Layout: 769px to a max of 1232px.  Inherits styles from: Mobile Layout and Tablet Layout. */
+
+/* @media only screen and (min-width: 769px) {
+	
+	.gd_container {
+		max-width: 1260px;a max-width may be desirable to keep this layout from getting too wide on a large monitor. This keeps line length more readable. IE6 does not respect this declaration.
+	
+	}
+} */
+
+

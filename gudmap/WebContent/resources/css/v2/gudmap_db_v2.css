@@ -1,0 +1,521 @@
+@charset "UTF-8";
+/* CSS Document. Rules in here are meant for the database query and browse section of website. Classes and IDs are prefixed with db_ */
+
+
+.db_h1 {
+	font-size:24px;
+	margin-left:-15px;
+	color:darkblue;
+}
+
+.db_pseudo_row {
+	/* padding-bottom:15px; */
+	padding-bottom:0px;
+}
+
+.db_columnFilterMargin {
+	margin-bottom:5px;
+}
+
+.db_grid_top_zero {
+	margin-top:-10px;
+}
+
+.db_align_right {
+	text-align:right;
+}
+
+.db_align_left {
+	text-align:left;
+}
+
+#db_querybrowse_left {
+	float:left;
+	margin-left:2%;
+	/*margin-right:5%;
+	 min-height: 252px;
+	min-width: 250px;
+	float: left;
+	margin-left:100px;
+	background-color: #D7E8D5;*/
+}
+
+#db_querybrowse2_left {
+	min-height: 252px;
+	min-width: 250px;
+	float: left;
+	margin-top:50px;
+	/*background-color: #D7E8D5;*/
+}
+
+#db_browsequery_left {
+	min-height: 252px;
+	min-width: 250px;
+	float: left;
+	margin-left:100px;
+	/*background-color:#F3ECCA;*/
+}
+
+
+
+#db_organstats_right {
+	background-color: #ffffff;
+	float:left;
+	font-size:90%;
+	margin-left:2%;
+	/* background-color: #D0DFE5;
+	 width: 340px;
+	background-color: #ffffff;
+	width: 450px;
+	min-height: 252px;
+	float: right;
+	font-size: 90%;
+	border-bottom-left-radius: 8px;
+	border-top-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px;
+	margin-right:100px; */
+}
+
+
+#db_organstats_right h2 {
+    font-size: 120%;
+}
+
+
+.db_cellborder_topleft {
+	border-top-color: #6FAEC4;
+	border-top-style: solid;
+	border-left-color: #6FAEC4;
+	border-left-style: solid;
+	
+}
+
+.db_cellborder_top {
+	border-top-color: #6FAEC4;
+	border-top-style: solid;
+}
+
+.db_cellborder_left {
+	border-left-color: #6FAEC4;
+	border-left-style: solid;
+}
+
+.db_cell_object_padding {
+	/* padding:0 8px; */	
+	padding:0 18px;
+}
+
+#db_organsystem {
+}
+
+#db_updates {
+	border-top: 1px solid #347982;
+	border-bottom: 1px solid #347982;
+}
+
+#db_homestats {
+	
+}
+
+#db_homestats a {
+	/* color:#c2d5dc; */
+	color:#0797F5;
+	
+	text-decoration: none;
+}
+
+#db_homestats a:visited {
+	/* color:#c2d5dc; */
+	color:#0797F5;	
+}
+#db_homestats a:hover, #db_homestats a:active, #db_homestats a:focus { 
+	text-decoration: underline;
+	color:#6ABCE6;
+}
+
+#db_homestats td {
+    padding: 5px 7px 5px 0;
+}
+
+.db_organimage {
+	border-radius: 8px;	
+}
+
+.db_order-table{   
+	border-collapse:collapse;
+}
+
+.db_order-table img {
+	max-height:40px;
+}
+
+.db_order-table-header{
+	text-align:center;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:2px 10px;
+	vertical-align:top;
+}
+
+.db_order-table-header-left{
+	text-align:left;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:2px 10px;
+	vertical-align:top;
+}
+/*
+.db_order-table-header{
+	text-align:center;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:16px;
+	vertical-align:top;
+}
+*/
+.db_order-table-odd-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #FFFFFFF;
+	border-top:1px solid #BBBBBB;
+}
+
+.db_order-table-even-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-top:1px solid #BBBBBB;
+}
+
+.db_order-table-odd-row td,  .db_order-table-even-row td {
+    padding:0 7px;
+}
+
+.db_table-header{
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:16px;
+	vertical-align:top;
+}
+
+.db_odd-row{
+	background:none repeat scroll 0 0 #FFFFFFF;
+	border-top:1px solid #BBBBBB;
+}
+
+.db_even-row{
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-top:1px solid #BBBBBB;
+}
+
+.db_table_col_left{
+	text-align:left;
+}
+
+.db_table_col_center{
+	text-align:center;
+}
+
+
+.db_tooltip{
+	margin:8px;
+	padding:8px;
+	border:1px solid #347982;
+	background-color:#EBEBBE;
+	position: absolute;
+	z-index: 2;
+}
+
+.db_pagenum {
+		padding:0 5px;
+		background-color:#EBEBEB;
+		margin-right:2px;
+}
+ .db_navborder {
+ 	border:1px solid #c2d5dc;
+ }
+ 
+ .db_focusborder {
+ 	border:3px solid red;
+ }
+ 
+  .db_nofocusborder {
+ 	border:1px solid green;
+ }
+ 
+ .db_outer_detail_left {
+ 	 /* background-color:#476885; */
+ 	 background-color:#c2d5dc;
+	 color:#FFFFFF;
+	 vertical-align:top;
+	 text-align:left;
+ 	 /* width:20%; */
+ 	 width:15%;
+ 	 font-weight:bold;
+ 	 padding: 5px 5px 5px 10px;
+ }
+ 
+  .db_outer_detail_right {
+ 	/* background-color: #c2d5dc; */
+ 	background-color: #ffffff;
+ 	color:#476885;
+ 	vertical-align:top;
+ 	text-align:left;
+ 	padding: 5px 5px 5px 10px;
+ }
+ 
+ .db_outer_detail_right th {
+    padding-right: 20px;
+}
+ 
+  .db_inner_detail_left {
+ 	font-weight:bold;
+/*  	font-size:110%; */
+ 	text-align:left;
+ 	width:200px;
+ 	vertical-align:top;
+ }
+ 
+ .db_inner_image_detail_left {
+ 	text-align:left;
+ 	width:192px;
+ 	vertical-align:top;  
+ }
+ 
+  .db_inner_detail_right {
+ 	text-align:left;
+ 	font-weight:normal;
+ 	vertical-align:top;
+ }
+ 
+ .db_inner_detail_right td {
+    padding-right: 5px;
+}
+ 
+ .db_inner_inner_title {
+ 	color:darkred;
+ }
+ 
+ .db_expression_detail_left {
+ 	text-align:left;
+ 	width:30px;
+ 	background-color:#EBEBEB;
+ }
+ 
+ 
+ .db_expression_detail_right {
+ 	text-align:left;
+ 	font-weight:normal;
+ 	background-color:#EBEBEB;
+ 	color:darkblue;
+ 	width:100%;
+ }
+
+ .db_bold {
+   font-weight:bold;
+   font-size:1.2em;
+ }
+ 
+ .db_h1_indent {
+ 	/* margin-left:80px; */
+ 	margin-left:1%;
+ 	color:#476885;
+ 	font-size:24px;
+ 	line-height:40px;
+ }
+ 
+ .db_30_width {
+ 	min-width:30px;
+ }
+ 
+ .db_panel_grid_width {
+ 	width:95%;
+ 	margin-bottom:15px;
+ }
+ 
+ .db_icon {
+ 	padding:10px;
+ }
+ 
+ .db_column_title {
+ 	font-size:110%;
+ }
+ 
+  .ui-datatable.il_disease_table th {
+ 	font-size:110%;
+ 	font-weight:bold;
+ 	text-align:left;
+ }
+ 
+ .db_table_header {
+   color:#FFFFFF;
+   background-color:#476885;
+ }
+ 
+ .db_table_text {
+ }
+ 
+ .db_sequence {
+ 	font-family: Courier;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
+ }
+ 
+ .db_expression_icon {
+ 	padding:2px 5px 0 0;
+ 	min-width:20px;
+ 	min-height:20px;
+ }
+ 
+ .db_thumb_height {
+ 	max-height:50px;
+ }
+ 
+ .superbigplaintext {
+    color: #22316C;
+    font-family: Arial,Helvetica,sans-serif;
+    /* font-size: 24px; */
+    font-size: 1.2em;
+    text-align: left;
+    padding-right:5px;
+}
+
+.superbigplaintext a, .superbigplaintext a:visited{
+    text-decoration: none;
+    color: #22316C;
+}
+
+ .superbigplaintext a:hover, .superbigplaintext a:active, .superbigplaintext a:focus{
+    text-decoration: underline;
+    color: lightblue;
+}
+
+.bigplaintext {
+    color: #22316C;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    text-align: left;
+    text-decoration: none;
+}
+
+#focusform {
+	padding-left:19px;
+}
+
+#dataform img, .db_outer_detail_right img {
+	border:1px solid #c2d5dc;
+	border-bottom-left-radius: 5px;
+	border-top-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	margin: 1px 0;
+	padding:3px;
+}
+
+#dataform img, .db_outer_detail_right img {
+	border:1px solid #c2d5dc;
+	border-bottom-left-radius: 5px;
+	border-top-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	margin: 1px 0;
+	padding:3px;
+}
+
+.db_list_images{
+	
+}
+
+.db_list_images img {
+	border: 0;
+    border-radius: 0;
+    margin: 0;
+    padding: 2px;
+}
+
+.db_max_col_width {
+	table-layout: fixed;
+    word-wrap: break-word;
+	max-width:130px;
+}
+
+.db_boolean_table {
+	vertical-align:top;
+}
+
+.db_hide {
+	display:none;
+}
+
+/* paging buttons override */
+
+#pagingform .ui-datalist-content.ui-widget-content {
+    margin: 10px;
+    border: 2px solid darkblue;
+}
+#pagingform input {
+    margin: 0 5px;
+    padding: 5px ;
+}
+
+ 
+ /***************************** ISH expression bars *******************************/
+div.exprGraph {
+	border:0px solid #E3E3E3;
+	width:110px;
+	margin:auto;
+	padding:2px 0;
+}
+
+table.exprGraphTable {
+	border:0px solid #C3C3C3;
+	border-collapse:collapse;
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+td.exprGraphCell {
+	height:22px;
+	margin:0px;
+	padding:0px;
+	vertical-align:bottom;
+}
+
+div.exprGraphBarSpacer {
+	background-color:#C3DBC3;
+	border:1px dotted #969696;
+	font-size:0pt;
+	margin:0px;
+	padding:0px;
+	width:8px;
+	visibility:hidden;
+}
+
+div.exprGraphBar {
+	border:1px solid #969696;
+	cursor:pointer;
+	font-size:0pt;
+	margin:0px;
+	padding:0px;
+	width:8px;
+}
+
+div.zeroExprGraphBar {
+	border-bottom:1px solid black;
+	font-size:0pt;
+	margin:0 0 -1px 0;
+	padding:0px;
+	width:8px;
+	height:0px;
+}
+
+div:hover.exprGraphBar {
+	border:1px solid #000000;
+}

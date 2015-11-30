@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template_v2.xhtml">
+	<ui:define name="title">
+	    SISH Data Results
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	#{genericTablePageBean.init('ISH','SISH',20,10,'SUB_OID',true)}
+	#{genericTablePageBean.loadDataList()}
+	
+	
+	
+		<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
+	
+		<ui:include src="/snippets/g_ishFilter.xhtml"></ui:include>
+		
+		<ui:include src="/snippets/g_collectionSaveOption.xhtml"></ui:include>
+		
+		<h:panelGrid columns="2" styleClass="db_columnFilterMargin">
+			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
+			<h:form id="focusform">
+				<h:panelGrid columns="3">
+					<h:outputText value="SISH Data Results&#160;&#160;" styleClass="db_bold"/> 
+					<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />	
+					<h:panelGroup id="spinner" style="display:none">
+						  		<h:outputText value="&#160;&#160;&#160;&#160;Page Loading " />
+						  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
+		</h:panelGrid>
+		<!-- all other content in here --> 
+	    <ui:include src="/snippets/g_insitu_dataform.xhtml"></ui:include>
+ 		
+ 		<ui:include src="/snippets/g_pagingForm.xhtml"></ui:include>
+ 		
+ 		<ui:include src="/snippets/g_collectionBar.xhtml"></ui:include>
+ 		
+		
+	</ui:define>
+</ui:composition>
+</html>
