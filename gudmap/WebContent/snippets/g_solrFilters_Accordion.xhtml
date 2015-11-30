@@ -42,22 +42,26 @@ input[type="checkbox"]{
 		 	</h:inputText>
 		</div>
  	</div>
-<ui:remove>	
+
 	<div class="accordion">
 		<h2>Expression</h2>
 		<div>
 			<pr:outputLabel value="Anatomy:" for="anatomy_input" />
 	    	<pr:autoComplete  id="anatomy_input" value="#{solrFilter.anatomy}" completeMethod="#{autocompleteBean.completeAnatomy}"
-	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
-		 	<h:selectOneRadio size="5" value="#{solrFilter.geneExpressionValue}" layout="pageDirection">
-		 		<f:selectItems value="#{solrFilter.geneExpressionList}" />
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;">
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+	     	</pr:autoComplete>			
+		 	<h:selectOneRadio size="5" value="#{solrFilter.expressionValue}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.expressionList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:selectOneRadio>
 		</div>  		
 	</div>
-</ui:remove>              
+             
 	<div class="accordion">
 		<h2>Theiler Stages</h2>
 		<div>
