@@ -73,15 +73,37 @@
 					<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
 		  		</h:commandLink>
             </h:form> -->
+            <!-- required for solr search with no input search in header -->
+            <h:form id="gd_searchform" style="visibility:hidden; width:0px;"></h:form>
            
             
             <div class="nav navbar-nav navbar-right gd_inline"  >
-	        <ul id="gd_login_list">
+	        <!-- <ul id="gd_login_list">
 	          <li><a href="#">Login</a></li>
-             </ul>
-            <ul id="gd_contact_list">
+            </ul> -->
+            
+            <h:panelGrid columns="5">
+            <h:graphicImage library="images/header" name="login_icon.png" id="gd_login_icon" />
+            
+            <h:outputLink value="#{appRoot}/db/login.jsf"  rendered="#{empty loginBean.username}">
+            	<h:outputText value=" Login" rendered="#{empty loginBean.username}"></h:outputText>
+            </h:outputLink>
+            <h:form   rendered="#{not empty loginBean.username}">
+            	<h:commandLink value=" Logout #{loginBean.username}" action="#{loginBean.logout()}"  rendered="#{not empty loginBean.username}"></h:commandLink>
+            </h:form>
+            <h:panelGroup rendered="#{empty loginBean.username}"></h:panelGroup>
+            <h:outputLink value="#{appRoot}/db/options.jsf"  rendered="#{not empty loginBean.username}">
+            	<h:outputText value="&#160;&#160;&#160;&#160; Options" rendered="#{not empty loginBean.username}"></h:outputText>
+            </h:outputLink>
+            <h:graphicImage library="images/header" name="feedback_icon.png" id="gd_feedback_icon" />
+            <h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=5">
+            	<h:outputText value=" Contact Us"></h:outputText>
+            </h:outputLink>
+          </h:panelGrid>
+            
+           <!--  <ul id="gd_contact_list">
 	          <li><a href="#">Contact Us</a></li>
-	        </ul>
+	        </ul> -->
             </div>
             
           </div>

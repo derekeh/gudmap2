@@ -138,6 +138,10 @@
     padding: 5px 7px 5px 0;
 }
 
+.db_condensed_stats#db_homestats td {
+    padding: 0 7px 0 0;
+}
+
 .db_organimage {
 	border-radius: 8px;	
 }

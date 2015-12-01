@@ -123,7 +123,8 @@ public class LoginBean implements Serializable{
 	}
 	
 	public String logout () {
-		String RET="database_homepage";//name of redirect page
+		
+		String RET="/gudmap/db/database_homepage.jsf";//name of redirect page
 		username=null;
 		password=null;
 		role=null;

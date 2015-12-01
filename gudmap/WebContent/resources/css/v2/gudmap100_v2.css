@@ -61,15 +61,15 @@
     background-attachment: scroll;
     background-clip: border-box;
     background-color: white !important;
-    background-image:url("#{resource['images/header/mag_glass.png']}");
+    /* background-image:url("#{resource['images/header/mag_glass.png']}");
     background-origin: padding-box;
     background-position: right center;
     background-repeat: no-repeat;
-    background-size: 20px 20px;
+    background-size: 20px 20px; */
     font-size: 20px;
     line-height: 30px;
     padding: 10px;
-    width: 350px;
+    width: 250px;
 	margin-bottom:5px
 }
 

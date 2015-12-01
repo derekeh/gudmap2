@@ -58,7 +58,7 @@ h1 {
 
 .container-fluid #defaultNavbar1 .nav.navbar-nav .dropdown-menu > li > a {
   clear:both;
-  color:darkblue;
+  color:#0397C8;
   display:block;
   font-weight:normal;
   line-height:1.42857143;
@@ -66,8 +66,18 @@ h1 {
   white-space:nowrap;
 }
 
+.navbar-right.gd_inline a {
+	color: #FFFFFF;
+	padding: 0 5px;
+}
+
 .dropdown-menu li a:hover {
 	background-color:#A69E9E;
+	/* background-color:#EBEBEB; */
+}
+
+.container-fluid #defaultNavbar1 .nav.navbar-nav .dropdown-menu > li > a:hover {
+	background-color:#EBEBEB;
 }
 
 .container-fluid .navbar.navbar-default .container-fluid {
@@ -103,3 +113,5 @@ h1 {
 	font-style: italic;
 	font-size: small;
 }
+
+

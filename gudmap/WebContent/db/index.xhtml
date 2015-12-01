@@ -16,18 +16,49 @@
 	</ui:define>
 	
 	<ui:define name="content">
+	
+	<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput (inField, e) {			
+							if (e.keyCode === 13) {
+								//alert(e.keyCode);
+								if(inField.id=='gd_search_gudmap'){
+									//alert('input return');
+				                	document.getElementById('gd_search_form:il_search_go').click();
+								}								
+				            }
+							return false;
+				        }
+		//]]>
+		</script>
+	
 		<!-- can use relative links on html tags -->
 	    <!-- all other content in here -->  
 	    <article class="col-lg-4">
-      <form method="post" name="gd_search_form" id="gd_search_form">
-	        <input name="gd_search_gudmap" type="text" autofocus="true" class="gd_input_large" id="gd_search_gudmap" form="gd_search_form" placeholder="Search GUDMAP ..." />
+      <h:form id="gd_search_form">
+      	<h:panelGrid columns="3">
+	        <input type="text" autofocus="true" class="gd_input_large" id="gd_search_gudmap" placeholder="Search GUDMAP ..." value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event);"/>
+	        <h:commandLink id="il_search_solr" action="solrInsitu">
+				<h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt="Search GUDMAP"></h:graphicImage>
+				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+	  		</h:commandLink>
+	  		<h:commandLink id="il_search_go" action="solrInsitu">
+				<h:graphicImage library="images/header" name="mag_glass.png" width="1" height="1" alt=""></h:graphicImage>
+				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+	  	</h:commandLink>
+	  	</h:panelGrid>
+	  	
 <p><em>Eg. NPY, Bladder, Urothelium + 'Lamina Propria', 8964...</em></p>      
-	      </form>
-          <ul class="gd_horizontal_list_no_image"><li>Search Help</li><li>Advanced Help</li></ul>
+	      </h:form>
+          <ul class="gd_horizontal_list_no_image"><li>Search Help</li><li>Advanced Help</li><li><a href="database_homepage.jsf">Alternative Search</a></li></ul>
 	      <h2 class="gd_sub_header">How to use GUDMAP</h2>
       <ul class="gd_horizontal_list_no_image"><li>Site Tutorials</li><li>Download Tutorials (pdf)</li></ul>
-<div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src="http://tv.adobe.com/embed/1221/24197/"></iframe>
+<div class="embed-responsive embed-responsive-16by9"  style="border-style:solid;border-width:1px;border-color:#EBEBEB;">
+        <!-- <iframe class="embed-responsive-item" src="#{appRoot}/resources/movies/GudmapTutorial.mp4"></iframe> -->
+        <video controls="controls">
+        	<source src="#{appRoot}/resources/movies/GudmapTutorial.mp4" type="video/mp4" />
+        </video>
           </div>
 	      <h2 class="gd_sub_header">Site Demos</h2>
 	      <ol>
@@ -76,7 +107,82 @@
 	      <h3 class="gd_h3">GUDMAP Database Entries</h3>
 	      <div class="row">
 	        <div class="col-lg-12">
-	          <div class="thumbnail"><img src="#{appRoot}/resources/images/home/db_summary.jpg" alt="Thumbnail Image 1" />              </div>
+	        
+	        	<h:form id="formstats" prependId="false">
+	         <table border="0" class="db_condensed_stats" id="db_homestats">
+	          <tr>
+	            <th align="left" scope="col">Assay Type</th>
+	            <th align="left" scope="col">Entries</th>
+	            <th align="left" scope="col">Genes</th>
+	          </tr>
+	          <tr>
+	            <td>All In Situ Hybridisation (ISH)</td>
+	            <td>
+	            	<h:link  outcome="browseInsituTablePage" value="#{volatileSummaryBean.getIshTotal()}" onclick="$('#spinner').show()"/>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
+	            
+	          </tr>
+	          <tr>
+	            <td>Wholemount ISH (WISH)</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage" id="il_wishlink"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Section ISH (SISH)</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getSishTotal()}" outcome="browseSishTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>OPT ISH</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getOptTotal()}" outcome="browseOptTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Immunohistochemistry (IHC)</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getIhcTotal()}" outcome="browseIhcTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Transgenic Reporters</td>
+	            <td>
+	            		<h:link value="#{volatileSummaryBean.getTgTotal()}" outcome="browseTgTablePage" onclick="$('#spinner').show()"></h:link>
+	             </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Microarray</td>
+	            <td>
+	            	
+	            	<h:link value="#{volatileSummaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" onclick="$('#spinner').show()"></h:link>
+	            	
+	            </td>
+	            <td></td>
+	          </tr>
+	          <tr>
+	            <td>Sequence</td>
+	            <td>
+	            		<h:link value="#{volatileSummaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td></td>
+	          </tr>
+	          <tr>
+	            <td><a href="http://www.gudmap.org/Website_Reports/Stats/gudmap_stats.html">More...</a></td>
+	            <td></td>
+	            <td></td>
+	          </tr>
+	        </table>
+        </h:form>
+	        
+	          <!-- <div class="thumbnail"><img src="#{appRoot}/resources/images/home/db_summary.jpg" alt="Thumbnail Image 1" /></div> -->
 	          <p>Database entries in more detail</p>
 	        </div>
           </div>
