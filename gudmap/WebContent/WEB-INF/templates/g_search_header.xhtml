@@ -81,12 +81,12 @@
 	          <div class="form-group">
 	            <h:inputText id="gd_search_value" placeholder="Search" required="true" value="#{solrTreeBean.solrInput}" onkeypress="handleInput1(this,event);"
 	            	style="color:grey;padding:0px;width:150px;"></h:inputText>
-	    		
-              </div>
-	          <h:commandLink id="gd_search_go" action="solrInsitu">
+	    		<h:commandLink id="gd_search_go" action="solrInsitu">
 				  <h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt="Search GUDMAP"></h:graphicImage>
 					<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
 		  		</h:commandLink>
+              </div>
+	          
             </h:form>
            
             

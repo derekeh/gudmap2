@@ -238,7 +238,8 @@
 }
 
 .gd_solr_form {
-	margin-left:7px;
+	/* margin-left:7px; */
+	margin-left:-5px;
 }
 .gd_solr_image {
 	margin-left:10px;

@@ -38,7 +38,7 @@
 	    <article class="col-lg-4">
       <h:form id="gd_search_form">
       	<h:panelGrid columns="3">
-	        <input type="text" autofocus="true" class="gd_input_large" id="gd_search_gudmap" placeholder="Search GUDMAP ..." value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event);"/>
+	        <h:inputText  p:autofocus="true" class="gd_input_large" id="gd_search_gudmap" p:placeholder="Search GUDMAP ..." value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event);"/>
 	        <h:commandLink id="il_search_solr" action="solrInsitu">
 				<h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt="Search GUDMAP"></h:graphicImage>
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
@@ -46,7 +46,7 @@
 	  		<h:commandLink id="il_search_go" action="solrInsitu">
 				<h:graphicImage library="images/header" name="mag_glass.png" width="1" height="1" alt=""></h:graphicImage>
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-	  	</h:commandLink>
+	  		</h:commandLink>
 	  	</h:panelGrid>
 	  	
 <p><em>Eg. NPY, Bladder, Urothelium + 'Lamina Propria', 8964...</em></p>      
