@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+/*Rules in here are meant for the website layout in general. Classes and IDs are prefixed with gd_ or il_ */
+
+/* from new template */
+
+#il_header  {
+	background-image: url(/gudmap/resources/images/header/gudmap_logo.png);
+	background-repeat: no-repeat;
+	min-width:334px;
+}
+
+
+
+#gd_login_list {
+	list-style-image:url(/gudmap/resources/images/header/login_icon.png);
+	float:left;
+}
+
+#gd_contact_list {
+	list-style-image:url(/gudmap/resources/images/header/feedback_icon.png);
+	float:left;
+}
+
+#gd_login {	
+	/* background:url(images/header/login_icon.png) 50% 50% no-repeat no-repeat; */
+	background:url(/gudmap/resources/images/header/login_icon.png) 50% 50% no-repeat no-repeat;
+   	padding-left: 65px;
+}
+
+#gd_feedback {	
+	/* background:url(images/header/feedback_icon.png) 50% 50% no-repeat no-repeat; */
+	background:url(/gudmap/resources/images/header/feedback_icon.png) 50% 50% no-repeat no-repeat;
+   	padding-left: 95px;
+}
+
+
+
+.gd_list ul li{
+	list-style-image:url(/gudmap/resources/images/resources/gudmap_list.png);
+	font-style:italic;
+	color:#939393;
+	padding-bottom:5px;
+}
+
+#defaultNavbar1  {
+	/* background-image:url(images/header/stripe.png); */
+	background-image: url(/gudmap/resources/images/header/stripe.png);
+	background-repeat: repeat-x;
+	
+	
+}
+
