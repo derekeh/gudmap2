@@ -42,7 +42,7 @@
 	 <div id="gd_dbstats">
     <h:form id="il_homeform">
     	<h:inputText id="il_solr_search" p:placeholder="Search GUDMAP..." styleClass="gd_input_large_empty" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event);"/>
-    	<h:commandLink id="il_search_go" action="solrInsitu" onclick="$('#spinner').show()">
+    	<h:commandLink id="il_search_go" action="#{solrTreeBean.initpage()}" onclick="$('#spinner').show()">
 			<h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt=""></h:graphicImage>
 			<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
 	  	</h:commandLink>

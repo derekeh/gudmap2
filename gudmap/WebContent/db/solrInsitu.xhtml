@@ -240,7 +240,7 @@
 	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
 	                <h:inputText id="rowsPerPage" value="#{solrInsituBean.rowsPerPage}" size="3" maxlength="3" />
 	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrInsituBean.pageFirst}" >
-	                	<f:ajax execute="@form" render="@form" />
+	                	<f:ajax execute="@form" render="@form :dataform" />
 	                </h:commandButton>               
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
 	             </h:panelGrid>

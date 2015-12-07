@@ -241,11 +241,29 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 			model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
 			model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
 			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
+
+//			String tissue = TissueFilter(doc.getFieldValue("TISSUE_TYPE").toString());
+			
 			
 			list.add(model);			
 		}
 			
 		return list;
-	 }	
+	 }
+	
+	private String TissueFilter(String tissues){
+		String result = "";
+		String[] items = tissues.split(";");
+		if (items.length > 0){
+			for(String item : items){
+				if (!item.contains("EMAP")){
+					result.concat(item + "; ");
+				}
+			}
+			int len = result.length();
+			result.substring(0, len - 1);
+		}
+		return result;
+	}
     
 }

@@ -114,6 +114,12 @@ public class SolrTreeBean implements Serializable {
 		this.filter = filter;
 	}
 
+	public String initpage(){
+		
+		return "solrInsitu";
+				
+	}
+	
 	////////////////// GENE ////////////////////////////	
 		
 	
