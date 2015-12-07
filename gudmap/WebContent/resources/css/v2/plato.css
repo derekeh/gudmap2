@@ -1,0 +1,125 @@
+/*rules in this document override bootstrap.css */
+
+button, input, optgroup, select, textarea {
+    margin: 5px;
+    padding: 2px;
+}
+
+input[type="text"], textarea {
+
+  background-color:#D0DFE5; 
+  border-radius: 5px;
+  border: 2px solid lightblue;
+  color:#436482;
+  min-height:20px;
+}
+
+input[type="submit"] {
+    margin: 0;
+    padding: 3px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 5px;
+    max-width: 100%;
+    font-weight:normal;
+    padding-left:5px;
+}
+
+h1 {
+	font-size:1.6em;
+}
+
+.container-fluid {
+	padding:0;
+}
+
+.navbar {
+	margin-bottom:4px;
+}
+
+#defaultNavbar1  {
+	/* background-image:url(images/header/stripe.png); */
+	background-image: url("#{resource['images/header/stripe.png']}");
+	background-repeat: repeat-x;
+	
+	
+}
+.container-fluid #defaultNavbar1 .nav.navbar-nav li a {
+	color: #FFFFFF;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  background-color:transparent;
+  color:#555555;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    background-color:#4F6E8A;
+   
+}
+
+.container-fluid #defaultNavbar1 .nav.navbar-nav .dropdown-menu > li > a {
+  clear:both;
+  color:#0397C8;
+  display:block;
+  font-weight:normal;
+  line-height:1.42857143;
+  padding:3px 20px;
+  white-space:nowrap;
+}
+
+.navbar-right.gd_inline a {
+	color: #FFFFFF;
+	padding: 0 5px;
+}
+
+.dropdown-menu li a:hover {
+	background-color:#A69E9E;
+	/* background-color:#EBEBEB; */
+}
+
+.container-fluid #defaultNavbar1 .nav.navbar-nav .dropdown-menu > li > a:hover {
+	background-color:#EBEBEB;
+}
+
+.container-fluid .navbar.navbar-default .container-fluid {
+	
+	background-color: #C2D5DC;
+}
+
+.container-fluid .navbar.navbar-default .container-fluid .navbar-header {
+	
+	background-color: transparent;
+}
+/* WHEN THE MENU IS COLLAPSED AND USING THE HAMBURGER */
+.container-fluid .navbar.navbar-default .container-fluid .navbar-collapse {
+	background-color: #436482;
+	border-radius: 33px;
+}
+
+.navbar-collapse .navbar-nav .open .dropdown-menu {
+	background-color:white;
+}
+
+.navbar-collapse .navbar-nav .open .dropdown-menu li a:hover {
+	background-color:#A69E9E;
+}
+
+
+
+.clear_all {
+	clear:both;
+}
+.col-lg-4 #gd_search_form p {
+	color: #776F6F;
+	font-style: italic;
+	font-size: small;
+}
+
+.col-lg-2 .thumbnail {
+	border-style:none;
+}
+
+

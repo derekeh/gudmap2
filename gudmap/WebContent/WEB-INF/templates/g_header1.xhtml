@@ -12,19 +12,19 @@
 <!--       	<a href="#"><h:graphicImage library="images/header" name="gudmap_logo.png" alt="GUDMAP" width="334" height="56" id="gudmap_logo"/></a> 
  -->    </div>
  
-		<script type="text/javascript">
+	<script type="text/javascript">
 		//<![CDATA[
 		
 						function handleInput1 (inField, e) {
 							//alert(e.keyCode);
-							if (e.keyCode === 13) {
+							if (inField.id=='gd_quicksearch:gd_search_value' && e.keyCode === 13) {
 								if(inField.id=='gd_quicksearch:gd_search_value')
 				                	document.getElementById('gd_quicksearch:gd_search_go').click();
 				            }
 				            return false;//so that mainForm is not called
 				        }
 		//]]>
-		</script>
+		</script>	
  
     <div id="gd_stripe_strip">
           <div id="gd_login" class="gd_webfont_header">
@@ -42,7 +42,7 @@
             </h:outputLink>
           </h:panelGrid>
     	  </div>
-          <div id="gd_quicksearch"  class="gd_webfont_header">
+          	<div id="gd_quicksearch"  class="gd_webfont_header">
           <h:form id="gd_searchform">
           <h:panelGrid columns="3" columnClasses="gd_cellTextRight,gd_cellTextLeft,gd_cellTextLeft">			  
 			  <h:outputLabel for="il_search_value" value="Search "></h:outputLabel>

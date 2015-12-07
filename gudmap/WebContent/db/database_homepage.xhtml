@@ -30,6 +30,10 @@
 		    margin: 0;
 		}
 		
+		input[type="text"] {
+		    min-height: 25px;
+		}
+		
 		#gd_edit_area { height:500px;}
 	</style>
 	
@@ -198,7 +202,12 @@
 	
 	
 	<!-- can use relative links on html tags -->
-	    <!-- all other content in here --> 	
+	    <!-- all other content in here --> 
+	    <h:outputStylesheet library="css" name="dmxNavigationMenu.css"></h:outputStylesheet>	
+	      <h:outputScript library="scripts" name="jquery.easing.1.3.js"></h:outputScript>
+  		  <h:outputScript library="scripts" name="dmxNavigationMenu.js"></h:outputScript>
+  		  <h:outputStylesheet library="css/dmxNavigationMenu/elegant_blue" name="elegant_blue.css"></h:outputStylesheet>
+	    
 	    <h:outputScript library="scripts" name="jquery-ui-1.9.2.accordion.custom.min.js"></h:outputScript>  
 	    <!-- need to use this type of linking if the stylesheet references other stylesheets or relative icon directories -->
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.core.min.css" />
@@ -215,6 +224,7 @@
 		
 						function handleInput (inField, e) {
 							//alert(e.keyCode);
+							if (e.keyCode === 13) {
 								if(inField.id=='il_dbhomepage:gene_input_input')
 				                	document.getElementById('il_dbhomepage:il_gene_go').click();
 								else if(inField.id=='il_dbhomepage:anatomy_input_input')
@@ -223,7 +233,7 @@
 				                	document.getElementById('il_dbhomepage:il_accession_go').click();
 								else if(inField.id=='il_dbhomepage:genefunction_input_input')
 				                	document.getElementById('il_dbhomepage:il_gene_function_go').click();
-				            //}
+				            }
 				            return false;//so that mainForm is not called
 				        }
 		//]]>
@@ -423,7 +433,7 @@
   	<table  width="100%" border="0" cellpadding="0" cellspacing="0">
 		<tr>
 		<td>
-		<div id="navmenu2" class="dmxNavigationMenu" style="width:155px;float:left">
+		<div id="navmenu2" class="dmxNavigationMenu" style="width:155px;float:left;margin-left:-5px;">
 		  <ul class="menu vertical">
 		  
 		    <li title="" class="db_pseudo_row"><a href="javascript:void(0);" class="expandable"><h:graphicImage library="images/dbhome" name="nocutaway/n_array.png" border="0" width="130" height="24" alt=" " /> <span class="sub_right"></span></a>

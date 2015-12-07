@@ -1,0 +1,103 @@
+@charset "UTF-8";
+/* CSS Document. Rules in here override 3rd party css*/
+
+/****************expression treee*******************/
+
+  #exp_key_div a {
+    font-size: 8pt;
+    color: #7F7F81;
+  }
+  .expression_btn, .pattern_btn {
+    pointer-events: none;
+    cursor: default;
+  }
+/*the background of the tree */
+  #demo2_view {
+    cursor: default;
+    background-color:#EBEBEB;
+  }
+
+  #demo2_view a {
+    cursor: default;
+  }
+   
+  /* the text of the tree */
+   #demo2_view ul li a {
+    /* font-size:14px; */
+    font-size:0.9em;
+    color:#355b7b;
+    /* line-height:18px; */
+  }
+ 
+ /* create space between icon and component text */ 
+ #demo2_view ul li a ins {
+    padding-right:3px;
+  }
+  
+   .jstree-icon {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+   .jstree-icon1 {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+   .jstree-icon2 {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+   .jstree-icon3 {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+   .jstree-icon4 {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+   .jstree-icon5 {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+   .jstree-icon6 {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+  .jstree-icon7 {
+  	vertical-align:middle;
+  	min-height:20px;
+  }
+  
+
+  
+ /*  .jstree-leaf a ins {
+  	padding-right:30px;
+  } */
+  
+  /* PRIME FACES OVERRIDES */
+  
+  #testdiv {
+  	min-height: 150px;
+  	width:250px;
+  	background:#EBEBEB url("#{resource['images/curve_blue.jpg']}") repeat-y top;
+  }
+    .pr_dialog_link {
+  	
+ }
+  .pr_dialog_link a:link,  .pr_dialog_link a:visited {
+  	color:#0797F5;
+	text-decoration: none; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+ }
+ 
+   .pr_dialog_link a:hover {
+  	color:darkblue;
+	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
+ }
+ 
+ .ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 1px 1px #8F8F8F inset;
+    color: #313131;
+    max-height: 14px;
+}
+ 
+

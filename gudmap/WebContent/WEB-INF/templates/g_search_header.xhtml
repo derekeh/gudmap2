@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+	<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput1 (inField, e) {
+							//alert(e.keyCode);
+							if (inField.id=='gd_searchform:gd_search_value' && e.keyCode === 13) {
+								if(inField.id=='gd_searchform:gd_search_value')
+				                	document.getElementById('gd_searchform:gd_search_go').click();
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		//]]>
+		</script>
+	
+	<nav class="navbar navbar-default">
+	    <div class="container-fluid"> <!-- Brand and toggle get grouped for better mobile display -->
+         
+	      <div class="navbar-header" id="il_header">
+	        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+	        <a class="navbar-brand" href="/gudmap/db/index.jsf" style="min-width:300px;"></a></div>
+           
+	      <!-- Collect the nav links, forms, and other content for toggling -->
+	      <div class="collapse navbar-collapse" id="defaultNavbar1">
+	        <ul class="nav navbar-nav">
+	          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">The Data<span class="caret"></span></a>
+	            <ul class="dropdown-menu" role="menu">
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=55">Project Protocols</a></li>
+	              <li><a href="http://www.gudmap.org/Submission_Archive/index.html">Submission Archive</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=11">ISH Quality Control</a></li>
+	              <li class="divider"></li>
+	              <li><a href="http://www.gudmap.org/Resources/MouseStrains/index.html">Mice/Cell Lines</a></li>
+                </ul>
+              </li>
+	         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">The GU System<span class="caret"></span></a>
+	            <ul class="dropdown-menu" role="menu">
+	              <li><a href="#{appRoot}/db/query_disease.jsf">Disease</a></li>
+	              <li><a href="http://www.gudmap.org/Schematics/index.php">Schematics</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=22">Development of the Mouse GU System</a></li>
+	              <li class="divider"></li>
+	              <li><a href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></li>
+	              <li class="divider"></li>
+	              <li><a href="http://www.gudmap.org/Resources/Ontologies.html">Ontology</a></li>
+                  <li><a href="http://www.gudmap.org/Resources/OPT/index.php">3D Atlas</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">The Project<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=2">Goals</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=3">Projects</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=4">Publications</a></li>
+                  <li><a href="#{appRoot}/pages/viewPage.jsf?docID=5">Contacts</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=6">Positions</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=7">Funding</a></li>
+                  <li><a href="#{appRoot}/pages/viewPage.jsf?docID=8">Events</a></li>
+	              <li><a href="http://www.gudmap.org/Website_Reports/index.html">Web Stats</a></li>
+                </ul>
+              </li>
+	          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Help<span class="caret"></span></a>
+	            <ul class="dropdown-menu" role="menu">
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=27">Website Interaction</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=26">GUDMAP database</a></li>
+	              <li><a href="#{appRoot}/pages/viewPage.jsf?docID=30">Glossary</a></li>
+                </ul>
+              </li>
+            </ul>
+            
+	       
+             <!-- <form class="navbar-form navbar-left" role="search">
+	          <div class="form-group">
+	            <input type="text" class="form-control" placeholder="Search" />
+              </div>
+	          <button type="submit" class="btn btn-default">Submit</button>
+            </form> -->
+            
+            <h:form id="gd_searchform" class="navbar-form navbar-left" role="search">
+	          <div class="form-group">
+	            <h:inputText id="gd_search_value" placeholder="Search" required="true" value="#{solrTreeBean.solrInput}" onkeypress="handleInput1(this,event);"
+	            	style="color:grey;padding:0px;width:150px;"></h:inputText>
+	    		<h:commandLink id="gd_search_go" action="solrInsitu">
+				  <h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt="Search GUDMAP"></h:graphicImage>
+					<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+		  		</h:commandLink>
+              </div>
+	          
+            </h:form>
+           
+            
+            <div class="nav navbar-nav navbar-right gd_inline"  >
+	        <ul id="gd_login_list">
+	          <li><a href="#">Login</a></li>
+             </ul>
+            <ul id="gd_contact_list">
+	          <li><a href="#">Contact Us</a></li>
+	        </ul>
+            </div>
+            
+          </div>
+	      <!-- /.navbar-collapse -->
+        </div>
+	    <!-- /.container-fluid -->
+        
+        
+        
+      </nav>
+ 
+</ui:composition>

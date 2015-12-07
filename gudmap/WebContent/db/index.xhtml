@@ -6,214 +6,190 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
-<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+<ui:composition template="/WEB-INF/templates/g_template_v2.xhtml">
 	<ui:define name="title">
-	    GUDMAP Gene Expression Resource
+	    GUDMAP
 	</ui:define>
-	
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
 	<ui:define name="solr">
-		<!--  <ui:include src="/snippets/g_solrFly.xhtml"/>  -->
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
 	</ui:define>
 	
 	<ui:define name="content">
-		<h:outputScript library="scripts" name="jquery-ui-1.9.2.accordion.custom.min.js"></h:outputScript>  
-	    <!-- need to use this type of linking if the stylesheet references other stylesheets or relative icon directories -->
-	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.core.min.css" />
-	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.theme.min.css" />
-	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/jquery.ui.accordion.min.css" />
-		<h:outputStylesheet library="css" name="override_vertical.css" /> 
-		
-		<!-- use this script to simulate RETURN on input fields -->
-		<script type="text/javascript">
+	
+	<script type="text/javascript">
 		//<![CDATA[
 		
-						function handleInput (inField, e) {
-							//alert(e.keyCode);
+						function handleInput (inField, e) {			
 							if (e.keyCode === 13) {
-								if(inField.id=='il_homeform:il_solr_search'){
-				                	document.getElementById('il_homeform:il_search_go').click();
+								//alert(e.keyCode);
+								if(inField.id=='gd_search_gudmap'){
+									//alert('input return');
+				                	document.getElementById('gd_search_form:il_search_go').click();
 								}								
 				            }
 							return false;
 				        }
 		//]]>
 		</script>
-		
-	 <div id="gd_dbstats">
-    <h:form id="il_homeform">
-    	<h:inputText id="il_solr_search" p:placeholder="Search GUDMAP..." styleClass="gd_input_large_empty" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event);"/>
-    	<h:commandLink id="il_search_go" action="#{solrTreeBean.initpage()}" onclick="$('#spinner').show()">
-			<h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt=""></h:graphicImage>
-			<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-	  	</h:commandLink>
-     </h:form>
-    <br />
-    <h:outputText styleClass="gd_webfont_title" value="GUDMAP DATA" />
-    <h:form>
-    	<table border="0" width="98%">
-          <tr>
-            <th align="left" scope="col">Assay Type</th>
-            <th align="left" scope="col">Entries</th>
-            <th align="left" scope="col">Genes</th>
-          </tr>
-          <tr>
-            <td>All In Situ Hybridisation (ISH)</td>
-            <td>
-            	<h:link value="#{summaryBean.getIshTotal()}" outcome="browseInsituTablePage" />
-            	
-            </td>
-            <td><h:outputText value="#{summaryBean.getIshGeneTotal()}"></h:outputText></td>
-            
-          </tr>
-          <tr>
-            <td>Wholemount ISH (WISH)</td>
-            <td>
-            	<h:link value="#{summaryBean.getWishTotal()}" outcome="browseWishTablePage" />
-            </td>
-            <td><h:outputText value="#{summaryBean.getWishGeneTotal()}"></h:outputText></td>
-          </tr>
-          <tr>
-            <td>Section ISH (SISH)</td>
-            <td>
-            	<h:link value="#{summaryBean.getSishTotal()}" outcome="browseSishTablePage" />
-            </td>
-            <td><h:outputText value="#{summaryBean.getSishGeneTotal()}"></h:outputText></td>
-          </tr>
-          <tr>
-            <td>OPT ISH</td>
-            <td>
-            	<h:link value="#{summaryBean.getOptTotal()}" outcome="browseOptTablePage" />
-            </td>
-            <td><h:outputText value="#{summaryBean.getOptGeneTotal()}"></h:outputText></td>
-          </tr>
-          <tr>
-            <td>Immunohistochemistry (IHC)</td>
-            <td>
-            	<h:link value="#{summaryBean.getIhcTotal()}" outcome="browseIhcTablePage" />
-            </td>
-            <td><h:outputText value="#{summaryBean.getIhcGeneTotal()}"></h:outputText></td>
-          </tr>
-          <tr>
-            <td>Transgenic Reporters</td>
-            <td>
-            	<h:link value="#{summaryBean.getTgTotal()}" outcome="browseTgTablePage" />
-            </td>
-            <td><h:outputText value="#{summaryBean.getTgGeneTotal()}"></h:outputText></td>
-          </tr>
-          <tr>
-            <td>Microarray</td>
-            <td>
-            	<h:link value="#{summaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" />
-            </td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Sequence</td>
-            <td>
-            	<h:link value="#{summaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" />
-            </td>
-            <td></td>
-          </tr>
-          <tr>
-            <td><a href="#">More...</a></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
-        </h:form>
-        <br /><br />
-        <h:panelGrid columns="1" styleClass="gd_webfont_header">
-	        <h:outputText value="PUBLICATIONS" styleClass="gd_webfont_title"/>
-	        <h:outputText value="Publication list from GUDMAP Consortium" />
-	        <div style="min-height:20px;"/>
-	        <h:outputText value="WEBSITE TUTORIALS" styleClass="gd_webfont_title" />
-	        <h:outputText value="Watch videos..." />
-	        <h:outputText value="Finding gene expression profiles" />
-	        <h:outputText value="Genes associated to disease" />
-        </h:panelGrid>
-    </div>
-    <!--<p><img id="gd_dbstats" src="../images/tests/dbstats_placeholder.png"  alt=""/></p>-->
-   
-    
+
+	
+		<!-- can use relative links on html tags -->
+	    <!-- all other content in here -->  
+	    <article class="col-lg-4">
+      <h:form id="gd_search_form">
+      	<h:panelGrid columns="3">
+	        <h:inputText  p:autofocus="true" class="gd_input_large" id="gd_search_gudmap" p:placeholder="Search GUDMAP ..." value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event);"/>
+	        <h:commandLink id="il_search_solr" action="#{solrTreeBean.initpage()}">
+				<h:graphicImage library="images/header" name="mag_glass.png" width="26" height="26" alt="Search GUDMAP"></h:graphicImage>
+				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+	  		</h:commandLink>
+	  		<h:commandLink id="il_search_go" action="solrInsitu">
+				<h:graphicImage library="images/header" name="mag_glass.png" width="1" height="1" alt=""></h:graphicImage>
+				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+	  		</h:commandLink>
+	  	</h:panelGrid>
+	  	
+<p><em>Eg. NPY, Bladder, Urothelium + 'Lamina Propria', 8964...</em></p>      
+	      </h:form>
+          <ul class="gd_horizontal_list_no_image"><li>Search Help</li><li>Advanced Help</li><li><a href="database_homepage.jsf">Alternative Search</a></li></ul>
+	      <h2 class="gd_sub_header">How to use GUDMAP</h2>
+      <ul class="gd_horizontal_list_no_image"><li>Site Tutorials</li><li>Download Tutorials (pdf)</li></ul>
+<div class="embed-responsive embed-responsive-16by9"  style="border-style:solid;border-width:1px;border-color:#EBEBEB;background-color:#FFFFFF;">
+        <!-- <iframe class="embed-responsive-item" src="#{appRoot}/resources/movies/GudmapTutorial.mp4"></iframe> -->
+        <video controls="controls" poster="#{appRoot}/resources/images/home/intro_frame_2.png">
+        	<source src="#{appRoot}/resources/movies/GudmapTutorial.mp4" type="video/mp4" />
+        	<h:outputText>You're browser does not support the video tag.</h:outputText>
+        </video>
+          </div>
+	      <h2 class="gd_sub_header">Site Demos</h2>
+	      <ol>
+	        <li>How do I find where my gene of interest is expressed during GU development?</li>
+	        <li>What genes significantly mark the structure I am interested in examining?</li>
+	        <li>What genes, within a genetic interval, are likely to have disease-causing mutations?</li>
+	        <li>How does the GU tract develop?</li>
+	      </ol>
+	      </article>
+	    <article class="col-lg-4">
+	      <h2 class="gd_sub_header">About the GenitoUrinary System</h2>
+	      <h3 class="gd_h3">Tutorials</h3>
+          <ul class="gd_horizontal_list_no_image"><li>GU System Tutorial</li><li>Download Tutorial (pdf)</li></ul>
+<h3 class="gd_h3">Schematics</h3>
+	      <p><em>(Short summary)</em></p>
+	      <div class="row">
+	        <div class="col-lg-12">
+	          <div class="thumbnail"><img src="#{appRoot}/resources/images/home/schematics.jpg" alt="Thumbnail Image 1" />              </div>
+            </div>
+          </div>
+	      <h3 class="gd_h3">Tissue Summaries</h3>
+	      <ul>
+	        <li>Metanephros</li>
+	        <li>Lower Urinary Tract</li>
+	        <li>Early GenitoUrinary System</li>
+	        <li>Male Reproductive System</li>
+	        <li>Female Reproductive System</li>
+	      </ul>
+	      <h3 class="gd_h3">Ontology</h3>
+	      <p>A high resolution ontology to describe the sub-compartments of the developing murine genitourinary tract</p>
+	      <div class="row">
+	        <div class="col-lg-12">
+	          <div class="thumbnail"><img src="#{appRoot}/resources/images/home/gu_ontology.jpg" alt="Thumbnail Image 1" />              </div>
+            </div>
+          </div>
+	      
+	    </article>
+	    <article class="col-lg-4">
+	      <h2 class="gd_sub_header">Mice/Cell Lines</h2>
+	      <h3 class="gd_h3">Summary of mouse strains characterized by the GUDMAP consortium</h3>
+	      <p>Three tables listing mouse strains generated by the GUDMAP consortium, strains generated by external sources and urogenital system cell lines funded by external sources</p>
+	      <h3 class="gd_h3">GUDMAP 2</h3>
+	      <p>Strategy for the production of reporter strains</p>
+          <h3 class="gd_h3">3D-Atlas (Genital Tubercle)</h3>
+	      <p>A set of 3D reference models with and without the gene expression patterns for the marker gene shh.</p>
+	      <h3 class="gd_h3">GUDMAP Database Entries</h3>
+	      <div class="row">
+	        <div class="col-lg-12">
 	        
-    <div id="gd_slideshow_home">
-    
-	    <div id="Accordion1">
-	    
-	      <h2>Gene Expression Database</h2>
-	      <div>
-	      	
-		      	<h:link outcome="database_homepage"><h:graphicImage library="images/gudmap" name="gene_expression_database_big.jpg" /></h:link>
-		        <h:outputText value="Some text in here" />
-	       
-	      </div>
-	      
-	      <h2>Microarray/Seq Analysis</h2>
-	      <div>
-	         <h:link outcome="viewGenelistTree"><h:graphicImage library="images/gudmap" name="microarray_seq_big.jpg" /></h:link>
-	         <h:outputText value="Some text in here" />
-	      </div>
-	      
-	      <h2>Developmental Tutorials</h2>
-	      <div>
-	         <h:link outcome="/pages/viewPage.jsf?docID=22"><h:graphicImage library="images/gudmap" name="dev_tutorials_big.jpg" /></h:link>
-	         <h:outputText value="Some text in here" />
-	      </div>
-	      
-	      <h2>Schematics</h2>
-	      <div>
-	         <h:outputLink value="http://www.gudmap.org/Schematics/index.php"><h:graphicImage library="images/gudmap" name="schematics_big.jpg" /></h:outputLink>
-	         <h:outputText value="Some text in here" />
-	      </div>
-	      
-	      <h2>Mouse/Cell Lines</h2>
-	      <div>
-	      	<h:outputLink value="http://www.gudmap.org/Resources/MouseStrains/index.html"><h:graphicImage library="images/gudmap" name="mouse_lines_big.jpg" /></h:outputLink>
-	         <h:outputText value="Some text in here" />
-	      </div>
-	      
-	      <h2>Ontology</h2>
-	      <div>
-	      	<h:outputLink value="http://www.gudmap.org/Resources/Ontologies.html"><h:graphicImage library="images/gudmap" name="ontology_big.jpg" /></h:outputLink>
-	         <h:outputText value="Some text in here" />
-	      </div>
-	      
-	      <h2>Tissue Summaries</h2>
-	      <div>
-	      	<h:outputLink value="http://www.gudmap.org/Organ_Summaries/index.php"><h:graphicImage library="images/gudmap" name="tissue_summaries_big.jpg" /></h:outputLink>
-	         <h:outputText value="Some text in here" />
-	      </div>
-	      
-	      <h2>3D Atlas - Genital Tubercle</h2>
-	      <div>
-	      	<h:outputLink value="http://www.gudmap.org/Resources/OPT/index.php"><h:graphicImage library="images/gudmap" name="3D_atlas_big.jpg" /></h:outputLink>
-	         <h:outputText value="Some text in here" />
-	      </div>
-	      
-	    </div><!-- end accordion 1 -->
-      
-  </div><!-- end gd_slideshow_home-->
-    
-   <div style="clear:both;" />
-
-<script type="text/javascript">
-//<![CDATA[
-   $(document).ready(function() {
-
-		$( "#Accordion1" ).accordion({
-			collapsible:true,
-			heightStyle:"content"
-		}); 
-		
-		
-   });
-   
-  
-   
-   
-//]]>
-</script>   
-	    
+	        	<h:form id="formstats" prependId="false">
+	         <table border="0" class="db_condensed_stats" id="db_homestats">
+	          <tr>
+	            <th align="left" scope="col">Assay Type</th>
+	            <th align="left" scope="col">Entries</th>
+	            <th align="left" scope="col">Genes</th>
+	          </tr>
+	          <tr>
+	            <td>All In Situ Hybridisation (ISH)</td>
+	            <td>
+	            	<h:link  outcome="browseInsituTablePage" value="#{volatileSummaryBean.getIshTotal()}" onclick="$('#spinner').show()"/>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getIshGeneTotal()}"></h:outputText></td>
+	            
+	          </tr>
+	          <tr>
+	            <td>Wholemount ISH (WISH)</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getWishTotal()}" outcome="browseWishTablePage" id="il_wishlink"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getWishGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Section ISH (SISH)</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getSishTotal()}" outcome="browseSishTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getSishGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>OPT ISH</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getOptTotal()}" outcome="browseOptTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getOptGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Immunohistochemistry (IHC)</td>
+	            <td>
+	            	<h:link value="#{volatileSummaryBean.getIhcTotal()}" outcome="browseIhcTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getIhcGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Transgenic Reporters</td>
+	            <td>
+	            		<h:link value="#{volatileSummaryBean.getTgTotal()}" outcome="browseTgTablePage" onclick="$('#spinner').show()"></h:link>
+	             </td>
+	            <td><h:outputText value="#{volatileSummaryBean.getTgGeneTotal()}"></h:outputText></td>
+	          </tr>
+	          <tr>
+	            <td>Microarray</td>
+	            <td>
+	            	
+	            	<h:link value="#{volatileSummaryBean.getMicroarrayTotal()}" outcome="browseMicSampleTablePage" onclick="$('#spinner').show()"></h:link>
+	            	
+	            </td>
+	            <td></td>
+	          </tr>
+	          <tr>
+	            <td>Sequence</td>
+	            <td>
+	            		<h:link value="#{volatileSummaryBean.getSequenceTotal()}" outcome="browseSeqSampleTablePage" onclick="$('#spinner').show()"></h:link>
+	            </td>
+	            <td></td>
+	          </tr>
+	          <tr>
+	            <td><a href="http://www.gudmap.org/Website_Reports/Stats/gudmap_stats.html">More...</a></td>
+	            <td></td>
+	            <td></td>
+	          </tr>
+	        </table>
+>>>>>>> origin/master
+        </h:form>
+	        
+	          <!-- <div class="thumbnail"><img src="#{appRoot}/resources/images/home/db_summary.jpg" alt="Thumbnail Image 1" /></div> -->
+	          <p>Database entries in more detail</p>
+	        </div>
+          </div>
+        </article>   
 	</ui:define>
 </ui:composition>
 </html>
