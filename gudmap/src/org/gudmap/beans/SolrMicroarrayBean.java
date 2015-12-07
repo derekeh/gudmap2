@@ -26,7 +26,7 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-	private SolrMicroarrayAssembler assembler;
+//	private SolrMicroarrayAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -56,13 +56,13 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 	public void setParamBean(ParamBean paramBean){
 		this.paramBean=paramBean;
 	}
-	
-	public void setSolrFilter(SolrFilter solrFilter){
-		this.solrFilter = solrFilter;
-	}
  
 	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
 		this.solrTreeBean=solrTreeBean;
+	}
+	
+	public void setSolrFilter(SolrFilter solrFilter){
+		this.solrFilter = solrFilter;
 	}
 	
 	public void setSolrInput(String solrInput){

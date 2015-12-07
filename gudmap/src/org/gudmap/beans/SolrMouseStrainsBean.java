@@ -90,10 +90,8 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-//        totalRows = assembler.getCount(solrInput, filters);
         totalRows = solrTreeBean.getSolrUtil().getMouseStrainsCount(solrInput, filters);
    	
-//     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
        // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
