@@ -18,7 +18,7 @@
 }
 
 .db_grid_top_zero {
-	margin-top:-10px;
+	margin-top:0px;
 }
 
 .db_align_right {
@@ -267,8 +267,8 @@
  	padding: 5px 5px 5px 10px;
  }
  
- .db_outer_detail_right th {
-    padding-right: 20px;
+ .db_outer_detail_right th, .db_outer_detail_right td {
+    padding-right: 40px;
 }
  
   .db_inner_detail_left {

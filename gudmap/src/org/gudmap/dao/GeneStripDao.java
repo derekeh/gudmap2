@@ -44,6 +44,7 @@ public class GeneStripDao {
 	private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
 	private ArrayList<MasterTableInfo> tableinfo;
 	private int maxColNumber = 0;
+	private DataSource ds=null;
 	/////////////////////
 	
 	public GeneStripDao(){
@@ -51,6 +52,14 @@ public class GeneStripDao {
 	        microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
 	        tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 	    /////////////////////////
+	        
+	        
+			try {
+				Context ctx = new InitialContext();
+				ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	  public GeneStripModel getGeneStripDataFromSymbol(String geneId){
@@ -198,7 +207,37 @@ public class GeneStripDao {
 		String queryString=GeneStripQueries.MASTER_SECTION_LIST;
 		boolean found=false;
 		////////////
+		
+		///////////
+		
 		try
+		{
+			repeatCon = ds.getConnection();
+			repeatPs = repeatCon.prepareStatement(queryString); 
+			repeatResult =  repeatPs.executeQuery();
+			if (repeatResult.first()) {
+				masterTableInfoList=new ArrayList<MasterTableInfo>();
+				found=true;
+				repeatResult.beforeFirst();
+				 while (repeatResult.next()) {
+						MasterTableInfo masterTableInfo = new MasterTableInfo();
+						masterTableInfo.setId(repeatResult.getString(1) + "_" + repeatResult.getString(2));
+						masterTableInfo.setMasterId(repeatResult.getString(1));
+						masterTableInfo.setSectionId(repeatResult.getString(2));
+						masterTableInfo.setTitle(repeatResult.getString(3));
+						masterTableInfo.setDescription(repeatResult.getString(4));
+						masterTableInfo.setPlatform(repeatResult.getString(5));
+						masterTableInfoList.add(masterTableInfo);
+			    }
+			}
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(repeatCon, repeatPs, repeatResult);
+		}
+		
+		/*try
 		{
 			repeatCon = Globals.getDatasource().getConnection();
 			repeatPs = repeatCon.prepareStatement(queryString); 
@@ -223,7 +262,7 @@ public class GeneStripDao {
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 		    Globals.closeQuietly(repeatCon, repeatPs, repeatResult);
-		}
+		}*/
 		
 		return masterTableInfoList.toArray(new MasterTableInfo[masterTableInfoList.size()]);
 		
@@ -387,7 +426,7 @@ public class GeneStripDao {
 		
 		try
 		{
-			repeatCon = Globals.getDatasource().getConnection();
+			repeatCon = ds.getConnection();
 			repeatPs = repeatCon.prepareStatement(queryString); 
 			repeatPs.setString(1, geneId);
 			repeatResult =  repeatPs.executeQuery();
@@ -772,7 +811,7 @@ public class GeneStripDao {
 		  String queryString = GeneStripQueries.GENE_RELATED_SUBMISSIONS_ISH;
 		  try
 			{
-			  repeatCon = Globals.getDatasource().getConnection();
+			  repeatCon = ds.getConnection();
 			  repeatPs = repeatCon.prepareStatement(queryString); 
 			  repeatPs.setString(1, geneSymbol);
 			  repeatResult =  repeatPs.executeQuery();
@@ -795,7 +834,7 @@ public class GeneStripDao {
 			 queryString = IshSubmissionQueries.IMAGE_INFO_BY_ACCESSION_ID;
 			 try
 				{
-				 repeatCon = Globals.getDatasource().getConnection();
+				 repeatCon = ds.getConnection();
 				 repeatPs = repeatCon.prepareStatement(queryString); 
 				 repeatPs.setString(1, candidateSubmission);
 				 repeatResult =  repeatPs.executeQuery();
