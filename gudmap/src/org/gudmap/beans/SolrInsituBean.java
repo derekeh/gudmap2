@@ -242,7 +242,11 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 			model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
 			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
 
-//			String tissue = TissueFilter(doc.getFieldValue("TISSUE_TYPE").toString());
+			String tissue = doc.getFieldValue("TISSUE_TYPE").toString();
+			if (tissue == "" || tissue.isEmpty())
+				model.setTissue(tissue);
+			else
+				model.setTissue(TissueFilter(tissue));
 			
 			
 			list.add(model);			
@@ -252,16 +256,18 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	 }
 	
 	private String TissueFilter(String tissues){
+		// filter out the EMAP strings for the display
+		
 		String result = "";
 		String[] items = tissues.split(";");
 		if (items.length > 0){
 			for(String item : items){
 				if (!item.contains("EMAP")){
-					result.concat(item + "; ");
+					result += item + "; ";
 				}
 			}
 			int len = result.length();
-			result.substring(0, len - 1);
+			result = result.substring(0, len-2);
 		}
 		return result;
 	}
