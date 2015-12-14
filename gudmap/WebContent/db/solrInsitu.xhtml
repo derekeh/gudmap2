@@ -31,6 +31,8 @@
 
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+	<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
+	
 		<h:form  id="dataform">
 
 	    <h:inputHidden id="solrInput" value="#{solrInsituBean.solrInput}" />
@@ -191,6 +193,12 @@
                     </h:commandLink>
 				</f:facet>
     				#{u.submission_date}
+    		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">
+    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
+				</f:facet>
     		</h:column>
 
  		</h:dataTable> 
