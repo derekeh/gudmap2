@@ -210,7 +210,7 @@
 	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
 	                <h:inputText id="rowsPerPage" value="#{solrSequencesBean.rowsPerPage}" size="3" maxlength="3" />
 	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrSequencesBean.pageFirst}" >
-	                	<f:ajax execute="@form" render="@form" />
+	                	<f:ajax execute="@form" render="@form :dataform" />
 	                </h:commandButton>               
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
 	             </h:panelGrid>
