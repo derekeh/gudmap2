@@ -80,7 +80,7 @@
     		<h:column rendered="#{paramBean.mic_agecol == true}">
     			<f:facet name="header">
     				<h:commandLink id="agelink" value="Age" actionListener="#{solrSequencesBean.sort}">
-                         <f:attribute name="sortField" value="AGE" />
+                         <f:attribute name="sortField" value="DEV_STAGE" />
                          <f:ajax execute="@this agelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
