@@ -27,6 +27,8 @@
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
 	
 		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
@@ -147,6 +149,11 @@
     			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
     		</h:column>
     		
+    		<h:column>
+    			<f:facet name="header">
+    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
+				</f:facet>
+    		</h:column>
 
 
     	 </h:dataTable>

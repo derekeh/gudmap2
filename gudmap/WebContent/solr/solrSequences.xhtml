@@ -29,6 +29,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+	<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
 	
 
 		<h:form id="dataform">
@@ -168,6 +169,14 @@
 				</f:facet>
     				#{u.submission_date}
     		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">
+    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
+				</f:facet>
+    		</h:column>
+    		
+    		
  		</h:dataTable> 
 	</h:form>	
 	
@@ -222,7 +231,6 @@
 			<h:inputText id="gotopage" value="#{solrSequencesBean.gotopage}" />
 		</h:form> 	
 		
-	<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
 	</ui:define>			
 
 </ui:composition>
