@@ -15,6 +15,11 @@
 	    Solr ISH Data
 	</ui:define>
 	
+
+
+
+	
+	
 <!-- 	comment out the following section if you don't want the solr menu displayed -->
 	<ui:define name="solr">	
 		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
@@ -144,7 +149,7 @@
     		<h:column rendered="#{paramBean.genotypecol == true}">
     			<f:facet name="header">
      				<h:commandLink value="Genotype" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="GENEOTYPE" />
+    					<f:attribute name="sortField" value="GENOTYPE" />
                     </h:commandLink>
 				</f:facet>
     				#{u.genotype}
@@ -153,7 +158,7 @@
     		<h:column rendered="#{paramBean.tissuecol == true}">
     			<f:facet name="header">
     				<h:commandLink value="Tissue" actionListener="#{solrInsituBean.sort}">
-    					<f:attribute name="sortField" value="TISSUE" />
+    					<f:attribute name="sortField" value="TISSUE_TYPE" />
                     </h:commandLink>
 				</f:facet>
     				#{u.tissue}
@@ -211,19 +216,19 @@
  			  <h:panelGrid columns="5">
                 <h:commandButton id="firstbutton" value="first" action="#{solrInsituBean.pageFirst}"
                     disabled="#{solrInsituBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="prevbutton" value="prev" action="#{solrInsituBean.pagePrevious}"
                     disabled="#{solrInsituBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="nextbutton" value="next" action="#{solrInsituBean.pageNext}"
                     disabled="#{solrInsituBean.firstRow + solrInsituBean.rowsPerPage >= solrInsituBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="lastbutton" value="last" action="#{solrInsituBean.pageLast}"
                     disabled="#{solrInsituBean.firstRow + solrInsituBean.rowsPerPage >= solrInsituBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:outputText value="Page #{solrInsituBean.currentPage} / #{solrInsituBean.totalPages}" />
                </h:panelGrid>

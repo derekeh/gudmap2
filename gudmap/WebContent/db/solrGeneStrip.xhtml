@@ -27,6 +27,8 @@
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
 	
 		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
@@ -147,6 +149,11 @@
     			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
     		</h:column>
     		
+    		<h:column>
+    			<f:facet name="header">
+    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
+				</f:facet>
+    		</h:column>
 
 
     	 </h:dataTable>
@@ -159,19 +166,19 @@
  			  <h:panelGrid columns="5">
                 <h:commandButton id="firstbutton" value="first" action="#{solrGeneStripBean.pageFirst}"
                     disabled="#{solrGeneStripBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="prevbutton" value="prev" action="#{solrGeneStripBean.pagePrevious}"
                     disabled="#{solrGeneStripBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="nextbutton" value="next" action="#{solrGeneStripBean.pageNext}"
                     disabled="#{solrGeneStripBean.firstRow + solrGeneStripBean.rowsPerPage >= solrGeneStripBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="lastbutton" value="last" action="#{solrGeneStripBean.pageLast}"
                     disabled="#{solrGeneStripBean.firstRow + solrGeneStripBean.rowsPerPage >= solrGeneStripBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:outputText value="Page #{solrGeneStripBean.currentPage} / #{solrGeneStripBean.totalPages}" />
                </h:panelGrid>

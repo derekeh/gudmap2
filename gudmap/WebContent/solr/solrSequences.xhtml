@@ -29,6 +29,7 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+	<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
 	
 
 		<h:form id="dataform">
@@ -79,7 +80,7 @@
     		<h:column rendered="#{paramBean.mic_agecol == true}">
     			<f:facet name="header">
     				<h:commandLink id="agelink" value="Age" actionListener="#{solrSequencesBean.sort}">
-                         <f:attribute name="sortField" value="AGE" />
+                         <f:attribute name="sortField" value="DEV_STAGE" />
                          <f:ajax execute="@this agelink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
@@ -168,6 +169,14 @@
 				</f:facet>
     				#{u.submission_date}
     		</h:column>
+    		
+    		<h:column>
+    			<f:facet name="header">
+    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
+				</f:facet>
+    		</h:column>
+    		
+    		
  		</h:dataTable> 
 	</h:form>	
 	
@@ -178,19 +187,19 @@
  			  <h:panelGrid columns="5">
                 <h:commandButton id="firstbutton" value="first" action="#{solrSequencesBean.pageFirst}"
                     disabled="#{solrSequencesBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="prevbutton" value="prev" action="#{solrSequencesBean.pagePrevious}"
                     disabled="#{solrSequencesBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="nextbutton" value="next" action="#{solrSequencesBean.pageNext}"
                     disabled="#{solrSequencesBean.firstRow + solrSequencesBean.rowsPerPage >= solrSequencesBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="lastbutton" value="last" action="#{solrSequencesBean.pageLast}"
                     disabled="#{solrSequencesBean.firstRow + solrSequencesBean.rowsPerPage >= solrSequencesBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:outputText value="Page #{solrSequencesBean.currentPage} / #{solrSequencesBean.totalPages}" />
                </h:panelGrid>
@@ -222,7 +231,6 @@
 			<h:inputText id="gotopage" value="#{solrSequencesBean.gotopage}" />
 		</h:form> 	
 		
-	<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
 	</ui:define>			
 
 </ui:composition>

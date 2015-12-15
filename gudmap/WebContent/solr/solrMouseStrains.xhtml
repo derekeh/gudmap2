@@ -38,7 +38,7 @@
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row"
     		>
- 
+<ui:remove>
     		<h:column>
     			<f:facet name="header">
     				<h:commandLink value="ID" actionListener="#{solrMouseStrainsBean.sort}">
@@ -47,7 +47,7 @@
     			</f:facet>
     				#{u.oid}
     		</h:column>
-    		
+ </ui:remove>    		
     		<h:column>
     			<f:facet name="header">
     				<h:commandLink value="Gene" actionListener="#{solrMouseStrainsBean.sort}">
@@ -119,7 +119,6 @@
     			</f:facet>
     				#{u.cellType}
     		</h:column>
- 
     		
   
  		</h:dataTable> 
@@ -130,19 +129,19 @@
  			  <h:panelGrid columns="5">
                 <h:commandButton id="firstbutton" value="first" action="#{solrMouseStrainsBean.pageFirst}"
                     disabled="#{solrMouseStrainsBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="prevbutton" value="prev" action="#{solrMouseStrainsBean.pagePrevious}"
                     disabled="#{solrMouseStrainsBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="nextbutton" value="next" action="#{solrMouseStrainsBean.pageNext}"
                     disabled="#{solrMouseStrainsBean.firstRow + solrMouseStrainsBean.rowsPerPage >= solrMouseStrainsBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="lastbutton" value="last" action="#{solrMouseStrainsBean.pageLast}"
                     disabled="#{solrMouseStrainsBean.firstRow + solrMouseStrainsBean.rowsPerPage >= solrMouseStrainsBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:outputText value="Page #{solrMouseStrainsBean.currentPage} / #{solrMouseStrainsBean.totalPages}" />
                </h:panelGrid>

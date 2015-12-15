@@ -38,7 +38,7 @@
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row"
     		>
- 
+<ui:remove> 
     		<h:column>
     			<f:facet name="header">
     				<h:commandLink value="OID" actionListener="#{solrTissueSummaryBean.sort}">
@@ -47,7 +47,7 @@
     			</f:facet>
     				#{u.oid}
     		</h:column>
-    		
+</ui:remove>    		
     		<h:column>
     			<f:facet name="header">
     				<h:commandLink value="Tissue Summary" actionListener="#{solrTissueSummaryBean.sort}">
@@ -73,7 +73,7 @@
 				</f:facet>
     				#{u.stages}
     		</h:column>
-    		
+
   
  		</h:dataTable> 
 	</h:form>	
@@ -85,19 +85,19 @@
  			  <h:panelGrid columns="5">
                 <h:commandButton id="firstbutton" value="first" action="#{solrTissueSummaryBean.pageFirst}"
                     disabled="#{solrTissueSummaryBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="prevbutton" value="prev" action="#{solrTissueSummaryBean.pagePrevious}"
                     disabled="#{solrTissueSummaryBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="nextbutton" value="next" action="#{solrTissueSummaryBean.pageNext}"
                     disabled="#{solrTissueSummaryBean.firstRow + solrTissueSummaryBean.rowsPerPage >= solrTissueSummaryBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:commandButton id="lastbutton" value="last" action="#{solrTissueSummaryBean.pageLast}"
                     disabled="#{solrTissueSummaryBean.firstRow + solrTissueSummaryBean.rowsPerPage >= solrTissueSummaryBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
                 </h:commandButton>
                 <h:outputText value="Page #{solrTissueSummaryBean.currentPage} / #{solrTissueSummaryBean.totalPages}" />
                </h:panelGrid>
