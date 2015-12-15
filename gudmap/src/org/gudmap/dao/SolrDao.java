@@ -19,7 +19,8 @@ public class SolrDao {
 	private PreparedStatement ps;
 	private ResultSet result;
 	private SolrInputDocument doc;
-	 private ArrayList<SolrInputDocument> docs;
+	private ArrayList<SolrInputDocument> docs;
+	
 	public SolrDao() {
 	}
 	
@@ -640,5 +641,30 @@ public class SolrDao {
 		}
         return docs;
     }
+
+	public ArrayList<String> getGeneList() {
+		
+		ArrayList<String> genelist = new ArrayList<String>();
+        String queryString = SolrQueries.GENE_LIST;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				genelist.add(result.getString(1).toLowerCase());
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return genelist;
+    }
+	
 	
 }

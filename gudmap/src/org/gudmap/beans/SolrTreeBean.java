@@ -32,6 +32,9 @@ public class SolrTreeBean implements Serializable {
 	private String filter;
 	
     @Inject
+    private SolrIndexBean solrIndexBean;
+	
+    @Inject
    	private SolrFilter solrFilter;
 	
 	public SolrTreeBean(){
@@ -42,6 +45,10 @@ public class SolrTreeBean implements Serializable {
 		this.solrFilter = filter;
 	}
 
+	public void setSolrIndex(SolrIndexBean index){
+		this.solrIndexBean = index;
+	}
+	
 	public SolrUtil getSolrUtil(){
 		return solrUtil;
 	}
@@ -116,7 +123,10 @@ public class SolrTreeBean implements Serializable {
 
 	public String initpage(){
 		
-		return "solrInsitu";
+		if (!containsGene())
+			return "solrInsitu";
+		else
+			return "solrGeneStrip";
 				
 	}
 	
@@ -317,6 +327,27 @@ public class SolrTreeBean implements Serializable {
 
 		
 		return map;
+	}
+	
+	private boolean containsGene(){
+		// looks for a gene in the input string
+		// to allow genestrip page to be shown to be selected
+		
+		ArrayList<String> genes = solrIndexBean.getGeneList();
+		
+		if (solrInput.isEmpty() || solrInput == "")
+			return false;
+		
+		String[] items = solrInput.split(" ");
+		if (items.length > 0){
+			for(String item : items){
+				if (genes.contains(item.toLowerCase()))
+					return true;
+			}
+		}
+		
+		return false;
+		
 	}
 	
 }

@@ -224,4 +224,11 @@ public class SolrIndexAssembler {
 		}
 	}
 	
+	public ArrayList<String> getGeneList() {
+		
+		return solrDao.getGeneList();
+		
+	}
+
+	
 }
