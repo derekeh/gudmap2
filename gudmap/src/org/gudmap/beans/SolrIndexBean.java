@@ -502,5 +502,10 @@ public class SolrIndexBean implements Serializable {
 //	}
 	
 
+	public ArrayList<String> getGeneList() {
+		
+		return assembler.getGeneList();
+		
+	}
 	
 }

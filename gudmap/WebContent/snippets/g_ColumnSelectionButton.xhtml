@@ -3,10 +3,22 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:pr="http://primefaces.org/ui" >
-	
+
+
+<ui:remove>
 	<h:form id="buttonform">
 		<h:panelGrid columns="2">
-			<pr:commandButton id="showdialog"  onclick="PF('dialog1').show();" type="button" image="/resources/images/resources/table.png"></pr:commandButton>
+			<pr:commandButton value="Col's" id="showdialog"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+		</h:panelGrid>
+	</h:form>
+</ui:remove>	
+
+	<h:form id="buttonform">
+		<h:panelGrid columns="2">
+			<pr:commandLink id="showdialog"  onclick="PF('dialog1').show();" type="button" >
+				<pr:graphicImage value="/resources/images/resources/table.png" /> 
+				<pr:tooltip id="toolTipFade" for="showdialog" value="Select columns to display" />
+			</pr:commandLink>
 		</h:panelGrid>
 	</h:form>
 		

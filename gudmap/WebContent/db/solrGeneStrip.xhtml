@@ -71,8 +71,10 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				Gene 
-    			</f:facet>
+    				<h:commandLink value="Gene" actionListener="#{solrGeneStripBean.sort}">
+    					<f:attribute name="sortField" value="GENE" />
+                    </h:commandLink>
+     			</f:facet>
      			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
