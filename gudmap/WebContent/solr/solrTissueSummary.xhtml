@@ -38,7 +38,7 @@
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row"
     		>
- 
+<ui:remove> 
     		<h:column>
     			<f:facet name="header">
     				<h:commandLink value="OID" actionListener="#{solrTissueSummaryBean.sort}">
@@ -47,7 +47,7 @@
     			</f:facet>
     				#{u.oid}
     		</h:column>
-    		
+</ui:remove>    		
     		<h:column>
     			<f:facet name="header">
     				<h:commandLink value="Tissue Summary" actionListener="#{solrTissueSummaryBean.sort}">
