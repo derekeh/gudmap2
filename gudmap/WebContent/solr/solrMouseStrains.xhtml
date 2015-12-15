@@ -23,13 +23,16 @@
 
 <!-- 	comment out the following section if you don't want the filter menu displayed -->	
 	<ui:define name="filters">	
-		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+		
 	</ui:define>		
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-		<h:form id="dataform">
+	
+	<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	
+		<h:form id="dataform" style="display:table-row;">
 
 	    <h:inputHidden id="solrInput" value="#{solrMouseStrainsBean.solrInput}" />
 	    
@@ -123,7 +126,7 @@
   
  		</h:dataTable> 
 	</h:form>	
-	<h:form id="pagingform">  
+	<h:form id="pagingform"  style="display:table-row;">  
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
@@ -169,7 +172,7 @@
            
          </h:panelGrid>    
 		</h:form> 
-		<h:form id="form2">
+		<h:form id="form2" style="display:table-row;">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrMouseStrainsBean.gotopage}" />
 		</h:form> 

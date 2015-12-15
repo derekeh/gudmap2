@@ -24,12 +24,14 @@
 
 <!-- 	comment out the following section if you don't want the filter menu displayed -->	
 	<ui:define name="filters">	
-		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+		
 	</ui:define>		
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 		
 	
 	<ui:define name="content">
+	
+	<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 
 	<h:outputStylesheet library="css" name="gallerie.css"  />
 	<h:outputStylesheet library="css" name="gallerie-effects.css"  />
@@ -83,7 +85,7 @@ $(document).ready(function(){
 	<!-- can use relative links on html tags -->
 
 <div id="gallery">
-	<h:form  id="dataform">
+	<h:form  id="dataform" style="display:table-row;">
 
 	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
 	
