@@ -164,6 +164,8 @@
 	border-bottom:1px solid #BBBBBB;
 	padding:2px 10px;
 	vertical-align:top;
+	/* padding:2px 0px;
+	width:100px; */
 }
 
 .db_order-table-header-left{
