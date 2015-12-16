@@ -23,7 +23,7 @@
 
 <!-- 	comment out the following section if you don't want the filter menu displayed -->	
 	<ui:define name="filters">	
-		
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 	</ui:define>		
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
@@ -31,9 +31,8 @@
 	<!-- can use relative links on html tags -->
 	<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
 	
-	<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 
-		<h:form id="dataform" style="display:table-row;">
+		<h:form id="dataform">
 	    <h:inputHidden id="solrInput" value="#{solrSequencesBean.solrInput}" />
 	    
 	    
@@ -170,13 +169,13 @@
 				</f:facet>
     				#{u.submission_date}
     		</h:column>
-<ui:remove>        		
+    		
     		<h:column>
     			<f:facet name="header">
     				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
 				</f:facet>
     		</h:column>
-</ui:remove>        		
+    		
     		
  		</h:dataTable> 
 	</h:form>	
@@ -227,7 +226,7 @@
            </h:panelGroup>
          </h:panelGrid>    
 		</h:form> 
-		<h:form id="form2" style="display:table-row;">
+		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrSequencesBean.gotopage}" />
 		</h:form> 	
