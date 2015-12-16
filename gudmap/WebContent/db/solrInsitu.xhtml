@@ -41,6 +41,7 @@
 		<h:form  id="dataform">
 
 	    <h:inputHidden id="solrInput" value="#{solrInsituBean.solrInput}" />
+
 	     <h:dataTable value="#{solrInsituBean.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
@@ -199,14 +200,16 @@
 				</f:facet>
     				#{u.submission_date}
     		</h:column>
-    		
+<ui:remove> 		
     		<h:column>
     			<f:facet name="header">
     				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
 				</f:facet>
     		</h:column>
-
+</ui:remove> 
  		</h:dataTable> 
+ 		
+
       	</h:form> 
       	
 	<h:form id="pagingform">	

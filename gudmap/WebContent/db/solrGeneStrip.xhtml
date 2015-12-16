@@ -150,13 +150,13 @@
     			</h:outputLink>
     			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
     		</h:column>
-    		
+ <ui:remove>    		
     		<h:column>
     			<f:facet name="header">
     				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
 				</f:facet>
     		</h:column>
-
+</ui:remove> 
 
     	 </h:dataTable>
 
