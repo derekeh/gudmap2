@@ -122,6 +122,9 @@ public class SolrTreeBean implements Serializable {
 	}
 
 	public String initpage(){
+
+		if (solrInput == null)
+			solrInput = "";
 		
 		if (!containsGene())
 			return "solrInsitu";
@@ -333,10 +336,11 @@ public class SolrTreeBean implements Serializable {
 		// looks for a gene in the input string
 		// to allow genestrip page to be shown to be selected
 		
-		ArrayList<String> genes = solrIndexBean.getGeneList();
-		
 		if (solrInput.isEmpty() || solrInput == "")
 			return false;
+		
+		ArrayList<String> genes = solrIndexBean.getGeneList();
+		
 		
 		String[] items = solrInput.split(" ");
 		if (items.length > 0){
