@@ -31,7 +31,7 @@
     			<f:facet name="header">
     			Gene <br />
     				<h:commandLink id="genelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GENE')}" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="RPR_SYMBOL" />
+    					<f:attribute name="sortField" value="gene" />
     					<f:ajax execute="@this genelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> 
     				 
@@ -45,7 +45,7 @@
     			<f:facet name="header">
     			Assay Detail <br />
     			<h:commandLink id="accessionlink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_GUDMAP_ACCESSION')}" actionListener="#{genericTablePageBean.sort}">
-    					<f:attribute name="sortField" value="SUB_OID" />
+    					<f:attribute name="sortField" value="oid" />
     					<f:ajax execute="@this accessionlink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> 
     				
@@ -104,7 +104,10 @@
     		<h:column rendered="#{paramBean.sexcol == true}">
     			<f:facet name="header">
     			Sex <br />
-    				#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SEX")}    				
+    				<h:commandLink id="sexlink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SEX')}" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="sex" />
+    					<f:ajax execute="@this sexlink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
 				</f:facet>
     				#{u.sex}
     		</h:column>
