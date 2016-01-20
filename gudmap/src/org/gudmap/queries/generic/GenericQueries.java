@@ -137,7 +137,7 @@ public class GenericQueries {
 				"FROM ((" +
 				"SELECT DISTINCT SUB_OID oid, RPR_SYMBOL gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " + 
 				"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) assay_type, RPR_JAX_ACC probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, " +
-				"STG_ALT_STAGE age, SPN_SEX sex,  " +
+				"IF(INSTR(STG_ALT_STAGE,'(')>0, SUBSTRING(STG_ALT_STAGE,1,INSTR(STG_ALT_STAGE,'(')-1), STG_ALT_STAGE ) age, SPN_SEX sex,  " +
 				"CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN  " +
 				"(SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN  " +
 				"(SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) ELSE  " +
@@ -158,7 +158,8 @@ public class GenericQueries {
 				"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4  AND SUB_ASSAY_TYPE NOT IN ('Microarray','NextGen') %s  GROUP BY oid )  " +
 				      
 				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date, " +
-				"'Microarray' assay_type, '' probe_name, STG_STAGE_DISPLAY stage,  STG_SPECIES species, STG_ALT_STAGE age, " +
+				"'Microarray' assay_type, '' probe_name, STG_STAGE_DISPLAY stage,  STG_SPECIES species, " +
+				"IF(INSTR(STG_ALT_STAGE,'(')>0, SUBSTRING(STG_ALT_STAGE,1,INSTR(STG_ALT_STAGE,'(')-1), STG_ALT_STAGE ) age, " +
 				"SPN_SEX sex, CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE 'NOVALUE' END AS genotype,  " +
 				"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') tissue, '' expression, " +
 				"'' specimen, '' image , '' gene_id " +
@@ -167,8 +168,9 @@ public class GenericQueries {
 				"SPN_SUBMISSION_FK=SUB_OID AND STG_OID = SUB_STAGE_FK AND ATN_PUBLIC_ID = EXP_COMPONENT_ID AND ATN_NODE_FK = ANO_OID AND IST_SUBMISSION_FK=SUB_OID %s ) " +
 				
 				"union (SELECT DISTINCT SUB_OID oid, '' gene, SUB_ACCESSION_ID gudmap_accession, SUB_SOURCE source, DATE_FORMAT(SUB_SUB_DATE,'%%e %%b %%Y') submission_date,  " +
-				"'Sequence' assay_type, '' probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) age, " +
-				"NGS_SEX sex,  " +
+/*				"'Sequence' assay_type, '' probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) age, " +
+*/				"'Sequence' assay_type, '' probe_name, STG_STAGE_DISPLAY stage, STG_SPECIES species, " +
+				"IF(INSTR(STG_ALT_STAGE,'(')>0, SUBSTRING(STG_ALT_STAGE,1,INSTR(STG_ALT_STAGE,'(')-1), STG_ALT_STAGE ) age, NGS_SEX sex,  " +
 				"CASE NGS_GENOTYPE WHEN 'true' THEN 'wild type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME)  " +
 				"FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME)  " +
 				"FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) ELSE  " +

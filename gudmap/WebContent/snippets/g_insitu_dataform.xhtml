@@ -66,25 +66,49 @@
     		<h:column rendered="#{paramBean.assaytypecol == true}">
     			<f:facet name="header">
     			Assay Type <br />
-    				#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_ASSAY_TYPE")}    				
+    				<h:commandLink id="assaytypelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_ASSAY_TYPE')}" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="assay_type" />
+    					<f:ajax execute="@this assaytypelink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>     				
 				</f:facet>
     				#{u.assay_type}
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
     			Specimen Type <br />
-    				#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_SPECIMEN_TYPE")}     				
+    				<h:commandLink id="specimenlink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SPECIMEN_TYPE')}" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="specimen" />
+    					<f:ajax execute="@this specimenlink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
 				</f:facet>
     				#{u.specimen}
+    				
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.speciescol == true}">
+    			<f:facet name="header">
+    			Species <br />
+    				<h:commandLink id="specieslink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_SPECIES')}" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="species" />
+    					<f:ajax execute="@this specieslink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
+				</f:facet>
+    				#{u.species}
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.agecol == true}">
     			<f:facet name="header">
     			Age <br />
-    				#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_AGE")}    				
+    				<h:commandLink id="agelink" value="#{genericTablePageBean.totalslist.get('ASSAY_TYPE_TOTAL_AGE')}" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="natural_sort(age)" />
+    					<f:ajax execute="@this agelink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
 				</f:facet>
     				#{u.age}
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.embryostagecol == true}">

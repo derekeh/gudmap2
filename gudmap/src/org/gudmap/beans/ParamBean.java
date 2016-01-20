@@ -43,6 +43,7 @@ public class ParamBean implements Serializable {
 	private boolean assaytypecol=true;
 	private boolean probenamecol=false;
 	private boolean embryostagecol=true;
+	private boolean speciescol=false;
 	private boolean agecol=true;
 	private boolean sexcol=true;
 	private boolean genotypecol=true;
@@ -298,6 +299,14 @@ public class ParamBean implements Serializable {
 		return embryostagecol;
 	}
 	
+	public void setSpeciescol(boolean speciescol){
+		this.speciescol=speciescol;
+	}
+	
+	public boolean getSpeciescol(){
+		return speciescol;
+	}
+	
 	public void setAgecol(boolean agecol){
 		this.agecol=agecol;
 	}
@@ -407,6 +416,7 @@ public class ParamBean implements Serializable {
 		assaytypecol=resultmap.containsKey("assaytype");
 		probenamecol=resultmap.containsKey("probename");
 		embryostagecol=resultmap.containsKey("embryostage");
+		speciescol=resultmap.containsKey("species");
 		agecol=resultmap.containsKey("age");
 		sexcol=resultmap.containsKey("sex");
 		genotypecol=resultmap.containsKey("genotype");
@@ -432,6 +442,7 @@ public class ParamBean implements Serializable {
 		//insitucolmap.put("Images", "images");
 		insitucolmap.put("Assay Type", "assaytype");
 		insitucolmap.put("Specimen Type", "specimentype");
+		insitucolmap.put("Species", "species");
 		insitucolmap.put("Age", "age");
 		insitucolmap.put("Stage", "embryostage");
 		insitucolmap.put("Sex", "sex");
@@ -465,6 +476,7 @@ public class ParamBean implements Serializable {
 		assaytypecol=tgresultmap.containsKey("assaytype");
 		//probenamecol=tgresultmap.containsKey("probename");
 		embryostagecol=tgresultmap.containsKey("embryostage");
+		speciescol=tgresultmap.containsKey("species");
 		agecol=tgresultmap.containsKey("age");
 		sexcol=tgresultmap.containsKey("sex");
 		genotypecol=tgresultmap.containsKey("genotype");
@@ -488,6 +500,7 @@ public class ParamBean implements Serializable {
 		tgcolmap.put("Assay Type", "assaytype");
 		tgcolmap.put("Specimen Type", "specimentype");
 		//tgcolmap.put("Probe Name", "probename");
+		tgcolmap.put("Species", "species");
 		tgcolmap.put("Age", "age");
 		tgcolmap.put("Stage", "embryostage");		
 		tgcolmap.put("Sex", "sex");
@@ -513,6 +526,7 @@ public class ParamBean implements Serializable {
 		oidcol=false;
 		genecol=genestripresultmap.containsKey("gene");
 		synonymcol=genestripresultmap.containsKey("synonym");
+		speciescol=genestripresultmap.containsKey("species");
 		omimcol=genestripresultmap.containsKey("omim");
 		embryostagecol=genestripresultmap.containsKey("stagerange");
 		ishexpressioncol=genestripresultmap.containsKey("expressionprofile");
@@ -532,6 +546,7 @@ public class ParamBean implements Serializable {
 		//insitucolmap.put("Oid", "oid"); //label, value
 		genestripcolmap.put("Gene", "gene");
 		genestripcolmap.put("Synonyms", "synonym");
+		genestripcolmap.put("Species", "species");
 		genestripcolmap.put("In situ Expression", "expressionprofile");
 		genestripcolmap.put("Images", "images");
 		genestripcolmap.put("Microarray Profile", "microarrayprofile");

@@ -51,7 +51,7 @@
     			<f:facet name="header">
     			<h:commandLink id="accessionlink" value="Assay Detail" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="natural_sort(x.oid)" />
-    					<f:ajax execute="@this accessionlink" render="@form"></f:ajax>
+    					<f:ajax execute="@this accessionlink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
 				<h:panelGrid columns="3">
@@ -72,7 +72,7 @@
     			<f:facet name="header">
     				<h:commandLink id="assaylink" value="Assay Type" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.assay_type" />
-    					<f:ajax execute="@this assaylink" render="@form"></f:ajax>
+    					<f:ajax execute="@this assaylink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> 
 				</f:facet>
     				#{u.assay_type}
@@ -80,14 +80,31 @@
     		
     		<h:column rendered="#{paramBean.specimentypecol == true}">
     			<f:facet name="header">
-    				Specimen Type
+    				<h:commandLink id="specimenlink" value="Specimen Type" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.specimen" />
+    					<f:ajax execute="@this specimenlink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink> 
 				</f:facet>
     				#{u.specimen}
     		</h:column>
     		
+    		<h:column rendered="#{paramBean.speciescol == true}">
+    			<f:facet name="header">
+    			<h:commandLink id="specieslink" value="Species" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.species" />
+    					<f:ajax execute="@this specieslink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
+				</f:facet>
+    				#{u.species}
+    				
+    		</h:column>
+    		
     		<h:column rendered="#{paramBean.agecol == true}">
     			<f:facet name="header">
-    				Age
+    			<h:commandLink id="agelink" value="Age" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="natural_sort(x.age)" />
+    					<f:ajax execute="@this agelink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
 				</f:facet>
     				#{u.age}
     		</h:column>
@@ -96,7 +113,7 @@
     			<f:facet name="header">
     			<h:commandLink id="stagelink"  value="Stage" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.stage" />
-    					<f:ajax execute="@this stagelink" render="@form"></f:ajax>
+    					<f:ajax execute="@this stagelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink>
 				</f:facet>
 				<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
@@ -108,7 +125,10 @@
     		
     		<h:column rendered="#{paramBean.sexcol == true}">
     			<f:facet name="header">
-    				Sex
+    				<h:commandLink id="sexlink" value="Sex" actionListener="#{genericTablePageBean.sort}">
+    					<f:attribute name="sortField" value="x.sex" />
+    					<f:ajax execute="@this sexlink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>  
 				</f:facet>
     				#{u.sex}
     		</h:column>
@@ -145,7 +165,7 @@
     			<f:facet name="header">
     			<h:commandLink id="sourcelink" value="Source" actionListener="#{genericTablePageBean.sort}">
     					<f:attribute name="sortField" value="x.source" />
-    					<f:ajax execute="@this sourcelink" render="@form"></f:ajax>
+    					<f:ajax execute="@this sourcelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink>
 				</f:facet>
     				#{u.source}

@@ -49,14 +49,20 @@
 	    <ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
 		<h:panelGrid columns="2">
 			<h:form>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="1">
 					<pr:commandButton id="showdialog" value="Column Selection" onclick="PF('dialog1').show();" type="button"></pr:commandButton>
 		<!-- 			<pr:commandButton id="showdialog2" value="Filter Results" onclick="PF('dialog2').show();" type="button"></pr:commandButton> -->
 				</h:panelGrid>
 			</h:form>
 			<h:form id="focusform">
-				<h:outputText value="Gene Query Results" styleClass="db_bold" />
-				<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" styleClass="db_bold" />	
+				<h:panelGroup columns="3">
+					<h:outputText value="Gene Query Results" styleClass="db_bold" />
+					<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" styleClass="db_bold" />
+					<h:panelGroup id="spinner" style="display:none">
+							  		<h:outputText value="&#160;&#160;&#160;&#160;Page Loading " />
+							  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />
+					</h:panelGroup>
+				</h:panelGroup>
 			</h:form>	    
 		</h:panelGrid>
 	    

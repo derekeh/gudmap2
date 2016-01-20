@@ -29,7 +29,10 @@
     		
     		<h:column rendered="#{paramBean.genecol == true}">
     			<f:facet name="header">
-    				Gene 
+    				<h:commandLink id="genelink" value="Gene" actionListener="#{geneStripBean.sort}">
+    					<f:attribute name="sortField" value="gene" />
+    					<f:ajax execute="@this genelink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink> 
     			</f:facet>
      			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
@@ -41,6 +44,17 @@
     				Synonyms
 				</f:facet>
 				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.speciescol == true}">
+    			<f:facet name="header">
+    				<h:commandLink id="specieslink" value="Species" actionListener="#{geneStripBean.sort}">
+    					<f:attribute name="sortField" value="species" />
+    					<f:ajax execute="@this specieslink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
+				</f:facet>
+    				#{u.species}
+    				
     		</h:column>
     		
     		<h:column rendered="#{paramBean.ishexpressioncol == true}">
