@@ -404,31 +404,44 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		for(SolrDocument doc : sdl) { 
 
 			String insituExpression = "";			
-			if (doc.getFieldValue("PRESENT").toString() != "")
+			if (doc.containsKey("PRESENT") && doc.getFieldValue("PRESENT").toString() != "")
 				insituExpression = "present";
-			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
+			else if (doc.containsKey("UNCERTAIN") && doc.getFieldValue("UNCERTAIN").toString() != "")
 				insituExpression = "uncertain";
-			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
+			else if (doc.containsKey("NOT_DETECTED") && doc.getFieldValue("NOT_DETECTED").toString() != "")
 				insituExpression = "not detected";
 			
 			model = new GeneStripModel();
 
 			
 
-			String geneId = doc.getFieldValue("MGI_GENE_ID").toString();		
-			String gene = doc.getFieldValue("GENE").toString();		
-
-			model.setGeneSymbol(gene);
-			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
-			model.setGene_id(geneId);
-			model.setMgiId(geneId);
-			model.setExpressionProfile(assembler.buildExpressionProfile(gene,geneId));
-			model.setMicroarrayProfile(assembler.buildMicroarrayProfile(geneId));
-			model.setImageUrl(assembler.getRepresentativeImage(geneId));
+			if (doc.containsKey("MGI_GENE_ID")){
+				String geneId = doc.getFieldValue("MGI_GENE_ID").toString();		
+				model.setGene_id(geneId);
+				model.setMgiId(geneId);
+				
+				model.setMicroarrayProfile(assembler.buildMicroarrayProfile(geneId));
+				model.setImageUrl(assembler.getRepresentativeImage(geneId));
+				
+				geneIds.add(geneId);
+			}
+			if (doc.containsKey("GENE")){
+				String gene = doc.getFieldValue("GENE").toString();				
+				model.setGeneSymbol(gene);
+			}
+			if (doc.containsKey("SYNONYMS")){
+				String synonyms = doc.getFieldValue("SYNONYMS").toString();	
+				model.setSynonyms(synonyms);
+			}
+			
+			if (doc.containsKey("GENE") && doc.containsKey("MGI_GENE_ID")){
+				String gene = doc.getFieldValue("GENE").toString();		
+				String geneId = doc.getFieldValue("MGI_GENE_ID").toString();		
+				model.setExpressionProfile(assembler.buildExpressionProfile(gene,geneId));
+			}
 
 			list.add(model);
 			
-			geneIds.add(geneId);
 		
 		}
 			

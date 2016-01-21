@@ -206,26 +206,43 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 			SolrDocument doc = sdl.get(i);
 			
 			model = new ArraySeqTableBeanModel();
-			model.setOid(doc.getFieldValue("GUDMAP").toString());
-			model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
-			String gid = doc.getFieldValue("SAMPLE_GEO_ID").toString();
-			model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
-			String stage = doc.getFieldValue("STAGE").toString();
-			model.setStage(stage);
-			model.setStage_order(stage.substring(2));
+			if (doc.containsKey("GUDMAP")){
+				model.setOid(doc.getFieldValue("GUDMAP").toString());
+				model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
+			}
+			if (doc.containsKey("SAMPLE_GEO_ID")){
+				String gid = doc.getFieldValue("SAMPLE_GEO_ID").toString();
+				model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
+			}
+			if (doc.containsKey("STAGE")){
+				String stage = doc.getFieldValue("STAGE").toString();
+				model.setStage(stage);
+				model.setStage_order(stage.substring(2));
+			}
 //arraySeqmodel.setSpecies(result.getString("species"));
-			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
-			model.setSource(doc.getFieldValue("PI_NAME").toString());
-			model.setLibraryStrategy(doc.getFieldValue("LIBRARY_STRATEGY").toString());
-			model.setSubmission_date(doc.getFieldValue("DATE").toString());
-			model.setSex(doc.getFieldValue("SEX").toString());
-			model.setSampleDescription(doc.getFieldValue("SAMPLE_DESCRIPTION").toString());
-			model.setTitle(doc.getFieldValue("SAMPLE_NAME").toString());
-			model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
-			model.setSampleComponents(doc.getFieldValue("COMPONENT").toString());
-			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());				
+			if (doc.containsKey("DEV_STAGE"))
+				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
+			if (doc.containsKey("PI_NAME"))
+				model.setSource(doc.getFieldValue("PI_NAME").toString());
+			if (doc.containsKey("LIBRARY_STRATEGY"))
+				model.setLibraryStrategy(doc.getFieldValue("LIBRARY_STRATEGY").toString());
+			if (doc.containsKey("DATE"))
+				model.setSubmission_date(doc.getFieldValue("DATE").toString());
+			if (doc.containsKey("SEX"))
+				model.setSex(doc.getFieldValue("SEX").toString());
+			if (doc.containsKey("SAMPLE_DESCRIPTION"))
+				model.setSampleDescription(doc.getFieldValue("SAMPLE_DESCRIPTION").toString());
+			if (doc.containsKey("SAMPLE_NAME"))
+				model.setTitle(doc.getFieldValue("SAMPLE_NAME").toString());
+			if (doc.containsKey("SERIES_GEO_ID"))
+				model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
+			if (doc.containsKey("COMPONENT"))
+				model.setSampleComponents(doc.getFieldValue("COMPONENT").toString());
+			if (doc.containsKey("GENOTYPE"))
+				model.setGenotype(doc.getFieldValue("GENOTYPE").toString());				
 //arraySeqmodel.setAssay_type(result.getString("assay_type"));
-			model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
+			if (doc.containsKey("SERIES_GEO_ID"))
+				model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
 			
 			list.add(model);	
 			

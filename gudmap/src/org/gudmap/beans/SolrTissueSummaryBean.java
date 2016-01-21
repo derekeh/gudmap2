@@ -163,38 +163,44 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
 			SolrDocument doc = sdl.get(i);
 
 			model = new TissueSummaryTableBeanModel();
-			String id = doc.getFieldValue("ID").toString();
-	    	String name = doc.getFieldValue("NAME").toString();
-	    	String stages = doc.getFieldValue("STAGES").toString();
-
-	        Map<String,Map<String,List<String>>> highlightMap = qr.getHighlighting();			
-	    	String reason = "";	    	
-	    	if (highlightMap != null){
-		        Set<String> keys = highlightMap.keySet();
-		    	if (keys.contains(id)){            
-		            Set<String> fields = highlightMap.get(id).keySet();
-		            for(String field :fields){
-		                List<String> result = highlightMap.get(id).get(field);
-		            	for(String item : result){
-		            		if (item.contains("<em>") && item.contains("</em>")){
-		            			int start = item.indexOf(">");
-		            			item = item.substring(start);
-		            			int end = item.indexOf("<");
-		            			item = item.substring(1,end);
-		                    	System.out.println("found = "+ item);
-		                    	if (reason.isEmpty())
-		                    		reason += item + " in document " + field + " field";
-		                    	else
-		                    		reason += " & " + item + " in document " + field + " field";
-		            		}
-		            	}            	
-		             }	    	
+			if (doc.containsKey("ID")){
+				String id = doc.getFieldValue("ID").toString();
+	    		model.setOid(id);
+	    		
+		        Map<String,Map<String,List<String>>> highlightMap = qr.getHighlighting();			
+		    	String reason = "";	    	
+		    	if (highlightMap != null){
+			        Set<String> keys = highlightMap.keySet();
+			    	if (keys.contains(id)){            
+			            Set<String> fields = highlightMap.get(id).keySet();
+			            for(String field :fields){
+			                List<String> result = highlightMap.get(id).get(field);
+			            	for(String item : result){
+			            		if (item.contains("<em>") && item.contains("</em>")){
+			            			int start = item.indexOf(">");
+			            			item = item.substring(start);
+			            			int end = item.indexOf("<");
+			            			item = item.substring(1,end);
+			                    	System.out.println("found = "+ item);
+			                    	if (reason.isEmpty())
+			                    		reason += item + " in document " + field + " field";
+			                    	else
+			                    		reason += " & " + item + " in document " + field + " field";
+			            		}
+			            	}            	
+			             }	    	
+			    	}
 		    	}
-	    	}
-	    	model.setOid(id);
-			model.setName(name);
-			model.setStages(stages);
-			model.setReason(reason);
+				model.setReason(reason);
+			}
+			if (doc.containsKey("NAME")){
+				String name = doc.getFieldValue("NAME").toString();
+				model.setName(name);
+			}
+			if (doc.containsKey("STAGES")){
+				String stages = doc.getFieldValue("STAGES").toString();
+				model.setStages(stages);
+			}
 			
 			list.add(model);			
 		}

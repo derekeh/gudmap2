@@ -183,15 +183,24 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 			SolrDocument doc = sdl.get(i);
 
 			model = new MouseStrainsTableBeanModel();
-			model.setOid(doc.getFieldValue("ID").toString());
-			model.setGene(doc.getFieldValue("GENE").toString());
-			model.setReporterAllele(doc.getFieldValue("REPORTER_ALLELE").toString());
-			model.setAlleleType(doc.getFieldValue("ALLELE_TYPE").toString());
-			model.setAlleleVerification(doc.getFieldValue("ALLELE_VER").toString());
-			model.setAlleleCharacterisation(doc.getFieldValue("ALLELE_CHAR").toString());
-			model.setStrainAvailability(doc.getFieldValue("STRAIN_AVA").toString());
-			model.setOrgan(doc.getFieldValue("ORGAN").toString());
-			model.setCellType(doc.getFieldValue("CELL_TYPE").toString());
+			if (doc.containsKey("ID"))
+				model.setOid(doc.getFieldValue("ID").toString());
+			if (doc.containsKey("GENE"))
+				model.setGene(doc.getFieldValue("GENE").toString());
+			if (doc.containsKey("REPORTER_ALLELE"))
+				model.setReporterAllele(doc.getFieldValue("REPORTER_ALLELE").toString());
+			if (doc.containsKey("ALLELE_TYPE"))
+				model.setAlleleType(doc.getFieldValue("ALLELE_TYPE").toString());
+			if (doc.containsKey("ALLELE_VER"))
+				model.setAlleleVerification(doc.getFieldValue("ALLELE_VER").toString());
+			if (doc.containsKey("ALLELE_CHAR"))
+				model.setAlleleCharacterisation(doc.getFieldValue("ALLELE_CHAR").toString());
+			if (doc.containsKey("STRAIN_AVA"))
+				model.setStrainAvailability(doc.getFieldValue("STRAIN_AVA").toString());
+			if (doc.containsKey("ORGAN"))
+				model.setOrgan(doc.getFieldValue("ORGAN").toString());
+			if (doc.containsKey("CELL_TYPE"))
+				model.setCellType(doc.getFieldValue("CELL_TYPE").toString());
 			
 			list.add(model);			
 		}

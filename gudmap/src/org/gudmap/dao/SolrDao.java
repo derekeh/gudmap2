@@ -45,25 +45,26 @@ public class SolrDao {
 				doc.addField("GENE_NAME", result.getString(2)); 
 				doc.addField("MGI_GENE_ID", result.getString(3)); 
 				doc.addField("MGI", result.getString(4)); 
-				doc.addField("ENSEMBL_ID", result.getString(15)); 
-				doc.addField("SYNONYMS", result.getString(16)); 
-				doc.addField("PROBESETS", result.getString(17)); 
-				doc.addField("ENTREZ_ID", result.getString(18)); 
-				doc.addField("GENBANK_ID", result.getString(19)); 
-				doc.addField("INSITU_ASSAY", result.getString(10)); 
-				doc.addField("MA_ASSAY", result.getString(11)); 
-				doc.addField("GUDMAP", result.getString(12)); 
-				doc.addField("GUDMAP_IDS", result.getString(13)); 
-				doc.addField("PRESENT", result.getString(14)); 
-				doc.addField("DIR_PRESENT", result.getString(15)); 
-				doc.addField("NOT_DETECTED", result.getString(16)); 
-				doc.addField("UNCERTAIN", result.getString(17)); 
-				doc.addField("EMAPS", result.getString(18)); 
-				doc.addField("SOURCE", result.getString(19)); 
-				doc.addField("PI_NAME", result.getString(20)); 
-				doc.addField("LAB", result.getString(21)); 
-				doc.addField("ANCHOR", result.getString(22)); 
-				doc.addField("MARKER", result.getString(23)); 
+				doc.addField("ENSEMBL_ID", result.getString(5)); 
+				doc.addField("SYNONYMS", result.getString(6)); 
+				doc.addField("GENE_ID", result.getString(7)); 
+				doc.addField("PROBESETS", result.getString(8)); 
+				doc.addField("ENTREZ_ID", result.getString(9)); 
+				doc.addField("GENBANK_ID", result.getString(10)); 
+				doc.addField("INSITU_ASSAY", result.getString(11)); 
+				doc.addField("MA_ASSAY", result.getString(12)); 
+				doc.addField("GUDMAP", result.getString(13)); 
+				doc.addField("GUDMAP_IDS", result.getString(14)); 
+				doc.addField("PRESENT", result.getString(15)); 
+				doc.addField("DIR_PRESENT", result.getString(16)); 
+				doc.addField("NOT_DETECTED", result.getString(17)); 
+				doc.addField("UNCERTAIN", result.getString(18)); 
+				doc.addField("EMAPS", result.getString(19)); 
+				doc.addField("SOURCE", result.getString(20)); 
+				doc.addField("PI_NAME", result.getString(21)); 
+				doc.addField("LAB", result.getString(22)); 
+				doc.addField("ANCHOR", result.getString(23)); 
+				doc.addField("MARKER", result.getString(24)); 
 				
 				docs.add(doc);
 			}
@@ -103,7 +104,7 @@ public class SolrDao {
 				doc.addField("TOT_GENES", result.getString(9)); 	
 				doc.addField("AUTHOR", result.getString(10)); 
 				doc.addField("DATE", result.getString(11)); 
-				doc.addField("THEILER_STAGE", result.getString(12)); 
+				doc.addField("STAGE", result.getString(12)); 
 				doc.addField("SEX", result.getString(13)); 
 				doc.addField("GENELIST_TYPE", result.getString(14)); 
 				doc.addField("ENTITIES", result.getString(15)); 
@@ -141,7 +142,7 @@ public class SolrDao {
 			// add field maps the query result to the solr index schema
 			while (result.next()) {
 				doc = new SolrInputDocument();
-//				doc.addField("id", result.getString(1)); 
+				doc.addField("id", result.getString(2)); 
 				doc.addField("GUDMAP", result.getString(1)); 
 				doc.addField("GUDMAP_ID", result.getString(2)); 
 				doc.addField("GENE", result.getString(3)); 
@@ -190,17 +191,20 @@ public class SolrDao {
 				doc.addField("ALLELE_MGI_ID", result.getString(46)); 
 				doc.addField("ALLELE_NAME", result.getString(47)); 	
 				doc.addField("ALLELE_TYPE", result.getString(48)); 					
-				doc.addField("PRESENT", result.getString(49)); 
-				doc.addField("DIR_PRESENT", result.getString(50)); 
-				doc.addField("INF_PRESENT", result.getString(51)); 
-				doc.addField("NOT_DETECTED", result.getString(52)); 
-				doc.addField("INF_NOT_DETECTED", result.getString(53)); 
-				doc.addField("UNCERTAIN", result.getString(54)); 
-				doc.addField("EMAPS", result.getString(55)); 
-				doc.addField("EXP_NOTES", result.getString(56)); 	
-				doc.addField("EXPRESSION_NOTES", result.getString(57)); 	
-				doc.addField("ANNOTATION", result.getString(58)); 				
-				doc.addField("TISSUE_TYPE", result.getString(59)); 
+				doc.addField("TISSUE", result.getString(49)); 					
+				doc.addField("TISSUE_EMAPS", result.getString(50)); 					
+				doc.addField("TISSUE_EMAPS_ID", result.getString(51)); 					
+				doc.addField("PRESENT", result.getString(52)); 
+				doc.addField("DIR_PRESENT", result.getString(53)); 
+				doc.addField("INF_PRESENT", result.getString(54)); 
+				doc.addField("NOT_DETECTED", result.getString(55)); 
+				doc.addField("INF_NOT_DETECTED", result.getString(56)); 
+				doc.addField("UNCERTAIN", result.getString(57)); 
+				doc.addField("EMAPS", result.getString(58)); 
+				doc.addField("EXP_NOTES", result.getString(59)); 	
+				doc.addField("EXPRESSION_NOTES", result.getString(60)); 	
+				doc.addField("ANNOTATION", result.getString(61)); 				
+				doc.addField("TISSUE_TYPE", result.getString(62)); 
  	
 				
 				docs.add(doc);
@@ -305,8 +309,8 @@ public class SolrDao {
 //				doc.addField("id", result.getString(1)); 
 				doc.addField("GUDMAP", result.getString(1)); 
 				doc.addField("SAMPLE_GEO_ID", result.getString(2)); 
-				doc.addField("THEILER_STAGE", result.getString(3)); 
-				doc.addField("STAGE", result.getString(4)); 
+				doc.addField("STAGE", result.getString(3)); 
+				doc.addField("DEV_STAGE", result.getString(4)); 
 				doc.addField("SOURCE", result.getString(5)); 
 				doc.addField("PI_NAME", result.getString(6)); 
 				doc.addField("DATE", result.getString(7)); 
@@ -356,19 +360,19 @@ public class SolrDao {
 				doc.addField("PLATFORM_GEO_ID", result.getString(6)); 	
 				doc.addField("SERIES_OID", result.getString(7)); 				
 				doc.addField("COMPONENT", result.getString(8)); 	
-				doc.addField("GENE", result.getString(9)); 				
-				doc.addField("EMAP", result.getString(10)); 	
-				doc.addField("MGI", result.getString(11)); 				
-				doc.addField("PRESENT", result.getString(12)); 	
-				doc.addField("NOT_DETECTED", result.getString(13)); 				
-				doc.addField("UNCERTAIN", result.getString(14)); 	
-				doc.addField("FOCUS_GROUPS", result.getString(15)); 				
-				doc.addField("SEX", result.getString(16)); 	
-				doc.addField("LAB", result.getString(17)); 				
-				doc.addField("maprobe", result.getString(18)); 	
-				doc.addField("GUDMAP", result.getString(19)); 				
-				doc.addField("THEILER_STAGE", result.getString(20)); 	
-				doc.addField("AUTHORS", result.getString(21)); 				
+//				doc.addField("GENE", result.getString(9)); 				
+//				doc.addField("EMAP", result.getString(10)); 	
+//				doc.addField("MGI", result.getString(11)); 				
+//				doc.addField("PRESENT", result.getString(12)); 	
+//				doc.addField("NOT_DETECTED", result.getString(13)); 				
+//				doc.addField("UNCERTAIN", result.getString(14)); 	
+//				doc.addField("FOCUS_GROUPS", result.getString(15)); 				
+//				doc.addField("SEX", result.getString(16)); 	
+//				doc.addField("LAB", result.getString(17)); 				
+//				doc.addField("maprobe", result.getString(18)); 	
+//				doc.addField("GUDMAP", result.getString(19)); 				
+//				doc.addField("THEILER_STAGE", result.getString(20)); 	
+//				doc.addField("AUTHORS", result.getString(21)); 				
 				
 				docs.add(doc);
 			}
@@ -418,7 +422,7 @@ public class SolrDao {
 				doc.addField("PROBE_IDS", result.getString(19)); 				
 				doc.addField("MA_PROBES_ID", result.getString(20)); 				
 				doc.addField("maprobe", result.getString(21)); 				
-				doc.addField("THEILER_STAGE", result.getString(22)); 				
+				doc.addField("STAGE", result.getString(22)); 				
 				
 				docs.add(doc);
 			}
@@ -624,7 +628,7 @@ public class SolrDao {
 				doc.addField("LIBRARY_STRATEGY", result.getString(5)); 
 				doc.addField("STAGE", result.getString(6)); 
 				doc.addField("PI_NAME", result.getString(7)); 
-				doc.addField("AGE", result.getString(8)); 
+				doc.addField("DEV_STAGE", result.getString(8)); 
 				doc.addField("DATE", result.getString(9)); 
 				doc.addField("SEX", result.getString(10)); 
 				doc.addField("SAMPLE_DESCRIPTION", result.getString(11)); 

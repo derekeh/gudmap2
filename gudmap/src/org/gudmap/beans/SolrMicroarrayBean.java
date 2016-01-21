@@ -205,19 +205,32 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 			}
 			else{
 				model = new ArraySeqTableBeanModel();
-				model.setOid(doc.getFieldValue("GUDMAP").toString());
-				model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
-				model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
-				model.setStage(doc.getFieldValue("STAGE").toString());
-				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
-				model.setSource(doc.getFieldValue("PI_NAME").toString());
-				model.setSubmission_date(doc.getFieldValue("DATE").toString());
-				model.setSex(doc.getFieldValue("SEX").toString());
-				model.setSampleDescription(doc.getFieldValue("DESCRIPTION").toString());
-				model.setTitle(doc.getFieldValue("TITLE").toString());
-//				model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
-				model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
-				model.setSampleComponents(doc.getFieldValue("COMPONENT").toString());
+				if (doc.containsKey("GUDMAP")){
+					model.setOid(doc.getFieldValue("GUDMAP").toString());
+					model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
+				}
+				if (doc.containsKey("SAMPLE_GEO_ID"))
+					model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
+				if (doc.containsKey("STAGE"))
+					model.setStage(doc.getFieldValue("STAGE").toString());
+				if (doc.containsKey("DEV_STAGE"))
+					model.setAge(doc.getFieldValue("DEV_STAGE").toString());
+				if (doc.containsKey("PI_NAME"))
+					model.setSource(doc.getFieldValue("PI_NAME").toString());
+				if (doc.containsKey("DATE"))
+					model.setSubmission_date(doc.getFieldValue("DATE").toString());
+				if (doc.containsKey("SEX"))
+					model.setSex(doc.getFieldValue("SEX").toString());
+				if (doc.containsKey("DESCRIPTION"))
+					model.setSampleDescription(doc.getFieldValue("DESCRIPTION").toString());
+				if (doc.containsKey("TITLE"))
+					model.setTitle(doc.getFieldValue("TITLE").toString());
+//				if (doc.containsKey("GENOTYPE"))
+//					model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
+				if (doc.containsKey("SERIES_GEO_ID"))
+					model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
+				if (doc.containsKey("COMPONENT"))
+					model.setSampleComponents(doc.getFieldValue("COMPONENT").toString());
 				
 				list.add(model);	
 				

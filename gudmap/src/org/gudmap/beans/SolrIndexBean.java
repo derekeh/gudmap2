@@ -63,8 +63,8 @@ public class SolrIndexBean implements Serializable {
 		server = solrUtil.getInsituServer();
 		assembler.updateInsituIndex(server);
 
-//		server = solrUtil.getMicroarrayServer();
-//		assembler.updateMicroarrayIndex(server);
+		server = solrUtil.getMicroarrayServer();
+		assembler.updateMicroarrayIndex(server);
 
 		server = solrUtil.getSamplesServer();
 		assembler.updateSamplesIndex(server);
@@ -101,8 +101,8 @@ public class SolrIndexBean implements Serializable {
 
 	public String indexMicroarray(){
 		
-//		HttpSolrClient server = solrUtil.getMicroarrayServer();
-//		assembler.updateMicroarrayIndex(server);
+		HttpSolrClient server = solrUtil.getMicroarrayServer();
+		assembler.updateMicroarrayIndex(server);
 		
 //		server = solrUtil.getSamplesServer();
 //		assembler.updateSamplesIndex(server);
@@ -110,6 +110,18 @@ public class SolrIndexBean implements Serializable {
 //		server = solrUtil.getSeriesServer();
 //		assembler.updateSeriesIndex(server);
 		
+		return null;		
+	}
+
+	public String indexSamples(){
+		
+		HttpSolrClient server = solrUtil.getSamplesServer();
+		assembler.updateSamplesIndex(server);
+		return null;		
+	}
+	public String indexSeries(){
+		HttpSolrClient server = solrUtil.getSeriesServer();
+		assembler.updateSeriesIndex(server);
 		return null;		
 	}
 
@@ -123,7 +135,7 @@ public class SolrIndexBean implements Serializable {
 	public String indexTissues(){
 		
 		HttpSolrClient server = solrUtil.getTissuesServer();
-		assembler.updateGenelistsIndex(server);
+		assembler.updateTissueIndex(server);
 		return null;		
 	}
 

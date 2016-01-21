@@ -209,14 +209,23 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 
 			
 			model = new ImageDetailModel();
-			model.setAccessionId(doc.getFieldValue("GUDMAP_ID").toString());
-			model.setGeneSymbol(doc.getFieldValue("GENE").toString());
-			model.setSpecimenType(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
-			model.setStage(doc.getFieldValue("STAGE").toString());
-			String image_path = doc.getFieldValue("THUMBNAIL_PATH").toString();
-			model.setFilePath(image_path.replace("thumbnails", "medium"));
+			if (doc.containsKey("GUDMAP_ID"))
+				model.setAccessionId(doc.getFieldValue("GUDMAP_ID").toString());
+			if (doc.containsKey("GENE"))
+				model.setGeneSymbol(doc.getFieldValue("GENE").toString());
+			if (doc.containsKey("SPECIMEN_ASSAY_TYPE"))
+				model.setSpecimenType(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
+			if (doc.containsKey("STAGE"))
+				model.setStage(doc.getFieldValue("STAGE").toString());
+			if (doc.containsKey("THUMBNAIL_PATH")){
+				String image_path = doc.getFieldValue("THUMBNAIL_PATH").toString();
+				model.setFilePath(image_path.replace("thumbnails", "medium"));
+			}
+			if (doc.containsKey("IMAGE_CLICK_PATH"))
 			model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
+			if (doc.containsKey("ASSAY_TYPE"))
 			model.setAssayType(doc.getFieldValue("ASSAY_TYPE").toString());
+			if (doc.containsKey("MGI_GENE_ID"))
 			model.setMgiGeneId(doc.getFieldValue("MGI_GENE_ID").toString());
 			
 			list.add(model);			

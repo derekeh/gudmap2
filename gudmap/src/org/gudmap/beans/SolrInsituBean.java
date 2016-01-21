@@ -216,39 +216,50 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 			SolrDocument doc = sdl.get(i);
 
 			String insituExpression = "";			
-			if (doc.getFieldValue("PRESENT").toString() != "")
+			if (doc.containsKey("PRESENT")  && doc.getFieldValue("PRESENT").toString() != "")
 				insituExpression = "present";
-			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
+			else if (doc.containsKey("UNCERTAIN")  && doc.getFieldValue("UNCERTAIN").toString() != "")
 				insituExpression = "uncertain";
-			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
+			else if (doc.containsKey("NOT_DETECTED")  && doc.getFieldValue("NOT_DETECTED").toString() != "")
 				insituExpression = "not detected";
 			
 			model = new InsituTableBeanModel();
-			model.setOid(doc.getFieldValue("GUDMAP").toString());
-			model.setGene(doc.getFieldValue("GENE").toString());
-			model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
-			model.setSource(doc.getFieldValue("SOURCE").toString());
-			model.setSubmission_date(doc.getFieldValue("DATE").toString());
-			model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
-			model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
-			model.setStage(doc.getFieldValue("STAGE").toString());
-			model.setAge(doc.getFieldValue("DEV_STAGE").toString());
-			model.setSex(doc.getFieldValue("SEX").toString());
-			model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
-			model.setTissue(doc.getFieldValue("TISSUE_TYPE").toString());
-			model.setExpression(insituExpression);
-			model.setSpecimen(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
-			model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
-			model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
-			model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
-
-			String tissue = doc.getFieldValue("TISSUE_TYPE").toString();
-			if (tissue == "" || tissue.isEmpty())
-				model.setTissue(tissue);
-			else
+			if (doc.containsKey("GUDMAP"))
+				model.setOid(doc.getFieldValue("GUDMAP").toString());
+			if (doc.containsKey("GENE"))
+				model.setGene(doc.getFieldValue("GENE").toString());
+			if (doc.containsKey("SOURCE"))
+				model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
+			if (doc.containsKey("GUDMAP_ID"))
+				model.setSource(doc.getFieldValue("SOURCE").toString());
+			if (doc.containsKey("DATE"))
+				model.setSubmission_date(doc.getFieldValue("DATE").toString());
+			if (doc.containsKey("ASSAY_TYPE"))
+				model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
+			if (doc.containsKey("PROBE_NAME"))
+				model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
+			if (doc.containsKey("STAGE"))
+				model.setStage(doc.getFieldValue("STAGE").toString());
+			if (doc.containsKey("DEV_STAGE"))
+				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
+			if (doc.containsKey("SEX"))
+				model.setSex(doc.getFieldValue("SEX").toString());
+			if (doc.containsKey("GENOTYPE"))
+				model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
+			if (doc.containsKey("SPECIMEN_ASSAY_TYPE"))
+				model.setSpecimen(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
+			if (doc.containsKey("IMAGE_PATH"))
+				model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
+			if (doc.containsKey("MGI_GENE_ID"))
+				model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
+			if (doc.containsKey("SYNONYMS"))
+				model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
+			if (doc.containsKey("TISSUE_TYPE")){
+				String tissue = doc.getFieldValue("TISSUE_TYPE").toString();
 				model.setTissue(TissueFilter(tissue));
-			
-			
+			}			
+			model.setExpression(insituExpression);
+
 			list.add(model);			
 		}
 			
