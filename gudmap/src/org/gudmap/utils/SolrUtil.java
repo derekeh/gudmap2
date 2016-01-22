@@ -1482,6 +1482,7 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
       
+	      	parameters.addField("GUDMAP_ID");
 	      	parameters.addField("GUDMAP");
         	parameters.addField("SAMPLE_GEO_ID");
         	parameters.addField("STAGE");

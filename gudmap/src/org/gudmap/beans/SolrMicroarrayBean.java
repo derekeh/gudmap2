@@ -91,8 +91,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-        totalRows = solrTreeBean.getSolrUtil().getMicroarrayFilteredCount(solrInput, filters);
-//        totalRows = solrTreeBean.getSolrUtil().getSamplesFilteredCount(solrInput, filters);
+//        totalRows = solrTreeBean.getSolrUtil().getMicroarrayFilteredCount(solrInput, filters);
+        totalRows = solrTreeBean.getSolrUtil().getSamplesFilteredCount(solrInput, filters);
     	
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
         // Set currentPage, totalPages and pages.
@@ -181,9 +181,10 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 
-		List<String> ids = solrTreeBean.getSolrUtil().getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
-//		List<String> ids = solrTreeBean.getSolrUtil().getSamplesData(solrInput,filterlist,sortColumn,ascending,offset,num);
-		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMicroarrayViewData(ids,sortColumn,ascending,offset,num);
+//		List<String> ids = solrTreeBean.getSolrUtil().getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
+		List<String> ids = solrTreeBean.getSolrUtil().getSamplesData(solrInput,filterlist,sortColumn,ascending,offset,num);
+//		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMicroarrayViewData(ids,sortColumn,ascending,offset,num);
+		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getSamplesViewData(ids,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
 
 		return list;
@@ -205,10 +206,10 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 			}
 			else{
 				model = new ArraySeqTableBeanModel();
-				if (doc.containsKey("GUDMAP")){
+				if (doc.containsKey("GUDMAP"))
 					model.setOid(doc.getFieldValue("GUDMAP").toString());
-					model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
-				}
+				if (doc.containsKey("GUDMAP_ID"))
+					model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
 				if (doc.containsKey("SAMPLE_GEO_ID"))
 					model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
 				if (doc.containsKey("STAGE"))

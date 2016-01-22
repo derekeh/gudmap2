@@ -307,23 +307,24 @@ public class SolrDao {
 			while (result.next()) {
 				doc = new SolrInputDocument();
 //				doc.addField("id", result.getString(1)); 
-				doc.addField("GUDMAP", result.getString(1)); 
-				doc.addField("SAMPLE_GEO_ID", result.getString(2)); 
-				doc.addField("STAGE", result.getString(3)); 
-				doc.addField("DEV_STAGE", result.getString(4)); 
-				doc.addField("SOURCE", result.getString(5)); 
-				doc.addField("PI_NAME", result.getString(6)); 
-				doc.addField("DATE", result.getString(7)); 
-				doc.addField("SEX", result.getString(8)); 
-				doc.addField("DESCRIPTION", result.getString(9)); 
-				doc.addField("TITLE", result.getString(10)); 
-				doc.addField("SERIES_GEO_ID", result.getString(11)); 
-				doc.addField("COMPONENT", result.getString(12)); 
-				doc.addField("QMC_ALE_GENE", result.getString(13)); 
-				doc.addField("ASSAY_TYPE", result.getString(14)); 
-				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(15)); 
-				doc.addField("PER_OID", result.getString(16)); 
-				doc.addField("PLATFORM_GEO_ID", result.getString(17)); 
+				doc.addField("GUDMAP_ID", result.getString(1)); 
+				doc.addField("GUDMAP", result.getString(2)); 
+				doc.addField("SAMPLE_GEO_ID", result.getString(3)); 
+				doc.addField("STAGE", result.getString(4)); 
+				doc.addField("DEV_STAGE", result.getString(5)); 
+				doc.addField("SOURCE", result.getString(6)); 
+				doc.addField("PI_NAME", result.getString(7)); 
+				doc.addField("DATE", result.getString(8)); 
+				doc.addField("SEX", result.getString(9)); 
+				doc.addField("DESCRIPTION", result.getString(10)); 
+				doc.addField("TITLE", result.getString(11)); 
+				doc.addField("SERIES_GEO_ID", result.getString(12)); 
+				doc.addField("COMPONENT", result.getString(13)); 
+				doc.addField("QMC_ALE_GENE", result.getString(14)); 
+				doc.addField("ASSAY_TYPE", result.getString(15)); 
+				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(16)); 
+				doc.addField("PER_OID", result.getString(17)); 
+				doc.addField("PLATFORM_GEO_ID", result.getString(18)); 
 				
 				docs.add(doc);
 			}
