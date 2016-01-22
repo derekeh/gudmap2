@@ -283,7 +283,7 @@ public class GeneStripDao {
 			return null;*/
 	}
 	
-	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String geneId) {
+	/*public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String geneId) {
 		// added by xingjun - 08/05/2009 - its possible values is null
 		if (values == null || values.length == 0) {
 			return "";
@@ -313,6 +313,35 @@ public class GeneStripDao {
     	// javascript function
     	code += "prepareGraph(geneSymbol,val,browseLink,focusGroups); </script>";
     	return code;
+	}*/
+	
+	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String geneId) {
+		if (values == null || values.length == 0) {
+			return "";
+		}
+		String url = "browseGeneListTablePage.jsf?expressionGene=" + symbol + "&amp;focusGroup=";
+		String focusGroup="";
+		String imageSource="";
+		String xprcode = "<table class='db_expression_table'><tr>";
+		for(int i=0;i<focusGroups.length;i++) {
+			xprcode+="<td>";
+			focusGroup=Globals.focusGroups[Integer.parseInt(focusGroups[i])];
+			if(values[i]==0){
+				imageSource="<a href='"+url+focusGroups[i]+"'><img class='db_expression_image' src='/gudmap/resources/images/expression_images/questionmark.png' height='24'  title='"+focusGroup+" [Expression Not Examined]'></a>";
+			}
+			else if (values[i]>0){
+				imageSource="<a href='"+url+focusGroups[i]+"'><img class='db_expression_image' src='/gudmap/resources/images/expression_images/checkmark_"+(i+1)+".png' height='24'  title='"+focusGroup+" [Expression Present]'></a>";
+			}
+			else{
+				imageSource="<a href='"+url+focusGroups[i]+"'><img class='db_expression_image' src='/gudmap/resources/images/expression_images/cancel_"+(i+1)+".png' height='24'  title='"+focusGroup+" [Expression Not Detected]'></a>";
+			}
+			
+			
+			xprcode+=imageSource+"</td>";
+		}
+		xprcode+="</tr></table>";
+		
+    	return xprcode;
 	}
 	
 	private double[] getInsituExprofile(String geneId) {
