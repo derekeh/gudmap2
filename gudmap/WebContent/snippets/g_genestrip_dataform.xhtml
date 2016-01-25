@@ -60,10 +60,7 @@
     		<h:column rendered="#{paramBean.ishexpressioncol == true}">
     			<f:facet name="header">
     				In situ Expression
-    				<ui:remove>
-	    				<div id="chartTableHeaders" style='text-align:center'></div>
-	    				<script type='text/javascript'>prepareGraphTableHeaders(1, 2, "ASC");</script>
-    				</ui:remove>
+    				
 				</f:facet>
 				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
     		</h:column>

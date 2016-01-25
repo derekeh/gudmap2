@@ -146,6 +146,7 @@ public class GeneStripDao {
 						species = (result.getString("species"));
 						createJSONFile(geneId);
 						geneStripModel.setExpressionProfile(buildExpressionProfile(gene,geneId));
+						//geneStripModel.setExpressionProfile("Hello");
 						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
 						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
@@ -320,6 +321,7 @@ public class GeneStripDao {
 			return "";
 		}
 		String url = "browseGeneListTablePage.jsf?expressionGene=" + symbol + "&amp;focusGroup=";
+		//String url = "browseGeneListTablePage.jsf?expressionGene=" + geneId + "&amp;focusGroup=";
 		String focusGroup="";
 		String imageSource="";
 		String xprcode = "<table class='db_expression_table'><tr>";
@@ -327,7 +329,7 @@ public class GeneStripDao {
 			xprcode+="<td>";
 			focusGroup=Globals.focusGroups[Integer.parseInt(focusGroups[i])];
 			if(values[i]==0){
-				imageSource="<a href='"+url+focusGroups[i]+"'><img class='db_expression_image' src='/gudmap/resources/images/expression_images/questionmark.png' height='24'  title='"+focusGroup+" [Expression Not Examined]'></a>";
+				imageSource="<img class='db_expression_image' src='/gudmap/resources/images/expression_images/questionmark.png' height='24'  title='"+focusGroup+" [Expression Not Examined]'>";
 			}
 			else if (values[i]>0){
 				imageSource="<a href='"+url+focusGroups[i]+"'><img class='db_expression_image' src='/gudmap/resources/images/expression_images/checkmark_"+(i+1)+".png' height='24'  title='"+focusGroup+" [Expression Present]'></a>";
@@ -837,7 +839,8 @@ public class GeneStripDao {
 		  }
 		  
 		  ArrayList<String[]> relatedSubmissionsList=null;
-		  String queryString = GeneStripQueries.GENE_RELATED_SUBMISSIONS_ISH;
+		  //String queryString = GeneStripQueries.GENE_RELATED_SUBMISSIONS_ISH;
+		String queryString = GeneStripQueries.GENESTRIP_RELATED_SUBMISSIONS;
 		  try
 			{
 			  repeatCon = ds.getConnection();

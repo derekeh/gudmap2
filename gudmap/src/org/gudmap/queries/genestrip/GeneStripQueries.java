@@ -62,7 +62,7 @@ public class GeneStripQueries {
 	                                "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
 	                                "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
 	                                "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
-	                                "JOIN REF_STAGE " +
+	                                "JOIN REF_STAGE ON STG_OID = SUB_STAGE_FK  " +
 	                                "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
 	                                "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
 	                                "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -82,6 +82,16 @@ public class GeneStripQueries {
 			  		"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID WHERE RPR_SYMBOL = ? " +
 			  		"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND " +
 			  		"(SUB_ASSAY_TYPE = 'ISH' || SUB_ASSAY_TYPE = 'IHC' || SUB_ASSAY_TYPE = 'TG') ORDER BY natural_sort(SUB_ACCESSION_ID)";
+	  
+	  //THIS REPLACES GENE_RELATED_SUBMISSIONS_ISH WHICH BRINGS BACK UNNECCESSARY DATA FOR THE GENESTRIP
+	  public static String GENESTRIP_RELATED_SUBMISSIONS = "SELECT DISTINCT SUB_ACCESSION_ID, 'viewSubmissionDetails.jsf', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE " +
+			    "FROM ISH_SUBMISSION JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " +
+		  		"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
+			    "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
+	            "JOIN REF_STAGE ON STG_OID = SUB_STAGE_FK  " +
+			    "WHERE RPR_LOCUS_TAG = ? " +
+		  		"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND " +
+		  		"(SUB_ASSAY_TYPE = 'ISH' || SUB_ASSAY_TYPE = 'IHC' || SUB_ASSAY_TYPE = 'TG') ORDER BY natural_sort(SUB_ACCESSION_ID)";
 	  
 	  //ALL PARAMETERS ARE THE SAME GENE SYMBOL
 	  /*public static String GENESTRIP_ROW_MINUS_PROFILES = "SELECT ? gene,  " +
