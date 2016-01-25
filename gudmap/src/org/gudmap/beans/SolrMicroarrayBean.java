@@ -212,8 +212,11 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 					model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
 				if (doc.containsKey("SAMPLE_GEO_ID"))
 					model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
-				if (doc.containsKey("STAGE"))
-					model.setStage(doc.getFieldValue("STAGE").toString());
+				if (doc.containsKey("STAGE")){
+					String stage = doc.getFieldValue("STAGE").toString();
+					model.setStage(stage);
+					model.setStage_order(stage.replace("TS", ""));
+				}
 				if (doc.containsKey("DEV_STAGE"))
 					model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 				if (doc.containsKey("PI_NAME"))
@@ -232,6 +235,10 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 					model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
 				if (doc.containsKey("COMPONENT"))
 					model.setSampleComponents(doc.getFieldValue("COMPONENT").toString());
+				if (doc.containsKey("SPECIES"))
+					model.setSpecies(doc.getFieldValue("SPECIES").toString());
+				if (doc.containsKey("GENOTYPE"))
+					model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
 				
 				list.add(model);	
 				

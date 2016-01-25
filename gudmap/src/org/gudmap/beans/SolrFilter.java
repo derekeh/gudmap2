@@ -33,6 +33,7 @@ public class SolrFilter implements Serializable {
 	private String geneValue;
 	private Date fromDateValue;
 	private Date toDateValue;
+	private ArrayList<String> speciesValues;
 	private ArrayList<String> sexValues;	
 	private ArrayList<String> assayTypeValues;	
 	private ArrayList<String> sourceValues;	
@@ -184,20 +185,47 @@ public class SolrFilter implements Serializable {
 		return "";
 	}
 
-	public Map<String,String> getSexList(){
+	public Map<String,String> getSpeciesList(){
 		
-		Map<String,String> sexmap = new LinkedHashMap<String,String>();
+		Map<String,String> speciesmap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
-		map.put("female", "female");
-		map.put("male", "male");
-		map.put("unknown", "unknown");
+		map.put("Human", "Homo sapiens");
+		map.put("Mouse", "Mus musculus");
 			
 	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-			sexmap.put(key, key);
+	        String val = (String)pair.getValue();
+	        speciesmap.put(key, val);
+		}
+
+		return speciesmap;
+	}	
+		
+	public ArrayList<String> getSpeciesValues(){
+		return speciesValues;
+	}	
+	public void setSpeciesValues(ArrayList<String> val){
+		speciesValues = val;
+	}	
+	
+	public Map<String,String> getSexList(){
+		
+		Map<String,String> sexmap = new LinkedHashMap<String,String>();
+
+		Map<String, String> map =  new LinkedHashMap<String, String>(); 
+		map.put("Female", "female");
+		map.put("Male", "male");
+		map.put("Unknown", "unknown");
+			
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+	        String key = (String)pair.getKey();
+	        String val = (String)pair.getValue();
+	        sexmap.put(key, val);
 		}
 
 		return sexmap;
@@ -380,6 +408,18 @@ public class SolrFilter implements Serializable {
 //			filters2.add(al);
 //		}
 
+		if (speciesValues != null && !speciesValues.isEmpty()) {
+			if (speciesValues.size() == 1){
+				filters.put("SPECIES","'" + speciesValues.get(0) + "'");
+			}
+			else {
+				String filter = "(";
+				for (String item : speciesValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("SPECIES",filter);
+			}
+		}
+		
 		if (sexValues != null && !sexValues.isEmpty()) {
 			if (sexValues.size() == 1){
 				filters.put("SEX",sexValues.get(0));
@@ -457,6 +497,7 @@ public class SolrFilter implements Serializable {
 		geneValue = "";
 		sourceValues = new ArrayList<String>();			
 		assayTypeValues = new ArrayList<String>();
+		speciesValues = new ArrayList<String>();
 		sexValues = new ArrayList<String>();
 		specimenTypeValues = new ArrayList<String>();
 		theilerStageValues = new ArrayList<String>();
@@ -494,6 +535,9 @@ public class SolrFilter implements Serializable {
     		break;
     	case "SOURCE":
     		sourceValues.clear();
+    		break;
+    	case "SPECIES":
+    		speciesValues.clear();
     		break;
     	case "SEX":
     		sexValues.clear();

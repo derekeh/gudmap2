@@ -243,6 +243,8 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 //arraySeqmodel.setAssay_type(result.getString("assay_type"));
 			if (doc.containsKey("SERIES_GEO_ID"))
 				model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
+			if (doc.containsKey("SPECIES"))
+				model.setSpecies(doc.getFieldValue("SPECIES").toString());
 			
 			list.add(model);	
 			

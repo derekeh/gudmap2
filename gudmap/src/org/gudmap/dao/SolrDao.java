@@ -194,17 +194,18 @@ public class SolrDao {
 				doc.addField("TISSUE", result.getString(49)); 					
 				doc.addField("TISSUE_EMAPS", result.getString(50)); 					
 				doc.addField("TISSUE_EMAPS_ID", result.getString(51)); 					
-				doc.addField("PRESENT", result.getString(52)); 
-				doc.addField("DIR_PRESENT", result.getString(53)); 
-				doc.addField("INF_PRESENT", result.getString(54)); 
-				doc.addField("NOT_DETECTED", result.getString(55)); 
-				doc.addField("INF_NOT_DETECTED", result.getString(56)); 
-				doc.addField("UNCERTAIN", result.getString(57)); 
-				doc.addField("EMAPS", result.getString(58)); 
-				doc.addField("EXP_NOTES", result.getString(59)); 	
-				doc.addField("EXPRESSION_NOTES", result.getString(60)); 	
-				doc.addField("ANNOTATION", result.getString(61)); 				
-				doc.addField("TISSUE_TYPE", result.getString(62)); 
+				doc.addField("SPECIES", result.getString(52)); 					
+				doc.addField("PRESENT", result.getString(53)); 
+				doc.addField("DIR_PRESENT", result.getString(54)); 
+				doc.addField("INF_PRESENT", result.getString(55)); 
+				doc.addField("NOT_DETECTED", result.getString(56)); 
+				doc.addField("INF_NOT_DETECTED", result.getString(57)); 
+				doc.addField("UNCERTAIN", result.getString(58)); 
+				doc.addField("EMAPS", result.getString(59)); 
+				doc.addField("EXP_NOTES", result.getString(60)); 	
+				doc.addField("EXPRESSION_NOTES", result.getString(61)); 	
+				doc.addField("ANNOTATION", result.getString(62)); 				
+				doc.addField("TISSUE_TYPE", result.getString(63)); 
  	
 				
 				docs.add(doc);
@@ -325,7 +326,8 @@ public class SolrDao {
 				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(16)); 
 				doc.addField("PER_OID", result.getString(17)); 
 				doc.addField("PLATFORM_GEO_ID", result.getString(18)); 
-				
+				doc.addField("SPECIES", result.getString(19)); 				
+				doc.addField("GENOTYPE", result.getString(20)); 				
 				docs.add(doc);
 			}
 		}
@@ -636,6 +638,7 @@ public class SolrDao {
 				doc.addField("SAMPLE_NAME", result.getString(12)); 
 				doc.addField("GENOTYPE", result.getString(13)); 
 				doc.addField("COMPONENT", result.getString(14)); 
+				doc.addField("SPECIES", result.getString(15)); 
 				
 				docs.add(doc);
 			}

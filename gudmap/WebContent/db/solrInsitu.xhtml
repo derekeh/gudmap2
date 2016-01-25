@@ -136,7 +136,10 @@
     					<f:attribute name="sortField" value="STAGE" />
                     </h:commandLink>
 				</f:facet>
-    				#{u.stage}
+    			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
+				 	<h:outputText value="#{u.stage}" />
+				</h:outputLink>
+				<h:outputText value="#{u.stage}" rendered="#{u.species != 'Mus musculus'}"/>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sexcol == true}">

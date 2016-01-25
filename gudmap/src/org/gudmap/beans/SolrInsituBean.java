@@ -238,8 +238,11 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 				model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
 			if (doc.containsKey("PROBE_NAME"))
 				model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
-			if (doc.containsKey("STAGE"))
-				model.setStage(doc.getFieldValue("STAGE").toString());
+			if (doc.containsKey("STAGE")){
+				String stage = doc.getFieldValue("STAGE").toString();
+				model.setStage(stage);
+				model.setStage_order(stage.replace("TS", ""));
+			}
 			if (doc.containsKey("DEV_STAGE"))
 				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 			if (doc.containsKey("SEX"))
@@ -258,6 +261,9 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 				String tissue = doc.getFieldValue("TISSUE_TYPE").toString();
 				model.setTissue(TissueFilter(tissue));
 			}			
+			if (doc.containsKey("SPECIES"))
+				model.setSpecies(doc.getFieldValue("SPECIES").toString());
+			
 			model.setExpression(insituExpression);
 
 			list.add(model);			
