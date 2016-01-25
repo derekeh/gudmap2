@@ -420,7 +420,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 				model.setGene_id(geneId);
 				model.setMgiId(geneId);
 				
-				model.setMicroarrayProfile(assembler.buildMicroarrayProfile(geneId));
+//				model.setMicroarrayProfile(assembler.buildMicroarrayProfile(geneId));
 				model.setImageUrl(assembler.getRepresentativeImage(geneId));
 				
 				geneIds.add(geneId);
