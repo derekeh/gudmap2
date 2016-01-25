@@ -34,9 +34,10 @@
     					<f:ajax execute="@this genelink" render="@form" onevent="monitor"></f:ajax>
                     </h:commandLink> 
     			</f:facet>
-     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails">
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{not empty u.imageUrl}">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
+				<h:outputText value="#{u.geneSymbol}" rendered="#{empty u.imageUrl}"/>
     		</h:column>
  
     		<h:column rendered="#{paramBean.synonymcol == true}">

@@ -146,8 +146,7 @@ public class GeneStripDao {
 						species = (result.getString("species"));
 						createJSONFile(geneId);
 						geneStripModel.setExpressionProfile(buildExpressionProfile(gene,geneId));
-						//geneStripModel.setExpressionProfile("Hello");
-						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
+						//geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
 						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
 						geneStripModel.setImageUrl(getRepresentativeImage(geneId));
