@@ -545,6 +545,7 @@ public class SolrDao {
 				doc.addField("EMAPS", result.getString(47)); 
 				doc.addField("EXPRESSION_NOTES", result.getString(48)); 
 				doc.addField("EXP_NOTES", result.getString(49)); 
+				doc.addField("SPECIES", result.getString(49)); 
 				
 				docs.add(doc);
 			}

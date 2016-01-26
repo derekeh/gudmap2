@@ -222,11 +222,13 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 				model.setFilePath(image_path.replace("thumbnails", "medium"));
 			}
 			if (doc.containsKey("IMAGE_CLICK_PATH"))
-			model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
+				model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
 			if (doc.containsKey("ASSAY_TYPE"))
-			model.setAssayType(doc.getFieldValue("ASSAY_TYPE").toString());
+				model.setAssayType(doc.getFieldValue("ASSAY_TYPE").toString());
 			if (doc.containsKey("MGI_GENE_ID"))
-			model.setMgiGeneId(doc.getFieldValue("MGI_GENE_ID").toString());
+				model.setMgiGeneId(doc.getFieldValue("MGI_GENE_ID").toString());
+			if (doc.containsKey("SPECIES"))
+				model.setSpecies(doc.getFieldValue("SPECIES").toString());
 			
 			list.add(model);			
 		}

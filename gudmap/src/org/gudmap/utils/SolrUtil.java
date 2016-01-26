@@ -2373,6 +2373,7 @@ public class SolrUtil {
 		    schema.add("EMAPS");
 		    schema.add("EXPRESSION_NOTES");
 		    schema.add("EXP_NOTES");
+//			schema.add("SPECIES"); 
 			    
 			    return schema;
 	   }   
