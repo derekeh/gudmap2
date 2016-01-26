@@ -88,7 +88,7 @@ public class GeneStripDao {
 						ishRange = (result.getString("ishRange"));
 						species = (result.getString("species"));
 						geneStripModel.setExpressionProfile(buildExpressionProfile(gene,geneId));
-						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
+//						geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
 						geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 						geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
 						geneStripModel.setImageUrl(getRepresentativeImage(geneId));

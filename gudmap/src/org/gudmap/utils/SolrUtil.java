@@ -515,6 +515,7 @@ public class SolrUtil {
 	        parameters.addField("PROBE_TYPE");
 	        parameters.addField("IMAGE");
 	        parameters.addField("MGI_GENE_ID");
+	        parameters.addField("SPECIES");
 	        
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
@@ -1482,6 +1483,7 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
       
+	      	parameters.addField("GUDMAP_ID");
 	      	parameters.addField("GUDMAP");
         	parameters.addField("SAMPLE_GEO_ID");
         	parameters.addField("STAGE");
@@ -1499,6 +1501,8 @@ public class SolrUtil {
         	parameters.addField("SPECIMEN_ASSAY_TYPE");
         	parameters.addField("PER_OID");
         	parameters.addField("PLATFORM_GEO_ID");
+        	parameters.addField("SPECIES");
+        	parameters.addField("GENOTYPE");
         	
             QueryResponse qr = samples_server.query(parameters);
         	sdl = qr.getResults();
@@ -2103,7 +2107,8 @@ public class SolrUtil {
 		   schema.add("EXPRESSION_NOTES");
 		   schema.add("ANNOTATION");
 		   schema.add("TISSUE_TYPE");
-	    
+		   schema.add("SPECIES"); 
+		   
 	    return schema;
     }
 
@@ -2178,7 +2183,9 @@ public class SolrUtil {
     schema.add("SAMPLE_NAME");
     schema.add("GENOTYPE");
     schema.add("COMPONENT");
-	    
+    schema.add("SPECIES"); 
+
+    
 	    return schema;
     }
 
@@ -2203,7 +2210,9 @@ public class SolrUtil {
 	    schema.add("SPECIMEN_ASSAY_TYPE");
 	    schema.add("PER_OID");
 	    schema.add("PLATFORM_GEO_ID"); 
-		    
+	    schema.add("SPECIES"); 
+	    schema.add("GENOTYPE"); 
+	    
 		    return schema;
    }
 
@@ -2364,6 +2373,7 @@ public class SolrUtil {
 		    schema.add("EMAPS");
 		    schema.add("EXPRESSION_NOTES");
 		    schema.add("EXP_NOTES");
+//			schema.add("SPECIES"); 
 			    
 			    return schema;
 	   }   

@@ -13,6 +13,7 @@ public class ImageInfoModel {
 	protected String assayType;
 	protected String unique_image;
 	protected boolean selected=false;
+	protected String species;
 	
 	public String getOid() {
 		return oid;
@@ -126,5 +127,12 @@ public class ImageInfoModel {
     	  return selected;
       }
 	  
+      public String getSpecies() {
+  		return species;
+      }
+
+      public void setSpecies(String species) {
+        	this.species = species;
+  	  }
 
 }

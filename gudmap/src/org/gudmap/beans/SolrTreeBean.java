@@ -183,7 +183,7 @@ public class SolrTreeBean implements Serializable {
 	public int getMicroarrayCount(){
 		HashMap<String,String> filters = new HashMap<String,String>();
 		filters = solrFilter.getFilters();
-		return solrUtil.getMicroarrayFilteredCount(solrInput, filters);
+		return solrUtil.getSamplesFilteredCount(solrInput, filters);
 	}
 
 //	public int getMicroarrayCount(String filter){
@@ -191,7 +191,7 @@ public class SolrTreeBean implements Serializable {
 //	}
 
 	public int getMicroarrayCount(HashMap<String,String> filters){
-		return solrUtil.getMicroarrayFilteredCount(solrInput, filters);
+		return solrUtil.getSamplesFilteredCount(solrInput, filters);
 	}
 	
 	////////////////// GENELIST ////////////////////////////

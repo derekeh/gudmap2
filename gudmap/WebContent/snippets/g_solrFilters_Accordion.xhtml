@@ -65,6 +65,18 @@ input[type="checkbox"]{
 		 	</h:selectOneRadio>
 		</div>  		
 	</div>
+ 
+	<div class="accordion">
+		<h2>Species</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.speciesValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.speciesList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
+      	</div>
+	</div>
              
 	<div class="accordion">
 		<h2>Theiler Stages</h2>

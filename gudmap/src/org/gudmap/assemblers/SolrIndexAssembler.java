@@ -34,6 +34,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrGeneIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -47,6 +51,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrGenelistsIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -60,6 +68,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrInsituIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -73,6 +85,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMicroarrayIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -86,6 +102,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSamplesIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -99,6 +119,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSeriesIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -112,6 +136,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrTissueIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -125,6 +153,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMouseStrainsIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -138,6 +170,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrImageIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -151,6 +187,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrNextGenSeriesIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -164,6 +204,10 @@ public class SolrIndexAssembler {
 		ArrayList<SolrInputDocument> docs  = solrDao.getSolrNextGenSamplesIndexData();
 		
 		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			server.add(docs);			
 			server.commit();
 		} catch (SolrServerException | IOException e) {
@@ -180,7 +224,10 @@ public class SolrIndexAssembler {
 		
 		ContentStreamUpdateRequest up  = new ContentStreamUpdateRequest("/update/extract");	
 		try {
-			server.deleteByQuery( "*:*" ); 
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
 			
 			up.addFile(new File(fileName),"html");
 			up.setParam("literal.id", solrId);
