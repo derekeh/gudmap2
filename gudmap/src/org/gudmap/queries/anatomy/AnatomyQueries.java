@@ -286,7 +286,9 @@ public class AnatomyQueries {
 		public static String BROWSE_ANATOMY_FOOTER_PARAM = "ORDER BY gene  ASC , assay_type, FIELD(expression, 'present', 'uncertain', 'not detected', ''), stage, tissue  ) AS x " +
 			"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
 		
-		
+		/*public static String BROWSE_ANATOMY_FOOTER_PARAM = " ) AS x " +
+				"GROUP BY x.gudmap_accession  ORDER BY %s %s, x.assay_type, x.gene, FIELD(x.expression, 'present', 'uncertain', 'not detected', ''), x.stage, x.tissue, x.sex limit ?,?";
+		*/
 		
 		public static String TOTAL_ISH_ANATOMY="select count(distinct gudmap_accession) FROM " +
 				"((SELECT DISTINCT QIC_SUB_ACCESSION_ID gudmap_accession FROM QSC_ISH_CACHE  JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK LEFT JOIN ISH_SP_TISSUE ON " +
