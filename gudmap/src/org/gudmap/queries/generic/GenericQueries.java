@@ -283,6 +283,8 @@ public class GenericQueries {
 	   	public final static String GET_UPDATE_INFO_DB = "SELECT MIS_SOFT_UPDATE software_update, MIS_EDIT_UPDATE editorial_update FROM REF_MISC";
 	   	
 		public final static String UPDATE_INFO = "UPDATE REF_MISC SET MIS_SOFT_UPDATE = ?, MIS_EDIT_UPDATE = ?, MIS_SOFT_VERSION = ?";
+		
+	
 
 
 	   
