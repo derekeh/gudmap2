@@ -44,6 +44,12 @@ input[type="checkbox"]{
 		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
 		 	</h:inputText>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.geneValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.geneList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 	</h:selectManyCheckbox>
 		</div>
  	</div>
 
@@ -143,7 +149,7 @@ input[type="checkbox"]{
 		<h2>Sources</h2>
 		<div>
 			<h:panelGrid columns="3">
-			 	<h:selectManyListbox size="10" value="#{solrFilter.sourceValues}" layout="pageDirection">
+			 	<h:selectManyListbox id="lb_source" size="10" value="#{solrFilter.sourceValues}" layout="pageDirection">
 			 		<f:selectItems value="#{solrFilter.sourceList}" />
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />

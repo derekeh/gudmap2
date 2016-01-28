@@ -5,6 +5,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,6 +34,7 @@ public class SolrFilter implements Serializable {
 	private String geneValue;
 	private Date fromDateValue;
 	private Date toDateValue;
+	private ArrayList<String> geneValues;
 	private ArrayList<String> speciesValues;
 	private ArrayList<String> sexValues;	
 	private ArrayList<String> assayTypeValues;	
@@ -157,6 +159,7 @@ public class SolrFilter implements Serializable {
 	public Map<String,String> getSourceList(){
 		
 		Map<String,String> sourcemap = new LinkedHashMap<String,String>();
+		sourcemap.put("---clear---", "clear");
 
 		Map<String, String> map =  paramBean.getSourcelist(); 
 	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
@@ -171,7 +174,10 @@ public class SolrFilter implements Serializable {
 		return sourceValues;
 	}	
 	public void setSourceValues(ArrayList<String> val){
-		this.sourceValues = val;
+		if (val.contains("clear"))
+			this.sourceValues.clear();
+		else
+			this.sourceValues = val;
 
 	}
 
@@ -185,6 +191,32 @@ public class SolrFilter implements Serializable {
 		return "";
 	}
 
+	public Map<String,String> getGeneList(){
+		
+		Map<String,String> genemap = new LinkedHashMap<String,String>();
+
+		Map<String, String> map =  new LinkedHashMap<String, String>(); 
+		map.put("Anchor", "anchor");
+		map.put("Marker", "marker");
+			
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+	        String key = (String)pair.getKey();
+	        String val = (String)pair.getValue();
+	        genemap.put(key, val);
+		}
+
+		return genemap;
+	}	
+		
+	public ArrayList<String> getGeneValues(){
+		return geneValues;
+	}	
+	public void setGeneValues(ArrayList<String> val){
+		geneValues = val;
+	}	
+	
 	public Map<String,String> getSpeciesList(){
 		
 		Map<String,String> speciesmap = new LinkedHashMap<String,String>();
@@ -388,7 +420,7 @@ public class SolrFilter implements Serializable {
 			String filter = "[" + df.format(fromDateValue) + " TO * ]";
 			filters.put("DATE",filter);				
 		}
-//		sourceValues = getSourceValues();
+
 		if (sourceValues != null && !sourceValues.isEmpty()) {
 			if (sourceValues.size() == 1){
 				filters.put("SOURCE",sourceValues.get(0));
@@ -401,22 +433,16 @@ public class SolrFilter implements Serializable {
 				filters.put("SOURCE",filter);
 			}
 		}
-//		if (sourceValues != null && !sourceValues.isEmpty()) {
-//			ArrayList<String> al = new ArrayList<String>();
-//			for (String item : sourceValues) 
-//				al.add("SOURCE:"+item);
-//			filters2.add(al);
-//		}
 
-		if (speciesValues != null && !speciesValues.isEmpty()) {
-			if (speciesValues.size() == 1){
-				filters.put("SPECIES","'" + speciesValues.get(0) + "'");
+		if (geneValues != null && !geneValues.isEmpty()) {
+			if (geneValues.size() == 1){
+				filters.put("GENE_TYPE",geneValues.get(0));
 			}
 			else {
 				String filter = "(";
-				for (String item : speciesValues) filter += item + " OR ";
+				for (String item : geneValues) filter += item + " OR ";
 				filter = filter.substring(0, filter.length()-3) + ")";
-				filters.put("SPECIES",filter);
+				filters.put("GENE_TYPE",filter);
 			}
 		}
 		
@@ -480,6 +506,18 @@ public class SolrFilter implements Serializable {
 			}
 		}
 
+		if (speciesValues != null && !speciesValues.isEmpty()) {
+			if (speciesValues.size() == 1){
+				filters.put("SPECIES",speciesValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : speciesValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("SPECIES",filter);
+			}
+		}
+		
 		if (expressionValue != null && !expressionValue.isEmpty() && anatomy != null && !anatomy.isEmpty()) {
 				if (expressionValue.contains("detected"))
 					filters.put("PRESENT", anatomy);
@@ -495,6 +533,7 @@ public class SolrFilter implements Serializable {
 		filters = new HashMap<String,String>();
 		
 		geneValue = "";
+		geneValues = new ArrayList<String>();			
 		sourceValues = new ArrayList<String>();			
 		assayTypeValues = new ArrayList<String>();
 		speciesValues = new ArrayList<String>();
@@ -553,6 +592,12 @@ public class SolrFilter implements Serializable {
     		break;
     	case "CARNEGIE_STAGE":
     		carnegieStageValues.clear();
+    		break;
+    	case "ANCHOR":
+    		geneValues.clear();
+    		break;
+    	case "MARKER":
+    		geneValues.clear();
     		break;
     	default:
     		break;
