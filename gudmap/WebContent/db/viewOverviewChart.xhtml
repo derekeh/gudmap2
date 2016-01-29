@@ -335,6 +335,61 @@
 			    });
 			        
 			        /****************************/
+			        
+			    $(function () {
+				    $('#container3').highcharts({
+				        chart: {
+				            type: 'column'
+				        },
+				        title: {
+				            text: 'GUDMAP Entries and Analysed Genes by Anatomical Focus Group'
+				        },
+				        subtitle: {
+				            text: 'Source: gudmap.org'
+				        },
+				        xAxis: {
+				            categories: [
+				                'Metanephros',
+				                'LUT',
+				                'Early Gen. System',
+				                'Male Rep. System',
+				                'Female Rep. System'
+				            ],
+				            crosshair: true
+				        },
+				        yAxis: {
+				            min: 0,
+				            title: {
+				                text: 'Number of Genes/Entries'
+				            }
+				        },
+				        tooltip: {
+				            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+				            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				            '<td style="padding:0"><b>{point.y:1f}</b></td></tr>',
+				            footerFormat: '</table>',
+				            shared: true,
+				            useHTML: true
+				        },
+				        plotOptions: {
+				            column: {
+				                pointPadding: 0.2,
+				                borderWidth: 0
+				            }
+				        },
+				        series: [{
+				            name: 'GENES',
+				            data: [3491, 2910, 240, 2543, 2487]
+				
+				        }, {
+				            name: 'ENTRIES',
+				            data: [7335, 5792, 270, 3208, 3058]
+				
+				        }]
+				    });
+				});
+			        
+			        /*****************************/
 			    });
 			});
 		</script>
@@ -363,6 +418,8 @@
 	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    
 	    <div id="container2" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    
+	     <div id="container3" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    <!-- all other content in here -->     
 	</ui:define>
 </ui:composition>
