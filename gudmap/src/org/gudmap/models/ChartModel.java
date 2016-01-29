@@ -17,6 +17,14 @@ public class ChartModel {
 	private int total_entries=0;
 	private int total_genes=0;
 	
+	private double wish_lab = 0.0;
+	private double sish_lab = 0.0;
+	private double opt_lab = 0.0;
+	private double ihc_lab = 0.0;
+	private double tg_lab = 0.0;
+	private double microarray_lab = 0.0;
+	private double sequence_lab = 0.0;
+	
 	public ChartModel(){
 		
 	}
@@ -112,6 +120,55 @@ public class ChartModel {
 	}
 	public int getTotal_genes(){
 		return total_genes;
+	}
+	
+	public void setWish_lab(double wish_lab){
+		this.wish_lab = wish_lab;
+	}
+	public double getWish_lab(){
+		return wish_lab;
+	}
+	
+	public void setSish_lab(double sish_lab){
+		this.sish_lab = sish_lab;
+	}
+	public double getSish_lab(){
+		return sish_lab;
+	}
+	
+	public void setOpt_lab(double opt_lab){
+		this.opt_lab = opt_lab;
+	}
+	public double getOpt_lab(){
+		return opt_lab;
+	}
+	
+	public void setTg_lab(double tg_lab){
+		this.tg_lab = tg_lab;
+	}
+	public double getTg_lab(){
+		return tg_lab;
+	}
+	
+	public void setIhc_lab(double ihc_lab){
+		this.ihc_lab = ihc_lab;
+	}
+	public double getIhc_lab(){
+		return ihc_lab;
+	}
+	
+	public void setMicroarray_lab(double microarray_lab){
+		this.microarray_lab = microarray_lab;
+	}
+	public double getMicroarray_lab(){
+		return microarray_lab;
+	}
+	
+	public void setSequence_lab(double sequence_lab){
+		this.sequence_lab = sequence_lab;
+	}
+	public double getSequence_lab(){
+		return sequence_lab;
 	}
 	
 	
