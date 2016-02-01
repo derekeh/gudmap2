@@ -111,6 +111,9 @@ public class GenericQueries {
 	   
 	   public final static String ALL_SOURCES="SELECT DISTINCT SUB_SOURCE FROM ISH_SUBMISSION WHERE SUB_SOURCE <> '' ORDER BY SUB_SOURCE";
 	   
+	   public final static String ALL_PUBLIC_SOURCES= "SELECT DISTINCT(SUBSTRING(SUB_SOURCE,INSTR(SUB_SOURCE,'-')+1)) AS abbrv, SUB_SOURCE AS lab FROM `ISH_SUBMISSION` WHERE SUB_SOURCE <> '' " +
+			   "AND SUB_IS_PUBLIC=1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ORDER BY abbrv";
+	   
 	   public final static String ALL_SOURCES_PER_ASSAY="SELECT DISTINCT SUB_SOURCE FROM ISH_SUBMISSION WHERE SUB_SOURCE <> '' " +
 			   "AND SUB_ASSAY_TYPE = ? ORDER BY SUB_SOURCE";
 	   
@@ -283,6 +286,8 @@ public class GenericQueries {
 	   	public final static String GET_UPDATE_INFO_DB = "SELECT MIS_SOFT_UPDATE software_update, MIS_EDIT_UPDATE editorial_update FROM REF_MISC";
 	   	
 		public final static String UPDATE_INFO = "UPDATE REF_MISC SET MIS_SOFT_UPDATE = ?, MIS_EDIT_UPDATE = ?, MIS_SOFT_VERSION = ?";
+		
+	
 
 
 	   

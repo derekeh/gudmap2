@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template_v2.xhtml">
+	<ui:define name="title">
+	    GUDMAP Overview
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h:outputScript library="scripts/Highcharts-4.2.1/js" name="highcharts.js"></h:outputScript>
+	<h:outputScript library="scripts/Highcharts-4.2.1/js/modules" name="data.js"></h:outputScript>
+	<h:outputScript library="scripts/Highcharts-4.2.1/js/modules" name="drilldown.js"></h:outputScript>
+	
+	<script type="text/javascript">
+			$(function () {
+			
+			    $(document).ready(function () {
+			
+			        // Build the chart
+			        $('#container').highcharts({
+			            chart: {
+			                plotBackgroundColor: null,
+			                plotBorderWidth: null,
+			                plotShadow: false,
+			                type: 'pie'
+			            },
+			            title: {
+			                text: 'GUDMAP Database Entries (Public)'
+			            },
+			            tooltip: {
+			                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br />'
+			            },
+			            plotOptions: {
+			                pie: {
+			                    allowPointSelect: true,
+			                    cursor: 'pointer',
+			                    dataLabels: {
+			                        enabled: true,
+			                        format: '{point.name}: {point.x:.1f}% (genes)'
+			                    },
+			                    showInLegend: true
+			                }
+			            },
+			            series: [{
+			                name: 'Entries',
+			                //colorByPoint: true,
+			                point: {
+			    				events: {
+			    					click: function(e) {
+			    						//this.slice();
+			    						//console.log(e);
+			    						location.href = e.point.url;
+			    						e.preventDefault();
+			    					}
+			    				}
+			    			},
+			                data: [{
+			                    name: 'WISH',
+			                    color: 'lightblue',
+			                    y: #{chartBean.chartModelList.get(0).wish_percent},
+			                    url: 'http://www.statetheta.com',
+			                    x: #{chartBean.chartModelList.get(0).wish_gene_percent}
+			                }, {
+			                    name: 'SISH',
+			                    y: #{chartBean.chartModelList.get(0).sish_percent},
+			                    color: 'orange',
+			                    sliced: false,
+			                    selected: false,
+			                    x: #{chartBean.chartModelList.get(0).sish_gene_percent}
+			                }, {
+			                    name: 'IHC',
+			                    color: 'yellow',
+			                    y: #{chartBean.chartModelList.get(0).ihc_percent},
+			                    x: #{chartBean.chartModelList.get(0).ihc_gene_percent}
+			                }, {
+			                    name: 'TG',
+			                    color: 'darkblue',
+			                    y: #{chartBean.chartModelList.get(0).tg_percent},
+			                    x: #{chartBean.chartModelList.get(0).tg_gene_percent}
+			                }, {
+			                    name: 'OPT',
+			                    color: 'lightgreen',
+			                    y: #{chartBean.chartModelList.get(0).opt_percent},
+			                    x: #{chartBean.chartModelList.get(0).tg_gene_percent}
+			                }, {
+			                    name: 'Sequence',
+			                    color: 'red',
+			                    y: #{chartBean.chartModelList.get(0).sequence_percent},
+			                    x: 0
+			                },{
+			                    name: 'Microarray',
+			                    color: 'grey',
+			                    y: #{chartBean.chartModelList.get(0).microarray_percent},
+			                    x:0
+			                }]
+			            }]
+			        });
+			        
+			        /**************************/
+			        
+			         $('#container2').highcharts({
+			        chart: {
+			            type: 'pie'
+			        },
+			        title: {
+			            text: 'GUDMAP ENTRIES PER LAB'
+			        },
+			        subtitle: {
+			            text: 'Click the slices to view labs. Source: gudmap.org.'
+			        },
+			        plotOptions: {
+			            series: {
+			                dataLabels: {
+			                    enabled: true,
+			                    format: '{point.name}: {point.y:.1f}%'
+			                }
+			            }
+			        },
+			
+			        tooltip: {
+			            headerFormat: '<span style="font-size:11px">{series.name}</span><br/>',
+			            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+			        },
+			        series: [{
+			            name: 'Entries',
+			            colorByPoint: true,
+			            data: [{
+		                    name: 'WISH',
+		                    color: 'lightblue',
+		                    y: #{chartBean.chartModelList.get(0).wish_percent},
+		                    url: 'http://www.statetheta.com',
+		                    x: #{chartBean.chartModelList.get(0).wish_gene_percent},
+		                    drilldown: 'WISH'
+		                }, {
+		                    name: 'SISH',
+		                    y: #{chartBean.chartModelList.get(0).sish_percent},
+		                    color: 'orange',
+		                    sliced: false,
+		                    selected: false,
+		                    x: #{chartBean.chartModelList.get(0).sish_gene_percent},
+		                    drilldown: 'SISH'
+		                }, {
+		                    name: 'IHC',
+		                    color: 'yellow',
+		                    y: #{chartBean.chartModelList.get(0).ihc_percent},
+		                    x: #{chartBean.chartModelList.get(0).ihc_gene_percent},
+		                    drilldown: 'IHC'
+		                }, {
+		                    name: 'TG',
+		                    color: 'darkblue',
+		                    y: #{chartBean.chartModelList.get(0).tg_percent},
+		                    x: #{chartBean.chartModelList.get(0).tg_gene_percent},
+		                    drilldown: 'TG'
+		                }, {
+		                    name: 'OPT',
+		                    color: 'lightgreen',
+		                    y: #{chartBean.chartModelList.get(0).opt_percent},
+		                    x: #{chartBean.chartModelList.get(0).tg_gene_percent},
+		                    drilldown: 'OPT'
+		                }, {
+		                    name: 'Sequence',
+		                    color: 'red',
+		                    y: #{chartBean.chartModelList.get(0).sequence_percent},
+		                    x: 0,
+		                    drilldown: 'Sequence'
+		                },{
+		                    name: 'Microarray',
+		                    color: 'grey',
+		                    y: #{chartBean.chartModelList.get(0).microarray_percent},
+		                    x:0,
+		                    drilldown: 'Microarray'
+		                }]
+			        }],
+			        drilldown: {
+			            series: [{
+			                name: 'WISH',
+			                id: 'WISH',
+			                data: [
+			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).wish_lab}],
+			                    ['Capel', #{chartBean.chartModelDrillList.get(1).wish_lab}],
+			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).wish_lab}],
+			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).wish_lab}],
+			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).wish_lab}],
+			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).wish_lab}],
+			                    ['Jain', #{chartBean.chartModelDrillList.get(6).wish_lab}],
+			                    ['Keast', #{chartBean.chartModelDrillList.get(7).wish_lab}],
+			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).wish_lab}],
+			                    ['Little', #{chartBean.chartModelDrillList.get(9).wish_lab}],
+			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).wish_lab}],
+			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).wish_lab}],
+			                    ['Potter', #{chartBean.chartModelDrillList.get(12).wish_lab}],
+			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).wish_lab}],
+			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).wish_lab}],
+			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).wish_lab}]
+			                ]
+			            }, {
+			                name: 'SISH',
+			                id: 'SISH',
+			                data: [
+			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).sish_lab}],
+			                    ['Capel', #{chartBean.chartModelDrillList.get(1).sish_lab}],
+			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).sish_lab}],
+			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).sish_lab}],
+			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).sish_lab}],
+			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).sish_lab}],
+			                    ['Jain', #{chartBean.chartModelDrillList.get(6).sish_lab}],
+			                    ['Keast', #{chartBean.chartModelDrillList.get(7).sish_lab}],
+			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).sish_lab}],
+			                    ['Little', #{chartBean.chartModelDrillList.get(9).sish_lab}],
+			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).sish_lab}],
+			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).sish_lab}],
+			                    ['Potter', #{chartBean.chartModelDrillList.get(12).sish_lab}],
+			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).sish_lab}],
+			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).sish_lab}],
+			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).sish_lab}]
+			                ]
+			            }, {
+			                name: 'IHC',
+			                id: 'IHC',
+			                data: [
+			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).ihc_lab}],
+			                    ['Capel', #{chartBean.chartModelDrillList.get(1).ihc_lab}],
+			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).ihc_lab}],
+			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).ihc_lab}],
+			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).ihc_lab}],
+			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).ihc_lab}],
+			                    ['Jain', #{chartBean.chartModelDrillList.get(6).ihc_lab}],
+			                    ['Keast', #{chartBean.chartModelDrillList.get(7).ihc_lab}],
+			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).ihc_lab}],
+			                    ['Little', #{chartBean.chartModelDrillList.get(9).ihc_lab}],
+			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).ihc_lab}],
+			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).ihc_lab}],
+			                    ['Potter', #{chartBean.chartModelDrillList.get(12).ihc_lab}],
+			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).ihc_lab}],
+			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).ihc_lab}],
+			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).ihc_lab}]
+			                ]
+			            }, {
+			                name: 'TG',
+			                id: 'TG',
+			                data: [
+			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).tg_lab}],
+			                    ['Capel', #{chartBean.chartModelDrillList.get(1).tg_lab}],
+			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).tg_lab}],
+			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).tg_lab}],
+			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).tg_lab}],
+			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).tg_lab}],
+			                    ['Jain', #{chartBean.chartModelDrillList.get(6).tg_lab}],
+			                    ['Keast', #{chartBean.chartModelDrillList.get(7).tg_lab}],
+			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).tg_lab}],
+			                    ['Little', #{chartBean.chartModelDrillList.get(9).tg_lab}],
+			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).tg_lab}],
+			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).tg_lab}],
+			                    ['Potter', #{chartBean.chartModelDrillList.get(12).tg_lab}],
+			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).tg_lab}],
+			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).tg_lab}],
+			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).tg_lab}]
+			                ]
+			            }, {
+			                name: 'OPT',
+			                id: 'OPT',
+			                data: [
+			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).opt_lab}],
+			                    ['Capel', #{chartBean.chartModelDrillList.get(1).opt_lab}],
+			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).opt_lab}],
+			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).opt_lab}],
+			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).opt_lab}],
+			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).opt_lab}],
+			                    ['Jain', #{chartBean.chartModelDrillList.get(6).opt_lab}],
+			                    ['Keast', #{chartBean.chartModelDrillList.get(7).opt_lab}],
+			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).opt_lab}],
+			                    ['Little', #{chartBean.chartModelDrillList.get(9).opt_lab}],
+			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).opt_lab}],
+			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).opt_lab}],
+			                    ['Potter', #{chartBean.chartModelDrillList.get(12).opt_lab}],
+			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).opt_lab}],
+			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).opt_lab}],
+			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).opt_lab}]
+			                ]
+			            },{
+			                name: 'Sequence',
+			                id: 'Sequence',
+			                data: [
+			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).sequence_lab}],
+			                    ['Capel', #{chartBean.chartModelDrillList.get(1).sequence_lab}],
+			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).sequence_lab}],
+			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).sequence_lab}],
+			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).sequence_lab}],
+			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).sequence_lab}],
+			                    ['Jain', #{chartBean.chartModelDrillList.get(6).sequence_lab}],
+			                    ['Keast', #{chartBean.chartModelDrillList.get(7).sequence_lab}],
+			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).sequence_lab}],
+			                    ['Little', #{chartBean.chartModelDrillList.get(9).sequence_lab}],
+			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).sequence_lab}],
+			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).sequence_lab}],
+			                    ['Potter', #{chartBean.chartModelDrillList.get(12).sequence_lab}],
+			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).sequence_lab}],
+			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).sequence_lab}],
+			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).sequence_lab}]
+			                ]
+			            },{
+			                name: 'Microarray',
+			                id: 'Microarray',
+			                data: [
+			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).microarray_lab}],
+			                    ['Capel', #{chartBean.chartModelDrillList.get(1).microarray_lab}],
+			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).microarray_lab}],
+			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).microarray_lab}],
+			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).microarray_lab}],
+			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).microarray_lab}],
+			                    ['Jain', #{chartBean.chartModelDrillList.get(6).microarray_lab}],
+			                    ['Keast', #{chartBean.chartModelDrillList.get(7).microarray_lab}],
+			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).microarray_lab}],
+			                    ['Little', #{chartBean.chartModelDrillList.get(9).microarray_lab}],
+			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).microarray_lab}],
+			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).microarray_lab}],
+			                    ['Potter', #{chartBean.chartModelDrillList.get(12).microarray_lab}],
+			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).microarray_lab}],
+			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).microarray_lab}],
+			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).microarray_lab}]
+			                ]
+			            }
+			            ]
+			        }
+			    });
+			        
+			        /****************************/
+			        
+			    $(function () {
+				    $('#container3').highcharts({
+				        chart: {
+				            type: 'column'
+				        },
+				        title: {
+				            text: 'GUDMAP Entries and Analysed Genes by Anatomical Focus Group'
+				        },
+				        subtitle: {
+				            text: 'Source: gudmap.org'
+				        },
+				        xAxis: {
+				            categories: [
+				                'Metanephros',
+				                'LUT',
+				                'Early Gen. System',
+				                'Male Rep. System',
+				                'Female Rep. System'
+				            ],
+				            crosshair: true
+				        },
+				        yAxis: {
+				            min: 0,
+				            title: {
+				                text: 'Number of Genes/Entries'
+				            }
+				        },
+				        tooltip: {
+				            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+				            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				            '<td style="padding:0"><b>{point.y:1f}</b></td></tr>',
+				            footerFormat: '</table>',
+				            shared: true,
+				            useHTML: true
+				        },
+				        plotOptions: {
+				            column: {
+				                pointPadding: 0.2,
+				                borderWidth: 0
+				            }
+				        },
+				        series: [{
+				            name: 'GENES',
+				            data: [3491, 2910, 240, 2543, 2487]
+				
+				        }, {
+				            name: 'ENTRIES',
+				            data: [7335, 5792, 270, 3208, 3058]
+				
+				        }]
+				    });
+				});
+			        
+			        /*****************************/
+			    });
+			});
+		</script>
+	    <h1>Dynamic Pie Chart with Legend</h1>	
+	    <h:outputText value="Wish Percentage: #{chartBean.chartModelList.get(0).wish_percent},&#160;&#160;"/>
+	    <h:outputText value="Sish Percentage: #{chartBean.chartModelList.get(0).sish_percent},&#160;&#160;"/>
+	    <h:outputText value="IHC Percentage: #{chartBean.chartModelList.get(0).ihc_percent},&#160;&#160;"/>
+	    <h:outputText value="TG Percentage: #{chartBean.chartModelList.get(0).tg_percent},&#160;&#160;"/>
+	    <h:outputText value="OPT Percentage: #{chartBean.chartModelList.get(0).opt_percent},&#160;&#160;"/>
+	    <h:outputText value="Microarray Percentage: #{chartBean.chartModelList.get(0).microarray_percent},&#160;&#160;"/>
+	    <h:outputText value="Sequence Percentage: #{chartBean.chartModelList.get(0).sequence_percent},&#160;&#160;"/><br /><br />
+	    <h:outputText value="Wish Gene Percentage: #{chartBean.chartModelList.get(0).wish_gene_percent},&#160;&#160;"/>
+	    <h:outputText value="Sish Gene Percentage: #{chartBean.chartModelList.get(0).sish_gene_percent},&#160;&#160;"/>
+	    <h:outputText value="IHC Gene Percentage: #{chartBean.chartModelList.get(0).ihc_gene_percent},&#160;&#160;"/>
+	    <h:outputText value="TG Gene Percentage: #{chartBean.chartModelList.get(0).tg_gene_percent},&#160;&#160;"/>
+	    <h:outputText value="OPT Gene Percentage: #{chartBean.chartModelList.get(0).opt_gene_percent},&#160;&#160;"/>
+	    <h:outputText value="WISH lab: #{chartBean.chartModelDrillList.get(9).wish_lab},&#160;&#160;"/><br /><br />
+	    <h:outputText value="SISH lab: #{chartBean.chartModelDrillList.get(9).sish_lab},&#160;&#160;"/>
+	    <h:outputText value="OPT lab: #{chartBean.chartModelDrillList.get(9).opt_lab},&#160;&#160;"/>
+	    <h:outputText value="IHC lab: #{chartBean.chartModelDrillList.get(9).ihc_lab},&#160;&#160;"/>
+	    <h:outputText value="TG lab: #{chartBean.chartModelDrillList.get(9).tg_lab},&#160;&#160;"/>
+	    <h:outputText value="Microarray lab: #{chartBean.chartModelDrillList.get(9).microarray_lab},&#160;&#160;"/>
+	    <h:outputText value="Sequence lab: #{chartBean.chartModelDrillList.get(9).sequence_lab},&#160;&#160;"/>
+	    
+	    
+	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    
+	    <div id="container2" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    
+	     <div id="container3" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    <!-- all other content in here -->     
+	</ui:define>
+</ui:composition>
+</html>
