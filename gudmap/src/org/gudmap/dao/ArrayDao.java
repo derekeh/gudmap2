@@ -77,6 +77,7 @@ public class ArrayDao {
 				ps = con.prepareStatement(queryString); 
 			else {
 				queryString += " " + whereclause;
+				ps = con.prepareStatement(queryString); 
 			}
 			result =  ps.executeQuery();
 

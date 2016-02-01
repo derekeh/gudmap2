@@ -1085,25 +1085,25 @@ public class SolrUtil {
 	        
 	        
 	      	parameters.addField("ID");
-        	parameters.addField("NAME");
-        	parameters.addField("DESCRIPTION");
-	      	parameters.addField("PLATFORM");
-        	parameters.addField("SAMPLE");
-        	parameters.addField("EMAP");
-	      	parameters.addField("MA_DATASET");
-        	parameters.addField("MA_DATASET_ID");
-        	parameters.addField("TOT_ENTITIES");
-	      	parameters.addField("TOT_GENES");
-        	parameters.addField("AUTHOR");
-        	parameters.addField("DATE");
-	      	parameters.addField("STAGE");
-        	parameters.addField("SEX");
-        	parameters.addField("GENELIST_TYPE");
-        	parameters.addField("ENTITIES");
-        	parameters.addField("GENE");
-	      	parameters.addField("GUDMAP_IDS");
-        	parameters.addField("REF");
-        	parameters.addField("EMAP_TERM");
+//        	parameters.addField("NAME");
+//        	parameters.addField("DESCRIPTION");
+//	      	parameters.addField("PLATFORM");
+//        	parameters.addField("SAMPLE");
+//        	parameters.addField("EMAP");
+//	      	parameters.addField("MA_DATASET");
+//        	parameters.addField("MA_DATASET_ID");
+//        	parameters.addField("TOT_ENTITIES");
+//	      	parameters.addField("TOT_GENES");
+//        	parameters.addField("AUTHOR");
+//        	parameters.addField("DATE");
+//	      	parameters.addField("STAGE");
+//        	parameters.addField("SEX");
+//        	parameters.addField("GENELIST_TYPE");
+//        	parameters.addField("ENTITIES");
+//        	parameters.addField("GENE");
+//	      	parameters.addField("GUDMAP_IDS");
+//        	parameters.addField("REF");
+//        	parameters.addField("EMAP_TERM");
 
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
@@ -1113,7 +1113,7 @@ public class SolrUtil {
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
-       	
+	        parameters.setRows(Integer.MAX_VALUE); 
         	
             QueryResponse qr = genelists_server.query(parameters);
             sdl = qr.getResults();    

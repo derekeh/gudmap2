@@ -57,7 +57,15 @@ public class SolrAnalysisBean implements Serializable  {
 
     public SolrAnalysisBean() {
     	arrayDao = new ArrayDao();   	
-    	createJSONFile();    }
+    	createJSONFile();    
+    }
+    
+    public void init(String x) {
+    	
+    	getSolrInput();
+    	filters = solrFilter.getFilters();
+    	createGeneList(solrInput,filters);
+    }
     
 	public void setSolrTreeBean(SolrTreeBean solrTreeBean){
 		this.solrTreeBean=solrTreeBean;
@@ -149,7 +157,8 @@ public class SolrAnalysisBean implements Serializable  {
 	    for(SolrDocument doc : sdl){
 	    	whereclause += doc.getFieldValue("ID").toString() + ",";
 		}
-	    
+	    int pos = whereclause.lastIndexOf(",");
+	    whereclause = whereclause.substring(0, pos);
 	    whereclause += ")";
 		ArrayList<GenelistTreeInfo> genelist = arrayDao.getRefGenelists(whereclause);
 		createJSONObject(genelist);
