@@ -204,14 +204,16 @@
 				</f:facet>
     				#{u.submission_date}
     		</h:column>
-<ui:remove> 		
-    		<h:column>
+    		
+ 			<h:column >
     			<f:facet name="header">
-    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
-				</f:facet>
+					<pr:commandButton value="Col" onclick="PF('dialog1').show();"  >
+					</pr:commandButton>
+    			</f:facet>
     		</h:column>
-</ui:remove> 
+
  		</h:dataTable> 
+			<ui:include src="/snippets/g_insituCols.xhtml"></ui:include> 		
  		
 
       	</h:form> 

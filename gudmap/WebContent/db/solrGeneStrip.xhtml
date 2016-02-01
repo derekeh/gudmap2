@@ -7,7 +7,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
-	xmlns:c="http://java.sun.com/jsp/jstl/core" >
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:pr="http://primefaces.org/ui" >
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
@@ -28,7 +29,6 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
 	
 	
 	
@@ -88,6 +88,15 @@
 				</f:facet>
 				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
     		</h:column>
+ 
+    		<h:column rendered="#{paramBean.speciescol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="Species" actionListener="#{solrGeneStripBean.sort}">
+    					<f:attribute name="sortField" value="SPECIES" />
+                    </h:commandLink>
+				</f:facet>
+    				#{u.species}
+    		</h:column> 
     		
     		<h:column rendered="#{paramBean.imagescol == true}">
     			<f:facet name="header">
@@ -102,8 +111,6 @@
     		<h:column rendered="#{paramBean.ishexpressioncol == true}">
     			<f:facet name="header">
     				Insitu Expression
-    				<div id="chartTableHeaders" style='text-align:center'></div>
-    				<script type='text/javascript'>prepareGraphTableHeaders(1, 2, "ASC");</script>
 				</f:facet>
 				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
     		</h:column>
@@ -152,15 +159,15 @@
     			</h:outputLink>
     			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
     		</h:column>
- <ui:remove>    		
-    		<h:column>
+    		
+ 			<h:column >
     			<f:facet name="header">
-    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
-				</f:facet>
+					<pr:commandButton value="Col" id="showdialog1"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+    			</f:facet>
     		</h:column>
-</ui:remove> 
 
     	 </h:dataTable>
+			<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
 
          </h:form> 
          
