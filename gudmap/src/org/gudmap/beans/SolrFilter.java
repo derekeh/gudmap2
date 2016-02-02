@@ -10,7 +10,11 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.gudmap.globals.Globals;
+import org.gudmap.queries.solr.SolrQueries;
+
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +25,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 @Named(value="solrFilter")
 @SessionScoped
@@ -48,6 +56,9 @@ public class SolrFilter implements Serializable {
 	private boolean showFilter = false;
 	private int filterWidth = 300;
 	
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet result;
 	
 	@Inject
    	private ParamBean paramBean;
@@ -301,7 +312,10 @@ public class SolrFilter implements Serializable {
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-	        specimentypemap.put(key, key);
+	        String val = (String)pair.getKey();	        
+	        if (key.contains("mouse marker strain"))
+	        	val = '"' + val + '"';
+	        specimentypemap.put(key, val);
 		}
 
 		return specimentypemap;
@@ -339,23 +353,27 @@ public class SolrFilter implements Serializable {
 		
 		Map<String,String> carnegiestagemap = new LinkedHashMap<String,String>();
 
-		Map<String, String> map =  new LinkedHashMap<String, String>(); 
-		for (int i = 10; i < 24; i++){
-			map.put("CS"+i, "CS"+i);
-		}
-		for (int j = 10; j < 24; j++){
-			String s = "Fetal Stage - " + j + "th week post-fertilization";
-			map.put(s, s);
-		}
-//		Map<String, String> map =  paramBean.getCarnegiestagelist(true);
 
-		Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-			carnegiestagemap.put(key, key);
-		}
+		String queryString=SolrQueries.CARNEGIE_STAGES;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next()){
+				String key = result.getString(1);
+				String val = result.getString(1);
+				if (key.contains("Fetal")){
+			        val = '"' + val + '"';					
+				}
+				carnegiestagemap.put(key, val);
+			}
 
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
 		return carnegiestagemap;
 	}	
 	public ArrayList<String> getCarnegieStageValues(){
@@ -606,6 +624,5 @@ public class SolrFilter implements Serializable {
     	filters.clear();
     	refresh();
 	}	
-    
-}
 
+}
