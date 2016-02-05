@@ -24,13 +24,15 @@
 
 <!-- 	comment out the following section if you don't want the filter menu displayed -->	
 	<ui:define name="filters">	
-			<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
+
 	</ui:define>		
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	    	
 	<ui:define name="content">
+<ui:remove>
+			<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>		
+</ui:remove>				
 	<!-- can use relative links on html tags -->
-	<h:outputStylesheet library="css" name="my_jstree_style.css"  />
 	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></h:outputScript>
@@ -47,7 +49,7 @@
 <script type="text/javascript">
 //<![CDATA[
 jQuery(document).ready(function(){
-	jQuery("#analysis_tree").jstree({ 	
+	jQuery("#demo2_view").jstree({ 	
 		"json_data" : {
 		    "progressive_render" : true,
 		    "ajax" : {
@@ -61,16 +63,10 @@ jQuery(document).ready(function(){
             }
 		},
         themes : {
-//			theme : "classic",
-//			dots  : true,
-//			icons : false,
-//			url   : "../resources/scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
-	          "theme": "default",
-	          "line": true,
-	          "dots" : true,
-	          "icons": true,
-		    "url" : "../resources/scripts/jstree_pre1.0_fix_1/themes/anatomytree/style3.css"
-			
+			theme : "classic",
+			dots  : true,
+			icons : false,
+			url   : "../resources/scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"	
 		},	
 		plugins : ["types", "themes", "json_data", "ui", "cookies"]												
 
@@ -161,7 +157,7 @@ $(document).ready(function(){
 		 <h:inputText id="analysisitem" value="#{solrAnalysisBean.selectedItem}" style="display:none; visibility: hidden; "/>
 		 <h:inputText id="analysis_mastertableId" value="#{solrAnalysisBean.masterTableId}" style="display:none; visibility: hidden; "/>
 
-		<div id="analysis_tree" class="demo" style="overflow: auto; align: left; height: 540px;">
+		<div id="demo2_view" class="demo" style="overflow: auto; align: left; height: 540px;">
 		</div>
 	
 		<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{solrAnalysisBean.findNode}" actionListener="#{solrAnalysisBean.processAction}" >

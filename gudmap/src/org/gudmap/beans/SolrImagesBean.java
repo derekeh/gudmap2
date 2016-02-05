@@ -136,7 +136,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
  //   	sortField = "RELEVANCE";
     	loadDataList();
 //    	paramBean.resetValues();
-    	return "solrInsitu";
+    	return "solrImages";
     }
 
     public void resetAll() {
@@ -219,6 +219,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 				model.setStage(doc.getFieldValue("STAGE").toString());
 			if (doc.containsKey("THUMBNAIL_PATH")){
 				String image_path = doc.getFieldValue("THUMBNAIL_PATH").toString();
+				model.setThumbnailPath(image_path);
 				model.setFilePath(image_path.replace("thumbnails", "medium"));
 			}
 			if (doc.containsKey("IMAGE_CLICK_PATH"))

@@ -7,6 +7,7 @@ public class ImageInfoModel {
 	protected String stage; // theiler stage
 	protected String specimenType;
 	protected String filePath;
+	protected String thumbnailPath;
 	protected String clickFilePath;
 	protected String serialNo;
 	protected String note;
@@ -55,6 +56,14 @@ public class ImageInfoModel {
 	    this.filePath = filePath;
 	  }
 
+	  public String getThumbnailPath() {
+	    return thumbnailPath;
+	  }
+		  
+	  public void setThumbnailPath(String thumbnailPath) {
+	    this.thumbnailPath = thumbnailPath;
+	  }
+
 	  public String getClickFilePath() {
 	      // do not know why zoom-viewer dose not work for microarray tif 
 	      // so put 'microarray' into specimenType so that
@@ -62,7 +71,7 @@ public class ImageInfoModel {
 	      if (null != specimenType && specimenType.equals("microarray")){	    	  
 	    	  return filePath;
 	      }
-
+	
 	      if (null == clickFilePath || clickFilePath.endsWith("tif")) {
 	    	  String ret = org.gudmap.globals.Globals.applicationRoot +"db/zoom_viewer.jsf?id="+accessionId;
 			  if (null == serialNo)
