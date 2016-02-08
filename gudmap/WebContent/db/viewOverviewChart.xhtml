@@ -68,7 +68,7 @@
 			                    name: 'WISH',
 			                    color: 'lightblue',
 			                    y: #{chartBean.chartModelList.get(0).wish_percent},
-			                    url: 'http://www.statetheta.com',
+			                    url: '/gudmap/db/browseWishTablePage.jsf',
 			                    x: #{chartBean.chartModelList.get(0).wish_gene_percent}
 			                }, {
 			                    name: 'SISH',
@@ -82,26 +82,31 @@
 			                    name: 'IHC',
 			                    color: 'yellow',
 			                    y: #{chartBean.chartModelList.get(0).ihc_percent},
+			                    url: '/gudmap/db/browseIhcTablePage.jsf',
 			                    x: #{chartBean.chartModelList.get(0).ihc_gene_percent}
 			                }, {
 			                    name: 'TG',
 			                    color: 'darkblue',
 			                    y: #{chartBean.chartModelList.get(0).tg_percent},
+			                    url: '/gudmap/db/browseTgTablePage.jsf',
 			                    x: #{chartBean.chartModelList.get(0).tg_gene_percent}
 			                }, {
 			                    name: 'OPT',
 			                    color: 'lightgreen',
 			                    y: #{chartBean.chartModelList.get(0).opt_percent},
+			                    url: '/gudmap/db/browseOptTablePage.jsf',
 			                    x: #{chartBean.chartModelList.get(0).tg_gene_percent}
 			                }, {
 			                    name: 'Sequence',
 			                    color: 'red',
 			                    y: #{chartBean.chartModelList.get(0).sequence_percent},
+			                    url: '/gudmap/db/browseSeqSampleTablePage.jsf',
 			                    x: 0
 			                },{
 			                    name: 'Microarray',
 			                    color: 'grey',
 			                    y: #{chartBean.chartModelList.get(0).microarray_percent},
+			                    url: '/gudmap/db/browseMicSampleTablePage.jsf',
 			                    x:0
 			                }]
 			            }]

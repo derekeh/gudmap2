@@ -30,6 +30,7 @@
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
 		
+	<div id="db_form_wrapper">
 	
 		<h:form id="dataform" style="display:table-row;">
 	    <h:inputHidden id="solrInput" value="#{solrTissueSummaryBean.solrInput}" />
@@ -127,6 +128,8 @@
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrTissueSummaryBean.gotopage}" />
 		</h:form> 
+		
+		</div>
 	</ui:define>
 </ui:composition>
 </html>

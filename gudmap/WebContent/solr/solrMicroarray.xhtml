@@ -31,6 +31,8 @@
 	<!-- can use relative links on html tags -->
 		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 
+<div id="db_form_wrapper">
+
 		<h:form  id="dataform" style="display:table-row;">
 	    <h:inputHidden id="solrInput" value="#{solrMicroarrayBean.solrInput}" />
 	     <h:dataTable value="#{solrMicroarrayBean.dataList}" var="u"
@@ -217,7 +219,7 @@
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrMicroarrayBean.gotopage}" />
 		</h:form> 	
-
+	</div>
 	</ui:define>			
 
 </ui:composition>

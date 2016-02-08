@@ -30,7 +30,8 @@
 	<!-- can use relative links on html tags -->
 		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 	
-
+	<div id="db_form_wrapper">
+	
 		<h:form id="dataform" style="display:table-row;">
 	    <h:inputHidden id="solrInput" value="#{solrSequencesBean.solrInput}" />
 	    
@@ -176,7 +177,7 @@
     		</h:column>
     		
  		</h:dataTable> 
-			<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
+		<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>	
  		
 	</h:form>	
 	
@@ -230,6 +231,8 @@
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
 			<h:inputText id="gotopage" value="#{solrSequencesBean.gotopage}" />
 		</h:form> 	
+		
+		</div>
 		
 	</ui:define>			
 
