@@ -36,6 +36,20 @@
 	<h:outputScript library="scripts" name="jquery.gallerie.js"></h:outputScript>
 
 
+	<h:form  id="dataform">
+		    <h:inputHidden id="solrInput" value="#{solrImagesBean.solrInput}" />
+		<div id="gallery">
+	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
+	
+	    	<a href="#{u.clickFilePath}">
+	    	<img title="#{u.accessionId} #{u.stage}" src="#{u.thumbnailPath}"/>
+	    	</a>
+	    </c:forEach>
+		</div>	     
+    </h:form>
+   	<h:form id="pagingform" />  
+
+
 <script type="text/javascript">
 $(document).ready(function(){
     $('#gallery').gallerie(
@@ -86,22 +100,10 @@ $(document).ready(function(){
 	<!-- can use relative links on html tags -->
 
 
-	<h:form  id="dataform">
-<div id="gallery">
-	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
-	
-	    	<a href="#{u.clickFilePath}">
-	    	<img title="#{u.accessionId} #{u.stage}" 
-	    		src="#{u.thumbnailPath}"
-	    		onmouseout="this.src='#{u.thumbnailPath}'"
-	    		onmouseover="this.src='#{u.filePath}'"/>
-	    	</a>
-	    </c:forEach>
-</div>	    
-    </h:form>
-    
-   	<h:form id="pagingform" /> 
-	<h:form id="form2" /> 
+   
+   
+
+
 	
    	
 

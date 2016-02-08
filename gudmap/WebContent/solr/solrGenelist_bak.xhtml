@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr Analysis Data
+	</ui:define>
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>			
+	</ui:define>
+	
+	<ui:define name="content">
+	#{solrAnalysisBean.init('')}
+	
+	<!-- can use relative links on html tags -->
+	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
+
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.js"></h:outputScript>
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></h:outputScript>
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></h:outputScript>
+	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/jquery.jstree.js"></h:outputScript> 
+	
+<script type="text/javascript">
+//<![CDATA[
+jQuery(document).ready(function(){
+	jQuery("#analysis_tree").jstree({ 	
+		"json_data" : {
+		    "progressive_render" : true,
+		    "ajax" : {
+		    	"url" : "../resources/scripts/solrgenelist.json"
+		    }
+		},	
+		"types": {
+            "types": {
+                "Role": {
+                },
+            }
+		},
+        themes : {
+			theme : "classic",
+			dots  : true,
+			icons : false,
+			url   : "../resources/scripts/jstree_pre1.0_fix_1/themes/gudmap/style.css"
+		},	
+		plugins : ["types", "themes", "json_data", "ui", "cookies"]												
+
+	})  		
+	.delegate("a", "click", function(e, data) {
+		//alert("click node");
+		var node = jQuery.jstree._focused().get_selected();
+		jQuery.jstree._focused( ).save_selected( ) ;
+		
+		var result = node.attr("id");
+
+		
+		jQuery.cookie("save_selected", result);
+		if (result <= '0'){
+			jQuery.jstree._focused().toggle_node(node);
+			return;
+		}
+		
+		var selectedNode =  document.getElementById('dataform:analysisitem');
+		selectedNode.value = result;
+
+//		selectedNode =  document.getElementById('dataform:genelist_crumb');
+//		selectedNode.value = node.attr("crumb");
+					
+		selectedNode =  document.getElementById('dataform:analysis_mastertableId');
+		selectedNode.value = node.attr("table");
+
+		
+		var dummyLink = document.getElementById("analysisLink");
+		if (document.createEvent)
+		{
+		    var evObj = document.createEvent('MouseEvents');
+		    evObj.initEvent( 'click', true, false );
+		    dummyLink.dispatchEvent(evObj);
+		}
+		else if (document.createEventObject)
+		{
+		    dummyLink.fireEvent('onclick');
+		}
+
+	});
+  		
+});
+
+function getCrumb(node){
+	alert("into crumb");
+	
+	var path =  jQuery.jstree._focused().get_parent(node, false);
+	alert("path = " + path);	
+	
+}	
+
+$(document).ready(function(){
+	$("#expanderHead").click(function(){
+		$("#expanderContent").slideToggle();
+		if ($("#expanderSign").text() == "(more...)"){
+			$("#expanderSign").html("(less...)")
+		}
+		else {
+			$("#expanderSign").text("(more...)")
+		}
+	});
+});
+
+	
+//]]>
+</script>
+
+
+	<h:form id="dataform">
+	<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
+	<div id="expanderContent" style="display:none">
+	
+	    <p>They are spilt into those lists that have been included in publications and those that are unpublished. Lists are further sub-divided by sample datasets, microarray chip platform and developmental stage. For more info, including protocols, please see the <a href="http://www.gudmap.org/Help/Analysis_Help.html" style="font-size:inherit;">analysis help page</a>.</p>
+	    <p>The number of microarray probes/genes in a list is displayed in brackets. Hover over a list name for more detailed information, or click on a list (bold) to view the lists in heatmap view.</p>
+	
+		<p>Protocols for published gene lists can be found in their respective publications:
+		<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19000842" style="font-size:inherit;">Brunskill et al. (2008)</a> Pubmed: 19000842<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19501082" style="font-size:inherit;">Georgas et al. (2009)</a> Pubmed: 19501082<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/21386911" style="font-size:inherit;" >Thiagarajan et al. (2011)</a> Pubmed: 21386911<br/>
+		</p>
+		<span class="collaps2"></span>
+	</div>
+	
+	 <h:inputText id="analysisitem" value="#{solrAnalysisBean.selectedItem}" style="display:none; visibility: hidden; "/>
+	 <h:inputText id="analysis_mastertableId" value="#{solrAnalysisBean.masterTableId}" style="display:none; visibility: hidden; "/>
+
+		<div id="analysis_tree" class="demo" style="overflow: auto; align: left; height: 540px;">
+		</div>
+
+	
+	<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{solrAnalysisBean.findNode}" actionListener="#{solrAnalysisBean.processAction}" >
+	</t:commandLink>
+	<t:commandLink id="createChildren" forceId="true" style="display:none" action="#{solrAnalysisBean.createChildren}"/> 
+		
+	</h:form> 
+
+
+	</ui:define>
+</ui:composition>
+</html>
