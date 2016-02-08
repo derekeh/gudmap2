@@ -5,11 +5,16 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.gudmap.globals.Globals;
+import org.gudmap.queries.solr.SolrQueries;
+
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +25,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 @Named(value="solrFilter")
 @SessionScoped
@@ -33,6 +42,7 @@ public class SolrFilter implements Serializable {
 	private String geneValue;
 	private Date fromDateValue;
 	private Date toDateValue;
+	private ArrayList<String> geneValues;
 	private ArrayList<String> speciesValues;
 	private ArrayList<String> sexValues;	
 	private ArrayList<String> assayTypeValues;	
@@ -46,6 +56,9 @@ public class SolrFilter implements Serializable {
 	private boolean showFilter = false;
 	private int filterWidth = 300;
 	
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet result;
 	
 	@Inject
    	private ParamBean paramBean;
@@ -157,6 +170,7 @@ public class SolrFilter implements Serializable {
 	public Map<String,String> getSourceList(){
 		
 		Map<String,String> sourcemap = new LinkedHashMap<String,String>();
+		sourcemap.put("---clear---", "clear");
 
 		Map<String, String> map =  paramBean.getSourcelist(); 
 	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
@@ -171,7 +185,10 @@ public class SolrFilter implements Serializable {
 		return sourceValues;
 	}	
 	public void setSourceValues(ArrayList<String> val){
-		this.sourceValues = val;
+		if (val.contains("clear"))
+			this.sourceValues.clear();
+		else
+			this.sourceValues = val;
 
 	}
 
@@ -185,6 +202,32 @@ public class SolrFilter implements Serializable {
 		return "";
 	}
 
+	public Map<String,String> getGeneList(){
+		
+		Map<String,String> genemap = new LinkedHashMap<String,String>();
+
+		Map<String, String> map =  new LinkedHashMap<String, String>(); 
+		map.put("Anchor", "anchor");
+		map.put("Marker", "marker");
+			
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+	        String key = (String)pair.getKey();
+	        String val = (String)pair.getValue();
+	        genemap.put(key, val);
+		}
+
+		return genemap;
+	}	
+		
+	public ArrayList<String> getGeneValues(){
+		return geneValues;
+	}	
+	public void setGeneValues(ArrayList<String> val){
+		geneValues = val;
+	}	
+	
 	public Map<String,String> getSpeciesList(){
 		
 		Map<String,String> speciesmap = new LinkedHashMap<String,String>();
@@ -269,7 +312,10 @@ public class SolrFilter implements Serializable {
 	    while (it.hasNext()) {
 	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 	        String key = (String)pair.getKey();
-	        specimentypemap.put(key, key);
+	        String val = (String)pair.getKey();	        
+	        if (key.contains("mouse marker strain"))
+	        	val = '"' + val + '"';
+	        specimentypemap.put(key, val);
 		}
 
 		return specimentypemap;
@@ -307,23 +353,27 @@ public class SolrFilter implements Serializable {
 		
 		Map<String,String> carnegiestagemap = new LinkedHashMap<String,String>();
 
-		Map<String, String> map =  new LinkedHashMap<String, String>(); 
-		for (int i = 10; i < 24; i++){
-			map.put("CS"+i, "CS"+i);
-		}
-		for (int j = 10; j < 24; j++){
-			String s = "Fetal Stage - " + j + "th week post-fertilization";
-			map.put(s, s);
-		}
-//		Map<String, String> map =  paramBean.getCarnegiestagelist(true);
 
-		Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-			carnegiestagemap.put(key, key);
-		}
+		String queryString=SolrQueries.CARNEGIE_STAGES;
+		try
+		{
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next()){
+				String key = result.getString(1);
+				String val = result.getString(1);
+				if (key.contains("Fetal")){
+			        val = '"' + val + '"';					
+				}
+				carnegiestagemap.put(key, val);
+			}
 
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
 		return carnegiestagemap;
 	}	
 	public ArrayList<String> getCarnegieStageValues(){
@@ -388,7 +438,7 @@ public class SolrFilter implements Serializable {
 			String filter = "[" + df.format(fromDateValue) + " TO * ]";
 			filters.put("DATE",filter);				
 		}
-//		sourceValues = getSourceValues();
+
 		if (sourceValues != null && !sourceValues.isEmpty()) {
 			if (sourceValues.size() == 1){
 				filters.put("SOURCE",sourceValues.get(0));
@@ -401,22 +451,16 @@ public class SolrFilter implements Serializable {
 				filters.put("SOURCE",filter);
 			}
 		}
-//		if (sourceValues != null && !sourceValues.isEmpty()) {
-//			ArrayList<String> al = new ArrayList<String>();
-//			for (String item : sourceValues) 
-//				al.add("SOURCE:"+item);
-//			filters2.add(al);
-//		}
 
-		if (speciesValues != null && !speciesValues.isEmpty()) {
-			if (speciesValues.size() == 1){
-				filters.put("SPECIES","'" + speciesValues.get(0) + "'");
+		if (geneValues != null && !geneValues.isEmpty()) {
+			if (geneValues.size() == 1){
+				filters.put("GENE_TYPE",geneValues.get(0));
 			}
 			else {
 				String filter = "(";
-				for (String item : speciesValues) filter += item + " OR ";
+				for (String item : geneValues) filter += item + " OR ";
 				filter = filter.substring(0, filter.length()-3) + ")";
-				filters.put("SPECIES",filter);
+				filters.put("GENE_TYPE",filter);
 			}
 		}
 		
@@ -480,6 +524,18 @@ public class SolrFilter implements Serializable {
 			}
 		}
 
+		if (speciesValues != null && !speciesValues.isEmpty()) {
+			if (speciesValues.size() == 1){
+				filters.put("SPECIES",speciesValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : speciesValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("SPECIES",filter);
+			}
+		}
+		
 		if (expressionValue != null && !expressionValue.isEmpty() && anatomy != null && !anatomy.isEmpty()) {
 				if (expressionValue.contains("detected"))
 					filters.put("PRESENT", anatomy);
@@ -495,6 +551,7 @@ public class SolrFilter implements Serializable {
 		filters = new HashMap<String,String>();
 		
 		geneValue = "";
+		geneValues = new ArrayList<String>();			
 		sourceValues = new ArrayList<String>();			
 		assayTypeValues = new ArrayList<String>();
 		speciesValues = new ArrayList<String>();
@@ -554,6 +611,12 @@ public class SolrFilter implements Serializable {
     	case "CARNEGIE_STAGE":
     		carnegieStageValues.clear();
     		break;
+    	case "ANCHOR":
+    		geneValues.clear();
+    		break;
+    	case "MARKER":
+    		geneValues.clear();
+    		break;
     	default:
     		break;
     	}
@@ -561,6 +624,5 @@ public class SolrFilter implements Serializable {
     	filters.clear();
     	refresh();
 	}	
-    
-}
 
+}

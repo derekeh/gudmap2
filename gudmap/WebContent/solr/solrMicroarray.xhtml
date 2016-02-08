@@ -24,14 +24,14 @@
 
 <!-- 	comment out the following section if you don't want the filter menu displayed -->	
 	<ui:define name="filters">	
-		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 	</ui:define>		
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 
-		<h:form id="dataform">
+		<h:form  id="dataform" style="display:table-row;">
 	    <h:inputHidden id="solrInput" value="#{solrMicroarrayBean.solrInput}" />
 	     <h:dataTable value="#{solrMicroarrayBean.dataList}" var="u"
 	    		styleClass="db_order-table"
@@ -154,16 +154,17 @@
     				Submission Date
 				</f:facet>
     				#{u.submission_date}
-    		</h:column>
-<ui:remove>
-     		<h:column>
+    		</h:column> 
+    		
+ 			<h:column >
     			<f:facet name="header">
-    				<ui:include src="/snippets/g_ColumnSelectionButton.xhtml"></ui:include>
-				</f:facet>
+					<pr:commandButton value="Col" id="showdialog1"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+    			</f:facet>
     		</h:column>
-</ui:remove>  		
   
  		</h:dataTable> 
+			<ui:include src="/snippets/g_micSampleCols.xhtml"></ui:include>
+ 		
     </h:form> 
       	
 	<h:form id="pagingform">	

@@ -433,6 +433,10 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 				String synonyms = doc.getFieldValue("SYNONYMS").toString();	
 				model.setSynonyms(synonyms);
 			}
+			if (doc.containsKey("SPECIES")){
+				String species = doc.getFieldValue("SPECIES").toString();	
+				model.setSpecies(species);
+			}
 			
 			if (doc.containsKey("GENE") && doc.containsKey("MGI_GENE_ID")){
 				String gene = doc.getFieldValue("GENE").toString();		

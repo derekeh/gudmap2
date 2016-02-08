@@ -7,6 +7,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
+import org.gudmap.dao.ArrayDao;
 import org.gudmap.models.MasterTableInfo;
 import org.gudmap.impl.PagerImpl;
 import org.json.simple.JSONObject;
@@ -48,13 +49,15 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     private String genelistId;// = "1493";
 
     private ArrayList<String> probeIds; 
+    private ArrayDao arrayDAO;
     
     @Inject
    	protected SessionBean sessionBean;    
     
     public MicroarrayHeatmapBean() {
     	
-       	super(1000,10,null,true);   	
+       	super(1000,10,null,true);   
+       	arrayDAO = new ArrayDao();
     }
     
 	public MicroarrayHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
@@ -129,8 +132,19 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
     }
     
    
+//	public String getGeneList(){
+//		String genelist = gene;
+//		return genelist;
+//	}
 	public String getGeneList(){
-		String genelist = gene;
+		String genelist = "";
+		if (genelistId != null) 
+			genelist = arrayDAO.retrieveGenelist(genelistId);
+//		else if (listOfGenes != null) 
+//			genelist = DbUtility.retrieveGenelistFromGenes(listOfGenes);
+		else
+			genelist = gene;
+		
 		return genelist;
 	}
 	

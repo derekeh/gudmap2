@@ -47,7 +47,7 @@
 		</h:selectOneMenu>
 
 		<h:outputLink id="topGene" target="_blank" 
-					value ="http://toppgene.cchmc.org/CheckInput.action?training_set=#{MasterTableBrowseBean.geneList}&amp;type=HGNC&amp;query=TOPPFUN">
+					value ="http://toppgene.cchmc.org/CheckInput.action?training_set=#{microarrayHeatmapBean.geneList}&amp;type=HGNC&amp;query=TOPPFUN">
 			<h:graphicImage library="images/display" name="ToppFun_Button.png" width="60" style="padding-right:10px;"/> 		
 		</h:outputLink>
 		
@@ -77,7 +77,7 @@
 </table>
 		<h:panelGroup rendered="#{microarrayHeatmapBean.dataAvailable}">
 			<div id="annotations" style='width:1100px; height:100px;'></div>	
-			<div id="chart" style='overflow:auto; width:1100px; height:400px;' ></div>
+			<div id="chart" style='overflow:auto; height:400px;' ></div>
 		</h:panelGroup>
 		
 <ui:remove>			

@@ -62,10 +62,19 @@ public class SolrDao {
 				doc.addField("EMAPS", result.getString(19)); 
 				doc.addField("SOURCE", result.getString(20)); 
 				doc.addField("PI_NAME", result.getString(21)); 
-				doc.addField("LAB", result.getString(22)); 
-				doc.addField("ANCHOR", result.getString(23)); 
-				doc.addField("MARKER", result.getString(24)); 
-				
+				doc.addField("LAB", result.getString(22));
+				int anchor = result.getInt(23);
+				if (anchor == 1)
+					doc.addField("ANCHOR", "anchor"); 
+				else
+					doc.addField("ANCHOR", ""); 
+				int marker = result.getInt(24);
+				if (marker == 1)
+					doc.addField("MARKER", "marker"); 
+				else
+					doc.addField("MARKER", ""); 
+				doc.addField("GENE_TYPE", result.getString(25));
+				doc.addField("SPECIES", result.getString(26));				
 				docs.add(doc);
 			}
 		}
@@ -194,18 +203,20 @@ public class SolrDao {
 				doc.addField("TISSUE", result.getString(49)); 					
 				doc.addField("TISSUE_EMAPS", result.getString(50)); 					
 				doc.addField("TISSUE_EMAPS_ID", result.getString(51)); 					
-				doc.addField("SPECIES", result.getString(52)); 					
-				doc.addField("PRESENT", result.getString(53)); 
-				doc.addField("DIR_PRESENT", result.getString(54)); 
-				doc.addField("INF_PRESENT", result.getString(55)); 
-				doc.addField("NOT_DETECTED", result.getString(56)); 
-				doc.addField("INF_NOT_DETECTED", result.getString(57)); 
-				doc.addField("UNCERTAIN", result.getString(58)); 
-				doc.addField("EMAPS", result.getString(59)); 
-				doc.addField("EXP_NOTES", result.getString(60)); 	
-				doc.addField("EXPRESSION_NOTES", result.getString(61)); 	
-				doc.addField("ANNOTATION", result.getString(62)); 				
-				doc.addField("TISSUE_TYPE", result.getString(63)); 
+				doc.addField("SPECIES", result.getString(52)); 
+				doc.addField("GENE_TYPE", result.getString(53)); 
+				
+				doc.addField("PRESENT", result.getString(54)); 
+				doc.addField("DIR_PRESENT", result.getString(55)); 
+				doc.addField("INF_PRESENT", result.getString(56)); 
+				doc.addField("NOT_DETECTED", result.getString(57)); 
+				doc.addField("INF_NOT_DETECTED", result.getString(58)); 
+				doc.addField("UNCERTAIN", result.getString(59)); 
+				doc.addField("EMAPS", result.getString(60)); 
+				doc.addField("EXP_NOTES", result.getString(61)); 	
+				doc.addField("EXPRESSION_NOTES", result.getString(62)); 	
+				doc.addField("ANNOTATION", result.getString(63)); 				
+				doc.addField("TISSUE_TYPE", result.getString(64)); 
  	
 				
 				docs.add(doc);
@@ -545,7 +556,8 @@ public class SolrDao {
 				doc.addField("EMAPS", result.getString(47)); 
 				doc.addField("EXPRESSION_NOTES", result.getString(48)); 
 				doc.addField("EXP_NOTES", result.getString(49)); 
-				doc.addField("SPECIES", result.getString(49)); 
+				doc.addField("SPECIES", result.getString(50)); 
+				doc.addField("GENE_TYPE", result.getString(51)); 
 				
 				docs.add(doc);
 			}

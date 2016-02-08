@@ -5,19 +5,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.apache.solr.client.solrj.SolrServerException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.gudmap.utils.SolrUtil;
 import org.gudmap.globals.Globals;
 import org.gudmap.models.GeneStripModel;
 import org.gudmap.models.MasterTableInfo;
 import org.gudmap.models.submission.ImageInfoModel;
 import org.gudmap.queries.genestrip.GeneStripQueries;
-import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.submission.IshSubmissionQueries;
 import org.gudmap.utils.Utils;
 
@@ -31,7 +33,7 @@ public class SolrGeneStripAssembler {
 	private Connection repeatCon=null;
 	private PreparedStatement repeatPs=null;
 	private ResultSet repeatResult=null;
-	
+	private DataSource ds=null;	
 	
 	private GeneStripModel model;
 //	private SolrUtil solrUtil;
@@ -39,6 +41,14 @@ public class SolrGeneStripAssembler {
 
 	public SolrGeneStripAssembler() {
 //		solrUtil = new SolrUtil();
+		
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	
 	}
 	
 //	public int getCount(String solrInput, HashMap<String,String> filterlist) {
@@ -111,13 +121,13 @@ public class SolrGeneStripAssembler {
 //				ishRange = (result.getString("ishRange"));
 //				species = (result.getString("species"));
 			model.setExpressionProfile(buildExpressionProfile(gene,geneId));
-			model.setMicroarrayProfile(buildMicroarrayProfile(geneId));
+//			model.setMicroarrayProfile(buildMicroarrayProfile(geneId));
 //				geneStripModel.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 // 			    geneStripModel.setOmimCount(Integer.parseInt(result.getString("omim")));
 			model.setImageUrl(getRepresentativeImage(geneId));
 //				geneStripModel.setSelected(false);
 			model.setGene_id(geneId);
-//				geneStripModel.setSpecies(species);
+//			model.setSpecies(doc.getFieldValue("SPECIES").toString());
 			
 			
 			geneIds.add(geneId);
@@ -140,7 +150,9 @@ public class SolrGeneStripAssembler {
 		RET=getExpressionHtmlCode(insituExprofile,interestedAnatomyStructures,geneSymbol,geneId);
 		return RET;
 	}
-
+	
+	
+/*
 	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String geneId) {
 		// added by xingjun - 08/05/2009 - its possible values is null
 		if (values == null || values.length == 0) {
@@ -172,6 +184,36 @@ public class SolrGeneStripAssembler {
     	code += "prepareGraph(geneSymbol,val,browseLink,focusGroups); </script>";
     	return code;
 	}
+*/
+	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String geneId) {
+		if (values == null || values.length == 0) {
+			return "";
+		}
+		String url = "browseGeneListTablePage.jsf?expressionGene=" + symbol + "&amp;focusGroup=";
+		//String url = "browseGeneListTablePage.jsf?expressionGene=" + geneId + "&amp;focusGroup=";
+		String focusGroup="";
+		String imageSource="";
+		String xprcode = "<table class='db_expression_table'><tr>";
+		for(int i=0;i<focusGroups.length;i++) {
+			xprcode+="<td>";
+			focusGroup=Globals.focusGroups[Integer.parseInt(focusGroups[i])];
+			if(values[i]==0){
+				imageSource="<img class='db_expression_image' src='/gudmap/resources/images/expression_images/questionmark.png' height='24'  title='"+focusGroup+" [Expression Not Examined]'>";
+			}
+			else if (values[i]>0){
+				imageSource="<a href='"+url+focusGroups[i]+"'><img class='db_expression_image' src='/gudmap/resources/images/expression_images/checkmark_"+(i+1)+".png' height='24'  title='"+focusGroup+" [Expression Present]'></a>";
+			}
+			else{
+				imageSource="<a href='"+url+focusGroups[i]+"'><img class='db_expression_image' src='/gudmap/resources/images/expression_images/cancel_"+(i+1)+".png' height='24'  title='"+focusGroup+" [Expression Not Detected]'></a>";
+			}
+			
+			
+			xprcode+=imageSource+"</td>";
+		}
+		xprcode+="</tr></table>";
+		
+    	return xprcode;
+	}
 	
 	private double[] getInsituExprofile(String geneId) {
 		if (geneId == null || geneId.equals("")) {
@@ -185,19 +227,16 @@ public class SolrGeneStripAssembler {
 		// array to store expression profiles
 		// 1: present; -1: not detected; 0: not examined/uncertain
 		// need to include expression profile not related to given structures - others
-//		double[] expressionProfiles = new double[analen+1];
 		double[] insituExprofile = new double[analen];
 		ArrayList<String> componentsOfAllGivenStructures = new ArrayList<String>();
 					
 			/** calculate expression profile for all given structures */
 			for (int i=0;i<analen;i++) {
-	//			System.out.println("structure: " + i);
-				// get component ids
-				String[] componentIds = (String[])Globals.getEMAPID().get(interestedAnatomyStructures[i]);
+				// get component ids new anatomy
+				String[] componentIds = (String[])Globals.getEMAPAID().get(interestedAnatomyStructures[i]);
 				
 				// put component ids into componentIdsInAll arrayList
 				int eLen = componentIds.length;
-	//			System.out.println("component id number: " + eLen);
 				for (int j=0;j<eLen;j++) {
 					componentsOfAllGivenStructures.add(componentIds[j]);
 				}
@@ -265,9 +304,14 @@ public class SolrGeneStripAssembler {
 		componentString = componentString.substring(0, (componentString.length()-2)) + ")";
 		
 		// assemble full component ids string including child nodes as well as parent component ids
-		String childQuery = GeneStripQueries.FIND_CHILD_NODE;
+		/*String childQuery = GeneStripQueries.FIND_CHILD_NODE;
 		componentClause += childQuery.replaceAll("WHERE ANCES_ATN.ATN_PUBLIC_ID IN", 
-		("WHERE ANCES_ATN.ATN_PUBLIC_ID IN "+ componentString)) + ")";
+		("WHERE ANCES_ATN.ATN_PUBLIC_ID IN "+ componentString)) + ")";*/
+		
+		//NEW ANATOMY
+		String childQuery = GeneStripQueries.FIND_CHILD_NODE_EMAPA;
+		componentClause += childQuery.replaceAll("WHERE ANO_PUBLIC_ID IN ", 
+    			("WHERE ANO_PUBLIC_ID IN  "+ componentString)) + ")";
 		
 		
 		// use different query string according to what expressions we are looking for
@@ -278,9 +322,11 @@ public class SolrGeneStripAssembler {
 		else {
 			queryString = expressionQuery.replace("AND EXP_COMPONENT_ID NOT IN", componentClause);
 		}
+		
+		
 		try
 		{
-			repeatCon = Globals.getDatasource().getConnection();
+			repeatCon = ds.getConnection();
 			repeatPs = repeatCon.prepareStatement(queryString); 
 			repeatPs.setString(1, geneId);
 			repeatResult =  repeatPs.executeQuery();

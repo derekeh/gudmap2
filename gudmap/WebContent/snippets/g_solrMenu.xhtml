@@ -111,7 +111,29 @@
 <ui:remove> 
          <h:outputLabel value="Tutorials (#{solrTreeBean.tutorialCount})" />
 </ui:remove>
-
+<ui:remove>
+<h:panelGroup id="includeContainer">
+		<h:panelGroup rendered="#{solrTreeBean.page == '/db/solrInsitu.xhtml'}">
+			<ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
+			<pr:commandButton value="Column Selection" id="showdialog1"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+		</h:panelGroup>
+	
+		<h:panelGroup  rendered="#{solrTreeBean.page == '/solr/solrMicroarray.xhtml'}">
+			<ui:include src="/snippets/g_micSampleCols.xhtml"></ui:include>
+			<pr:commandButton value="Column Selection" id="showdialog2"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+		</h:panelGroup>	
+		
+		<h:panelGroup  rendered="#{solrTreeBean.page == '/solr/solrSequences.xhtml'}">
+			<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
+			<pr:commandButton value="Column Selection" id="showdialog3"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+		</h:panelGroup>
+		
+		<h:panelGroup  rendered="#{solrTreeBean.page == '/db/solrGeneStrip.xhtml'}">
+			<ui:include src="/snippets/g_genestripCols.xhtml"></ui:include>
+			<pr:commandButton value="Column Selection" id="showdialog4"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+		</h:panelGroup>
+</h:panelGroup>
+</ui:remove>
 	  
 	  </h:panelGrid>
 	  

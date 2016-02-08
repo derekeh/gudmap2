@@ -8,11 +8,13 @@ import java.util.ArrayList;
 
 
 
+
 import org.gudmap.globals.Globals;
 import org.gudmap.models.GenelistTreeInfo;
 import org.gudmap.models.GenelistRnaSeqTreeInfo;
 import org.gudmap.models.submission.GeneModel;
 import org.gudmap.queries.array.ArrayQueries;
+import org.gudmap.queries.array.MicroarrayHeatmapQueries;
 
 public class ArrayDao {
 	
@@ -77,6 +79,7 @@ public class ArrayDao {
 				ps = con.prepareStatement(queryString); 
 			else {
 				queryString += " " + whereclause;
+				ps = con.prepareStatement(queryString); 
 			}
 			result =  ps.executeQuery();
 
@@ -181,5 +184,50 @@ public class ArrayDao {
 		}
         return genelist;
 	}	
+
+	public String retrieveGenelist(String genelistId) {
+
+		if (genelistId == null || genelistId.equals("")) {
+		    return null;
+		}
+		
+		String clusterIdMark = "_@_!_";
+		String glstId = genelistId;
+		String clstId = null;
+		int i = genelistId.indexOf(clusterIdMark);
+		if (i >= 0) glstId = genelistId.substring(0, i);
+		if (i >= 0) clstId = genelistId.substring(i+clusterIdMark.length());
+		
+		String genelist = "";
+		String queryString = "";
+	    if (clstId == null) { // only genelist id passed in
+	    	queryString = MicroarrayHeatmapQueries.GET_ANALYSIS_GENELIST;
+	    } 
+
+		try{
+			
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+		    if (clstId == null)
+		    	ps.setInt(1, Integer.parseInt(glstId));
+		    else
+		    	ps.setInt(1, Integer.parseInt(clstId));
+			
+			ps.setString(1, genelistId);
+			result =  ps.executeQuery();
+
+			while (result.next()) { // it's possible it's expressed in more than one component 
+				genelist += result.getString(1) + ",";
+			}
+			genelist = genelist.substring(0, genelist.length()-1);
+			
+		} 
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return genelist;
+	}
+	
 	
 }

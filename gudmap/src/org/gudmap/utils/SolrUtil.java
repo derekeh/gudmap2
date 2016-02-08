@@ -1085,25 +1085,25 @@ public class SolrUtil {
 	        
 	        
 	      	parameters.addField("ID");
-        	parameters.addField("NAME");
-        	parameters.addField("DESCRIPTION");
-	      	parameters.addField("PLATFORM");
-        	parameters.addField("SAMPLE");
-        	parameters.addField("EMAP");
-	      	parameters.addField("MA_DATASET");
-        	parameters.addField("MA_DATASET_ID");
-        	parameters.addField("TOT_ENTITIES");
-	      	parameters.addField("TOT_GENES");
-        	parameters.addField("AUTHOR");
-        	parameters.addField("DATE");
-	      	parameters.addField("STAGE");
-        	parameters.addField("SEX");
-        	parameters.addField("GENELIST_TYPE");
-        	parameters.addField("ENTITIES");
-        	parameters.addField("GENE");
-	      	parameters.addField("GUDMAP_IDS");
-        	parameters.addField("REF");
-        	parameters.addField("EMAP_TERM");
+//        	parameters.addField("NAME");
+//        	parameters.addField("DESCRIPTION");
+//	      	parameters.addField("PLATFORM");
+//        	parameters.addField("SAMPLE");
+//        	parameters.addField("EMAP");
+//	      	parameters.addField("MA_DATASET");
+//        	parameters.addField("MA_DATASET_ID");
+//        	parameters.addField("TOT_ENTITIES");
+//	      	parameters.addField("TOT_GENES");
+//        	parameters.addField("AUTHOR");
+//        	parameters.addField("DATE");
+//	      	parameters.addField("STAGE");
+//        	parameters.addField("SEX");
+//        	parameters.addField("GENELIST_TYPE");
+//        	parameters.addField("ENTITIES");
+//        	parameters.addField("GENE");
+//	      	parameters.addField("GUDMAP_IDS");
+//        	parameters.addField("REF");
+//        	parameters.addField("EMAP_TERM");
 
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
@@ -1113,7 +1113,7 @@ public class SolrUtil {
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
-       	
+	        parameters.setRows(Integer.MAX_VALUE); 
         	
             QueryResponse qr = genelists_server.query(parameters);
             sdl = qr.getResults();    
@@ -1383,7 +1383,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-//		            if (microarray_schema.contains(pair.getKey()))
+		            if (samples_schema.contains(pair.getKey()))
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }
@@ -1922,7 +1922,8 @@ public class SolrUtil {
         	parameters.addField("THUMBNAIL_PATH");
            	parameters.addField("IMAGE_CLICK_PATH");
            	parameters.addField("IMAGE_TYPE");
-
+           	parameters.addField("SPECIES");
+           	
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
@@ -1935,16 +1936,16 @@ public class SolrUtil {
 	        QueryResponse qr = image_server.query(parameters);
             sdl = qr.getResults();
             
-            SolrDocumentList docs = new SolrDocumentList();
-            ArrayList<String> genes = new ArrayList<String>();
-            for(SolrDocument doc:sdl){
-            	if (!genes.contains(doc.getFieldValue("GUDMAP_ID").toString())){
-            		genes.add(doc.getFieldValue("GUDMAP_ID").toString());
-            		docs.add(doc);
-            		
-            	}
-            }
-            sdl = docs;
+//            SolrDocumentList docs = new SolrDocumentList();
+//            ArrayList<String> genes = new ArrayList<String>();
+//            for(SolrDocument doc:sdl){
+//            	if (!genes.contains(doc.getFieldValue("GUDMAP_ID").toString())){
+//            		genes.add(doc.getFieldValue("GUDMAP_ID").toString());
+//            		docs.add(doc);
+//            		
+//            	}
+//            }
+//            sdl = docs;
         }
         catch (SolrServerException e)
         {
@@ -2019,8 +2020,10 @@ public class SolrUtil {
 	    schema.add("LAB");
 	    schema.add("ANCHOR");
 	    schema.add("MARKER");   
-	    
-	    return schema;
+		schema.add("GENE_TYPE"); 	    
+		schema.add("SPECIES"); 
+		
+		return schema;
      }
     
    public  Set<String> getMouseStrainsSchema() {
@@ -2108,6 +2111,7 @@ public class SolrUtil {
 		   schema.add("ANNOTATION");
 		   schema.add("TISSUE_TYPE");
 		   schema.add("SPECIES"); 
+		   schema.add("GENE_TYPE"); 
 		   
 	    return schema;
     }
@@ -2373,7 +2377,8 @@ public class SolrUtil {
 		    schema.add("EMAPS");
 		    schema.add("EXPRESSION_NOTES");
 		    schema.add("EXP_NOTES");
-//			schema.add("SPECIES"); 
+			schema.add("SPECIES"); 
+			schema.add("GENE_TYPE"); 
 			    
 			    return schema;
 	   }   
