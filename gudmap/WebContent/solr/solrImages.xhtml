@@ -27,76 +27,146 @@
 	</ui:define>		
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 		
+
+
+
 	
 	<ui:define name="content">
 		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 
-	<h:outputStylesheet library="css" name="gallerie.css"  />
-	<h:outputStylesheet library="css" name="gallerie-effects.css"  />
-	<h:outputScript library="scripts" name="jquery.gallerie.js"></h:outputScript>
+	<h:outputScript library="scripts/highslide" name="highslide-with-gallery.js"></h:outputScript> 
+<link rel="stylesheet" type="text/css" href="#{appRoot}/resources/scripts/highslide/highslide.css" />
 
 
+
+
+
+<div id="db_form_wrapper">
 	<h:form  id="dataform">
-		    <h:inputHidden id="solrInput" value="#{solrImagesBean.solrInput}" />
-		<div id="gallery">
-	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
-	
-	    	<a href="#{u.clickFilePath}">
-	    	<img title="#{u.accessionId} #{u.stage}" src="#{u.thumbnailPath}"/>
-	    	</a>
-	    </c:forEach>
-		</div>	     
-    </h:form>
-   	<h:form id="pagingform" />  
-
+ 
 
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#gallery').gallerie(
-    	wrapAround: true;
-	);
-});
-</script>	
-	
-<style>
-	
-	
-	#gallery {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	
-	#gallery > a {
-		margin: 15px;
-	}
-	
-	#gallery > a img {
-		border: 2px solid;
-		border-color: black;
-		border-radius: 5px;
-		opacity: 0.9;
-	
-		transition: all 500ms;
-		-webkit-transition: all 500ms;
-		-moz-transition: all 500ms;
-		-ms-transition: all 500ms;
-		-o-transition: all 500ms;
-		z-index: 1;
-		position: relative;
-	}
+//<![CDATA[
 
-	#gallery > a img:hover {
-		border-color: black;
-		opacity: 1.0;
-/*		transform: scale(1.5);
-		-webkit-transform: scale(1.5);
-		-moz-transform: scale(1.5);
-		-ms-transform: scale(1.5);
-		-o-transform: scale(1.5);*/
-		z-index: 10;
+hs.graphicsDir = '../resources/scripts/highslide/graphics/';
+hs.align = 'center';
+hs.transitions = ['expand', 'crossfade'];
+hs.outlineType = 'rounded-white';
+hs.fadeInOut = true;
+hs.numberPosition = 'caption';
+hs.dimmingOpacity = 0.75;
+hs.showCredits = false;
+hs.wrapperClassName = 'controls-in-heading';
+
+
+// Add the controlbar
+if (hs.addSlideshow) hs.addSlideshow({
+	//slideshowGroup: 'group1',
+	interval: 5000,
+	repeat: false,
+	useControls: true,
+//	fixedControls: 'fit',
+	fixedControls: false,
+	overlayOptions: {
+		opacity: .75,
+//		position: 'bottom center',
+		position: 'top right',
+		hideOnMouseOut: true
 	}
+});
+/*
+hs.graphicsDir = '../resources/scripts/highslide/graphics/';
+hs.align = 'center';
+hs.transitions = ['expand', 'crossfade'];
+hs.fadeInOut = true;
+hs.dimmingOpacity = 0.8;
+hs.outlineType = 'rounded-white';
+hs.captionEval = 'this.thumb.alt';
+hs.marginBottom = 105; // make room for the thumbstrip and the controls
+hs.numberPosition = 'caption';
+hs.showCredits = false;
+
+// Add the controlbar
+hs.addSlideshow({
+	//slideshowGroup: 'group1',
+	interval: 5000,
+	repeat: false,
+	useControls: true,
+	overlayOptions: {
+		className: 'text-controls',
+		position: 'bottom center',
+		relativeTo: 'viewport',
+		offsetY: -60
+	},
+	thumbstrip: {
+		position: 'bottom center',
+		mode: 'horizontal',
+		relativeTo: 'viewport'
+	}
+});
+*/
+//]]>
+</script>	
+
+
+		<h:inputHidden id="solrInput" value="#{solrImagesBean.solrInput}" />
+		<h:panelGroup>		    
+
+
+<div class="highslide-gallery">
+
+	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
+
+	    	<a id="#{u.sibling}" class="highslide" href="#{u.filePath}" 
+	    		onclick="return hs.expand(this, {slideshowGroup : #{u.group}})" >
+	    	<img width="75px" height="75px" src="#{u.thumbnailPath}" title="Click to view images for #{u.accessionId}"/>
+	    	</a>
+			<div class="highslide-heading" >
+				#{u.accessionId}
+	    	<a href="#{u.clickFilePath}">
+	    	<img width="20px" height="20px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
+	    	</a>
+	    	</div>			
+	    	<div class="highslide-caption">
+				#{u.accessionId}
+	    	<a href="#{u.clickFilePath}">
+	    	<img width="25px" height="25px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
+	    	</a>
+			</div>
+	    </c:forEach>
+</div>
+<div class="hidden-container">
+
+	    <c:forEach items="#{solrImagesBean.sublist}" var="u">
+   
+	    	<a class="highslide" href="#{u.filePath}" 
+	    		onclick="return hs.expand(this, {thumbnailId: '#{u.sibling}', slideshowGroup : #{u.group}})" >
+	    	</a>
+			<div class="highslide-heading">
+				#{u.accessionId}			
+	    	<a href="#{u.clickFilePath}">
+	    	<img width="20px" height="20px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
+	    	</a>	
+	    	</div>
+			<div class="highslide-caption">
+				#{u.accessionId}
+	    	<a href="#{u.clickFilePath}">
+	    	<img width="25px" height="25px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
+	    	</a>
+			</div>
+
+
+	    </c:forEach>
+</div>
+ 
+	    </h:panelGroup>		    
+    </h:form>
+    
+   	<h:form id="pagingform" />  
+</div>
+
 	
-	</style>	
+
 	<!-- can use relative links on html tags -->
 
 

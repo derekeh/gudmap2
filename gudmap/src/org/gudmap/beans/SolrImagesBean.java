@@ -60,6 +60,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 	private boolean showPageDetails = true;
    
 	private String geneId;
+	private List<ImageDetailModel> sublist;
     
     // Constructors -------------------------------------------------------------------------------
 
@@ -183,6 +184,10 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
     
+    public List<ImageDetailModel> getSublist(){
+    	return sublist;
+    }
+    
 	public List<ImageDetailModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();
@@ -202,6 +207,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 	private List<ImageDetailModel> formatTableData(SolrDocumentList sdl){
 		
 		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();
+		sublist = new ArrayList<ImageDetailModel>();
 		List<String> ids = new ArrayList<String>();
 		ImageDetailModel model = null;
 		int rowNum = sdl.size();
@@ -211,11 +217,12 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 			
 			if (doc.getFieldValue("GUDMAP_ID") != null){
 				String accessionId = doc.getFieldValue("GUDMAP_ID").toString();
-				if (!ids.contains(accessionId)){
 						
 					model = new ImageDetailModel();
 					if (doc.containsKey("GUDMAP_ID"))
-						model.setAccessionId(doc.getFieldValue("GUDMAP_ID").toString());
+						model.setAccessionId(accessionId);
+					if (doc.containsKey("IMAGE_ID"))
+						model.setOid(doc.getFieldValue("IMAGE_ID").toString());
 					if (doc.containsKey("GENE"))
 						model.setGeneSymbol(doc.getFieldValue("GENE").toString());
 					if (doc.containsKey("SPECIMEN_ASSAY_TYPE"))
@@ -236,13 +243,22 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 					if (doc.containsKey("SPECIES"))
 						model.setSpecies(doc.getFieldValue("SPECIES").toString());
 					
-					list.add(model);
-					ids.add(accessionId);
-				}
+					model.setGroup(accessionId.replace("GUDMAP:", ""));
+					model.setSibling(accessionId.replace(":", "_"));
+					
+					if (!ids.contains(accessionId)){
+						
+						list.add(model);
+						ids.add(accessionId);
+					}
+					else{
+						sublist.add(model);
+					}
+					
 			}
 		}
 
-			
+
 		return list;
 	}	
 
