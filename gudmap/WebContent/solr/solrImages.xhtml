@@ -53,17 +53,18 @@ hs.align = 'center';
 hs.transitions = ['expand', 'crossfade'];
 hs.outlineType = 'rounded-white';
 hs.fadeInOut = true;
-hs.numberPosition = 'caption';
+hs.numberPosition = 'heading';
 hs.dimmingOpacity = 0.75;
 hs.showCredits = false;
 hs.wrapperClassName = 'controls-in-heading';
 
 
 // Add the controlbar
-if (hs.addSlideshow) hs.addSlideshow({
+if (hs.addSlideshow) 
+	hs.addSlideshow({
 	//slideshowGroup: 'group1',
-	interval: 5000,
-	repeat: false,
+	interval: 2000,
+	repeat: true,
 	useControls: true,
 //	fixedControls: 'fit',
 	fixedControls: false,
@@ -71,40 +72,11 @@ if (hs.addSlideshow) hs.addSlideshow({
 		opacity: .75,
 //		position: 'bottom center',
 		position: 'top right',
-		hideOnMouseOut: true
+		hideOnMouseOut: false
 	}
 });
-/*
-hs.graphicsDir = '../resources/scripts/highslide/graphics/';
-hs.align = 'center';
-hs.transitions = ['expand', 'crossfade'];
-hs.fadeInOut = true;
-hs.dimmingOpacity = 0.8;
-hs.outlineType = 'rounded-white';
-hs.captionEval = 'this.thumb.alt';
-hs.marginBottom = 105; // make room for the thumbstrip and the controls
-hs.numberPosition = 'caption';
-hs.showCredits = false;
 
-// Add the controlbar
-hs.addSlideshow({
-	//slideshowGroup: 'group1',
-	interval: 5000,
-	repeat: false,
-	useControls: true,
-	overlayOptions: {
-		className: 'text-controls',
-		position: 'bottom center',
-		relativeTo: 'viewport',
-		offsetY: -60
-	},
-	thumbstrip: {
-		position: 'bottom center',
-		mode: 'horizontal',
-		relativeTo: 'viewport'
-	}
-});
-*/
+
 //]]>
 </script>	
 
@@ -113,56 +85,121 @@ hs.addSlideshow({
 		<h:panelGroup>		    
 
 
-<div class="highslide-gallery">
-
+		<div class="highslide-gallery">
+		<!-- 	displays unique assay images in the main window -->
 	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
 
-	    	<a id="#{u.sibling}" class="highslide" href="#{u.filePath}" 
-	    		onclick="return hs.expand(this, {slideshowGroup : #{u.group}})" >
-	    	<img width="75px" height="75px" src="#{u.thumbnailPath}" title="Click to view images for #{u.accessionId}"/>
-	    	</a>
+	    	<a id="#{u.sibling}" class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {slideshowGroup : #{u.group}})" >
+	    		<img width="75px" height="75px" src="#{u.thumbnailPath}" title="#{u.accessionId}; #{u.geneSymbol} - Click to view images"/>
+	    	</a>	
 			<div class="highslide-heading" >
-				#{u.accessionId}
-	    	<a href="#{u.clickFilePath}">
-	    	<img width="20px" height="20px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
-	    	</a>
-	    	</div>			
-	    	<div class="highslide-caption">
-				#{u.accessionId}
-	    	<a href="#{u.clickFilePath}">
-	    	<img width="25px" height="25px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
-	    	</a>
-			</div>
+	    	</div>	    				
+			<div class="highslide-caption">
+				<h:outputText value="Assay: "/>
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.xhtml">
+					<f:param name="accId" value="#{u.accessionId}"></f:param>
+				</h:commandLink>
+				<br/>
+				<h:outputText value="Gene: "/>
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml">
+					<f:param name="solrInput" value="#{u.geneSymbol}"></f:param>
+				</h:commandLink>
+				<ui:remove>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
+					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
+				</h:commandLink>
+				</ui:remove>
+				<br/>
+				<h:outputText value="Go to "/>
+	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+ 			</div>
 	    </c:forEach>
-</div>
-<div class="hidden-container">
+		</div>
 
+		<div class="hidden-container">
+		<!-- 	displays images for selected assay in the poup window -->
 	    <c:forEach items="#{solrImagesBean.sublist}" var="u">
    
-	    	<a class="highslide" href="#{u.filePath}" 
-	    		onclick="return hs.expand(this, {thumbnailId: '#{u.sibling}', slideshowGroup : #{u.group}})" >
-	    	</a>
-			<div class="highslide-heading">
-				#{u.accessionId}			
-	    	<a href="#{u.clickFilePath}">
-	    	<img width="20px" height="20px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
-	    	</a>	
-	    	</div>
+	    	<a class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {thumbnailId: '#{u.sibling}', slideshowGroup : #{u.group}})" >
+	    	</a>   	
+			<div class="highslide-heading">	
+	    	</div>	    	
 			<div class="highslide-caption">
-				#{u.accessionId}
-	    	<a href="#{u.clickFilePath}">
-	    	<img width="25px" height="25px" src="../resources/images/header/mag_glass.png" title="Click to expand images"/>
-	    	</a>
-			</div>
+				<h:outputText value="Assay: "/>
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.xhtml">
+					<f:param name="accId" value="#{u.accessionId}"></f:param>
+				</h:commandLink>
+				<br/>
+				<h:outputText value="Gene: "/>
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml">
+					<f:param name="solrInput" value="#{u.geneSymbol}"></f:param>
+				</h:commandLink>
+				<ui:remove>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
+					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
+				</h:commandLink>
+				</ui:remove>
+				<br/>
+				<h:outputText value="Go to "/>
+	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+	    	</div>
 
 
 	    </c:forEach>
-</div>
+		</div>
  
 	    </h:panelGroup>		    
     </h:form>
     
-   	<h:form id="pagingform" />  
+  	<h:form id="pagingform">
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{solrImagesBean.pageFirst}"
+                    disabled="#{solrImagesBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{solrImagesBean.pagePrevious}"
+                    disabled="#{solrImagesBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{solrImagesBean.pageNext}"
+                    disabled="#{solrImagesBean.firstRow + solrImagesBean.rowsPerPage >= solrImagesBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{solrImagesBean.pageLast}"
+                    disabled="#{solrImagesBean.firstRow + solrImagesBean.rowsPerPage >= solrImagesBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:outputText value="Page #{solrImagesBean.currentPage} / #{solrImagesBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{solrImagesBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrImagesBean.page}"
+                        rendered="#{page != solrImagesBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == solrImagesBean.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{solrImagesBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrImagesBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :dataform" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+      	</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{solrImagesBean.gotopage}" />
+		</h:form> 
 </div>
 
 	
