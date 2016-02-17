@@ -29,9 +29,9 @@
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 	    	
 	<ui:define name="content">
-<ui:remove>
+
 			<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>		
-</ui:remove>				
+			
 	<!-- can use relative links on html tags -->
 	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.js"></h:outputScript>
@@ -136,7 +136,7 @@ $(document).ready(function(){
 </script>
 
 
-
+<div id="db_form_wrapper">
 	<h:form id="dataform">
 	
 		<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
@@ -171,6 +171,7 @@ $(document).ready(function(){
 	<h:form id="form2" style="display:table-row;">
 	</h:form> 
 
+</div>
 	</ui:define>
 </ui:composition>
 </html>

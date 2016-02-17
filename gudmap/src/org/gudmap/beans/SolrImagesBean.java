@@ -60,8 +60,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 	private boolean showPageDetails = true;
    
 	private String geneId;
-	private List<ImageDetailModel> sublist;
-    
+	private List<ImageDetailModel> sublist;  
     // Constructors -------------------------------------------------------------------------------
 
     public SolrImagesBean() {
@@ -108,12 +107,11 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-//        totalRows = assembler.getCount(solrInput, filters);
-        totalRows = solrTreeBean.getSolrUtil().getImagesCount(solrInput,filters);
+//        totalRows = solrTreeBean.getSolrUtil().getImagesCount(solrInput,filters);
     	
-//     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
-     	int count = dataList.size();
+     	totalRows = dataList.size();
+
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
@@ -187,6 +185,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
     public List<ImageDetailModel> getSublist(){
     	return sublist;
     }
+
     
 	public List<ImageDetailModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 

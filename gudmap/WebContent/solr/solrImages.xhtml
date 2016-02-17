@@ -27,68 +27,26 @@
 	</ui:define>		
 	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
 		
-
-
-
 	
 	<ui:define name="content">
 		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 
-	<h:outputScript library="scripts/highslide" name="highslide-with-gallery.js"></h:outputScript> 
+	<h:outputScript library="scripts/highslide" name="highslide-full.js"></h:outputScript> 
 <link rel="stylesheet" type="text/css" href="#{appRoot}/resources/scripts/highslide/highslide.css" />
-
-
-
 
 
 <div id="db_form_wrapper">
 	<h:form  id="dataform">
  
 
-<script type="text/javascript">
-//<![CDATA[
-
-hs.graphicsDir = '../resources/scripts/highslide/graphics/';
-hs.align = 'center';
-hs.transitions = ['expand', 'crossfade'];
-hs.outlineType = 'rounded-white';
-hs.fadeInOut = true;
-hs.numberPosition = 'heading';
-hs.dimmingOpacity = 0.75;
-hs.showCredits = false;
-hs.wrapperClassName = 'controls-in-heading';
-
-
-// Add the controlbar
-if (hs.addSlideshow) 
-	hs.addSlideshow({
-	//slideshowGroup: 'group1',
-	interval: 2000,
-	repeat: true,
-	useControls: true,
-//	fixedControls: 'fit',
-	fixedControls: false,
-	overlayOptions: {
-		opacity: .75,
-//		position: 'bottom center',
-		position: 'top right',
-		hideOnMouseOut: false
-	}
-});
-
-
-//]]>
-</script>	
 
 
 		<h:inputHidden id="solrInput" value="#{solrImagesBean.solrInput}" />
 		<h:panelGroup>		    
 
-
 		<div class="highslide-gallery">
 		<!-- 	displays unique assay images in the main window -->
-	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
-
+	    <ui:repeat value="#{solrImagesBean.dataList}" var="u">
 	    	<a id="#{u.sibling}" class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {slideshowGroup : #{u.group}})" >
 	    		<img width="75px" height="75px" src="#{u.thumbnailPath}" title="#{u.accessionId}; #{u.geneSymbol} - Click to view images"/>
 	    	</a>	
@@ -100,26 +58,20 @@ if (hs.addSlideshow)
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
 				<br/>
-				<h:outputText value="Gene: "/>
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml">
-					<f:param name="solrInput" value="#{u.geneSymbol}"></f:param>
-				</h:commandLink>
-				<ui:remove>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
-					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
-				</h:commandLink>
-				</ui:remove>
+				<h:outputText value="Gene: "/>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
+     				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
+				</h:commandLink>			
 				<br/>
 				<h:outputText value="Go to "/>
 	    		<a href="#{u.clickFilePath}">Image Viewer</a>
  			</div>
-	    </c:forEach>
+	    </ui:repeat>
 		</div>
 
 		<div class="hidden-container">
 		<!-- 	displays images for selected assay in the poup window -->
-	    <c:forEach items="#{solrImagesBean.sublist}" var="u">
-   
+	    <ui:repeat value="#{solrImagesBean.sublist}" var="u">   
 	    	<a class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {thumbnailId: '#{u.sibling}', slideshowGroup : #{u.group}})" >
 	    	</a>   	
 			<div class="highslide-heading">	
@@ -130,23 +82,21 @@ if (hs.addSlideshow)
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
 				<br/>
-				<h:outputText value="Gene: "/>
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml">
-					<f:param name="solrInput" value="#{u.geneSymbol}"></f:param>
+				<h:outputText value="Gene: "/>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
+     				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
-				<ui:remove>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
-					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
-				</h:commandLink>
-				</ui:remove>
 				<br/>
 				<h:outputText value="Go to "/>
 	    		<a href="#{u.clickFilePath}">Image Viewer</a>
 	    	</div>
-
-
-	    </c:forEach>
+	    </ui:repeat>
 		</div>
+ 
+ 
+ 
+
+ 
  
 	    </h:panelGroup>		    
     </h:form>
@@ -214,7 +164,41 @@ if (hs.addSlideshow)
 	
    	
 
+ <script type="text/javascript">
 
+hs.graphicsDir = '../resources/scripts/highslide/graphics/';
+hs.align = 'center';
+hs.transitions = ['expand', 'crossfade'];
+hs.outlineType = 'rounded-white';
+hs.fadeInOut = true;
+hs.numberPosition = 'heading';
+hs.dimmingOpacity = 0.75;
+hs.showCredits = false;
+hs.wrapperClassName = 'controls-in-heading';
+
+hs.forceAjaxReload = true;
+hs.preserveContent = true;
+
+// Add the controlbar
+if (hs.addSlideshow) 
+	hs.addSlideshow({
+	//slideshowGroup: 'group1',
+	interval: 2000,
+	repeat: true,
+	useControls: true,
+//	fixedControls: 'fit',
+	fixedControls: false,
+	overlayOptions: {
+		opacity: .75,
+//		position: 'bottom center',
+		position: 'top right',
+		hideOnMouseOut: false
+	}
+});
+
+
+
+</script>	
 	
 
 
