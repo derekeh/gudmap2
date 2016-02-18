@@ -193,10 +193,16 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 				model.setAlleleType(doc.getFieldValue("ALLELE_TYPE").toString());
 			if (doc.containsKey("ALLELE_VER"))
 				model.setAlleleVerification(doc.getFieldValue("ALLELE_VER").toString());
+			if (doc.containsKey("ALLELE_VER_URL"))
+				model.setAlleleVerificationUrl(doc.getFieldValue("ALLELE_VER_URL").toString());
 			if (doc.containsKey("ALLELE_CHAR"))
 				model.setAlleleCharacterisation(doc.getFieldValue("ALLELE_CHAR").toString());
+			if (doc.containsKey("ALLELE_CHAR_URL"))
+				model.setAlleleCharacterisationUrl(doc.getFieldValue("ALLELE_CHAR_URL").toString());
 			if (doc.containsKey("STRAIN_AVA"))
 				model.setStrainAvailability(doc.getFieldValue("STRAIN_AVA").toString());
+			if (doc.containsKey("STRAIN_AVA_URL"))
+				model.setStrainAvailabilityUrl(doc.getFieldValue("STRAIN_AVA_URL").toString());
 			if (doc.containsKey("ORGAN"))
 				model.setOrgan(doc.getFieldValue("ORGAN").toString());
 			if (doc.containsKey("CELL_TYPE"))

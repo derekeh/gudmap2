@@ -136,7 +136,7 @@
            </h:panelGroup>
            <h:panelGroup>
 				<h:panelGrid columns="4">
-	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:outputLabel for="rowsPerPage" value="Images per page:&#160;&#160;" />
 	                <h:inputText id="rowsPerPage" value="#{solrImagesBean.rowsPerPage}" size="3" maxlength="3" />
 	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrImagesBean.pageFirst}" >
 	                	<f:ajax execute="@form" render="@form :dataform" />

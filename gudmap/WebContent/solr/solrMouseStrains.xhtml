@@ -84,7 +84,9 @@
     					<f:attribute name="sortField" value="ALLELE_VER" />
                     </h:commandLink>
     			</f:facet>
-    				#{u.alleleVerification}
+				<h:outputLink value="#{u.alleleVerificationUrl}">
+					<h:outputText value="#{u.alleleVerification}"/>
+				</h:outputLink>
     		</h:column>
     		
     		<h:column>
@@ -93,7 +95,9 @@
     					<f:attribute name="sortField" value="ALLELE_CHAR" />
                     </h:commandLink>
 				</f:facet>
-    				#{u.alleleCharacterisation}
+				<h:outputLink value="#{u.alleleCharacterisationUrl}">
+					<h:outputText value="#{u.alleleCharacterisation}"/>
+				</h:outputLink>
     		</h:column>
      		
     		<h:column>
@@ -102,7 +106,9 @@
     					<f:attribute name="sortField" value="STRAIN_AVA" />
                     </h:commandLink>
     			</f:facet>
-    				#{u.strainAvailability}
+				<h:outputLink value="#{u.strainAvailabilityUrl}">
+					<h:outputText value="#{u.strainAvailability}"/>
+				</h:outputLink>
     		</h:column>
  
     		<h:column>
