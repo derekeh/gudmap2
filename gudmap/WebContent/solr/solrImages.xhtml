@@ -31,72 +31,129 @@
 	<ui:define name="content">
 		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
 
-	<h:outputStylesheet library="css" name="gallerie.css"  />
-	<h:outputStylesheet library="css" name="gallerie-effects.css"  />
-	<h:outputScript library="scripts" name="jquery.gallerie.js"></h:outputScript>
+	<h:outputScript library="scripts/highslide" name="highslide-full.js"></h:outputScript> 
+<link rel="stylesheet" type="text/css" href="#{appRoot}/resources/scripts/highslide/highslide.css" />
 
 
+<div id="db_form_wrapper">
 	<h:form  id="dataform">
-		    <h:inputHidden id="solrInput" value="#{solrImagesBean.solrInput}" />
-		<div id="gallery">
-	    <c:forEach items="#{solrImagesBean.dataList}" var="u">
-	
-	    	<a href="#{u.clickFilePath}">
-	    	<img title="#{u.accessionId} #{u.stage}" src="#{u.thumbnailPath}"/>
-	    	</a>
-	    </c:forEach>
-		</div>	     
+ 
+
+
+
+		<h:inputHidden id="solrInput" value="#{solrImagesBean.solrInput}" />
+		<h:panelGroup>		    
+
+		<div class="highslide-gallery">
+		<!-- 	displays unique assay images in the main window -->
+	    <ui:repeat value="#{solrImagesBean.dataList}" var="u">
+	    	<a id="#{u.sibling}" class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {slideshowGroup : #{u.group}})" >
+	    		<img width="75px" height="75px" src="#{u.thumbnailPath}" title="#{u.accessionId}; #{u.geneSymbol} - Click to view images"/>
+	    	</a>	
+			<div class="highslide-heading" >
+	    	</div>	    				
+			<div class="highslide-caption">
+				<h:outputText value="Assay: "/>
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.xhtml">
+					<f:param name="accId" value="#{u.accessionId}"></f:param>
+				</h:commandLink>
+				<br/>
+				<h:outputText value="Gene: "/>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
+     				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
+				</h:commandLink>			
+				<br/>
+				<h:outputText value="Go to "/>
+	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+ 			</div>
+	    </ui:repeat>
+		</div>
+
+		<div class="hidden-container">
+		<!-- 	displays images for selected assay in the poup window -->
+	    <ui:repeat value="#{solrImagesBean.sublist}" var="u">   
+	    	<a class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {thumbnailId: '#{u.sibling}', slideshowGroup : #{u.group}})" >
+	    	</a>   	
+			<div class="highslide-heading">	
+	    	</div>	    	
+			<div class="highslide-caption">
+				<h:outputText value="Assay: "/>
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.xhtml">
+					<f:param name="accId" value="#{u.accessionId}"></f:param>
+				</h:commandLink>
+				<br/>
+				<h:outputText value="Gene: "/>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
+     				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
+				</h:commandLink>
+				<br/>
+				<h:outputText value="Go to "/>
+	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+	    	</div>
+	    </ui:repeat>
+		</div>
+ 
+ 
+ 
+
+ 
+ 
+	    </h:panelGroup>		    
     </h:form>
-   	<h:form id="pagingform" />  
+    
+  	<h:form id="pagingform">
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{solrImagesBean.pageFirst}"
+                    disabled="#{solrImagesBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{solrImagesBean.pagePrevious}"
+                    disabled="#{solrImagesBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{solrImagesBean.pageNext}"
+                    disabled="#{solrImagesBean.firstRow + solrImagesBean.rowsPerPage >= solrImagesBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{solrImagesBean.pageLast}"
+                    disabled="#{solrImagesBean.firstRow + solrImagesBean.rowsPerPage >= solrImagesBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:outputText value="Page #{solrImagesBean.currentPage} / #{solrImagesBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{solrImagesBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrImagesBean.page}"
+                        rendered="#{page != solrImagesBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == solrImagesBean.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Images per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{solrImagesBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrImagesBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :dataform" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+      	</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{solrImagesBean.gotopage}" />
+		</h:form> 
+</div>
 
+	
 
-<script type="text/javascript">
-$(document).ready(function(){
-    $('#gallery').gallerie(
-    	wrapAround: true;
-	);
-});
-</script>	
-	
-<style>
-	
-	
-	#gallery {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	
-	#gallery > a {
-		margin: 15px;
-	}
-	
-	#gallery > a img {
-		border: 2px solid;
-		border-color: black;
-		border-radius: 5px;
-		opacity: 0.9;
-	
-		transition: all 500ms;
-		-webkit-transition: all 500ms;
-		-moz-transition: all 500ms;
-		-ms-transition: all 500ms;
-		-o-transition: all 500ms;
-		z-index: 1;
-		position: relative;
-	}
-
-	#gallery > a img:hover {
-		border-color: black;
-		opacity: 1.0;
-/*		transform: scale(1.5);
-		-webkit-transform: scale(1.5);
-		-moz-transform: scale(1.5);
-		-ms-transform: scale(1.5);
-		-o-transform: scale(1.5);*/
-		z-index: 10;
-	}
-	
-	</style>	
 	<!-- can use relative links on html tags -->
 
 
@@ -107,7 +164,41 @@ $(document).ready(function(){
 	
    	
 
+ <script type="text/javascript">
 
+hs.graphicsDir = '../resources/scripts/highslide/graphics/';
+hs.align = 'center';
+hs.transitions = ['expand', 'crossfade'];
+hs.outlineType = 'rounded-white';
+hs.fadeInOut = true;
+hs.numberPosition = 'heading';
+hs.dimmingOpacity = 0.75;
+hs.showCredits = false;
+hs.wrapperClassName = 'controls-in-heading';
+
+hs.forceAjaxReload = true;
+hs.preserveContent = true;
+
+// Add the controlbar
+if (hs.addSlideshow) 
+	hs.addSlideshow({
+	//slideshowGroup: 'group1',
+	interval: 2000,
+	repeat: true,
+	useControls: true,
+//	fixedControls: 'fit',
+	fixedControls: false,
+	overlayOptions: {
+		opacity: .75,
+//		position: 'bottom center',
+		position: 'top right',
+		hideOnMouseOut: false
+	}
+});
+
+
+
+</script>	
 	
 
 

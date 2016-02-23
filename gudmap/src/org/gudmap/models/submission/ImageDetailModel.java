@@ -10,7 +10,9 @@ public class ImageDetailModel extends ImageInfoModel{
 	  protected String age;
 	  protected ArrayList<String[]> allImageNotesInSameSubmission;
 	  protected ArrayList<String> allPublicImagesInSameSubmission;
-	  
+	  protected String sibling;
+	  protected String group
+	  ;	  
 	  public String getGeneSymbol() {
 		return geneSymbol;
      }
@@ -74,5 +76,19 @@ public class ImageDetailModel extends ImageInfoModel{
 	
 	return ret;
    }
+   
+   public void setSibling(String sibling){
+	   this.sibling = sibling;
+   }
+   public String getSibling(){
+	   return sibling;
+   }
 
+   public void setGroup(String group){
+	   this.group = group;
+   }
+   public String getGroup(){
+	   return group;
+   }
+   
 }

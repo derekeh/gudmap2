@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MouseStrainsTableBeanModel {
 	
-	private String oid,gene,reporterAllele,alleleType,alleleVerification,alleleCharacterisation,strainAvailability,organ,cellType=null;
+	private String oid,gene,reporterAllele,alleleType,alleleVerification,alleleVerificationUrl,alleleCharacterisation,alleleCharacterisationUrl,strainAvailability,strainAvailabilityUrl,organ,cellType=null;
 	private List<String> totals=null;;
 	private boolean selected;
 
@@ -38,11 +38,23 @@ public class MouseStrainsTableBeanModel {
 	public String getAlleleVerification(){
 		return alleleVerification;
 	}
+	public void setAlleleVerificationUrl(String alleleVerificationUrl){
+		this.alleleVerificationUrl=alleleVerificationUrl;
+	}
+	public String getAlleleVerificationUrl(){
+		return alleleVerificationUrl;
+	}	
 	public void setAlleleCharacterisation(String alleleCharacterisation){
 		this.alleleCharacterisation=alleleCharacterisation;
 	}
 	public String getAlleleCharacterisation(){
 		return alleleCharacterisation;
+	}
+	public void setAlleleCharacterisationUrl(String alleleCharacterisationUrl){
+		this.alleleCharacterisationUrl=alleleCharacterisationUrl;
+	}
+	public String getAlleleCharacterisationUrl(){
+		return alleleCharacterisationUrl;
 	}
 	public void setStrainAvailability(String strainAvailability){
 		this.strainAvailability=strainAvailability;
@@ -50,6 +62,13 @@ public class MouseStrainsTableBeanModel {
 	public String getStrainAvailability(){
 		return strainAvailability;
 	}
+	public void setStrainAvailabilityUrl(String strainAvailabilityUrl){
+		this.strainAvailabilityUrl=strainAvailabilityUrl;
+	}
+	public String getStrainAvailabilityUrl(){
+		return strainAvailabilityUrl;
+	}
+	
 	public void setOrgan(String organ){
 		this.organ=organ;
 	}
