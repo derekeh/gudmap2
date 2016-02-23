@@ -80,22 +80,22 @@ public class SolrIndexAssembler {
         docs.clear();
 	}
 
-	public void updateMicroarrayIndex(HttpSolrClient server){
-
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMicroarrayIndexData();
-		
-		try {
-			// clear index
-			server.deleteByQuery("*:*");
-			server.commit();			
-			
-			server.add(docs);			
-			server.commit();
-		} catch (SolrServerException | IOException e) {
-			e.printStackTrace();
-		}
-        docs.clear();
-	}
+//	public void updateMicroarrayIndex(HttpSolrClient server){
+//
+//		ArrayList<SolrInputDocument> docs  = solrDao.getSolrMicroarrayIndexData();
+//		
+//		try {
+//			// clear index
+//			server.deleteByQuery("*:*");
+//			server.commit();			
+//			
+//			server.add(docs);			
+//			server.commit();
+//		} catch (SolrServerException | IOException e) {
+//			e.printStackTrace();
+//		}
+//        docs.clear();
+//	}
 	
 	public void updateSamplesIndex(HttpSolrClient server){
 
@@ -114,22 +114,22 @@ public class SolrIndexAssembler {
         docs.clear();
 	}
 
-	public void updateSeriesIndex(HttpSolrClient server){
-
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSeriesIndexData();
-		
-		try {
-			// clear index
-			server.deleteByQuery("*:*");
-			server.commit();			
-			
-			server.add(docs);			
-			server.commit();
-		} catch (SolrServerException | IOException e) {
-			e.printStackTrace();
-		}
-        docs.clear();
-	}
+//	public void updateSeriesIndex(HttpSolrClient server){
+//
+//		ArrayList<SolrInputDocument> docs  = solrDao.getSolrSeriesIndexData();
+//		
+//		try {
+//			// clear index
+//			server.deleteByQuery("*:*");
+//			server.commit();			
+//			
+//			server.add(docs);			
+//			server.commit();
+//		} catch (SolrServerException | IOException e) {
+//			e.printStackTrace();
+//		}
+//        docs.clear();
+//	}
 	
 	public void updateTissueIndex(HttpSolrClient server){
 
@@ -182,22 +182,22 @@ public class SolrIndexAssembler {
         docs.clear();
 	}
 
-	public void updateNextGenSeriesIndex(HttpSolrClient server){
-
-		ArrayList<SolrInputDocument> docs  = solrDao.getSolrNextGenSeriesIndexData();
-		
-		try {
-			// clear index
-			server.deleteByQuery("*:*");
-			server.commit();			
-			
-			server.add(docs);			
-			server.commit();
-		} catch (SolrServerException | IOException e) {
-			e.printStackTrace();
-		}
-        docs.clear();
-	}
+//	public void updateNextGenSeriesIndex(HttpSolrClient server){
+//
+//		ArrayList<SolrInputDocument> docs  = solrDao.getSolrNextGenSeriesIndexData();
+//		
+//		try {
+//			// clear index
+//			server.deleteByQuery("*:*");
+//			server.commit();			
+//			
+//			server.add(docs);			
+//			server.commit();
+//		} catch (SolrServerException | IOException e) {
+//			e.printStackTrace();
+//		}
+//        docs.clear();
+//	}
 	
 	public void updateNextGenSamplesIndex(HttpSolrClient server){
 

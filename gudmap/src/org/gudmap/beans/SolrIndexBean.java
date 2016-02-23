@@ -6,16 +6,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
 
-import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrServerException;
+
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
-import org.apache.solr.client.solrj.request.CoreAdminRequest;
-import org.apache.solr.client.solrj.response.CoreAdminResponse;
-import org.apache.solr.client.solrj.response.UpdateResponse;
-import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.common.util.NamedList;
-import org.apache.solr.handler.extraction.ExtractingParams;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
 import org.gudmap.assemblers.SolrIndexAssembler;
 import org.gudmap.models.MasterTableInfo;
@@ -63,15 +55,9 @@ public class SolrIndexBean implements Serializable {
 		server = solrUtil.getInsituServer();
 		assembler.updateInsituIndex(server);
 
-		server = solrUtil.getMicroarrayServer();
-		assembler.updateMicroarrayIndex(server);
-
 		server = solrUtil.getSamplesServer();
 		assembler.updateSamplesIndex(server);
 
-		server = solrUtil.getSeriesServer();
-		assembler.updateSeriesIndex(server);
-		
 		server = solrUtil.getTissuesServer();
 		assembler.updateTissueIndex(server);
 
@@ -99,29 +85,10 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 
-	public String indexMicroarray(){
-		
-		HttpSolrClient server = solrUtil.getMicroarrayServer();
-		assembler.updateMicroarrayIndex(server);
-		
-//		server = solrUtil.getSamplesServer();
-//		assembler.updateSamplesIndex(server);
-//
-//		server = solrUtil.getSeriesServer();
-//		assembler.updateSeriesIndex(server);
-		
-		return null;		
-	}
-
 	public String indexSamples(){
 		
 		HttpSolrClient server = solrUtil.getSamplesServer();
 		assembler.updateSamplesIndex(server);
-		return null;		
-	}
-	public String indexSeries(){
-		HttpSolrClient server = solrUtil.getSeriesServer();
-		assembler.updateSeriesIndex(server);
 		return null;		
 	}
 
@@ -150,13 +117,6 @@ public class SolrIndexBean implements Serializable {
 		
 		HttpSolrClient server = solrUtil.getImageServer();
 		assembler.updateImageIndex(server);
-		return null;		
-	}
-
-	public String indexNextGenSeries(){
-		
-		HttpSolrClient server = solrUtil.getNextGenSeriesServer();
-		assembler.updateNextGenSeriesIndex(server);
 		return null;		
 	}
 	

@@ -41,12 +41,12 @@ public class SolrDao {
 			while (result.next()) {
 				doc = new SolrInputDocument();
 //				doc.addField("id", result.getString(1)); 
-				doc.addField("GENE", result.getString(1)); 
+				doc.addField("GENE", result.getString(1), (float)2.0); // added boost
 				doc.addField("GENE_NAME", result.getString(2)); 
 				doc.addField("MGI_GENE_ID", result.getString(3)); 
 				doc.addField("MGI", result.getString(4)); 
 				doc.addField("ENSEMBL_ID", result.getString(5)); 
-				doc.addField("SYNONYMS", result.getString(6)); 
+				doc.addField("SYNONYMS", result.getString(6), (float)1.5); // added boost
 				doc.addField("GENE_ID", result.getString(7)); 
 				doc.addField("PROBESETS", result.getString(8)); 
 				doc.addField("ENTREZ_ID", result.getString(9)); 
@@ -229,78 +229,78 @@ public class SolrDao {
         return docs;
     }
 
-	public ArrayList<SolrInputDocument> getSolrMicroarrayIndexData() {
-		
-		docs = new ArrayList<SolrInputDocument>();
-		
-        String queryString = SolrQueries.GET_MICROARRAY_INDEX_DATA;
-        
-        try
-		{
-			//con = ds.getConnection();
-			con=Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(queryString); 
-			result =  ps.executeQuery();
-			
-			// add field maps the query result to the solr index schema
-			while (result.next()) {
-				doc = new SolrInputDocument();
-//				doc.addField("id", result.getString(1)); 
-				doc.addField("GUDMAP", result.getString(1)); 
-				doc.addField("GUDMAP_ID", result.getString(2)); 
-				doc.addField("PLATFORM_GEO_ID", result.getString(3)); 
-				doc.addField("PLATFORM_TITLE", result.getString(4)); 
-				doc.addField("PLATFORM_NAME", result.getString(5)); 
-				doc.addField("SAMPLE_GEO_ID", result.getString(6)); 
-				doc.addField("SAMPLE_STRAIN", result.getString(7)); 
-				doc.addField("SAMPLE_SEX", result.getString(8)); 
-				doc.addField("DEVELOPMENT_STAGE", result.getString(9)); 
-				doc.addField("SAMPLE_THEILER_STAGE", result.getString(10)); 
-				doc.addField("SAMPLE_MOLECULE", result.getString(11)); 
-				doc.addField("SAMPLE_RNA_EXTRACT_PROTOCOL", result.getString(12));
-				doc.addField("SAMPLE_DISSECTION_METHOD", result.getString(13));
-				doc.addField("SAMPLE_EXPERIMENTAL_DESIGN", result.getString(14));	
-				doc.addField("SAMPLE_ARRAY_HYB_PROTOCOL", result.getString(15));
-				doc.addField("SAMPLE_DATA_ANALYSIS_METHOD", result.getString(16));	
-				doc.addField("SAMPLE_REFERENCE_USED", result.getString(17));
-				doc.addField("SAMPLE_TARGET_AMPLIFICATION_MANUFACTURER", result.getString(18));	
-				doc.addField("SAMPLE_SCAN_PROTOCOL", result.getString(19));
-				doc.addField("SAMPLE_LABEL_PROTOCOL", result.getString(20));	
-				doc.addField("SERIES_GEO_ID", result.getString(21));
-				doc.addField("SERIES_TITLE", result.getString(22));	
-				doc.addField("COMPONENT", result.getString(23));
-				doc.addField("EMAP", result.getString(24));	
-				doc.addField("PI_NAME", result.getString(25));	
-				doc.addField("LAB", result.getString(26));	
-				doc.addField("SOURCE", result.getString(27));					
-				doc.addField("DATE", result.getString(28));	
-				doc.addField("STAGE", result.getString(29));					
-				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(30));	
-				doc.addField("FIXATION_METHOD", result.getString(31));					
-				doc.addField("STRAIN", result.getString(32));					
-				doc.addField("SEX", result.getString(33));					
-				doc.addField("DEV_STAGE", result.getString(34));					
-				doc.addField("STAGE_FORMAT", result.getString(35));					
-				doc.addField("GENOTYPE", result.getString(36));				
-				doc.addField("FIRST_CHROMATID", result.getString(37));
-				doc.addField("SECOND_CHROMATID", result.getString(38));
-				doc.addField("ALLELE_MGI_ID", result.getString(39));
-				doc.addField("ALLELE_LAB_NAME", result.getString(40));
-				doc.addField("ALLELE_NAME", result.getString(41));
-				doc.addField("ALLELE_TYPE", result.getString(42));
-				doc.addField("GENE", result.getString(43));					
-				doc.addField("MGI_IDS", result.getString(44));					
-				doc.addField("MGI", result.getString(45));					
-				
-				docs.add(doc);
-			}
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		}
-        return docs;
-    }
+//	public ArrayList<SolrInputDocument> getSolrMicroarrayIndexData() {
+//		
+//		docs = new ArrayList<SolrInputDocument>();
+//		
+//        String queryString = SolrQueries.GET_MICROARRAY_INDEX_DATA;
+//        
+//        try
+//		{
+//			//con = ds.getConnection();
+//			con=Globals.getDatasource().getConnection();
+//			ps = con.prepareStatement(queryString); 
+//			result =  ps.executeQuery();
+//			
+//			// add field maps the query result to the solr index schema
+//			while (result.next()) {
+//				doc = new SolrInputDocument();
+////				doc.addField("id", result.getString(1)); 
+//				doc.addField("GUDMAP", result.getString(1)); 
+//				doc.addField("GUDMAP_ID", result.getString(2)); 
+//				doc.addField("PLATFORM_GEO_ID", result.getString(3)); 
+//				doc.addField("PLATFORM_TITLE", result.getString(4)); 
+//				doc.addField("PLATFORM_NAME", result.getString(5)); 
+//				doc.addField("SAMPLE_GEO_ID", result.getString(6)); 
+//				doc.addField("SAMPLE_STRAIN", result.getString(7)); 
+//				doc.addField("SAMPLE_SEX", result.getString(8)); 
+//				doc.addField("DEVELOPMENT_STAGE", result.getString(9)); 
+//				doc.addField("SAMPLE_THEILER_STAGE", result.getString(10)); 
+//				doc.addField("SAMPLE_MOLECULE", result.getString(11)); 
+//				doc.addField("SAMPLE_RNA_EXTRACT_PROTOCOL", result.getString(12));
+//				doc.addField("SAMPLE_DISSECTION_METHOD", result.getString(13));
+//				doc.addField("SAMPLE_EXPERIMENTAL_DESIGN", result.getString(14));	
+//				doc.addField("SAMPLE_ARRAY_HYB_PROTOCOL", result.getString(15));
+//				doc.addField("SAMPLE_DATA_ANALYSIS_METHOD", result.getString(16));	
+//				doc.addField("SAMPLE_REFERENCE_USED", result.getString(17));
+//				doc.addField("SAMPLE_TARGET_AMPLIFICATION_MANUFACTURER", result.getString(18));	
+//				doc.addField("SAMPLE_SCAN_PROTOCOL", result.getString(19));
+//				doc.addField("SAMPLE_LABEL_PROTOCOL", result.getString(20));	
+//				doc.addField("SERIES_GEO_ID", result.getString(21));
+//				doc.addField("SERIES_TITLE", result.getString(22));	
+//				doc.addField("COMPONENT", result.getString(23));
+//				doc.addField("EMAP", result.getString(24));	
+//				doc.addField("PI_NAME", result.getString(25));	
+//				doc.addField("LAB", result.getString(26));	
+//				doc.addField("SOURCE", result.getString(27));					
+//				doc.addField("DATE", result.getString(28));	
+//				doc.addField("STAGE", result.getString(29));					
+//				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(30));	
+//				doc.addField("FIXATION_METHOD", result.getString(31));					
+//				doc.addField("STRAIN", result.getString(32));					
+//				doc.addField("SEX", result.getString(33));					
+//				doc.addField("DEV_STAGE", result.getString(34));					
+//				doc.addField("STAGE_FORMAT", result.getString(35));					
+//				doc.addField("GENOTYPE", result.getString(36));				
+//				doc.addField("FIRST_CHROMATID", result.getString(37));
+//				doc.addField("SECOND_CHROMATID", result.getString(38));
+//				doc.addField("ALLELE_MGI_ID", result.getString(39));
+//				doc.addField("ALLELE_LAB_NAME", result.getString(40));
+//				doc.addField("ALLELE_NAME", result.getString(41));
+//				doc.addField("ALLELE_TYPE", result.getString(42));
+//				doc.addField("GENE", result.getString(43));					
+//				doc.addField("MGI_IDS", result.getString(44));					
+//				doc.addField("MGI", result.getString(45));					
+//				
+//				docs.add(doc);
+//			}
+//		}
+//		catch(SQLException sqle){sqle.printStackTrace();}
+//		finally {
+//		    Globals.closeQuietly(con, ps, result);
+//		}
+//        return docs;
+//    }
 	
 	public ArrayList<SolrInputDocument> getSolrSamplesIndexData() {
 		
@@ -349,54 +349,54 @@ public class SolrDao {
         return docs;
     }
 
-	public ArrayList<SolrInputDocument> getSolrSeriesIndexData() {
-		
-		docs = new ArrayList<SolrInputDocument>();
-		
-        String queryString = SolrQueries.GET_SERIES_INDEX_DATA;
-        
-        try
-		{
-			//con = ds.getConnection();
-			con=Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(queryString); 
-			result =  ps.executeQuery();
-			
-			// add field maps the query result to the solr index schema
-			while (result.next()) {
-				doc = new SolrInputDocument();
-//				doc.addField("id", result.getString(1)); 
-				doc.addField("SERIES_GEO_ID", result.getString(1)); 				
-				doc.addField("TITLE", result.getString(2)); 	
-				doc.addField("SAMPLE_NUMBER", result.getString(3)); 				
-				doc.addField("SOURCE", result.getString(4)); 	
-				doc.addField("PI_NAME", result.getString(5)); 				
-				doc.addField("PLATFORM_GEO_ID", result.getString(6)); 	
-				doc.addField("SERIES_OID", result.getString(7)); 				
-				doc.addField("COMPONENT", result.getString(8)); 	
-//				doc.addField("GENE", result.getString(9)); 				
-//				doc.addField("EMAP", result.getString(10)); 	
-//				doc.addField("MGI", result.getString(11)); 				
-//				doc.addField("PRESENT", result.getString(12)); 	
-//				doc.addField("NOT_DETECTED", result.getString(13)); 				
-//				doc.addField("UNCERTAIN", result.getString(14)); 	
-//				doc.addField("FOCUS_GROUPS", result.getString(15)); 				
-//				doc.addField("SEX", result.getString(16)); 	
-//				doc.addField("LAB", result.getString(17)); 				
-//				doc.addField("maprobe", result.getString(18)); 	
-//				doc.addField("GUDMAP", result.getString(19)); 				
-//				doc.addField("THEILER_STAGE", result.getString(20)); 	
-//				doc.addField("AUTHORS", result.getString(21)); 				
-				
-				docs.add(doc);
-			}
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		}
-        return docs;
-    }
+//	public ArrayList<SolrInputDocument> getSolrSeriesIndexData() {
+//		
+//		docs = new ArrayList<SolrInputDocument>();
+//		
+//        String queryString = SolrQueries.GET_SERIES_INDEX_DATA;
+//        
+//        try
+//		{
+//			//con = ds.getConnection();
+//			con=Globals.getDatasource().getConnection();
+//			ps = con.prepareStatement(queryString); 
+//			result =  ps.executeQuery();
+//			
+//			// add field maps the query result to the solr index schema
+//			while (result.next()) {
+//				doc = new SolrInputDocument();
+////				doc.addField("id", result.getString(1)); 
+//				doc.addField("SERIES_GEO_ID", result.getString(1)); 				
+//				doc.addField("TITLE", result.getString(2)); 	
+//				doc.addField("SAMPLE_NUMBER", result.getString(3)); 				
+//				doc.addField("SOURCE", result.getString(4)); 	
+//				doc.addField("PI_NAME", result.getString(5)); 				
+//				doc.addField("PLATFORM_GEO_ID", result.getString(6)); 	
+//				doc.addField("SERIES_OID", result.getString(7)); 				
+//				doc.addField("COMPONENT", result.getString(8)); 	
+////				doc.addField("GENE", result.getString(9)); 				
+////				doc.addField("EMAP", result.getString(10)); 	
+////				doc.addField("MGI", result.getString(11)); 				
+////				doc.addField("PRESENT", result.getString(12)); 	
+////				doc.addField("NOT_DETECTED", result.getString(13)); 				
+////				doc.addField("UNCERTAIN", result.getString(14)); 	
+////				doc.addField("FOCUS_GROUPS", result.getString(15)); 				
+////				doc.addField("SEX", result.getString(16)); 	
+////				doc.addField("LAB", result.getString(17)); 				
+////				doc.addField("maprobe", result.getString(18)); 	
+////				doc.addField("GUDMAP", result.getString(19)); 				
+////				doc.addField("THEILER_STAGE", result.getString(20)); 	
+////				doc.addField("AUTHORS", result.getString(21)); 				
+//				
+//				docs.add(doc);
+//			}
+//		}
+//		catch(SQLException sqle){sqle.printStackTrace();}
+//		finally {
+//		    Globals.closeQuietly(con, ps, result);
+//		}
+//        return docs;
+//    }
 	
 	public ArrayList<SolrInputDocument> getSolrTissueIndexData() {
 		
@@ -416,8 +416,8 @@ public class SolrDao {
 				doc = new SolrInputDocument();
 //				doc.addField("id", result.getString(1)); 
 				doc.addField("ID", result.getString(1)); 
-				doc.addField("NAME", result.getString(2)); 
-				doc.addField("SYNONYM", result.getString(3)); 
+				doc.addField("NAME", result.getString(2), (float)2.0); // added boost
+				doc.addField("SYNONYM", result.getString(3), (float)1.5); // added boost
 				doc.addField("STAGES", result.getString(4)); 
 				doc.addField("FOCUS_GROUPS", result.getString(5)); 
 				doc.addField("GENELIST_IDS", result.getString(6)); 				
@@ -467,7 +467,7 @@ public class SolrDao {
 				String tmp = result.getString(1);
 //				doc.addField("id", result.getString(1)); 
 				doc.addField("ID", result.getString(1)); 
-				doc.addField("GENE", result.getString(2)); 
+				doc.addField("GENE", result.getString(2), (float)2.0); // added boost
 				doc.addField("REPORTER_ALLELE", result.getString(3)); 
 				doc.addField("ALLELE_TYPE", result.getString(4)); 
 				doc.addField("ALLELE_VER", result.getString(5)); 
@@ -569,55 +569,55 @@ public class SolrDao {
         return docs;
     }
 
-	public ArrayList<SolrInputDocument> getSolrNextGenSeriesIndexData() {
-		
-		docs = new ArrayList<SolrInputDocument>();
-		
-        String queryString = SolrQueries.GET_NEXTGEN_SERIES_INDEX_DATA;
-        
-        try
-		{
-			//con = ds.getConnection();
-			con=Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(queryString); 
-			result =  ps.executeQuery();
-			
-			// add field maps the query result to the solr index schema
-			while (result.next()) {
-				doc = new SolrInputDocument();
-				String tmp = result.getString(2);
-//				doc.addField("id", result.getString(1)); 
-				doc.addField("SERIES_GEO_ID", result.getString(1)); 
-				doc.addField("TITLE", result.getString(2)); 
-				doc.addField("SAMPLE_NUMBER", result.getString(3)); 
-				doc.addField("SOURCE", result.getString(4)); 
-				doc.addField("PI_NAME", result.getString(5)); 
-				doc.addField("PLATFORM_GEO_ID", result.getString(6)); 
-				doc.addField("SERIES_OID", result.getString(7)); 
-				doc.addField("COMPONENT", result.getString(8)); 
-				doc.addField("GENE", result.getString(9)); 
-				doc.addField("EMAP", result.getString(10)); 
-				doc.addField("MGI", result.getString(11)); 
-				doc.addField("PRESENT", result.getString(12)); 
-				doc.addField("NOT_DETECTED", result.getString(13)); 
-				doc.addField("UNCERTAIN", result.getString(14)); 
-				doc.addField("FOCUS_GROUPS", result.getString(15)); 
-				doc.addField("SEX", result.getString(16)); 
-				doc.addField("LAB", result.getString(17)); 
-				doc.addField("maprobe", result.getString(18)); 
-				doc.addField("GUDMAP", result.getString(19)); 
-				doc.addField("THEILER_STAGE", result.getString(20)); 
-				doc.addField("AUTHORS", result.getString(21)); 
-				
-				docs.add(doc);
-			}
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		}
-        return docs;
-    }
+//	public ArrayList<SolrInputDocument> getSolrNextGenSeriesIndexData() {
+//		
+//		docs = new ArrayList<SolrInputDocument>();
+//		
+//        String queryString = SolrQueries.GET_NEXTGEN_SERIES_INDEX_DATA;
+//        
+//        try
+//		{
+//			//con = ds.getConnection();
+//			con=Globals.getDatasource().getConnection();
+//			ps = con.prepareStatement(queryString); 
+//			result =  ps.executeQuery();
+//			
+//			// add field maps the query result to the solr index schema
+//			while (result.next()) {
+//				doc = new SolrInputDocument();
+//				String tmp = result.getString(2);
+////				doc.addField("id", result.getString(1)); 
+//				doc.addField("SERIES_GEO_ID", result.getString(1)); 
+//				doc.addField("TITLE", result.getString(2)); 
+//				doc.addField("SAMPLE_NUMBER", result.getString(3)); 
+//				doc.addField("SOURCE", result.getString(4)); 
+//				doc.addField("PI_NAME", result.getString(5)); 
+//				doc.addField("PLATFORM_GEO_ID", result.getString(6)); 
+//				doc.addField("SERIES_OID", result.getString(7)); 
+//				doc.addField("COMPONENT", result.getString(8)); 
+//				doc.addField("GENE", result.getString(9)); 
+//				doc.addField("EMAP", result.getString(10)); 
+//				doc.addField("MGI", result.getString(11)); 
+//				doc.addField("PRESENT", result.getString(12)); 
+//				doc.addField("NOT_DETECTED", result.getString(13)); 
+//				doc.addField("UNCERTAIN", result.getString(14)); 
+//				doc.addField("FOCUS_GROUPS", result.getString(15)); 
+//				doc.addField("SEX", result.getString(16)); 
+//				doc.addField("LAB", result.getString(17)); 
+//				doc.addField("maprobe", result.getString(18)); 
+//				doc.addField("GUDMAP", result.getString(19)); 
+//				doc.addField("THEILER_STAGE", result.getString(20)); 
+//				doc.addField("AUTHORS", result.getString(21)); 
+//				
+//				docs.add(doc);
+//			}
+//		}
+//		catch(SQLException sqle){sqle.printStackTrace();}
+//		finally {
+//		    Globals.closeQuietly(con, ps, result);
+//		}
+//        return docs;
+//    }
 
 	public ArrayList<SolrInputDocument> getSolrNextGenSamplesIndexData() {
 		
