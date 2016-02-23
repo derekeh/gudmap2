@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/WEB-INF/templates/g_template_v2.xhtml">
+	<ui:define name="title">
+	    GUDMAP Overview
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define>
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h:outputScript library="scripts/Highcharts-4.2.1/js" name="highcharts.js"></h:outputScript>
+	<h:outputScript library="scripts/Highcharts-4.2.1/js/modules" name="data.js"></h:outputScript>
+	<h:outputScript library="scripts/Highcharts-4.2.1/js/modules" name="drilldown.js"></h:outputScript>
+	<h:outputScript library="scripts/Highcharts-4.2.1/js/modules" name="exporting.js"></h:outputScript>
+	
+	<script type="text/javascript">
+	$(function () {
+		var sliceClicked=0;
+
+	    // Create the chart
+	    $('#container').highcharts({
+	        chart: {
+	            type: 'pie',
+	            events: {
+	                drilldown: function (e) {
+	                    if (!e.seriesOptions) {
+
+	                         var chart = this,
+	                         /* drilldowns = {
+	                                'Stage': {
+	                                    name: 'Stage',
+	                                    data: [
+	                                           ['TS18', 8],
+	                                           ['TS19', 8],
+	                                           ['TS20', 8],
+	                                           ['TS21', 8],
+	                                           ['TS22', 8],
+	                                           ['TS23', 8],
+	                                           ['TS24', 8],
+	                                           ['TS25', 8],
+	                                           ['TS26', 8],
+	                                           ['TS27', 8],
+	                                           ['TS28', 8],
+	                                           ['Adult', 12]
+	                                       ]
+	                                },
+	                                'Focus Group': {
+	                                    name: 'Focus Group',
+	                                    data: [
+	                                        ['MET', 20],
+	                                        ['LUT', 20],
+	                                        ['ERS', 20],
+	                                        ['FRS', 20],
+	                                        ['MRS', 20]
+	                                    ]
+	                                },
+	                                'Lab': {
+	                                    name: 'Lab',
+	                                    data: [
+	                                        ['Little', 25],
+	                                        ['McMahon', 25],
+	                                        ['Gaido', 25],
+	                                        ['Ahern', 25]
+	                                    ]
+	                                }
+	                            },
+	                            series = drilldowns[e.point.name]; */
+	                        	sliceClicked = e.point.id;
+	                        	alert ('you have clicked slice: '+sliceClicked);
+
+	                        // Show the loading label
+	                        chart.showLoading('Simulating Ajax ...');
+
+	                        setTimeout(function () {
+	                            chart.hideLoading();
+	                            $('#assayTypeValuep').text(sliceClicked);
+	                            $('#assaytypeform\\:assaytypevalue').val(sliceClicked);
+	                            $('#assaytypeform\\:assaytypebutton').trigger('click');
+	                            $('#drillchartform\\:drillchart').trigger('click');
+	                            //alert('little hashmap value: '+ #{chartFilterBean.drillByAssayTypeMap.get("Little")});
+	                            //console.log(e.point.toSource());
+	                            //alert('series: '+series);
+	                           //chart.addSeriesAsDrilldown(e.point, series);
+	                        }, 1000);
+	                    }
+
+	                }
+	            }
+	        },
+	        title: {
+	            text: 'GUDMAP Entries (Total: '+#{chartFilterBean.chartModelList.get(0).total_entries} +')'
+	        },
+
+
+	        plotOptions: {
+	        	pie: {
+                    
+                    showInLegend: false
+                },
+	            series: {
+	                borderWidth: 0,
+	                dataLabels: {
+	                    enabled: true
+	                },
+	                allowPointSelect: true
+	            }
+	        },
+
+	        series: [{
+	        	tooltip: {
+	                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br />'
+	            },
+	            name: 'Total Entries',
+	            colorByPoint: true,
+	            data: [{
+	            	id:0,
+                    name: 'WISH',
+                    color: 'lightblue',
+                    y: #{chartFilterBean.chartModelList.get(0).wish_percent},
+                    //url: '/gudmap/db/browseWishTablePage.jsf',
+                    drilldown: true
+                   // x: #{chartBean.chartModelList.get(0).wish_gene_percent}
+                }, {
+                	id:1,
+                    name: 'SISH',
+                    y: #{chartFilterBean.chartModelList.get(0).sish_percent},
+                    color: 'orange',
+                    sliced: false,
+                    selected: false,
+                    //url: '/gudmap/db/browseSishTablePage.jsf',
+                    drilldown: true
+                   // x: #{chartBean.chartModelList.get(0).sish_gene_percent}
+                }, {
+                	id:2,
+                    name: 'IHC',
+                    color: 'yellow',
+                    y: #{chartFilterBean.chartModelList.get(0).ihc_percent},
+                    //url: '/gudmap/db/browseIhcTablePage.jsf',
+                    drilldown: true
+                   // x: #{chartBean.chartModelList.get(0).ihc_gene_percent}
+                }, {
+                	id:3,
+                    name: 'TG',
+                    color: 'darkblue',
+                    y: #{chartFilterBean.chartModelList.get(0).tg_percent},
+                    //url: '/gudmap/db/browseTgTablePage.jsf',
+                    drilldown: true
+                   // x: #{chartBean.chartModelList.get(0).tg_gene_percent}
+                }, {
+                	id:4,
+                    name: 'OPT',
+                    color: 'lightgreen',
+                    y: #{chartFilterBean.chartModelList.get(0).opt_percent},
+                   // url: '/gudmap/db/browseOptTablePage.jsf',
+                    drilldown: true
+                   // x: #{chartBean.chartModelList.get(0).tg_gene_percent}
+                }, {
+                	id:5,
+                    name: 'Sequence',
+                    color: 'red',
+                    y: #{chartFilterBean.chartModelList.get(0).sequence_percent},
+                    //url: '/gudmap/db/browseSeqSampleTablePage.jsf',
+                    drilldown: true
+                    //x: 0
+                },{
+                	id:6,
+                    name: 'Microarray',
+                    color: 'grey',
+                    y: #{chartFilterBean.chartModelList.get(0).microarray_percent},
+                   // url: '/gudmap/db/browseMicSampleTablePage.jsf',
+                    drilldown: true
+                   // x:0
+                }]
+            }],
+
+	        drilldown: {
+	            series: []
+	        },
+	        
+	        navigation: {
+	            buttonOptions: {
+	                verticalAlign: 'bottom',
+	                y: -20
+	            }
+	        }
+	        
+	        
+	        
+	    }, function(chart) { // on complete
+	    	drilldowns = {
+                    'Stage': {
+                        name: 'Stage',
+                        data: [
+                            ['TS18', 8],
+                            ['TS19', 8],
+                            ['TS20', 8],
+                            ['TS21', 8],
+                            ['TS22', 8],
+                            ['TS23', 8],
+                            ['TS24', 8],
+                            ['TS25', 8],
+                            ['TS26', 8],
+                            ['TS27', 8],
+                            ['TS28', 8],
+                            ['Adult', 12]
+                        ]
+                    },
+                    'Focus Group': {
+                        name: 'Focus Group',
+                        data: [
+                            ['MET',20],
+                            ['LUT',20],
+                            ['ERS', 20],
+                            ['FRS', 20],
+                            ['MRS', 20]
+                        ]
+                    },
+                    'Lab': {
+                        name: 'Lab',
+                        data: [
+                               ['Little', #{chartFilterBean.drillByAssayTypeMap.get('Little')}],
+                               ['McMahon', #{chartFilterBean.drillByAssayTypeMap.get('McMahon')}],
+                               ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
+                               ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
+                           ]
+                    }
+                },	        
+	        
+	         $('#btn').click(function(){
+	        	 series = drilldowns['Stage'];
+	        	 chart.addSeriesAsDrilldown(chart.series[0].data[0], series);
+	        });
+	         
+	         $('#btn2').click(function(){
+	        	 series = drilldowns['Focus Group'];
+	        	 chart.addSeriesAsDrilldown(chart.series[0].data[1], series);
+	        });
+	         
+	         $('#btn3').click(function(){
+	        	 alert('btn3 clicked, slice: '+sliceClicked);
+	        	 /* var processed_json = new Array();
+	        	 $.getJSON('http://localhost:8080/gudmap/resources/files/json_data.json', function(data) {
+	                    // Populate series
+	                    for (i = 0; i &lt; data.length; i++){
+	                        processed_json.push([data[i].key, data[i].value]);
+	                    }
+	                    alert('data: '+data);
+	                    chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked],processed_json);
+	        	 }); */
+	        	 //series =  #{chartFilterBean.json_return};
+	        	 
+	        	/* setTimeout(function () {
+	        		 //chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData('Lab'));
+	        		 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked],processed_json);
+	        		 //$('#container').highcharts().redraw(); 
+	        		 
+	             }, 9000);*/
+	        	//chart.redraw(); 
+	        	 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData('Lab'));
+	        	 //chart.redraw();
+	             //location.reload(true);
+	             //getLabData('Lab',sliceClicked);
+	        	 
+	        	 
+	        	 //$('#container').highcharts().redraw();
+	        	 //chart.addSeriesAsDrilldown(e.point, data);
+                 // where data is for example: 
+                 // { name: 'Cars', data: [ ['Toyota', 1], ['Volkswagen', 2], ['Opel', 5] ] }
+                
+	        });
+	        
+	    });
+	    
+	});
+		</script>
+		
+		<script>
+			function getLabData(lab) {
+				//var chart = $("#container").highcharts();
+				//$('#assaytypeform\\:assaytypebutton').trigger('click');
+	           // $('#drillchartform\\:drillchart').trigger('click');
+				//alert('little: '+#{chartFilterBean.drillByAssayTypeMap.get('Little')});
+				 series = null;
+				 drilldowns3 = {
+	                     'Lab': {
+	                         name: 'Lab',
+	                         data: [
+	                                ['Little', #{chartFilterBean.drillByAssayTypeMap.get('Little')}],
+	                                ['McMahon', #{chartFilterBean.drillByAssayTypeMap.get('McMahon')}],
+	                                ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
+	                                ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
+	                            ]
+	                     }
+	                 };
+				series = drilldowns3[lab];
+				//chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], series);
+				//chart.redraw();
+				return series;
+			}
+		
+		</script>
+	    <h1>Dynamic Pie Chart with Legend</h1>	
+	   
+	    
+	   
+	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    <div style="width:50%; margin:0 auto;text-align:center;"><button id="btn">Stages</button><button id="btn2">Focus Group</button><button id="btn3">Lab</button></div>
+	  
+	    <h:form id="drillchartform">
+		    <h:commandButton style="display:none" id="drillchart" actionListener="#{chartFilterBean.drillLabByAssayTypeChart(paramBean.assayTypeIndex)}">
+			 <f:ajax execute="@form" render="@form"/>
+			</h:commandButton>
+			<h:outputText value="Little value: #{chartFilterBean.drillByAssayTypeMap.get('Little')}"></h:outputText>
+		</h:form>
+		
+		<h:form id="assaytypeform">
+			<h:inputHidden id="assaytypevalue" value="#{paramBean.assayTypeIndex}"></h:inputHidden>
+			<h:commandButton style="display:none" id="assaytypebutton">
+			  <f:ajax execute="@form" render="@form"/>
+			</h:commandButton>
+			<h:outputText value="#{paramBean.assayTypeIndex}"></h:outputText>
+		</h:form>
+		
+		<div><p id="assayTypeValuep">original</p></div>
+	    <!-- all other content in here -->     
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,13 +1,18 @@
 package org.gudmap.beans;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import org.gudmap.globals.Globals;
@@ -18,12 +23,14 @@ import org.gudmap.queries.generic.ChartQueries;
 import org.gudmap.queries.generic.GenericQueries;
 
 @Named
-@RequestScoped
-public class ChartBean {
+@SessionScoped
+public class ChartFilterBean implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private ArrayList<ChartModel> chartModelList = null;
-	private ArrayList<ChartModel> chartModelDrillList = null;
+	private ArrayList<ChartModel> drillByAssayTypeList = null;
 	private ArrayList<ChartModel> chartModelBarList = null;
+	private Map<String,Integer>drillByAssayTypeMap = null;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -37,11 +44,13 @@ public class ChartBean {
 	int total_tg = 0;
 	int total_microarray = 0;
 	int total_sequence = 0;
+	private String json_return="{\"name\":\"Lab\",\"data\":[[\"Little\",\"1197\"],[\"McMahon\",\"183\"],[\"Gaido\",\"187\"],[\"Lessard\",\"0\"]]}";
 	
-	public ChartBean() {
+	public ChartFilterBean() {
 		init();
-		drillChart();
-		barChart();
+		drillByAssayTypeMap = new LinkedHashMap<String,Integer>();
+		//drillChart();
+		//barChart();
 	}
 	
 	public ArrayList<ChartModel> getChartModelList() {
@@ -49,9 +58,9 @@ public class ChartBean {
 		return chartModelList;
 	}
 	
-	public ArrayList<ChartModel> getChartModelDrillList() {
+	public ArrayList<ChartModel> getDrillByAssayTypeList() {
 		
-		return chartModelDrillList;
+		return drillByAssayTypeList;
 	}
 	
 	public ArrayList<ChartModel> getChartModelBarList() {
@@ -108,10 +117,15 @@ public class ChartBean {
 		
 	}
 	
-	public void drillChart() {
-		ChartModel chartModel = null;
+	public void drillLabByAssayTypeChart(int assayType) {
+		//int assayType = Integer.parseInt(input);
+		drillByAssayTypeMap.clear();
+		String[] assayArray = {"wholemount","section","opt-wholemount","IHC","TG","NextGen","Microarray"};
 		String lab="";
+		String abbrevLab="";
 		ArrayList<String>sourceList = new ArrayList<String>();
+		ArrayList<String>abbrevList = new ArrayList<String>();
+		ChartModel chartModel = null;
 		 try
 			{
 				con=Globals.getDatasource().getConnection();
@@ -119,6 +133,7 @@ public class ChartBean {
 				result =  ps.executeQuery();
 				while (result.next()) {
 					sourceList.add(result.getString("lab"));
+					abbrevList.add(result.getString("abbrv"));
 				}
 				
 				
@@ -128,36 +143,25 @@ public class ChartBean {
 			    Globals.closeQuietly(con, ps, result);
 			}
 		
-		chartModelDrillList = new ArrayList<ChartModel>();
-		
+		 //drillByAssayTypeMap = new LinkedHashMap<String,Integer>();
+		 //drillByAssayTypeList = new ArrayList<ChartModel>();
+		 
+		String queryString = (assayType<3)?ChartQueries.LABS_BY_ISH:ChartQueries.LABS_BY_NON_ISH; 
 		for(int i=0;i<sourceList.size();i++){
 			lab = sourceList.get(i);
+			abbrevLab = abbrevList.get(i);
+			//chartModel = new ChartModel();
 	        try
 			{
 				con=Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(ChartQueries.ENTRIES_BY_LAB); 
+				ps = con.prepareStatement(queryString); 
 				ps.setString(1, lab);
-				ps.setString(2, lab);
-				ps.setString(3, lab);
-				ps.setString(4, lab);
-				ps.setString(5, lab);
-				ps.setString(6, lab);
-				ps.setString(7, lab);
+				ps.setString(2, assayArray[assayType]);
 				result =  ps.executeQuery();
 				if (result.first()) {
-					chartModel = new ChartModel();
-					chartModel.setWish_lab(calculatePercentage(result.getInt("wish_lab"),total_wish));
-					chartModel.setSish_lab(calculatePercentage(result.getInt("sish_lab"),total_sish));
-					chartModel.setOpt_lab(calculatePercentage(result.getInt("opt_lab"),total_opt));
-					chartModel.setIhc_lab(calculatePercentage(result.getInt("ihc_lab"),total_ihc));
-					chartModel.setTg_lab(calculatePercentage(result.getInt("tg_lab"),total_tg));
-					chartModel.setMicroarray_lab(calculatePercentage(result.getInt("microarray_lab"),total_microarray));
-					chartModel.setSequence_lab(calculatePercentage(result.getInt("sequence_lab"),total_sequence));
-	                
-					chartModelDrillList.add(chartModel);       
-				}
-				
-				
+					drillByAssayTypeMap.put(abbrevLab,result.getInt("TOTAL"));
+					
+				}				      
 			}
 			catch(SQLException sqle){sqle.printStackTrace();}
 			finally {
@@ -167,58 +171,26 @@ public class ChartBean {
 		
 	}
 	
-	public void barChart() {
-		ChartModel chartModel = null;
-		try
-			{
-				con=Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(ChartQueries.ENTRIES_BY_FOCUS_GROUP); 
-				result =  ps.executeQuery();
-				if (result.first()) {
-					chartModel = new ChartModel();
-					chartModelBarList = new ArrayList<ChartModel>();
-					chartModel.setTot_met_entries(result.getInt("TOT_MET"));
-					chartModel.setTot_lut_entries(result.getInt("TOT_LUT"));
-					chartModel.setTot_ers_entries(result.getInt("TOT_ERS"));
-					chartModel.setTot_frs_entries(result.getInt("TOT_FRS"));
-					chartModel.setTot_mrs_entries(result.getInt("TOT_MRS"));
-				}
-				
-				
-			}
-			catch(SQLException sqle){sqle.printStackTrace();}
-			finally {
-			    Globals.closeQuietly(con, ps, result);
-			}
-		
-		
-		
-			try
-			{
-				con=Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(ChartQueries.GENES_BY_FOCUS_GROUP); 
-				result =  ps.executeQuery();
-				if (result.first()) {
-					chartModel.setTot_met_genes(result.getInt("TOT_MET_GENE"));
-					chartModel.setTot_lut_genes(result.getInt("TOT_LUT_GENE"));
-					chartModel.setTot_ers_genes(result.getInt("TOT_ERS_GENE"));
-					chartModel.setTot_frs_genes(result.getInt("TOT_FRS_GENE"));
-					chartModel.setTot_mrs_genes(result.getInt("TOT_MRS_GENE"));
-	          	      
-				}
-			}
-			catch(SQLException sqle){sqle.printStackTrace();}
-			finally {
-			    Globals.closeQuietly(con, ps, result);
-			}
-			
-			chartModelBarList.add(chartModel); 
-		
-	}
+	
+	
+
 	
 	private double calculatePercentage(int fraction, int total) {
 		double y= Math.round(100 * ((fraction * 100f)/total)) / 100d;
 		return y;
+	}
+	
+	public Map<String,Integer> getDrillByAssayTypeMap() {
+		
+		return drillByAssayTypeMap;
+	}
+	
+	public void setJson_return(String json_return) {
+		this.json_return = json_return;
+	}
+	
+	public String getJson_return () {
+		return json_return;
 	}
 
 }

@@ -178,6 +178,9 @@ public class ParamBean implements Serializable {
 	private boolean col_downloadcol=true;
 	private boolean col_sharecol=true;
 	
+	//charts
+	private int assayTypeIndex=0;
+	
 		
 	public ParamBean() {
 		//DEFAULT COLUMNS TO SHOW
@@ -2018,6 +2021,15 @@ public class ParamBean implements Serializable {
 		 else
 			 return "browseCollectionListTablePage";
 	 }
+	
+	////////////charts/////////////////
+	public void setAssayTypeIndex(int assayTypeIndex){
+		this.assayTypeIndex = assayTypeIndex;
+	}
+	
+	public int getAssayTypeIndex() {
+		return assayTypeIndex;
+	}
 	
 	/////////////debug//////////////////
 	

@@ -118,6 +118,10 @@ function slow_monitor(data){
     }
 }
 
+
+
+
+
 /*function showExpressionInformation() {
 	  var w = window.open('viewExpressionDetail.jsf','expressionPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=400');
 	  w.focus();
