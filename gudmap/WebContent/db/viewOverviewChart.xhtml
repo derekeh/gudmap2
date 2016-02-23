@@ -62,6 +62,11 @@
 			    						location.href = e.point.url;
 			    						e.preventDefault();
 			    					}
+			            			//,
+			    					//legendItemClick: function(e) {
+			    					//	e.preventDefault();
+			    					//	e.point.drilldown:'STAGES';
+			    					//}
 			    				}
 			    			},
 			                data: [{
@@ -110,6 +115,34 @@
 			                    x:0
 			                }]
 			            }]
+			           /* ,
+			            drilldown: {
+				            series: [{
+				                name: 'STAGES',
+				                id: 'STAGES',
+				                data: [
+				                    ['Ahern', #{chartBean.chartModelDrillList.get(0).wish_lab}],
+				                    ['Capel', #{chartBean.chartModelDrillList.get(1).wish_lab}],
+				                    ['Cohn', #{chartBean.chartModelDrillList.get(2).wish_lab}],
+				                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).wish_lab}],
+				                    ['Gaido', #{chartBean.chartModelDrillList.get(4).wish_lab}],
+				                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).wish_lab}],
+				                    ['Jain', #{chartBean.chartModelDrillList.get(6).wish_lab}],
+				                    ['Keast', #{chartBean.chartModelDrillList.get(7).wish_lab}],
+				                    ['Lessard', #{chartBean.chartModelDrillList.get(8).wish_lab}],
+				                    ['Little', #{chartBean.chartModelDrillList.get(9).wish_lab}],
+				                    ['McMahon', #{chartBean.chartModelDrillList.get(10).wish_lab}],
+				                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).wish_lab}],
+				                    ['Potter', #{chartBean.chartModelDrillList.get(12).wish_lab}],
+				                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).wish_lab}],
+				                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).wish_lab}],
+				                    ['Vezina', #{chartBean.chartModelDrillList.get(15).wish_lab}]
+				                ]
+				            }
+				            ]
+				        }
+			            */
+			            
 			        });
 			        
 			        /**************************/
@@ -358,8 +391,8 @@
 				                'Metanephros',
 				                'LUT',
 				                'Early Gen. System',
-				                'Male Rep. System',
-				                'Female Rep. System'
+				                'Female Rep. System',
+				                'Male Rep. System'
 				            ],
 				            crosshair: true
 				        },
@@ -385,11 +418,15 @@
 				        },
 				        series: [{
 				            name: 'GENES',
-				            data: [3491, 2910, 240, 2543, 2487]
+				            data: [#{chartBean.chartModelBarList.get(0).tot_met_genes}, #{chartBean.chartModelBarList.get(0).tot_lut_genes}, 
+				                   #{chartBean.chartModelBarList.get(0).tot_ers_genes}, #{chartBean.chartModelBarList.get(0).tot_frs_genes}, 
+				                   #{chartBean.chartModelBarList.get(0).tot_mrs_genes}]
 				
 				        }, {
 				            name: 'ENTRIES',
-				            data: [7335, 5792, 270, 3208, 3058]
+				            data: [#{chartBean.chartModelBarList.get(0).tot_met_entries}, #{chartBean.chartModelBarList.get(0).tot_lut_entries},
+				                   #{chartBean.chartModelBarList.get(0).tot_ers_entries}, #{chartBean.chartModelBarList.get(0).tot_frs_entries}, 
+				                   #{chartBean.chartModelBarList.get(0).tot_mrs_entries}]
 				
 				        }]
 				    });
