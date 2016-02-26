@@ -58,10 +58,16 @@
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
 				<br/>
+<ui:remove>
 				<h:outputText value="Gene: "/>				
      			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
      				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
-				</h:commandLink>			
+				</h:commandLink>
+</ui:remove>				
+				<h:outputText value="Gene: "/>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.xhtml" >
+     				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
+				</h:commandLink>
 				<br/>
 				<h:outputText value="Go to "/>
 	    		<a href="#{u.clickFilePath}">Image Viewer</a>
@@ -82,9 +88,15 @@
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
 				<br/>
+<ui:remove>
 				<h:outputText value="Gene: "/>				
      			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
      				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
+				</h:commandLink>
+</ui:remove>				
+				<h:outputText value="Gene: "/>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.xhtml" >
+     				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
 				<br/>
 				<h:outputText value="Go to "/>

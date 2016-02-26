@@ -34,15 +34,16 @@ function changePalette(paletteName, heatmapId) {
 	t.selectAll(".cell")
 	     .style("fill", function(d) {
 	    	 if (paletteName == "Default")
-	             return getHeatmapColor(d.adjvalue);
+	             return getHeatmapColor(d);
+//             	 return getHeatmapColor(d.adjvalue);
 	    	 else{
 	    		 var classesNumber = 10;
 	    		 var colors = colorbrewer[paletteName][classesNumber];
 	    		 var colorScale = d3.scale.quantize()
 	    		      .domain([-2.0, 2.0])
 	    		      .range(colors);
-	   		 
-	    		 return colorScale(d.adjvalue);
+	    		 return colorScale(d);	   		 
+//	    		 return colorScale(d.adjvalue);
 	    	 }
 	      });
 }
@@ -105,7 +106,40 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
  	   		.append("g")
  	   		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
        
-                
+
+ 	   	
+		var legend = d3.select("#legend")	   	
+        .svg.append("g")
+        .attr("class", "legend")
+        .selectAll(".legendElement")
+        .data([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+        .enter().append("g")
+        .attr("class", "legendElement");
+
+    legend.append("svg:rect")
+        .attr("x", function(d, i) {
+            return width * i;
+        })
+//        .attr("y", viewerPosTop)
+        .attr("class", "cellLegend bordered")
+        .attr("width", width)
+        .attr("height", cellSize / 2)
+        .style("fill", function(d, i) {
+            return colors[i];
+        });
+	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
         var rowSortOrder = false;
         var colSortOrder = false;
 
@@ -304,7 +338,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 	        })
 	        .on("change", function() {
 	        	var newPalette = d3.select("#palette").property("value");
-	            changePalette(newPalette, heatmapid);
+	            changePalette(newPalette, "#chart");
 	        });			    
 		
 	    //==================================================
@@ -315,8 +349,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			var sorted; // sorted is zero-based index
 			d3.selectAll(".c"+rORc+i) 
 				.filter(function(d){
-//	               log2r.push(d);
-	               log2r.push(ce.adjvalue);
+	               log2r.push(d);
+//	               log2r.push(ce.adjvalue);
 	             });
 			if(rORc=="r"){ // sort log2ratio of a gene
 				sorted=d3.range(col_number).sort(function(a,b){ if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});

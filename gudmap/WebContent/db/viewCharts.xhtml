@@ -265,7 +265,7 @@
 	        		 
 	             }, 9000);*/
 	        	//chart.redraw(); 
-	        	 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData('Lab'));
+	        	 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData());
 	        	 //chart.redraw();
 	             //location.reload(true);
 	             //getLabData('Lab',sliceClicked);
@@ -284,14 +284,13 @@
 		</script>
 		
 		<script>
-			function getLabData(lab) {
+			function getLabData() {
 				//var chart = $("#container").highcharts();
 				//$('#assaytypeform\\:assaytypebutton').trigger('click');
 	           // $('#drillchartform\\:drillchart').trigger('click');
 				//alert('little: '+#{chartFilterBean.drillByAssayTypeMap.get('Little')});
 				 series = null;
 				 drilldowns3 = {
-	                     'Lab': {
 	                         name: 'Lab',
 	                         
 	                          data: [
@@ -300,9 +299,8 @@
 	                                ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
 	                                ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
 	                            ] 
-	                     }
 	                 };
-				series = drilldowns3[lab];
+				series = drilldowns3;
 				//chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], series);
 				//chart.redraw();
 				return series;
@@ -312,6 +310,7 @@
 	    <h1>Dynamic Pie Chart with Legend</h1>	
 	   
 	    
+
 	   
 	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    <div style="width:50%; margin:0 auto;text-align:center;"><button id="btn">Stages</button><button id="btn2">Focus Group</button><button id="btn3">Lab</button></div>

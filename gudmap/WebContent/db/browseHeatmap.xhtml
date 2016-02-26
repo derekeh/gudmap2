@@ -27,12 +27,14 @@
 	#{microarrayHeatmapBean.loadDataList()}
 	
 	<h:form id="microarrayHeatmapForm">	
-		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>		
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
 		<h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
 		<h:outputScript library="scripts" name="heatmap.js"></h:outputScript>
 		<h:outputStylesheet library="css" name="heatmap.css" /> 
 		<h:outputStylesheet library="css" name="tabbedPane.css" /> 
+		<h:outputScript library="scripts" name="jquery-ui.js"></h:outputScript>
+		
 		
 <h:panelGrid columns="4">
 	<h:panelGroup>
@@ -42,10 +44,12 @@
 	
  	   
 		<h:selectOneMenu id="menu1" value="#{microarrayHeatmapBean.selectedSample}" 
+			rendered="#{empty microarrayHeatmapBean.genelistId}"
 	   		onchange="submit()" immediate="true" valueChangeListener="#{microarrayHeatmapBean.selectedSampleChanged}" >
 			<f:selectItems value="#{microarrayHeatmapBean.sampleOptions}" />
 		</h:selectOneMenu>
-
+		<h:outputText  value="&nbsp;" rendered="#{not empty microarrayHeatmapBean.genelistId}"></h:outputText>
+		
 		<h:outputLink id="topGene" target="_blank" 
 					value ="http://toppgene.cchmc.org/CheckInput.action?training_set=#{microarrayHeatmapBean.geneList}&amp;type=HGNC&amp;query=TOPPFUN">
 			<h:graphicImage library="images/display" name="ToppFun_Button.png" width="60" style="padding-right:10px;"/> 		
@@ -67,6 +71,12 @@
 		</select>
 	</h:panelGroup>	
 	
+	
+
+	<label>CellSize:</label>
+	<div id="slider" style='width:200px;'></div>
+
+	
 	<h:outputText  value="No Data available for display" rendered="#{!microarrayHeatmapBean.dataAvailable}"></h:outputText>
  		
 </h:panelGrid> 	
@@ -77,56 +87,10 @@
 </table>
 		<h:panelGroup rendered="#{microarrayHeatmapBean.dataAvailable}">
 			<div id="annotations" style='width:1100px; height:100px;'></div>	
-			<div id="chart" style='overflow:auto; height:400px;' ></div>
+			<div id="legend" ></div>
+			<div id="chart" style='overflow:auto;' ></div>
 		</h:panelGroup>
 		
-<ui:remove>			
-  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0" rendered="#{microarrayHeatmapBean.dataAvailable}">
- 			<h:panelGroup>
- 			  <h:panelGrid columns="5">
-                <h:commandButton id="firstbutton" value="first" action="#{microarrayHeatmapBean.pageFirst}"
-                    disabled="#{microarrayHeatmapBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form" />
-                </h:commandButton>
-                <h:commandButton id="prevbutton" value="prev" action="#{microarrayHeatmapBean.pagePrevious}"
-                    disabled="#{microarrayHeatmapBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form" />
-                </h:commandButton>
-                <h:commandButton id="nextbutton" value="next" action="#{microarrayHeatmapBean.pageNext}"
-                    disabled="#{microarrayHeatmapBean.firstRow + microarrayHeatmapBean.rowsPerPage >= microarrayHeatmapBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form" />
-                </h:commandButton>
-                <h:commandButton id="lastbutton" value="last" action="#{microarrayHeatmapBean.pageLast}"
-                    disabled="#{microarrayHeatmapBean.firstRow + microarrayHeatmapBean.rowsPerPage >= microarrayHeatmapBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form" />
-                </h:commandButton>
-                <h:outputText value="Page #{microarrayHeatmapBean.currentPage} / #{microarrayHeatmapBean.totalPages}" />
-               </h:panelGrid>
-			</h:panelGroup>
-			
-	
-			<h:panelGroup>
-                <t:dataList value="#{microarrayHeatmapBean.pages}" var="page">
-                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{microarrayHeatmapBean.page}"
-                        rendered="#{page != microarrayHeatmapBean.currentPage}" />
-                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-                        rendered="#{page == microarrayHeatmapBean.currentPage}" />
-                </t:dataList>
-           </h:panelGroup>
-           
-           <h:panelGroup>
-				<h:panelGrid columns="4">
-	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
-	                <h:inputText id="rowsPerPage" value="#{microarrayHeatmapBean.rowsPerPage}" size="3" maxlength="3" />
-	                <h:commandButton id="setrowsbutton" value="Set" action="#{microarrayHeatmapBean.pageFirst}" >
-	                	<f:ajax execute="@form" render="@form" />
-	                </h:commandButton>               
-	                <h:message for="rowsPerPage" errorStyle="color: red;" />
-	             </h:panelGrid>
-           </h:panelGroup>
-	           
-         </h:panelGrid>    
-</ui:remove>		
 	
 	
 
@@ -146,20 +110,27 @@
 		var annotationHeaders = ["Platform","Gene","Probe Seq ID","MGI Gene ID","Entrez Gene ID","Human Ortholog Symbol","Human Ortholog Entrez","GUDMAP-ISH","UCSC","KEGG","ENS"];
 	   
 		heatmap_display(url, annotationHeaders, "#chart", "Default");
- });   	
-
+ });   
+   
+$(function() {
+	   var sliderOpts = {
+	   min: 0,
+	   max: 10,
+	   value: 4,
+	   step:1,   
+	   change: function(){
+		   var x = $(this).slider("value") + 10;
+		   alert(x);
+	   }	
+	   };		   
+	   $("#slider").slider(sliderOpts);
+});
 //]]>
  </script>		
 
 
 	</h:form>  
-	
-<ui:remove>	
-		<h:form id="form2" rendered="#{microarrayHeatmapBean.dataAvailable}">
-			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
-			<h:inputText id="gotopage" value="#{microarrayHeatmapBean.gotopage}" />
-		</h:form> 
-</ui:remove>
+
 
 	</ui:define>
 </ui:composition>
