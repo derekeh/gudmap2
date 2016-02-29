@@ -72,10 +72,6 @@
 	</h:panelGroup>	
 	
 	
-
-	<label>CellSize:</label>
-	<div id="slider" style='width:200px;'></div>
-
 	
 	<h:outputText  value="No Data available for display" rendered="#{!microarrayHeatmapBean.dataAvailable}"></h:outputText>
  		
@@ -110,21 +106,8 @@
 		var annotationHeaders = ["Platform","Gene","Probe Seq ID","MGI Gene ID","Entrez Gene ID","Human Ortholog Symbol","Human Ortholog Entrez","GUDMAP-ISH","UCSC","KEGG","ENS"];
 	   
 		heatmap_display(url, annotationHeaders, "#chart", "Default");
- });   
+ }); 
    
-$(function() {
-	   var sliderOpts = {
-	   min: 0,
-	   max: 10,
-	   value: 4,
-	   step:1,   
-	   change: function(){
-		   var x = $(this).slider("value") + 10;
-		   alert(x);
-	   }	
-	   };		   
-	   $("#slider").slider(sliderOpts);
-});
 //]]>
  </script>		
 

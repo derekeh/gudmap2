@@ -108,30 +108,6 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
        
 
  	   	
-		var legend = d3.select("#legend")	   	
-        .svg.append("g")
-        .attr("class", "legend")
-        .selectAll(".legendElement")
-        .data([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
-        .enter().append("g")
-        .attr("class", "legendElement");
-
-    legend.append("svg:rect")
-        .attr("x", function(d, i) {
-            return width * i;
-        })
-//        .attr("y", viewerPosTop)
-        .attr("class", "cellLegend bordered")
-        .attr("width", width)
-        .attr("height", cellSize / 2)
-        .style("fill", function(d, i) {
-            return colors[i];
-        });
-	   	
- 	   	
- 	   	
- 	   	
- 	   	
  	   	
  	   	
  	   	
