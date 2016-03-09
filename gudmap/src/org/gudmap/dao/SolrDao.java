@@ -43,7 +43,8 @@ public class SolrDao {
 //				doc.addField("id", result.getString(1)); 
 				doc.addField("GENE", result.getString(1), (float)2.0); // added boost
 				doc.addField("GENE_NAME", result.getString(2)); 
-				doc.addField("MGI_GENE_ID", result.getString(3)); 
+				String MGI_GENE_ID = result.getString(3);
+				doc.addField("MGI_GENE_ID", MGI_GENE_ID); 
 				doc.addField("MGI", result.getString(4)); 
 				doc.addField("ENSEMBL_ID", result.getString(5)); 
 				doc.addField("SYNONYMS", result.getString(6), (float)1.5); // added boost
@@ -74,8 +75,11 @@ public class SolrDao {
 				else
 					doc.addField("MARKER", ""); 
 				doc.addField("GENE_TYPE", result.getString(25));
-				doc.addField("SPECIES", result.getString(26));				
-				docs.add(doc);
+				doc.addField("SPECIES", result.getString(26));	
+				
+				// to filter out rubbish
+				if (MGI_GENE_ID != null && MGI_GENE_ID != "")
+					docs.add(doc);
 			}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}

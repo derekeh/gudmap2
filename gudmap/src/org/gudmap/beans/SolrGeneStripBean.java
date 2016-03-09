@@ -72,7 +72,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     // Constructors -------------------------------------------------------------------------------
 
     public SolrGeneStripBean() {
-    	super(5,10,"RELEVANCE",true);
+    	super(10,10,"RELEVANCE",true);
     	setup();
     }
     
