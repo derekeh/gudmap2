@@ -4,8 +4,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:pr="http://primefaces.org/ui" >
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
 <ui:composition template="/WEB-INF/templates/g_template_v2.xhtml">
 	<ui:define name="title">
@@ -50,28 +49,39 @@
 	                            $('#assayTypeValuep').text(sliceClicked);
 	                            $('#assaytypeform\\:assaytypevalue').val(sliceClicked);
 	                            $('#assaytypeform\\:assaytypebutton').trigger('click');
-	                            $('#drillchartform\\:drillchart').trigger('click');	                           	                           
+	                            $('#drillchartform\\:drillchart').trigger('click');
+	                            //alert('little hashmap value: '+ #{chartFilterBean.drillByAssayTypeMap.get("Little")});
+	                            //console.log(e.point.toSource());
+	                            //alert('series: '+series);
+	                           //chart.addSeriesAsDrilldown(e.point, series);
+	                           
+	                          /*  if(this.drilldown == null) {
+	                        	   alert('drilldown series is null');
+	                        	   this.drilldown = [];
+	                           } */
+	                           
+	                           
+	                           
 	                        }, 1000);
 	                        
-	                        drilldowns = {
-	   	       	                     'Lab': {
-	   	       	                         name: 'Lab',
+// 	                        drilldowns = {
+// 	   	       	                     'Lab': {
+// 	   	       	                         name: 'Lab',
 	   	       	                         
-	   	       	                          data: [
-	   	       	                                ['Little', #{chartFilterBean.drillByAssayTypeMap.get('Little')}],
-	   	       	                                ['McMahon', #{chartFilterBean.drillByAssayTypeMap.get('McMahon')}],
-	   	       	                                ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
-	   	       	                                ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
-	   	       	                            ] 
-	   	       	                     }
-	   	       	                 };
+// 	   	       	                          data: [
+// 	   	       	                                ['Little', #{chartFilterBean.drillByAssayTypeMap.get('Little')}],
+// 	   	       	                                ['McMahon', #{chartFilterBean.drillByAssayTypeMap.get('McMahon')}],
+// 	   	       	                                ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
+// 	   	       	                                ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
+// 	   	       	                            ] 
+// 	   	       	                     }
+// 	   	       	                 };
 	   	                        
-	   	                        series = drilldowns[e.point.dname];
-	   	                        console.log('drilldown event');
-	   	                        console.log(series);
-	   	                        chart.addSeriesAsDrilldown(e.point, series);
-	   	                        chart.redraw();
-	   	                        alert('littleoutput: ' + $('#drillchartform\\:littleoutput').text())
+// 	   	                        series = drilldowns[e.point.dname];
+// 	   	                        console.log('drilldown event');
+// 	   	                        console.log(series);
+// 	   	                        chart.addSeriesAsDrilldown(e.point, series);
+// 	   	                        chart.redraw();
 	                        
 	                        
 	                        
@@ -194,8 +204,24 @@
 	    }, function(chart) { // on complete
 	         
 	         $('#btn3').click(function(){
-
 	        	 alert('btn3 clicked, slice: '+sliceClicked);
+	        	 $.ajax({
+	        		 url:'http://localhost:8080/gudmap/resources/files/json_example.json',
+	        		 dataType: 'json',
+	        		 data: 'lab',
+	        		// success: alert(data),
+	        		 //success: function(data) {chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked],data);},
+	        		 cache: false
+	        	 })
+	        	 .done(function(data) {
+	        		 console.log(data);
+	        		 //chart.options.drilldown.series = [getDrilldowns()];
+	        		 //chart.redraw();
+	        		// myRedraw();
+	        		 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked],getLabData('Lab'));
+	        		 alert('done');
+	        	 });
+	        	 
 	        	 /* var processed_json = new Array();
 	        	 $.getJSON('http://localhost:8080/gudmap/resources/files/json_data.json', function(data) {
 	                    // Populate series
@@ -214,8 +240,9 @@
 	        		 
 	             }, 9000);*/
 	        	//chart.redraw(); 
-	        	 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData());
-	        	 //chart.redraw();
+	            // $.ajaxSetup({ cache: false });
+	        	 //chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData('Lab'));
+	        	// chart.redraw();
 	             //location.reload(true);
 	             //getLabData('Lab',sliceClicked);
 	        	 
@@ -225,7 +252,6 @@
                  // where data is for example: 
                  // { name: 'Cars', data: [ ['Toyota', 1], ['Volkswagen', 2], ['Opel', 5] ] }
                 
-
 	        });
 	        
 	    });
@@ -233,15 +259,22 @@
 	});
 		</script>
 		
-
+		
 		<script>
-			function getLabData() {
+		
+			function myRedraw() {
+				var chart = $("#container").highcharts();
+				chart.redraw();
+			}
+			
+			function getLabData(lab) {
 				//var chart = $("#container").highcharts();
 				//$('#assaytypeform\\:assaytypebutton').trigger('click');
 	           // $('#drillchartform\\:drillchart').trigger('click');
 				//alert('little: '+#{chartFilterBean.drillByAssayTypeMap.get('Little')});
 				 series = null;
 				 drilldowns3 = {
+	                     'Lab': {
 	                         name: 'Lab',
 	                         
 	                          data: [
@@ -250,19 +283,37 @@
 	                                ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
 	                                ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
 	                            ] 
+	                     }
 	                 };
-				series = drilldowns3;
+				series = drilldowns3[lab];
+				console.log('getlabdata_function');
+				console.log(series);
 				//chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], series);
 				//chart.redraw();
 				return series;
-			}		
+			}
+			
+			function getDrilldowns(){
+				drilldowns3 = {
+	                     'Lab': {
+	                         name: 'Lab',
+	                         
+	                          data: [
+	                                ['Little', #{chartFilterBean.drillByAssayTypeMap.get('Little')}],
+	                                ['McMahon', #{chartFilterBean.drillByAssayTypeMap.get('McMahon')}],
+	                                ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
+	                                ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
+	                            ] 
+	                     }
+	                 };
+				return drilldowns3;
+			}
 		</script>
-
 	    
 	    <h1>Dynamic Pie Chart with Legend</h1>	
 	   
 	    
-
+	  
 	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	   
 	    <div style="width:50%; margin:0 auto;text-align:center;"><button id="btn">Stages</button><button id="btn2">Focus Group</button><button id="btn3">Lab</button></div>
