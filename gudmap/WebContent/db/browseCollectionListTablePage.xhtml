@@ -51,7 +51,7 @@
     					<f:ajax execute="@this checkall" render="@form" />
 					</h:commandButton>
 					<br />
-    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />				
+    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.collectionCheckboxSelections()}" />				
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>

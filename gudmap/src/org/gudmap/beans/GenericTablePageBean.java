@@ -483,6 +483,22 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     	} 
     }
     
+    public String collectionCheckboxSelections() { 
+    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
+    	selectedItems.clear();
+    	for (int i=0;i<dataList.size();i++) { 
+    		if (((CollectionInfoModel) dataList.get(i)).getSelected()) { 
+    			if(paramBean.getCollectionType().equalsIgnoreCase("Entries"))
+    				selectedItems.add(String.valueOf( ((CollectionInfoModel) dataList.get(i)).getOid()) );
+    			//else if(paramBean.getCollectionType().equalsIgnoreCase("Genes"))
+    				//selectedItems.add(((CollectionInfoModel) dataList.get(i)).getGene_id());
+    		} 
+    	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
+    	//return "browseCollectionEntriesTablePage";
+    	return "result";
+    	//return collectionSaveOption();
+    }
+    
     //create comma separated string of selected checkbox items created in checkboxSelections()
     public String getSelectedItemstoString(){
     	String str="";
