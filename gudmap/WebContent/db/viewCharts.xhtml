@@ -194,7 +194,38 @@
 	    }, function(chart) { // on complete
 	         
 	         $('#btn3').click(function(){
-	        	 alert('btn3 clicked, slice: '+sliceClicked);   
+
+	        	 alert('btn3 clicked, slice: '+sliceClicked);
+	        	 /* var processed_json = new Array();
+	        	 $.getJSON('http://localhost:8080/gudmap/resources/files/json_data.json', function(data) {
+	                    // Populate series
+	                    for (i = 0; i &lt; data.length; i++){
+	                        processed_json.push([data[i].key, data[i].value]);
+	                    }
+	                    alert('data: '+data);
+	                    chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked],processed_json);
+	        	 }); */
+	        	 //series =  #{chartFilterBean.json_return};
+	        	 
+	        	/* setTimeout(function () {
+	        		 //chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData('Lab'));
+	        		 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked],processed_json);
+	        		 //$('#container').highcharts().redraw(); 
+	        		 
+	             }, 9000);*/
+	        	//chart.redraw(); 
+	        	 chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], getLabData());
+	        	 //chart.redraw();
+	             //location.reload(true);
+	             //getLabData('Lab',sliceClicked);
+	        	 
+	        	 
+	        	 //$('#container').highcharts().redraw();
+	        	 //chart.addSeriesAsDrilldown(e.point, data);
+                 // where data is for example: 
+                 // { name: 'Cars', data: [ ['Toyota', 1], ['Volkswagen', 2], ['Opel', 5] ] }
+                
+
 	        });
 	        
 	    });
@@ -202,11 +233,36 @@
 	});
 		</script>
 		
+
+		<script>
+			function getLabData() {
+				//var chart = $("#container").highcharts();
+				//$('#assaytypeform\\:assaytypebutton').trigger('click');
+	           // $('#drillchartform\\:drillchart').trigger('click');
+				//alert('little: '+#{chartFilterBean.drillByAssayTypeMap.get('Little')});
+				 series = null;
+				 drilldowns3 = {
+	                         name: 'Lab',
+	                         
+	                          data: [
+	                                ['Little', #{chartFilterBean.drillByAssayTypeMap.get('Little')}],
+	                                ['McMahon', #{chartFilterBean.drillByAssayTypeMap.get('McMahon')}],
+	                                ['Gaido', #{chartFilterBean.drillByAssayTypeMap.get('Gaido')}],
+	                                ['Lessard', #{chartFilterBean.drillByAssayTypeMap.get('Lessard')}]
+	                            ] 
+	                 };
+				series = drilldowns3;
+				//chart.addSeriesAsDrilldown(chart.series[0].data[sliceClicked], series);
+				//chart.redraw();
+				return series;
+			}		
+		</script>
+
 	    
 	    <h1>Dynamic Pie Chart with Legend</h1>	
 	   
 	    
-	  
+
 	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	   
 	    <div style="width:50%; margin:0 auto;text-align:center;"><button id="btn">Stages</button><button id="btn2">Focus Group</button><button id="btn3">Lab</button></div>

@@ -34,15 +34,16 @@ function changePalette(paletteName, heatmapId) {
 	t.selectAll(".cell")
 	     .style("fill", function(d) {
 	    	 if (paletteName == "Default")
-	             return getHeatmapColor(d.adjvalue);
+	             return getHeatmapColor(d);
+//             	 return getHeatmapColor(d.adjvalue);
 	    	 else{
 	    		 var classesNumber = 10;
 	    		 var colors = colorbrewer[paletteName][classesNumber];
 	    		 var colorScale = d3.scale.quantize()
 	    		      .domain([-2.0, 2.0])
 	    		      .range(colors);
-	   		 
-	    		 return colorScale(d.adjvalue);
+	    		 return colorScale(d);	   		 
+//	    		 return colorScale(d.adjvalue);
 	    	 }
 	      });
 }
@@ -70,6 +71,13 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
         //console.log(data);
         var arr = data.data;
         var adj = data.adjdata;
+
+        // get min,max values for legend range
+        var min0 = d3.min(d3.values(arr));        //alert(min0);
+        var max0 = d3.max(d3.values(arr));	     //alert(max0);
+        var min = d3.min(d3.values(min0));        //alert(min);
+        var max = d3.max(d3.values(max0));	     //alert(max);
+        
         var probes = data.probes;
         var genes = data.genes;
         var samples = data.samples;
@@ -105,7 +113,16 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
  	   		.append("g")
  	   		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
        
-                
+
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
+ 	   	
         var rowSortOrder = false;
         var colSortOrder = false;
 
@@ -250,6 +267,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 		    	d3.selectAll(".rowLabel").classed("text-selected",function(r,ri){ return ri==j;});
 		        d3.selectAll(".colLabel").classed("text-selected",function(c,ci){ return ci==i;});
 			}); 
+
 		
 		// display selected cell data
 		function tabulate(annotationData) {
@@ -269,8 +287,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 		        .append("th")
 			    .style("border", "1px black solid")
 			    .style("padding", "5px")
-			    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")}) 
-			    .on("mouseout", function(){d3.select(this).style("background-color", "white")}) 
+//			    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")}) 
+//			    .on("mouseout", function(){d3.select(this).style("background-color", "white")}) 
 		        .text(function(column) { return column; })
 			    .style("font-size", "12px");
 			
@@ -286,8 +304,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			    .enter().append("td")
 			    .style("border", "1px black solid")
 			    .style("padding", "5px")
-			    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")}) 
-			    .on("mouseout", function(){d3.select(this).style("background-color", "white")}) 
+//			    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")}) 
+//			    .on("mouseout", function(){d3.select(this).style("background-color", "white")}) 
 //			    .on("click", function(d){ return openLink(d,annotations);}) 
 //			    .html(function(d) { return d; });
 			    .text(function(d){return d;})
@@ -304,9 +322,40 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 	        })
 	        .on("change", function() {
 	        	var newPalette = d3.select("#palette").property("value");
-	            changePalette(newPalette, heatmapid);
+	            changePalette(newPalette, "#chart");
+//	            setLegend();
 	        });			    
-		
+
+	    //==================================================
+	    // Change ordering of cells
+	    function setLegend(){
+
+	    	
+	         var mylegend = d3.selection("#legend")
+	         .append("g")
+	        .attr("class", "legend")
+	        .selectAll(".legendElement")
+	        .data([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+	        .enter().append("g")
+	        .attr("class", "legendElement");
+
+	         legend.append("svg:rect")
+	        .attr("x", function(d, i) {
+	            return cellSize * i;
+	        })
+	        .attr("y", margin.top)
+	        .attr("class", "cellLegend bordered")
+	        .attr("width", cellSize*2)
+	        .attr("height", cellSize / 2);
+	    	
+	    	
+	    	
+	    }
+	    
+        
+
+	              
+	            	    
 	    //==================================================
 	    // Change ordering of cells
 	    function sortbylabel(rORc,i,sortOrder){
@@ -315,8 +364,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			var sorted; // sorted is zero-based index
 			d3.selectAll(".c"+rORc+i) 
 				.filter(function(d){
-//	               log2r.push(d);
-	               log2r.push(ce.adjvalue);
+	               log2r.push(d);
+//	               log2r.push(ce.adjvalue);
 	             });
 			if(rORc=="r"){ // sort log2ratio of a gene
 				sorted=d3.range(col_number).sort(function(a,b){ if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});

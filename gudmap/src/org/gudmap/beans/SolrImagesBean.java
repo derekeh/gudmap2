@@ -224,8 +224,6 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 						model.setOid(doc.getFieldValue("IMAGE_ID").toString());
 					if (doc.containsKey("GENE"))
 						model.setGeneSymbol(doc.getFieldValue("GENE").toString());
-					if (doc.containsKey("SPECIMEN_ASSAY_TYPE"))
-						model.setSpecimenType(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
 					if (doc.containsKey("STAGE"))
 						model.setStage(doc.getFieldValue("STAGE").toString());
 					if (doc.containsKey("THUMBNAIL_PATH")){
@@ -235,13 +233,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 					}
 					if (doc.containsKey("IMAGE_CLICK_PATH"))
 						model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
-					if (doc.containsKey("ASSAY_TYPE"))
-						model.setAssayType(doc.getFieldValue("ASSAY_TYPE").toString());
-					if (doc.containsKey("MGI_GENE_ID"))
-						model.setMgiGeneId(doc.getFieldValue("MGI_GENE_ID").toString());
-					if (doc.containsKey("SPECIES"))
-						model.setSpecies(doc.getFieldValue("SPECIES").toString());
-					
+
 					model.setGroup(accessionId.replace("GUDMAP:", ""));
 					model.setSibling(accessionId.replace(":", "_"));
 					

@@ -140,6 +140,13 @@
 					<h:outputText value="#{u.geoSeriesID}"/>
 				</h:outputLink>
     		</h:column>
+
+    		<h:column rendered="#{paramBean.mic_platformIDcol == true}">
+    			<f:facet name="header">
+    				Platform
+				</f:facet>
+    				#{u.platformID}
+    		</h:column> 
     		
     		<h:column rendered="#{paramBean.mic_sourcecol == true}">
     			<f:facet name="header">

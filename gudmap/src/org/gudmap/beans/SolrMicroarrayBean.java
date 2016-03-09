@@ -15,7 +15,6 @@ import javax.inject.Named;
 
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.gudmap.assemblers.SolrMicroarrayAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.ArraySeqTableBeanModel;
 
@@ -26,7 +25,6 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-//	private SolrMicroarrayAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -77,7 +75,6 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 	}
 
 	public void setup() {
-//     	assembler=new SolrMicroarrayAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -91,7 +88,6 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-//        totalRows = solrTreeBean.getSolrUtil().getMicroarrayFilteredCount(solrInput, filters);
         totalRows = solrTreeBean.getSolrUtil().getSamplesFilteredCount(solrInput, filters);
     	
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
@@ -123,8 +119,6 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 
     public void resetAll() {
 		paramBean.resetAll();
-//		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
     }
    
@@ -181,9 +175,7 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 
-//		List<String> ids = solrTreeBean.getSolrUtil().getMicroarrayData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		List<String> ids = solrTreeBean.getSolrUtil().getSamplesData(solrInput,filterlist,sortColumn,ascending,offset,num);
-//		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMicroarrayViewData(ids,sortColumn,ascending,offset,num);
 		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getSamplesViewData(ids,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
 
@@ -219,8 +211,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 				}
 				if (doc.containsKey("DEV_STAGE"))
 					model.setAge(doc.getFieldValue("DEV_STAGE").toString());
-				if (doc.containsKey("PI_NAME"))
-					model.setSource(doc.getFieldValue("PI_NAME").toString());
+				if (doc.containsKey("SOURCE"))
+					model.setSource(doc.getFieldValue("SOURCE").toString());
 				if (doc.containsKey("DATE"))
 					model.setSubmission_date(doc.getFieldValue("DATE").toString());
 				if (doc.containsKey("SEX"))
@@ -229,8 +221,6 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 					model.setSampleDescription(doc.getFieldValue("DESCRIPTION").toString());
 				if (doc.containsKey("TITLE"))
 					model.setTitle(doc.getFieldValue("TITLE").toString());
-//				if (doc.containsKey("GENOTYPE"))
-//					model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
 				if (doc.containsKey("SERIES_GEO_ID"))
 					model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
 				if (doc.containsKey("COMPONENT"))
@@ -239,6 +229,8 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 					model.setSpecies(doc.getFieldValue("SPECIES").toString());
 				if (doc.containsKey("GENOTYPE"))
 					model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
+				if (doc.containsKey("PLATFORM_GEO_ID"))
+					model.setPlatformID(doc.getFieldValue("PLATFORM_GEO_ID").toString());
 				
 				list.add(model);	
 				
