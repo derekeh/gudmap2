@@ -55,16 +55,18 @@
     					<f:attribute name="sortField" value="NAME" />
                     </h:commandLink>
     			</f:facet>
-    				#{u.name}
+				<h:outputLink value="http://glenelgin.hgu.mrc.ac.uk/Organ_Summaries/component_summary.php?componentID=#{u.oid}">
+					<h:outputText value="#{u.name}"/>
+				</h:outputLink>
     		</h:column>
- 
+<ui:remove>  
     		<h:column>
     			<f:facet name="header">
      				Reason
 				</f:facet>
     				#{u.reason}
     		</h:column>
-    		
+</ui:remove>     		
     		<h:column>
     			<f:facet name="header">
      				<h:commandLink value="Stages" actionListener="#{solrTissueSummaryBean.sort}">
