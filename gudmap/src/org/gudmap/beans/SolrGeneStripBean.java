@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -42,7 +46,11 @@ import org.json.simple.JSONObject;
 @SessionScoped
 public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 	
-	 private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
+	
+	private Connection con;
+	private PreparedStatement ps;
+	private ResultSet result;
 	 
     // Data.
 	private SolrGeneStripAssembler assembler;
@@ -433,10 +441,25 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 				String synonyms = doc.getFieldValue("SYNONYMS").toString();	
 				model.setSynonyms(synonyms);
 			}
+			String species = "";
 			if (doc.containsKey("SPECIES")){
-				String species = doc.getFieldValue("SPECIES").toString();	
+				species = doc.getFieldValue("SPECIES").toString();	
 				model.setSpecies(species);
 			}
+			if (doc.containsKey("OMIM")){
+				int omimCount = Integer.parseInt(doc.getFieldValue("OMIM").toString());	
+				model.setOmimCount(omimCount);
+			}
+			
+			String arrayRange = "";
+			String ishRange = "";
+			if (doc.containsKey("ARRAY_RANGE")){
+				arrayRange = doc.getFieldValue("ARRAY_RANGE").toString();	
+			}
+			if (doc.containsKey("ISH_RANGE")){
+				ishRange = doc.getFieldValue("ISH_RANGE").toString();	
+			}
+			model.setStageRange(calculateStageRange(arrayRange,ishRange,species));
 			
 			if (doc.containsKey("GENE") && doc.containsKey("MGI_GENE_ID")){
 				String gene = doc.getFieldValue("GENE").toString();		
@@ -452,5 +475,69 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		return list;
 	 }	
     
+	  private String calculateStageRange(String arrayRange, String ishRange, String species){
+		  String RET="";
+		  Connection stgConn = null;
+		  PreparedStatement stgps = null;;
+		  ResultSet stgresult = null;
+		  ArrayList<Integer> rangeList=new ArrayList<Integer>();
+		  if(arrayRange!=null && arrayRange!="") {
+			  String [] arrayValues = arrayRange.split("-");
+			  
+			  for(int i=0;i<arrayValues.length;i++) {
+				  rangeList.add(Integer.valueOf(arrayValues[i]));
+			  }
+		  }
+		  if(ishRange!=null && ishRange!="") {
+			  String [] ishValues = ishRange.split("-"); 		  
+			  for(int i=0;i<ishValues.length;i++) {
+				  rangeList.add(Integer.valueOf(ishValues[i]));
+			  }
+		  }
+		  if(rangeList.size()>0) {
+			  java.util.Collections.sort(rangeList);	
+
+			  if(species == null || species.startsWith("Mus")) {
+				  RET="TS"+rangeList.get(0).toString()+"-TS"+rangeList.get((rangeList.size()-1)).toString();
+			  }
+			  else if(species.startsWith("Hom")) {
+				  RET = "";
+				  
+				  //////////////
+				try
+				{
+					stgConn = Globals.getDatasource().getConnection();
+					stgps = stgConn.prepareStatement("SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_ORDER = "+rangeList.get(0).toString()+" AND STG_SPECIES = 'Homo sapiens'"); 
+					stgresult =  stgps.executeQuery();
+					while (stgresult.next()) {
+						RET=stgresult.getString(1)+"-";			
+					}			
+				}
+				catch(SQLException sqle){sqle.printStackTrace();}
+				finally {
+						Globals.closeQuietly(stgConn, stgps, stgresult);
+				}
+				
+				try
+				{
+					stgConn = Globals.getDatasource().getConnection();
+					stgps = stgConn.prepareStatement("SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_ORDER = "+rangeList.get((rangeList.size()-1)).toString()+" AND STG_SPECIES = 'Homo sapiens'"); 
+					stgresult =  stgps.executeQuery();
+					while (stgresult.next()) {
+						RET+=stgresult.getString(1);			
+					}			
+				}
+				catch(SQLException sqle){sqle.printStackTrace();}
+				finally {
+						Globals.closeQuietly(stgConn, stgps, stgresult);
+				}
+				  
+				  /////////////
+			  }
+		  }
+
+		  
+		  return RET;
+	  }
     
 }
