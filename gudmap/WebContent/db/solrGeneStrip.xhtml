@@ -149,16 +149,22 @@
     				#{u.stageRange}
     			</h:outputLink>
     		</h:column>
+
+
+
     				
     		<h:column rendered="#{paramBean.omimcol == true}">
     			<f:facet name="header">
     				Disease
 				</f:facet>				
 				<h:outputLink value="viewDiseaseResult.jsf?type=gene&amp;diseaseGene=#{u.geneSymbol}&amp;isDirect=false" rendered="#{u.omimCount>0}">
-    				OMIM(#{u.omimCount})
+    				OMIM
     			</h:outputLink>
-    			<h:outputText value="OMIM(#{u.omimCount})" rendered="#{u.omimCount==0}" />
+    			<h:outputText value="0" rendered="#{u.omimCount==0}" />
     		</h:column>
+    	
+    	
+    	
     		
  			<h:column >
     			<f:facet name="header">

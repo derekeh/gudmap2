@@ -34,7 +34,6 @@
 			
 	<!-- can use relative links on html tags -->
 	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
-	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></h:outputScript>
 	<h:outputScript library="scripts" name="jstree_pre1.0_fix_1/jquery.jstree.js"></h:outputScript> 
@@ -153,7 +152,7 @@ $(document).ready(function(){
 			</p>
 			<span class="collaps2"></span>
 		</div>
-		
+
 		 <h:inputText id="analysisitem" value="#{solrAnalysisBean.selectedItem}" style="display:none; visibility: hidden; "/>
 		 <h:inputText id="analysis_mastertableId" value="#{solrAnalysisBean.masterTableId}" style="display:none; visibility: hidden; "/>
 
@@ -163,7 +162,7 @@ $(document).ready(function(){
 		<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{solrAnalysisBean.findNode}" actionListener="#{solrAnalysisBean.processAction}" >
 		</t:commandLink>
 		<t:commandLink id="createChildren" forceId="true" style="display:none" action="#{solrAnalysisBean.createChildren}"/> 
-		
+			
 	</h:form> 
 
 	<h:form id="pagingform"  style="display:table-row;">  

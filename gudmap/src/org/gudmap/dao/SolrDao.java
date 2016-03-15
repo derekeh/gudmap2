@@ -49,40 +49,50 @@ public class SolrDao {
 				doc.addField("ENSEMBL_ID", result.getString(5)); 
 				doc.addField("SYNONYMS", result.getString(6), (float)1.5); // added boost
 				doc.addField("GENE_ID", result.getString(7)); 
-				doc.addField("PROBESETS", result.getString(8)); 
-				doc.addField("ENTREZ_ID", result.getString(9)); 
-				doc.addField("GENBANK_ID", result.getString(10)); 
-				doc.addField("INSITU_ASSAY", result.getString(11)); 
-				doc.addField("MA_ASSAY", result.getString(12)); 
-				doc.addField("GUDMAP", result.getString(13)); 
-				doc.addField("GUDMAP_IDS", result.getString(14)); 
-				doc.addField("PRESENT", result.getString(15)); 
-				doc.addField("DIR_PRESENT", result.getString(16)); 
-				doc.addField("NOT_DETECTED", result.getString(17)); 
-				doc.addField("UNCERTAIN", result.getString(18)); 
-				doc.addField("EMAPS", result.getString(19)); 
-				doc.addField("SOURCE", result.getString(20)); 
-				doc.addField("PI_NAME", result.getString(21)); 
-				doc.addField("LAB", result.getString(22));
-				int anchor = result.getInt(23);
+				doc.addField("OMIM", result.getString(8));	
+				doc.addField("ARRAY_RANGE", result.getString(9));	
+				doc.addField("ISH_RANGE", result.getString(10));	
+				
+				
+				doc.addField("PROBESETS", result.getString(11)); 
+				doc.addField("ENTREZ_ID", result.getString(12)); 
+				doc.addField("GENBANK_ID", result.getString(13)); 
+				doc.addField("INSITU_ASSAY", result.getString(14)); 
+				doc.addField("MA_ASSAY", result.getString(15)); 
+				doc.addField("GUDMAP", result.getString(16)); 
+				doc.addField("GUDMAP_IDS", result.getString(17)); 
+				doc.addField("PRESENT", result.getString(18)); 
+				doc.addField("DIR_PRESENT", result.getString(19)); 
+				doc.addField("NOT_DETECTED", result.getString(20)); 
+				doc.addField("UNCERTAIN", result.getString(21)); 
+				doc.addField("EMAPS", result.getString(22)); 
+				doc.addField("SOURCE", result.getString(23)); 
+				doc.addField("PI_NAME", result.getString(24)); 
+				doc.addField("LAB", result.getString(25));
+				int anchor = result.getInt(26);
 				if (anchor == 1)
 					doc.addField("ANCHOR", "anchor"); 
 				else
 					doc.addField("ANCHOR", ""); 
-				int marker = result.getInt(24);
+				int marker = result.getInt(27);
 				if (marker == 1)
 					doc.addField("MARKER", "marker"); 
 				else
 					doc.addField("MARKER", ""); 
-				doc.addField("GENE_TYPE", result.getString(25));
-				doc.addField("SPECIES", result.getString(26));	
+				doc.addField("GENE_TYPE", result.getString(28));
+				doc.addField("SPECIES", result.getString(29));	
+//				doc.addField("OMIM", result.getString(27));	
+//				doc.addField("ARRAY_RANGE", result.getString(28));	
+//				doc.addField("ISH_RANGE", result.getString(29));	
 				
 				// to filter out rubbish
 				if (MGI_GENE_ID != null && MGI_GENE_ID != "")
 					docs.add(doc);
 			}
 		}
-		catch(SQLException sqle){sqle.printStackTrace();}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			}
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
