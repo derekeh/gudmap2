@@ -15,6 +15,7 @@ public class ImageInfoModel {
 	protected String unique_image;
 	protected boolean selected=false;
 	protected String species;
+	protected String image_type;
 	
 	public String getOid() {
 		return oid;
@@ -144,4 +145,12 @@ public class ImageInfoModel {
         	this.species = species;
   	  }
 
+      public String getImageType() {
+  		return image_type;
+      }
+
+      public void setImageType(String image_type) {
+        	this.image_type = image_type;
+  	  }
+      
 }

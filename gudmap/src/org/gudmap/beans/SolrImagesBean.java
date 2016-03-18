@@ -107,10 +107,10 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-//        totalRows = solrTreeBean.getSolrUtil().getImagesCount(solrInput,filters);
+        totalRows = solrTreeBean.getSolrUtil().getImagesCount(solrInput,filters);
     	
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
-     	totalRows = dataList.size();
+//     	totalRows = dataList.size();
 
         // Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
@@ -213,30 +213,43 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 		
 		for(int i=0; i<rowNum; i++) { 
 			SolrDocument doc = sdl.get(i);
-			
+
 			if (doc.getFieldValue("GUDMAP_ID") != null){
 				String accessionId = doc.getFieldValue("GUDMAP_ID").toString();
 						
-					model = new ImageDetailModel();
-					if (doc.containsKey("GUDMAP_ID"))
-						model.setAccessionId(accessionId);
-					if (doc.containsKey("IMAGE_ID"))
-						model.setOid(doc.getFieldValue("IMAGE_ID").toString());
-					if (doc.containsKey("GENE"))
-						model.setGeneSymbol(doc.getFieldValue("GENE").toString());
-					if (doc.containsKey("STAGE"))
-						model.setStage(doc.getFieldValue("STAGE").toString());
-					if (doc.containsKey("THUMBNAIL_PATH")){
-						String image_path = doc.getFieldValue("THUMBNAIL_PATH").toString();
-						model.setThumbnailPath(image_path);
-						model.setFilePath(image_path.replace("thumbnails", "medium"));
-					}
-					if (doc.containsKey("IMAGE_CLICK_PATH"))
-						model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
+				model = new ImageDetailModel();
+				if (doc.containsKey("GUDMAP_ID"))
+					model.setAccessionId(accessionId);
+				if (doc.containsKey("IMAGE_ID"))
+					model.setOid(doc.getFieldValue("IMAGE_ID").toString());
+				if (doc.containsKey("GENE"))
+					model.setGeneSymbol(doc.getFieldValue("GENE").toString());
+				if (doc.containsKey("STAGE"))
+					model.setStage(doc.getFieldValue("STAGE").toString());
+				if (doc.containsKey("THUMBNAIL_PATH")){
+					String image_path = doc.getFieldValue("THUMBNAIL_PATH").toString();
+					model.setThumbnailPath(image_path);
+//						model.setFilePath(image_path.replace("thumbnails", "medium"));
+				}
+				if (doc.containsKey("IMAGE_PATH"))
+					model.setFilePath(doc.getFieldValue("IMAGE_PATH").toString());
+				
+				if (doc.containsKey("IMAGE_CLICK_PATH"))
+					model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
 
-					model.setGroup(accessionId.replace("GUDMAP:", ""));
-					model.setSibling(accessionId.replace(":", "_"));
-					
+				if (doc.containsKey("ASSAY_TYPE"))
+					model.setAssayType(doc.getFieldValue("ASSAY_TYPE").toString());
+
+				if (doc.containsKey("IMAGE_TYPE"))
+					model.setImageType(doc.getFieldValue("IMAGE_TYPE").toString());
+				
+				model.setGroup(accessionId.replace("GUDMAP:", ""));
+				model.setSibling(accessionId.replace(":", "_"));
+				
+				if (model.getImageType() == "schematic"){
+					list.add(model);
+				}
+				else{
 					if (!ids.contains(accessionId)){
 						
 						list.add(model);
@@ -245,8 +258,39 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 					else{
 						sublist.add(model);
 					}
+				}
 					
 			}
+
+			if (doc.containsKey("IMAGE_TYPE")){
+				String imagetype = doc.getFieldValue("IMAGE_TYPE").toString();
+				if (imagetype.contains("schematic")){
+					model = new ImageDetailModel();
+					
+					if (doc.containsKey("IMAGE_ID"))
+						model.setOid(doc.getFieldValue("IMAGE_ID").toString());
+					
+					if (doc.containsKey("THUMBNAIL_PATH")){
+						String image_path = doc.getFieldValue("THUMBNAIL_PATH").toString();
+						model.setThumbnailPath(image_path);
+					}
+					if (doc.containsKey("IMAGE_PATH"))
+						model.setFilePath(doc.getFieldValue("IMAGE_PATH").toString());
+					
+					if (doc.containsKey("IMAGE_CLICK_PATH"))
+						model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
+
+					if (doc.containsKey("IMAGE_TYPE"))
+						model.setImageType(doc.getFieldValue("IMAGE_TYPE").toString());
+					
+					list.add(model);
+
+				}
+			}
+			
+			
+			
+			
 		}
 
 
