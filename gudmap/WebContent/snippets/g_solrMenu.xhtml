@@ -44,8 +44,8 @@
 
 		<h:panelGrid columns="1" style="text-align:center">
 			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrImages.jsf" >
-				<h:outputText style="color:grey" value="Images" rendered="#{solrTreeBean.page != '/db/solrImages.jsf'}"/>
-				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Images" rendered="#{solrTreeBean.page == '/db/solrImages.jsf'}"/>
+				<h:outputText style="color:grey" value="Images" rendered="#{solrTreeBean.page != '/db/solrImages.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Images" rendered="#{solrTreeBean.page == '/db/solrImages.xhtml'}"/>
 	         </h:outputLink>  
 	         <h:outputText value="(#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.page != '/db/solrImages.xhtml'}"/>
 	         <h:outputText style="color:black" value="(#{solrTreeBean.imagesCount})" rendered="#{solrTreeBean.page == '/db/solrImages.xhtml'}"/>

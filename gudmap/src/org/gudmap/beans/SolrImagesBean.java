@@ -246,6 +246,9 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 				model.setGroup(accessionId.replace("GUDMAP:", ""));
 				model.setSibling(accessionId.replace(":", "_"));
 				
+				String groupTitle = model.getAccessionId() + "; " + model.getGeneSymbol();
+				model.setGroupTitle(groupTitle);
+				
 				if (model.getImageType() == "schematic"){
 					list.add(model);
 				}
@@ -283,7 +286,34 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 					if (doc.containsKey("IMAGE_TYPE"))
 						model.setImageType(doc.getFieldValue("IMAGE_TYPE").toString());
 					
-					list.add(model);
+					String groupId = "";
+					if (doc.containsKey("GROUP_ID")){
+						groupId = doc.getFieldValue("GROUP_ID").toString();
+						model.setGroup(groupId);
+						model.setSibling(groupId);
+					}
+
+					if (doc.containsKey("UGP_DESCRIPTION"))
+						model.setGroupTitle(doc.getFieldValue("UGP_DESCRIPTION").toString());
+					if (doc.containsKey("IMAGE")){
+						String title = doc.getFieldValue("IMAGE").toString();
+						title = title.replace(".jpg", "");
+						title = title.replace(".tif", "");
+						title = title.replace(".gif", "");
+						title = title.replace("_", " ");
+						model.setImageTitle(title);
+					}
+					
+					if (!ids.contains(groupId)){
+						
+						list.add(model);
+						ids.add(groupId);
+					}
+					else{
+						sublist.add(model);
+					}
+					
+//					list.add(model);
 
 				}
 			}

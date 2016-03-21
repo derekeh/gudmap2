@@ -11,8 +11,12 @@ public class ImageDetailModel extends ImageInfoModel{
 	  protected ArrayList<String[]> allImageNotesInSameSubmission;
 	  protected ArrayList<String> allPublicImagesInSameSubmission;
 	  protected String sibling;
-	  protected String group
-	  ;	  
+	  protected String group;	
+	  protected String groupTitle;
+	  protected String imageTitle;
+	  
+	  
+	  
 	  public String getGeneSymbol() {
 		return geneSymbol;
      }
@@ -89,6 +93,20 @@ public class ImageDetailModel extends ImageInfoModel{
    }
    public String getGroup(){
 	   return group;
+   }
+
+   public void setGroupTitle(String groupTitle){
+	   this.groupTitle = groupTitle;
+   }
+   public String getGroupTitle(){
+	   return groupTitle;
+   }
+
+   public void setImageTitle(String imageTitle){
+	   this.imageTitle = imageTitle;
+   }
+   public String getImageTitle(){
+	   return imageTitle;
    }
    
 }

@@ -572,6 +572,11 @@ public class SolrDao {
 				doc.addField("EXP_NOTES", result.getString(49)); 
 				doc.addField("SPECIES", result.getString(50)); 
 				doc.addField("GENE_TYPE", result.getString(51)); 
+				doc.addField("UIG_TITLE", result.getString(52)); 
+				doc.addField("UIG_DESCE", result.getString(53)); 
+				doc.addField("UGP_TITLE", result.getString(54)); 
+				doc.addField("UGP_DESCRIPTION", result.getString(55)); 
+				doc.addField("GROUP_ID", result.getString(56)); 
 				
 				docs.add(doc);
 			}
