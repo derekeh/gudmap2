@@ -170,7 +170,9 @@
     		
  			<h:column >
     			<f:facet name="header">
-					<pr:commandButton value="Col" id="showdialog1"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+					<pr:commandLink id="showdialog1"  onclick="PF('dialog1').show();"  title="select columns to view">
+						<h:graphicImage library="images/resources" name="bars.png"  width="25" height="25" />
+					</pr:commandLink>
     			</f:facet>
     		</h:column>
 

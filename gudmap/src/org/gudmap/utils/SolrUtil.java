@@ -231,6 +231,22 @@ public class SolrUtil {
 		
 		return updatedfilters;		
 	}
+	
+	public String setWidcard(String q){
+		String query = "";
+		String ops = "AND OR NOT";
+		
+		String[] items = q.split(" ");
+		for( int i = 0; i < items.length; i++){
+			String update = items[i];
+			if (ops.contains(update))
+				query += update + " ";
+			else
+				query += update + "* ";
+		}
+		
+		return query.trim();
+	}
     //***************************** INSITU METHODS *****************************************************
 
 
@@ -242,6 +258,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
     	
         int insituCount = 0;
       	insitu_server.setParser(new XMLResponseParser());
@@ -271,6 +289,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
     	int count = 0;
 
@@ -319,6 +339,8 @@ public class SolrUtil {
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
    	
 		int count = 0;
 		try{
@@ -435,6 +457,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		List<Integer> ishStages = new ArrayList<Integer>();
 		for (int i= 0; i < 12; i++){
@@ -477,6 +501,9 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+		
 
     	if (column.contentEquals("GUDMAP_ID"))
     		column = "GUDMAP";
@@ -547,6 +574,8 @@ public class SolrUtil {
 		
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		List<Integer> fieldCounts = new ArrayList<Integer>();	
 
@@ -617,6 +646,8 @@ public class SolrUtil {
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
    	
 		int count = 0;
 		try{
@@ -653,6 +684,8 @@ public class SolrUtil {
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
    	
 		int count = 0;
 		try{
@@ -683,6 +716,8 @@ public class SolrUtil {
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
    	
 		int count = 0;
 		ArrayList<String> genelist = new ArrayList<String>();  
@@ -744,6 +779,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		List<String> genes = new ArrayList<String>();
     	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
@@ -757,7 +794,7 @@ public class SolrUtil {
 	        parameters.setFacet(true);        	      	        
 	        parameters.addFacetField("GENE");        	        
 //	        parameters.addFacetField("MGI_GENE_ID");        	        
-//	        parameters.addFacetField("SYNONYMS");        	        
+	        parameters.addFacetField("SYNONYMS");        	        
 	        parameters.setFacetMinCount(0);
 	        parameters.setIncludeScore(true);
 //	        parameters.setFacetLimit(100000);
@@ -803,6 +840,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		String genes = "";
 
@@ -843,6 +882,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		HashSet<String> sources = new HashSet<String>();                       
         try
@@ -885,6 +926,8 @@ public class SolrUtil {
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
    	
 		int count = 0;
 		try{
@@ -922,6 +965,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
     	if (column.contentEquals("GUDMAP_ID"))
     		column = "GUDMAP";
@@ -992,6 +1037,8 @@ public class SolrUtil {
     {
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		try
         {
@@ -1037,6 +1084,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		long count = 0;
 
@@ -1075,6 +1124,8 @@ public class SolrUtil {
 
  		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
  		SolrDocumentList sdl = null;
     	   	    	
@@ -1135,7 +1186,9 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
-    	
+		else
+			queryString = setWidcard(queryString);
+   	
     	long count = 0;
 
         try
@@ -1174,6 +1227,8 @@ public class SolrUtil {
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		QueryResponse qr = null;
     	
@@ -1363,6 +1418,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
    	
     	int count = 0;
 
@@ -1414,6 +1471,8 @@ public class SolrUtil {
  
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
     	
     	List<String> ids = new ArrayList<String>();
 		    	
@@ -1692,6 +1751,8 @@ public class SolrUtil {
     	long count = 0;
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
         try
         {
@@ -1748,6 +1809,8 @@ public class SolrUtil {
 
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
     	
     	long count = 0;
 
@@ -1789,6 +1852,8 @@ public class SolrUtil {
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		
     	SolrDocumentList sdl = null;
@@ -1855,6 +1920,8 @@ public class SolrUtil {
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
         try
         {
@@ -1893,6 +1960,8 @@ public class SolrUtil {
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
 
 		SolrDocumentList sdl = null;
 
