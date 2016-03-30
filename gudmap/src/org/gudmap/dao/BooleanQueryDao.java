@@ -64,7 +64,8 @@ public class BooleanQueryDao {
             "DATE_FORMAT(QIC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date,"+
             "QIC_STG_STAGE_DISPLAY stage,"+
             "QIC_SPN_ASSAY_TYPE specimen,"+
-            "QIC_STG_ALT_STAGE age,"+
+            //"QIC_STG_ALT_STAGE age,"+
+            "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE,' ',QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT,QIC_SPN_STAGE) END) age," +
             "QIC_SUB_THUMBNAIL image,"+
             "QIC_SUB_ACCESSION_ID gudmap_accession,"+
             "'' col11,"+

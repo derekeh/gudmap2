@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -18,7 +19,8 @@ import org.gudmap.queries.generic.ChartQueries;
 import org.gudmap.queries.generic.GenericQueries;
 
 @Named
-@RequestScoped
+//@RequestScoped
+@ApplicationScoped
 public class ChartBean {
 	
 	private ArrayList<ChartModel> chartModelList = null;
