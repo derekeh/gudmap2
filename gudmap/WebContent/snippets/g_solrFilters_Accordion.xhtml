@@ -15,7 +15,15 @@ input[type="checkbox"]{
 	 float:left;
 }
 */
+.column1 {
+    width: 50%;
+    text-align: left;
+}
 
+.column2 {
+    width: 50%;
+    text-align: right;
+}
 </style>
 
 
@@ -34,149 +42,183 @@ input[type="checkbox"]{
 </script>	
 			
 	<div style="border: 1px solid grey;font-size:10px; float:left; overflow: auto;" class="slide-menu">		
-	<h3 class="gd_h3" style="margin:8px 0 0 8px;">Filter</h3>
-
+	<h:panelGrid columns="2" columnClasses="column1,column2">
+		<h3 class="gd_h3" style="margin:8px 0 0 8px;">Filter</h3>
+ 		<h:commandButton id="il_filter_submit" value="Clear" >
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
+		 		<pr:ajax update=":filterform"/>
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform"/>
+ 		</h:commandButton>
+	</h:panelGrid>
+	
     <h:form id="solr_filterform">
 	<div class="accordion">
-		<h2>Genes</h2>
+		<h2 style="background:#{not empty solrFilter.geneValues || not empty solrFilter.geneValue  ? 'pink' : '' }">Genes</h2>
 		<div>
 		 	<h:outputText value="Gene: "></h:outputText>
 		 	<h:inputText value="#{solrFilter.geneValue}" >
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+			 	<pr:ajax update=":filterform" />
 		 	</h:inputText>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.geneValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.geneList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
-		 	</h:selectManyCheckbox>
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+			 	<pr:ajax update=":filterform" />	
+			 </h:selectManyCheckbox>
 		</div>
  	</div>
 
 	<div class="accordion">
-		<h2>Expression</h2>
+		<h2 style="background:#{empty solrFilter.expressionValue ||  empty solrFilter.anatomy ? '' : 'pink'  }">Expression</h2>
 		<div>
 			<pr:outputLabel value="Anatomy:" for="anatomy_input" />
 	    	<pr:autoComplete  id="anatomy_input" value="#{solrFilter.anatomy}" completeMethod="#{autocompleteBean.completeAnatomy}"
 	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;">
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
-	     	</pr:autoComplete>			
+		 		<pr:ajax update=":dataform"  />
+		 		<pr:ajax update=":pagingform"  />
+			 	<pr:ajax update=":filterform" />	     	
+			</pr:autoComplete>			
 		 	<h:selectOneRadio size="5" value="#{solrFilter.expressionValue}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.expressionList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+			 	<pr:ajax update=":filterform" />
 		 	</h:selectOneRadio>
 		</div>  		
 	</div>
  
 	<div class="accordion">
-		<h2>Species</h2>
+		<h2 style="background:#{not empty solrFilter.speciesValues  ? 'pink' : '' }">Species</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.speciesValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.speciesList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+			 	<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
 	</div>
              
 	<div class="accordion">
-		<h2>Theiler Stages</h2>
+		<h2 style="background:#{not empty solrFilter.theilerStageValues  ? 'pink' : '' }">Theiler Stages</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.theilerStageValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.theilerStageList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform"  />
+			 	<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
 	</div>
       
 	<div class="accordion">
-		<h2>Human Stages</h2>
+		<h2 style="background:#{not empty solrFilter.carnegieStageValues  ? 'pink' : '' }">Human Stages</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.carnegieStageValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.carnegieStageList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+			 	<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
    	</div>
    	
 	<div class="accordion">
-		<h2>Sex</h2>
+		<h2 style="background:#{not empty solrFilter.sexValues  ? 'pink' : '' }">Sex</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.sexList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+			 	<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
    	</div>
 
    
 	<div class="accordion">
-		<h2>Specimen Type</h2>
+		<h2 style="background:#{not empty solrFilter.specimenTypeValues  ? 'pink' : '' }">Specimen Types</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
 		 		<pr:ajax update=":solr_menuform :dataform :pagingform" listener="#{solrFilter.refresh}" />
+			 	<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
    	</div>
 
              
 	<div class="accordion">
-		<h2>Assay Types</h2>
+		<h2 style="background:#{not empty solrFilter.assayTypeValues  ? 'pink' : '' }">Assay Types</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.assayTypeList}" />
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" />
+			 		<pr:ajax update=":pagingform" />
+			 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
 		</div>
 	</div>
             
 	<div class="accordion">
-		<h2>Sources</h2>
+		<h2 style="background:#{not empty solrFilter.sourceValues  ? 'pink' : '' }">Sources</h2>
 		<div>
 			<h:panelGrid columns="3">
 			 	<h:selectManyListbox id="lb_source" size="10" value="#{solrFilter.sourceValues}" layout="pageDirection">
 			 		<f:selectItems value="#{solrFilter.sourceList}" />
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" />
+			 		<pr:ajax update=":pagingform" />
+			 		<pr:ajax update=":filterform" />
 			 	</h:selectManyListbox>
 		 	</h:panelGrid>
 		</div>
 	</div>
       		
 	<div class="accordion">		
-		<h2>Submission Date</h2>
+		<h2 style="background:#{not empty solrFilter.fromDateValue || not empty solrFilter.toDateValue ? 'pink' : '' }">Submission Date</h2>
 		<div>
        		<h:panelGrid columns="2">
 	 			<h:outputText value="From:"></h:outputText>
 	 			<pr:calendar widgetVar="fromDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.fromDateValue}">
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" />
+			 		<pr:ajax update=":pagingform" />
+			 		<pr:ajax update=":filterform" />
 	 			</pr:calendar>
 	 			<h:outputText value="To:"></h:outputText>
 	 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+			 		<pr:ajax update=":dataform" />
+			 		<pr:ajax update=":pagingform" />
+		 			<pr:ajax update=":filterform" />
 	 			</pr:calendar>
 			</h:panelGrid>
+		</div>
+	</div>
+
+	<div class="accordion">		
+		<h2 style="background:#{not empty solrFilter.imageValues  ? 'pink' : '' }">Image Type</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.imageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.imageList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
+		 	</h:selectManyCheckbox>
 		</div>
 	</div>
              

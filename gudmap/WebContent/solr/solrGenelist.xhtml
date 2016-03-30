@@ -30,7 +30,9 @@
 	    	
 	<ui:define name="content">
 
-			<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>		
+	<h:form  id="filterform">
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
+	</h:form>	
 			
 	<!-- can use relative links on html tags -->
 	<h:outputScript library="scripts" name="jstree.gudmap.globalsearch.js"></h:outputScript>
@@ -41,10 +43,13 @@
 	
 	<!-- can use relative links on html tags -->
 
-		#{solrAnalysisBean.init('')}
+
+<div id="db_form_wrapper">
+	<h:form id="dataform">
+	
 	
 
-
+	
 <script type="text/javascript">
 //<![CDATA[
 jQuery(document).ready(function(){
@@ -134,10 +139,8 @@ $(document).ready(function(){
 //]]>
 </script>
 
+			#{solrAnalysisBean.init('')}
 
-<div id="db_form_wrapper">
-	<h:form id="dataform">
-	
 		<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span></p>
 		<div id="expanderContent" style="display:none">
 		
@@ -161,7 +164,6 @@ $(document).ready(function(){
 	
 		<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{solrAnalysisBean.findNode}" actionListener="#{solrAnalysisBean.processAction}" >
 		</t:commandLink>
-		<t:commandLink id="createChildren" forceId="true" style="display:none" action="#{solrAnalysisBean.createChildren}"/> 
 			
 	</h:form> 
 

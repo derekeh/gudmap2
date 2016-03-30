@@ -36,7 +36,7 @@ public class SolrFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<String,String> filters;	
-	private ArrayList<ArrayList<String>> filters2;
+//	private ArrayList<ArrayList<String>> filters2;
 //	private ArrayList<String> filterlist;	
 	
 	private String geneValue;
@@ -50,6 +50,7 @@ public class SolrFilter implements Serializable {
 	private ArrayList<String> specimenTypeValues;
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
+	private ArrayList<String> imageValues;
 	private String expressionValue = "";
 	private String anatomy;
 	private String page;
@@ -72,7 +73,7 @@ public class SolrFilter implements Serializable {
 		filters = new HashMap<String,String>();
 		showFilter = false;
 		
-		filters2 = new ArrayList<ArrayList<String>>();
+//		filters2 = new ArrayList<ArrayList<String>>();
 	}
 	
 	public void setParamBean(ParamBean paramBean){
@@ -89,12 +90,12 @@ public class SolrFilter implements Serializable {
 	public void setFilters(HashMap<String,String> val){
 		filters = val;	
 	}	
-	public ArrayList<ArrayList<String>> getFilters2(){
-		return filters2;		
-	}
-	public void setFilters2(ArrayList<ArrayList<String>> val){
-		filters2 = val;	
-	}	
+//	public ArrayList<ArrayList<String>> getFilters2(){
+//		return filters2;		
+//	}
+//	public void setFilters2(ArrayList<ArrayList<String>> val){
+//		filters2 = val;	
+//	}	
 	
 //	public ArrayList<String> getFilterlist(){
 //		
@@ -383,6 +384,31 @@ public class SolrFilter implements Serializable {
 		carnegieStageValues = val;
 	}	
 
+	public Map<String,String> getImageList(){
+		
+		Map<String,String> imagemap = new LinkedHashMap<String,String>();
+
+		Map<String, String> map =  new LinkedHashMap<String, String>(); 
+		map.put("Image", "image");
+		map.put("Schematic", "schematic");
+			
+	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+	        String key = (String)pair.getKey();
+	        String val = (String)pair.getValue();
+	        imagemap.put(key, val);
+		}
+
+		return imagemap;
+	}	
+		
+	public ArrayList<String> getImageValues(){
+		return imageValues;
+	}	
+	public void setImageValues(ArrayList<String> val){
+		imageValues = val;
+	}	
 	
 	public Map<String,String> getExpressionList(){
 		
@@ -415,7 +441,7 @@ public class SolrFilter implements Serializable {
 	public void refresh(){
 		showFilter = !showFilter;
 		
-		filters2 = new ArrayList<ArrayList<String>>();
+//		filters2 = new ArrayList<ArrayList<String>>();
 		filters = new HashMap<String,String>();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -544,10 +570,23 @@ public class SolrFilter implements Serializable {
 				if (expressionValue.contains("uncertain"))
 					filters.put("UNCERTAIN", anatomy);
 		}
+		
+		if (imageValues != null && !imageValues.isEmpty()) {
+			if (imageValues.size() == 1){
+				filters.put("IMAGE_TYPE",imageValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : imageValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("IMAGE_TYPE",filter);
+			}
+		}
+		
 	}
 	
 	public void reset(){
-		filters2 = new ArrayList<ArrayList<String>>();
+//		filters2 = new ArrayList<ArrayList<String>>();
 		filters = new HashMap<String,String>();
 		
 		geneValue = "";
@@ -556,11 +595,14 @@ public class SolrFilter implements Serializable {
 		assayTypeValues = new ArrayList<String>();
 		speciesValues = new ArrayList<String>();
 		sexValues = new ArrayList<String>();
+		imageValues = new ArrayList<String>();
 		specimenTypeValues = new ArrayList<String>();
 		theilerStageValues = new ArrayList<String>();
 		carnegieStageValues = new ArrayList<String>();
 		fromDateValue = null;
 		toDateValue = null;		
+		
+    	refresh();
 	}
 
    

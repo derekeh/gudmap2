@@ -41,13 +41,16 @@ public class SolrDao {
 			while (result.next()) {
 				doc = new SolrInputDocument();
 //				doc.addField("id", result.getString(1)); 
-				doc.addField("GENE", result.getString(1), (float)2.0); // added boost
+				doc.addField("GENE", result.getString(1)); // added boost
 				doc.addField("GENE_NAME", result.getString(2)); 
 				String MGI_GENE_ID = result.getString(3);
 				doc.addField("MGI_GENE_ID", MGI_GENE_ID); 
 				doc.addField("MGI", result.getString(4)); 
 				doc.addField("ENSEMBL_ID", result.getString(5)); 
-				doc.addField("SYNONYMS", result.getString(6), (float)1.5); // added boost
+				String synonyms = result.getString(6);
+//				if (synonyms != null && synonyms != "")
+//					synonyms = synonyms.replace(";", ",");
+				doc.addField("SYNONYMS", synonyms); // added boost
 				doc.addField("GENE_ID", result.getString(7)); 
 				doc.addField("OMIM", result.getString(8));	
 				doc.addField("ARRAY_RANGE", result.getString(9));	
@@ -572,6 +575,11 @@ public class SolrDao {
 				doc.addField("EXP_NOTES", result.getString(49)); 
 				doc.addField("SPECIES", result.getString(50)); 
 				doc.addField("GENE_TYPE", result.getString(51)); 
+				doc.addField("UIG_TITLE", result.getString(52)); 
+				doc.addField("UIG_DESCE", result.getString(53)); 
+				doc.addField("UGP_TITLE", result.getString(54)); 
+				doc.addField("UGP_DESCRIPTION", result.getString(55)); 
+				doc.addField("GROUP_ID", result.getString(56)); 
 				
 				docs.add(doc);
 			}

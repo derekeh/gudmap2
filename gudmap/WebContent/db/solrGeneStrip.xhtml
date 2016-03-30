@@ -28,7 +28,9 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	<h:form  id="filterform">
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
+	</h:form>	
 	
 	
 	
@@ -102,9 +104,9 @@
     			<f:facet name="header">
     				Images
 				</f:facet>				
-    			<h:commandLink  action="viewImageMatrix">
+    			<h:commandLink  action="viewImageMatrix.jsf">
     					<img src="#{u.imageUrl}"  height="40"/>
-                        <f:setPropertyActionListener id="il_imageMatrix" target="#{imageMatrixBean.geneId}" value="#{u.gene_id}" />
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
                  </h:commandLink>
     		</h:column>
     		
@@ -168,7 +170,9 @@
     		
  			<h:column >
     			<f:facet name="header">
-					<pr:commandButton value="Col" id="showdialog1"  onclick="PF('dialog1').show();" type="button" ></pr:commandButton>
+					<pr:commandLink id="showdialog1"  onclick="PF('dialog1').show();"  title="select columns to view">
+						<h:graphicImage library="images/resources" name="bars.png"  width="25" height="25" />
+					</pr:commandLink>
     			</f:facet>
     		</h:column>
 

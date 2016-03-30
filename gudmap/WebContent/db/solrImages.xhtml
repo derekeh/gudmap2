@@ -29,7 +29,9 @@
 		
 	
 	<ui:define name="content">
-		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>
+	<h:form  id="filterform">
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
+	</h:form>	
 
 	<h:outputScript library="scripts/highslide" name="highslide-full.js"></h:outputScript> 
 <link rel="stylesheet" type="text/css" href="#{appRoot}/resources/scripts/highslide/highslide.css" />
@@ -48,29 +50,30 @@
 		<!-- 	displays unique assay images in the main window -->
 	    <ui:repeat value="#{solrImagesBean.dataList}" var="u">
 	    	<a id="#{u.sibling}" class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {slideshowGroup : #{u.group}})" >
-	    		<img width="75px" height="75px" src="#{u.thumbnailPath}" title="#{u.accessionId}; #{u.geneSymbol} - Click to view images"/>
+	    		<img width="75px" height="75px" src="#{u.thumbnailPath}" title="#{u.groupTitle} - Click to view images"/>
 	    	</a>	
-			<div class="highslide-heading" >
+			<div class="highslide-heading" >#{u.imageTitle}
 	    	</div>	    				
 			<div class="highslide-caption">
+			<h:panelGroup rendered="#{u.imageType != 'schematic'}">
 				<h:outputText value="Assay: "/>
-    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.xhtml">
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf">
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
-				<br/>
-<ui:remove>
+				<br/>				
 				<h:outputText value="Gene: "/>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
-     				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
-				</h:commandLink>
-</ui:remove>				
-				<h:outputText value="Gene: "/>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.xhtml" >
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.jsf" >
      				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
 				<br/>
 				<h:outputText value="Go to "/>
 	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+	    	</h:panelGroup>
+			<h:panelGroup rendered="#{u.imageType == 'schematic'}">			
+ 				<h:outputLink value="http://glenelgin.hgu.mrc.ac.uk/Schematics/index.php?grpID=#{u.group}">
+					<h:outputText value="#{u.imageTitle}"/>
+				</h:outputLink>
+			</h:panelGroup>
  			</div>
 	    </ui:repeat>
 		</div>
@@ -80,27 +83,28 @@
 	    <ui:repeat value="#{solrImagesBean.sublist}" var="u">   
 	    	<a class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {thumbnailId: '#{u.sibling}', slideshowGroup : #{u.group}})" >
 	    	</a>   	
-			<div class="highslide-heading">	
+			<div class="highslide-heading">#{u.imageTitle}
 	    	</div>	    	
-			<div class="highslide-caption">
+			<div class="highslide-caption" >
+			<h:panelGroup rendered="#{u.imageType != 'schematic'}">
 				<h:outputText value="Assay: "/>
-    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.xhtml">
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf">
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
 				<br/>
-<ui:remove>
 				<h:outputText value="Gene: "/>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/solrGeneStrip.xhtml" >
-     				<f:setPropertyActionListener target="#{solrTreeBean.solrInput}" value="#{u.geneSymbol}" />     	     			
-				</h:commandLink>
-</ui:remove>				
-				<h:outputText value="Gene: "/>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.xhtml" >
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.jsf" >
      				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
 				<br/>
 				<h:outputText value="Go to "/>
 	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+	    	</h:panelGroup>
+			<h:panelGroup rendered="#{u.imageType == 'schematic'}">
+ 				<h:outputLink value="http://glenelgin.hgu.mrc.ac.uk/Schematics/index.php?grpID=#{u.group}">
+					<h:outputText value="#{u.imageTitle}"/>
+				</h:outputLink>
+			</h:panelGroup>
 	    	</div>
 	    </ui:repeat>
 		</div>
@@ -190,6 +194,11 @@ hs.wrapperClassName = 'controls-in-heading';
 
 hs.forceAjaxReload = true;
 hs.preserveContent = true;
+
+// define the restraining box
+hs.useBox = true;
+hs.width = 640;
+hs.height = 480;
 
 // Add the controlbar
 if (hs.addSlideshow) 
