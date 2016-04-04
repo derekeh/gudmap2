@@ -948,7 +948,8 @@ function findExpressionNotes(){
 		
 							<h:outputText value="Gene" />
 							<h:panelGroup></h:panelGroup>
-							<h:outputLink value="viewGeneDetails.jsf">
+							<h:outputText value="#{allele.geneSymbol}" rendered="#{empty allele.geneId}"/>
+							<h:outputLink value="viewGeneDetails.jsf" rendered="#{not empty allele.geneId}">
 								<h:outputText value="#{allele.geneSymbol}" />
 								<f:param name="geneId" value="#{allele.geneId}" />
 							</h:outputLink>
