@@ -57,6 +57,14 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
         .style("position", "absolute")
         .style("visibility", "hidden");
 
+    
+    function zoom() {
+    	svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+    // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+//    var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+    
+    
     //==================================================
 //    var viewerWidth = $(document).width();
 //    var viewerHeight = $(document).height();
@@ -110,6 +118,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
  	   	var svg = d3.select(heatmapId).append("svg")
  	   		.attr("width", width)
  	   		.attr("height", height + margin.bottom + margin.top)
+ .append("g")
+    .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom)) 	   		
  	   		.append("g")
  	   		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
        

@@ -28,8 +28,9 @@ public class SolrDao {
 		
 		docs = new ArrayList<SolrInputDocument>();
 		
+		
         String queryString = SolrQueries.GET_GENE_INDEX_DATA;
-        
+//        queryString += " LIMIT 40000,1000 "; 
         try
 		{
 			//con = ds.getConnection();
@@ -41,7 +42,7 @@ public class SolrDao {
 			while (result.next()) {
 				doc = new SolrInputDocument();
 //				doc.addField("id", result.getString(1)); 
-				doc.addField("GENE", result.getString(1)); // added boost
+				doc.addField("GENE", result.getString(1), (float)2.0); // added boost
 				doc.addField("GENE_NAME", result.getString(2)); 
 				String MGI_GENE_ID = result.getString(3);
 				doc.addField("MGI_GENE_ID", MGI_GENE_ID); 
@@ -50,7 +51,7 @@ public class SolrDao {
 				String synonyms = result.getString(6);
 //				if (synonyms != null && synonyms != "")
 //					synonyms = synonyms.replace(";", ",");
-				doc.addField("SYNONYMS", synonyms); // added boost
+				doc.addField("SYNONYMS", synonyms, (float)1.5); // added boost
 				doc.addField("GENE_ID", result.getString(7)); 
 				doc.addField("OMIM", result.getString(8));	
 				doc.addField("ARRAY_RANGE", result.getString(9));	
@@ -84,9 +85,6 @@ public class SolrDao {
 					doc.addField("MARKER", ""); 
 				doc.addField("GENE_TYPE", result.getString(28));
 				doc.addField("SPECIES", result.getString(29));	
-//				doc.addField("OMIM", result.getString(27));	
-//				doc.addField("ARRAY_RANGE", result.getString(28));	
-//				doc.addField("ISH_RANGE", result.getString(29));	
 				
 				// to filter out rubbish
 				if (MGI_GENE_ID != null && MGI_GENE_ID != "")
@@ -99,6 +97,7 @@ public class SolrDao {
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
+        
         return docs;
     }
 
