@@ -13,6 +13,7 @@ public class SpecimenModel {
     private String phase = "";
     private String[] notes= new String[0];
     private String species = "";
+    private String stagingNotes;
 
     public String getStageFormat() {
         return stageFormat;
@@ -156,4 +157,11 @@ public class SpecimenModel {
 		species = value.trim();
     }	
 
+    public void setStagingNotes(String stagingNotes) {
+    	this.stagingNotes = stagingNotes;
+    }  
+    
+    public String getStagingNotes() {
+    	return stagingNotes;
+    }
 }
