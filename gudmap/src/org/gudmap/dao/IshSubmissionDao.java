@@ -384,6 +384,8 @@ public class IshSubmissionDao {
 			    antibodyModel.setSecondaryAntibody(result.getString(24));
 			    antibodyModel.setSignalDetectionMethod(result.getString(25));
 			    antibodyModel.setAssayType(result.getString(26));
+			    
+			    antibodyModel.setCuratorNotes(result.getString(27));
 	        }
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
