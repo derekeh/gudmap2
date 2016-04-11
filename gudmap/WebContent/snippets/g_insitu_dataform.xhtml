@@ -139,7 +139,7 @@
     		<h:column rendered="#{paramBean.genotypecol == true}">
     			<f:facet name="header">
     			Genotype <br />
-    				#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_GENEOTYPE")}     				
+    				#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_GENOTYPE")}     				
 				</f:facet>
     				#{u.genotype}
     		</h:column>
@@ -165,7 +165,12 @@
     			Probe Name  <br />
     				#{genericTablePageBean.totalslist.get("ASSAY_TYPE_TOTAL_PROBE_NAME")}   				
 				</f:facet>
-    				#{u.probe_name}
+				<h:outputLink value="http://www.informatics.jax.org/accession/#{u.probe_name}" rendered="#{u.probe_name.startsWith('MGI')}">
+    				<h:outputText value="#{u.probe_name}"></h:outputText>
+    			</h:outputLink>
+    			<h:outputLink value="viewAntibodyDetails.jsf?antibody=#{u.probe_name}" rendered="#{u.probe_name.startsWith('maprobe')}">
+    				<h:outputText value="#{u.probe_name}"></h:outputText>
+    			</h:outputLink>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.sourcecol == true}">
