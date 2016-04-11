@@ -212,10 +212,10 @@
 				<h:outputText value="Development Age:" />
 				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.devAge}" />
 				
-				<h:outputText value="Theiler Stage:" />
+				<h:outputText value="Stage:" />
 				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.stage}" />
 	
-				<h:outputText value="Developmental Landmark:" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}"/>
+				<h:outputText value="Staging Notes:" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}"/>
 				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}"/>
 				
 				<h:outputText value="Pooled Sample:" />

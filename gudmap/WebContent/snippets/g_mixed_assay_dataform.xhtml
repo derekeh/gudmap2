@@ -8,7 +8,9 @@
 	
 	<h:form id="dataform"> 
 
+<ui:remove>
   	    <h:inputHidden id="lshidden" value="#{paramBean.localStorage}"></h:inputHidden>
+</ui:remove>
 
 	     <h:dataTable value="#{genericTablePageBean.dataList}" var="u"
 	    		styleClass="db_order-table"

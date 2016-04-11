@@ -540,10 +540,10 @@ function findExpressionNotes(){
 				<h:panelGrid columns="2" columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
 					
 					<h:graphicImage library="images/tree" name="max_high.png" styleClass="db_expression_icon" />
-					<h:outputText value="Maximum"  />
+					<h:outputText value="High"  />
 					
 					<h:graphicImage library="images/tree" name="mod_medium.png" styleClass="db_expression_icon" />
-					<h:outputText value="Moderate"  />
+					<h:outputText value="Medium"  />
 
 					<h:graphicImage library="images/tree" name="min_low.png" styleClass="db_expression_icon" />
 					<h:outputText value="Low"  />
@@ -759,6 +759,9 @@ function findExpressionNotes(){
 					
 					<h:outputText value="Species Specificity:" />
 					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.speciesSpecificity}" />
+
+					<h:outputText value="Curator Notes:" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes != ''}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes}" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes != ''}"/>
 					
 					<h:outputText value="Detection System:" />
 					<h:panelGrid columns="1" border="0">
@@ -929,6 +932,10 @@ function findExpressionNotes(){
 				<h:outputText value="CS#{ishSubmissionBean.ishSubmissionModel.stage}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species != 'Mus musculus'}"/>
 				<h:outputText rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.otherStage}" value="Other Staging System:" />
 				<h:outputText rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.otherStage}" value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.otherStage}" />
+
+				<h:outputText rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.stagingNotes}" value="Staging Notes:" />
+				<h:outputText rendered="#{not empty ishSubmissionBean.ishSubmissionModel.specimenModel.stagingNotes}" value="#{ishSubmissionBean.ishSubmissionModel.specimenModel.stagingNotes}" />
+
 
 				<h:outputText value="Tissue:" />
 				<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.tissue}" />

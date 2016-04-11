@@ -32,6 +32,7 @@ public class AntibodyModel extends CommonAntibodyProbeModel{
 	private String labProbeId;
 	private String locusTag;
 	private String geneId;	
+    private String curatorNotes;
 	
 	public String getName() {
 		return name;
@@ -278,4 +279,12 @@ public class AntibodyModel extends CommonAntibodyProbeModel{
 		this.geneId = geneId;
 	}
 
+	public String getCuratorNotes() {
+		return curatorNotes;
+	}
+	
+	public void setCuratorNotes(String curatorNotes) {
+		this.curatorNotes = curatorNotes;
+	}
+	
 }
