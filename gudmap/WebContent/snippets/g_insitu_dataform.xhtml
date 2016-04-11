@@ -168,7 +168,10 @@
 				<h:outputLink value="http://www.informatics.jax.org/accession/#{u.probe_name}" rendered="#{u.probe_name.startsWith('MGI')}">
     				<h:outputText value="#{u.probe_name}"></h:outputText>
     			</h:outputLink>
-    			<h:outputLink value="viewAntibodyDetails.jsf?antibody=#{u.probe_name}" rendered="#{u.probe_name.startsWith('maprobe')}">
+    			<h:outputLink value="viewAntibodyDetails.jsf?antibody=#{u.probe_name}" rendered="#{u.probe_name.startsWith('maprobe') and u.assay_type == 'IHC'}">
+    				<h:outputText value="#{u.probe_name}"></h:outputText>
+    			</h:outputLink>
+    			<h:outputLink value="viewMaProbeDetails.jsf?probe=#{u.probe_name}&amp;maprobe=#{u.probe_name}" rendered="#{u.probe_name.startsWith('maprobe') and u.assay_type == 'ISH'}">
     				<h:outputText value="#{u.probe_name}"></h:outputText>
     			</h:outputLink>
     		</h:column>
