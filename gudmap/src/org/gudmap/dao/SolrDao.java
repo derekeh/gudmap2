@@ -708,5 +708,35 @@ public class SolrDao {
         return genelist;
     }
 	
+	public ArrayList<SolrInputDocument> getSolrWebIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_WEB_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				doc.addField("ID", result.getString(1)); 
+				doc.addField("ALIAS", result.getString(4)); 
+				doc.addField("TITLE", result.getString(5)); 
+				doc.addField("CONTENT", result.getString(6)); 
+				
+				docs.add(doc);
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return docs;
+    }
 	
 }

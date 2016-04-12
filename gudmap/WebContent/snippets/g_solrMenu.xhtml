@@ -106,11 +106,25 @@
 	         <h:outputText style="color:black" value="(#{solrTreeBean.genelistCount})" rendered="#{solrTreeBean.page == '/solr/solrGenelist.xhtml'}"/>
 		</h:panelGrid>
 
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrTutorial.jsf" >
+				<h:outputText style="color:grey" value="Tutorials" rendered="#{solrTreeBean.page != '/solr/solrTutorial.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Tutorials" rendered="#{solrTreeBean.page == '/solr/solrTutorial.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.tutorialCount})" rendered="#{solrTreeBean.page != '/solr/solrTutorial.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.tutorialCount})" rendered="#{solrTreeBean.page == '/solr/solrTutorial.xhtml'}"/>
+		</h:panelGrid>
+
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrWebPages.jsf" >
+				<h:outputText style="color:grey" value="Web Pages" rendered="#{solrTreeBean.page != '/solr/solrWebPages.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Web Pages" rendered="#{solrTreeBean.page == '/solr/solrWebPages.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.webCount})" rendered="#{solrTreeBean.page != '/solr/solrWebPages.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.webCount})" rendered="#{solrTreeBean.page == '/solr/solrWebPages.xhtml'}"/>
+		</h:panelGrid>
 
 
-<ui:remove> 
-         <h:outputLabel value="Tutorials (#{solrTreeBean.tutorialCount})" />
-</ui:remove>
 <ui:remove>
 <h:panelGroup id="includeContainer">
 		<h:panelGroup rendered="#{solrTreeBean.page == '/db/solrInsitu.xhtml'}">

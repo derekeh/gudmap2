@@ -215,8 +215,56 @@ public class SolrIndexAssembler {
 		}
         docs.clear();
 	}
-	
+
 	public void updateTutorialIndex(HttpSolrClient server){
+		try {
+			
+//			bin/solr create -c gudmap_tutorial			
+//			bin/post -c gudmap_tutorial -filetypes "html" gudmap_data/tutorials/			
+			
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
+			updateTutorialOverview(server);
+			updateTutorialDevMRS(server);
+			updateTutorialDevMUS(server);
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateTutorialOverview(HttpSolrClient server){
+
+		
+		String fileName= "/export/data0/bernardh/solr-5.2.1/solr-5.2.1/server/solr/cores/core_tutorials/docs/DevMRS.html"; 
+		String solrId = "Overview";
+		
+		ContentStreamUpdateRequest up  = new ContentStreamUpdateRequest("/update/extract");	
+		try {
+			up.addFile(new File(fileName),"html");
+			up.setParam("literal.id", solrId);
+			up.setParam("uprefix", "attr_");
+			up.setParam("fmap.content", "attr_content");
+			up.setParam(ExtractingParams.EXTRACT_ONLY, "true");
+//			up.setAction(AbstractUpdateRequest.ACTION.COMMIT, true, true);
+			server.request(up);
+			server.commit();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void updateTutorialDevMRS(HttpSolrClient server){
 
 		
 		String fileName= "/export/data0/bernardh/solr-5.2.1/solr-5.2.1/server/solr/cores/core_tutorials/docs/DevMRS.html"; 
@@ -224,11 +272,31 @@ public class SolrIndexAssembler {
 		
 		ContentStreamUpdateRequest up  = new ContentStreamUpdateRequest("/update/extract");	
 		try {
-			// clear index
-			server.deleteByQuery("*:*");
-			server.commit();			
-			
-			
+			up.addFile(new File(fileName),"html");
+			up.setParam("literal.id", solrId);
+			up.setParam("uprefix", "attr_");
+			up.setParam("fmap.content", "attr_content");
+			up.setParam(ExtractingParams.EXTRACT_ONLY, "true");
+//			up.setAction(AbstractUpdateRequest.ACTION.COMMIT, true, true);
+			server.request(up);
+			server.commit();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public void updateTutorialDevMUS(HttpSolrClient server){
+
+		
+		String fileName= "/export/data0/bernardh/solr-5.2.1/solr-5.2.1/server/solr/cores/core_tutorials/docs/DevMRS.html"; 
+		String solrId = "DevMUS";
+		
+		ContentStreamUpdateRequest up  = new ContentStreamUpdateRequest("/update/extract");	
+		try {
 			up.addFile(new File(fileName),"html");
 			up.setParam("literal.id", solrId);
 			up.setParam("uprefix", "attr_");
@@ -247,6 +315,22 @@ public class SolrIndexAssembler {
 
 	}
 
+	public void updateWebIndex(HttpSolrClient server){
+
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrWebIndexData();
+		
+		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
+			server.add(docs);			
+			server.commit();
+		} catch (SolrServerException | IOException e) {
+			e.printStackTrace();
+		}
+        docs.clear();
+	}
 	
 	public void updateDemoIndex(){
 

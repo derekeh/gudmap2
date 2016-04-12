@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr Web Pages
+	</ui:define>
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
+	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h:form  id="filterform">
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
+	</h:form>	
+
+	
+	<div id="db_form_wrapper">
+	
+		<h:form id="dataform" style="display:table-row;">
+
+	    <h:inputHidden id="solrInput" value="#{solrWeb.solrInput}" />
+	    
+	     <h:dataTable value="#{solrWeb.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row"
+    		>
+
+    		<h:column>
+    			<f:facet name="header">
+    				Document Title
+				</f:facet>
+				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=#{u.id}&amp;query=#{solrWeb.solrInput}">
+					<h:outputText value="#{u.title}"/>
+				</h:outputLink>
+    		</h:column>
+ 
+
+    		
+  
+ 		</h:dataTable> 
+	</h:form>	
+	
+	<h:form id="pagingform">  
+ 		
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{solrWeb.pageFirst}"
+                    disabled="#{solrWeb.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{solrWeb.pagePrevious}"
+                    disabled="#{solrWeb.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{solrWeb.pageNext}"
+                    disabled="#{solrWeb.firstRow + solrWeb.rowsPerPage >= solrWeb.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{solrWeb.pageLast}"
+                    disabled="#{solrWeb.firstRow + solrWeb.rowsPerPage >= solrWeb.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:outputText value="Page #{solrWeb.currentPage} / #{solrWeb.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{solrWeb.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrWeb.page}"
+                        rendered="#{page != solrWeb.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == solrWeb.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{solrWeb.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrWeb.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :dataform" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+		</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{solrWeb.gotopage}" />
+		</h:form> 
+
+
+		
+</div>
+	</ui:define>
+</ui:composition>
+</html>

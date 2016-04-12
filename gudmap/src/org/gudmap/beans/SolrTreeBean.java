@@ -254,6 +254,19 @@ public class SolrTreeBean implements Serializable {
 	public int getImagesCount(HashMap<String,String> filters){
 		return solrUtil.getImagesCount(solrInput, filters);
 	}
+	
+	////////////////// WEB PAGES ////////////////////////////
+	
+	public int getWebCount(){
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getWebCount(solrInput, filters);
+	}
+
+	public int getWebCount(HashMap<String,String> filters){
+		return solrUtil.getWebCount(solrInput, filters);
+	}
+	
 		
 	public Map<String,String> getAssayTypeList(){
 		
