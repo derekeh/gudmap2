@@ -35,7 +35,8 @@ public class ViewPageBean {
 			int size = arr.length;
 			for (int i=0; i<size; i++){
 				String old = arr[i];
-				String update = "<span style='background-color: #FFFF00'>" + old + "</span>";
+				// add yellow highlight 
+				String update = "<span style='background-color: #FFFF00'>" + old + "</span>"; 
 				content = content.replace(old, update);					
 			}
 			model.setContent_1(content);
