@@ -1,6 +1,8 @@
 package org.gudmap.beans;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -20,7 +22,14 @@ public class ViewPageBean {
 	public ViewPageBean() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
     	this.docID = facesContext.getExternalContext().getRequestParameterMap().get("docID");	
-    	this.query = facesContext.getExternalContext().getRequestParameterMap().get("query");	
+    	Iterator<String> itr = facesContext.getExternalContext().getRequestParameterNames();
+    	while(itr.hasNext()){
+    		String element = itr.next().toString();
+    		if (element.contains("query")){
+    			this.query = facesContext.getExternalContext().getRequestParameterMap().get("query");
+    		}
+    	}
+    	
     	editPageAssembler = new EditPageAssembler();
     	editPageList = editPageAssembler.retrievePage(docID);
     	

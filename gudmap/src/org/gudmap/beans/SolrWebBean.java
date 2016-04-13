@@ -18,7 +18,7 @@ import javax.inject.Named;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
-import org.gudmap.models.WebBeanModel;
+import org.gudmap.models.EditPageModel;
 
 @Named (value="solrWeb")
 @SessionScoped
@@ -119,23 +119,23 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
     	return "solrTutorial";
     }
 
-    public String checkboxSelections() { 
-    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
-    	selectedItems.clear();
-    	for (int i=0;i<dataList.size();i++) { 
-    		if (((WebBeanModel) dataList.get(i)).getSelected()) { 
-    			selectedItems.add(((WebBeanModel) dataList.get(i)).getId()); 
-    		} 
-    	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
-    	return "result";
-    }
+//    public String checkboxSelections() { 
+//    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
+//    	selectedItems.clear();
+//    	for (int i=0;i<dataList.size();i++) { 
+//    		if (((EditPageModel) dataList.get(i)).getSelected()) { 
+//    			selectedItems.add(((EditPageModel) dataList.get(i)).getId()); 
+//    		} 
+//    	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
+//    	return "result";
+//    }
     
-    public void checkAll() { 
-    	areAllChecked=(areAllChecked)?false:true;
-    	for (int i=0;i<dataList.size();i++) { 
-    		((WebBeanModel)dataList.get(i)).setSelected(areAllChecked);
-    	} 
-    }
+//    public void checkAll() { 
+//    	areAllChecked=(areAllChecked)?false:true;
+//    	for (int i=0;i<dataList.size();i++) { 
+//    		((EditPageModel)dataList.get(i)).setSelected(areAllChecked);
+//    	} 
+//    }
 
     
     public String getTitle(){
@@ -161,9 +161,9 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
     
-	public List<WebBeanModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<EditPageModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
-		List<WebBeanModel> list = new ArrayList<WebBeanModel>();
+		List<EditPageModel> list = new ArrayList<EditPageModel>();
 
 		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getWebData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
@@ -171,25 +171,25 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
-	private List<WebBeanModel> formatTableData(SolrDocumentList sdl){
+	private List<EditPageModel> formatTableData(SolrDocumentList sdl){
 		
-		List<WebBeanModel> list = new ArrayList<WebBeanModel>();
-		WebBeanModel model = null;
+		List<EditPageModel> list = new ArrayList<EditPageModel>();
+		EditPageModel model = null;
 		
 		int rowNum = sdl.size();
 		
 		for(int i=0; i<rowNum; i++) { 
 			SolrDocument doc = sdl.get(i);
 
-			model = new WebBeanModel();
+			model = new EditPageModel();
 			if (doc.containsKey("ID"))
-				model.setId(doc.getFieldValue("ID").toString());
+				model.setOid(Integer.parseInt(doc.getFieldValue("ID").toString()));
 			if (doc.containsKey("TITLE"))
 				model.setTitle(doc.getFieldValue("TITLE").toString());
 			if (doc.containsKey("ALIAS"))
 				model.setAlias(doc.getFieldValue("ALIAS").toString());
 			if (doc.containsKey("CONTENT"))
-				model.setContent(doc.getFieldValue("CONTENT").toString());
+				model.setContent_1(doc.getFieldValue("CONTENT").toString());
 			
 			list.add(model);			
 		}

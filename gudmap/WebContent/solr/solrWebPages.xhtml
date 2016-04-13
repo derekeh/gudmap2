@@ -49,7 +49,7 @@
     			<f:facet name="header">
     				Document Title
 				</f:facet>
-				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=#{u.id}&amp;query=#{solrWeb.solrInput}">
+				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=#{u.oid}&amp;query=#{solrWeb.solrInput}">
 					<h:outputText value="#{u.title}"/>
 				</h:outputLink>
     		</h:column>
