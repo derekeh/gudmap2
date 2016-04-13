@@ -79,6 +79,7 @@ public class SolrUtil {
 	public HttpSolrClient mouse_strain_server;
 	public HttpSolrClient image_server;
 	public HttpSolrClient tutorial_server;
+	public HttpSolrClient web_server;
 	
 	public Set<String> insitu_schema;
 	public Set<String> genes_schema;
@@ -124,7 +125,8 @@ public class SolrUtil {
 		tissues_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_tissues" );		
 		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_mousestrains" );		
 		image_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_images" );		
-		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorials");
+		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorial");
+		web_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_web");
 		
 		
 //    	microarray_schema = getMicroarraySchema();
@@ -178,6 +180,9 @@ public class SolrUtil {
 //	}
 	public HttpSolrClient getTutorialServer(){
 		return tutorial_server;
+	}
+	public HttpSolrClient getWebServer(){
+		return web_server;
 	}
 	
 	public String getExpressionFilter(String filter) {
@@ -1760,14 +1765,14 @@ public class SolrUtil {
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
 
-	        if (filters != null){
-		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
-		        while (it.hasNext()) {
-		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-//		            if (tutorial_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
-		        }
-	        }
+//	        if (filters != null){
+//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+//		        while (it.hasNext()) {
+//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+////		            if (tutorial_schema.contains(pair.getKey()))
+//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+//		        }
+//	        }
 	        
             QueryResponse qr = tutorial_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -1784,6 +1789,56 @@ public class SolrUtil {
         return (int)count;    
     }
 
+    public SolrDocumentList getTutorialData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+		
+    	SolrDocumentList sdl = null;
+    	
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+
+        try
+        {
+
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        
+	        parameters.setIncludeScore(true);
+	        
+	        parameters.setStart(offset);
+	        parameters.setRows(rows);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+      
+	        
+//	        if (filters != null){
+//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+//		        while (it.hasNext()) {
+//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//		            if (tutorial_schema.contains(pair.getKey()))
+//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+//		        }
+//	        }
+        	
+	        QueryResponse qr = tutorial_server.query(parameters);
+            sdl = qr.getResults();
+
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}        
+
+        return sdl;
+    }
+   
+    
     public int getTutorialOverviewCount(String queryString){
         HashMap<String,String> filter = new HashMap<String,String>();
         filter.put("title","Tutorial overview"); 	
@@ -2025,6 +2080,104 @@ public class SolrUtil {
 
         return sdl;
     }
+    //***************************** WEB METHODS *****************************************************
+
+
+    public int getWebCount(String queryString){
+    	return getTutorialCount(queryString, null);
+    }
+    
+	// method to retrieve the Tutorials count for the results page
+    public int getWebCount(String queryString, HashMap<String,String> filters){
+
+    	long count = 0;
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+        try
+        {
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);
+
+//	        if (filters != null){
+//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+//		        while (it.hasNext()) {
+//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+////		            if (tutorial_schema.contains(pair.getKey()))
+//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+//		        }
+//	        }
+	        
+            QueryResponse qr = web_server.query(parameters);
+            SolrDocumentList sdl = qr.getResults();
+            count = sdl.getNumFound();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}        
+
+
+        return (int)count;    
+    }
+
+    public SolrDocumentList getWebData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+		
+    	SolrDocumentList sdl = null;
+    	
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+
+        try
+        {
+
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        
+	        parameters.setIncludeScore(true);
+	        
+	        parameters.setStart(offset);
+	        parameters.setRows(rows);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+      
+	        
+//	        if (filters != null){
+//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+//		        while (it.hasNext()) {
+//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//		            if (tutorial_schema.contains(pair.getKey()))
+//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+//		        }
+//	        }
+        	
+	        QueryResponse qr = web_server.query(parameters);
+            sdl = qr.getResults();
+
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}        
+
+        return sdl;
+    }
+   
+    
+
+    
        
     public String getGenelistIds(){
     	return genelistids;

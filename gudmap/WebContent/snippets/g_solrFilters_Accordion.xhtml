@@ -52,7 +52,7 @@ input[type="checkbox"]{
  		</h:commandButton>
 	</h:panelGrid>
 	
-    <h:form id="solr_filterform">
+
 	<div class="accordion">
 		<h2 style="background:#{not empty solrFilter.geneValues || not empty solrFilter.geneValue  ? 'pink' : '' }">Genes</h2>
 		<div>
@@ -195,9 +195,10 @@ input[type="checkbox"]{
 			</h:panelGrid>
 		</div>
 	</div>
+	
 
 	<div class="accordion">		
-		<h2 style="background:#{not empty solrFilter.imageValues  ? 'pink' : '' }">Image Type</h2>
+		<h2 id="fred" style="background:#{not empty solrFilter.imageValues  ? 'pink' : '' }">Image Type</h2>
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.imageValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.imageList}" />
@@ -208,7 +209,7 @@ input[type="checkbox"]{
 		</div>
 	</div>
              
-</h:form>
+
       
 
 

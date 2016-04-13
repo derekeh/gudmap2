@@ -11,6 +11,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.gudmap.globals.Globals;
 import org.gudmap.queries.solr.SolrQueries;
+import org.jsoup.Jsoup;
 
 public class SolrDao {
 	
@@ -708,5 +709,44 @@ public class SolrDao {
         return genelist;
     }
 	
+	public ArrayList<SolrInputDocument> getSolrWebIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_WEB_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				doc.addField("ID", result.getString(1)); 
+				doc.addField("ALIAS", result.getString(4)); 
+				doc.addField("TITLE", result.getString(5)); 
+				doc.addField("DATE", result.getString(14)); 
+//				doc.addField("CONTENT", result.getString(6)); 
+				// strip out the html markup
+				String html = result.getString(6);
+				String text = "";
+				if (html != null)
+					text = Jsoup.parse(html).text();
+				else
+					text = html;
+				
+				doc.addField("CONTENT", text);
+				docs.add(doc);
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return docs;
+    }
 	
 }

@@ -134,6 +134,13 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 
+	public String indexWeb(){
+		
+		HttpSolrClient server = solrUtil.getWebServer();
+		assembler.updateWebIndex(server);
+		return null;		
+	}
+	
 	public void createGenestripFiles(){
 		ArrayList<String> geneIds = new ArrayList<String>();
 		for (int i = 0; i < 25000; i++){
