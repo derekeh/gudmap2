@@ -729,6 +729,7 @@ public class SolrDao {
 				doc.addField("ALIAS", result.getString(4)); 
 				doc.addField("TITLE", result.getString(5)); 
 				doc.addField("DATE", result.getString(14)); 
+				doc.addField("URL", "/pages/viewPage.jsf?docID=" + result.getString(1)); 
 //				doc.addField("CONTENT", result.getString(6)); 
 				// strip out the html markup
 				String html = result.getString(6);

@@ -19,6 +19,7 @@ public class EditPageModel {
 	private String modifiedBy;
 	private String modifiedDate;
 	private String username;
+	private String url;
 	
 	public void setOid(int oid) {
 		this.oid = oid;
@@ -131,4 +132,13 @@ public class EditPageModel {
 	public String getUsername() {
 		return username;
 	}
+	
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	public String getUrl() {
+		return url;
+	}
+	
 }
