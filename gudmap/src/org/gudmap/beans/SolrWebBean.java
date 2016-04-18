@@ -197,8 +197,8 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 		
 		Map<String,Map<String,List<String>>> highlightMap = qr.getHighlighting();
 		Set<String> keys = highlightMap.keySet();
-
 		
+
 		SolrDocumentList sdl = qr.getResults();
 		
 		int rowNum = sdl.size();
