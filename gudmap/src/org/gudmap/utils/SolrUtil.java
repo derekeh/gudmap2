@@ -2101,15 +2101,6 @@ public class SolrUtil {
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);
-
-//	        if (filters != null){
-//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
-//		        while (it.hasNext()) {
-//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-////		            if (tutorial_schema.contains(pair.getKey()))
-//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
-//		        }
-//	        }
 	        
             QueryResponse qr = web_server.query(parameters);
             SolrDocumentList sdl = qr.getResults();
@@ -2126,7 +2117,7 @@ public class SolrUtil {
         return (int)count;    
     }
 
-    public SolrDocumentList getWebData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
+    public QueryResponse getWebData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
 			queryString = "*:*";
@@ -2137,7 +2128,7 @@ public class SolrUtil {
     	SolrDocumentList sdl = null;
     	
     	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
-
+    	QueryResponse qr = null;
         try
         {
 
@@ -2151,18 +2142,15 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
       
-	        
-//	        if (filters != null){
-//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
-//		        while (it.hasNext()) {
-//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-//		            if (tutorial_schema.contains(pair.getKey()))
-//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
-//		        }
-//	        }
-        	
-	        QueryResponse qr = web_server.query(parameters);
-            sdl = qr.getResults();
+	        parameters.setHighlight(true);  
+//	        parameters.setParam("hl.fl", "CONTENT");	 
+	        parameters.addHighlightField("CONTENT");
+	        parameters.setHighlightSimplePre("<strong>");	 
+	        parameters.setHighlightSimplePost("</strong>");	 
+	        parameters.setHighlightFragsize(350);
+
+	        qr = web_server.query(parameters);
+ //           sdl = qr.getResults();
 
         }
         catch (SolrServerException e)
@@ -2172,7 +2160,7 @@ public class SolrUtil {
 			e.printStackTrace();
 		}        
 
-        return sdl;
+        return qr;
     }
    
     

@@ -10,6 +10,8 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pr="http://primefaces.org/ui" >
 
+
+
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
 	    Solr Web Pages
@@ -32,32 +34,47 @@
 		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
 	</h:form>	
 
-	
-	<div id="db_form_wrapper">
+<style>
+ .ex1 {
+    padding: 2cm;
+    border-left-width: 150px;
+}
+</style>
+	<div id="db_form_margin" style="width: 140px; float: left;"></div>
+	<div id="db_form_wrapper" style="margin-left: 150px;">
 	
 		<h:form id="dataform" style="display:table-row;">
 
 	    <h:inputHidden id="solrInput" value="#{solrWeb.solrInput}" />
 	    
-	     <h:dataTable value="#{solrWeb.dataList}" var="u"
+	     <ui:repeat value="#{solrWeb.dataList}" var="u"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row"
     		>
 
-    		<h:column>
-    			<f:facet name="header">
-    				Document Title
-				</f:facet>
+<ui:remove>
+			<h:panelGrid columns="1" style="text-align: left;">
+				<h:outputLink style="padding-left:50px;" value="#{appRoot}/pages/viewPage.jsf?docID=#{u.oid}&amp;query=#{solrWeb.solrInput}">
+					<h:outputText value="#{u.title}"/>
+				</h:outputLink>
+				<h:outputText style="padding-left:50px;" value="#{solrWeb.host}#{appRoot}/pages/viewPage.jsf?docID=#{u.oid}&amp;query=#{solrWeb.solrInput}" />
+				<h:outputText style="padding-left:50px;" escape="false" value="#{u.modifiedDate} - #{u.content_1}"/>
+				&nbsp;	
+			</h:panelGrid>
+</ui:remove>
+			<h:panelGrid columns="1" style="text-align: left;">
 				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=#{u.oid}&amp;query=#{solrWeb.solrInput}">
 					<h:outputText value="#{u.title}"/>
 				</h:outputLink>
-    		</h:column>
- 
+				<h:outputText value="#{solrWeb.host}#{appRoot}/pages/viewPage.jsf?docID=#{u.oid}&amp;query=#{solrWeb.solrInput}" />
+				<h:outputText escape="false" value="#{u.modifiedDate} - #{u.content_1}..."/>
+				&nbsp;	
+			</h:panelGrid>
 
     		
   
- 		</h:dataTable> 
+ 		</ui:repeat> 
 	</h:form>	
 	
 	<h:form id="pagingform">  

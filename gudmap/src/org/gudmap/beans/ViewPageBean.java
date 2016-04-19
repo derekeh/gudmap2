@@ -36,10 +36,10 @@ public class ViewPageBean {
 	}
 	
 	public ArrayList<EditPageModel> getEditPageList() {
+		
 		if (query.length() > 0){
 			EditPageModel model = editPageList.get(0);
 			String content = model.getContent_1();
-			String newcontent = "";
 			String[] arr = query.split(" ");
 			int size = arr.length;
 			for (int i=0; i<size; i++){
@@ -51,7 +51,9 @@ public class ViewPageBean {
 			model.setContent_1(content);
 			editPageList.set(0, model);
 		}
+		
 		return editPageList;
 	}
+
 
 }
