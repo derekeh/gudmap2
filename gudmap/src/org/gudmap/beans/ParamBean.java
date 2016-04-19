@@ -28,6 +28,7 @@ public class ParamBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	//false=production
 	private boolean debug=false;
+	private boolean multiwhere=false;
 	
 	private ParamBeanAssembler assembler;
 	
@@ -216,6 +217,13 @@ public class ParamBean implements Serializable {
 		sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
 	}
 	
+	public void setMultiwhere(boolean multiwhere){
+		this.multiwhere = multiwhere;
+	}
+	
+	public boolean getMultiwhere() {
+		return multiwhere;
+	}
 	
 	public void setFocusGroup(String focusGroup){
 		this.focusGroup=focusGroup;
@@ -1039,7 +1047,7 @@ public class ParamBean implements Serializable {
 				genevalueclause+geneIdvalueclause+probenamevalueclause+col_statusvalueclause;
 		//+col_statusvalueclause
 		
-		if(!debug)
+		if(!debug && !multiwhere)
 			resetFilter();
 		return whereclause;
 	}
@@ -1060,7 +1068,7 @@ public class ParamBean implements Serializable {
 		/*cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
 				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cachegeneIdvalueclause+cacheprobenamevalueclause;*/
 		
-		if(!debug)
+		if(!debug && !multiwhere)
 			resetFilter();
 		return cachewhereclause;
 	}
@@ -1082,7 +1090,7 @@ public class ParamBean implements Serializable {
 				cachesexvalueclause+cachespecimentypevalueclause;*/
 		arraycachewhereclause=arraycachewhereclause.replace("QIC", "QMC");
 		
-		if(!debug)
+		if(!debug && !multiwhere)
 			resetFilter();
 		return arraycachewhereclause;
 	}

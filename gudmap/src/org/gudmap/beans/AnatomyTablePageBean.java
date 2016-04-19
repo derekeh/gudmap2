@@ -70,6 +70,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
     
     @Override
     public void loadDataList() {
+    	
     	assembler.init(userInputQuery.replace("'", ""));
     	dataList = assembler.getData(firstRow, rowsPerPage, sortField, sortAscending, paramBean.getWhereclause(),
     									paramBean.getFocusGroupWhereclause(),paramBean.getExpressionJoin(),specimenWhereclause,userInputQuery,
@@ -90,6 +91,7 @@ public class AnatomyTablePageBean extends PagerImpl implements Serializable  {
             pages[i] = ++firstPage;
         }
         this.queryTotals=assembler.getQueryTotals();
+       
     }
     
     public String refresh(){
