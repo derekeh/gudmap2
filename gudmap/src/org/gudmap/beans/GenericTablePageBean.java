@@ -238,6 +238,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
         	queryTotals=geneListAssembler.getQueryTotals();
     	}
     	else if(assayType.equals("anatomy")) {
+    		paramBean.setMultiwhere(true);
     		//reset whereclause for this search
     		paramBean.setWhereclause(whereclause);
     		anatomyAssembler.init(userInputQuery.replace("'", ""));
@@ -248,6 +249,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
         	//setTotalslist(assembler.getTotals());
         	totalRows = anatomyAssembler.count();
         	queryTotals=anatomyAssembler.getQueryTotals();
+        	paramBean.setMultiwhere(false);
     	}
     	else if(assayType.equals("accession")) {
     		//reset whereclause for this search

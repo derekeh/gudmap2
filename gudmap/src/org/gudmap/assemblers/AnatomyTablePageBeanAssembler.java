@@ -214,8 +214,11 @@ public class AnatomyTablePageBeanAssembler {
 			}
 		}
 		queryTotals+=(microarraycount+")  Sequence(");
-		queryString=AnatomyQueries.TOTAL_SEQUENCE_ANATOMY;
-		sql = queryString;
+		//queryString=AnatomyQueries.TOTAL_SEQUENCE_ANATOMY;
+		queryString=AnatomyQueries.TOTAL_SEQUENCE_ANATOMY_2;
+		whereclause = whereclause.replace("SPN_SEX", "NGS_SEX");
+		sql = String.format(queryString, whereclause, timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString);
+		//sql = queryString;
 		try
 		{
 				con = Globals.getDatasource().getConnection();

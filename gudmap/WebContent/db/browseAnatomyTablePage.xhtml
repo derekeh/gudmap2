@@ -24,6 +24,7 @@
 	#{genericTablePageBean.loadDataList()}
 	
 	
+	
 	<ui:include src="/snippets/g_nullReturn.xhtml"></ui:include>	
 	
 	<h:panelGrid id="pageview" rendered="#{null!=genericTablePageBean.dataList || genericTablePageBean.dataList.size()>0}" styleClass="db_grid_top_zero">
@@ -55,8 +56,7 @@
  		
  		<ui:include src="/snippets/g_pagingForm.xhtml"></ui:include>
 	
-	</h:panelGrid>
-		
+	</h:panelGrid>	
 	</ui:define>
 </ui:composition>
 </html>
