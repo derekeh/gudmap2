@@ -90,6 +90,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
         var genes = data.genes;
         var samples = data.samples;
         var annotations = data.annotations;
+        var urls = data.urls;
         var row_number = arr.length;
         var col_number = arr[0].length;
         
@@ -270,8 +271,10 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			.on('click', function(d,i,j) {
 				d3.select("#tabulate2").remove;
 				var item = annotations[j];
+				var item2 = urls[j];
 				var ds1 = [];
 				ds1.push(item);
+//				ds1.push(item2);				
 				tabulate(ds1);
 		        d3.selectAll(".geneLabel").classed("text-selected",function(r,ri){ return ri==j;});
 		    	d3.selectAll(".rowLabel").classed("text-selected",function(r,ri){ return ri==j;});
@@ -308,7 +311,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			    .enter()
 			    .append("tr");
 			
-
+//			.attr("xlink:href", "http://en.gudmap.org)
 			var cells = rows.selectAll("td")
 			    .data(function(d){return d;})
 			    .enter().append("td")
@@ -317,9 +320,20 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //			    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")}) 
 //			    .on("mouseout", function(){d3.select(this).style("background-color", "white")}) 
 //			    .on("click", function(d){ return openLink(d,annotations);}) 
-//			    .html(function(d) { return d; });
-			    .text(function(d){return d;})
-			    .style("font-size", "10px");
+			    .html(function(d) { 
+			    	if (d[1] === null) {
+			    		return d;
+			    	}else{
+			    		console.log(d);
+//			    		return "<a href=\"http://gudmap.org" +"\">" + d + "</a>"; 
+			    		return "<a href=\"http://" + d[1] +"\">" + d[0] + "</a>"; 
+
+			    	}
+			    });
+
+
+//			    .text(function(d){return d;})
+//			    .style("font-size", "10px");
 			
 		};
 

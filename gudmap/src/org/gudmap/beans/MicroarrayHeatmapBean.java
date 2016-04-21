@@ -302,6 +302,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		obj.put("data", getDataValues());
 		obj.put("adjdata", getDataAdjValues());
 		obj.put("annotations", getProbeAnnotations());
+		obj.put("urls", getUrls());
 		
 				
 		return obj;
@@ -392,7 +393,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		return data;
 	}
 
-	private LinkedList<LinkedList<String>> getProbeAnnotations(){
+	private LinkedList<LinkedList<String>> getProbeAnnotationsOrig(){
 		
 		LinkedList<LinkedList<String>> annotations = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
@@ -417,6 +418,113 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		}
 				
 		return annotations;
+	}
+	private LinkedList<LinkedList<LinkedList<String>>> getProbeAnnotations(){
+		
+		LinkedList<LinkedList<LinkedList<String>>> annotations = new LinkedList<LinkedList<LinkedList<String>>>();
+		LinkedList<LinkedList<String>> items;
+		LinkedList<String> links;
+
+		ArrayList<String[]> dataList = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
+		for(String[] item : dataList){
+			items = new LinkedList<LinkedList<String>>();
+			String link = "";
+			
+			
+			links = new LinkedList<String>();
+			links.add(item[0]);
+			link = "www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=" + item[0];	
+			links.add(link);
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add(item[1]);
+			link = "/pages/gene.html?geneid="+item[3];	
+			links.add(link);
+			items.add(links);
+
+			links = new LinkedList<String>();
+			links.add(item[2]);
+			link = "www.informatics.jax.org/accession/"+item[3];
+			links.add(link);
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add(item[3]);
+			links.add(null);			
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add(item[4]);
+			link = "www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[1];
+			links.add(link);			
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add(item[5]);
+			links.add(null);			
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add(item[6]);
+			links.add(null);			
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add("GUDMAP");
+			links.add(null);			
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add("UCSC");
+			link = "genome.ucsc.edu/cgi-bin/hgNear?hgsid=80317038&org=Mouse&db=mm8&near_search="+item[1]+"&submit=Go!&near_order=expGnfAtlas2&near.count=50";
+			links.add(null);			
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add("KEGG");
+			link = "www.genome.jp/dbget-bin/www_bfind_sub?dbkey=genes&keywords="+ item[1];
+			links.add(link);			
+			items.add(links);
+			
+			links = new LinkedList<String>();
+			links.add("ENS");
+			link = "www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g="+item[1];
+			links.add(link);			
+			items.add(links);
+			
+			annotations.add(items);
+
+		}
+				
+		return annotations;
+	}
+
+	private LinkedList<LinkedList<String>> getUrls(){
+		
+		LinkedList<LinkedList<String>> urls = new LinkedList<LinkedList<String>>();
+		LinkedList<String> items;
+
+		ArrayList<String[]> dataList = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
+		for(String[] item : dataList){
+			items = new LinkedList<String>();
+
+			items.add("www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=" + item[0]);//platform
+			items.add("/pages/gene.html?geneid="+item[3]);// gene
+			items.add(item[2]);//probe seq id
+			items.add("www.informatics.jax.org/accession/"+item[3]);//mgi gene id
+			items.add("www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[1]);//entrez geneid
+			items.add(item[5]);//Human Ortholog Symbol
+			items.add(item[6]);//Human Ortholog Entrez
+			items.add("GUDMAP");//GUDMAP-ISH
+			items.add("genome.ucsc.edu/cgi-bin/hgNear?hgsid=80317038&org=Mouse&db=mm8&near_search="+item[1]+"&submit=Go!&near_order=expGnfAtlas2&near.count=50");
+			items.add("www.genome.jp/dbget-bin/www_bfind_sub?dbkey=genes&keywords="+ item[1]);
+			items.add("www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g="+item[1]);//ENS
+			
+			urls.add(items);
+		}
+				
+		return urls;
 	}
 	
  }
