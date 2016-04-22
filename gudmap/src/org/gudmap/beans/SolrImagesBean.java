@@ -296,17 +296,21 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 					if (doc.containsKey("UGP_DESCRIPTION"))
 						model.setGroupTitle(doc.getFieldValue("UGP_DESCRIPTION").toString());
 					
-//					if (doc.containsKey("IMAGE")){
-//						String title = doc.getFieldValue("IMAGE").toString();
-//						title = title.replace(".jpg", "");
-//						title = title.replace(".tif", "");
-//						title = title.replace(".gif", "");
-//						title = title.replace("_", " ");
-//						model.setImageTitle(title);
-//					}
+
 					if (doc.containsKey("UIG_TITLE")){
 						String title = doc.getFieldValue("UIG_TITLE").toString();
 						model.setImageTitle(title);
+					}
+					else{
+						if (doc.containsKey("IMAGE")){
+						String title = doc.getFieldValue("IMAGE").toString();
+						title = title.replace(".jpg", "");
+						title = title.replace(".tif", "");
+						title = title.replace(".gif", "");
+						title = title.replace("_", " ");
+						model.setImageTitle(title);
+					}
+						
 					}
 					
 					if (!ids.contains(groupId)){
