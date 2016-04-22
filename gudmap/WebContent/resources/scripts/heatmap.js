@@ -112,7 +112,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //            .append("g")
 //            .attr("transform", "translate(" + viewerPosLeft + "," + viewerPosTop + ")");
 
- 	   	var margin = { top: 190, right: 10, bottom: 50, left: 100 };
+// 	   	var margin = { top: 190, right: 10, bottom: 50, left: 100 };
+ 	   	var margin = { top: 60, right: 10, bottom: 50, left: 100 };
  	   	var width = cellSize*col_number*1.2;
  	   	var height = cellSize*row_number;
          
@@ -204,8 +205,17 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			.style("text-anchor", "left")
 			.attr("transform", "translate("+ colLabelspacer +",0) translate("+ cellSize/2 + ",-6) rotate (-90)")
 			.attr("class",  function (d,i) { return "colLabel mono c"+i;} )
-			.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
-			.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
+			.on("mouseover", function(d,i) {
+				d3.select(this).classed("text-hover",true);
+				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
+		        tooltip.style("left", (d3.event.pageX-100) + "px")
+		        tooltip.style("top", (d3.event.pageY-50) + "px")
+				tooltip.style("visibility", "visible");				
+			})
+			.on("mouseout" , function(d) {
+				d3.select(this).classed("text-hover",false);
+				tooltip.style("visibility", "hidden");	
+			})
 			.on("click", function(d,i) {
 				colSortOrder=!colSortOrder;  
 				sortbylabel("c",i,colSortOrder);
@@ -322,7 +332,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //			    .on("click", function(d){ return openLink(d,annotations);}) 
 			    .html(function(d) { 
 			    	if (d[1] === null) {
-			    		return d;
+			    		return d[0];
 			    	}else{
 			    		console.log(d);
 //			    		return "<a href=\"http://gudmap.org" +"\">" + d + "</a>"; 
