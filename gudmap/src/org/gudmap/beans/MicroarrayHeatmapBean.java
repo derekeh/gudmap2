@@ -426,6 +426,13 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+		String contextpath = request.getContextPath();
+		
+		String locale = request.getRemoteHost();
+		String addr = request.getRemoteAddr();
+		String usr = request.getRemoteUser();
+		String pathinfo = request.getPathInfo();
+		
 		String host = request.getLocalName() + path;
 
 		
