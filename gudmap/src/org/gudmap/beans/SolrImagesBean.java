@@ -295,6 +295,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 
 					if (doc.containsKey("UGP_DESCRIPTION"))
 						model.setGroupTitle(doc.getFieldValue("UGP_DESCRIPTION").toString());
+					
 //					if (doc.containsKey("IMAGE")){
 //						String title = doc.getFieldValue("IMAGE").toString();
 //						title = title.replace(".jpg", "");

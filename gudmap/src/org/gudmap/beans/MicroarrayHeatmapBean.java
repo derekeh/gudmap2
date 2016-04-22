@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 
 @Named (value="microarrayHeatmapBean")
@@ -421,6 +422,14 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 	}
 	private LinkedList<LinkedList<LinkedList<String>>> getProbeAnnotations(){
 		
+		String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+		String host = request.getLocalName() + path;
+
+		
+		
 		LinkedList<LinkedList<LinkedList<String>>> annotations = new LinkedList<LinkedList<LinkedList<String>>>();
 		LinkedList<LinkedList<String>> items;
 		LinkedList<String> links;
@@ -439,8 +448,8 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			
 			links = new LinkedList<String>();
 			links.add(item[1]);
-			link = "/pages/gene.html?geneid="+item[3];	
-			links.add(link);
+			link = path + "/pages/gene.html?geneid="+item[3];	
+			links.add(null);
 			items.add(links);
 
 			links = new LinkedList<String>();
@@ -451,7 +460,8 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			
 			links = new LinkedList<String>();
 			links.add(item[3]);
-			links.add(null);			
+			link = "www.informatics.jax.org/accession/"+item[3];
+			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
@@ -462,12 +472,14 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			
 			links = new LinkedList<String>();
 			links.add(item[5]);
-			links.add(null);			
+			link = "www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[5];
+			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add(item[6]);
-			links.add(null);			
+			link = "www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[6];
+			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
@@ -478,7 +490,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			links = new LinkedList<String>();
 			links.add("UCSC");
 			link = "genome.ucsc.edu/cgi-bin/hgNear?hgsid=80317038&org=Mouse&db=mm8&near_search="+item[1]+"&submit=Go!&near_order=expGnfAtlas2&near.count=50";
-			links.add(null);			
+			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
