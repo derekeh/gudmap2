@@ -433,7 +433,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 		String usr = request.getRemoteUser();
 		String pathinfo = request.getPathInfo();
 		
-		String host = request.getLocalName() + path;
+		String host = request.getLocalName();
 
 		
 		
@@ -449,43 +449,43 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			
 			links = new LinkedList<String>();
 			links.add(item[0]);
-			link = "www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=" + item[0];	
+			link = "http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=" + item[0];	
 			links.add(link);
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add(item[1]);
-			link = path + "/pages/gene.html?geneid="+item[3];	
-			links.add(null);
+			link = "/pages/viewGeneDetails.jsf?geneId="+item[3];	
+			links.add(link);
 			items.add(links);
 
 			links = new LinkedList<String>();
 			links.add(item[2]);
-			link = "www.informatics.jax.org/accession/"+item[3];
+			link = "http://www.informatics.jax.org/accession/"+item[3];
 			links.add(link);
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add(item[3]);
-			link = "www.informatics.jax.org/accession/"+item[3];
+			link = "http://www.informatics.jax.org/accession/"+item[3];
 			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add(item[4]);
-			link = "www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[1];
+			link = "http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[1];
 			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add(item[5]);
-			link = "www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[5];
+			link = "http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[5];
 			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add(item[6]);
-			link = "www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[6];
+			link = "http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi?term="+ item[6];
 			links.add(link);			
 			items.add(links);
 			
@@ -496,19 +496,19 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			
 			links = new LinkedList<String>();
 			links.add("UCSC");
-			link = "genome.ucsc.edu/cgi-bin/hgNear?hgsid=80317038&org=Mouse&db=mm8&near_search="+item[1]+"&submit=Go!&near_order=expGnfAtlas2&near.count=50";
+			link = "http://genome.ucsc.edu/cgi-bin/hgNear?hgsid=80317038&org=Mouse&db=mm8&near_search="+item[1]+"&submit=Go!&near_order=expGnfAtlas2&near.count=50";
 			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add("KEGG");
-			link = "www.genome.jp/dbget-bin/www_bfind_sub?dbkey=genes&keywords="+ item[1];
+			link = "http://www.genome.jp/dbget-bin/www_bfind_sub?dbkey=genes&keywords="+ item[1];
 			links.add(link);			
 			items.add(links);
 			
 			links = new LinkedList<String>();
 			links.add("ENS");
-			link = "www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g="+item[1];
+			link = "http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g="+item[1];
 			links.add(link);			
 			items.add(links);
 			
