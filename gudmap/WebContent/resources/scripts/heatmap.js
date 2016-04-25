@@ -90,6 +90,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
         var genes = data.genes;
         var samples = data.samples;
         var annotations = data.annotations;
+        var urls = data.urls;
         var row_number = arr.length;
         var col_number = arr[0].length;
         
@@ -111,7 +112,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //            .append("g")
 //            .attr("transform", "translate(" + viewerPosLeft + "," + viewerPosTop + ")");
 
- 	   	var margin = { top: 190, right: 10, bottom: 50, left: 100 };
+// 	   	var margin = { top: 190, right: 10, bottom: 50, left: 100 };
+ 	   	var margin = { top: 60, right: 10, bottom: 50, left: 100 };
  	   	var width = cellSize*col_number*1.2;
  	   	var height = cellSize*row_number;
          
@@ -203,8 +205,17 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			.style("text-anchor", "left")
 			.attr("transform", "translate("+ colLabelspacer +",0) translate("+ cellSize/2 + ",-6) rotate (-90)")
 			.attr("class",  function (d,i) { return "colLabel mono c"+i;} )
-			.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
-			.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
+			.on("mouseover", function(d,i) {
+				d3.select(this).classed("text-hover",true);
+				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
+		        tooltip.style("left", (d3.event.pageX-100) + "px")
+		        tooltip.style("top", (d3.event.pageY-50) + "px")
+				tooltip.style("visibility", "visible");				
+			})
+			.on("mouseout" , function(d) {
+				d3.select(this).classed("text-hover",false);
+				tooltip.style("visibility", "hidden");	
+			})
 			.on("click", function(d,i) {
 				colSortOrder=!colSortOrder;  
 				sortbylabel("c",i,colSortOrder);
@@ -270,8 +281,10 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			.on('click', function(d,i,j) {
 				d3.select("#tabulate2").remove;
 				var item = annotations[j];
+				var item2 = urls[j];
 				var ds1 = [];
 				ds1.push(item);
+//				ds1.push(item2);				
 				tabulate(ds1);
 		        d3.selectAll(".geneLabel").classed("text-selected",function(r,ri){ return ri==j;});
 		    	d3.selectAll(".rowLabel").classed("text-selected",function(r,ri){ return ri==j;});
@@ -308,7 +321,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			    .enter()
 			    .append("tr");
 			
-
+//			.attr("xlink:href", "http://en.gudmap.org)
 			var cells = rows.selectAll("td")
 			    .data(function(d){return d;})
 			    .enter().append("td")
@@ -317,9 +330,20 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //			    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")}) 
 //			    .on("mouseout", function(){d3.select(this).style("background-color", "white")}) 
 //			    .on("click", function(d){ return openLink(d,annotations);}) 
-//			    .html(function(d) { return d; });
-			    .text(function(d){return d;})
-			    .style("font-size", "10px");
+			    .html(function(d) { 
+			    	if (d[1] === null) {
+			    		return d[0];
+			    	}else{
+			    		console.log(d);
+//			    		return "<a href=\"http://gudmap.org" +"\">" + d + "</a>"; 
+			    		return "<a href=\"http://" + d[1] +"\">" + d[0] + "</a>"; 
+
+			    	}
+			    });
+
+
+//			    .text(function(d){return d;})
+//			    .style("font-size", "10px");
 			
 		};
 
