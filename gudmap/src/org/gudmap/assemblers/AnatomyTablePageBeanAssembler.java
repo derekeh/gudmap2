@@ -99,6 +99,7 @@ public class AnatomyTablePageBeanAssembler {
 									cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
 									cachewhereclause,timedComponentsQueryString,
 									arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
+									whereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
 									sortField, sortDirection);
 		}
 		
@@ -111,6 +112,7 @@ public class AnatomyTablePageBeanAssembler {
 		
 		if(!ish_present && array_present){
 			sql = String.format(paramSQL,arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
+					whereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
 					sortField, sortDirection);
 		}
 		
@@ -312,5 +314,6 @@ public class AnatomyTablePageBeanAssembler {
 		
 		partParamSQL+=AnatomyQueries.BROWSE_ANATOMY_FOOTER_PARAM;
 		paramSQL=partParamSQL;	
+		int i=0;
 	}
 }

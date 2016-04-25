@@ -238,6 +238,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
         	queryTotals=geneListAssembler.getQueryTotals();
     	}
     	else if(assayType.equals("anatomy")) {
+    		//set this so that multiple whereclauses are not reset immediately following filter submit
     		paramBean.setMultiwhere(true);
     		//reset whereclause for this search
     		paramBean.setWhereclause(whereclause);
@@ -262,6 +263,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 			queryTotals=accessionAssembler.getQueryTotals();
     	}
     	else if(assayType.equals("genefunction")) {
+    		paramBean.setMultiwhere(true);
     		//reset whereclause for this search
     		paramBean.setWhereclause(whereclause);
     		genefunctionAssembler.init(userInputQuery.replace("'", ""),"equals");
@@ -271,6 +273,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
             
         	totalRows = genefunctionAssembler.count();
         	queryTotals=genefunctionAssembler.getQueryTotals();
+        	paramBean.setMultiwhere(false);
     	}
     	else if(assayType.equals("Microarray")) {
     		if(specimenAssay.equals("micseries")) {
