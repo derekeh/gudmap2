@@ -456,7 +456,7 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 			links = new LinkedList<String>();
 			links.add(item[1]);
 			link = "/pages/viewGeneDetails.jsf?geneId="+item[3];	
-			links.add(link);
+			links.add(null);
 			items.add(links);
 
 			links = new LinkedList<String>();
