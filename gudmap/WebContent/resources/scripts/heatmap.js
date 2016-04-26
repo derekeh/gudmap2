@@ -335,9 +335,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			    		return d[0];
 			    	}else{
 			    		console.log(d);
-//			    		return "<a href=\"http://gudmap.org" +"\">" + d + "</a>"; 
-			    		return "<a href=\"http://" + d[1] +"\">" + d[0] + "</a>"; 
-
+			    		return "<a href=\"" + d[1] +"\">" + d[0] + "</a>"; 
 			    	}
 			    });
 
