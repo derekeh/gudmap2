@@ -18,7 +18,7 @@ import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.InsituTableBeanModel;
 
-public class AnatomyTablePageBeanAssembler {
+public class AnatomyTablePageBeanAssembler_bkp {
 	
 	
 	private Connection con;
@@ -45,7 +45,7 @@ public class AnatomyTablePageBeanAssembler {
 	private boolean array_present=false;
 	private boolean seq_present=false;
 	
-	public  AnatomyTablePageBeanAssembler() {
+	public  AnatomyTablePageBeanAssembler_bkp() {
 		
 		anatomyDao = new AnatomyDao();
 		
@@ -95,7 +95,7 @@ public class AnatomyTablePageBeanAssembler {
 									focusGroupSpWhereclause,sortField, sortDirection);*/
 		String sql="";
 		//different substitutions to query string based on assaytype in filter
-		if(ish_present && array_present && seq_present) {
+		if(ish_present && array_present) {
 			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
 									cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
 									cachewhereclause,timedComponentsQueryString,
@@ -104,42 +104,16 @@ public class AnatomyTablePageBeanAssembler {
 									sortField, sortDirection);
 		}
 		
-		if(ish_present && array_present && !seq_present) {
-			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
-									cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
-									cachewhereclause,timedComponentsQueryString,
-									arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
-									sortField, sortDirection);
-		}
-		
-		if(ish_present && !array_present && seq_present) {
-			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
-									cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
-									cachewhereclause,timedComponentsQueryString,
-									whereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
-									sortField, sortDirection);
-		}
-		
-		if(ish_present && !array_present && !seq_present){
+		if(ish_present && !array_present){
 			sql = String.format(paramSQL,cachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,
 					cachewhereclause,timedComponentsQueryString,ancestorComponentsQueryString,
 					cachewhereclause,timedComponentsQueryString,
 					sortField, sortDirection);
 		}
 		
-		if(!ish_present && array_present && seq_present){
+		if(!ish_present && array_present){
 			sql = String.format(paramSQL,arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
 					whereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
-					sortField, sortDirection);
-		}
-		
-		if(!ish_present && !array_present && seq_present){
-			sql = String.format(paramSQL,whereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
-					sortField, sortDirection);
-		}
-		
-		if(!ish_present && array_present && !seq_present){
-			sql = String.format(paramSQL,arraycachewhereclause,timedComponentsQueryString,descendentComponentsQueryString,ancestorComponentsQueryString,
 					sortField, sortDirection);
 		}
 		
@@ -319,8 +293,6 @@ public class AnatomyTablePageBeanAssembler {
 		String partParamSQL= AnatomyQueries.BROWSE_ANATOMY_HEADER_PARAM;
 		ish_present=false;
 		array_present=false;
-		seq_present=false;
-		
 		if(cachewhereclause.contains("SUB_ASSAY_TYPE")){
 			
 			if(cachewhereclause.contains("'ISH'") || cachewhereclause.contains("'IHC'") || cachewhereclause.contains("'TG'") ) {
@@ -328,23 +300,16 @@ public class AnatomyTablePageBeanAssembler {
 				partParamSQL+=AnatomyQueries.BROWSE_ANATOMY_ISH_PARAM;
 			}
 			
-			if(cachewhereclause.contains("Microarray")) {
+			if(cachewhereclause.contains("Microarray") || cachewhereclause.contains("NextGen")) {
 				array_present=true;
 				partParamSQL+=(ish_present)?(" UNION " +AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM):AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM;
-			}
-			
-			if(cachewhereclause.contains("NextGen")) {
-				seq_present=true;
-				
-				partParamSQL+=(ish_present || array_present)?(" UNION " +AnatomyQueries.BROWSE_ANATOMY_SEQ_PARAM):AnatomyQueries.BROWSE_ANATOMY_SEQ_PARAM;
 			}
 			
 		}
 		else {
 			ish_present=true;
 			array_present=true;
-			seq_present=true;
-			partParamSQL+=(AnatomyQueries.BROWSE_ANATOMY_ISH_PARAM + " UNION " + AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM + " UNION " + AnatomyQueries.BROWSE_ANATOMY_SEQ_PARAM);
+			partParamSQL+=(AnatomyQueries.BROWSE_ANATOMY_ISH_PARAM + " UNION " + AnatomyQueries.BROWSE_ANATOMY_MIC_PARAM);
 		}
 		
 		
