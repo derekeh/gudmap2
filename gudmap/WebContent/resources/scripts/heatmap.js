@@ -48,7 +48,17 @@ function changePalette(paletteName, heatmapId) {
 	      });
 }
 
-function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
+function update_heatmap(heatmapId, cellSize) {
+	
+	
+	
+	var svg = d3.select(heatmapId);
+	svg.selectAll('svg').remove();
+
+
+}
+
+function heatmap_display(url, tableHeaders, heatmapId, paletteName, cell_size) {
 
 
     //==================================================
@@ -70,7 +80,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 //    var viewerHeight = $(document).height();
 //    var viewerPosTop = 200;
 //    var viewerPosLeft = 100;
-    var cellSize = 20;//14;
+    var cellSize = cell_size; //5; //10; //20;//14;
 //    var svg;
 
     //==================================================
@@ -117,6 +127,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
  	   	var width = cellSize*col_number*1.2;
  	   	var height = cellSize*row_number;
          
+ 	   	
+ 	   	
  	   	var svg = d3.select(heatmapId).append("svg")
  	   		.attr("width", width)
  	   		.attr("height", height + margin.bottom + margin.top)
@@ -335,7 +347,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName) {
 			    		return d[0];
 			    	}else{
 			    		console.log(d);
-			    		return "<a href=\"" + d[1] +"\">" + d[0] + "</a>"; 
+			    		return "<a href=\"" + d[1] +"\"  target=\"_blank\" >" + d[0] + "</a>"; 
 			    	}
 			    });
 

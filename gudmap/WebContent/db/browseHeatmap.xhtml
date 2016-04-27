@@ -36,7 +36,7 @@
 		<h:outputScript library="scripts" name="jquery-ui.js"></h:outputScript>
 		
 		
-<h:panelGrid columns="4">
+<h:panelGrid columns="6">
 	<h:panelGroup>
 	    <h:outputText  value="Microarray Expression Profile for:"></h:outputText>
 	    <h:outputText  value=" #{microarrayHeatmapBean.title}"></h:outputText>        
@@ -70,12 +70,26 @@
 		  <option value="PuOr">PuOr</option>
 		</select>
 	</h:panelGroup>	
+
+<ui:remove>
+	<h:panelGrid columns="2">
+   		<h:outputLabel>Heatmap Scale:</h:outputLabel>
+   		<h:inputText id="amount" width="10px"/>	
+   	</h:panelGrid>
+</ui:remove>	 
+
+  	
+	<div>
+	<label>Heatmap Scale</label>
+		<div id="slider"></div>
+	</div>
+
 	
+
 	
-	
-	<h:outputText  value="No Data available for display" rendered="#{!microarrayHeatmapBean.dataAvailable}"></h:outputText>
  		
 </h:panelGrid> 	
+	<h:outputText  value="No Data available for display" rendered="#{!microarrayHeatmapBean.dataAvailable}"></h:outputText>
 	
 <table id="split">
 <thead></thead>
@@ -105,11 +119,33 @@
 		var annotationHeaders = ["Platform","Gene","Probe Seq ID","MGI Gene ID","Entrez Gene ID","Human Ortholog Symbol","Human Ortholog Entrez","GUDMAP-ISH","UCSC","KEGG","ENS"];
 
 		var viewWidth = $(document).width();					
-		var viewHeight = $(document).height();					
+		var viewHeight = $(document).height();	
 		
-		heatmap_display(url, annotationHeaders, "#chart", "Default");
+		var cell_size = 15;
+		
+		heatmap_display(url, annotationHeaders, "#chart", "Default", cell_size);
+		
+		var sliderOpts = {
+				   range: "min",
+				   value: 15,
+				   min: 5,
+				   max: 25,
+				   animate: true,
+				   stop: function( event, ui ) {
+				   		$( "#amount" ).val( ui.value );
+				   		update_heatmap("#chart", ui.value);
+				   		heatmap_display(url, annotationHeaders, "#chart", "Default",ui.value);
+				   }
+				
+				
+		};
+	   $( "#slider" ).slider(sliderOpts);
+		   
+  
  }); 
    
+   
+
 //]]>
  </script>		
 
