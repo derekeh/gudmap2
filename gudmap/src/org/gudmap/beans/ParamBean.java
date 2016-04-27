@@ -1084,10 +1084,10 @@ public class ParamBean implements Serializable {
 			stagebuffer.insert(stagebuffer.lastIndexOf("AND")-1, "))");
 			stagebuffer.replace(stagebuffer.lastIndexOf("QIC_STG_SPECIES")-4, stagebuffer.lastIndexOf("QIC_STG_SPECIES")-1, ") OR (");			
 		}
+		/*arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+stagebuffer.toString()+
+				cachesexvalueclause+cachespecimentypevalueclause;*/
 		arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+stagebuffer.toString()+
 				cachesexvalueclause+cachespecimentypevalueclause;
-		/*arraycachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
-				cachesexvalueclause+cachespecimentypevalueclause;*/
 		arraycachewhereclause=arraycachewhereclause.replace("QIC", "QMC");
 		
 		if(!debug && !multiwhere)

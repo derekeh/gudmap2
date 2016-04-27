@@ -329,9 +329,9 @@ public class AnatomyQueries {
 				"ANA_TIMED_NODE ON ATN_PUBLIC_ID=IST_COMPONENT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID  " +
 				"LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +
 				"%s " + 
-				"SUB_ASSAY_TYPE = 'NextGen' AND  (IST_COMPONENT IN (%s,%s,%s)) AND GenericQueries.PUBLIC_ENTRIES  GROUP BY SUB_ACCESSION_ID)";
+				"(IST_COMPONENT IN (%s,%s,%s)) AND " + GenericQueries.PUBLIC_ENTRIES + "  GROUP BY SUB_ACCESSION_ID) ";
 		
-		public static String BROWSE_ANATOMY_MIC_PARAM_1 = 
+		public static String BROWSE_ANATOMY_MIC_PARAM = 
 				"(select distinct SUBSTRING(QMC_SUB_ACCESSION_ID,8) oid, '' gene, QMC_SUB_ACCESSION_ID gudmap_accession, QMC_SUB_SOURCE source, " +
 				"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_STG_STAGE_DISPLAY stage, " +
 				"QMC_STG_SPECIES species, TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE,' ',QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT,QMC_SPN_STAGE) END) age," +
@@ -353,7 +353,7 @@ public class AnatomyQueries {
 				"%s  " +
 				"(QMC_ATN_PUBLIC_ID in (%s,%s,%s))) UNION " + BROWSE_ANATOMY_SEQ_PARAM;*/
 		
-		public static String BROWSE_ANATOMY_MIC_PARAM  = //"UNION MICROARRAY AND NEXTGEN " +
+		public static String BROWSE_ANATOMY_MIC_PARAM_2  = //"UNION MICROARRAY AND NEXTGEN " +
 				"(select distinct SUBSTRING(QMC_SUB_ACCESSION_ID,8) oid, '' gene, QMC_SUB_ACCESSION_ID gudmap_accession, QMC_SUB_SOURCE source, " +
 				"DATE_FORMAT(QMC_SUB_SUB_DATE,'%%e %%b %%Y') submission_date, 'Microarray' assay_type, '' probe_name, QMC_STG_STAGE_DISPLAY stage, " +
 				"QMC_STG_SPECIES species, TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE,' ',QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT,QMC_SPN_STAGE) END) age," +
@@ -378,7 +378,7 @@ public class AnatomyQueries {
 				"ANA_TIMED_NODE ON ATN_PUBLIC_ID=IST_COMPONENT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID  LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID  " +
 				"LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +
 				"%s " + 
-				"SUB_ASSAY_TYPE = 'NextGen' AND  (IST_COMPONENT IN (%s,%s,%s)) AND " +GenericQueries.PUBLIC_ENTRIES+"  GROUP BY SUB_ACCESSION_ID) ";
+				"(IST_COMPONENT IN (%s,%s,%s)) AND " +GenericQueries.PUBLIC_ENTRIES+"  GROUP BY SUB_ACCESSION_ID) ";
 		
 		
 		

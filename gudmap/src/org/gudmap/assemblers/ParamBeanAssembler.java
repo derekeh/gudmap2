@@ -138,6 +138,7 @@ public class ParamBeanAssembler {
 			}
 			else {
 				result.last();
+				theilerstagelist.put(result.getString(2), result.getString(1));
 				while(result.previous())
 					theilerstagelist.put(result.getString(2), result.getString(1));
 			}
@@ -164,6 +165,7 @@ public class ParamBeanAssembler {
 			}
 			else {
 				result.last();
+				carnegiestagelist.put(result.getString(2), result.getString(1));
 				while(result.previous())
 					carnegiestagelist.put(result.getString(2), result.getString(1));
 			}
