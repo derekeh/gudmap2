@@ -81,9 +81,10 @@
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
      			</f:facet>
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml" rendered="#{not empty u.imageUrl}">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
+				<h:outputText value="#{u.geneSymbol}" rendered="#{empty u.imageUrl}"/>
     		</h:column>
  
     		<h:column rendered="#{paramBean.synonymcol == true}">
@@ -144,7 +145,7 @@
 				</h:outputLink>
 				
     		</h:column>    
-    		
+	
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
     				Stages
@@ -153,7 +154,7 @@
     				#{u.stageRange}
     			</h:outputLink>
     		</h:column>
-
+ 
 
 
     				
