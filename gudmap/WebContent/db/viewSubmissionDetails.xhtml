@@ -204,6 +204,7 @@ function enhanceTree(event, data) {
 
 		        for (p = 0; p < pattern_from_db.length; p++) {
 		        	var pattern_name = String(pattern_from_db[p][0]).replace(" ","");
+		        	//alert('pattern_name: '+pattern_name);
 		        	if (node_name == pattern_name){
 //		        		alert("pattern icon");
 		                if (pattern_from_db[p][1] == "graded"){
@@ -231,12 +232,15 @@ function enhanceTree(event, data) {
 		        
 		        for (n = 0; n < expnote_from_db.length; n++) {
 		        	var note_name = String(expnote_from_db[n][0]).replace(" ","");
+		        	//alert('note_name: '+note_name);
 		        	if (node_name == note_name){
-//		        		alert("note-icon1");
+		        		//alert("note-icon1");
 		                selected_class = "note-icon1";
 		                jQuery('li[name="'+node_name+'"] > a') .after('<a title=\''+ expnote_from_db[n][1] + '\' ><ins class="' + selected_class + '">&nbsp;</ins></a>');
 		               // jQuery('li[name="'+node_name+'"] > a') .after('<a onmouseover="tooltip.show(\''+ expnote_from_db[n][1] + '\')"  onmouseout="tooltip.hide();" ><ins class="' + selected_class + '">&nbsp;</ins></a>');
-		            }		        	
+		            }
+		        	//else
+		        		//alert('node and note not equal');
 		        }// end for n loop
 								
             }// end of for i loop
@@ -285,7 +289,8 @@ function findPatterns(){
 
 function findExpressionNotes(){
 	
-	var notes=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressionNotes}");
+	//var notes=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressionNotes}");
+	var notes=String("${ishSubmissionBean.ishSubmissionModel.annotationTreeExpressionNotes}");
 
 	var temparray = notes.split("|");
 	var count = temparray.length;
@@ -295,9 +300,9 @@ function findExpressionNotes(){
 		var tmpstr = temparray[i].replace(":","");		
 		var idx = tmpstr.indexOf(",");
 		notes_array[i][0] = tmpstr.substring(0,idx);
-		notes_array[i][1] = tmpstr.substring(idx);
-//		alert(notes_array[i][0]);
-//		alert(notes_array[i][1]);
+		notes_array[i][1] = tmpstr.substring(idx+1);
+		//alert('notes_array[i][0]: '+notes_array[i][0]);
+		//alert('notes_array[i][1]: '+notes_array[i][1]);
 	}
 /*
 	var dnotes=String("${ISHSingleSubmissionBean.submission.annotationTreeDensityNotes}");
