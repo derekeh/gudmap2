@@ -36,7 +36,7 @@
 		<h:outputScript library="scripts" name="jquery-ui.js"></h:outputScript>
 		
 		
-<h:panelGrid columns="6">
+<h:panelGrid columns="5">
 	<h:panelGroup>
 	    <h:outputText  value="Microarray Expression Profile for:"></h:outputText>
 	    <h:outputText  value=" #{microarrayHeatmapBean.title}"></h:outputText>        
@@ -79,9 +79,9 @@
 </ui:remove>	 
 
   	
-	<div>
-	<label>Heatmap Scale</label>
-		<div id="slider"></div>
+	<div style="width:200px;">
+		<label>Heatmap Scale</label>
+		<div id="slider" ></div>
 	</div>
 
 	
@@ -126,15 +126,16 @@
 		heatmap_display(url, annotationHeaders, "#chart", "Default", cell_size);
 		
 		var sliderOpts = {
-				   range: "min",
+//				   range: "min",
 				   value: 15,
 				   min: 5,
 				   max: 25,
 				   animate: true,
-				   stop: function( event, ui ) {
-				   		$( "#amount" ).val( ui.value );
+				   change: function( event, ui ) {
+//				   		$( "#amount" ).val( ui.value );
 				   		update_heatmap("#chart", ui.value);
 				   		heatmap_display(url, annotationHeaders, "#chart", "Default",ui.value);
+
 				   }
 				
 				
