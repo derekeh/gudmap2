@@ -738,8 +738,9 @@ function findExpressionNotes(){
 					<h:outputText value="Catalogue Number: " />
 					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.catalogueNumber}" />
 			
-					<h:outputText value="Lot Number: " />
-					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.lotNumber}" />
+					<h:outputText value="Lot Number: " rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.lotNumber}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.lotNumber}" 
+					 rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.lotNumber}"/>
 			
 					<h:panelGroup/>
 					<h:panelGroup/>
@@ -747,42 +748,53 @@ function findExpressionNotes(){
 					<h:outputText value="Type: " />
 					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.type}" />
 			
-					<h:outputText value="Host: " />
-					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.host}"/>
+					<h:outputText value="Host: "  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.host}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.host}" 
+					 rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.host}"/>
 					
-					<h:outputText value="Purification Method: "/>
-					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.purificationMethod}" />
+					<h:outputText value="Purification Method: "  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.purificationMethod}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.purificationMethod}" 
+					 rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.purificationMethod}"/>
 
 					<h:panelGroup/>
 					<h:panelGroup/>
 					
-					<h:outputText value="Immunoglobulin Isotype:" />
-					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.immunoglobulinIsotype}" />
+					<h:outputText value="Immunoglobulin Isotype:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.immunoglobulinIsotype}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.immunoglobulinIsotype}" 
+					 rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.immunoglobulinIsotype}"/>
 					
-					<h:outputText value="Variant Detected:" />
-					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.detectedVariantValue}" />
+					<h:outputText value="Variant Detected:"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.detectedVariantValue}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.detectedVariantValue}"
+					  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.detectedVariantValue}" />
 					
-					<h:outputText value="Species Specificity:" />
-					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.speciesSpecificity}" />
+					<h:outputText value="Species Specificity:"   rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.speciesSpecificity}" />
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.speciesSpecificity}" 
+					 rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.speciesSpecificity}"/>
 
-					<h:outputText value="Curator Notes:" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes != ''}"/>
-					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes}" rendered="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes != ''}"/>
+					<h:outputText value="Curator Notes:" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes}"/>
+					<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.curatorNotes}"/>
 					
-					<h:outputText value="Detection System:" />
-					<h:panelGrid columns="1" border="0">
-						<h:panelGroup>
+					<h:outputText value="Detection System:"  rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.directLabel or 
+					not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.secondaryAntibody or 
+					not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.signalDetectionMethod or 
+					not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.detectionNotes}"/>
+					<h:panelGrid columns="1" border="0" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.directLabel or 
+					not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.secondaryAntibody or 
+					not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.signalDetectionMethod or 
+					not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.detectionNotes}">
+						<h:panelGroup rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.directLabel}">
 							<h:outputText styleClass="db_inner_inner_title"  value="Direct Label: " />
 							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.directLabel}"/>
 						</h:panelGroup>
-						<h:panelGroup>
+						<h:panelGroup rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.secondaryAntibody}">
 							<h:outputText styleClass="db_inner_inner_title"  value="Secondary Antibody: " />
 							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.secondaryAntibody}"/>
 						</h:panelGroup>
-						<h:panelGroup>
+						<h:panelGroup rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.signalDetectionMethod}">
 							<h:outputText styleClass="db_inner_inner_title"  value="Signal Detection Method: " />
 							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.signalDetectionMethod}"/>
 						</h:panelGroup>
-						<h:panelGroup>
+						<h:panelGroup rendered="#{not empty ishSubmissionBean.ishSubmissionModel.antibodyModel.detectionNotes}">
 							<h:outputText styleClass="db_inner_inner_title"  value="Detection Notes: " />
 							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.antibodyModel.detectionNotes}"/>
 						</h:panelGroup>
@@ -950,11 +962,11 @@ function findExpressionNotes(){
 
 				<h:outputText value="Genotype:" />
 				<h:outputText value="wild type" rendered="#{null == ishSubmissionBean.ishSubmissionModel.alleleModel}"/>
-			    <t:dataTable id="alleleContentTable" value="#{ishSubmissionBean.ishSubmissionModel.alleleModel}" var="allele"  style="margin-left:-5px;"  
+			    <t:dataTable id="alleleContentTable" value="#{ishSubmissionBean.ishSubmissionModel.alleleModel}" var="allele" 
 			                			 rendered="#{null != ishSubmissionBean.ishSubmissionModel.alleleModel}">
 				    <t:column>
-				       <h:panelGrid columns="3" columnClasses="db_bold, db_30_width, db_inner_detail_right">
-							<h:outputText value="#{allele.title}" styleClass="db_inner_inner_title"/>
+				       <h:panelGrid columns="3" columnClasses="db_inner_inner_title, db_30_width, db_inner_detail_right">
+							<h:outputText value="#{allele.title}" styleClass="db_bold"/>
 							<h:panelGroup></h:panelGroup>
 							<h:panelGroup></h:panelGroup>
 		
@@ -981,9 +993,9 @@ function findExpressionNotes(){
 							<h:panelGroup></h:panelGroup>
 							<h:outputText value="#{allele.type}"/>
 						
-							<h:outputText value="Mutation"/>
-							<h:panelGroup></h:panelGroup>
-							<h:outputText value="#{allele.mutation}"/>
+							<h:outputText value="Mutation" rendered="#{not empty allele.mutation}"/>
+							<h:panelGroup  rendered="#{not empty allele.mutation}"></h:panelGroup>
+							<h:outputText value="#{allele.mutation}"  rendered="#{not empty allele.mutation}"/>
 
 							<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 							<h:panelGroup rendered="#{not empty allele.alleleFirstChrom}" />
@@ -1056,7 +1068,7 @@ function findExpressionNotes(){
 							               bgcolor="white" cellpadding="5" value="#{link[1]}" var="accessionIDAndTypes">
 								<h:column>
 									<f:facet name="header">
-										<h:outputText value="Accession ID" styleClass="db_bold" />
+										<h:outputText value="Accession ID" styleClass="db_inner_detail_left" />
 									</f:facet>
 									<h:outputLink styleClass="plaintext" id="submissionID" value="viewSubmissionDetails.jsf">
 										<f:param name="accId" value="#{accessionIDAndTypes[0]}" />
@@ -1065,7 +1077,7 @@ function findExpressionNotes(){
 					 			</h:column>
 								<h:column>
 									<f:facet name="header">
-					   					<h:outputText value="Link Type(s)" styleClass="db_bold" />
+					   					<h:outputText value="Link Type(s)" styleClass="db_inner_detail_left" />
 									</f:facet>
 									<t:dataList id="linkTypes" styleClass="plaintext" rowIndexVar="index"
 					                		    var="linkType" value="#{accessionIDAndTypes[1]}" layout="simple" rowCountVar="count" >

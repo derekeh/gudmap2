@@ -198,9 +198,9 @@
 							<h:panelGroup></h:panelGroup>
 							<h:outputText value="#{allele.type}"/>
 							
-							<h:outputText value="Mutation"/>
-							<h:panelGroup></h:panelGroup>
-							<h:outputText value="#{allele.mutation}"/>
+							<h:outputText value="Mutation"  rendered="#{not empty allele.mutation}"/>
+							<h:panelGroup  rendered="#{not empty allele.mutation}"></h:panelGroup>
+							<h:outputText value="#{allele.mutation}" rendered="#{not empty allele.mutation}"/>
 					
 							<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 							<h:panelGroup rendered="#{not empty allele.alleleFirstChrom}" />
