@@ -86,7 +86,7 @@
 	   	
 	   		<h:commandButton id="il_filter_test" value="Test" rendered="#{paramBean.debug}" action="result"></h:commandButton>
 	   		
-	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{genericTablePageBean.resetAll()}">
+	   		<h:commandButton id="il_filter_reset" value="Reset" actionListener="#{genericTablePageBean.resetAll()}"  onclick="PF('dialog2').hide();">
 	   			<f:ajax execute="@this il_filter_reset" render=":filterform :dataform :pagingform :focusform :buttonform" ></f:ajax> 
 	   		</h:commandButton>
 	   	</h:panelGrid>	

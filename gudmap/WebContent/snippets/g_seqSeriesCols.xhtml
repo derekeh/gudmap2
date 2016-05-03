@@ -17,7 +17,9 @@
    		<h:commandButton id="il_columnSubmit" value="Submit"  disabled="#{not il_insitucheckbox.valid}">
    			<f:ajax execute="@form" render=":dataform :pagingform" ></f:ajax>
    		</h:commandButton>
-	    <h:commandButton value="Reset" type="reset" />
+	    <h:commandButton id="il_column_reset" value="Reset" actionListener="#{paramBean.resetSeqseriescols()}" onclick="PF('dialog1').hide();">
+	   			<f:ajax execute="@this il_column_reset" render="il_insitucheckbox :dataform :pagingform" ></f:ajax> 
+	   	</h:commandButton>
    	</h:panelGrid>
    	<h:message id="checkboxmessage" for="il_insitucheckbox" /> 
 	</pr:dialog> 

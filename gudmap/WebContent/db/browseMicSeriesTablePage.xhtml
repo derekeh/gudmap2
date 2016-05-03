@@ -85,7 +85,7 @@
                          <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
-				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}" target='_blank'>
 					<h:outputText value="#{u.geoSeriesID}"/>
 				</h:outputLink>
     		</h:column>
@@ -97,7 +97,7 @@
                          <f:ajax execute="@this platformlink" render="@form"></f:ajax>
                     </h:commandLink>
 				</f:facet>
-				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.platformID}">
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.platformID}"  target='_blank'>
 					<h:outputText value="#{u.platformID}"/>
 				</h:outputLink>
     				

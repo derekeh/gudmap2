@@ -188,19 +188,11 @@ public class ParamBean implements Serializable {
 		insitucols= new String[]{"gene","gudmapaccession","assaytype","age","embryostage","sex","genotype","tissue"};
 		tgcols= new String[]{"gene","gudmapaccession","assaytype","embryostage","age","sex","genotype","tissue"};
 		genestripcols= new String[]{"gene","expressionprofile","images","microarrayprofile","rnaseq","stagerange","omim"};
-		//micseriescols= new String[]{"title","geoid","source","numsamples","platform","components"};
 		micseriescols= new String[]{"title","numsamples","components"};
 		micsamplecols= new String[]{"gudmapaccession","sampledescription","age","stage","sex","genotype","components"};
-		//micsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
-		//		"genotype","components"};
-		//seqsamplecols= new String[]{"gudmapaccession","geosampleid","geoseriesid","source","stage","sampledescription",
-				//"genotype","components"};
 		seqsamplecols= new String[]{"gudmapaccession","sampledescription","age","stage","sex","genotype","components"};
-		seqseriescols= new String[]{"title","numsamples","components"};
-		//seqseriescols= new String[]{"title","geoid","source","numsamples","librarystrategy","components"};
-		
-		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};
-		
+		seqseriescols= new String[]{"title","numsamples","components"};		
+		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};		
 		collectioncols= new String[]{"name","description","owner","count","focusgroup","status","modified","download","share"};
 		
 		resultmap=new HashMap<String,Boolean>();
@@ -1047,8 +1039,8 @@ public class ParamBean implements Serializable {
 				genevalueclause+geneIdvalueclause+probenamevalueclause+col_statusvalueclause;
 		//+col_statusvalueclause
 		
-		if(!debug && !multiwhere)
-			resetFilter();
+		/*if(!debug && !multiwhere)
+			resetFilter();*/
 		return whereclause;
 	}
 	
@@ -1068,8 +1060,8 @@ public class ParamBean implements Serializable {
 		/*cachewhereclause=GenericQueries.WHERE_CLAUSE+cachesourcevalueclause+cachedatevalueclause+cacheassaytypevalueclause+cachetheilerstagevalueclause+cachecarnegiestagevalueclause+
 				cachesexvalueclause+cachespecimentypevalueclause+cachegenevalueclause+cachegeneIdvalueclause+cacheprobenamevalueclause;*/
 		
-		if(!debug && !multiwhere)
-			resetFilter();
+		/*if(!debug && !multiwhere)
+			resetFilter();*/
 		return cachewhereclause;
 	}
 	
@@ -1090,8 +1082,8 @@ public class ParamBean implements Serializable {
 				cachesexvalueclause+cachespecimentypevalueclause;
 		arraycachewhereclause=arraycachewhereclause.replace("QIC", "QMC");
 		
-		if(!debug && !multiwhere)
-			resetFilter();
+		/*if(!debug && !multiwhere)
+			resetFilter();*/
 		return arraycachewhereclause;
 	}
 	
@@ -1107,7 +1099,7 @@ public class ParamBean implements Serializable {
 		return micWhereclause;
 	}
 		 
-	/******************reset*******************/
+	/******************RESETS*******************/
 	
 	public void resetValues(){
 		//reset the parameterized values
@@ -1219,6 +1211,45 @@ public class ParamBean implements Serializable {
 		resetArraySeqValues();
 		resetArraySeqClauses();
 	}
+	
+	public void resetInsitucols() {
+		setInsitucols(new String[]{"gene","gudmapaccession","assaytype","age","embryostage","sex","genotype","tissue"});
+	}
+	
+	public void resetTgcols() {
+		setTgcols(new String[]{"gene","gudmapaccession","assaytype","embryostage","age","sex","genotype","tissue"});
+	}
+	
+	public void resetGenestripcols() {
+		setGenestripcols(new String[]{"gene","expressionprofile","images","microarrayprofile","rnaseq","stagerange","omim"});
+	}
+	
+	public void resetMicseriescols() {
+		setMicseriescols(new String[]{"title","numsamples","components"});
+	}
+	
+	public void resetMicsamplecols() {
+		setMicsamplecols(new String[]{"gudmapaccession","sampledescription","age","stage","sex","genotype","components"});
+	}
+	
+	public void resetSeqsamplecols() {
+		setSeqsamplecols(new String[]{"gudmapaccession","sampledescription","age","stage","sex","genotype","components"});
+	}
+	
+	public void resetSeqseriescols() {
+		setSeqseriescols(new String[]{"title","numsamples","components"});
+	}
+	
+	public void resetMicplatformcols() {
+		setMicplatformcols(new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"});
+	}
+	
+	public void resetCollectioncols() {
+		setCollectioncols(new String[]{"name","description","owner","count","focusgroup","status","modified","download","share"});
+	}
+	
+	
+
 
 	/*******************focus groups****************/
 	public void focusGroupAction(ActionEvent event){
@@ -1612,6 +1643,8 @@ public class ParamBean implements Serializable {
 	public String[] getMicseriescols(){
 		return micseriescols;
 	}
+	
+	
 	
 	
 	private static Map<String,Object> micseriescolmap;
