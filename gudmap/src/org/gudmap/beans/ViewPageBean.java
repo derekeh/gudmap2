@@ -54,6 +54,14 @@ public class ViewPageBean {
 		
 		return editPageList;
 	}
+	
+	public String getDocID () {
+		return docID;
+	}
+	
+	public void setDocID (String docID) {
+		this.docID = docID;
+	}
 
 
 }

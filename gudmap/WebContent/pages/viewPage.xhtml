@@ -25,6 +25,11 @@
 		}
 	</style>
 	<!-- can use relative links on html tags -->
+		<p>
+			<h:outputLink value="/gudmap/editor/ck_editor.jsf?pageid=#{viewPageBean.docID}"  rendered="#{not empty loginBean.username}">
+				<h:outputText value="Edit"></h:outputText>
+			</h:outputLink>
+		</p>
 	    <h1><h:outputText value="#{viewPageBean.editPageList.get(0).title}" escape="false"/></h1>
 	 
 	    <h:outputText value="#{viewPageBean.editPageList.get(0).content_1}" escape="false" />
