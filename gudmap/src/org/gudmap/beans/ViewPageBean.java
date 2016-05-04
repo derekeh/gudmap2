@@ -3,6 +3,7 @@ package org.gudmap.beans;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -40,17 +41,29 @@ public class ViewPageBean {
 		if (query.length() > 0){
 			EditPageModel model = editPageList.get(0);
 			String content = model.getContent_1();
-			String[] arr = query.split(" ");
-			int size = arr.length;
-			for (int i=0; i<size; i++){
-				String old = arr[i];
-				// add yellow highlight 
-				String update = "<span style='background-color: #FFFF00'>" + old + "</span>"; 
-				content = content.replace(old, update);					
+			ArrayList<ArrayList<String>> highlights = model.getHighlights();
+			for (ArrayList<String> highlight : highlights){
+				content = content.replace(highlight.get(0), highlight.get(1));	
 			}
 			model.setContent_1(content);
 			editPageList.set(0, model);
 		}
+
+//		if (query.length() > 0){
+//			EditPageModel model = editPageList.get(0);
+//			String content = model.getContent_1();
+//			String[] arr = query.split(" ");
+//			int size = arr.length;
+//			for (int i=0; i<size; i++){
+//				String old = arr[i];
+//				// add yellow highlight 
+//				String update = "<span style='background-color: #FFFF00'>" + old + "</span>"; 
+//				content = content.replaceAll(old, update);	
+//			}
+//			model.setContent_1(content);
+//			editPageList.set(0, model);
+//		}
+		
 		
 		return editPageList;
 	}

@@ -2147,7 +2147,8 @@ public class SolrUtil {
 	        parameters.addHighlightField("CONTENT");
 	        parameters.setHighlightSimplePre("<strong>");	 
 	        parameters.setHighlightSimplePost("</strong>");	 
-	        parameters.setHighlightFragsize(350);
+	        parameters.setHighlightFragsize(50);//(350);
+	        parameters.setHighlightSnippets(100);
 
 	        qr = web_server.query(parameters);
  //           sdl = qr.getResults();

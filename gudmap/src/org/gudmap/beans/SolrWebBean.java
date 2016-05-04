@@ -198,8 +198,26 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 		Map<String,Map<String,List<String>>> highlightMap = qr.getHighlighting();
 		Set<String> keys = highlightMap.keySet();
 		
+		
 
 		SolrDocumentList sdl = qr.getResults();
+		
+		Map<String,Map<String,List<String>>> hl = qr.getHighlighting();
+//		for (Map.Entry<String,Map<String,List<String>>> entry1 :hl.entrySet()){
+//			String hkey = entry1.getKey();
+//			Map<String,List<String>> hval = entry1.getValue();
+//			for(Map.Entry<String,List<String>> entry2 : hval.entrySet() ){
+//				String hkey2 = entry2.getKey();
+//				List<String> hval2 = entry2.getValue();
+//				for(String v2: hval2){
+//					int l = v2.length();
+//				}
+//					
+//			}
+//			
+//		}
+		
+		
 		
 		int rowNum = sdl.size();
 		
@@ -220,6 +238,31 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 	            	}            	
 	             }	    	
 	    	}
+	    	
+	    	ArrayList<ArrayList<String>> modellist = new ArrayList<ArrayList<String>>();
+			for (Map.Entry<String,Map<String,List<String>>> entry1 :hl.entrySet()){
+				if( id.contains(entry1.getKey())){	
+					Map<String,List<String>> hval = entry1.getValue();
+					for(Map.Entry<String,List<String>> entry2 : hval.entrySet() ){
+						String hkey2 = entry2.getKey();
+						List<String> hval2 = entry2.getValue();
+						for(String v2: hval2){
+							String orig = v2.replace("<strong>","");
+							orig = orig.replace("</strong>","");
+							String update = v2.replace("<strong>", "<span style='background-color: #FFFF00'>");
+							update = update.replace("</strong>", "</span>");
+							ArrayList<String> al = new ArrayList<String>();
+							al.add(orig);
+							al.add(update);
+							modellist.add(al);							
+						}
+							
+					}
+				}
+				
+			}
+			model.setHighlights(modellist);
+	    	
 			
 			
 			
