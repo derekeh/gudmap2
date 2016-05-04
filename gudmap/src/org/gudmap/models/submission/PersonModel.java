@@ -15,6 +15,7 @@ public class PersonModel {
 	    protected String id;
 	    protected String fullAddress = null;
 	    protected String displayAddress = null;
+	    protected String detailAddress = null;
 	    
 	    public void setName(String input) {
 	        name = input;
@@ -169,6 +170,24 @@ public class PersonModel {
 		}
 
 		return displayAddress;
-	    }	    
+	    }
+	    
+	    public String getDetailAddress () {
+			if (null == detailAddress) {
+				detailAddress = "";
+			     if (null != address && !address.equals(""))
+			    	 detailAddress  = detailAddress+address;
+			     if (null != address2 && !address2.equals(""))
+			    	 detailAddress  = detailAddress+", "+address2;
+			     if (null != city && !city.equals(""))
+			    	 detailAddress  = detailAddress+", "+city;
+			     if (null != postcode && !postcode.equals(""))
+			    	 detailAddress  = detailAddress+", "+postcode;
+			     if (null != country && !country.equals(""))
+			    	 detailAddress  = detailAddress+", "+country;
+			}
+
+			return detailAddress;
+		    }
 
 }

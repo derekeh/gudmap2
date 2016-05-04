@@ -31,7 +31,7 @@
 	        <h:inputSecret label="Last Name"
 	                     value="#{loginBean.password}"
 	                     required="true">
-	          <f:validateLength minimum="6" maximum="12"></f:validateLength>
+	          <f:validateLength minimum="6" maximum="15"></f:validateLength>
 	        </h:inputSecret>
 	        <h:panelGroup></h:panelGroup>
 	        <h:commandButton action="#{loginBean.login()}" value="Login"></h:commandButton>
