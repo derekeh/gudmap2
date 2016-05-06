@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.gudmap.assemblers.EditPageAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.EditPageModel;
 
@@ -261,10 +262,8 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 				}
 				
 			}
+			
 			model.setHighlights(modellist);
-	    	
-			
-			
 			
 			if (doc.containsKey("TITLE"))
 				model.setTitle(doc.getFieldValue("TITLE").toString());
@@ -277,37 +276,8 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 			}
 			if (doc.containsKey("URL"))
 				model.setUrl(doc.getFieldValue("URL").toString());
-/*
-			if (doc.containsKey("CONTENT")){
-				String text = doc.getFieldValue("CONTENT").toString();
+
 				
-				String[] arr = solrInput.split(" ");
-				int size = arr.length;
-				
-				String[] arr2 = text.split("\\.");
-				int size2 = arr2.length;
-				
-				String sentence = "";
-				
-				for (int j=0; j<size; j++){
-					String query = arr[j];
-					
-					for (int k=0; k<size2; k++){
-						String subtext = arr2[k];
-						boolean found = subtext.contains(query);
-						if (found){
-						// add yellow highlight 
-							String update = "<span style='font-weight:bold'>" + query + "</span>"; 
-							sentence += subtext.replace(query, update);
-							break;
-						}
-						
-					}
-				}
-				model.setContent_1(sentence);
-		
-			}
-*/				
 			list.add(model);			
 		}
 		

@@ -2143,12 +2143,11 @@ public class SolrUtil {
 	        	parameters.setSort(column, order);
       
 	        parameters.setHighlight(true);  
-//	        parameters.setParam("hl.fl", "CONTENT");	 
 	        parameters.addHighlightField("CONTENT");
 	        parameters.setHighlightSimplePre("<strong>");	 
 	        parameters.setHighlightSimplePost("</strong>");	 
-	        parameters.setHighlightFragsize(50);//(350);
-	        parameters.setHighlightSnippets(100);
+	        parameters.setHighlightFragsize(350);
+	        parameters.setHighlightSnippets(10);
 
 	        qr = web_server.query(parameters);
  //           sdl = qr.getResults();
