@@ -1,5 +1,8 @@
 package org.gudmap.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EditPageModel {
 	
 	public EditPageModel() {
@@ -20,6 +23,8 @@ public class EditPageModel {
 	private String modifiedDate;
 	private String username;
 	private String url;
+	private ArrayList<ArrayList<String>> highlights;
+	
 	
 	public void setOid(int oid) {
 		this.oid = oid;
@@ -139,6 +144,14 @@ public class EditPageModel {
 	
 	public String getUrl() {
 		return url;
+	}
+
+	public void setHighlights(ArrayList<ArrayList<String>> highlights) {
+		this.highlights = highlights;
+	}
+	
+	public ArrayList<ArrayList<String>>  getHighlights() {
+		return highlights;
 	}
 	
 }

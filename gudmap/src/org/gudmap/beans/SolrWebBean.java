@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.gudmap.assemblers.EditPageAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.EditPageModel;
 
@@ -198,8 +199,26 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 		Map<String,Map<String,List<String>>> highlightMap = qr.getHighlighting();
 		Set<String> keys = highlightMap.keySet();
 		
+		
 
 		SolrDocumentList sdl = qr.getResults();
+		
+		Map<String,Map<String,List<String>>> hl = qr.getHighlighting();
+//		for (Map.Entry<String,Map<String,List<String>>> entry1 :hl.entrySet()){
+//			String hkey = entry1.getKey();
+//			Map<String,List<String>> hval = entry1.getValue();
+//			for(Map.Entry<String,List<String>> entry2 : hval.entrySet() ){
+//				String hkey2 = entry2.getKey();
+//				List<String> hval2 = entry2.getValue();
+//				for(String v2: hval2){
+//					int l = v2.length();
+//				}
+//					
+//			}
+//			
+//		}
+		
+		
 		
 		int rowNum = sdl.size();
 		
@@ -220,8 +239,31 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 	            	}            	
 	             }	    	
 	    	}
+	    	
+	    	ArrayList<ArrayList<String>> modellist = new ArrayList<ArrayList<String>>();
+			for (Map.Entry<String,Map<String,List<String>>> entry1 :hl.entrySet()){
+				if( id.contains(entry1.getKey())){	
+					Map<String,List<String>> hval = entry1.getValue();
+					for(Map.Entry<String,List<String>> entry2 : hval.entrySet() ){
+						String hkey2 = entry2.getKey();
+						List<String> hval2 = entry2.getValue();
+						for(String v2: hval2){
+							String orig = v2.replace("<strong>","");
+							orig = orig.replace("</strong>","");
+							String update = v2.replace("<strong>", "<span style='background-color: #FFFF00'>");
+							update = update.replace("</strong>", "</span>");
+							ArrayList<String> al = new ArrayList<String>();
+							al.add(orig);
+							al.add(update);
+							modellist.add(al);							
+						}
+							
+					}
+				}
+				
+			}
 			
-			
+			model.setHighlights(modellist);
 			
 			if (doc.containsKey("TITLE"))
 				model.setTitle(doc.getFieldValue("TITLE").toString());
@@ -234,37 +276,8 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 			}
 			if (doc.containsKey("URL"))
 				model.setUrl(doc.getFieldValue("URL").toString());
-/*
-			if (doc.containsKey("CONTENT")){
-				String text = doc.getFieldValue("CONTENT").toString();
+
 				
-				String[] arr = solrInput.split(" ");
-				int size = arr.length;
-				
-				String[] arr2 = text.split("\\.");
-				int size2 = arr2.length;
-				
-				String sentence = "";
-				
-				for (int j=0; j<size; j++){
-					String query = arr[j];
-					
-					for (int k=0; k<size2; k++){
-						String subtext = arr2[k];
-						boolean found = subtext.contains(query);
-						if (found){
-						// add yellow highlight 
-							String update = "<span style='font-weight:bold'>" + query + "</span>"; 
-							sentence += subtext.replace(query, update);
-							break;
-						}
-						
-					}
-				}
-				model.setContent_1(sentence);
-		
-			}
-*/				
 			list.add(model);			
 		}
 		
