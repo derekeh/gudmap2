@@ -145,4 +145,15 @@ public class LoginBean implements Serializable{
 			nav.performNavigation("/db/access-denied.jsf");
 		}
 	}
+	
+	public void isWebEditor(ComponentSystemEvent event){
+		FacesContext fc = FacesContext.getCurrentInstance();
+		if(priv_level<900 && !role.equals("WEB_EDITOR")) {
+			ConfigurableNavigationHandler nav 
+			   = (ConfigurableNavigationHandler) 
+				fc.getApplication().getNavigationHandler();
+	 
+			nav.performNavigation("/db/access-denied.jsf");
+		}
+	}
 }

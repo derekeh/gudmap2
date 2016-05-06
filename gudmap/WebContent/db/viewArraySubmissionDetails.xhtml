@@ -30,7 +30,7 @@
 	    		<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.accID}" />
 	    		
 	    		<h:outputText value="Stage " />
-	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.arraySubmissionModel.stage}definition.html">
+	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.arraySubmissionModel.stage}definition.html" target="_blank">
 					<h:outputText value="Theiler Stage #{arraySeqSubmissionBean.arraySubmissionModel.stage}" />
 				</h:outputLink>
 				
@@ -106,7 +106,7 @@
 	    		<h:outputText value="Submitters"></h:outputText>
 	    		<h:panelGroup>
 	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
-	    			    <h:outputText value="Principal Investigator(s) : "/>
+	    			    <h:outputText value="Principal Investigator(s): "/>
 	    				<t:dataList id="piDataList" var="piInfo" value="#{arraySeqSubmissionBean.arraySubmissionModel.principalInvestigators}" >
 							<h:commandLink id="lastbutton2" value="#{piInfo.name}, "  onclick="PF('lab_dialog').show();">
 	                            	<f:setPropertyActionListener id="piproperty" target="#{personBean.id}" value="#{piInfo.id}" />     	
@@ -217,7 +217,9 @@
 				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.devAge}" />
 				
 				<h:outputText value="Stage:" />
-				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.stage}" />
+				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.arraySubmissionModel.stage}definition.html" target="_blank">
+					<h:outputText value="TS #{arraySeqSubmissionBean.arraySubmissionModel.stage}" />
+				</h:outputLink>
 	
 				<h:outputText value="Staging Notes:" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}"/>
 				<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}" rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.sampleModel.developmentalLandmarks}"/>

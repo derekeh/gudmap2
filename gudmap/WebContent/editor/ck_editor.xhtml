@@ -20,7 +20,7 @@
 	<ui:define name="content">
 	
 	<!-- can use relative links on html tags -->
-		<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
+		<f:event listener="#{loginBean.isWebEditor}" type="preRenderView" />
 		    <!-- all other content in here --> 
 		<h1>Edit page </h1> 
 			#{editPageBean.dummy()}
