@@ -111,7 +111,7 @@
 			  	<f:validator validatorId="ImageUploadValidator" />
 			  </h:inputFile>
 			  <h:commandButton value="Upload"
-			      action="#{inputBean.uploadImage(paramBean.imageDir)}">
+			      action="#{inputBean.uploadImage(1,paramBean.imageDir)}">
 			      <f:ajax execute="uploadfile" render="uploadform :il_filelist:il_imagelist"/>
 			  </h:commandButton>
 		  </h:panelGrid>

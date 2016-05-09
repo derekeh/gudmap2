@@ -35,6 +35,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>geneoptionlist;
 	private Map<String,String>annotationtypelist;
 	private Map<String,String>imagedirlist;
+	private Map<String,String>webfiledirlist;
 	private Map<String,String>pageIdlist;
 	private Map<String,String>pageCategorylist;
 	private Map<String,String>collectionTypeList;
@@ -239,6 +240,15 @@ public class ParamBeanAssembler {
 		imagedirlist.put("tissue","tissue");
 		
 		return imagedirlist;
+	}
+	
+	public Map<String,String> getWebfiledirlist() {
+		webfiledirlist = new LinkedHashMap<String,String>();
+		webfiledirlist.put("general","general");
+		webfiledirlist.put("mouse_strains","mouse_strains");
+		webfiledirlist.put("protocols","protocols");
+		
+		return webfiledirlist;
 	}
 	
 	public Map<String,String> getPageIdlist() {
