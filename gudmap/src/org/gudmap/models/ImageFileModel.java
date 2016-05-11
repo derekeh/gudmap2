@@ -20,7 +20,6 @@ public class ImageFileModel {
 	//private String baseUrl="http://glenelgin.hgu.mrc.ac.uk/Appfiles/";
 	private String imageDir="images/";
 	private String webfileDir="docs/";
-	private int mb=1048576;
 	
 	public void setPath(String path) {
 		this.path=path;
@@ -64,14 +63,6 @@ public class ImageFileModel {
 		return length;
 	}
 	
-	/*public String getLength() {
-		int mblength = Integer.parseInt(length)/1048576;
-		length = String.valueOf(mblength);
-		if(mblength<1)
-			return length+"K";
-		else
-			return length+"MB";
-	}*/
 	
 	public void setSize(String size){
 		this.size = size;

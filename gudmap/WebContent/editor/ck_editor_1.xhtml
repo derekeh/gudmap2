@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -7,15 +7,20 @@
 	xmlns:ck="http://code.google.com/ck-jsf-editor">
 	
 	
-<h:head>
-	<title>GUDMAP EDITOR | Page List</title>
-	<h:outputStylesheet library="css" name="gudmap.css"></h:outputStylesheet>
-</h:head>
 
-<h:body>
-	    
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP EDITOR | Page List
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	 <ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define> 
+	
+	<ui:define name="content">
+	
 	<!-- can use relative links on html tags -->
-		<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
+		<f:event listener="#{loginBean.isWebEditor}" type="preRenderView" />
 		    <!-- all other content in here --> 
 		<h1>Edit page </h1> 
 			#{editPageBean.dummy()}
@@ -43,7 +48,7 @@
 							 <h:message for="theHeader" /> 
 						</h:panelGroup> 
 					 </h:panelGrid>    
-			    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea"/>
+			    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" cssContents="/gudmap/resources/css/gudmap.css"/>
 			    	
 					<h:commandButton value="Save" action="#{editPageBean.updatePage}">
 						<f:param name="pageId" value="#{paramBean.pageId}"></f:param>
@@ -66,7 +71,7 @@
 			   	</h:selectOneMenu>   	
 			</h:panelGrid>
 		
-			<h:dataTable id="il_imagelist" value="#{fileManagementBean.getImageList(paramBean.imageDir)}" var="u" headerClass="gd_datatable_header" >
+			<h:dataTable id="il_imagelist" value="#{fileManagementBean.getImageList(paramBean.imageDir)}" var="u" headerClass="gd_datatable_header" class="gd_image_list">
 		    		
 		 			<h:column >
 		    			<f:facet name="header">
@@ -118,8 +123,17 @@
 		  <p><h:messages id="messages"/></p>
 		</h:form>
 		
+		<script>
+		$(document).ready(function() {
+		    $('#form\\:theEditor').find('iframe').contents().find('body').css({
+		        'font-size': '10px',
+		        'color' : 'red'
+		    });
+		});
+		</script>
 
-	</h:body>
+	</ui:define>
+  </ui:composition>
 </html>
 
 
