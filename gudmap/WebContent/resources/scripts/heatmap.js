@@ -58,6 +58,16 @@ function update_heatmap(heatmapId, cellSize) {
 
 }
 
+function getHeatmapColor2(value,maxvalue){
+	
+	value = Math.round(value);
+	maxvalue = Math.round(maxvalue);
+	var num = Math.log(value+1)/Math.log(10);
+	var denom = Math.log(maxvalue+1)/Math.log(10);
+	var result = num/denom;
+	return getHeatmapColor(result);
+}
+
 function heatmap_display(url, tableHeaders, heatmapId, paletteName, cell_size) {
 
 
@@ -206,7 +216,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName, cell_size) {
 
     	// display samples
 		var colLabelspacer = geneLabelLength + 10;
-			var colLabels = svg.append("g")
+		var colLabels = svg.append("g")
 			.selectAll(".colLabelg")
 			.data(samples)
 			.enter()
@@ -220,8 +230,8 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName, cell_size) {
 			.on("mouseover", function(d,i) {
 				d3.select(this).classed("text-hover",true);
 				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
-		        tooltip.style("left", (d3.event.pageX-100) + "px")
-		        tooltip.style("top", (d3.event.pageY-50) + "px")
+		        tooltip.style("left", (d3.event.pageX-100) + "px");
+		        tooltip.style("top", (d3.event.pageY-50) + "px");
 				tooltip.style("visibility", "visible");				
 			})
 			.on("mouseout" , function(d) {
@@ -502,7 +512,7 @@ function heatmap_display(url, tableHeaders, heatmapId, paletteName, cell_size) {
 						y       : p[1],
 						width   : 1,
 						height  : 1
-	              })
+	              });
 	     	})
 	     	.on("mousemove", function() {
 	     		var s = sa.select("rect.selection");
@@ -672,7 +682,7 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
 		   tooltip.style("left", (d3.event.pageX-50) + "px");
 		   tooltip.style("top", (d3.event.pageY-50) + "px");
 		   if (labels[j] == "")
-			   tooltip.style("visibility", "hidden")
+			   tooltip.style("visibility", "hidden");
 		   else
 			   tooltip.style("visibility", "visible");
 		})
@@ -788,4 +798,397 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
 	     
 	     
     }); 
+    
+    
 }
+
+function seq_heatmap_display(url, heatmapId, paletteName, cell_size) {
+    var cellSize = cell_size; //5; //10; //20;//14;
+//  var svg;
+    var tooltip = d3.select(heatmapId)
+    .append("div")
+    .style("position", "absolute")
+    .style("visibility", "hidden");
+
+    //==================================================
+    d3.json(url, function(error, data) {
+
+        var arr = data.data;
+        var maxvalues = data.maxvalues;
+
+        
+        var ids = data.ids
+        var genes = data.genes;
+        var samples = data.samples;
+        var row_number = arr.length;
+        var col_number = arr[0].length;
+        
+        
+        var hcrow = [];
+        for (var i=1; i<ids.length+1; i++)
+        	hcrow.push(1*i);
+
+        var hccol = [];
+        for (i=1; i<samples.length; i++)
+        	hccol.push(1*i);
+      
+
+	   	var margin = { top: 60, right: 10, bottom: 50, left: 10 };
+	   	var width = cellSize*col_number*2;
+	   	var height = cellSize*row_number;
+       
+	   	
+	   	
+	   	var svg = d3.select(heatmapId).append("svg")
+	   		.attr("width", width)
+	   		.attr("height", height + margin.bottom + margin.top)
+	   		.append("g")
+	   		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var rowSortOrder = false;
+        var colSortOrder = false;
+
+    	// display ids       
+//        var rowLabels = svg.append("g")
+//        .selectAll(".rowLabelg")
+//        .data(ids)
+//        .enter().append("text")
+//        .text(function(d) { return d.count > 1 ? d.join("/") : d; })
+//        .attr("x", 0)
+//        .attr("y", function(d, i) {return (i * cellSize); })
+//        .style("text-anchor", "end")
+//        .attr("transform", function(d, i) { return "translate(0," + cellSize / 1.5 + ")"; })
+//		.attr("class", function (d,i) { return "rowLabel mono r"+i;} ) 
+//		.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
+//		.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
+//        .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;})
+//        ;
+        
+        
+        
+     	// some precalculation to get text length of genes for layout
+        var geneLabelLength = 0;
+        var geneLabels0 = svg.append("g")
+	    	.selectAll(".geneLabelg")
+	    	.data(genes)
+	    	.enter()
+	    	.append("text")
+	    	.text(function (d) { return d; })
+	    	.attr("x", 0)
+	    	.attr("y", function (d, i) { return (i * cellSize); })
+	    	.style("text-anchor", "end")
+	    	.style("visibility", "hidden")
+	    	.attr("transform", "translate(50," + cellSize / 1.5 + ")")
+	    	.attr("width", function(d){ 
+	    		 var len = this.parentNode.getBBox().width;
+	    		 if (len > geneLabelLength) geneLabelLength = len;
+	    		 });
+    	
+    	geneLabelLength = 	geneLabelLength+10;
+    	
+    	// display genes
+    	var geneLabels = svg.append("g")
+	    	.selectAll(".geneLabelg")
+	    	.data(genes)
+	    	.enter()
+	    	.append("text")
+	    	.text(function (d) { return d; })
+	    	.attr("x", 0)
+	    	.attr("y", function (d, i) { return (i * cellSize); })
+	    	.style("text-anchor", "end")
+	    	.attr("transform", "translate(" + geneLabelLength + "," + cellSize / 1.5 + ")")
+	    	.attr("class", function (d,i) { return "geneLabel mono r"+i;} ) 
+	    	.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
+	    	.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
+            .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;});
+	   	
+	   	
+    	// display samples
+		var colLabelspacer = geneLabelLength + 10;
+		var colLabels = svg.append("g")
+			.selectAll(".colLabelg")
+			.data(samples)
+			.enter()
+			.append("text")
+			.text(function(d) { return d; })
+			.attr("x", 0)
+			.attr("y", function (d, i) { return (i * cellSize); })
+			.style("text-anchor", "left")
+			.attr("transform", "translate("+ colLabelspacer +",0) translate("+ cellSize/2 + ",-6) rotate (-90)")
+			.attr("class",  function (d,i) { return "colLabel mono c"+i;} )
+			.on("mouseover", function(d,i) {
+				d3.select(this).classed("text-hover",true);
+				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
+		        tooltip.style("left", (d3.event.pageX-100) + "px");
+		        tooltip.style("top", (d3.event.pageY-50) + "px");
+				tooltip.style("visibility", "visible");				
+			})
+			.on("mouseout" , function(d) {
+				d3.select(this).classed("text-hover",false);
+				tooltip.style("visibility", "hidden");	
+			})
+			.on("click", function(d,i) {
+				colSortOrder=!colSortOrder;  
+				sortbylabel("c",i,colSortOrder);
+				d3.select("#order").property("selectedIndex", 4).node().focus();
+			});		     
+
+		// display data	
+		var row = svg.selectAll(".row")
+			.data(arr)
+			.enter().append("g")
+			.attr("class", "row")
+			.attr("id", function(d) {
+			    return d.idx;
+			});
+
+		
+	 	var rectLabelspacer = geneLabelLength + 6;
+		var j = 0;
+		var heatMap = row.selectAll(".cell")
+			.data(function(d) {
+			    j++;
+			    return d;
+			})
+			.enter().append("svg:rect")
+			.attr("x", function(d, i) {
+			    return (i * cellSize + rectLabelspacer);
+			})
+			.attr("y", function(d, i, j) {
+			    return j * cellSize;
+			})
+			.attr("class", function(d, i, j) {
+			    return "cell bordered cr" + j + " cc" + i;
+			})
+			.attr("row", function(d, i, j) {
+			    return j;
+			})
+			.attr("col", function(d, i, j) {
+			    return i;
+			})
+			.attr("width", cellSize)
+			.attr("height", cellSize)
+//			.style("fill", function(d) { return getHeatmapColor(d.adjvalue); })
+			.style("fill", function(d,i) {return  getHeatmapColor2(d,maxvalues[i]); })
+//			.append("text")
+//			.text(function(d) { return d; })
+			.on('mouseover', function(d, i, j) {
+		        d3.select(this).classed("cell-hover",true);
+		        d3.selectAll(".geneLabel").classed("text-highlight",function(r,ri){ return ri==j;});
+		        d3.selectAll(".rowLabel").classed("text-highlight",function(r,ri){ return ri==j;});
+		        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
+				tooltip.html('<div class="mytooltip">gene:' + genes[j] + '<br\/> sample:' + samples[i] + '<br\/> value:' + arr[j][i] + '</div>');
+		        tooltip.style("left", (d3.event.pageX-160) + "px");
+		        tooltip.style("top", (d3.event.pageY-100) + "px");
+				tooltip.style("visibility", "visible");
+			})
+			.on('mouseout', function(d, i, j) {
+		        d3.select(this).classed("cell-hover",false);
+		        d3.selectAll(".geneLabel").classed("text-highlight",false);
+		        d3.selectAll(".rowLabel").classed("text-highlight",false);
+		        d3.selectAll(".colLabel").classed("text-highlight",false);
+				tooltip.style("visibility", "hidden");
+			}); 
+
+		
+	    //==================================================
+	    d3.select("#palette")
+	        .on("keyup", function() {
+				var newPalette = d3.select("#palette").property("value");
+				if (newPalette != null)						
+	            	changePalette(newPalette, heatmapid);
+	        })
+	        .on("change", function() {
+	        	var newPalette = d3.select("#palette").property("value");
+	            changePalette(newPalette, "#chart");
+//	            setLegend();
+	        });			    
+		
+	    //==================================================
+	    // Change ordering of cells
+	    function sortbylabel(rORc,i,sortOrder){
+			var t = svg.transition().duration(3000);
+			var log2r=[];
+			var sorted; // sorted is zero-based index
+			d3.selectAll(".c"+rORc+i) 
+				.filter(function(d){
+	               log2r.push(d);
+//	               log2r.push(ce.adjvalue);
+	             });
+			if(rORc=="r"){ // sort log2ratio of a gene
+				sorted=d3.range(col_number).sort(function(a,b){ if(sortOrder){ return log2r[b]-log2r[a];}else{ return log2r[a]-log2r[b];}});
+	            t.selectAll(".cell")
+	             .attr("x", function(d) { 
+	            		var col = parseInt(d3.select(this).attr("col"));
+	            		return sorted.indexOf(col) * cellSize + rectLabelspacer; 
+	             });
+	            t.selectAll(".colLabel")
+	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; });
+			} else { // sort log2ratio of a contrast
+	            sorted=d3.range(row_number).sort(function(a,b){
+	            	if(sortOrder){ return log2r[b]-log2r[a];}
+	            	else{ return log2r[a]-log2r[b];}
+	            });
+	            
+	            t.selectAll(".cell")
+	             .attr("y", function(d) { 
+	                  var col = parseInt(d3.select(this).attr("row"));
+	            	  return sorted.indexOf(col) * cellSize; 
+	             });
+	            t.selectAll(".rowLabel")
+	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; });
+	            t.selectAll(".geneLabel")
+	             .attr("y", function (d, i) { return sorted.indexOf(i) * cellSize; });
+	          }
+	     }
+
+	     d3.select("#order").on("change",function(){
+	    	 order(this.value);
+	     });
+	     
+	     function order(value){
+	    	 if(value=="hclust"){
+	    		 var t = svg.transition().duration(3000);
+	    		 t.selectAll(".cell")
+		          .attr("x", function(d) { return hccol.indexOf(d.col) * cellSize + rectLabelspacer; })
+		          .attr("y", function(d) { return hcrow.indexOf(d.row) * cellSize; });
+
+	    		 t.selectAll(".rowLabel")
+		          .attr("y", function (d, i) { return hcrow.indexOf(i+1) * cellSize; });
+
+	    		 t.selectAll(".colLabel")
+		          .attr("y", function (d, i) { return hccol.indexOf(i+1) * cellSize; });
+
+	    	 } else if (value=="probecontrast"){
+	    		 var t = svg.transition().duration(3000);
+	    		 t.selectAll(".cell")
+		          .attr("x", function(d) { return (d.col - 1) * cellSize + rectLabelspacer; })
+		          .attr("y", function(d) { return (d.row - 1) * cellSize; });
+
+	    		 t.selectAll(".rowLabel")
+		          .attr("y", function (d, i) { return i * cellSize; });
+
+	    		 t.selectAll(".colLabel")
+		          .attr("y", function (d, i) { return i * cellSize; });
+
+	    	 } else if (value=="probe"){
+	    		 var t = svg.transition().duration(3000);
+	    		 t.selectAll(".cell")
+		          .attr("y", function(d) { return (d.row - 1) * cellSize; });
+
+	    		 t.selectAll(".rowLabel")
+		          .attr("y", function (d, i) { return i * cellSize; });
+	    	 } else if (value=="contrast"){
+	    		 var t = svg.transition().duration(3000);
+	    		 t.selectAll(".cell")
+		          .attr("x", function(d) { return (d.col - 1) * cellSize + rectLabelspacer; });
+	    		 
+	    		 t.selectAll(".colLabel")
+		          .attr("y", function (d, i) { return i * cellSize; });
+    	 	}
+	     }
+	     
+
+	     var sa=d3.select(".g3")
+	     	.on("mousedown", function() {
+	     		if( !d3.event.altKey) {
+	                d3.selectAll(".cell-selected").classed("cell-selected",false);
+	                d3.selectAll(".rowLabel").classed("text-selected",false);
+	                d3.selectAll(".colLabel").classed("text-selected",false);
+	     		}
+	            var p = d3.mouse(this);
+	            sa.append("rect")
+	              .attr({
+						rx      : 0,
+						ry      : 0,
+						class   : "selection",
+						x       : p[0],
+						y       : p[1],
+						width   : 1,
+						height  : 1
+	              });
+	     	})
+	     	.on("mousemove", function() {
+	     		var s = sa.select("rect.selection");
+         
+            if(!s.empty()) {
+                var p = d3.mouse(this),
+                    d = {
+                        x       : parseInt(s.attr("x"), 10),
+                        y       : parseInt(s.attr("y"), 10),
+                        width   : parseInt(s.attr("width"), 10),
+                        height  : parseInt(s.attr("height"), 10)
+                    },
+                    move = {
+                        x : p[0] - d.x,
+                        y : p[1] - d.y
+                    };
+         
+                if(move.x < 1 || (move.x*2<d.width)) {
+                    d.x = p[0];
+                    d.width -= move.x;
+                } else {
+                    d.width = move.x;       
+                }
+         
+                if(move.y < 1 || (move.y*2<d.height)) {
+                    d.y = p[1];
+                    d.height -= move.y;
+                } else {
+                    d.height = move.y;       
+                }
+                s.attr(d);
+         
+                    // deselect all temporary selected state objects
+                d3.selectAll('.cell-selection.cell-selected').classed("cell-selected", false);
+                d3.selectAll(".text-selection.text-selected").classed("text-selected",false);
+
+                d3.selectAll('.cell').filter(function(cell_d, i) {
+                    if(
+                        !d3.select(this).classed("cell-selected") && 
+                            // inner circle inside selection frame
+                        (this.x.baseVal.value)+cellSize >= d.x && (this.x.baseVal.value)<=d.x+d.width && 
+                        (this.y.baseVal.value)+cellSize >= d.y && (this.y.baseVal.value)<=d.y+d.height
+                    ) {
+         
+                        d3.select(this)
+                        .classed("cell-selection", true)
+                        .classed("cell-selected", true);
+
+                        d3.select(".r"+(cell_d.row-1))
+                        .classed("text-selection",true)
+                        .classed("text-selected",true);
+
+                        d3.select(".c"+(cell_d.col-1))
+                        .classed("text-selection",true)
+                        .classed("text-selected",true);
+                    }
+                });
+        	}
+         })
+         .on("mouseup", function() {
+               // remove selection frame
+        	 sa.selectAll("rect.selection").remove();
+         
+                // remove temporary selection marker class
+        	 d3.selectAll('.cell-selection').classed("cell-selection", false);
+        	 d3.selectAll(".text-selection").classed("text-selection",false);
+         })
+         .on("mouseout", function() {
+        	 if(d3.event.relatedTarget.tagName=='html') {
+                    // remove selection frame
+        		 sa.selectAll("rect.selection").remove();
+                    // remove temporary selection marker class
+        		 d3.selectAll('.cell-selection').classed("cell-selection", false);
+        		 d3.selectAll(".rowLabel").classed("text-selected",false);
+        		 d3.selectAll(".colLabel").classed("text-selected",false);
+        	 }
+         });	     
+		
+		
+		
+  });
+}
+
+
+

@@ -12,11 +12,17 @@ import org.gudmap.models.MasterTableInfo;
 import org.gudmap.impl.PagerImpl;
 import org.json.simple.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -51,6 +57,8 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 
     private ArrayList<String> probeIds; 
     private ArrayDao arrayDAO;
+    
+    private String csvFile;
     
     @Inject
    	protected SessionBean sessionBean;    
@@ -545,5 +553,113 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 				
 		return urls;
 	}
+
+	// ********************   deal with rna heatmap  
 	
- }
+	public void initRnaSeqFile(){
+		
+		ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+		String path = ctx.getRealPath("/");
+		path += "/resources/genestrips/rnaseq_test.csv";
+		
+		JSONObject obj = new JSONObject();
+		BufferedReader br = null;
+		List<String[]> geneList = null;
+		String[] header = null;
+		try {
+			br = new BufferedReader(new FileReader(path));
+			
+			String line;
+			geneList = new ArrayList<String[]>();
+			header = br.readLine().split(",");
+			LinkedList<String> newheader = new LinkedList<String>();
+			for(int i = 2; i < header.length-1; i++){
+				String s = header[i].replace("cufflink_", "");
+				s = s.replace("_genes.fpkm_tracking.collapse", "");
+				s = s.replace(".genes.fpkm_tracking.collapse", "");				
+				newheader.add(s);
+			}			
+			obj.put("samples", newheader);
+			
+			
+			LinkedList<String> maxvalues = new LinkedList<String>();
+			String[] max = br.readLine().split(",");
+			for(int i = 2; i < max.length-1; i++){
+				maxvalues.add(max[i]);
+			}
+			obj.put("maxvalues", maxvalues);
+			
+			while ((line = br.readLine()) != null){
+				String[] data = line.split(",");
+				geneList.add(data);			
+			}
+			
+			
+			Collections.sort(geneList, new Comparator<String[]> () {
+			    @Override
+			    public int compare(String[] a, String[] b) {
+			    	Float f1 = Float.parseFloat(a[2]);
+			    	Float f2 = Float.parseFloat(b[2]);
+			        return f2.compareTo(f1);
+			    }
+			});
+	
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+//		geneList = geneList.subList(0, 30);
+		geneList = geneList.subList(0, 500);
+		
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> ids = new LinkedList<String>();
+		LinkedList<String> genes = new LinkedList<String>();
+		for (String[] line:geneList){
+			int len = line.length;
+			ids.add(line[0]);
+			genes.add(line[1]);
+			LinkedList<String> d = new LinkedList<String>();
+			for (int i = 2; i < len-1; i++)
+				d.add(line[i]);
+			data.add(d);
+		}
+		
+		
+		
+		obj.put("ids", ids);
+		obj.put("genes", genes);
+		obj.put("data", data);
+		
+		
+		FileWriter writer;
+		try {
+			
+			path = ctx.getRealPath("/");
+			path += "/resources/genestrips/rnaseq_top.json";
+		
+			
+			writer = new FileWriter(path);
+
+			writer.write(obj.toJSONString());
+			writer.flush();
+			writer.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
+}

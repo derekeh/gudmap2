@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<!-- Styles for the HEATMAP -->
+
+
+<h:body>
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+		RnaSeq Expression Profile 
+	</ui:define>
+	
+
+	
+	<ui:define name="content">
+
+	#{microarrayHeatmapBean.initRnaSeqFile()}
+
+		
+	<h:form id="rnaseqHeatmapForm">	
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>		
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
+		<h:outputScript library="scripts" name="heatmap.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="heatmap.css" /> 
+		<h:outputStylesheet library="css" name="tabbedPane.css" /> 
+		<h:outputScript library="scripts" name="jquery-ui.js"></h:outputScript>
+		
+		
+<h:panelGrid columns="5">
+	<h:panelGroup>
+	    <h:outputText  value="Rna Seq Expression Profile for:"></h:outputText>   
+	</h:panelGroup>	 
+
+		
+	<h:panelGroup>
+		Palette:
+		<select id="palette">
+		  <option value="Default" selected="selected">Default</option>
+		  <option value="RdYlGn">RdYlGn</option>
+		  <option value="Spectral">Spectral</option>
+		  <option value="RdYlBu">RdYlBu</option>
+		  <option value="RdGy">RdGy</option>
+		  <option value="RdBu">RdBu</option>
+		  <option value="PiYG">PiYG</option>
+		  <option value="PRGn">PRGn</option>
+		  <option value="BrBG">BrBG</option>
+		  <option value="PuOr">PuOr</option>
+		</select>
+	</h:panelGroup>	
+
+<ui:remove>
+	<h:panelGrid columns="2">
+   		<h:outputLabel>Heatmap Scale:</h:outputLabel>
+   		<h:inputText id="amount" width="10px"/>	
+   	</h:panelGrid>
+</ui:remove>	 
+
+  	
+	<div style="width:200px;">
+		<label>Heatmap Scale</label>
+		<div id="slider" ></div>
+	</div>
+
+	
+
+	
+ 		
+</h:panelGrid> 	
+	
+<table id="split">
+<thead></thead>
+<tbody></tbody>
+</table>
+		<h:panelGroup>
+			<div id="chart" style='overflow:auto;' ></div>
+		</h:panelGroup>
+		
+	
+	
+
+<script type="text/javascript">
+//<![CDATA[
+
+   $(document).ready(function() {
+	   
+
+	    var url = "../resources/genestrips/rnaseq_top.json";
+
+		var viewWidth = $(document).width();					
+		var viewHeight = $(document).height();	
+		
+		var cell_size = 15;
+		
+		seq_heatmap_display(url, "#chart", "Default", cell_size);
+
+		var sliderOpts = {
+//				   range: "min",
+				   value: 15,
+				   min: 5,
+				   max: 25,
+				   animate: true,
+				   change: function( event, ui ) {
+//				   		$( "#amount" ).val( ui.value );
+				   		update_heatmap("#chart", ui.value);
+				   		seq_heatmap_display(url, "#chart", "Default",ui.value);
+
+				   }
+				
+				
+		};
+	   $( "#slider" ).slider(sliderOpts);
+  
+ }); 
+   
+   
+
+//]]>
+ </script>		
+
+
+	</h:form>  
+
+
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>
