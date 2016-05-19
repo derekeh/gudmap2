@@ -22,8 +22,7 @@
 
 	
 	<ui:define name="content">
-
-	#{microarrayHeatmapBean.initRnaSeqFile()}
+	#{rnaSeqHeatmapBean.loadDataList()}
 
 		
 	<h:form id="rnaseqHeatmapForm">	
@@ -34,14 +33,22 @@
 		<h:outputStylesheet library="css" name="heatmap.css" /> 
 		<h:outputStylesheet library="css" name="tabbedPane.css" /> 
 		<h:outputScript library="scripts" name="jquery-ui.js"></h:outputScript>
-		
+		<h:outputScript library="scripts" name="d3-context-menu.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="d3-context-menu.css" /> 
 		
 <h:panelGrid columns="5">
 	<h:panelGroup>
 	    <h:outputText  value="Rna Seq Expression Profile for:"></h:outputText>   
 	</h:panelGroup>	 
 
-		
+	<h:panelGroup>
+		Table Size:
+		<h:selectOneMenu id="menu1" value="#{rnaSeqHeatmapBean.topGeneCount}" 
+	   		onchange="submit()" immediate="true" valueChangeListener="#{rnaSeqHeatmapBean.topGeneCountChanged}" >
+			<f:selectItems value="#{rnaSeqHeatmapBean.topGeneCountOptions}" />		
+		</h:selectOneMenu>
+	</h:panelGroup>		
+	
 	<h:panelGroup>
 		Palette:
 		<select id="palette">
@@ -58,20 +65,21 @@
 		</select>
 	</h:panelGroup>	
 
-<ui:remove>
-	<h:panelGrid columns="2">
-   		<h:outputLabel>Heatmap Scale:</h:outputLabel>
-   		<h:inputText id="amount" width="10px"/>	
-   	</h:panelGrid>
-</ui:remove>	 
-
   	
 	<div style="width:200px;">
 		<label>Heatmap Scale</label>
 		<div id="slider" ></div>
 	</div>
 
-	
+
+	<h:inputText id="sampleId" value="#{rnaSeqHeatmapBean.selectedSample}" >
+		<pr:ajax update=":rnaseqHeatmapForm" listener="#{rnaSeqHeatmapBean.reset}" />
+		<f:ajax event="change" listener="#{rnaSeqHeatmapBean.selectedSampleChanged()}" />
+	</h:inputText>	
+
+	<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{rnaSeqHeatmapBean.findNode}" actionListener="#{rnaSeqHeatmapBean.processAction}" >
+	</t:commandLink>
+
 
 	
  		
@@ -93,15 +101,13 @@
 
    $(document).ready(function() {
 	   
-
 	    var url = "../resources/genestrips/rnaseq_top.json";
 
 		var viewWidth = $(document).width();					
-		var viewHeight = $(document).height();	
-		
+		var viewHeight = $(document).height();			
 		var cell_size = 15;
-		
-		seq_heatmap_display(url, "#chart", "Default", cell_size);
+		var item = document.getElementById('rnaseqHeatmapForm:sampleId');
+		seq_heatmap_display(url, "#chart", "Default", cell_size, item);
 
 		var sliderOpts = {
 //				   range: "min",
@@ -112,11 +118,8 @@
 				   change: function( event, ui ) {
 //				   		$( "#amount" ).val( ui.value );
 				   		update_heatmap("#chart", ui.value);
-				   		seq_heatmap_display(url, "#chart", "Default",ui.value);
-
+				   		seq_heatmap_display(url, "#chart", "Default",ui.value, item);
 				   }
-				
-				
 		};
 	   $( "#slider" ).slider(sliderOpts);
   

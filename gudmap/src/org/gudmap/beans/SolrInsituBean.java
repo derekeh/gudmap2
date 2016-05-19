@@ -7,18 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-//import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-//import javax.faces.context.FacesContext;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-//import org.gudmap.assemblers.SolrInsituAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.InsituTableBeanModel;
 import org.gudmap.models.SolrInsituTableBeanModel;

@@ -5,7 +5,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;

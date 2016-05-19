@@ -4,18 +4,14 @@ package org.gudmap.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 

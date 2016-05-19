@@ -802,20 +802,20 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
     
 }
 
-function seq_heatmap_display(url, heatmapId, paletteName, cell_size) {
+function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item) {
     var cellSize = cell_size; //5; //10; //20;//14;
 //  var svg;
     var tooltip = d3.select(heatmapId)
     .append("div")
     .style("position", "absolute")
     .style("visibility", "hidden");
+    
 
     //==================================================
     d3.json(url, function(error, data) {
 
         var arr = data.data;
         var maxvalues = data.maxvalues;
-
         
         var ids = data.ids
         var genes = data.genes;
@@ -833,7 +833,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size) {
         	hccol.push(1*i);
       
 
-	   	var margin = { top: 60, right: 10, bottom: 50, left: 10 };
+	   	var margin = { top: 160, right: 10, bottom: 50, left: 10 };
 	   	var width = cellSize*col_number*2;
 	   	var height = cellSize*row_number;
        
@@ -904,6 +904,22 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size) {
 	   	
 	   	
     	// display samples
+    	var menu = [    	            	
+    	            {
+    	                title: 'Sort displayed genes',
+    	                action: function(elm, d, i){
+    	    				colSortOrder=!colSortOrder;  
+    	    				sortbylabel("c",i,colSortOrder);
+    	    				d3.select("#order").property("selectedIndex", 4).node().focus();
+    	                }
+    	            },
+    	            {
+    	                title: 'Sort all genes in sample',
+    	                action: function(elm, d, i){
+    	                	item.setAttribute("value", d);
+    	                }
+    	            }
+    	        ];    	
 		var colLabelspacer = geneLabelLength + 10;
 		var colLabels = svg.append("g")
 			.selectAll(".colLabelg")
@@ -917,22 +933,23 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size) {
 			.attr("transform", "translate("+ colLabelspacer +",0) translate("+ cellSize/2 + ",-6) rotate (-90)")
 			.attr("class",  function (d,i) { return "colLabel mono c"+i;} )
 			.on("mouseover", function(d,i) {
-				d3.select(this).classed("text-hover",true);
-				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
-		        tooltip.style("left", (d3.event.pageX-100) + "px");
-		        tooltip.style("top", (d3.event.pageY-50) + "px");
-				tooltip.style("visibility", "visible");				
+//				d3.select(this).classed("text-hover",true);
+//				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
+//		        tooltip.style("left", (d3.event.pageX-100) + "px");
+//		        tooltip.style("top", (d3.event.pageY-50) + "px");
+//				tooltip.style("visibility", "visible");				
 			})
 			.on("mouseout" , function(d) {
-				d3.select(this).classed("text-hover",false);
-				tooltip.style("visibility", "hidden");	
+//				d3.select(this).classed("text-hover",false);
+//				tooltip.style("visibility", "hidden");	
 			})
 			.on("click", function(d,i) {
 				colSortOrder=!colSortOrder;  
 				sortbylabel("c",i,colSortOrder);
 				d3.select("#order").property("selectedIndex", 4).node().focus();
-			});		     
-
+			})
+			.on('contextmenu', d3.contextMenu(menu));
+		
 		// display data	
 		var row = svg.selectAll(".row")
 			.data(arr)
