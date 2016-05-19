@@ -77,7 +77,7 @@
 		<f:ajax event="change" listener="#{rnaSeqHeatmapBean.selectedSampleChanged()}" />
 	</h:inputText>	
 
-	<t:commandLink id="analysisLink" forceId="true" style="display:none; visibility: hidden;" action="#{rnaSeqHeatmapBean.findNode}" actionListener="#{rnaSeqHeatmapBean.processAction}" >
+	<t:commandLink id="analysisLink" forceId="true"  action="#{rnaSeqHeatmapBean.findNode}" actionListener="#{rnaSeqHeatmapBean.processAction}" >
 	</t:commandLink>
 
 
@@ -107,7 +107,10 @@
 		var viewHeight = $(document).height();			
 		var cell_size = 15;
 		var item = document.getElementById('rnaseqHeatmapForm:sampleId');
-		seq_heatmap_display(url, "#chart", "Default", cell_size, item);
+		var item2 = document.getElementById('analysisLink');
+		
+		
+		seq_heatmap_display(url, "#chart", "Default", cell_size, item, item2);
 
 		var sliderOpts = {
 //				   range: "min",
@@ -118,7 +121,7 @@
 				   change: function( event, ui ) {
 //				   		$( "#amount" ).val( ui.value );
 				   		update_heatmap("#chart", ui.value);
-				   		seq_heatmap_display(url, "#chart", "Default",ui.value, item);
+				   		seq_heatmap_display(url, "#chart", "Default",ui.value, item, item2);
 				   }
 		};
 	   $( "#slider" ).slider(sliderOpts);

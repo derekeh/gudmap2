@@ -802,7 +802,7 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
     
 }
 
-function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item) {
+function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, control) {
     var cellSize = cell_size; //5; //10; //20;//14;
 //  var svg;
     var tooltip = d3.select(heatmapId)
@@ -917,6 +917,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item) {
     	                title: 'Sort all genes in sample',
     	                action: function(elm, d, i){
     	                	item.setAttribute("value", d);
+    	                	eventFire(control,'click');
     	                }
     	            }
     	        ];    	
@@ -1202,10 +1203,17 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item) {
         	 }
          });	     
 		
-		
+	     function eventFire(el, etype){
+	    	  if (el.fireEvent) {
+	    	    el.fireEvent('on' + etype);
+	    	  } else {
+	    	    var evObj = document.createEvent('Events');
+	    	    evObj.initEvent(etype, true, false);
+	    	    el.dispatchEvent(evObj);
+	    	  }
+	    	}
 		
   });
 }
-
 
 
