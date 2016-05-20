@@ -71,16 +71,15 @@
 		<div id="slider" ></div>
 	</div>
 
-
-	<h:inputText id="sampleId" value="#{rnaSeqHeatmapBean.selectedSample}" >
-		<pr:ajax update=":rnaseqHeatmapForm" listener="#{rnaSeqHeatmapBean.reset}" />
-		<f:ajax event="change" listener="#{rnaSeqHeatmapBean.selectedSampleChanged()}" />
-	</h:inputText>	
-
-	<t:commandLink id="analysisLink" forceId="true"  action="#{rnaSeqHeatmapBean.findNode}" actionListener="#{rnaSeqHeatmapBean.processAction}" >
+	<h:inputText id="sampleId" value="#{rnaSeqHeatmapBean.selectedSample}" style="display:none; visibility: hidden;">
+	</h:inputText>		
+	<t:commandLink id="analysisLink" forceId="true"  style="display:none; visibility: hidden;" actionListener="#{rnaSeqHeatmapBean.processAction}" >
 	</t:commandLink>
-
-
+	
+<ui:remove>
+	<t:commandLink id="analysisLink" forceId="true"  style="display:none; visibility: hidden;" action="#{rnaSeqHeatmapBean.findNode}" actionListener="#{rnaSeqHeatmapBean.processAction}" >
+	</t:commandLink>
+</ui:remove>
 	
  		
 </h:panelGrid> 	

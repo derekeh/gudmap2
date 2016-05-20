@@ -911,6 +911,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
     	    				colSortOrder=!colSortOrder;  
     	    				sortbylabel("c",i,colSortOrder);
     	    				d3.select("#order").property("selectedIndex", 4).node().focus();
+
     	                }
     	            },
     	            {
@@ -918,6 +919,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
     	                action: function(elm, d, i){
     	                	item.setAttribute("value", d);
     	                	eventFire(control,'click');
+//    	    		        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
     	                }
     	            }
     	        ];    	
@@ -934,15 +936,15 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
 			.attr("transform", "translate("+ colLabelspacer +",0) translate("+ cellSize/2 + ",-6) rotate (-90)")
 			.attr("class",  function (d,i) { return "colLabel mono c"+i;} )
 			.on("mouseover", function(d,i) {
-//				d3.select(this).classed("text-hover",true);
-//				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
-//		        tooltip.style("left", (d3.event.pageX-100) + "px");
-//		        tooltip.style("top", (d3.event.pageY-50) + "px");
-//				tooltip.style("visibility", "visible");				
+				d3.select(this).classed("text-hover",true);
+				tooltip.html('<div class="mytooltip">' + samples[i] + '</div>');
+		        tooltip.style("left", (d3.event.pageX-100) + "px");
+		        tooltip.style("top", (d3.event.pageY-50) + "px");
+				tooltip.style("visibility", "visible");				
 			})
 			.on("mouseout" , function(d) {
-//				d3.select(this).classed("text-hover",false);
-//				tooltip.style("visibility", "hidden");	
+				d3.select(this).classed("text-hover",false);
+				tooltip.style("visibility", "hidden");	
 			})
 			.on("click", function(d,i) {
 				colSortOrder=!colSortOrder;  
@@ -1204,14 +1206,14 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
          });	     
 		
 	     function eventFire(el, etype){
-	    	  if (el.fireEvent) {
-	    	    el.fireEvent('on' + etype);
-	    	  } else {
-	    	    var evObj = document.createEvent('Events');
-	    	    evObj.initEvent(etype, true, false);
-	    	    el.dispatchEvent(evObj);
-	    	  }
-	    	}
+	    	 if (el.fireEvent) {
+	    		 el.fireEvent('on' + etype);
+	    	 } else {
+	    		 var evObj = document.createEvent('Events');
+	    		 evObj.initEvent(etype, true, false);
+	    		 el.dispatchEvent(evObj);
+	    	 }
+	     }
 		
   });
 }

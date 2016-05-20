@@ -87,10 +87,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	selectedSample = sample;
     }
 	
-    public void selectedSampleChanged(AjaxBehaviorEvent event) {
-		loadDataList();
-    }
-	
 	public RnaSeqHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
 		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
 	}
@@ -101,10 +97,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     
     public SessionBean getSessionBean() {
     	return sessionBean;
-    }
-  
-    public void reset() {
-    	loadDataList();
     }
 
     public void processAction(ActionEvent event) throws AbortProcessingException,Exception {  
