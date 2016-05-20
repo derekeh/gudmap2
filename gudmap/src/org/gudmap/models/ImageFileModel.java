@@ -1,4 +1,5 @@
 package org.gudmap.models;
+import org.apache.commons.io.FileUtils;
 
 public class ImageFileModel {
 	
@@ -11,9 +12,14 @@ public class ImageFileModel {
 	private String width;
 	private String height;
 	private String length;
+	private String size;
 	private String type;
 	private String absolutePath;
 	private String baseUrl="http://glenelgin.hgu.mrc.ac.uk/Appfiles/images/";
+	private String docUrl="http://glenelgin.hgu.mrc.ac.uk/Appfiles/docs/";
+	//private String baseUrl="http://glenelgin.hgu.mrc.ac.uk/Appfiles/";
+	private String imageDir="images/";
+	private String webfileDir="docs/";
 	
 	public void setPath(String path) {
 		this.path=path;
@@ -52,7 +58,18 @@ public class ImageFileModel {
 	}
 	
 	public String getLength() {
+		Long output = Long.valueOf(length);
+		length = FileUtils.byteCountToDisplaySize(output);
 		return length;
+	}
+	
+	
+	public void setSize(String size){
+		this.size = size;
+	}
+	
+	public String getSize() {
+		return size;
 	}
 	
 	public void setType(String type) {
@@ -73,6 +90,10 @@ public class ImageFileModel {
 	
 	public String getBaseUrl() {
 		return baseUrl;
+	}
+	
+	public String getDocUrl() {
+		return docUrl;
 	}
 
 }

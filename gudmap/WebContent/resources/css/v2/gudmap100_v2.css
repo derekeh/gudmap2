@@ -382,6 +382,11 @@
 	background-color: #E0E0E0;
 }
 
+.gd_datatable_header2 {
+	background-color: #E0E0E0;
+	padding-right:20px;
+}
+
 .gd_social_media {
 	font-family: droid-sans, molengo;
 	font-style:normal;
@@ -391,8 +396,11 @@
   	color:#25496D;
 }
 
+.gd_webfiletable {padding-right:10px;}
 
- */
+
+.gd_image_list img {padding:5px;}
+
 /* Tablet Layout: 481px to 768px. Inherits styles from: Mobile Layout. */
 
 /* @media only screen and (min-width: 481px) {

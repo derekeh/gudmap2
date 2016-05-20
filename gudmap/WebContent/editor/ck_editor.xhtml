@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ck="http://code.google.com/ck-jsf-editor">
+	xmlns:f="http://java.sun.com/jsf/core">
 	
 	
 
@@ -19,6 +18,11 @@
 	
 	<ui:define name="content">
 	
+	<script type="text/javascript" src="/gudmap/ckeditor/ckeditor.js" /> 
+	<style>
+		.cke_toolgroup{min-height:25px;}
+	</style>
+	
 	<!-- can use relative links on html tags -->
 		<f:event listener="#{loginBean.isWebEditor}" type="preRenderView" />
 		    <!-- all other content in here --> 
@@ -32,32 +36,47 @@
 						<h:selectOneMenu id="selectpage" value="#{paramBean.pageId}"
 							valueChangeListener="#{paramBean.pageIdChanged}">
 				   			<f:selectItems value="#{paramBean.getPageIdlist()}" />
-				   			<f:ajax event="change" render=":editorForm:theEditor :editorForm:theHeader tmppage" execute="selectpage"></f:ajax>
+				   			<f:ajax event="change" render=":ckEditorForm tmppage" execute="selectpage"></f:ajax>
 				   		</h:selectOneMenu> 
 						<h:outputText id="tmppage" value="#{paramBean.pageId}" style="color:#E0E0E0"></h:outputText>
 					</h:panelGroup>
 				</h:panelGrid>
 		   	</h:form>
 			 
-			<h:form id="editorForm"> 
-					<h:panelGrid columns="3">
-						<h:outputText value="Title:"></h:outputText>
-						<h:panelGroup style="min-width:10px;"></h:panelGroup>
-						<h:panelGroup>
-							 <h:inputText id="theHeader" value="#{editPageBean.title}" required="true" requiredMessage="You must enter a String value!"></h:inputText> 
-							 <h:message for="theHeader" /> 
-						</h:panelGroup> 
-					 </h:panelGrid>    
-			    	<ck:editor id="theEditor" value="#{editPageBean.value}"  uiColor="aed0ea" cssContents="/gudmap/resources/css/gudmap.css"/>
-			    	
-					<h:commandButton value="Save" action="#{editPageBean.updatePage}">
-						<f:param name="pageId" value="#{paramBean.pageId}"></f:param>
-					</h:commandButton>
-					<br />
+			
+			
+			<h:form id="ckEditorForm">
+				<h:panelGrid columns="3">
+							<h:outputText value="Title:"></h:outputText>
+							<h:panelGroup style="min-width:10px;"></h:panelGroup>
+							<h:panelGroup>
+								 <h:inputText id="theHeader" value="#{editPageBean.title}" required="true" requiredMessage="You must enter a String value!"></h:inputText> 
+								 <h:message for="theHeader" /> 
+							</h:panelGroup> 
+				</h:panelGrid> 
+				<h:inputHidden required="false" value="#{editPageBean.value}" id="editorValue" />
+				<textarea cols="140" rows="40" id="editor1" name="editor1">
+			        <h:outputText value="#{editPageBean.value}"/>
+			    </textarea>
+			    <script type="text/javascript">
+			        CKEDITOR.replace('editor1',
+			            {
+			                uiColor: '#aed0ea'
+			            });
+			    </script> 
+			    
+			     
+			
+			    <h:commandButton id="saveButton" value="Save" 
+			                     onclick="document.getElementById('ckEditorForm:editorValue').value = 
+			                              CKEDITOR.instances.editor1.getData();" 
+			                     action="#{editPageBean.updatePage}">
+			    	<f:param name="pageId" value="#{paramBean.pageId}"></f:param>
+				</h:commandButton>
+				<br />
 					<h:outputText value="#{editPageBean.status}"  />
-				
-				<!-- <h:messages id="messages" /> -->
-			</h:form> 
+			</h:form>
+			
 			<hr />
 			<h:form id="il_filelist">
 			
@@ -71,7 +90,7 @@
 			   	</h:selectOneMenu>   	
 			</h:panelGrid>
 		
-			<h:dataTable id="il_imagelist" value="#{fileManagementBean.getImageList(paramBean.imageDir)}" var="u" headerClass="gd_datatable_header" >
+			<h:dataTable id="il_imagelist" value="#{fileManagementBean.getImageList(paramBean.imageDir)}" var="u" headerClass="gd_datatable_header" class="gd_image_list">
 		    		
 		 			<h:column >
 		    			<f:facet name="header">
@@ -116,21 +135,14 @@
 			  	<f:validator validatorId="ImageUploadValidator" />
 			  </h:inputFile>
 			  <h:commandButton value="Upload"
-			      action="#{inputBean.uploadImage(paramBean.imageDir)}">
+			      action="#{inputBean.uploadImage(1,paramBean.imageDir)}">
 			      <f:ajax execute="uploadfile" render="uploadform :il_filelist:il_imagelist"/>
 			  </h:commandButton>
 		  </h:panelGrid>
 		  <p><h:messages id="messages"/></p>
 		</h:form>
 		
-		<script>
-		$(document).ready(function() {
-		    $('#form\\:theEditor').find('iframe').contents().find('body').css({
-		        'font-size': '10px',
-		        'color' : 'red'
-		    });
-		});
-		</script>
+		
 
 	</ui:define>
   </ui:composition>

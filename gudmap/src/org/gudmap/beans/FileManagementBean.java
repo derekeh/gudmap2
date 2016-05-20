@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.enterprise.context.RequestScoped;
 import javax.imageio.ImageIO;
@@ -17,6 +18,7 @@ import org.gudmap.models.ImageFileModel;
 @RequestScoped
 public class FileManagementBean {
 	private ArrayList<ImageFileModel> imageList =null;
+	private ArrayList<ImageFileModel> webfileList =null;
 	private static File dir;
 	private  String[] EXTENSIONS;
 	private  FilenameFilter IMAGE_FILTER;
@@ -72,6 +74,54 @@ public class FileManagementBean {
             
         }
 		return imageList;
+	}
+	
+	public void init2(String imagedir) {
+		dir = new File(Globals.webfilePath+imagedir);
+		EXTENSIONS = new String[]{
+		        "txt", "pdf", "doc", "docx", "xls", "xlsx" // and other formats you need
+		};
+		
+		IMAGE_FILTER = new FilenameFilter() {
+
+	        @Override
+	        public boolean accept(final File dir, final String name) {
+	            for (final String ext : EXTENSIONS) {
+	                if (name.endsWith("." + ext)) {
+	                    return (true);
+	                }
+	            }
+	            return (false);
+	        }
+	    };
+	}
+	
+	
+	public ArrayList<ImageFileModel> getWebfileList(String directory) {
+		init2(directory);
+		if (dir.isDirectory()) { // make sure it's a directory
+			webfileList = new ArrayList<ImageFileModel>();
+			ImageFileModel imageFileModel;
+			File[] files = dir.listFiles(IMAGE_FILTER);
+			//sort files alphabetically
+			Arrays.sort(files);
+			//for (final File f : dir.listFiles(IMAGE_FILTER)) {
+            for (File f : files) {
+                //BufferedImage img = null;
+                imageFileModel = new ImageFileModel();
+                //try {
+                    //img = ImageIO.read(f);
+                    imageFileModel.setName(f.getName());
+                    imageFileModel.setLength(String.valueOf(f.length()));
+                    imageFileModel.setAbsolutePath(f.getAbsolutePath());
+                    webfileList.add(imageFileModel);
+                //} catch (final IOException e) {
+                    // handle errors here
+               // }
+            }
+            
+        }
+		return webfileList;
 	}
 	
 

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP EDITOR | Upload File
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	 <ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define> 
+	
+	<ui:define name="content">
+	
+	<!-- can use relative links on html tags -->
+		<f:event listener="#{loginBean.isWebEditor}" type="preRenderView" />
+		    <!-- all other content in here --> 
+		<h1>Upload File </h1> 
+		
+			<h:form id="il_filelist">
+			
+			<h:panelGrid columns="3" columnClasses="gd_webfiletable">
+				<h:outputText value="File Directory:"></h:outputText>
+				<h:panelGroup style="min-width:10px;"></h:panelGroup>
+				<h:selectOneMenu id="selectone" value="#{paramBean.webfileDir}"
+						valueChangeListener="#{paramBean.webfileDirChanged}">
+			   			<f:selectItems value="#{paramBean.getWebfiledirlist()}" />
+			   			<f:ajax event="change" render="il_webfilelist" execute="selectone"></f:ajax>
+			   	</h:selectOneMenu>   	
+			</h:panelGrid>
+		
+			<h:dataTable id="il_webfilelist" value="#{fileManagementBean.getWebfileList(paramBean.webfileDir)}" var="u" headerClass="gd_datatable_header2"
+			columnClasses="gd_webfiletable">
+		    		
+		 			<h:column >
+		    			<f:facet name="header">
+		    				<h:outputText value="Filename"></h:outputText>
+		    			</f:facet>
+		    				#{u.name}
+		    		</h:column>
+		    		
+		    		
+		    		<h:column >
+		    			<f:facet name="header">
+		    				<h:outputText value="Filesize"></h:outputText>
+		    			</f:facet>
+		    				#{u.length} 
+		    		</h:column>
+		    		
+		    		<h:column >
+		    			<f:facet name="header">
+		    				<h:outputText value="URL"></h:outputText>
+		    			</f:facet>
+		    				<h:inputText size="70"  value="#{u.docUrl}#{paramBean.webfileDir}/#{u.name}"></h:inputText>
+		    		</h:column>
+			</h:dataTable>
+		</h:form>
+		
+		<hr />
+		<h:form id="uploadform" enctype="multipart/form-data">
+		  <h:panelGrid columns="4">
+		  	  <h:outputText value="Upload File:"/>
+		  	  <h:panelGroup style="min-width:10px;"></h:panelGroup>
+			  <h:inputFile id="uploadfile" value="#{inputBean.part}">
+			  	<f:validator validatorId="WebFileUploadValidator" />
+			  </h:inputFile>
+			  <h:commandButton value="Upload"
+			      action="#{inputBean.uploadImage(2,paramBean.webfileDir)}">
+			      <f:ajax execute="uploadfile" render="uploadform :il_filelist:il_webfilelist"/>
+			  </h:commandButton>
+		  </h:panelGrid>
+		  <p><h:messages id="messages"/></p>
+		</h:form>
+		
+
+	</ui:define>
+  </ui:composition>
+</html>
+
+

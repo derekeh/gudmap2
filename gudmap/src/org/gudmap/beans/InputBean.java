@@ -86,13 +86,14 @@ public class InputBean implements Serializable {
 		return paramBean.geneSearchRedirect();    // return to same page
 	}
 	
-	public String uploadImage(String imageDir) throws IOException {
+	public String uploadImage(int type, String imageDir) throws IOException {
 		 
 		// Extract file name from content-disposition header of file part
 		String fileName = getFileName(part);
+		String  abs = (type==1)?Globals.imagePath:Globals.webfilePath;
 		
-		File outputFilePath = new File(Globals.imagePath + imageDir + "/" + fileName);
-		 
+		//File outputFilePath = new File(Globals.imagePath + imageDir + "/" + fileName);
+		File outputFilePath = new File(abs + imageDir + "/" + fileName); 
 		// Copy uploaded file to destination path
 		InputStream inputStream = null;
 		OutputStream outputStream = null;

@@ -158,6 +158,9 @@ public class ParamBean implements Serializable {
 	//image upload directories
 	private String imageDir="general";
 	
+	//web file upload directories
+	private String webfileDir="general";
+	
 	//page editing
 	private String pageId="1";
 	
@@ -1352,6 +1355,24 @@ public class ParamBean implements Serializable {
 	
 	public void imageDirChanged(ValueChangeEvent e){
 		this.imageDir = e.getNewValue().toString();
+	}
+	
+////////////////WEB FILE UPLOAD DIRECTORIES/////////////////
+	
+	public Map<String,String> getWebfiledirlist(){
+		return assembler.getWebfiledirlist();
+	}
+	
+	public void setWebfileDir(String webfileDir){
+		this.webfileDir = webfileDir;
+	}
+	
+	public String getWebfileDir() {
+		return webfileDir;
+	}
+	
+	public void webfileDirChanged(ValueChangeEvent e){
+		this.webfileDir = e.getNewValue().toString();
 	}
 	
 	/////////////////PAGE EDITING////////////////////////////

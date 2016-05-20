@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ck="http://code.google.com/ck-jsf-editor">
+	
+	
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP EDITOR | Create Page
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	 <ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define> 
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+		<f:event listener="#{loginBean.isEditor}" type="preRenderView" />
+		    <!-- all other content in here --> 
+			<h1>Create New Page: </h1> 
+		 
+		<h:form id="editorForm"> 
+			<h:panelGrid columns="3">
+				<h:outputText value="Category:"></h:outputText>
+				<h:panelGroup style="min-width:10px;"></h:panelGroup>
+				<h:selectOneMenu id="selectcategory" value="#{paramBean.pageCategory}"
+						valueChangeListener="#{paramBean.pageCategoryChanged}">
+			   			<f:selectItems value="#{paramBean.getPageCategorylist()}" />
+			   	</h:selectOneMenu>
+				
+				 <h:outputText value="Level:"></h:outputText>
+				 <h:panelGroup style="min-width:10px;"></h:panelGroup>
+				 <h:panelGroup>
+					 <h:inputText id="theLevel" value="#{createPageBean.level}" required="true" converterMessage="Must be a number!"></h:inputText> 
+					 <h:message for="theLevel" /> 
+				 </h:panelGroup>
+				 
+				<h:outputText value="Alias:"></h:outputText>
+				<h:panelGroup style="min-width:10px;"></h:panelGroup>
+				<h:panelGroup>
+					 <h:inputText id="theAlias" value="#{createPageBean.alias}" required="true" requiredMessage="You must enter a String value!" 
+					 				validator="#{createPageBean.validateAlias}"></h:inputText> 
+					 <h:message for="theAlias" /> 
+				 </h:panelGroup>
+				 
+				<h:outputText value="Title:"></h:outputText>
+				<h:panelGroup style="min-width:10px;"></h:panelGroup>
+				 <h:panelGroup>
+					 <h:inputText id="theHeader" value="#{createPageBean.title}" required="true" requiredMessage="You must enter a String value!"></h:inputText> 				
+					 <h:message for="theHeader" /> 
+				 </h:panelGroup>
+			</h:panelGrid>    
+		    <ck:editor id="theEditor" value="#{createPageBean.value}"  uiColor="aed0ea" />
+		    	
+			<h:commandButton value="Create Page" action="#{createPageBean.createPage}" />
+			<br />
+			<h:outputText value="#{createPageBean.status}&#160;&#160;&#160;"  />
+			<h:outputLink value="../pages/viewPage.jsf?docID=#{createPageBean.lastInsert}"  rendered="#{createPageBean.lastInsert>0}">
+				<h:outputText value="Go to page" />
+			</h:outputLink>
+			
+			<!-- <h:messages id="messages" /> -->
+			
+		</h:form> 
+		<hr />
+		<h:form id="il_filelist">
+		<h:panelGrid columns="3">
+			<h:outputText value="Image Directory:"></h:outputText>
+			<h:panelGroup style="min-width:10px;"></h:panelGroup>
+			<h:selectOneMenu id="selectone" value="#{paramBean.imageDir}"
+					valueChangeListener="#{paramBean.imageDirChanged}">
+		   			<f:selectItems value="#{paramBean.getImagedirlist()}" />
+		   			<f:ajax event="change" render="il_imagelist" execute="selectone"></f:ajax>
+		   	</h:selectOneMenu>   	
+		</h:panelGrid>
+		
+		<h:dataTable id="il_imagelist" value="#{fileManagementBean.getImageList(paramBean.imageDir)}" var="u" headerClass="gd_datatable_header" >
+	    		
+	 			<h:column >
+	    			<f:facet name="header">
+	    				<h:outputText value="Filename"></h:outputText>
+	    			</f:facet>
+	    				#{u.name}
+	    		</h:column>
+	    		<h:column >
+	    			<f:facet name="header">
+	    				<h:outputText value="Image"></h:outputText>
+	    			</f:facet>
+	    				<img src="#{u.baseUrl}#{paramBean.imageDir}/#{u.name}" />
+	    		</h:column>
+	    		
+	    		<h:column >
+	    			<f:facet name="header">
+	    				<h:outputText value="Width"></h:outputText>
+	    			</f:facet>
+	    				#{u.width} 
+	    		</h:column>
+	    		<h:column >
+	    			<f:facet name="header">
+	    				<h:outputText value="Height"></h:outputText>
+	    			</f:facet>
+	    				#{u.height}
+	    		</h:column>
+	    		<h:column >
+	    			<f:facet name="header">
+	    				<h:outputText value="URL"></h:outputText>
+	    			</f:facet>
+	    				<h:inputText size="70"  value="#{u.baseUrl}#{paramBean.imageDir}/#{u.name}"></h:inputText>
+	    		</h:column>
+		</h:dataTable>
+	</h:form>
+	<hr />
+	<h:form id="uploadform" enctype="multipart/form-data">
+	  <h:panelGrid columns="4">
+	  	  <h:outputText value="Upload Image:"/>
+	  	  <h:panelGroup style="min-width:10px;"></h:panelGroup>
+		  <h:inputFile id="uploadfile" value="#{inputBean.part}">
+		  	<f:validator validatorId="ImageUploadValidator" />
+		  </h:inputFile>
+		  <h:commandButton value="Upload"
+		      action="#{inputBean.uploadImage(1,paramBean.imageDir)}">
+		      <f:ajax execute="uploadfile" render="uploadform :il_filelist:il_imagelist"/>
+		  </h:commandButton>
+	  </h:panelGrid>
+	  <p><h:messages id="messages"/></p>
+	</h:form>
+	
+	<script>
+	$(document).ready(function() {
+	    $('#form\\:theEditor').find('iframe').contents().find('body').css({
+	        'font-size': '10px',
+	        'color' : 'red'
+	    });
+	});
+	</script>  
+	</ui:define>
+</ui:composition>
+</html>
+	
