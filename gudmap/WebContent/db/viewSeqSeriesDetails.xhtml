@@ -36,9 +36,16 @@
 			<f:param name="batch" value="#{arraySeqSeriesBean.datalist.get(0).batchID}"/>
 			<h:outputText value="#{arraySeqSeriesBean.datalist.get(0).batchID}"  rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}"/>
 		</h:outputLink>
-		
+<ui:remove>		
 		<h:outputText  value="Number of Samples:" />
 		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).numSamples} samples" />
+</ui:remove>		
+		
+		<h:outputText  value="Number of Samples:" />
+		<h:outputLink value="browseSeqHeatmap.jsf"  title="View Heatmap" rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}">
+			<f:param name="seriesID" value="#{arraySeqSeriesBean.datalist.get(0).getGeoSeriesID()}"/>
+			<h:outputText value="#{arraySeqSeriesBean.datalist.get(0).numSamples} samples"  rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}"/>
+		</h:outputLink>
 	
 		<h:outputText  value="Title:" />
 		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).title}" />

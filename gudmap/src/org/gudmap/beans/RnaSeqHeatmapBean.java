@@ -5,7 +5,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 
@@ -40,6 +39,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
  
 	private int topGeneCount = 50;
 	private int selectedSampleCol = 2;
+	private String cellSize = "15";
 	private String selectedSample = "AdultProximal_Tubules-1";
 	
 	private String tableTitle;
@@ -79,6 +79,14 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	
 	}
 
+    public String getCellSize() {
+    	return cellSize;
+    }
+    
+    public void setCellSize(String cellSize) {
+    	this.cellSize = cellSize;
+    }
+	
     public String getSelectedSample() {
     	return selectedSample;
     }
@@ -103,11 +111,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	loadDataList();
     }
 
-    public String findNode() throws IOException
-    {   
-
-		return "";
-    }
    
 // ********************   deal with heatmap  
 	

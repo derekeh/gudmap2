@@ -48,7 +48,7 @@ function changePalette(paletteName, heatmapId) {
 	      });
 }
 
-function update_heatmap(heatmapId, cellSize) {
+function update_heatmap(heatmapId) {
 	
 	
 	
@@ -802,8 +802,9 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
     
 }
 
-function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, control) {
+function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, control, idx) {
     var cellSize = cell_size; //5; //10; //20;//14;
+    var sortgeneidx = -1;//idx;
 //  var svg;
     var tooltip = d3.select(heatmapId)
     .append("div")
@@ -834,6 +835,8 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
       
 
 	   	var margin = { top: 160, right: 10, bottom: 50, left: 10 };
+
+
 	   	var width = cellSize*col_number*2;
 	   	var height = cellSize*row_number;
        
@@ -1008,8 +1011,63 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
 		        d3.selectAll(".rowLabel").classed("text-highlight",false);
 		        d3.selectAll(".colLabel").classed("text-highlight",false);
 				tooltip.style("visibility", "hidden");
+			})
+			.on('click', function(d,i,j) {
+				d3.select("#tabulate2").remove;
+				var item = [ids[j],genes[j],samples[i],d,"GSE664959"];
+				var ds1 = [];
+				ds1.push(item);				
+				tabulate(ds1);
+		        d3.selectAll(".geneLabel").classed("text-selected",function(r,ri){ return ri==j;});
+		    	d3.selectAll(".rowLabel").classed("text-selected",function(r,ri){ return ri==j;});
+		        d3.selectAll(".colLabel").classed("text-selected",function(c,ci){ return ci==i;});
 			}); 
 
+
+		if (sortgeneidx != -1) {
+			rowSortOrder=!rowSortOrder; 
+			sortbylabel("r",sortgeneidx,rowSortOrder);
+			d3.select("#order").property("selectedIndex", 4).node().focus();
+		}
+		
+		// display selected cell data
+		var tableHeaders = ["Ensemble ID", "Gene","Sample","Value","Series"];
+		function tabulate(annotationData) {
+			jQuery("#annotations").empty();
+
+			var mytable = d3.select("#annotations")
+			    .append("table")
+			    .style("border-collapse", "collapse")
+			    .style("border", "2px black solid");
+			
+			mytable.selectAll('thead').data([0]).enter().append('thead');
+			var thead = mytable.select('thead');					
+			
+	        var th = thead.selectAll("th")
+		        .data(tableHeaders)
+		        .enter()
+		        .append("th")
+			    .style("border", "1px black solid")
+			    .style("padding", "5px")
+		        .text(function(column) { return column; })
+			    .style("font-size", "12px");
+			
+			var tbody = mytable.append("tbody");
+			var rows = tbody.selectAll("tr")
+			    .data(annotationData)
+			    .enter()
+			    .append("tr");
+			
+			var cells = rows.selectAll("td")
+			    .data(function(d){return d;})
+			    .enter().append("td")
+			    .style("border", "1px black solid")
+			    .style("padding", "5px")
+			    .text(function(d){return d;})
+			    .style("font-size", "10px");
+			
+		};
+		
 		
 	    //==================================================
 	    d3.select("#palette")

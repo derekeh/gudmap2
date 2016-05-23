@@ -80,12 +80,12 @@
 		
 		        		 
  		<h:panelGrid columns="1" style="text-align:center">
-			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrSequences.jsf" >
-				<h:outputText style="color:grey" value="Sequences" rendered="#{solrTreeBean.page != '/solr/solrSequences.xhtml'}"/>
-				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Sequences" rendered="#{solrTreeBean.page == '/solr/solrSequences.xhtml'}"/>
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrSequences.jsf" >
+				<h:outputText style="color:grey" value="Sequences" rendered="#{solrTreeBean.page != '/db/solrSequences.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Sequences" rendered="#{solrTreeBean.page == '/db/solrSequences.xhtml'}"/>
 	         </h:outputLink>  
-	         <h:outputText value="(#{solrTreeBean.sequencesCount})" rendered="#{solrTreeBean.page != '/solr/solrSequences.xhtml'}"/>
-	         <h:outputText style="color:black" value="(#{solrTreeBean.sequencesCount})" rendered="#{solrTreeBean.page == '/solr/solrSequences.xhtml'}"/>
+	         <h:outputText value="(#{solrTreeBean.sequencesCount})" rendered="#{solrTreeBean.page != '/db/solrSequences.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.sequencesCount})" rendered="#{solrTreeBean.page == '/db/solrSequences.xhtml'}"/>
 		</h:panelGrid>
  
  		<h:panelGrid columns="1" style="text-align:center">
