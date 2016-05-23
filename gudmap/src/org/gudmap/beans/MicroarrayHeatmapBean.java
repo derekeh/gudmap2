@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 
 	private static final long serialVersionUID = 1L;	
-    private boolean debug = true;
  
 
 	private MicroarrayHeatmapBeanAssembler assembler;
@@ -51,6 +50,8 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 
     private ArrayList<String> probeIds; 
     private ArrayDao arrayDAO;
+    
+    private String csvFile;
     
     @Inject
    	protected SessionBean sessionBean;    
@@ -545,5 +546,5 @@ public class MicroarrayHeatmapBean extends PagerImpl  implements Serializable{
 				
 		return urls;
 	}
-	
- }
+
+}
