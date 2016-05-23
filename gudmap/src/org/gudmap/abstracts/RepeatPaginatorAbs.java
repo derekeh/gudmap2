@@ -1,11 +1,14 @@
 package org.gudmap.abstracts;
 
 import java.util.List;
-/*
- * This paginator takes in and processes the whole model. EG. All the subsequent work is done  client side on the model with no return to the DB server.
- * This is not the preferred option at present.
- * We use PagerImpl.java so that a definite number of records are retrieved per request.
+/**
+ * Interface methods for paginator which takes in and processes the whole model.
+ * <p>For example, all the subsequent work is done client side on the model with no return to the DB server.
+ * This is not the preferred option at present. Instead we use {@link PagerAbs} so that a definite number of records are retrieved per request.
+ * @author dhoughto
+ *
  */
+
 
 public abstract interface RepeatPaginatorAbs {
 	

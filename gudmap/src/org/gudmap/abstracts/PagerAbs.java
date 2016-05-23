@@ -2,7 +2,11 @@ package org.gudmap.abstracts;
 
 import java.util.List;
 import javax.faces.event.ActionEvent;
-
+/**
+ * Interface methods required for paging. 
+ * @author dhoughto
+ * @see impl.PagerImpl
+ */
 public abstract interface PagerAbs {
 	
 	public abstract void pageNext();
