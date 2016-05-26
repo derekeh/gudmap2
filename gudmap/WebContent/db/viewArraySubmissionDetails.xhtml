@@ -164,17 +164,20 @@
 			    <t:dataTable id="alleleContentTable" value="#{arraySeqSubmissionBean.arraySubmissionModel.alleleModel}" var="allele"  style="margin-left:-5px;"  
 			                			 rendered="#{null != arraySeqSubmissionBean.arraySubmissionModel.alleleModel}">
 				    <t:column>
-				       <h:panelGrid columns="3" columnClasses="db_bold, db_30_width, db_inner_detail_right">
-							<h:outputText value="#{allele.title}" styleClass="db_inner_inner_title"/>
+				       <h:panelGrid columns="3" columnClasses="db_inner_inner_title, db_30_width, db_inner_detail_right">
+							<h:outputText value="#{allele.title}" styleClass="db_bold"/>
 							<h:panelGroup></h:panelGroup>
 							<h:panelGroup></h:panelGroup>
-		
+							
 							<h:outputText value="Gene" />
 							<h:panelGroup></h:panelGroup>
-							<h:outputLink value="viewGeneStrip.jsf">
+							<h:outputText value="#{allele.geneSymbol}" rendered="#{empty allele.geneId}"/>
+							<h:outputLink value="viewGeneDetails.jsf" rendered="#{not empty allele.geneId}">
 								<h:outputText value="#{allele.geneSymbol}" />
-								<f:param name="gene" value="#{allele.geneSymbol}" />
+								<f:param name="geneId" value="#{allele.geneId}" />
 							</h:outputLink>
+		
+							
 		
 							<h:outputText value="MGI ID"  rendered="#{not empty allele.alleleId}"/>
 							<h:panelGroup rendered="#{not empty allele.alleleId}"/>
