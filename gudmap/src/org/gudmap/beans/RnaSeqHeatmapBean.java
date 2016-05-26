@@ -41,6 +41,8 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	private int selectedSampleCol = 2;
 	private String cellSize = "15";
 	private String selectedSample = "AdultProximal_Tubules-1";
+	private String selectedGene;
+
 	
 	private String tableTitle;
 	
@@ -94,7 +96,15 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     public void setSelectedSample(String sample) {
     	selectedSample = sample;
     }
-	
+
+    public String getSelectedGene() {
+    	return selectedGene;
+    }
+    
+    public void setSelectedGene(String gene) {
+    	selectedGene = gene;
+    }
+    
 	public RnaSeqHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
 		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
 	}
@@ -167,7 +177,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 				geneList.add(data);			
 			}
 			
-			
 			Collections.sort(geneList, new Comparator<String[]> () {
 			    @Override
 			    public int compare(String[] a, String[] b) {
@@ -197,21 +206,43 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		}
 
 
-		geneList = geneList.subList(0, topGeneCount);
+
+		List<String[]> subGeneList = geneList.subList(0, topGeneCount);
 		
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
 		LinkedList<String> ids = new LinkedList<String>();
 		LinkedList<String> genes = new LinkedList<String>();
-		for (String[] line:geneList){
+		boolean geneFound = false;
+		for (String[] line:subGeneList){
 			int len = line.length;
 			ids.add(line[0]);
 			genes.add(line[1]);
+			if(selectedGene != null && selectedGene.contentEquals(line[1]))
+				geneFound = true;
+			
 			LinkedList<String> d = new LinkedList<String>();
 			for (int i = 2; i < len-1; i++)
 				d.add(line[i]);
 			data.add(d);
 		}
 		
+		// if selected gene not in list of topGeneCount, find gene entries in file and add to list
+		// this will allow sort by gene to be reinstated
+		while (selectedGene != null && !geneFound){
+			for (int i = topGeneCount; i < geneList.size(); i++){
+				String[] line = geneList.get(i);
+				if(selectedGene.contentEquals(line[1])){
+					LinkedList<String> d = new LinkedList<String>();
+					for (int j = 2; j < line.length-1; j++)
+						d.add(line[j]);
+
+					data.add(d);
+					geneFound = true;
+				}
+				if (geneFound) 
+					break;
+			}
+		}			
 		
 		
 		obj.put("ids", ids);

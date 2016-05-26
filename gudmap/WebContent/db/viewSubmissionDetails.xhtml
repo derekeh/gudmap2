@@ -443,8 +443,8 @@ function findExpressionNotes(){
 	    		<h:outputText value="Submitters"></h:outputText>
 	    		<h:panelGroup>
 	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
-	    			    <h:outputText value="Principal Investigator(s) : "/>
-	    				<t:dataList id="piDataList" var="piInfo" value="#{ishSubmissionBean.ishSubmissionModel.principalInvestigators}" >
+	    			    <h:outputText value="Principal Investigator(s) : " rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}"/>
+	    				<t:dataList id="piDataList" var="piInfo" value="#{ishSubmissionBean.ishSubmissionModel.principalInvestigators}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}">
 							<h:commandLink id="lastbutton2" value="#{piInfo.name}, "  onclick="PF('lab_dialog').show();">
 	                            	<f:setPropertyActionListener id="piproperty" target="#{personBean.id}" value="#{piInfo.id}" />     	
 				                    <f:ajax execute="lastbutton2" render=":dialogform" />
@@ -453,12 +453,13 @@ function findExpressionNotes(){
 				        </t:dataList>
 				        
 				        <h:outputText value="Contributors:" />
-						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.authors}" />
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.authors}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}"/>
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Homo sapiens'}"/>
 						
 						
 						<h:outputText value="Submitted By:" />
 						<h:panelGroup>
-	                            <h:commandLink id="lastbutton" value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, "  onclick="PF('lab_dialog').show();">
+	                            <h:commandLink id="lastbutton" value="#{ishSubmissionBean.ishSubmissionModel.submitter.name}, "  onclick="PF('lab_dialog').show();" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}">
 	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{ishSubmissionBean.ishSubmissionModel.submitter.id}" />     	
 				                    <f:ajax execute="lastbutton" render=":dialogform" />
 				                </h:commandLink>

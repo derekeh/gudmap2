@@ -80,7 +80,8 @@
 	</h:panelGroup>	    
 
 	
-	  
+	<h:inputText id="selectedGene" value="#{rnaSeqHeatmapBean.selectedGene}" style="display:none; visibility: hidden;">
+	</h:inputText>			  
 	<h:inputText id="cellSize" value="#{rnaSeqHeatmapBean.cellSize}" style="display:none; visibility: hidden;">
 	</h:inputText>		
 	<h:inputText id="sampleId" value="#{rnaSeqHeatmapBean.selectedSample}" style="display:none; visibility: hidden;">
@@ -88,7 +89,6 @@
 	<t:commandLink id="analysisLink" forceId="true"  style="display:none; visibility: hidden;" actionListener="#{rnaSeqHeatmapBean.processAction}" >
 	</t:commandLink>
 	
- 		
 </h:panelGrid> 	
 	
 <table id="split">
@@ -115,11 +115,12 @@
 //		var cell_size = 15;
 		var cell_size_str = document.getElementById('rnaseqHeatmapForm:cellSize').value;
 		var cell_size = parseInt(cell_size_str);
-		var item = document.getElementById('rnaseqHeatmapForm:sampleId');
-		var item2 = document.getElementById('analysisLink');
+		var sample = document.getElementById('rnaseqHeatmapForm:sampleId');
+		var gene = document.getElementById('rnaseqHeatmapForm:selectedGene');
+		var item = document.getElementById('analysisLink');
 		
 		
-		seq_heatmap_display(url, "#chart", "Default", cell_size, item, item2, -1);
+		seq_heatmap_display(url, "#chart", "Default", cell_size, sample, gene, item);
 /*
 		var sliderOpts = {
 				   value: 15,
@@ -128,7 +129,7 @@
 				   animate: true,
 				   change: function( event, ui ) {
 				   		update_heatmap("#chart", ui.value);
-				   		seq_heatmap_display(url, "#chart", "Default",ui.value, item, item2);
+				   		seq_heatmap_display(url, "#chart", "Default",ui.value, sample, gene, item);
 				   }
 		};
 	   $( "#slider" ).slider(sliderOpts);
@@ -143,7 +144,7 @@
 		   cell_size = cell_size - 2;
 		   document.getElementById('rnaseqHeatmapForm:cellSize').value = '' + cell_size;
 		   update_heatmap("#chart");
-		   seq_heatmap_display(url, "#chart", "Default",cell_size, item, item2, 4);
+		   seq_heatmap_display(url, "#chart", "Default",cell_size, sample, gene, item);
 	   });
 
 	   $("#cell-increase").button({
@@ -156,7 +157,7 @@
 		   cell_size = cell_size + 2;
 		   document.getElementById('rnaseqHeatmapForm:cellSize').value = '' + cell_size;
 		   update_heatmap("#chart");
-		   seq_heatmap_display(url, "#chart", "Default",cell_size, item, item2, 2);
+		   seq_heatmap_display(url, "#chart", "Default",cell_size, sample, gene, item);
 	   });
   
  }); 
