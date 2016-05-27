@@ -454,7 +454,7 @@ function findExpressionNotes(){
 				        
 				        <h:outputText value="Contributors:" />
 						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.authors}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}"/>
-						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Homo sapiens'}"/>
+						<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.sourceLab}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Homo sapiens'}"/>
 						
 						
 						<h:outputText value="Submitted By:" />
@@ -463,7 +463,8 @@ function findExpressionNotes(){
 	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{ishSubmissionBean.ishSubmissionModel.submitter.id}" />     	
 				                    <f:ajax execute="lastbutton" render=":dialogform" />
 				                </h:commandLink>
-				                <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" />
+				                <h:outputText title="#{ishSubmissionBean.ishSubmissionModel.submitter.fullAddress}"  value="#{ishSubmissionBean.ishSubmissionModel.submitter.displayAddress}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}"/>
+				                <h:outputText value="#{ishSubmissionBean.ishSubmissionModel.sourceLab}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Homo sapiens'}"/>
 						</h:panelGroup>
 						
 						<ui:remove>
