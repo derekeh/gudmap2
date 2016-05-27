@@ -802,7 +802,7 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
     
 }
 
-function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, control, idx) {
+function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gene, control) {
     var cellSize = cell_size; //5; //10; //20;//14;
     var sortgeneidx = -1;//idx;
 //  var svg;
@@ -818,8 +818,10 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
         var arr = data.data;
         var maxvalues = data.maxvalues;
         
-        var ids = data.ids
+        var ids = data.ids;
         var genes = data.genes;
+        var geneidx = genes.indexOf(gene.value);
+
         var samples = data.samples;
         var row_number = arr.length;
         var col_number = arr[0].length;
@@ -832,8 +834,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
         var hccol = [];
         for (i=1; i<samples.length; i++)
         	hccol.push(1*i);
-      
-
+                     
 	   	var margin = { top: 160, right: 10, bottom: 50, left: 10 };
 
 
@@ -903,7 +904,13 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
 	    	.attr("class", function (d,i) { return "geneLabel mono r"+i;} ) 
 	    	.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
 	    	.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
-            .on("click", function(d,i) {rowSortOrder=!rowSortOrder; sortbylabel("r",i,rowSortOrder);d3.select("#order").property("selectedIndex", 4).node().focus();;});
+            .on("click", function(d,i) {
+            	alert(d);
+            	gene.setAttribute("value", d);
+            	rowSortOrder=!rowSortOrder; 
+            	sortbylabel("r",i,rowSortOrder);
+            	d3.select("#order").property("selectedIndex", 4).node().focus();;
+            });
 	   	
 	   	
     	// display samples
@@ -920,7 +927,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
     	            {
     	                title: 'Sort all genes in sample',
     	                action: function(elm, d, i){
-    	                	item.setAttribute("value", d);
+    	                	sample.setAttribute("value", d);
     	                	eventFire(control,'click');
 //    	    		        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
     	                }
@@ -1023,12 +1030,13 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, item, contr
 		        d3.selectAll(".colLabel").classed("text-selected",function(c,ci){ return ci==i;});
 			}); 
 
-
-		if (sortgeneidx != -1) {
+		// if previously sorted by gene - then resort by gene
+        if (geneidx != -1){	
+        	alert("sorting by gene");
 			rowSortOrder=!rowSortOrder; 
-			sortbylabel("r",sortgeneidx,rowSortOrder);
-			d3.select("#order").property("selectedIndex", 4).node().focus();
+			sortbylabel("r",geneidx,rowSortOrder);
 		}
+
 		
 		// display selected cell data
 		var tableHeaders = ["Ensemble ID", "Gene","Sample","Value","Series"];

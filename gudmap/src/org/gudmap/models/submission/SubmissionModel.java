@@ -47,6 +47,7 @@ public class SubmissionModel {
     protected ArrayList<String[]> linkedPublications;
     protected String[] acknowledgements;
     protected ArrayList<Object> linkedSubmissions;
+    protected String sourceLab; 			
 
     public SubmissionModel() {
     
@@ -359,6 +360,9 @@ public class SubmissionModel {
     
     public void setSource(String source) {
     	this.source = source;
+    	
+    	String[] arr = source.split("-");
+    	setSourceLab(arr[1] + " Lab");
     }
 
     public String getValidation() {
@@ -493,4 +497,12 @@ public class SubmissionModel {
         return stageAnatomy;
     }
 
+    public void setSourceLab(String sourceLab) {
+        this.sourceLab = sourceLab;
+    }
+
+    public String getSourceLab() {
+        return sourceLab;
+    }
+    
 }

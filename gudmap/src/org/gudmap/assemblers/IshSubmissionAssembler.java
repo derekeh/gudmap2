@@ -80,6 +80,7 @@ public class IshSubmissionAssembler {
 		ishSubmissionModel.setAssayType(assayType);
 		ishSubmissionModel.setArchiveId(submissionModel.getArchiveId());
 		ishSubmissionModel.setBatchId(submissionModel.getBatchId());
+		ishSubmissionModel.setSourceLab(submissionModel.getSourceLab());
 		//This is for the old tree. Don't need anymore
 		//ishSubmissionModel.setAnnotationTree(annotationTree);
 		ishSubmissionModel.setExpressionDetailModel(expressionDetailModel);

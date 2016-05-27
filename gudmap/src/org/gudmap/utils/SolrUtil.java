@@ -1,37 +1,24 @@
 package org.gudmap.utils;
 
-//import java.io.File;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 //import java.util.ResourceBundle;
 import java.util.Set;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
-
-//import javax.faces.context.FacesContext;
-//import javax.xml.parsers.ParserConfigurationException;
-
-
-
-
 
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.core.CoreContainer;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
-//import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
-//import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.request.LukeRequest;
@@ -39,41 +26,25 @@ import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.PivotField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.response.SolrQueryResponse;
 
-
-//import org.xml.sax.SAXException;
 
 
 /**
- * @author Bernie
- * Bernard Haggarty 13/03/2013 
+ * <h1>SolrUtil</h1>
+ * The SolrUtil class contains the methods to connect and run the Solr Search engine
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
  */
 public class SolrUtil {
-	
-	protected boolean debug = false;
-    static boolean timer = true; // false only builds top level of tree
-	
-	
-
-	
-	int ishExpressionCount = 0;
-
-	
-//	List<Integer> ishStages;
-	
-	String genelistids;
-	String genes;
-	
+		
 	public CoreContainer container;
 	
 	public HttpSolrClient insitu_server;
 	public HttpSolrClient genes_server;
 	public HttpSolrClient genelists_server;
-//	public HttpSolrClient microarray_server;
-//	public HttpSolrClient series_server;
 	public HttpSolrClient samples_server;
-//	public HttpSolrClient ng_series_server;
 	public HttpSolrClient ng_samples_server;
 	public HttpSolrClient tissues_server;
 	public HttpSolrClient mouse_strain_server;
@@ -84,15 +55,16 @@ public class SolrUtil {
 	public Set<String> insitu_schema;
 	public Set<String> genes_schema;
 	public Set<String> genelists_schema;
-//	public Set<String> microarray_schema;
-//	public Set<String> series_schema;
+
 	public Set<String> samples_schema;
-//	public Set<String> ng_series_schema;
 	public Set<String> ng_samples_schema;
 	public Set<String> tissues_schema;
 	public Set<String> mouse_strain_schema;
 	public Set<String> image_schema;
 		
+	public int ishExpressionCount = 0;	
+	public String genelistids;
+	public String genes;
 	public String searchString = null;
 	
 	public SolrUtil(){
@@ -112,15 +84,10 @@ public class SolrUtil {
 //			e.printStackTrace();
 //		}
 		
-		insitu_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_insitu" );
-		
-		genes_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genes" );
-		
+		insitu_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_insitu" );		
+		genes_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genes" );		
 		genelists_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_genelists" );
-//		microarray_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_microarray" );
-//		series_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_series" );
 		samples_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_samples" );		
-//		ng_series_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_nextgen_series" );
 		ng_samples_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_nextgen_samples" );		
 		tissues_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_tissues" );		
 		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_mousestrains" );		
@@ -129,13 +96,10 @@ public class SolrUtil {
 		web_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_web");
 		
 		
-//    	microarray_schema = getMicroarraySchema();
     	insitu_schema = getInsituSchema();
 		genes_schema = getGeneSchema();
 		genelists_schema = getGeneListsSchema();
-//		series_schema = getSeriesSchema();
 		samples_schema = getSamplesSchema();
-//		ng_series_schema = getSequenceSeriesSchema();
 		ng_samples_schema = getSequenceSamplesSchema();
 		tissues_schema = getTissuesSchema();
 		mouse_strain_schema = getMouseStrainsSchema();
@@ -144,43 +108,65 @@ public class SolrUtil {
 
 		
 	}
+
 	
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_insitu index
+	 */
 	public HttpSolrClient getInsituServer(){
 		return insitu_server;
 	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_genes index
+	 */
 	public HttpSolrClient getGenesServer(){
 		return genes_server;
 	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_genelistss index
+	 */
 	public HttpSolrClient getGenelistsServer(){
 		return genelists_server;
 	}
-//	public HttpSolrClient getMicroarrayServer(){
-//		return microarray_server;
-//	}
-//	public HttpSolrClient getSeriesServer(){
-//		return series_server;
-//	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_samples index
+	 */
 	public HttpSolrClient getSamplesServer(){
 		return samples_server;
 	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_tissues index
+	 */
 	public HttpSolrClient getTissuesServer(){
 		return tissues_server;
 	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_mousestrains index
+	 */
 	public HttpSolrClient getMouseStrainServer(){
 		return mouse_strain_server;
 	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_images index
+	 */
 	public HttpSolrClient getImageServer(){
 		return image_server;
 	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_nextgen_samples index
+	 */
 	public HttpSolrClient getNextGenSamplesServer(){
 		return ng_samples_server;
 	}
-//	public HttpSolrClient getNextGenSeriesServer(){
-//		return ng_series_server;
-//	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_tutorial index
+	 */
 	public HttpSolrClient getTutorialServer(){
 		return tutorial_server;
 	}
+	/**
+	 * @return Returns the HttpSolrClient instance connected to the gudmap_web index
+	 */
 	public HttpSolrClient getWebServer(){
 		return web_server;
 	}
@@ -237,6 +223,13 @@ public class SolrUtil {
 		return updatedfilters;		
 	}
 	
+	/**
+	 * This method returns a modified query string. The query is modified by adding the wildcard symbol
+	 * to each unreserved word in the query string
+	 * ie sox AND bladder -> sox* AND bladder*
+	 * @param queryString This is the search query string
+	 * @return String This returns modified query string
+	 */
 	public String setWidcard(String q){
 		String query = "";
 		String ops = "AND OR NOT";
@@ -254,11 +247,22 @@ public class SolrUtil {
 	}
     //***************************** INSITU METHODS *****************************************************
 
-
+	/**
+	 * This method return the count of in-situs for a search query
+	 * @param queryString The main query string for retrieving relevant documents'
+	 * @return int This returns the count of the query
+	 */
     public int getInsituCount(String queryString){
     	return getInsituCount(queryString, null);
     }
-    
+
+	/**
+	 * This method return the count of in-situs for a search query with
+	 * modifying filter
+	 * @param queryString The main query string for retrieving relevant documents'
+	 * @param filter The filter used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getInsituCount(String queryString, String filter){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -289,7 +293,14 @@ public class SolrUtil {
         return  insituCount;
     }
 
-	// method to retrieve the Insitu count for the results page
+	/**
+	 * This method return the count of in-situs for a search query with
+	 * modifying filter and modifying filter list
+	 * @param queryString The main query string for retrieving relevant documents'
+	 * @param filter The filter used to modify the query
+	 * @param filters The list of filters used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getInsituCount(String queryString, String filter, List<String> filters) throws SolrServerException{   	
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -340,6 +351,13 @@ public class SolrUtil {
        return count;    
     }
     
+	/**
+	 * This method return the count of in-situs for a search query with
+	 * modifying filter and modifying filter list
+	 * @param queryString The main query string for retrieving relevant documents'
+	 * @param filters The list of filters used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getInsituFilteredCount(String queryString, HashMap<String,String> filters)
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -500,8 +518,18 @@ public class SolrUtil {
         return ishStages;    
     }
     
-    
-    	// method to retrieve the Insitu data for the results page
+
+    /**
+     * This method retuns a SolrDocumentList for a query on the Solr in-situ index
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters The filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return sdl The SolrDocumentList
+     * @throws SolrServerException
+     */
     public SolrDocumentList getInsituData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -642,11 +670,23 @@ public class SolrUtil {
     
     //***************************** GENE METHODS *****************************************************
 
-    public int getGeneCount(String query){ 
+	/**
+	 * This method return the count of genes for a search query
+	 * @param queryString This is the search query
+	 * @return int This returns the count of the query
+	 */
+   public int getGeneCount(String query){ 
     	return getGeneCount(query, null);
     }
     
     
+	/**
+	 * This method return the count of genes for a search query with
+	 * modifying filter and modifying filter list
+	 * @param queryString This is the search query
+	 * @param filters The list of filters used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getGeneCount(String queryString, HashMap<String,String> filters)
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -685,6 +725,13 @@ public class SolrUtil {
         return count;
     }
 
+	/**
+	 * This method return the count of genes for a search query with
+	 * modifying filter
+	 * @param queryString This is the search query
+	 * @param filter The filter used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getGeneFilteredCount(String queryString, String filter)
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -717,6 +764,13 @@ public class SolrUtil {
         return count;
     }
     
+	/**
+	 * This method return the count of genes for a search query with
+	 * modifying filter
+	 * @param queryString This is the search query
+	 * @param filter The filter used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getGeneCount2(String queryString, String filter)
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -778,8 +832,18 @@ public class SolrUtil {
         return count;
     }       
     
-
-    // returns a list of genes from solr for a given query and filter setting   
+  
+    /**
+     * This method retuns a SolrDocumentList for a query on the Solr genes index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return sdl The SolrDocumentList
+     * @throws SolrServerException
+     */
     public SolrDocumentList getGudmapGenes(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -840,7 +904,11 @@ public class SolrUtil {
 
 
 
-	// returns a list of genes from solr for a given string of GenelistIds  
+    /**
+     * This method returns a string of genes for a query on the Solr genelists index
+     * @param queryString
+     * @return
+     */
     public String getGenesFromGenelistId(String queryString){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -922,11 +990,23 @@ public class SolrUtil {
 
     //***************************** SEQUENCES METHODS *****************************************************
     
+	/**
+	 * This method return the count of next gen sequences for a search query
+	 * @param queryString This is the search query
+	 * @return int This returns the count of the query
+	 */
     public int getSequencesCount(String query){ 
     	return getSequencesCount(query, null);
     }
     
     
+	/**
+	 * This method return the count of next gen sequences for a search query with
+	 * modifying filter and modifying filter list
+	 * @param queryString This is the search query
+	 * @param filters The list of filters used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getSequencesCount(String queryString, HashMap<String,String> filters)
     {    			
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -966,6 +1046,17 @@ public class SolrUtil {
         return count;
     }
 
+    /**
+     * This method retuns a SolrDocumentList for a query on the Solr next gen sequences index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return sdl The SolrDocumentList
+     * @throws SolrServerException
+     */
     public SolrDocumentList getSequencesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1037,7 +1128,11 @@ public class SolrUtil {
     
     //***************************** GENELISTS METHODS *****************************************************
 
-    // method to retrieve the counts for Genelists node to be displayed on tree control
+	/**
+	 * This method return the count of genelists for a search query
+	 * @param queryString This is the search query
+	 * @return int This returns the count of the query
+	 */
     public void queryGenelists(String queryString)
     {
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1084,7 +1179,13 @@ public class SolrUtil {
 
     }
     
-	// method to retrieve the Genelist count for the results page
+	/**
+	 * This method return the count of genelists for a search query with
+	 * modifying filter and modifying filter list
+	 * @param queryString This is the search query
+	 * @param filters The list of filters used to modify the query
+	 * @return int This returns the count of the query
+	 */    
     public int getGenelistCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1124,7 +1225,12 @@ public class SolrUtil {
         return (int)count;    
     }
 
-	// method to retrieve the Genelist data for the results page
+    /**
+     * This method retuns a SolrDocumentList for a query on the Solr genelists index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @return sdl The SolrDocumentList
+     */
      public SolrDocumentList getGenelistData(String queryString, HashMap<String,String> filters){
 
  		if (queryString == "" || queryString == null || queryString == "*")
@@ -1186,7 +1292,13 @@ public class SolrUtil {
     
     //***************************** TISSUE METHODS *****************************************************
 
-	// method to retrieve the Tissues count for the results page
+ 	/**
+ 	 * This method return the count of tissues for a search query with
+ 	 * modifying filter and modifying filter list
+ 	 * @param queryString This is the search query
+ 	 * @param filters The list of filters used to modify the query
+ 	 * @return int This returns the count of the query
+ 	 */    
     public int getTissueCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1227,7 +1339,16 @@ public class SolrUtil {
     }
  
 
-    // method to retrieve the Tissues data for the results page
+    /**
+     * This method retuns a QueryResponse for a query on the tissues index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return qr The QueryResponse
+     */
     public QueryResponse getTissueData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1418,7 +1539,13 @@ public class SolrUtil {
     
     //***************************** SAMPLE METHODS *****************************************************
 
-    // method to retrieve the Samples count for the results page
+ 	/**
+ 	 * This method return the count of samples for a search query with
+ 	 * modifying filter and modifying filter list
+ 	 * @param queryString This is the search query
+ 	 * @param filters The list of filters used to modify the query
+ 	 * @return int This returns the count of the query
+ 	 */    
     public int getSamplesFilteredCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1471,7 +1598,16 @@ public class SolrUtil {
         return count;    
     }
 
-	// method to retrieve the sample geo ids for the results page
+    /**
+     * This method retuns a list of sample geo ids for a query on the samples index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return ids The list of sample geo ids
+     */
     public List<String> getSamplesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
  
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1527,7 +1663,16 @@ public class SolrUtil {
         return ids;
     }
    
-	// method to retrieve the Samples data for the results page
+    /**
+     * This method retuns a SolrDocumentList for a query on the samples index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return sdl The SolrDocumentList
+     */
     public SolrDocumentList getSamplesViewData(List<String> ids, String column, boolean ascending, int offset, int rows){
     	
     	SolrDocumentList sdl = new SolrDocumentList();
@@ -1746,11 +1891,23 @@ public class SolrUtil {
     //***************************** TUTORIAL METHODS *****************************************************
 
 
+ 	/**
+ 	 * This method return the count of tutorials for a search query
+ 	 * @param queryString This is the search query
+ 	 * @return int This returns the count of the query
+ 	 */
     public int getTutorialCount(String queryString){
     	return getTutorialCount(queryString, null);
     }
     
-	// method to retrieve the Tutorials count for the results page
+ 	/**
+ 	 * This method return the count of tutorials for a search query with
+ 	 * modifying filter and modifying filter list
+ 	 * @param queryString This is the search query
+ 	 * @param filters The list of filters used to modify the query
+ 	 * @return int This returns the count of the query
+ 	 */    
+
     public int getTutorialCount(String queryString, HashMap<String,String> filters){
 
     	long count = 0;
@@ -1789,6 +1946,16 @@ public class SolrUtil {
         return (int)count;    
     }
 
+    /**
+     * This method retuns a SolrDocumentList for a query on the tutorials index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return sdl The SolrDocumentList
+     */
     public SolrDocumentList getTutorialData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1859,7 +2026,13 @@ public class SolrUtil {
     
     //***************************** MOUSE STRAINS METHODS *****************************************************
     
-    // method to retrieve the Mouse Strails count for the results page
+ 	/**
+ 	 * This method return the count of mouse strains for a search query with
+ 	 * modifying filter and modifying filter list
+ 	 * @param queryString This is the search query
+ 	 * @param filters The list of filters used to modify the query
+ 	 * @return int This returns the count of the query
+ 	 */    
     public int getMouseStrainsCount(String queryString, HashMap<String,String> filters){
 
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1902,7 +2075,16 @@ public class SolrUtil {
     }
 
 
-    // method to retrieve the Mouse Strains data for the results page
+    /**
+     * This method retuns a SolrDocumentList for a query on the mouse strains index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return sdl The SolrDocumentList
+     */
     public SolrDocumentList getMouseStrainsData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -1968,7 +2150,13 @@ public class SolrUtil {
     //***************************** IMAGES METHODS *****************************************************
 
 
-    // method to retrieve the Images count for the results page
+ 	/**
+ 	 * This method return the count of images for a search query with
+ 	 * modifying filter and modifying filter list
+ 	 * @param queryString This is the search query
+ 	 * @param filters The list of filters used to modify the query
+ 	 * @return int This returns the count of the query
+ 	 */    
     public int getImagesCount(String queryString, HashMap<String,String> filters){
 
     	long count = 0;
@@ -2010,7 +2198,16 @@ public class SolrUtil {
     }
 
 
-    // method to retrieve the Mouse Strains data for the results page
+    /**
+     * This method retuns a SolrDocumentList for a query on the images index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return sdl The SolrDocumentList
+     */
     public SolrDocumentList getImagesData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -2083,11 +2280,23 @@ public class SolrUtil {
     //***************************** WEB METHODS *****************************************************
 
 
-    public int getWebCount(String queryString){
+ 	/**
+ 	 * This method return the count of web pages for a search query with
+ 	 * modifying filter and modifying filter list
+ 	 * @param queryString This is the search query
+ 	 * @return int This returns the count of the query
+ 	 */    
+   public int getWebCount(String queryString){
     	return getTutorialCount(queryString, null);
     }
     
-	// method to retrieve the Tutorials count for the results page
+ 	/**
+ 	 * This method return the count of web pages for a search query with
+ 	 * modifying filter and modifying filter list
+ 	 * @param queryString This is the search query
+ 	 * @param filters The list of filters used to modify the query
+ 	 * @return int This returns the count of the query
+ 	 */    
     public int getWebCount(String queryString, HashMap<String,String> filters){
 
     	long count = 0;
@@ -2117,6 +2326,16 @@ public class SolrUtil {
         return (int)count;    
     }
 
+    /**
+     * This method retuns a SolrDocumentList for a query on the web pages index
+     * @param queryString The solr search query string
+     * @param filters The filters to be applied to the solr search
+     * @param column The sort column
+     * @param ascending The sort direction
+     * @param offset The start row in the SolrDocumentList
+     * @param rows The number of rows to retun in the SolrDocumentList
+     * @return sdl The SolrDocumentList
+     */
     public QueryResponse getWebData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
 		if (queryString == "" || queryString == null || queryString == "*")
@@ -2150,7 +2369,6 @@ public class SolrUtil {
 	        parameters.setHighlightSnippets(10);
 
 	        qr = web_server.query(parameters);
- //           sdl = qr.getResults();
 
         }
         catch (SolrServerException e)
@@ -2175,23 +2393,12 @@ public class SolrUtil {
     	return genes;
     }
     
-    
     public int getIshExpressionCount(){
     	return ishExpressionCount;
     }
-
-    
     
     public void setIshExpressionCount(PivotField p){
     	ishExpressionCount += p.getPivot().size();
-    	
-    	if (debug){
-	    	System.out.println("expression count = " + ishExpressionCount);
-			for( PivotField pf : p.getPivot() ){
-				System.out.println("id = " + pf.getValue());
-			}
-    	}
-
     }
 
     public  Set<String> getGeneSchema() {
