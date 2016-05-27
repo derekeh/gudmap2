@@ -35,12 +35,14 @@ public class InsituTablePageBeanAssembler {
 	private String expressionJoin;
 	private String specimenWhereclause;
 	private int batch=0;
+	private String submitter;
 	
 	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
 		if(Globals.getParameterValue("batch")!=null)
 			batch=Integer.parseInt(Globals.getParameterValue("batch"));
 		
-
+		if(Globals.getParameterValue("submitter")!=null)
+			submitter=Globals.getParameterValue("submitter");
 		
 		this.paramSQL=paramSQL;
 		this.assayType=assayType;
@@ -56,6 +58,7 @@ public class InsituTablePageBeanAssembler {
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
 		if(batch>0){whereclause+=" SUB_BATCH="+batch+" AND ";}
+		if(submitter!=null){whereclause+=" SUB_SOURCE='"+submitter+"' AND ";}
 		
 		if(assayType.equals("TG"))
 			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");
@@ -130,6 +133,7 @@ public class InsituTablePageBeanAssembler {
 		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
 		if(batch>0)
 			sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
+		if(submitter!=null){sql=sql.replace(" WHERE ", " WHERE SUB_SOURCE='"+submitter+"' AND ");}
 		try
 		{
 				con = Globals.getDatasource().getConnection();
@@ -176,6 +180,8 @@ public class InsituTablePageBeanAssembler {
 				//is it a batch query?
 				if(batch>0)
 					sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
+				
+				if(submitter!=null){sql=sql.replace(" WHERE ", " WHERE SUB_SOURCE='"+submitter+"' AND ");}
 				
 				if(assayType.equals("INSITU")){
 					sql = sql.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC','TG')");

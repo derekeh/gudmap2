@@ -26,133 +26,14 @@
 			
 			    $(document).ready(function () {
 			
-			        // Build the chart
-			        $('#container').highcharts({
-			            chart: {
-			                plotBackgroundColor: null,
-			                plotBorderWidth: null,
-			                plotShadow: false,
-			                type: 'pie'
-			            },
-			            title: {
-			                text: 'GUDMAP Database Entries (Public)'
-			            },
-			            tooltip: {
-			                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br />'
-			            },
-			            plotOptions: {
-			                pie: {
-			                    allowPointSelect: true,
-			                    cursor: 'pointer',
-			                    dataLabels: {
-			                        enabled: true,
-			                        format: '{point.name}: ({point.x:.1f}% of genes)'
-			                    },
-			                    showInLegend: true
-			                }
-			            },
-			            series: [{
-			                name: 'Entries',
-			                //colorByPoint: true,
-			                point: {
-			    				events: {
-			    					click: function(e) {
-			    						//this.slice();
-			    						//console.log(e);
-			    						location.href = e.point.url;
-			    						e.preventDefault();
-			    					}
-			            			//,
-			    					//legendItemClick: function(e) {
-			    					//	e.preventDefault();
-			    					//	e.point.drilldown:'STAGES';
-			    					//}
-			    				}
-			    			},
-			                data: [{
-			                    name: 'WISH',
-			                    color: 'lightblue',
-			                    y: #{chartBean.chartModelList.get(0).wish_percent},
-			                    url: '/gudmap/db/browseWishTablePage.jsf',
-			                    x: #{chartBean.chartModelList.get(0).wish_gene_percent}
-			                }, {
-			                    name: 'SISH',
-			                    y: #{chartBean.chartModelList.get(0).sish_percent},
-			                    color: 'orange',
-			                    sliced: false,
-			                    selected: false,
-			                    url: '/gudmap/db/browseSishTablePage.jsf',
-			                    x: #{chartBean.chartModelList.get(0).sish_gene_percent}
-			                }, {
-			                    name: 'IHC',
-			                    color: 'yellow',
-			                    y: #{chartBean.chartModelList.get(0).ihc_percent},
-			                    url: '/gudmap/db/browseIhcTablePage.jsf',
-			                    x: #{chartBean.chartModelList.get(0).ihc_gene_percent}
-			                }, {
-			                    name: 'TG',
-			                    color: 'darkblue',
-			                    y: #{chartBean.chartModelList.get(0).tg_percent},
-			                    url: '/gudmap/db/browseTgTablePage.jsf',
-			                    x: #{chartBean.chartModelList.get(0).tg_gene_percent}
-			                }, {
-			                    name: 'OPT',
-			                    color: 'lightgreen',
-			                    y: #{chartBean.chartModelList.get(0).opt_percent},
-			                    url: '/gudmap/db/browseOptTablePage.jsf',
-			                    x: #{chartBean.chartModelList.get(0).tg_gene_percent}
-			                }, {
-			                    name: 'Sequence',
-			                    color: 'red',
-			                    y: #{chartBean.chartModelList.get(0).sequence_percent},
-			                    url: '/gudmap/db/browseSeqSampleTablePage.jsf',
-			                    x: 0
-			                },{
-			                    name: 'Microarray',
-			                    color: 'grey',
-			                    y: #{chartBean.chartModelList.get(0).microarray_percent},
-			                    url: '/gudmap/db/browseMicSampleTablePage.jsf',
-			                    x:0
-			                }]
-			            }]
-			           /* ,
-			            drilldown: {
-				            series: [{
-				                name: 'STAGES',
-				                id: 'STAGES',
-				                data: [
-				                    ['Ahern', #{chartBean.chartModelDrillList.get(0).wish_lab}],
-				                    ['Capel', #{chartBean.chartModelDrillList.get(1).wish_lab}],
-				                    ['Cohn', #{chartBean.chartModelDrillList.get(2).wish_lab}],
-				                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).wish_lab}],
-				                    ['Gaido', #{chartBean.chartModelDrillList.get(4).wish_lab}],
-				                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).wish_lab}],
-				                    ['Jain', #{chartBean.chartModelDrillList.get(6).wish_lab}],
-				                    ['Keast', #{chartBean.chartModelDrillList.get(7).wish_lab}],
-				                    ['Lessard', #{chartBean.chartModelDrillList.get(8).wish_lab}],
-				                    ['Little', #{chartBean.chartModelDrillList.get(9).wish_lab}],
-				                    ['McMahon', #{chartBean.chartModelDrillList.get(10).wish_lab}],
-				                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).wish_lab}],
-				                    ['Potter', #{chartBean.chartModelDrillList.get(12).wish_lab}],
-				                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).wish_lab}],
-				                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).wish_lab}],
-				                    ['Vezina', #{chartBean.chartModelDrillList.get(15).wish_lab}]
-				                ]
-				            }
-				            ]
-				        }
-			            */
-			            
-			        });
 			        
-			        /**************************/
 			        
 			         $('#container2').highcharts({
 			        chart: {
 			            type: 'pie'
 			        },
 			        title: {
-			            text: 'GUDMAP ENTRIES PER LAB'
+			            text: 'DATABASE ENTRIES BY TYPE AND LAB'
 			        },
 			        subtitle: {
 			            text: 'Click the slices to view labs. Source: gudmap.org.'
@@ -162,7 +43,9 @@
 			                dataLabels: {
 			                    enabled: true,
 			                    format: '{point.name}: {point.y:.1f}%'
-			                }
+			                },
+			                allowPointSelect: true,
+		                    cursor: 'pointer',
 			            }
 			        },
 			
@@ -173,6 +56,7 @@
 			        series: [{
 			            name: 'Entries',
 			            colorByPoint: true,
+			           
 			            data: [{
 		                    name: 'WISH',
 		                    color: 'lightblue',
@@ -221,26 +105,67 @@
 		                }]
 			        }],
 			        drilldown: {
+			        	
 			            series: [{
 			                name: 'WISH',
-			                id: 'WISH',
+			                id: 'WISH',	
+			                point: {
+			    				events: {
+			    					click: function(e) {
+			    						location.href = e.point.url;
+			    						e.preventDefault();
+			    					}
+			    				}
+			    			},
 			                data: [
-			                    ['Ahern', #{chartBean.chartModelDrillList.get(0).wish_lab}],
-			                    ['Capel', #{chartBean.chartModelDrillList.get(1).wish_lab}],
-			                    ['Cohn', #{chartBean.chartModelDrillList.get(2).wish_lab}],
-			                    ['EuReGene', #{chartBean.chartModelDrillList.get(3).wish_lab}],
-			                    ['Gaido', #{chartBean.chartModelDrillList.get(4).wish_lab}],
-			                    ['Humphreys', #{chartBean.chartModelDrillList.get(5).wish_lab}],
-			                    ['Jain', #{chartBean.chartModelDrillList.get(6).wish_lab}],
-			                    ['Keast', #{chartBean.chartModelDrillList.get(7).wish_lab}],
-			                    ['Lessard', #{chartBean.chartModelDrillList.get(8).wish_lab}],
-			                    ['Little', #{chartBean.chartModelDrillList.get(9).wish_lab}],
-			                    ['McMahon', #{chartBean.chartModelDrillList.get(10).wish_lab}],
-			                    ['Mendelsohn', #{chartBean.chartModelDrillList.get(11).wish_lab}],
-			                    ['Potter', #{chartBean.chartModelDrillList.get(12).wish_lab}],
-			                    ['Potter/Gomez', #{chartBean.chartModelDrillList.get(13).wish_lab}],
-			                    ['Southard-Smith', #{chartBean.chartModelDrillList.get(14).wish_lab}],
-			                    ['Vezina', #{chartBean.chartModelDrillList.get(15).wish_lab}]
+								{name: 'Ahern',
+								y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+								{name: 'Capel',
+								y: #{chartBean.chartModelDrillList.get(1).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+								{name: 'Cohn',
+								y: #{chartBean.chartModelDrillList.get(2).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+								{name: 'EuReGene',
+								y: #{chartBean.chartModelDrillList.get(3).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+								{name: 'Gaido',
+								y: #{chartBean.chartModelDrillList.get(4).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+								{name: 'Humphreys',
+								y: #{chartBean.chartModelDrillList.get(5).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+								{name: 'Jain',
+								y: #{chartBean.chartModelDrillList.get(6).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'},
+								{name: 'Keast',
+								y: #{chartBean.chartModelDrillList.get(7).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Keast'},
+								{name: 'Lessard',
+								y: #{chartBean.chartModelDrillList.get(8).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Lessard'},
+								{name: 'Little',
+								y: #{chartBean.chartModelDrillList.get(9).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Little'},
+								{name: 'McMahon',
+								y: #{chartBean.chartModelDrillList.get(10).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-McMahon'},
+								{name: 'Mendelsohn',
+								y: #{chartBean.chartModelDrillList.get(11).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Mendelsohn'},
+								{name: 'Potter',
+								y: #{chartBean.chartModelDrillList.get(12).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Potter'},
+								{name: 'Potter/Gomez',
+								y: #{chartBean.chartModelDrillList.get(13).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Potter/Gomez'},
+								{name: 'Southard-Smith',
+								y: #{chartBean.chartModelDrillList.get(14).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Southard-Smith'},
+								{name: 'Vezina',
+								y: #{chartBean.chartModelDrillList.get(15).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Vezina'}
 			                ]
 			            }, {
 			                name: 'SISH',
@@ -438,8 +363,6 @@
 		</script>
 	    <h1>Interactive Graphical Data Summary</h1>	
 	  
-	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-	    
 	    <div id="container2" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    
 	     <div id="container3" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
