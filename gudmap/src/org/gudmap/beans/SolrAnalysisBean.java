@@ -168,6 +168,7 @@ public class SolrAnalysisBean implements Serializable  {
 		createJSONObject(genelist);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createJSONObject(ArrayList<GenelistTreeInfo> genelist){
 		
 		JSONObject obj = new JSONObject();
@@ -205,6 +206,7 @@ public class SolrAnalysisBean implements Serializable  {
 	
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONArray createIsPublished(ArrayList<GenelistTreeInfo> genelist){
 
 		JSONArray  plist = new JSONArray();
@@ -279,6 +281,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return plist;		
 	
 	}
+	@SuppressWarnings("unchecked")
 	private JSONObject createPublished(ArrayList<GenelistTreeInfo> genelist){
 
 		// published datasets
@@ -317,6 +320,7 @@ public class SolrAnalysisBean implements Serializable  {
 		
 	
 	}
+	@SuppressWarnings("unchecked")
 	private JSONObject createUnpublished(ArrayList<GenelistTreeInfo> genelist){
 
 		ArrayList<GenelistTreeInfo> unpublishedGenelist = new ArrayList<GenelistTreeInfo>();
@@ -358,6 +362,7 @@ public class SolrAnalysisBean implements Serializable  {
 	
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createUnpublishedDatasets(ArrayList<GenelistTreeInfo> genelist, String dataset, int id){
 		
 		JSONObject obj = new JSONObject();		
@@ -402,6 +407,7 @@ public class SolrAnalysisBean implements Serializable  {
 				
 		return obj;
 	}	
+	@SuppressWarnings("unchecked")
 	private JSONObject createUnpublishedDatasets2(ArrayList<GenelistTreeInfo> genelist, String dataset, int id){
 		
 		JSONObject obj = new JSONObject();		
@@ -497,6 +503,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, int id){
 
 		JSONObject obj = new JSONObject();		
@@ -529,6 +536,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createMultiStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, int id){
 
 		System.out.println("dataset = "+ dataset + " stage = "+ stage);
@@ -575,6 +583,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createUnnamedSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
 
 		JSONObject obj = new JSONObject();
@@ -632,6 +641,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
 
 		JSONObject obj = new JSONObject();
@@ -689,6 +699,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONArray createLevelAll(ArrayList<GenelistTreeInfo> genelist){
 
 		JSONArray  list = new JSONArray();
@@ -747,6 +758,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONArray createLevelCluster(ArrayList<GenelistTreeInfo> genelist, String count){
 
 		ArrayList<GenelistTreeInfo> kList = new ArrayList<GenelistTreeInfo>();
@@ -782,6 +794,7 @@ public class SolrAnalysisBean implements Serializable  {
 
 	
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createPublishedDatasets(ArrayList<GenelistTreeInfo> genelist, String dataset, int id){
 		
 		JSONObject obj = new JSONObject();		
@@ -814,6 +827,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createPublisher(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, int id){
 		
 		JSONObject obj = new JSONObject();		
@@ -841,6 +855,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createPublisher2(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, int id){
 		
 		JSONObject obj = new JSONObject();		
@@ -902,6 +917,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createPublishedStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, String stage, int id){
 
 		JSONObject obj = new JSONObject();
@@ -929,6 +945,7 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONArray createPublishedNames(ArrayList<GenelistTreeInfo> genelist){
 	
 		JSONArray  list = new JSONArray();

@@ -79,7 +79,6 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	}
     
     public void setup() {
-//    	assembler=new SolrInsituAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -93,12 +92,10 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-//        totalRows = assembler.getCount(solrInput, filters);
         totalRows = solrTreeBean.getSolrUtil().getInsituFilteredCount(solrInput,filters);
-    	
-//     	dataList = assembler.getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
-     	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
-        // Set currentPage, totalPages and pages.
+      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
+
+      	// Set currentPage, totalPages and pages.
         currentPage = (totalRows / rowsPerPage) - ((totalRows - firstRow) / rowsPerPage) + 1;
         totalPages = (totalRows / rowsPerPage) + ((totalRows % rowsPerPage != 0) ? 1 : 0);
         int pagesLength = Math.min(pageRange, totalPages);
@@ -181,6 +178,19 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
     
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of InsituTableBeanModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of InsituTableBeanModels
+	 * @see InsituTableBeanModel
+     */
 	public List<InsituTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
@@ -201,6 +211,13 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
+	/**
+	 * This method creates a list of InsituTableBeanModels from the documents in the SolrDocumentList sdl.
+	 * 
+	 * @param sdl A SolrDocumentList	  
+	 * @return A List of InsituTableBeanModels
+	 * @see InsituTableBeanModel
+	 */
 	private List<InsituTableBeanModel> formatTableData(SolrDocumentList sdl){
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
@@ -267,6 +284,12 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		return list;
 	 }
 	
+	/**
+	 * This method takes a string and filters out the EMAP ID's.
+	 * 
+	 * @param tissues A string
+	 * @return A String containing EMAP ID's
+	 */
 	private String TissueFilter(String tissues){
 		// filter out the EMAP strings for the display
 		

@@ -181,6 +181,19 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
     
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of EditPageModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of EditPageModels
+     * @see EditPageModel
+     */
 	public List<EditPageModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<EditPageModel> list = new ArrayList<EditPageModel>();
@@ -191,6 +204,13 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
+	/**
+	 * This method creates a list of EditPageModels from the documents in the QueryResponse qr.
+	 * 
+	 * @param qr A solr QueryResponse	  
+	 * @return A List of EditPageModels
+     * @see EditPageModel
+	 */
 	private List<EditPageModel> formatTableData(QueryResponse qr){
 		
 		List<EditPageModel> list = new ArrayList<EditPageModel>();

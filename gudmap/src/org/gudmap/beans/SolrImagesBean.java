@@ -187,6 +187,19 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
     }
 
     
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of ImageDetailModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of ImageDetailModels
+ 	 * @see ImageDetailModel
+    */
 	public List<ImageDetailModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();
@@ -203,6 +216,13 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
+	/**
+	 * This method creates a list of ImageDetailModels from the documents in the SolrDocumentList sdl.
+	 * 
+	 * @param sdl A SolrDocumentList	  
+	 * @return A List of ImageDetailModels
+	 * @see ImageDetailModel
+	 */
 	private List<ImageDetailModel> formatTableData(SolrDocumentList sdl){
 		
 		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();

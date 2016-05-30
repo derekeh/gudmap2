@@ -383,6 +383,19 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
 
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of GeneStripModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of GeneStripModels
+	 * @see GeneStripModel
+     */
 	public List<GeneStripModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
@@ -403,6 +416,13 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		return geneIds;
 	}
 	
+	/**
+	 * This method creates a list of GeneStripModels from the documents in the SolrDocumentList sdl.
+	 * 
+	 * @param sdl A SolrDocumentList	  
+	 * @return A List of GeneStripModels
+	 * @see GeneStripModel
+	 */
 	public List<GeneStripModel> formatTableData(SolrDocumentList sdl){
 		
 		List<GeneStripModel> list = new ArrayList<GeneStripModel>();

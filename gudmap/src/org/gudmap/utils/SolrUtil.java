@@ -2438,14 +2438,16 @@ public class SolrUtil {
     	return genes;
     }
     
-    public int getIshExpressionCount(){
-    	return ishExpressionCount;
-    }
-    
-    public void setIshExpressionCount(PivotField p){
-    	ishExpressionCount += p.getPivot().size();
-    }
+//    public int getIshExpressionCount(){
+//    	return ishExpressionCount;
+//    }
+//    
+//    public void setIshExpressionCount(PivotField p){
+//    	ishExpressionCount += p.getPivot().size();
+//    }
 
+    //***************************** SCHEMA METHODS *****************************************************
+     
 	/**
 	 * @return A set containing the valid field names of the gudmap_genes index schema
 	 */

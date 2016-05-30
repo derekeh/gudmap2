@@ -29,6 +29,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * <h1>SolrFilter</h1>
+ * The SolrFilter class contains the methods to initialise and update the search filter used
+ * by the search facility
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2016 
+ */
 @Named(value="solrFilter")
 @SessionScoped
 public class SolrFilter implements Serializable {
@@ -167,6 +176,12 @@ public class SolrFilter implements Serializable {
 		toDateValue = val;
 	}	
 	
+	/**
+	 * This method returns a map of sources to be displayed in the Sources Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of sources
+	 */
 	public Map<String,String> getSourceList(){
 		
 		Map<String,String> sourcemap = new LinkedHashMap<String,String>();
@@ -204,21 +219,21 @@ public class SolrFilter implements Serializable {
 
 	public Map<String,String> getGeneList(){
 		
-		Map<String,String> genemap = new LinkedHashMap<String,String>();
+//		Map<String,String> genemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Anchor", "anchor");
 		map.put("Marker", "marker");
 			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        genemap.put(key, val);
-		}
+//	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+//	    while (it.hasNext()) {
+//	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//	        String key = (String)pair.getKey();
+//	        String val = (String)pair.getValue();
+//	        genemap.put(key, val);
+//		}
 
-		return genemap;
+		return map;
 	}	
 		
 	public ArrayList<String> getGeneValues(){
@@ -228,23 +243,30 @@ public class SolrFilter implements Serializable {
 		geneValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of species to be displayed in the Species Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of species
+	 */
 	public Map<String,String> getSpeciesList(){
 		
-		Map<String,String> speciesmap = new LinkedHashMap<String,String>();
+//		Map<String,String> speciesmap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Human", "Homo sapiens");
 		map.put("Mouse", "Mus musculus");
 			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        speciesmap.put(key, val);
-		}
+//	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+//	    while (it.hasNext()) {
+//	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//	        String key = (String)pair.getKey();
+//	        String val = (String)pair.getValue();
+//	        speciesmap.put(key, val);
+//		}
 
-		return speciesmap;
+//		return speciesmap;
+		return map;
 	}	
 		
 	public ArrayList<String> getSpeciesValues(){
@@ -254,24 +276,30 @@ public class SolrFilter implements Serializable {
 		speciesValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of sexes to be displayed in the Sex Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of sexes
+	 */
 	public Map<String,String> getSexList(){
 		
-		Map<String,String> sexmap = new LinkedHashMap<String,String>();
+//		Map<String,String> sexmap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Female", "female");
 		map.put("Male", "male");
 		map.put("Unknown", "unknown");
 			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        sexmap.put(key, val);
-		}
+//	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+//	    while (it.hasNext()) {
+//	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//	        String key = (String)pair.getKey();
+//	        String val = (String)pair.getValue();
+//	        sexmap.put(key, val);
+//		}
 
-		return sexmap;
+		return map;
 	}	
 		
 	public ArrayList<String> getSexValues(){
@@ -281,6 +309,12 @@ public class SolrFilter implements Serializable {
 		sexValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of assay types to be displayed in the Assay Types Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of assay types
+	 */
 	public Map<String,String> getAssayTypeList(){
 		
 		Map<String,String> assaytypemap = new LinkedHashMap<String,String>();
@@ -303,6 +337,12 @@ public class SolrFilter implements Serializable {
 		 assayTypeValues = val;
 	}	
 
+	/**
+	 * This method returns a map of specimen types to be displayed in the Specimen Types Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of specimen types
+	 */
 	public Map<String,String> getSpecimenTypeList(){
 		
 		Map<String,String> specimentypemap = new LinkedHashMap<String,String>();
@@ -327,6 +367,12 @@ public class SolrFilter implements Serializable {
 		specimenTypeValues = val;
 	}	
 
+	/**
+	 * This method returns a map of theiler stages to be displayed in the Theiler Stages Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of theiler stages
+	 */
 	public Map<String,String> getTheilerStageList(){
 		
 		Map<String,String> theilerstagemap = new LinkedHashMap<String,String>();
@@ -349,6 +395,12 @@ public class SolrFilter implements Serializable {
 		theilerStageValues = val;
 	}	
 
+	/**
+	 * This method returns a map of carnegie stages to be displayed in the Human Stages Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of carnegie stages
+	 */
 	public Map<String,String> getCarnegieStageList(){
 		
 		Map<String,String> carnegiestagemap = new LinkedHashMap<String,String>();
@@ -383,23 +435,29 @@ public class SolrFilter implements Serializable {
 		carnegieStageValues = val;
 	}	
 
+	/**
+	 * This method returns a map of image types to be displayed in the Image Type Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of image types
+	 */
 	public Map<String,String> getImageList(){
 		
-		Map<String,String> imagemap = new LinkedHashMap<String,String>();
+//		Map<String,String> imagemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Image", "image");
 		map.put("Schematic", "schematic");
 			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        imagemap.put(key, val);
-		}
+//	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
+//	    while (it.hasNext()) {
+//	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//	        String key = (String)pair.getKey();
+//	        String val = (String)pair.getValue();
+//	        imagemap.put(key, val);
+//		}
 
-		return imagemap;
+		return map;
 	}	
 		
 	public ArrayList<String> getImageValues(){
@@ -409,6 +467,12 @@ public class SolrFilter implements Serializable {
 		imageValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of expression types to be displayed in the Expression Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of expression types
+	 */
 	public Map<String,String> getExpressionList(){
 		
 		Map<String,String> expressionmap = new LinkedHashMap<String,String>();

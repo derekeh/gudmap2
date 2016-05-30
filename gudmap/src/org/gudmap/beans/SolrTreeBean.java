@@ -221,15 +221,15 @@ public class SolrTreeBean implements Serializable {
 	
 	////////////////// TUTORIAL ////////////////////////////
 	
-	public int getTutorialCount(){
-		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrFilter.getFilters();
-		return solrUtil.getTutorialCount(solrInput, filters);
-	}
+//	public int getTutorialCount(){
+//		HashMap<String,String> filters = new HashMap<String,String>();
+//		filters = solrFilter.getFilters();
+//		return solrUtil.getTutorialCount(solrInput, filters);
+//	}
 
-	public int getTutorialCount(HashMap<String,String> filters){
-		return solrUtil.getTutorialCount(solrInput, filters);
-	}
+//	public int getTutorialCount(HashMap<String,String> filters){
+//		return solrUtil.getTutorialCount(solrInput, filters);
+//	}
 	
 	////////////////// MOUSESTRAINS ////////////////////////////
 	

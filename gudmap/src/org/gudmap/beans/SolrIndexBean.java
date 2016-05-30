@@ -116,12 +116,6 @@ public class SolrIndexBean implements Serializable {
 	 * 
 	 * @return
 	 */
-	/**
-	 * @return
-	 */
-	/**
-	 * @return
-	 */
 	public String indexSamples(){
 		
 		HttpSolrClient server = solrUtil.getSamplesServer();
@@ -218,6 +212,11 @@ public class SolrIndexBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * This method generates a json file based on the geneId.
+	 * 
+	 * @param geneId
+	 */
 	private void createGenestripJSONFile(String geneId){
 		
 		try{
@@ -262,7 +261,6 @@ public class SolrIndexBean implements Serializable {
 	
 	private LinkedList<String> getLabels(String geneId){
 		
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> labels = new LinkedList<String>();
 		int colsize = 0;
 		
