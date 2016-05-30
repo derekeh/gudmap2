@@ -25,6 +25,8 @@ public class ChartBean {
 	
 	private ArrayList<ChartModel> chartModelList = null;
 	private ArrayList<ChartModel> chartModelDrillList = null;
+	private ArrayList<ChartModel> chartModelListAge = null;
+	private ArrayList<ChartModel> chartModelDrillListAge = null;
 	private ArrayList<ChartModel> chartModelBarList = null;
 	private Connection con;
 	private PreparedStatement ps;
@@ -42,7 +44,9 @@ public class ChartBean {
 	
 	public ChartBean() {
 		init();
+		initAge();
 		drillChart();
+		drillChartAge();
 		barChart();
 	}
 	
@@ -54,6 +58,16 @@ public class ChartBean {
 	public ArrayList<ChartModel> getChartModelDrillList() {
 		
 		return chartModelDrillList;
+	}
+	
+	public ArrayList<ChartModel> getChartModelListAge() {
+		
+		return chartModelListAge;
+	}
+	
+	public ArrayList<ChartModel> getChartModelDrillListAge() {
+		
+		return chartModelDrillListAge;
 	}
 	
 	public ArrayList<ChartModel> getChartModelBarList() {
@@ -157,6 +171,87 @@ public class ChartBean {
 					chartModel.setSequence_lab(calculatePercentage(result.getInt("sequence_lab"),total_sequence));
 	                
 					chartModelDrillList.add(chartModel);       
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+		}
+		
+	}
+	
+	public void initAge() {
+		String queryString = ChartQueries.ENTRIES_BY_AGE;
+		ChartModel chartModel = null;
+		
+        try
+		{
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				chartModelListAge = new ArrayList<ChartModel>();
+				chartModel = new ChartModel();
+                chartModel.setAge_1_percent(calculatePercentage(result.getInt("TOT_AGE_1"),total_entries));
+                chartModel.setAge_2_percent(calculatePercentage(result.getInt("TOT_AGE_2"),total_entries));
+                chartModel.setAge_3_percent(calculatePercentage(result.getInt("TOT_AGE_3"),total_entries));
+                chartModel.setAge_4_percent(calculatePercentage(result.getInt("TOT_AGE_4"),total_entries));
+                chartModel.setAge_5_percent(calculatePercentage(result.getInt("TOT_AGE_5"),total_entries));
+                
+                chartModelListAge.add(chartModel);
+               
+			}
+			
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+	}
+	
+	public void drillChartAge() {
+		ChartModel chartModel = null;
+		Integer ageArray[]={1,15,16,20,21,22,23,27,28,28};
+		
+		
+		chartModelDrillListAge = new ArrayList<ChartModel>();
+		
+		for(int i=0;i<ageArray.length;i+=2){
+	        try
+			{
+				con=Globals.getDatasource().getConnection();
+				ps = con.prepareStatement(ChartQueries.ASSAY_TYPES_BY_AGE); 
+				ps.setInt(1, ageArray[i]);
+				ps.setInt(2, ageArray[i+1]);
+				ps.setInt(3, ageArray[i]);
+				ps.setInt(4, ageArray[i+1]);
+				ps.setInt(5, ageArray[i]);
+				ps.setInt(6, ageArray[i+1]);
+				ps.setInt(7, ageArray[i]);
+				ps.setInt(8, ageArray[i+1]);
+				ps.setInt(9, ageArray[i]);
+				ps.setInt(10, ageArray[i+1]);
+				ps.setInt(11, ageArray[i]);
+				ps.setInt(12, ageArray[i+1]);
+				ps.setInt(13, ageArray[i]);
+				ps.setInt(14, ageArray[i+1]);
+				result =  ps.executeQuery();
+				if (result.first()) {
+					chartModel = new ChartModel();
+					chartModel.setWish_age(calculatePercentage(result.getInt("wish_age"),total_entries));
+					chartModel.setSish_age(calculatePercentage(result.getInt("sish_age"),total_entries));
+					chartModel.setOpt_age(calculatePercentage(result.getInt("opt_age"),total_entries));
+					chartModel.setIhc_age(calculatePercentage(result.getInt("ihc_age"),total_entries));
+					chartModel.setTg_age(calculatePercentage(result.getInt("tg_age"),total_entries));
+					chartModel.setMicroarray_age(calculatePercentage(result.getInt("microarray_age"),total_entries));
+					chartModel.setSequence_age(calculatePercentage(result.getInt("sequence_age"),total_entries));
+	                
+					chartModelDrillListAge.add(chartModel);       
 				}
 				
 				

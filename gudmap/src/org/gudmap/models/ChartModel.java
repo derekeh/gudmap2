@@ -25,6 +25,20 @@ public class ChartModel {
 	private double microarray_lab = 0.0;
 	private double sequence_lab = 0.0;
 	
+	private double wish_age = 0.0;
+	private double sish_age = 0.0;
+	private double opt_age = 0.0;
+	private double ihc_age = 0.0;
+	private double tg_age = 0.0;
+	private double microarray_age = 0.0;
+	private double sequence_age = 0.0;
+	
+	private double age_1_percent = 0.0;
+	private double age_2_percent = 0.0;
+	private double age_3_percent = 0.0;
+	private double age_4_percent = 0.0;
+	private double age_5_percent = 0.0;
+	
 	private int tot_met_entries = 0;
 	private int tot_met_genes = 0;
 	private int tot_lut_entries = 0;
@@ -182,6 +196,90 @@ public class ChartModel {
 	public double getSequence_lab(){
 		return sequence_lab;
 	}
+	/////
+	public void setAge_1_percent(double age_1_percent){
+		this.age_1_percent = age_1_percent;
+	}
+	public double getAge_1_percent(){
+		return age_1_percent;
+	}
+	public void setAge_2_percent(double age_2_percent){
+		this.age_2_percent = age_2_percent;
+	}
+	public double getAge_2_percent(){
+		return age_2_percent;
+	}
+	
+	public void setAge_3_percent(double age_3_percent){
+		this.age_3_percent = age_3_percent;
+	}
+	public double getAge_3_percent(){
+		return age_3_percent;
+	}
+	public void setAge_4_percent(double age_4_percent){
+		this.age_4_percent = age_4_percent;
+	}
+	public double getAge_4_percent(){
+		return age_4_percent;
+	}
+	
+	public void setAge_5_percent(double age_5_percent){
+		this.age_5_percent = age_5_percent;
+	}
+	public double getAge_5_percent(){
+		return age_5_percent;
+	}
+	////
+	public void setWish_age(double wish_age){
+		this.wish_age = wish_age;
+	}
+	public double getWish_age(){
+		return wish_age;
+	}
+	
+	public void setSish_age(double sish_age){
+		this.sish_age = sish_age;
+	}
+	public double getSish_age(){
+		return sish_age;
+	}
+	
+	public void setOpt_age(double opt_age){
+		this.opt_age = opt_age;
+	}
+	public double getOpt_age(){
+		return opt_age;
+	}
+	
+	public void setTg_age(double tg_age){
+		this.tg_age = tg_age;
+	}
+	public double getTg_age(){
+		return tg_age;
+	}
+	
+	public void setIhc_age(double ihc_age){
+		this.ihc_age = ihc_age;
+	}
+	public double getIhc_age(){
+		return ihc_age;
+	}
+	
+	public void setMicroarray_age(double microarray_age){
+		this.microarray_age = microarray_age;
+	}
+	public double getMicroarray_age(){
+		return microarray_age;
+	}
+	
+	public void setSequence_age(double sequence_age){
+		this.sequence_age = sequence_age;
+	}
+	public double getSequence_age(){
+		return sequence_age;
+	}
+	
+	////
 	
 	public void setTot_met_entries(int tot_met_entries) {
 		this.tot_met_entries = tot_met_entries;
