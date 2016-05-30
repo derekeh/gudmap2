@@ -27,6 +27,15 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
+/**
+ * <h1>SolrAnalysisBean</h1>
+ * The SolrAnalysisBean class contains the methods to provide data and deal with events on the
+ * solrGenelist.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrAnalysisBean")
 @SessionScoped
 public class SolrAnalysisBean implements Serializable  {

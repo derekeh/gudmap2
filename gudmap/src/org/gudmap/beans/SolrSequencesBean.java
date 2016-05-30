@@ -20,6 +20,15 @@ import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.ArraySeqTableBeanModel;
 
+/**
+ * <h1>SolrSequencesBean</h1>
+ * The SolrSequencesBean class contains the methods to provide data and deal with events on the
+ * solrSequences.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrSequencesBean")
 @SessionScoped
 public class SolrSequencesBean extends PagerImpl implements Serializable  {

@@ -22,6 +22,15 @@ import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.TissueSummaryTableBeanModel;
 
 
+/**
+ * <h1>SolrTissueSummaryBean</h1>
+ * The SolrTissueSummaryBean class contains the methods to provide data and deal with events on the
+ * solrTissueSummary.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrTissueSummaryBean")
 @SessionScoped
 public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {

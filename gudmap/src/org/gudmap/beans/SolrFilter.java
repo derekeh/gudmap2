@@ -44,9 +44,7 @@ public class SolrFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<String,String> filters;	
-//	private ArrayList<ArrayList<String>> filters2;
-//	private ArrayList<String> filterlist;	
-	
+		
 	private String geneValue;
 	private Date fromDateValue;
 	private Date toDateValue;
@@ -80,8 +78,7 @@ public class SolrFilter implements Serializable {
 	public SolrFilter() {
 		filters = new HashMap<String,String>();
 		showFilter = false;
-		
-//		filters2 = new ArrayList<ArrayList<String>>();
+
 	}
 	
 	public void setParamBean(ParamBean paramBean){
@@ -98,22 +95,6 @@ public class SolrFilter implements Serializable {
 	public void setFilters(HashMap<String,String> val){
 		filters = val;	
 	}	
-//	public ArrayList<ArrayList<String>> getFilters2(){
-//		return filters2;		
-//	}
-//	public void setFilters2(ArrayList<ArrayList<String>> val){
-//		filters2 = val;	
-//	}	
-	
-//	public ArrayList<String> getFilterlist(){
-//		
-//		return filterlist;		
-//	}
-//	
-//	public void setFilterlist(ArrayList<String>  val){
-//		filterlist = val;	
-//	}
-
 	
 	public boolean getShowFilter(){		
 		return showFilter;		
@@ -127,7 +108,6 @@ public class SolrFilter implements Serializable {
 		else
 			filterWidth = 300;
 	}
-
 	
 	public int getFilterWidth(){		
 		return filterWidth;		
@@ -501,6 +481,9 @@ public class SolrFilter implements Serializable {
 	
 	/************************ refresh and set/rest filters *************************************/
 	
+	/**
+	 * This method updates the Map of filters used by the Advanced Search
+	 */
 	public void refresh(){
 		showFilter = !showFilter;
 		
@@ -648,8 +631,10 @@ public class SolrFilter implements Serializable {
 		
 	}
 	
+	/**
+	 * This method resets the Map of filters, and all individual filters used by the Advanced Search
+	 */
 	public void reset(){
-//		filters2 = new ArrayList<ArrayList<String>>();
 		filters = new HashMap<String,String>();
 		
 		geneValue = "";
@@ -685,8 +670,7 @@ public class SolrFilter implements Serializable {
     public void removeFilter(AjaxBehaviorEvent event) {
     	UIComponent source = (UIComponent)event.getSource();
     	String prefix = source.getId();    	
- //   	filters.remove(prefix);
-		
+ 		
     	switch(prefix){
     	case "GENE":
     		geneValue = "";

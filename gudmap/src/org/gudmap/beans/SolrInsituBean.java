@@ -21,6 +21,15 @@ import org.gudmap.models.SolrInsituTableBeanModel;
 
 
 
+/**
+ * <h1>SolrInsituBean</h1>
+ * The SolrInsituBean class contains the methods to provide data and deal with events on the
+ * solrInsitu.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrInsituBean")
 @SessionScoped
 public class SolrInsituBean extends PagerImpl implements Serializable  {

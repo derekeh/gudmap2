@@ -21,6 +21,15 @@ import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.MouseStrainsTableBeanModel;
 
+/**
+ * <h1>SolrMouseStrainsBean</h1>
+ * The SolrMouseStrainsBean class contains the methods to provide data and deal with events on the
+ * solrMouseStrains.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrMouseStrainsBean")
 @SessionScoped
 public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {

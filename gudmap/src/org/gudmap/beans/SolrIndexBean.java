@@ -23,8 +23,13 @@ import java.util.LinkedList;
 
 
 /**
- * @author bernardh
- *
+ * <h1>SolrIndexBean</h1>
+ * The SolrIndexBean class contains the methods to provide data and deal with events on the
+ * solrIndexing.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
  */
 @Named (value="solrIndexBean")
 @RequestScoped

@@ -42,6 +42,15 @@ import org.json.simple.JSONObject;
 
 
 
+/**
+ * <h1>SolrGeneStripBean</h1>
+ * The SolrGeneStripBean class contains the methods to provide data and deal with events on the
+ * solrGeneStrip.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrGeneStripBean")
 @SessionScoped
 public class SolrGeneStripBean extends PagerImpl implements Serializable  {

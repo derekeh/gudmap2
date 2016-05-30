@@ -18,6 +18,15 @@ import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.ArraySeqTableBeanModel;
 
+/**
+ * <h1>SolrMicroarrayBean</h1>
+ * The SolrMicroarrayBean class contains the methods to provide data and deal with events on the
+ * solrMicroarray.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrMicroarrayBean")
 @SessionScoped
 public class SolrMicroarrayBean extends PagerImpl implements Serializable  {

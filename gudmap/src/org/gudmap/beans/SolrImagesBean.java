@@ -33,6 +33,15 @@ import org.gudmap.models.submission.ImageDetailModel;
 
 
 
+/**
+ * <h1>SolrImagesBean</h1>
+ * The SolrImagesBean class contains the methods to provide data and deal with events on the
+ * solrImages.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrImagesBean")
 @SessionScoped
 public class SolrImagesBean extends PagerImpl implements Serializable  {

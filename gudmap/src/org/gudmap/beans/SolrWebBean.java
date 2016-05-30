@@ -30,6 +30,15 @@ import org.gudmap.assemblers.EditPageAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.EditPageModel;
 
+/**
+ * <h1>SolrWebBean</h1>
+ * The SolrWebBean class contains the methods to provide data and deal with events on the
+ * solrWebPages.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrWeb")
 @SessionScoped
 public class SolrWebBean extends PagerImpl implements Serializable  {

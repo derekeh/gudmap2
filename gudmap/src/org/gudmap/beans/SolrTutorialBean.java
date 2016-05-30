@@ -20,6 +20,15 @@ import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.TutorialBeanModel;
 
+/**
+ * <h1>SolrTutorialBean</h1>
+ * The SolrTutorialBean class contains the methods to provide data and deal with events on the
+ * solrTutorial.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrTutorial")
 @SessionScoped
 public class SolrTutorialBean extends PagerImpl implements Serializable  {
