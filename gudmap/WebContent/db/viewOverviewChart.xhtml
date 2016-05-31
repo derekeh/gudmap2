@@ -27,246 +27,14 @@
 			    $(document).ready(function () {
 			    	
 			    	/////
-			    	 $('#container').highcharts({
-			            chart: {
-			                plotBackgroundColor: null,
-			                plotBorderWidth: null,
-			                plotShadow: false,
-			                type: 'pie'
-			            },
-			            title: {
-			                text: 'GUDMAP Database Entries By Developmental Age and Type'
-			            },
-			            tooltip: {
-				            headerFormat: '<span style="font-size:11px">{series.name}</span><br/>',
-				            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-				        },
-			            plotOptions: {
-			                pie: {
-			                    allowPointSelect: true,
-			                    cursor: 'pointer',
-			                    dataLabels: {
-			                        enabled: true,
-			                        format: '{point.name}: {point.y:.1f}%'
-			                    }
-			                }
-			            },
-			            series: [{
-			                name: 'Entries',
-			                colorByPoint: true,
-			                
-			                data: [{
-			                    name: '0-9.5 dpc',
-			                    color: 'lightblue',
-			                    y: #{chartBean.chartModelListAge.get(0).age_1_percent},
-			                    drilldown: '0-9.5 dpc'
-			                }, {
-			                    name: '10-12 dpc',
-			                    color: 'orange',
-			                    y: #{chartBean.chartModelListAge.get(0).age_2_percent},
-			                    drilldown: '10-12 dpc'
-			                }, {
-			                    name: '13-14 dpc',
-			                    color: 'yellow',
-			                    y: #{chartBean.chartModelListAge.get(0).age_3_percent},
-			                    drilldown: '13-14 dpc'
-			                }, {
-			                    name: '15 dpc-P0',
-			                    color: 'darkblue',
-			                    y: #{chartBean.chartModelListAge.get(0).age_4_percent},
-			                    drilldown: '15 dpc-P0'
-			                }, {
-			                    name: 'Post Natal Adult',
-			                    color: 'lightgreen',
-			                    y: #{chartBean.chartModelListAge.get(0).age_5_percent},
-			                    drilldown: 'Post Natal Adult'
-			                }]
-			            }],
-			            drilldown: {
-				        	
-				            series: [{
-				                name: '0-9.5 dpc',
-				                id: '0-9.5 dpc',	
-				                point: {
-				    				events: {
-				    					click: function(e) {
-				    						location.href = e.point.url;
-				    						e.preventDefault();
-				    					}
-				    				}
-				    			},
-				                data: [
-									{name: 'WISH',
-									y: #{chartBean.chartModelDrillListAge.get(0).wish_age},
-									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
-									{name: 'SISH',
-									y: #{chartBean.chartModelDrillListAge.get(0).sish_age},
-									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
-									{name: 'OPT',
-									y: #{chartBean.chartModelDrillListAge.get(0).opt_age},
-									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
-									{name: 'IHC',
-									y: #{chartBean.chartModelDrillListAge.get(0).ihc_age},
-									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
-									{name: 'TG',
-									y: #{chartBean.chartModelDrillListAge.get(0).tg_age},
-									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
-									{name: 'Microarray',
-									y: #{chartBean.chartModelDrillListAge.get(0).microarray_age},
-									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
-									{name: 'Sequence',
-									y: #{chartBean.chartModelDrillListAge.get(0).sequence_age},
-									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
-				                ]
-				            }, {
-				                name: '10-12 dpc',
-				                id: '10-12 dpc',
-				                point: {
-				    				events: {
-				    					click: function(e) {
-				    						location.href = e.point.url;
-				    						e.preventDefault();
-				    					}
-				    				}
-				    			},
-				    			data: [
-										{name: 'WISH',
-										y: #{chartBean.chartModelDrillListAge.get(1).wish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
-										{name: 'SISH',
-										y: #{chartBean.chartModelDrillListAge.get(1).sish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
-										{name: 'OPT',
-										y: #{chartBean.chartModelDrillListAge.get(1).opt_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
-										{name: 'IHC',
-										y: #{chartBean.chartModelDrillListAge.get(1).ihc_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
-										{name: 'TG',
-										y: #{chartBean.chartModelDrillListAge.get(1).tg_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
-										{name: 'Microarray',
-										y: #{chartBean.chartModelDrillListAge.get(1).microarray_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
-										{name: 'Sequence',
-										y: #{chartBean.chartModelDrillListAge.get(1).sequence_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
-					                ]
-				            }, {
-				                name: '13-14 dpc',
-				                id: '13-14 dpc',
-				                point: {
-				    				events: {
-				    					click: function(e) {
-				    						location.href = e.point.url;
-				    						e.preventDefault();
-				    					}
-				    				}
-				    			},
-				    			data: [
-										{name: 'WISH',
-										y: #{chartBean.chartModelDrillListAge.get(2).wish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
-										{name: 'SISH',
-										y: #{chartBean.chartModelDrillListAge.get(2).sish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
-										{name: 'OPT',
-										y: #{chartBean.chartModelDrillListAge.get(2).opt_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
-										{name: 'IHC',
-										y: #{chartBean.chartModelDrillListAge.get(2).ihc_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
-										{name: 'TG',
-										y: #{chartBean.chartModelDrillListAge.get(2).tg_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
-										{name: 'Microarray',
-										y: #{chartBean.chartModelDrillListAge.get(2).microarray_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
-										{name: 'Sequence',
-										y: #{chartBean.chartModelDrillListAge.get(2).sequence_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
-					                ]
-				            }, {
-				                name: '15 dpc-P0',
-				                id: '15 dpc-P0',
-				                point: {
-				    				events: {
-				    					click: function(e) {
-				    						location.href = e.point.url;
-				    						e.preventDefault();
-				    					}
-				    				}
-				    			},
-				    			data: [
-										{name: 'WISH',
-										y: #{chartBean.chartModelDrillListAge.get(3).wish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
-										{name: 'SISH',
-										y: #{chartBean.chartModelDrillListAge.get(3).sish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
-										{name: 'OPT',
-										y: #{chartBean.chartModelDrillListAge.get(3).opt_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
-										{name: 'IHC',
-										y: #{chartBean.chartModelDrillListAge.get(3).ihc_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
-										{name: 'TG',
-										y: #{chartBean.chartModelDrillListAge.get(3).tg_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
-										{name: 'Microarray',
-										y: #{chartBean.chartModelDrillListAge.get(3).microarray_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
-										{name: 'Sequence',
-										y: #{chartBean.chartModelDrillListAge.get(3).sequence_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
-					                ]
-				            }, {
-				                name: 'Post Natal Adult',
-				                id: 'Post Natal Adult',
-				                point: {
-				    				events: {
-				    					click: function(e) {
-				    						location.href = e.point.url;
-				    						e.preventDefault();
-				    					}
-				    				}
-				    			},
-				    			data: [
-										{name: 'WISH',
-										y: #{chartBean.chartModelDrillListAge.get(4).wish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
-										{name: 'SISH',
-										y: #{chartBean.chartModelDrillListAge.get(4).sish_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
-										{name: 'OPT',
-										y: #{chartBean.chartModelDrillListAge.get(4).opt_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
-										{name: 'IHC',
-										y: #{chartBean.chartModelDrillListAge.get(4).ihc_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
-										{name: 'TG',
-										y: #{chartBean.chartModelDrillListAge.get(4).tg_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
-										{name: 'Microarray',
-										y: #{chartBean.chartModelDrillListAge.get(4).microarray_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
-										{name: 'Sequence',
-										y: #{chartBean.chartModelDrillListAge.get(4).sequence_age},
-										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
-					                ]
-				            }
-				            ]
-				        }
-			           
-			            
-			        });
+			    	
 			    	
 			    	
 			    	/////
 			
 			        
 			        
-			         $('#container2').highcharts({
+			         $('#lab_container').highcharts({
 			        chart: {
 			            type: 'pie'
 			        },
@@ -697,72 +465,500 @@
 			        
 			        /****************************/
 			        
-			    $(function () {
-				    $('#container3').highcharts({
-				        chart: {
-				            type: 'column'
+	 $('#age_container').highcharts({
+			            chart: {
+			                plotBackgroundColor: null,
+			                plotBorderWidth: null,
+			                plotShadow: false,
+			                type: 'pie'
+			            },
+			            title: {
+			                text: 'GUDMAP DATABASE ENTRIES BY DEVELOPMENTAL AGE AND TYPE'
+			            },
+			            tooltip: {
+				            headerFormat: '<span style="font-size:11px">{series.name}</span><br/>',
+				            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
 				        },
-				        title: {
-				            text: 'GUDMAP Entries and Analysed Genes by Anatomical Focus Group'
-				        },
-				        subtitle: {
-				            text: 'Source: gudmap.org'
-				        },
-				        xAxis: {
-				            categories: [
-				                'Metanephros',
-				                'LUT',
-				                'Early Gen. System',
-				                'Female Rep. System',
-				                'Male Rep. System'
-				            ],
-				            crosshair: true
-				        },
-				        yAxis: {
-				            min: 0,
-				            title: {
-				                text: 'Number of Genes/Entries'
+			            plotOptions: {
+			                pie: {
+			                    allowPointSelect: true,
+			                    cursor: 'pointer',
+			                    dataLabels: {
+			                        enabled: true,
+			                        format: '{point.name}: {point.y:.1f}%'
+			                    }
+			                }
+			            },
+			            series: [{
+			                name: 'Entries',
+			                colorByPoint: true,
+			                
+			                data: [{
+			                    name: '0-9.5 dpc',
+			                    color: 'lightblue',
+			                    y: #{chartBean.chartModelListAge.get(0).age_1_percent},
+			                    drilldown: '0-9.5 dpc'
+			                }, {
+			                    name: '10-12 dpc',
+			                    color: 'orange',
+			                    y: #{chartBean.chartModelListAge.get(0).age_2_percent},
+			                    drilldown: '10-12 dpc'
+			                }, {
+			                    name: '13-14 dpc',
+			                    color: 'yellow',
+			                    y: #{chartBean.chartModelListAge.get(0).age_3_percent},
+			                    drilldown: '13-14 dpc'
+			                }, {
+			                    name: '15 dpc-P0',
+			                    color: 'darkblue',
+			                    y: #{chartBean.chartModelListAge.get(0).age_4_percent},
+			                    drilldown: '15 dpc-P0'
+			                }, {
+			                    name: 'Post Natal Adult',
+			                    color: 'lightgreen',
+			                    y: #{chartBean.chartModelListAge.get(0).age_5_percent},
+			                    drilldown: 'Post Natal Adult'
+			                }]
+			            }],
+			            drilldown: {
+				        	
+				            series: [{
+				                name: '0-9.5 dpc',
+				                id: '0-9.5 dpc',	
+				                point: {
+				    				events: {
+				    					click: function(e) {
+				    						location.href = e.point.url;
+				    						e.preventDefault();
+				    					}
+				    				}
+				    			},
+				                data: [
+									{name: 'WISH',
+									y: #{chartBean.chartModelDrillListAge.get(0).wish_age},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+									{name: 'SISH',
+									y: #{chartBean.chartModelDrillListAge.get(0).sish_age},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+									{name: 'OPT',
+									y: #{chartBean.chartModelDrillListAge.get(0).opt_age},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+									{name: 'IHC',
+									y: #{chartBean.chartModelDrillListAge.get(0).ihc_age},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+									{name: 'TG',
+									y: #{chartBean.chartModelDrillListAge.get(0).tg_age},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+									{name: 'Microarray',
+									y: #{chartBean.chartModelDrillListAge.get(0).microarray_age},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+									{name: 'Sequence',
+									y: #{chartBean.chartModelDrillListAge.get(0).sequence_age},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+				                ]
+				            }, {
+				                name: '10-12 dpc',
+				                id: '10-12 dpc',
+				                point: {
+				    				events: {
+				    					click: function(e) {
+				    						location.href = e.point.url;
+				    						e.preventDefault();
+				    					}
+				    				}
+				    			},
+				    			data: [
+										{name: 'WISH',
+										y: #{chartBean.chartModelDrillListAge.get(1).wish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+										{name: 'SISH',
+										y: #{chartBean.chartModelDrillListAge.get(1).sish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+										{name: 'OPT',
+										y: #{chartBean.chartModelDrillListAge.get(1).opt_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+										{name: 'IHC',
+										y: #{chartBean.chartModelDrillListAge.get(1).ihc_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+										{name: 'TG',
+										y: #{chartBean.chartModelDrillListAge.get(1).tg_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+										{name: 'Microarray',
+										y: #{chartBean.chartModelDrillListAge.get(1).microarray_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+										{name: 'Sequence',
+										y: #{chartBean.chartModelDrillListAge.get(1).sequence_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+					                ]
+				            }, {
+				                name: '13-14 dpc',
+				                id: '13-14 dpc',
+				                point: {
+				    				events: {
+				    					click: function(e) {
+				    						location.href = e.point.url;
+				    						e.preventDefault();
+				    					}
+				    				}
+				    			},
+				    			data: [
+										{name: 'WISH',
+										y: #{chartBean.chartModelDrillListAge.get(2).wish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+										{name: 'SISH',
+										y: #{chartBean.chartModelDrillListAge.get(2).sish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+										{name: 'OPT',
+										y: #{chartBean.chartModelDrillListAge.get(2).opt_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+										{name: 'IHC',
+										y: #{chartBean.chartModelDrillListAge.get(2).ihc_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+										{name: 'TG',
+										y: #{chartBean.chartModelDrillListAge.get(2).tg_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+										{name: 'Microarray',
+										y: #{chartBean.chartModelDrillListAge.get(2).microarray_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+										{name: 'Sequence',
+										y: #{chartBean.chartModelDrillListAge.get(2).sequence_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+					                ]
+				            }, {
+				                name: '15 dpc-P0',
+				                id: '15 dpc-P0',
+				                point: {
+				    				events: {
+				    					click: function(e) {
+				    						location.href = e.point.url;
+				    						e.preventDefault();
+				    					}
+				    				}
+				    			},
+				    			data: [
+										{name: 'WISH',
+										y: #{chartBean.chartModelDrillListAge.get(3).wish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+										{name: 'SISH',
+										y: #{chartBean.chartModelDrillListAge.get(3).sish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+										{name: 'OPT',
+										y: #{chartBean.chartModelDrillListAge.get(3).opt_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+										{name: 'IHC',
+										y: #{chartBean.chartModelDrillListAge.get(3).ihc_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+										{name: 'TG',
+										y: #{chartBean.chartModelDrillListAge.get(3).tg_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+										{name: 'Microarray',
+										y: #{chartBean.chartModelDrillListAge.get(3).microarray_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+										{name: 'Sequence',
+										y: #{chartBean.chartModelDrillListAge.get(3).sequence_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+					                ]
+				            }, {
+				                name: 'Post Natal Adult',
+				                id: 'Post Natal Adult',
+				                point: {
+				    				events: {
+				    					click: function(e) {
+				    						location.href = e.point.url;
+				    						e.preventDefault();
+				    					}
+				    				}
+				    			},
+				    			data: [
+										{name: 'WISH',
+										y: #{chartBean.chartModelDrillListAge.get(4).wish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+										{name: 'SISH',
+										y: #{chartBean.chartModelDrillListAge.get(4).sish_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+										{name: 'OPT',
+										y: #{chartBean.chartModelDrillListAge.get(4).opt_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+										{name: 'IHC',
+										y: #{chartBean.chartModelDrillListAge.get(4).ihc_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+										{name: 'TG',
+										y: #{chartBean.chartModelDrillListAge.get(4).tg_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+										{name: 'Microarray',
+										y: #{chartBean.chartModelDrillListAge.get(4).microarray_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+										{name: 'Sequence',
+										y: #{chartBean.chartModelDrillListAge.get(4).sequence_age},
+										url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+					                ]
 				            }
-				        },
-				        tooltip: {
-				            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-				            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-				            '<td style="padding:0"><b>{point.y:1f}</b></td></tr>',
-				            footerFormat: '</table>',
-				            shared: true,
-				            useHTML: true
-				        },
-				        plotOptions: {
-				            column: {
-				                pointPadding: 0.2,
-				                borderWidth: 0
-				            }
-				        },
-				        series: [{
-				            name: 'GENES',
-				            data: [#{chartBean.chartModelBarList.get(0).tot_met_genes}, #{chartBean.chartModelBarList.get(0).tot_lut_genes}, 
-				                   #{chartBean.chartModelBarList.get(0).tot_ers_genes}, #{chartBean.chartModelBarList.get(0).tot_frs_genes}, 
-				                   #{chartBean.chartModelBarList.get(0).tot_mrs_genes}]
+				            ]
+				        }
+			           
+			            
+			        });		        
+			        
+			        /*******************************/
+			    
+			          
+			     $('#tissue_container').highcharts({
+			        chart: {
+			            type: 'pie'
+			        },
+			        title: {
+			            text: 'DATABASE ENTRIES BY TISSUE GROUPS AND TYPE'
+			        },
+			        subtitle: {
+			            text: 'Click the slices to view labs. Source: gudmap.org.'
+			        },
+			        plotOptions: {
+			            series: {
+			                dataLabels: {
+			                    enabled: true,
+			                    format: '{point.name}: {point.y:.1f}%'
+			                },
+			                allowPointSelect: true,
+		                    cursor: 'pointer',
+			            }
+			        },
+			        tooltip: {
+			        	formatter: function() {
+			                return '<span style="font-size:11px">'+this.series.name+'</span><br/> <span style="color:'+this.point.color+'">'
+			                +this.point.name+'</span>: <b>'+ this.point.y +'%</b> <em> ('+this.point.x+' entries)</em>';
+			            }	
+			        },
+			        series: [{
+			            name: 'Entries',
+			            colorByPoint: true,
+			           
+			            data: [{
+		                    name: 'Metanephros',
+		                    color: 'lightblue',
+		                    y: #{chartBean.chartModelBarList.get(0).met_percent},
+		                    x: #{chartBean.chartModelBarList.get(0).tot_met_entries},
+		                    drilldown: 'Metanephros'
+		                }, {
+		                    name: 'LUT',
+		                    y: #{chartBean.chartModelBarList.get(0).lut_percent},
+		                    color: 'orange',
+		                    sliced: false,
+		                    selected: false,
+		                    x: #{chartBean.chartModelBarList.get(0).tot_lut_entries},
+		                    drilldown: 'LUT'
+		                }, {
+		                    name: 'Early Gen. System',
+		                    color: 'yellow',
+		                    y: #{chartBean.chartModelBarList.get(0).ers_percent},
+		                    x: #{chartBean.chartModelBarList.get(0).tot_ers_entries},
+		                    drilldown: 'Early Gen. System'
+		                }, {
+		                    name: 'Female Rep. System',
+		                    color: 'darkblue',
+		                    y: #{chartBean.chartModelBarList.get(0).frs_percent},
+		                    x: #{chartBean.chartModelBarList.get(0).tot_frs_entries},
+		                    drilldown: 'Female Rep. System'
+		                }, {
+		                    name: 'Male Rep. System',
+		                    color: 'lightgreen',
+		                    y: #{chartBean.chartModelBarList.get(0).mrs_percent},
+		                    x: #{chartBean.chartModelBarList.get(0).tot_mrs_entries},
+		                    drilldown: 'Male Rep. System'
+		                }]
+			        }],
+			        drilldown: {
+			        	
+			            series: [{
+			                name: 'Metanephros',
+			                id: 'Metanephros',	
+			                point: {
+			    				events: {
+			    					click: function(e) {
+			    						location.href = e.point.url;
+			    						e.preventDefault();
+			    					}
+			    				}
+			    			},
+			                data: [
+								{name: 'WISH',
+								y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+								{name: 'SISH',
+								y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+								{name: 'IHC',
+								y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+								{name: 'OPT',
+								y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+								{name: 'TG',
+								y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+								{name: 'Microarray',
+								y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+								{name: 'Sequence',
+								y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+			                ]
+			            }, {
+			                name: 'LUT',
+			                id: 'LUT',
+			                point: {
+			    				events: {
+			    					click: function(e) {
+			    						location.href = e.point.url;
+			    						e.preventDefault();
+			    					}
+			    				}
+			    			},
+			    			data: [
+									{name: 'WISH',
+									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+									{name: 'SISH',
+									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+									{name: 'IHC',
+									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+									{name: 'OPT',
+									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+									{name: 'TG',
+									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+									{name: 'Microarray',
+									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+									{name: 'Sequence',
+									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+				                ]
+			            }, {
+			                name: 'Early Gen. System',
+			                id: 'Early Gen. System',
+			                point: {
+			    				events: {
+			    					click: function(e) {
+			    						location.href = e.point.url;
+			    						e.preventDefault();
+			    					}
+			    				}
+			    			},
+			    			data: [
+									{name: 'WISH',
+									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+									{name: 'SISH',
+									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+									{name: 'IHC',
+									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+									{name: 'OPT',
+									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+									{name: 'TG',
+									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+									{name: 'Microarray',
+									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+									{name: 'Sequence',
+									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+				                ]
+			            }, {
+			                name: 'Female Rep. System',
+			                id: 'Female Rep. System',
+			                point: {
+			    				events: {
+			    					click: function(e) {
+			    						location.href = e.point.url;
+			    						e.preventDefault();
+			    					}
+			    				}
+			    			},
+			    			data: [
+									{name: 'WISH',
+									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+									{name: 'SISH',
+									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+									{name: 'IHC',
+									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+									{name: 'OPT',
+									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+									{name: 'TG',
+									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+									{name: 'Microarray',
+									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+									{name: 'Sequence',
+									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+				                ]
+			            }, {
+			                name: 'Male Rep. System',
+			                id: 'Male Rep. System',
+			                point: {
+			    				events: {
+			    					click: function(e) {
+			    						location.href = e.point.url;
+			    						e.preventDefault();
+			    					}
+			    				}
+			    			},
+			    			data: [
+									{name: 'WISH',
+									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
+									{name: 'SISH',
+									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
+									{name: 'IHC',
+									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
+									{name: 'OPT',
+									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
+									{name: 'TG',
+									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
+									{name: 'Microarray',
+									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
+									{name: 'Sequence',
+									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
+				                ]
+			            }
+			            ]
+			        }
+			    });    
+			        
+			          
+			        
+			        
+			        
+			        /*****************************/
+			    
 				
-				        }, {
-				            name: 'ENTRIES',
-				            data: [#{chartBean.chartModelBarList.get(0).tot_met_entries}, #{chartBean.chartModelBarList.get(0).tot_lut_entries},
-				                   #{chartBean.chartModelBarList.get(0).tot_ers_entries}, #{chartBean.chartModelBarList.get(0).tot_frs_entries}, 
-				                   #{chartBean.chartModelBarList.get(0).tot_mrs_entries}]
-				
-				        }]
-				    });
-				});
 			        
 			        /*****************************/
 			    });
 			});
 		</script>
 	    <h1>Interactive Graphical Data Summary</h1>	
-	  
-	    <div id="container2" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-	     <div id="container3" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    <div id="lab_container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    <div id="age_container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+	    <div id="tissue_container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    <!-- all other content in here -->     
 	</ui:define>
 </ui:composition>

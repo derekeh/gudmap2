@@ -39,6 +39,20 @@ public class ChartModel {
 	private double age_4_percent = 0.0;
 	private double age_5_percent = 0.0;
 	
+	private double wish_tissue = 0.0;
+	private double sish_tissue = 0.0;
+	private double opt_tissue = 0.0;
+	private double ihc_tissue = 0.0;
+	private double tg_tissue = 0.0;
+	private double microarray_tissue = 0.0;
+	private double sequence_tissue = 0.0;
+	
+	private double met_percent = 0.0;
+	private double lut_percent = 0.0;
+	private double frs_percent = 0.0;
+	private double mrs_percent = 0.0;
+	private double ers_percent = 0.0;
+	
 	private int tot_met_entries = 0;
 	private int tot_met_genes = 0;
 	private int tot_lut_entries = 0;
@@ -281,6 +295,56 @@ public class ChartModel {
 	
 	////
 	
+	public void setWish_tissue(double wish_tissue){
+		this.wish_tissue = wish_tissue;
+	}
+	public double getWish_tissue(){
+		return wish_tissue;
+	}
+	
+	public void setSish_tissue(double sish_tissue){
+		this.sish_tissue = sish_tissue;
+	}
+	public double getSish_tissue(){
+		return sish_tissue;
+	}
+	
+	public void setOpt_tissue(double opt_tissue){
+		this.opt_tissue = opt_tissue;
+	}
+	public double getOpt_tissue(){
+		return opt_tissue;
+	}
+	
+	public void setTg_tissue(double tg_tissue){
+		this.tg_tissue = tg_tissue;
+	}
+	public double getTg_tissue(){
+		return tg_tissue;
+	}
+	
+	public void setIhc_tissue(double ihc_tissue){
+		this.ihc_tissue = ihc_tissue;
+	}
+	public double getIhc_tissue(){
+		return ihc_tissue;
+	}
+	
+	public void setMicroarray_tissue(double microarray_tissue){
+		this.microarray_tissue = microarray_tissue;
+	}
+	public double getMicroarray_tissue(){
+		return microarray_tissue;
+	}
+	
+	public void setSequence_tissue(double sequence_tissue){
+		this.sequence_tissue = sequence_tissue;
+	}
+	public double getSequence_tissue(){
+		return sequence_tissue;
+	}
+	////
+	
 	public void setTot_met_entries(int tot_met_entries) {
 		this.tot_met_entries = tot_met_entries;
 	}
@@ -315,6 +379,42 @@ public class ChartModel {
 	public int getTot_mrs_entries() {
 		return tot_mrs_entries;
 	}
+	
+	/////
+	public void setMet_percent(double met_percent){
+		this.met_percent = met_percent;
+	}
+	public double getMet_percent(){
+		return met_percent;
+	}
+	public void setLut_percent(double lut_percent){
+		this.lut_percent = lut_percent;
+	}
+	public double getLut_percent(){
+		return lut_percent;
+	}
+	
+	public void setFrs_percent(double frs_percent){
+		this.frs_percent = frs_percent;
+	}
+	public double getFrs_percent(){
+		return frs_percent;
+	}
+	public void setMrs_percent(double mrs_percent){
+		this.mrs_percent = mrs_percent;
+	}
+	public double getMrs_percent(){
+		return mrs_percent;
+	}
+	
+	public void setErs_percent(double ers_percent){
+		this.ers_percent = ers_percent;
+	}
+	public double getErs_percent(){
+		return ers_percent;
+	}
+	
+	/////
 	
 	public void setTot_met_genes(int tot_met_genes) {
 		this.tot_met_genes = tot_met_genes;
