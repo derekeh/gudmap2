@@ -268,46 +268,46 @@ public class SolrTreeBean implements Serializable {
 	}
 	
 		
-	public Map<String,String> getAssayTypeList(){
-		
-		Map<String,String> map = new LinkedHashMap<String,String>();
-		
-		String label = "ISH (" + this.getInsituCount("ASSAY_TYPE:ISH") + ")";
-		map.put(label, "ASSAY_TYPE:ISH");
-		
-		label = "IHC (" + this.getInsituCount("ASSAY_TYPE:IHC") + ")";
-		map.put(label, "ASSAY_TYPE:IHC");
-		
-		label = "TG (" + this.getInsituCount("ASSAY_TYPE:TG") + ")";
-		map.put(label, "ASSAY_TYPE:TG");
-
-		
-		return map;
-	}
+//	public Map<String,String> getAssayTypeList(){
+//		
+//		Map<String,String> map = new LinkedHashMap<String,String>();
+//		
+//		String label = "ISH (" + this.getInsituCount("ASSAY_TYPE:ISH") + ")";
+//		map.put(label, "ASSAY_TYPE:ISH");
+//		
+//		label = "IHC (" + this.getInsituCount("ASSAY_TYPE:IHC") + ")";
+//		map.put(label, "ASSAY_TYPE:IHC");
+//		
+//		label = "TG (" + this.getInsituCount("ASSAY_TYPE:TG") + ")";
+//		map.put(label, "ASSAY_TYPE:TG");
+//
+//		
+//		return map;
+//	}
 
 	
-	public Map<String,String> getFocusGroupList(){
-		
-		Map<String,String> map = new LinkedHashMap<String,String>();
-		
-		String label = "Metanephros (" + this.getInsituCount("FOCUS_GROUPS:metanephros") + ")";
-		map.put(label, "FOCUS_GROUPS:metanephros");
-		
-		label = "Lower Urinary Tract (" + this.getInsituCount("FOCUS_GROUPS:lower urinary tract") + ")";
-		map.put(label, "FOCUS_GROUPS:lower urinary tract");
-		
-		label = "Male Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:male reproductive system") + ")";
-		map.put(label, "FOCUS_GROUPS:male reproductive system");
-		
-		label = "Female Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:female reproductive system") + ")";
-		map.put(label, "FOCUS_GROUPS:female reproductive system");
-		
-		label = "Early Genitourinary System (" + this.getInsituCount("FOCUS_GROUPS:early genitourinary system") + ")";
-		map.put(label, "FOCUS_GROUPS:early_genitourinary_system");
-
-		
-		return map;
-	}
+//	public Map<String,String> getFocusGroupList(){
+//		
+//		Map<String,String> map = new LinkedHashMap<String,String>();
+//		
+//		String label = "Metanephros (" + this.getInsituCount("FOCUS_GROUPS:metanephros") + ")";
+//		map.put(label, "FOCUS_GROUPS:metanephros");
+//		
+//		label = "Lower Urinary Tract (" + this.getInsituCount("FOCUS_GROUPS:lower urinary tract") + ")";
+//		map.put(label, "FOCUS_GROUPS:lower urinary tract");
+//		
+//		label = "Male Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:male reproductive system") + ")";
+//		map.put(label, "FOCUS_GROUPS:male reproductive system");
+//		
+//		label = "Female Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:female reproductive system") + ")";
+//		map.put(label, "FOCUS_GROUPS:female reproductive system");
+//		
+//		label = "Early Genitourinary System (" + this.getInsituCount("FOCUS_GROUPS:early genitourinary system") + ")";
+//		map.put(label, "FOCUS_GROUPS:early_genitourinary_system");
+//
+//		
+//		return map;
+//	}
 
 //	public Map<String,String> getPlatformList(){
 //		
@@ -330,21 +330,28 @@ public class SolrTreeBean implements Serializable {
 //	}
 
 	
-	public Map<String,String> getTheilerStageList(){
-		
-		Map<String,String> map = new LinkedHashMap<String,String>();
-		
-		String label;
-
-		for (int i = 17;  i<29; i++){
-			label = "TS" + i+  " (" + this.getInsituCount("THEILER_STAGE:TS" + i) + ")";
-			map.put(label, "THEILER_STAGE:TS" + i);
-		}
-
-		
-		return map;
-	}
+//	public Map<String,String> getTheilerStageList(){
+//		
+//		Map<String,String> map = new LinkedHashMap<String,String>();
+//		
+//		String label;
+//
+//		for (int i = 17;  i<29; i++){
+//			label = "TS" + i+  " (" + this.getInsituCount("THEILER_STAGE:TS" + i) + ")";
+//			map.put(label, "THEILER_STAGE:TS" + i);
+//		}
+//
+//		
+//		return map;
+//	}
 	
+	/**
+	 * This method returns true or false depending on whether the solrInput string contains a
+	 * gene name. If a gene name is found the solrGeneStrip.xhtml page is displayed otherwise 
+	 * the solrInsitu.xhtml page is displayed.
+	 * 
+	 * @return boolean flag
+	 */
 	private boolean containsGene(){
 		// looks for a gene in the input string
 		// to allow genestrip page to be shown to be selected

@@ -37,7 +37,6 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-//	private SolrInsituAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -125,21 +124,16 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
    }
 
     public String refresh(){
- //   	sortField = "RELEVANCE";
-    	loadDataList();
-//    	paramBean.resetValues();
+     	loadDataList();
     	return "solrInsitu";
     }
 
     public void resetAll() {
 		paramBean.resetAll();
-//		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
 	}
     
     public String checkboxSelections() { 
-    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
     	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
     		if (((SolrInsituTableBeanModel) dataList.get(i)).getSelected()) { 

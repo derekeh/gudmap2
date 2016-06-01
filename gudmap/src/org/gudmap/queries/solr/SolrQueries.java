@@ -2,6 +2,15 @@ package org.gudmap.queries.solr;
 
 
 
+/**
+ * <h1>SolrQueries</h1>
+ * The SolrQueries class contains the SQL query string used to extract data from the database
+ * to create the indexes required for searching.
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2016 
+ */
 public class SolrQueries {
 
 	public final static String GET_GENE_INDEX_DATA = "SELECT SOLR_GENES_INDEX.GENE,SOLR_GENES_INDEX.GENE_NAME,SOLR_GENES_INDEX.MGI_GENE_ID,SOLR_GENES_INDEX.MGI,SOLR_GENES_INDEX.ENSEMBL_ID,SOLR_GENES_INDEX.SYNONYMS,SOLR_GENES_INDEX.OMIM,SOLR_GENES_INDEX.ARRAY_RANGE,SOLR_GENES_INDEX.ISH_RANGE, " +

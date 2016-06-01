@@ -57,9 +57,9 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Connection con;
-	private PreparedStatement ps;
-	private ResultSet result;
+//	private Connection con;
+//	private PreparedStatement ps;
+//	private ResultSet result;
 	 
     // Data.
 	private SolrGeneStripAssembler assembler;
@@ -165,16 +165,12 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
    }
 
     public String refresh(){
- //   	sortField = "RELEVANCE";
     	loadDataList();
-//    	paramBean.resetValues();
     	return "solrGeneStrip";
     }
 
     public void resetAll() {
 		paramBean.resetAll();
-//		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
 	}
     
@@ -231,6 +227,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createHeatmapJSONObject(String geneId){
 		
 		JSONObject obj = new JSONObject();
@@ -440,13 +437,13 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		
 		for(SolrDocument doc : sdl) { 
 
-			String insituExpression = "";			
-			if (doc.containsKey("PRESENT") && doc.getFieldValue("PRESENT").toString() != "")
-				insituExpression = "present";
-			else if (doc.containsKey("UNCERTAIN") && doc.getFieldValue("UNCERTAIN").toString() != "")
-				insituExpression = "uncertain";
-			else if (doc.containsKey("NOT_DETECTED") && doc.getFieldValue("NOT_DETECTED").toString() != "")
-				insituExpression = "not detected";
+//			String insituExpression = "";			
+//			if (doc.containsKey("PRESENT") && doc.getFieldValue("PRESENT").toString() != "")
+//				insituExpression = "present";
+//			else if (doc.containsKey("UNCERTAIN") && doc.getFieldValue("UNCERTAIN").toString() != "")
+//				insituExpression = "uncertain";
+//			else if (doc.containsKey("NOT_DETECTED") && doc.getFieldValue("NOT_DETECTED").toString() != "")
+//				insituExpression = "not detected";
 			
 			model = new GeneStripModel();
 

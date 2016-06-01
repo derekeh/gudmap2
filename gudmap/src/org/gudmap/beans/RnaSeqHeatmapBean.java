@@ -30,6 +30,14 @@ import javax.servlet.ServletContext;
 
 
 
+/**
+ * <h1>RnaSeqHeatmapBean</h1>
+ * The RnaSeqHeatmapBean class contains the methods to display the browseSeqHeatmap.xhtml
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2016 
+ */
 @Named (value="rnaSeqHeatmapBean")
 @SessionScoped
 //@RequestScoped
@@ -56,6 +64,13 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
        	super(1000,10,null,true);  
     }
 
+	/**
+	 * This method returns a map of counts to be displayed in the Table Size control 
+	 * of the browseSeqHeatmap.xhtml page.
+	 * This sets the number of rows to be displayed in the heatmap.
+	 * 
+	 * @return A Map of counts
+	 */    
     public Map<String,Integer> getTopGeneCountOptions() {
     	LinkedHashMap<String,Integer> options = new LinkedHashMap<String,Integer>();
     	options.put("25",25);
@@ -67,40 +82,87 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
    	return options;
     }
     
+	/**
+	 * This method returns the current row count from the Table Size control 
+	 * of the browseSeqHeatmap.xhtml page.
+	 * 
+	 * @return The topGeneCount
+	 */
     public int getTopGeneCount() {
     	return topGeneCount;
     }
     
+	/**
+	 * This method sets the row count to be displayed in the Table Size control 
+	 * of the browseSeqHeatmap.xhtml page.
+	 * 
+	 * @param count
+	 */
     public void setTopGeneCount(int count) {
     	topGeneCount = count;
     }
     
+	/**
+	 * This method redisplays the heatmap when the row count in the Table Size control changes.
+	 * 
+	 * @param e
+	 */
 	public void topGeneCountChanged(ValueChangeEvent e){
 		topGeneCount = (int)e.getNewValue();
-		loadDataList();
-    	
+		loadDataList();    	
 	}
 
     public String getCellSize() {
     	return cellSize;
     }
     
+	/**
+	 * This method sets the cell size of the heatmap displayed in the browseSeqHeatmap.xhtml page.
+	 * The cell size is incremented/decremented by the Heatmap Scale button on the browseSeqHeatmap.xhtml page.
+	 * 
+	 * @param cellSize
+	 */
     public void setCellSize(String cellSize) {
     	this.cellSize = cellSize;
     }
 	
+	/**
+	 * This method gets the selected sample used as the sort column in the displayed heatmap of 
+	 * the browseSeqHeatmap.xhtml page.
+	 * 
+	 * @return The selectedSample
+	 */
     public String getSelectedSample() {
     	return selectedSample;
     }
     
+	/**
+	 * This method sets the selected sample. The selected sample is used as the sort column in
+	 * the displayed heatmap of the browseSeqHeatmap.xhtml page.
+	 * 
+	 * @param cellSize
+	 */
     public void setSelectedSample(String sample) {
     	selectedSample = sample;
     }
 
+	/**
+	 * This method gets the selected gene used as the sort row in the displayed heatmap of 
+	 * the browseSeqHeatmap.xhtml page.
+	 * 
+	 * @return The selectedGene
+	 */
     public String getSelectedGene() {
     	return selectedGene;
     }
     
+	/**
+	 * This method sets the selected gene. The selected gene is used as the sort row in
+	 * the displayed heatmap of the browseSeqHeatmap.xhtml page.
+	 * The selected gene is used to resort the rows when the column sort changes
+	 * 
+	 * @param cellSize
+	 */
     public void setSelectedGene(String gene) {
     	selectedGene = gene;
     }
@@ -137,6 +199,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public void init(String sample){
 		
 		
