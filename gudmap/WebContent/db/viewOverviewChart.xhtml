@@ -26,15 +26,10 @@
 			
 			    $(document).ready(function () {
 			    	
-			    	/////
-			    	
-			    	
-			    	
-			    	/////
-			
-			        
-			        
-			         $('#lab_container').highcharts({
+			    	$('#lab_container').highcharts({
+			    		credits: {
+			    		    enabled: false
+			    		  },
 			        chart: {
 			            type: 'pie'
 			        },
@@ -43,12 +38,13 @@
 			        },
 			        subtitle: {
 			            text: 'Click the slices to view labs. Source: gudmap.org.'
-			        },
+			        }, 
 			        plotOptions: {
 			            series: {
 			                dataLabels: {
 			                    enabled: true,
 			                    format: '{point.name}: {point.y:.1f}%'
+			                    //format: '<span style="font-size:9px">{point.name}: {point.y:.1f}%</span>'
 			                },
 			                allowPointSelect: true,
 		                    cursor: 'pointer',
@@ -60,7 +56,7 @@
 			            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
 			        },
 			        series: [{
-			            name: 'Entries',
+			            name: 'Assay Type',
 			            colorByPoint: true,
 			           
 			            data: [{
@@ -110,7 +106,13 @@
 		                }]
 			        }],
 			        drilldown: {
-			        	
+			        	/* drillUpButton: {
+			        		relativeTo: 'spacingBox',
+			        		position: {
+			                    y: 55,
+			                    x: 0
+			                }
+			        	}, */
 			            series: [{
 			                name: 'WISH',
 			                id: 'WISH',	
@@ -466,6 +468,9 @@
 			        /****************************/
 			        
 	 $('#age_container').highcharts({
+						 credits: {
+				 		    enabled: false
+				 		  },
 			            chart: {
 			                plotBackgroundColor: null,
 			                plotBorderWidth: null,
@@ -490,7 +495,7 @@
 			                }
 			            },
 			            series: [{
-			                name: 'Entries',
+			                name: 'Developmental Age',
 			                colorByPoint: true,
 			                
 			                data: [{
@@ -703,6 +708,9 @@
 			    
 			          
 			     $('#tissue_container').highcharts({
+			    	 credits: {
+			    		    enabled: false
+			    	},
 			        chart: {
 			            type: 'pie'
 			        },
@@ -729,7 +737,7 @@
 			            }	
 			        },
 			        series: [{
-			            name: 'Entries',
+			            name: 'Tissue Group',
 			            colorByPoint: true,
 			           
 			            data: [{
@@ -781,25 +789,32 @@
 			    			},
 			                data: [
 								{name: 'WISH',
-								y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+								y: #{chartBean.chartModelDrillListTissue.get(0).wish_tissue},
+								x: #{chartBean.chartModelDrillListTissue.get(0).tot_wish_tissue_entries},
 								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
 								{name: 'SISH',
-								y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+								y: #{chartBean.chartModelDrillListTissue.get(0).sish_tissue},
+								x: #{chartBean.chartModelDrillListTissue.get(0).tot_sish_tissue_entries},
 								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
 								{name: 'IHC',
-								y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+								y: #{chartBean.chartModelDrillListTissue.get(0).ihc_tissue},
+								x: #{chartBean.chartModelDrillListTissue.get(0).tot_ihc_tissue_entries},
 								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
 								{name: 'OPT',
-								y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+								y: #{chartBean.chartModelDrillListTissue.get(0).opt_tissue},
+								x: #{chartBean.chartModelDrillListTissue.get(0).tot_opt_tissue_entries},
 								url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
 								{name: 'TG',
-								y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+								y: #{chartBean.chartModelDrillListTissue.get(0).tg_tissue},
+								x: #{chartBean.chartModelDrillListTissue.get(0).tot_tg_tissue_entries},
 								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
 								{name: 'Microarray',
-								y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+								y: #{chartBean.chartModelDrillListTissue.get(0).microarray_tissue},
+								x: #{chartBean.chartModelDrillListTissue.get(0).tot_microarray_tissue_entries},
 								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
 								{name: 'Sequence',
-								y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+								y: #{chartBean.chartModelDrillListTissue.get(0).sequence_tissue},
+								x: #{chartBean.chartModelDrillListTissue.get(0).tot_sequence_tissue_entries},
 								url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
 			                ]
 			            }, {
@@ -815,25 +830,32 @@
 			    			},
 			    			data: [
 									{name: 'WISH',
-									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(1).wish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(1).tot_wish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
 									{name: 'SISH',
-									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(1).sish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(1).tot_sish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
 									{name: 'IHC',
-									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(1).ihc_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(1).tot_ihc_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
 									{name: 'OPT',
-									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(1).opt_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(1).tot_opt_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
 									{name: 'TG',
-									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(1).tg_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(1).tot_tg_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
 									{name: 'Microarray',
-									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(1).microarray_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(1).tot_microarray_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
 									{name: 'Sequence',
-									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(1).sequence_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(1).tot_sequence_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
 				                ]
 			            }, {
@@ -849,25 +871,32 @@
 			    			},
 			    			data: [
 									{name: 'WISH',
-									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(2).wish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(2).tot_wish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
 									{name: 'SISH',
-									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(2).sish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(2).tot_sish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
 									{name: 'IHC',
-									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(2).ihc_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(2).tot_ihc_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
 									{name: 'OPT',
-									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(2).opt_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(2).tot_opt_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
 									{name: 'TG',
-									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(2).tg_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(2).tot_tg_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
 									{name: 'Microarray',
-									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(2).microarray_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(2).tot_microarray_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
 									{name: 'Sequence',
-									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(2).sequence_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(2).tot_sequence_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
 				                ]
 			            }, {
@@ -883,25 +912,32 @@
 			    			},
 			    			data: [
 									{name: 'WISH',
-									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(3).wish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(3).tot_wish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
 									{name: 'SISH',
-									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(3).sish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(3).tot_sish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
 									{name: 'IHC',
-									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(3).ihc_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(3).tot_ihc_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
 									{name: 'OPT',
-									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(3).opt_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(3).tot_opt_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
 									{name: 'TG',
-									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(3).tg_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(3).tot_tg_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
 									{name: 'Microarray',
-									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(3).microarray_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(3).tot_microarray_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
 									{name: 'Sequence',
-									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(3).sequence_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(3).tot_sequence_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
 				                ]
 			            }, {
@@ -917,25 +953,32 @@
 			    			},
 			    			data: [
 									{name: 'WISH',
-									y: #{chartBean.chartModelDrillList.get(0).wish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(4).wish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(4).tot_wish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Ahern'},
 									{name: 'SISH',
-									y: #{chartBean.chartModelDrillList.get(1).sish_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(4).sish_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(4).tot_sish_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Capel'},
 									{name: 'IHC',
-									y: #{chartBean.chartModelDrillList.get(2).ihc_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(4).ihc_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(4).tot_ihc_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Cohn'},
 									{name: 'OPT',
-									y: #{chartBean.chartModelDrillList.get(3).opt_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(4).opt_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(4).tot_opt_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=External-EuReGene'},
 									{name: 'TG',
-									y: #{chartBean.chartModelDrillList.get(4).tg_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(4).tg_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(4).tot_tg_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Gaido'},
 									{name: 'Microarray',
-									y: #{chartBean.chartModelDrillList.get(5).microarray_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(4).microarray_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(4).tot_microarray_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-External-Humphreys'},
 									{name: 'Sequence',
-									y: #{chartBean.chartModelDrillList.get(6).sequence_lab},
+									y: #{chartBean.chartModelDrillListTissue.get(4).sequence_tissue},
+									x: #{chartBean.chartModelDrillListTissue.get(4).tot_sequence_tissue_entries},
 									url: '/gudmap/db/browseWishTablePage.jsf?submitter=GUDMAP-Jain'}
 				                ]
 			            }
@@ -956,6 +999,7 @@
 			});
 		</script>
 	    <h1>Interactive Graphical Data Summary</h1>	
+	    <!-- <div id="lab_container" style="min-width: 300px; height: 250px; max-width: 350px; margin: 0 auto"></div> -->
 	    <div id="lab_container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    <div id="age_container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    <div id="tissue_container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>

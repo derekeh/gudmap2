@@ -34,6 +34,7 @@ public class ChartBean {
 	private ResultSet result;
 	DecimalFormat df = new DecimalFormat(".##");
 	int total_entries = 0;
+	int total_focus_entries = 0;
 	int total_genes = 0;
 	int total_wish = 0;
 	int total_sish = 0;
@@ -49,6 +50,7 @@ public class ChartBean {
 		initTissue();
 		drillChart();
 		drillChartAge();
+		drillChartTissue();
 		//barChart();
 	}
 	
@@ -274,7 +276,7 @@ public class ChartBean {
 	
 	public void initTissue() {
 		ChartModel chartModel = null;
-		int total_focus_entries=0;
+		//int total_focus_entries=0;
 		try
 			{
 				con=Globals.getDatasource().getConnection();
@@ -330,39 +332,34 @@ public class ChartBean {
 	
 	public void drillChartTissue() {
 		ChartModel chartModel = null;
-		Integer ageArray[]={1,15,16,20,21,22,23,27,28,28};
-		
+		String tissueArray[]={"LMN_EMAP","LKP_METANEPHROS","LUR_EMAP","LKP_URINARY","LER_EMAP","LKP_EARLY_REPRO","LFR_EMAP","LKP_FEMALE_REPRO","LMR_EMAP","LKP_MALE_REPRO"};
+		String queryString = ChartQueries.ASSAY_TYPES_BY_TISSUE;
+		String sql="";
 		chartModelDrillListTissue= new ArrayList<ChartModel>();
 		
-		for(int i=0;i<ageArray.length;i+=2){
+		for(int i=0;i<tissueArray.length;i+=2){
 	        try
-			{
+			{	sql = String.format(queryString,tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],
+			 	      tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1]);
 				con=Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(ChartQueries.ASSAY_TYPES_BY_TISSUE); 
-				ps.setInt(1, ageArray[i]);
-				ps.setInt(2, ageArray[i+1]);
-				ps.setInt(3, ageArray[i]);
-				ps.setInt(4, ageArray[i+1]);
-				ps.setInt(5, ageArray[i]);
-				ps.setInt(6, ageArray[i+1]);
-				ps.setInt(7, ageArray[i]);
-				ps.setInt(8, ageArray[i+1]);
-				ps.setInt(9, ageArray[i]);
-				ps.setInt(10, ageArray[i+1]);
-				ps.setInt(11, ageArray[i]);
-				ps.setInt(12, ageArray[i+1]);
-				ps.setInt(13, ageArray[i]);
-				ps.setInt(14, ageArray[i+1]);
+				ps = con.prepareStatement(sql); 
 				result =  ps.executeQuery();
 				if (result.first()) {
 					chartModel = new ChartModel();
-					chartModel.setWish_tissue(calculatePercentage(result.getInt("wish_tissue"),total_entries));
-					chartModel.setSish_tissue(calculatePercentage(result.getInt("sish_tissue"),total_entries));
-					chartModel.setOpt_tissue(calculatePercentage(result.getInt("opt_tissue"),total_entries));
-					chartModel.setIhc_tissue(calculatePercentage(result.getInt("ihc_tissue"),total_entries));
-					chartModel.setTg_tissue(calculatePercentage(result.getInt("tg_tissue"),total_entries));
-					chartModel.setMicroarray_tissue(calculatePercentage(result.getInt("microarray_tissue"),total_entries));
-					chartModel.setSequence_tissue(calculatePercentage(result.getInt("sequence_tissue"),total_entries));
+					chartModel.setWish_tissue(calculatePercentage(result.getInt("wish_tissue"),total_focus_entries));
+					chartModel.setTot_wish_tissue_entries(result.getInt("wish_tissue"));
+					chartModel.setSish_tissue(calculatePercentage(result.getInt("sish_tissue"),total_focus_entries));
+					chartModel.setTot_sish_tissue_entries(result.getInt("sish_tissue"));
+					chartModel.setOpt_tissue(calculatePercentage(result.getInt("opt_tissue"),total_focus_entries));
+					chartModel.setTot_opt_tissue_entries(result.getInt("opt_tissue"));
+					chartModel.setIhc_tissue(calculatePercentage(result.getInt("ihc_tissue"),total_focus_entries));
+					chartModel.setTot_ihc_tissue_entries(result.getInt("ihc_tissue"));
+					chartModel.setTg_tissue(calculatePercentage(result.getInt("tg_tissue"),total_focus_entries));
+					chartModel.setTot_tg_tissue_entries(result.getInt("tg_tissue"));
+					chartModel.setMicroarray_tissue(calculatePercentage(result.getInt("microarray_tissue"),total_focus_entries));
+					chartModel.setTot_microarray_tissue_entries(result.getInt("microarray_tissue"));
+					chartModel.setSequence_tissue(calculatePercentage(result.getInt("sequence_tissue"),total_focus_entries));
+					chartModel.setTot_sequence_tissue_entries(result.getInt("sequence_tissue"));
 	                
 					chartModelDrillListTissue.add(chartModel);       
 				}

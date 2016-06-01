@@ -64,6 +64,14 @@ public class ChartModel {
 	private int tot_mrs_entries = 0;
 	private int tot_mrs_genes = 0;
 	
+	private int tot_wish_tissue_entries = 0;
+	private int tot_sish_tissue_entries = 0;
+	private int tot_opt_tissue_entries = 0;
+	private int tot_ihc_tissue_entries = 0;
+	private int tot_tg_tissue_entries = 0;
+	private int tot_microarray_tissue_entries = 0;
+	private int tot_sequence_tissue_entries = 0;
+	
 	
 	public ChartModel(){
 		
@@ -381,6 +389,55 @@ public class ChartModel {
 	}
 	
 	/////
+	public void setTot_wish_tissue_entries(int tot_wish_tissue_entries) {
+		this.tot_wish_tissue_entries = tot_wish_tissue_entries;
+	}
+	public int getTot_wish_tissue_entries() {
+		return tot_wish_tissue_entries;
+	}
+	
+	public void setTot_sish_tissue_entries(int tot_sish_tissue_entries) {
+		this.tot_sish_tissue_entries = tot_sish_tissue_entries;
+	}
+	public int getTot_sish_tissue_entries() {
+		return tot_sish_tissue_entries;
+	}
+	
+	public void setTot_opt_tissue_entries(int tot_opt_tissue_entries) {
+		this.tot_opt_tissue_entries = tot_opt_tissue_entries;
+	}
+	public int getTot_opt_tissue_entries() {
+		return tot_opt_tissue_entries;
+	}
+	
+	public void setTot_ihc_tissue_entries(int tot_ihc_tissue_entries) {
+		this.tot_ihc_tissue_entries = tot_ihc_tissue_entries;
+	}
+	public int getTot_ihc_tissue_entries() {
+		return tot_ihc_tissue_entries;
+	}
+	
+	public void setTot_tg_tissue_entries(int tot_tg_tissue_entries) {
+		this.tot_tg_tissue_entries = tot_tg_tissue_entries;
+	}
+	public int getTot_tg_tissue_entries() {
+		return tot_tg_tissue_entries;
+	}
+	public void setTot_microarray_tissue_entries(int tot_microarray_tissue_entries) {
+		this.tot_microarray_tissue_entries = tot_microarray_tissue_entries;
+	}
+	public int getTot_microarray_tissue_entries() {
+		return tot_microarray_tissue_entries;
+	}
+	
+	public void setTot_sequence_tissue_entries(int tot_sequence_tissue_entries) {
+		this.tot_sequence_tissue_entries = tot_sequence_tissue_entries;
+	}
+	public int getTot_sequence_tissue_entries() {
+		return tot_sequence_tissue_entries;
+	}
+	
+	////
 	public void setMet_percent(double met_percent){
 		this.met_percent = met_percent;
 	}
