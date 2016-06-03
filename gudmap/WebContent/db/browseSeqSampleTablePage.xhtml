@@ -32,6 +32,7 @@
 				<h:panelGrid columns="3">
 					<h:outputText value="Sequence Sample Data&#160;&#160;" styleClass="db_bold"/>
 					<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />	
+					<h:outputText value="&gt; #{paramBean.params}" rendered="#{not empty paramBean.params}" />	
 					<h:panelGroup id="spinner" style="display:none">
 						  		<h:outputText value="&#160;&#160;&#160;&#160;Page Loading " />
 						  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />

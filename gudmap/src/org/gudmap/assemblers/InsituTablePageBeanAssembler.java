@@ -36,6 +36,8 @@ public class InsituTablePageBeanAssembler {
 	private String specimenWhereclause;
 	private int batch=0;
 	private String submitter;
+	private int agefrom=-1;
+	private int ageto=-1;
 	
 	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
 		if(Globals.getParameterValue("batch")!=null)
@@ -43,6 +45,12 @@ public class InsituTablePageBeanAssembler {
 		
 		if(Globals.getParameterValue("submitter")!=null)
 			submitter=Globals.getParameterValue("submitter");
+		
+		if(Globals.getParameterValue("agefrom")!=null)
+			agefrom=Integer.parseInt(Globals.getParameterValue("agefrom"));
+		
+		if(Globals.getParameterValue("ageto")!=null)
+			ageto=Integer.parseInt(Globals.getParameterValue("ageto"));
 		
 		this.paramSQL=paramSQL;
 		this.assayType=assayType;
@@ -59,6 +67,9 @@ public class InsituTablePageBeanAssembler {
 		
 		if(batch>0){whereclause+=" SUB_BATCH="+batch+" AND ";}
 		if(submitter!=null){whereclause+=" SUB_SOURCE='"+submitter+"' AND ";}
+		if(agefrom>=0) {
+			whereclause+=" SUB_STAGE_FK BETWEEN "+agefrom+" AND "+ageto+" AND ";
+		}
 		
 		if(assayType.equals("TG"))
 			whereclause = whereclause.replace("RPR_SYMBOL", "ALE_GENE");
@@ -131,9 +142,14 @@ public class InsituTablePageBeanAssembler {
 		}
 		String sql = String.format(queryString,expressionJoin,totalwhere,focusGroupWhereclause);
 		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
+		//PARAMS
 		if(batch>0)
 			sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
 		if(submitter!=null){sql=sql.replace(" WHERE ", " WHERE SUB_SOURCE='"+submitter+"' AND ");}
+		if(agefrom>=0) {
+			sql=sql.replace(" WHERE ", " WHERE SUB_STAGE_FK BETWEEN "+agefrom+" AND "+ageto+" AND ");
+		}
+		
 		try
 		{
 				con = Globals.getDatasource().getConnection();
@@ -177,12 +193,16 @@ public class InsituTablePageBeanAssembler {
 					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
 					//ps = con.prepareStatement(sql);
 				}
+				//PARAMS
 				//is it a batch query?
 				if(batch>0)
 					sql=sql.replace(" WHERE ", " WHERE SUB_BATCH="+batch+" AND ");
 				
 				if(submitter!=null){sql=sql.replace(" WHERE ", " WHERE SUB_SOURCE='"+submitter+"' AND ");}
 				
+				if(agefrom>=0) {
+					sql=sql.replace(" WHERE ", " WHERE SUB_STAGE_FK BETWEEN "+agefrom+" AND "+ageto+" AND ");
+				}
 				if(assayType.equals("INSITU")){
 					sql = sql.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC','TG')");
 				}

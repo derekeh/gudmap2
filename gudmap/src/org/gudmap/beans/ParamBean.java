@@ -33,6 +33,7 @@ public class ParamBean implements Serializable {
 	private ParamBeanAssembler assembler;
 	
 	private String focusGroup="reset";
+	private String params="";
 	private boolean isLoggedIn=false;
 	private String assayType="ISH";
 	/*columns*/
@@ -2101,6 +2102,18 @@ public class ParamBean implements Serializable {
 	}
 	public boolean getDebug() {
 		return debug;
+	}
+	
+	/////////////PARAM STRING//////////////
+	
+	public void setParams(String params) {
+		this.params=params;
+	}
+	public String getParams(){
+		if(params.equals("Dev Age between: Post Natal Adult and Post Natal Adult"))
+			return "DevAge = Post Natal Adult";
+		else
+			return params;
 	}
 	
 	/**********TODO **********checkboxes keep this code ******************/

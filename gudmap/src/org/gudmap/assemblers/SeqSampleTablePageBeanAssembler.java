@@ -32,7 +32,7 @@ public class SeqSampleTablePageBeanAssembler {
 	private String assayType;
 	private String paramValue;
 	private String whereclause;
-	//private String focusGroupWhereclause;
+	private String focusGroupWhereclause;
 	
 	public SeqSampleTablePageBeanAssembler(String paramSQL,String assayType) {
 	
@@ -41,14 +41,25 @@ public class SeqSampleTablePageBeanAssembler {
 		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND STG_STAGE_DISPLAY='"+Globals.getParameterValue("stage")+"' ":"";
 		paramValue+=(Globals.getParameterValue("batch")!=null)?" AND SUB_BATCH='"+Globals.getParameterValue("batch")+"' ":"";
 		
+		///
+				if(Globals.getParameterValue("submitter")!=null)
+					paramValue+=" AND SUB_SOURCE='"+Globals.getParameterValue("submitter")+"' ";
+				
+				if(Globals.getParameterValue("agefrom")!=null && Globals.getParameterValue("ageto")!=null)
+					paramValue+=" AND SUB_STAGE_FK BETWEEN "+Integer.parseInt(Globals.getParameterValue("agefrom"))+" AND "+
+					Integer.parseInt(Globals.getParameterValue("ageto"));
+				
+				///
+		
 	}
 	
-	public List<ArraySeqTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause){
+	public List<ArraySeqTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause,String focusgroup_sp_whereclause){
 		this.whereclause=whereclause;
-		//this.focusGroupWhereclause=focusGroupWhereclause;
+		this.focusGroupWhereclause=focusgroup_sp_whereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
 		
-		String sql = String.format(paramSQL, whereclause, paramValue, sortField, sortDirection);
+		//String sql = String.format(paramSQL, whereclause, paramValue, sortField, sortDirection);
+		String sql = String.format(paramSQL, whereclause, focusGroupWhereclause, paramValue, sortField, sortDirection);
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 		try
 		{
@@ -96,7 +107,9 @@ public class SeqSampleTablePageBeanAssembler {
 		int count=0;
 		/*String totalwhere=(whereclause.equals(" WHERE "))?"":Utils.removeWhere(whereclause, " WHERE ");*/
 		String totalwhere=whereclause;
-		String sql = String.format(SequenceQueries.TOTAL_SEQUENCE_SAMPLE,totalwhere,paramValue);
+		//String sql = String.format(SequenceQueries.TOTAL_SEQUENCE_SAMPLE,totalwhere,paramValue);
+		String sql = String.format(SequenceQueries.TOTAL_SEQUENCE_SAMPLE,totalwhere,focusGroupWhereclause,paramValue);
+		
 		try
 		{
 				con = Globals.getDatasource().getConnection();

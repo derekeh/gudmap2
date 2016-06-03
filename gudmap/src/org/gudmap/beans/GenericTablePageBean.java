@@ -106,6 +106,20 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
 	
     
     public void setup(String assayType,String specimenAssay) {
+    	//RESET PARAMETER STRING
+    	paramBean.setParams("");
+    	if(Globals.getParameterValue("submitter")!=null)
+    		paramBean.setParams(Globals.getParameterValue("submitter"));
+		
+		if(Globals.getParameterValue("agefrom")!=null)
+			paramBean.setParams("Dev Age between: "+Globals.getDevAge(Globals.getParameterValue("agefrom"))+" and "+
+					Globals.getDevAge(Globals.getParameterValue("ageto")));
+		if(Globals.getParameterValue("tissue")!=null) {
+			paramBean.setFocusGroup(Globals.getParameterValue("tissue"));
+			paramBean.setParams("value");
+		}
+		else
+			paramBean.setFocusGroup("reset");
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
     	//this.assayType=assayType;
     	stage=null;
@@ -177,7 +191,11 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     			if(Globals.getParameterValue("focusGroup")!=null)  {
     				paramBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
     				volatileSummaryBean.setFocusGroup(Globals.focusGroups[Integer.parseInt(Globals.getParameterValue("focusGroup"))]);
-    			}   			
+    			} 
+    			/*if(Globals.getParameterValue("tissue")!=null)
+    				paramBean.setFocusGroup(Globals.getParameterValue("tissue"));
+    			else
+    				paramBean.setFocusGroup("reset");*/
     			assembler=new InsituTablePageBeanAssembler(GenericQueries.BROWSE_ISH_PARAM,assayType);
     		}
     	}
@@ -311,7 +329,8 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		}
     		if(specimenAssay.equals("seqsample")) {
     			seqSampleAssembler.setAssayType("NextGen");
-	    		dataList = seqSampleAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending,paramBean.getMicWhereclause());
+	    		dataList = seqSampleAssembler.getData(firstRow, rowsPerPage, sortField, sortAscending,paramBean.getMicWhereclause(),
+	    				paramBean.getFocusGroupSpWhereclause());
 	    		//TODO Write column total queries.
 				//setTotalslist(micSeriesAssembler.getTotals());
 				totalRows = seqSampleAssembler.count();
