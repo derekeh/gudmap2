@@ -72,6 +72,22 @@ public class ChartModel {
 	private int tot_microarray_tissue_entries = 0;
 	private int tot_sequence_tissue_entries = 0;
 	
+	private int tot_wish = 0;
+	private int tot_sish = 0;
+	private int tot_ihc = 0;
+	private int tot_tg = 0;
+	private int tot_opt = 0;
+	private int tot_microarray = 0;
+	private int tot_sequence = 0;
+	
+	private int tot_age_1 = 0;
+	private int tot_age_2 = 0;
+	private int tot_age_3 = 0;
+	private int tot_age_4 = 0;
+	private int tot_age_5 = 0;
+	
+	
+	
 	
 	public ChartModel(){
 		
@@ -507,7 +523,80 @@ public class ChartModel {
 	public int getTot_mrs_genes() {
 		return tot_mrs_genes;
 	}
-	
+	/////
+	public void setTot_wish(int tot_wish){
+		this.tot_wish = tot_wish;
+	}
+	public int getTot_wish() {
+		return tot_wish;
+	}
+	public void setTot_sish(int tot_sish){
+		this.tot_sish = tot_sish;
+	}
+	public int getTot_sish() {
+		return tot_sish;
+	}
+	public void setTot_opt(int tot_opt){
+		this.tot_opt = tot_opt;
+	}
+	public int getTot_opt() {
+		return tot_opt;
+	}
+	public void setTot_ihc(int tot_ihc){
+		this.tot_ihc = tot_ihc;
+	}
+	public int getTot_ihc() {
+		return tot_ihc;
+	}
+	public void setTot_tg(int tot_tg){
+		this.tot_tg = tot_tg;
+	}
+	public int getTot_tg() {
+		return tot_tg;
+	}
+	public void setTot_microarray(int tot_microarray){
+		this.tot_microarray = tot_microarray;
+	}
+	public int getTot_microarray() {
+		return tot_microarray;
+	}
+	public void setTot_sequence(int tot_sequence){
+		this.tot_sequence = tot_sequence;
+	}
+	public int getTot_sequence() {
+		return tot_sequence;
+	}
+	///
+	public void setTot_age_1 (int tot_age_1){
+		this.tot_age_1 = tot_age_1;
+	}
+	public int getTot_age_1() {
+		return tot_age_1;
+	}
+	public void setTot_age_2 (int tot_age_2){
+		this.tot_age_2 = tot_age_2;
+	}
+	public int getTot_age_2() {
+		return tot_age_2;
+	}
+	public void setTot_age_3 (int tot_age_3){
+		this.tot_age_3 = tot_age_3;
+	}
+	public int getTot_age_3() {
+		return tot_age_3;
+	}
+	public void setTot_age_4 (int tot_age_4){
+		this.tot_age_4 = tot_age_4;
+	}
+	public int getTot_age_4() {
+		return tot_age_4;
+	}
+	public void setTot_age_5 (int tot_age_5){
+		this.tot_age_5 = tot_age_5;
+	}
+	public int getTot_age_5() {
+		return tot_age_5;
+	}
 }
 	
 	
