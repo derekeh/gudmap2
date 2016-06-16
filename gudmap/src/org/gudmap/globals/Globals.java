@@ -60,6 +60,29 @@ public class Globals {
 			return refererURI;
 	}
 	
+	public static String getDevAge(String oid) {
+		String RET="";
+		 if(oid.equals("1"))
+			 RET="0";
+		 else if (oid.equals("15"))
+			 RET="9.5 dpc";
+		 else if (oid.equals("16"))
+				 RET="10 dpc";
+		 else if (oid.equals("20"))
+			 RET="12.5 dpc";
+		 else if (oid.equals("21"))
+			 RET="13 dpc";
+		 else if (oid.equals("22"))
+			 RET="14.5 dpc";
+		 else if (oid.equals("23"))
+			 RET="15 dpc";
+		 else if (oid.equals("27"))
+			 RET="Newborn";
+		 else if (oid.equals("28"))
+			 RET="Post Natal Adult";
+		return RET;
+	}
+	
 	/*public static String getFacesRequestParamValue(String key) {
 		Object value = FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get(key);	
 		if (value==null)

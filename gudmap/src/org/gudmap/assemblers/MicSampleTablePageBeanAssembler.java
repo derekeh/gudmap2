@@ -43,6 +43,16 @@ public class MicSampleTablePageBeanAssembler {
 		paramValue+=(Globals.getParameterValue("stage")!=null)?" AND STG_STAGE_DISPLAY='"+Globals.getParameterValue("stage")+"' ":"";
 		paramValue+=(Globals.getParameterValue("batch")!=null)?" AND SUB_BATCH='"+Globals.getParameterValue("batch")+"' ":"";
 		
+		///
+		if(Globals.getParameterValue("submitter")!=null)
+			paramValue+=" AND SUB_SOURCE='"+Globals.getParameterValue("submitter")+"' ";
+		
+		if(Globals.getParameterValue("agefrom")!=null && Globals.getParameterValue("ageto")!=null)
+			paramValue+=" AND SUB_STAGE_FK BETWEEN "+Integer.parseInt(Globals.getParameterValue("agefrom"))+" AND "+
+			Integer.parseInt(Globals.getParameterValue("ageto"));
+		
+		///
+		
 		
 	}
 	

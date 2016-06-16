@@ -25,12 +25,16 @@ public class ChartBean {
 	
 	private ArrayList<ChartModel> chartModelList = null;
 	private ArrayList<ChartModel> chartModelDrillList = null;
+	private ArrayList<ChartModel> chartModelListAge = null;
+	private ArrayList<ChartModel> chartModelDrillListAge = null;
 	private ArrayList<ChartModel> chartModelBarList = null;
+	private ArrayList<ChartModel> chartModelDrillListTissue = null;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
 	DecimalFormat df = new DecimalFormat(".##");
 	int total_entries = 0;
+	int total_focus_entries = 0;
 	int total_genes = 0;
 	int total_wish = 0;
 	int total_sish = 0;
@@ -42,8 +46,12 @@ public class ChartBean {
 	
 	public ChartBean() {
 		init();
+		initAge();
+		initTissue();
 		drillChart();
-		barChart();
+		drillChartAge();
+		drillChartTissue();
+		//barChart();
 	}
 	
 	public ArrayList<ChartModel> getChartModelList() {
@@ -56,9 +64,26 @@ public class ChartBean {
 		return chartModelDrillList;
 	}
 	
+	public ArrayList<ChartModel> getChartModelListAge() {
+		
+		return chartModelListAge;
+	}
+	
+	
+	
+	public ArrayList<ChartModel> getChartModelDrillListAge() {
+		
+		return chartModelDrillListAge;
+	}
+	
 	public ArrayList<ChartModel> getChartModelBarList() {
 		
 		return chartModelBarList;
+	}
+	
+	public ArrayList<ChartModel> getChartModelDrillListTissue() {
+		
+		return chartModelDrillListTissue;
 	}
 	
 	public void init() {
@@ -79,23 +104,30 @@ public class ChartBean {
                 chartModel.setTotal_genes(total_genes);
                 total_ihc = result.getInt("ihc");
                 chartModel.setIhc_percent(calculatePercentage(result.getInt("ihc"),total_entries));
+                chartModel.setTot_ihc(total_ihc);
                 chartModel.setIhc_gene_percent(calculatePercentage(result.getInt("total_ihc_genes"),total_genes));
                 total_tg = result.getInt("tg");
                 chartModel.setTg_percent(calculatePercentage(result.getInt("tg"),total_entries));
+                chartModel.setTot_tg(total_tg);
                 chartModel.setTg_gene_percent(calculatePercentage(result.getInt("total_tg_genes"),total_genes));
                 total_wish = result.getInt("wish");
                 chartModel.setWish_percent(calculatePercentage(result.getInt("wish"),total_entries));
+                chartModel.setTot_wish(total_wish);
                 chartModel.setWish_gene_percent(calculatePercentage(result.getInt("total_wish_genes"),total_genes));
                 total_sish = result.getInt("sish");
                 chartModel.setSish_percent(calculatePercentage(result.getInt("sish"),total_entries));
+                chartModel.setTot_sish(total_sish);
                 chartModel.setSish_gene_percent(calculatePercentage(result.getInt("total_sish_genes"),total_genes));
                 total_opt = result.getInt("opt");
                 chartModel.setOpt_percent(calculatePercentage(result.getInt("opt"),total_entries));
+                chartModel.setTot_opt(total_opt);
                 chartModel.setOpt_gene_percent(calculatePercentage(result.getInt("total_opt_genes"),total_genes));
                 total_microarray = result.getInt("microarray");
                 chartModel.setMicroarray_percent(calculatePercentage(result.getInt("microarray"),total_entries));
+                chartModel.setTot_microarray(total_microarray);
                 total_sequence = result.getInt("sequence");
                 chartModel.setSequence_percent(calculatePercentage(result.getInt("sequence"),total_entries));
+                chartModel.setTot_sequence(total_sequence);
                 
                 chartModelList.add(chartModel);
                
@@ -146,7 +178,7 @@ public class ChartBean {
 				ps.setString(6, lab);
 				ps.setString(7, lab);
 				result =  ps.executeQuery();
-				if (result.first()) {
+				/*if (result.first()) {
 					chartModel = new ChartModel();
 					chartModel.setWish_lab(calculatePercentage(result.getInt("wish_lab"),total_wish));
 					chartModel.setSish_lab(calculatePercentage(result.getInt("sish_lab"),total_sish));
@@ -155,6 +187,25 @@ public class ChartBean {
 					chartModel.setTg_lab(calculatePercentage(result.getInt("tg_lab"),total_tg));
 					chartModel.setMicroarray_lab(calculatePercentage(result.getInt("microarray_lab"),total_microarray));
 					chartModel.setSequence_lab(calculatePercentage(result.getInt("sequence_lab"),total_sequence));
+	                
+					chartModelDrillList.add(chartModel);       
+				}*/
+				if (result.first()) {
+					chartModel = new ChartModel();
+					chartModel.setWish_lab(calculatePercentage(result.getInt("wish_lab"),total_entries));
+					chartModel.setTot_wish(result.getInt("wish_lab"));
+					chartModel.setSish_lab(calculatePercentage(result.getInt("sish_lab"),total_entries));
+					chartModel.setTot_sish(result.getInt("sish_lab"));
+					chartModel.setOpt_lab(calculatePercentage(result.getInt("opt_lab"),total_entries));
+					chartModel.setTot_opt(result.getInt("opt_lab"));
+					chartModel.setIhc_lab(calculatePercentage(result.getInt("ihc_lab"),total_entries));
+					chartModel.setTot_ihc(result.getInt("ihc_lab"));
+					chartModel.setTg_lab(calculatePercentage(result.getInt("tg_lab"),total_entries));
+					chartModel.setTot_tg(result.getInt("tg_lab"));
+					chartModel.setMicroarray_lab(calculatePercentage(result.getInt("microarray_lab"),total_entries));
+					chartModel.setTot_microarray(result.getInt("microarray_lab"));
+					chartModel.setSequence_lab(calculatePercentage(result.getInt("sequence_lab"),total_entries));
+					chartModel.setTot_sequence(result.getInt("sequence_lab"));
 	                
 					chartModelDrillList.add(chartModel);       
 				}
@@ -169,8 +220,101 @@ public class ChartBean {
 		
 	}
 	
-	public void barChart() {
+	public void initAge() {
+		String queryString = ChartQueries.ENTRIES_BY_AGE;
 		ChartModel chartModel = null;
+		
+        try
+		{
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			if (result.first()) {
+				chartModelListAge = new ArrayList<ChartModel>();
+				chartModel = new ChartModel();
+                chartModel.setAge_1_percent(calculatePercentage(result.getInt("TOT_AGE_1"),total_entries));
+                chartModel.setTot_age_1(result.getInt("TOT_AGE_1"));
+                chartModel.setAge_2_percent(calculatePercentage(result.getInt("TOT_AGE_2"),total_entries));
+                chartModel.setTot_age_2(result.getInt("TOT_AGE_2"));
+                chartModel.setAge_3_percent(calculatePercentage(result.getInt("TOT_AGE_3"),total_entries));
+                chartModel.setTot_age_3(result.getInt("TOT_AGE_3"));
+                chartModel.setAge_4_percent(calculatePercentage(result.getInt("TOT_AGE_4"),total_entries));
+                chartModel.setTot_age_4(result.getInt("TOT_AGE_4"));
+                chartModel.setAge_5_percent(calculatePercentage(result.getInt("TOT_AGE_5"),total_entries));
+                chartModel.setTot_age_5(result.getInt("TOT_AGE_5"));
+                
+                chartModelListAge.add(chartModel);
+               
+			}
+			
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		
+	}
+	
+	public void drillChartAge() {
+		ChartModel chartModel = null;
+		Integer ageArray[]={1,15,16,20,21,22,23,27,28,28};
+		
+		chartModelDrillListAge = new ArrayList<ChartModel>();
+		
+		for(int i=0;i<ageArray.length;i+=2){
+	        try
+			{
+				con=Globals.getDatasource().getConnection();
+				ps = con.prepareStatement(ChartQueries.ASSAY_TYPES_BY_AGE); 
+				ps.setInt(1, ageArray[i]);
+				ps.setInt(2, ageArray[i+1]);
+				ps.setInt(3, ageArray[i]);
+				ps.setInt(4, ageArray[i+1]);
+				ps.setInt(5, ageArray[i]);
+				ps.setInt(6, ageArray[i+1]);
+				ps.setInt(7, ageArray[i]);
+				ps.setInt(8, ageArray[i+1]);
+				ps.setInt(9, ageArray[i]);
+				ps.setInt(10, ageArray[i+1]);
+				ps.setInt(11, ageArray[i]);
+				ps.setInt(12, ageArray[i+1]);
+				ps.setInt(13, ageArray[i]);
+				ps.setInt(14, ageArray[i+1]);
+				result =  ps.executeQuery();
+				if (result.first()) {
+					chartModel = new ChartModel();
+					chartModel.setWish_age(calculatePercentage(result.getInt("wish_age"),total_entries));
+					chartModel.setTot_wish(result.getInt("wish_age"));
+					chartModel.setSish_age(calculatePercentage(result.getInt("sish_age"),total_entries));
+					chartModel.setTot_sish(result.getInt("sish_age"));
+					chartModel.setOpt_age(calculatePercentage(result.getInt("opt_age"),total_entries));
+					chartModel.setTot_opt(result.getInt("opt_age"));
+					chartModel.setIhc_age(calculatePercentage(result.getInt("ihc_age"),total_entries));
+					chartModel.setTot_ihc(result.getInt("ihc_age"));
+					chartModel.setTg_age(calculatePercentage(result.getInt("tg_age"),total_entries));
+					chartModel.setTot_tg(result.getInt("tg_age"));
+					chartModel.setMicroarray_age(calculatePercentage(result.getInt("microarray_age"),total_entries));
+					chartModel.setTot_microarray(result.getInt("microarray_age"));
+					chartModel.setSequence_age(calculatePercentage(result.getInt("sequence_age"),total_entries));
+					chartModel.setTot_sequence(result.getInt("sequence_age"));
+	                
+					chartModelDrillListAge.add(chartModel);       
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+		}
+		
+	}
+	
+	public void initTissue() {
+		ChartModel chartModel = null;
+		//int total_focus_entries=0;
 		try
 			{
 				con=Globals.getDatasource().getConnection();
@@ -179,11 +323,17 @@ public class ChartBean {
 				if (result.first()) {
 					chartModel = new ChartModel();
 					chartModelBarList = new ArrayList<ChartModel>();
+					total_focus_entries=result.getInt("TOT_MET")+result.getInt("TOT_LUT")+result.getInt("TOT_ERS")+result.getInt("TOT_FRS")+result.getInt("TOT_MRS");
 					chartModel.setTot_met_entries(result.getInt("TOT_MET"));
+					chartModel.setMet_percent(calculatePercentage(result.getInt("TOT_MET"),total_focus_entries));
 					chartModel.setTot_lut_entries(result.getInt("TOT_LUT"));
+					chartModel.setLut_percent(calculatePercentage(result.getInt("TOT_LUT"),total_focus_entries));
 					chartModel.setTot_ers_entries(result.getInt("TOT_ERS"));
+					chartModel.setErs_percent(calculatePercentage(result.getInt("TOT_ERS"),total_focus_entries));
 					chartModel.setTot_frs_entries(result.getInt("TOT_FRS"));
+					chartModel.setFrs_percent(calculatePercentage(result.getInt("TOT_FRS"),total_focus_entries));
 					chartModel.setTot_mrs_entries(result.getInt("TOT_MRS"));
+					chartModel.setMrs_percent(calculatePercentage(result.getInt("TOT_MRS"),total_focus_entries));
 				}
 				
 				
@@ -195,7 +345,7 @@ public class ChartBean {
 		
 		
 		
-			try
+			/*try
 			{
 				con=Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(ChartQueries.GENES_BY_FOCUS_GROUP); 
@@ -212,9 +362,53 @@ public class ChartBean {
 			catch(SQLException sqle){sqle.printStackTrace();}
 			finally {
 			    Globals.closeQuietly(con, ps, result);
-			}
+			}*/
 			
 			chartModelBarList.add(chartModel); 
+		
+	}
+	
+	public void drillChartTissue() {
+		ChartModel chartModel = null;
+		String tissueArray[]={"LMN_EMAP","LKP_METANEPHROS","LUR_EMAP","LKP_URINARY","LER_EMAP","LKP_EARLY_REPRO","LFR_EMAP","LKP_FEMALE_REPRO","LMR_EMAP","LKP_MALE_REPRO"};
+		String queryString = ChartQueries.ASSAY_TYPES_BY_TISSUE;
+		String sql="";
+		chartModelDrillListTissue= new ArrayList<ChartModel>();
+		
+		for(int i=0;i<tissueArray.length;i+=2){
+	        try
+			{	sql = String.format(queryString,tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],
+			 	      tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1],tissueArray[i],tissueArray[i+1]);
+				con=Globals.getDatasource().getConnection();
+				ps = con.prepareStatement(sql); 
+				result =  ps.executeQuery();
+				if (result.first()) {
+					chartModel = new ChartModel();
+					chartModel.setWish_tissue(calculatePercentage(result.getInt("wish_tissue"),total_focus_entries));
+					chartModel.setTot_wish_tissue_entries(result.getInt("wish_tissue"));
+					chartModel.setSish_tissue(calculatePercentage(result.getInt("sish_tissue"),total_focus_entries));
+					chartModel.setTot_sish_tissue_entries(result.getInt("sish_tissue"));
+					chartModel.setOpt_tissue(calculatePercentage(result.getInt("opt_tissue"),total_focus_entries));
+					chartModel.setTot_opt_tissue_entries(result.getInt("opt_tissue"));
+					chartModel.setIhc_tissue(calculatePercentage(result.getInt("ihc_tissue"),total_focus_entries));
+					chartModel.setTot_ihc_tissue_entries(result.getInt("ihc_tissue"));
+					chartModel.setTg_tissue(calculatePercentage(result.getInt("tg_tissue"),total_focus_entries));
+					chartModel.setTot_tg_tissue_entries(result.getInt("tg_tissue"));
+					chartModel.setMicroarray_tissue(calculatePercentage(result.getInt("microarray_tissue"),total_focus_entries));
+					chartModel.setTot_microarray_tissue_entries(result.getInt("microarray_tissue"));
+					chartModel.setSequence_tissue(calculatePercentage(result.getInt("sequence_tissue"),total_focus_entries));
+					chartModel.setTot_sequence_tissue_entries(result.getInt("sequence_tissue"));
+	                
+					chartModelDrillListTissue.add(chartModel);       
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
+		}
 		
 	}
 	

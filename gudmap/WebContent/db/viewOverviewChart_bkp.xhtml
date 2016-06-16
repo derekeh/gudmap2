@@ -46,7 +46,7 @@
 			                    cursor: 'pointer',
 			                    dataLabels: {
 			                        enabled: true,
-			                        format: '{point.name}: {point.x:.1f}% (genes)'
+			                        format: '{point.name}: ({point.x:.1f}% of genes)'
 			                    },
 			                    showInLegend: true
 			                }
@@ -436,28 +436,8 @@
 			    });
 			});
 		</script>
-	    <h1>Dynamic Pie Chart with Legend</h1>	
-	    <h:outputText value="Wish Percentage: #{chartBean.chartModelList.get(0).wish_percent},&#160;&#160;"/>
-	    <h:outputText value="Sish Percentage: #{chartBean.chartModelList.get(0).sish_percent},&#160;&#160;"/>
-	    <h:outputText value="IHC Percentage: #{chartBean.chartModelList.get(0).ihc_percent},&#160;&#160;"/>
-	    <h:outputText value="TG Percentage: #{chartBean.chartModelList.get(0).tg_percent},&#160;&#160;"/>
-	    <h:outputText value="OPT Percentage: #{chartBean.chartModelList.get(0).opt_percent},&#160;&#160;"/>
-	    <h:outputText value="Microarray Percentage: #{chartBean.chartModelList.get(0).microarray_percent},&#160;&#160;"/>
-	    <h:outputText value="Sequence Percentage: #{chartBean.chartModelList.get(0).sequence_percent},&#160;&#160;"/><br /><br />
-	    <h:outputText value="Wish Gene Percentage: #{chartBean.chartModelList.get(0).wish_gene_percent},&#160;&#160;"/>
-	    <h:outputText value="Sish Gene Percentage: #{chartBean.chartModelList.get(0).sish_gene_percent},&#160;&#160;"/>
-	    <h:outputText value="IHC Gene Percentage: #{chartBean.chartModelList.get(0).ihc_gene_percent},&#160;&#160;"/>
-	    <h:outputText value="TG Gene Percentage: #{chartBean.chartModelList.get(0).tg_gene_percent},&#160;&#160;"/>
-	    <h:outputText value="OPT Gene Percentage: #{chartBean.chartModelList.get(0).opt_gene_percent},&#160;&#160;"/>
-	    <h:outputText value="WISH lab: #{chartBean.chartModelDrillList.get(9).wish_lab},&#160;&#160;"/><br /><br />
-	    <h:outputText value="SISH lab: #{chartBean.chartModelDrillList.get(9).sish_lab},&#160;&#160;"/>
-	    <h:outputText value="OPT lab: #{chartBean.chartModelDrillList.get(9).opt_lab},&#160;&#160;"/>
-	    <h:outputText value="IHC lab: #{chartBean.chartModelDrillList.get(9).ihc_lab},&#160;&#160;"/>
-	    <h:outputText value="TG lab: #{chartBean.chartModelDrillList.get(9).tg_lab},&#160;&#160;"/>
-	    <h:outputText value="Microarray lab: #{chartBean.chartModelDrillList.get(9).microarray_lab},&#160;&#160;"/>
-	    <h:outputText value="Sequence lab: #{chartBean.chartModelDrillList.get(9).sequence_lab},&#160;&#160;"/>
-	    
-	    
+	    <h1>Interactive Graphical Data Summary</h1>	
+	  
 	    <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 	    
 	    <div id="container2" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
