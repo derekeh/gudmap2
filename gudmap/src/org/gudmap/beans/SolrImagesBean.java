@@ -14,7 +14,6 @@ import javax.inject.Named;
 
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.gudmap.dao.GeneDetailsDao;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.SolrInsituTableBeanModel;
 import org.gudmap.models.submission.ImageDetailModel;
@@ -37,7 +36,6 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-	private GeneDetailsDao geneDetailsDao;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -87,8 +85,6 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 	}
     
     public void setup() {
-//    	assembler=new SolrInsituAssembler();
-    	geneDetailsDao = new GeneDetailsDao();
         selectedItems = new ArrayList<String>(); 
     }
     

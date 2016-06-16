@@ -36,7 +36,6 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-//	private SolrSequencesAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -87,7 +86,6 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	}
 
 	public void setup() {
-//     	assembler=new SolrSequencesAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -125,20 +123,16 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     }
 
     public String refresh(){
- //   	sortField = "RELEVANCE";
-    	loadDataList();
+     	loadDataList();
     	return "solrSequences";
     }
 
     public void resetAll() {
 		paramBean.resetAll();
-//		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
     }
    
     public String checkboxSelections() { 
-    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
     	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
     		if (((ArraySeqTableBeanModel) dataList.get(i)).getSelected()) { 
@@ -210,7 +204,6 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 			list = formatTableData(sdl);
 			
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -240,7 +233,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 				model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
 			}
 			if (doc.containsKey("SAMPLE_GEO_ID")){
-				String gid = doc.getFieldValue("SAMPLE_GEO_ID").toString();
+//				String gid = doc.getFieldValue("SAMPLE_GEO_ID").toString();
 				model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
 			}
 			if (doc.containsKey("STAGE")){

@@ -7,10 +7,6 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.queries.generic.WebPageQueries;
@@ -32,7 +28,6 @@ public class SolrFilterBeanAssembler {
 	private Map<String,String>annotationtypelist;
 	private Map<String,String>imagedirlist;
 	private Map<String,String>pageIdlist;
-	private Map<String,String>pageCategorylist;
 	private Map<String,String>collectionTypeList;
 	private Map<String,String>speciesList;
 	

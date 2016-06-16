@@ -154,7 +154,7 @@ public class SolrAnalysisBean implements Serializable  {
     }
 
 	private void createGeneList(String solrInput, HashMap<String,String> filterlist){
-		ArrayList<String> genelistids = new ArrayList<String> ();
+//		ArrayList<String> genelistids = new ArrayList<String> ();
 
 		SolrDocumentList sdl  = solrTreeBean.getGenelistData(solrInput, filterlist);
 		
@@ -400,220 +400,215 @@ public class SolrAnalysisBean implements Serializable  {
 				
 		return obj;
 	}	
-	@SuppressWarnings("unchecked")
-	private JSONObject createUnpublishedDatasets2(ArrayList<GenelistTreeInfo> genelist, String dataset, int id){
-		
-		JSONObject obj = new JSONObject();		
-		obj.put("data", dataset);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id", id);
-		attr.put("title", "Dataset = "+dataset);
-		obj.put("attr", attr);
+//	@SuppressWarnings("unchecked")
+//	private JSONObject createUnpublishedDatasets2(ArrayList<GenelistTreeInfo> genelist, String dataset, int id){
+//		
+//		JSONObject obj = new JSONObject();		
+//		obj.put("data", dataset);
+//		obj.put("state", "closed");
+//		
+//		JSONObject attr = new JSONObject();
+//		attr.put("id", id);
+//		attr.put("title", "Dataset = "+dataset);
+//		obj.put("attr", attr);
+//
+//		ArrayList<String> stages = new ArrayList<String>();
+//		ArrayList<String> multistages = new ArrayList<String>();
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset())){
+//				if(!stages.contains(inf.getStage()) && !inf.getStage().trim().contentEquals("0")){
+//					if (inf.getStage().length() == 4)
+//						stages.add(inf.getStage());
+//					else if(!multistages.contains(inf.getStage()))
+//						multistages.add(inf.getStage());
+//				}
+//			}
+//		}
+//		Collections.sort(stages);
+//		Collections.sort(multistages);
+//		
+//		JSONArray  list = new JSONArray();
+//		
+//		int id2 = -10;
+//		for(String multistage : multistages){
+//			id2 = id2-1;
+//			list.add(createMultiStages(genelist, dataset, multistage, id2));					
+//		}				
+//		
+//		for(String stage : stages){
+//			id2 = id2-1;
+//			list.add(createStages(genelist, dataset, stage, id2));					
+//		}				
+//		obj.put("children", list);
+//				
+//		return obj;
+//	}
 
-		ArrayList<String> stages = new ArrayList<String>();
-		ArrayList<String> multistages = new ArrayList<String>();
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset())){
-				if(!stages.contains(inf.getStage()) && !inf.getStage().trim().contentEquals("0")){
-					if (inf.getStage().length() == 4)
-						stages.add(inf.getStage());
-					else if(!multistages.contains(inf.getStage()))
-						multistages.add(inf.getStage());
-				}
-			}
-		}
-		Collections.sort(stages);
-		Collections.sort(multistages);
-		
-		JSONArray  list = new JSONArray();
-		
-		int id2 = -10;
-		for(String multistage : multistages){
-			id2 = id2-1;
-			list.add(createMultiStages(genelist, dataset, multistage, id2));					
-		}				
-		
-		for(String stage : stages){
-			id2 = id2-1;
-			list.add(createStages(genelist, dataset, stage, id2));					
-		}				
-		obj.put("children", list);
-				
-		return obj;
-	}
+//	@SuppressWarnings("unchecked")
+//	private JSONObject createStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, int id){
+//
+//		JSONObject obj = new JSONObject();		
+//		obj.put("data", stage);
+//		obj.put("state", "closed");
+//		
+//		JSONObject attr = new JSONObject();
+//		attr.put("id",id);				
+//		attr.put("title", "Dataset = "+ dataset + ", " + stage);
+//		obj.put("attr", attr);
+//
+//		ArrayList<String> samples = new ArrayList<String>();
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
+//				if(!samples.contains(inf.getSample()) && !inf.getSample().trim().equalsIgnoreCase(""))
+//					samples.add(inf.getSample());
+//			}
+//		}
+//		Collections.sort(samples);
+//		
+//		
+//		JSONArray  list = new JSONArray();
+//		int id2 = -100;
+//		for(String sample : samples){
+//			id2 = id2 - 1;
+//			list.add(createSamples(genelist, dataset, stage, sample, id2));					
+//		}				
+//		obj.put("children", list);
+//				
+//		return obj;
+//	}
 
-	@SuppressWarnings("unchecked")
-	private JSONObject createStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, int id){
-
-		JSONObject obj = new JSONObject();		
-		obj.put("data", stage);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id",id);				
-		attr.put("title", "Dataset = "+ dataset + ", " + stage);
-		obj.put("attr", attr);
-
-		ArrayList<String> samples = new ArrayList<String>();
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
-				if(!samples.contains(inf.getSample()) && !inf.getSample().trim().equalsIgnoreCase(""))
-					samples.add(inf.getSample());
-			}
-		}
-		Collections.sort(samples);
-		
-		
-		JSONArray  list = new JSONArray();
-		int id2 = -100;
-		for(String sample : samples){
-			id2 = id2 - 1;
-			list.add(createSamples(genelist, dataset, stage, sample, id2));					
-		}				
-		obj.put("children", list);
-				
-		return obj;
-	}
-
-	@SuppressWarnings("unchecked")
-	private JSONObject createMultiStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, int id){
-
-		System.out.println("dataset = "+ dataset + " stage = "+ stage);
-
-		ArrayList<String> samples = new ArrayList<String>();
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
-				if(!samples.contains(inf.getSample()) && !inf.getSample().trim().equalsIgnoreCase(""))
-					samples.add(inf.getSample());
-			}
-		}
-		Collections.sort(samples);
-
-		JSONObject obj = new JSONObject();
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
-				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
-					obj = new JSONObject();
-					obj.put("data", inf.getName());
-					JSONObject attr1 = new JSONObject();
-					attr1.put("id", inf.getGenelistOID());
-					String table = "";
-					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-						table = "4_" + inf.getDatasetId();
-					else
-						table = "3_" + inf.getDatasetId();
-					attr1.put("table", table);
-					attr1.put("rel", "Role");							
-					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
-					obj.put("attr", attr1);
-					return obj;
-				}
-			}
-		}
-
-		obj = new JSONObject();		
-		int id2 = -100;
-		for(String sample : samples){
-			id2 = id2 - 1;
-			obj = createSamples(genelist, dataset, stage, sample, id2);					
-		}				
-				
-		return obj;
-	}
+//	@SuppressWarnings("unchecked")
+//	private JSONObject createMultiStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, int id){
+//
+//		System.out.println("dataset = "+ dataset + " stage = "+ stage);
+//
+//		ArrayList<String> samples = new ArrayList<String>();
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
+//				if(!samples.contains(inf.getSample()) && !inf.getSample().trim().equalsIgnoreCase(""))
+//					samples.add(inf.getSample());
+//			}
+//		}
+//		Collections.sort(samples);
+//
+//		JSONObject obj = new JSONObject();
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
+//				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
+//					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+//					obj = new JSONObject();
+//					obj.put("data", inf.getName());
+//					JSONObject attr1 = new JSONObject();
+//					attr1.put("id", inf.getGenelistOID());
+//					String table = "";
+//					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+//						table = "4_" + inf.getDatasetId();
+//					else
+//						table = "3_" + inf.getDatasetId();
+//					attr1.put("table", table);
+//					attr1.put("rel", "Role");							
+//					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
+//					obj.put("attr", attr1);
+//					return obj;
+//				}
+//			}
+//		}
+//
+//		obj = new JSONObject();		
+//		int id2 = -100;
+//		for(String sample : samples){
+//			id2 = id2 - 1;
+//			obj = createSamples(genelist, dataset, stage, sample, id2);					
+//		}				
+//				
+//		return obj;
+//	}
 	
-	@SuppressWarnings("unchecked")
-	private JSONObject createUnnamedSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
-
-		JSONObject obj = new JSONObject();
-		if(sample.contains("GSM") || sample.isEmpty()){
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
-				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
-					obj = new JSONObject();
-					obj.put("data", inf.getName());
-					JSONObject attr1 = new JSONObject();
-					attr1.put("id", inf.getGenelistOID());
-					String table = "";
-					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-						table = "4_" + inf.getDatasetId();
-					else
-						table = "3_" + inf.getDatasetId();
-					attr1.put("table", table);
-					attr1.put("rel", "Role");							
-					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
-					obj.put("attr", attr1);
-					return obj;
-				}
-			}
-		}
-		}
-		
-		
-		
-
-
-
-		obj.put("data", sample);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id",id);
-		attr.put("title", "Dataset = "+ dataset + ", Sample = " +sample);
-		obj.put("attr", attr);
-
-
-		ArrayList<GenelistTreeInfo> allList = new ArrayList<GenelistTreeInfo>();
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
-				if(!allList.contains(inf.getSubset2()))
-					allList.add(inf);
-			}
-		}
-
-		JSONArray  list = new JSONArray();
-		list = createLevelAll(allList);
-		obj.put("children", list);
-				
-		return obj;
-	}
+//	@SuppressWarnings("unchecked")
+//	private JSONObject createUnnamedSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
+//
+//		JSONObject obj = new JSONObject();
+//		if(sample.contains("GSM") || sample.isEmpty()){
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+//				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
+//					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+//					obj = new JSONObject();
+//					obj.put("data", inf.getName());
+//					JSONObject attr1 = new JSONObject();
+//					attr1.put("id", inf.getGenelistOID());
+//					String table = "";
+//					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+//						table = "4_" + inf.getDatasetId();
+//					else
+//						table = "3_" + inf.getDatasetId();
+//					attr1.put("table", table);
+//					attr1.put("rel", "Role");							
+//					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
+//					obj.put("attr", attr1);
+//					return obj;
+//				}
+//			}
+//		}
+//		}
+//		
+//		
+//		
+//
+//
+//
+//		obj.put("data", sample);
+//		obj.put("state", "closed");
+//		
+//		JSONObject attr = new JSONObject();
+//		attr.put("id",id);
+//		attr.put("title", "Dataset = "+ dataset + ", Sample = " +sample);
+//		obj.put("attr", attr);
+//
+//
+//		ArrayList<GenelistTreeInfo> allList = new ArrayList<GenelistTreeInfo>();
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+//				if(!allList.contains(inf.getSubset2()))
+//					allList.add(inf);
+//			}
+//		}
+//
+//		JSONArray  list = new JSONArray();
+//		list = createLevelAll(allList);
+//		obj.put("children", list);
+//				
+//		return obj;
+//	}
 
 	@SuppressWarnings("unchecked")
 	private JSONObject createSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
 
 		JSONObject obj = new JSONObject();
 		if(sample.contains("GSM") || sample.isEmpty()){
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
-				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
-					obj = new JSONObject();
-					obj.put("data", inf.getName());
-					JSONObject attr1 = new JSONObject();
-					attr1.put("id", inf.getGenelistOID());
-					String table = "";
-					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-						table = "4_" + inf.getDatasetId();
-					else
-						table = "3_" + inf.getDatasetId();
-					attr1.put("table", table);
-					attr1.put("rel", "Role");							
-					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
-					obj.put("attr", attr1);
-					return obj;
+			for(GenelistTreeInfo inf : genelist){
+				if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+					if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
+						System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+						obj = new JSONObject();
+						obj.put("data", inf.getName());
+						JSONObject attr1 = new JSONObject();
+						attr1.put("id", inf.getGenelistOID());
+						String table = "";
+						if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+							table = "4_" + inf.getDatasetId();
+						else
+							table = "3_" + inf.getDatasetId();
+						attr1.put("table", table);
+						attr1.put("rel", "Role");							
+						attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
+						obj.put("attr", attr1);
+						return obj;
+					}
 				}
 			}
 		}
-		}
 		
-		
-		
-
-
-
 		obj.put("data", sample);
 		obj.put("state", "closed");
 		
@@ -625,7 +620,6 @@ public class SolrAnalysisBean implements Serializable  {
 
 		ArrayList<GenelistTreeInfo> allList = new ArrayList<GenelistTreeInfo>();
 		for(GenelistTreeInfo inf : genelist){
-//			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage()) && sample.equalsIgnoreCase(inf.getSample())){
 			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
 				if(!allList.contains(inf.getSubset2()))
 					allList.add(inf);
@@ -646,7 +640,6 @@ public class SolrAnalysisBean implements Serializable  {
 		
 		ArrayList<GenelistTreeInfo> allList = new ArrayList<GenelistTreeInfo>();
 		for(GenelistTreeInfo inf : genelist){
-//			System.out.println("Subset2 = " + inf.getSubset2() + " , " + inf.getGenelistOID());
 			if (inf.getSubset2() != null){
 				if(!allList.contains(inf.getSubset2()) && inf.getSubset2().equalsIgnoreCase("All"))
 					allList.add(inf);
@@ -791,93 +784,93 @@ public class SolrAnalysisBean implements Serializable  {
 		return obj;
 	}
 
-	@SuppressWarnings("unchecked")
-	private JSONObject createPublisher2(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, int id){
-		
-		JSONObject obj = new JSONObject();		
-		obj.put("data", publisher);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id", id);
-		obj.put("attr", attr);
-
-		ArrayList<String> stages = new ArrayList<String>();
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
-				if(!stages.contains(inf.getStage()) && !inf.getStage().trim().contentEquals("0"))
-					stages.add(inf.getStage());
-			}
-		}
-		Collections.sort(stages);
-
-		JSONArray  list = new JSONArray();
-		
-		// put multiple stages here outside the stage node
-		String redundantStage = "";
-		for(String stage1 : stages){
-			if (stage1.length() > 4){
-				for(GenelistTreeInfo inf : genelist){
-					if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage1.equalsIgnoreCase(inf.getStage())){						
-						JSONObject obj1 = new JSONObject();
-						obj1.put("data", inf.getName());
-						JSONObject attr1 = new JSONObject();
-						attr1.put("id", inf.getGenelistOID());
-						String table = "";
-						if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-							table = "4_" + inf.getDatasetId();
-						else
-							table = "3_" + inf.getDatasetId();
-						attr1.put("table", table);
-						attr1.put("rel", "Role");
-						attr1.put("title", "Dataset = "+ inf.getDataset() + ", Sample = " + inf.getName() + ", " + inf.getStage() + ", " + inf.getLpuRef() + ", " + inf.getAuthor());
-						obj1.put("attr", attr1);
-						list.add(obj1);
-						redundantStage = stage1;
-					}
-					
-				}
-			}
-		}
-		if (redundantStage.length() > 0)
-			stages.remove(redundantStage);
-			
-		for(String stage : stages){
-			id = id-1;
-			list.add(createPublishedStages(genelist, dataset, publisher, stage, id));					
-		}				
-		obj.put("children", list);
-				
-		return obj;
-	}
+//	@SuppressWarnings("unchecked")
+//	private JSONObject createPublisher2(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, int id){
+//		
+//		JSONObject obj = new JSONObject();		
+//		obj.put("data", publisher);
+//		obj.put("state", "closed");
+//		
+//		JSONObject attr = new JSONObject();
+//		attr.put("id", id);
+//		obj.put("attr", attr);
+//
+//		ArrayList<String> stages = new ArrayList<String>();
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
+//				if(!stages.contains(inf.getStage()) && !inf.getStage().trim().contentEquals("0"))
+//					stages.add(inf.getStage());
+//			}
+//		}
+//		Collections.sort(stages);
+//
+//		JSONArray  list = new JSONArray();
+//		
+//		// put multiple stages here outside the stage node
+//		String redundantStage = "";
+//		for(String stage1 : stages){
+//			if (stage1.length() > 4){
+//				for(GenelistTreeInfo inf : genelist){
+//					if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage1.equalsIgnoreCase(inf.getStage())){						
+//						JSONObject obj1 = new JSONObject();
+//						obj1.put("data", inf.getName());
+//						JSONObject attr1 = new JSONObject();
+//						attr1.put("id", inf.getGenelistOID());
+//						String table = "";
+//						if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+//							table = "4_" + inf.getDatasetId();
+//						else
+//							table = "3_" + inf.getDatasetId();
+//						attr1.put("table", table);
+//						attr1.put("rel", "Role");
+//						attr1.put("title", "Dataset = "+ inf.getDataset() + ", Sample = " + inf.getName() + ", " + inf.getStage() + ", " + inf.getLpuRef() + ", " + inf.getAuthor());
+//						obj1.put("attr", attr1);
+//						list.add(obj1);
+//						redundantStage = stage1;
+//					}
+//					
+//				}
+//			}
+//		}
+//		if (redundantStage.length() > 0)
+//			stages.remove(redundantStage);
+//			
+//		for(String stage : stages){
+//			id = id-1;
+//			list.add(createPublishedStages(genelist, dataset, publisher, stage, id));					
+//		}				
+//		obj.put("children", list);
+//				
+//		return obj;
+//	}
 	
-	@SuppressWarnings("unchecked")
-	private JSONObject createPublishedStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, String stage, int id){
-
-		JSONObject obj = new JSONObject();
-		
-		obj.put("data", stage);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id",id);				
-		attr.put("title", "Dataset = "+ dataset + ", " + stage);
-		obj.put("attr", attr);
-
-		ArrayList<GenelistTreeInfo> names = new ArrayList<GenelistTreeInfo>();
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage.equalsIgnoreCase(inf.getStage())){
-				if(!names.contains(inf.getName()))
-					names.add(inf);
-			}
-		}
-		
-		JSONArray  list = new JSONArray();
-		list = createPublishedNames(names);
-		obj.put("children", list);
-				
-		return obj;
-	}
+//	@SuppressWarnings("unchecked")
+//	private JSONObject createPublishedStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, String stage, int id){
+//
+//		JSONObject obj = new JSONObject();
+//		
+//		obj.put("data", stage);
+//		obj.put("state", "closed");
+//		
+//		JSONObject attr = new JSONObject();
+//		attr.put("id",id);				
+//		attr.put("title", "Dataset = "+ dataset + ", " + stage);
+//		obj.put("attr", attr);
+//
+//		ArrayList<GenelistTreeInfo> names = new ArrayList<GenelistTreeInfo>();
+//		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage.equalsIgnoreCase(inf.getStage())){
+//				if(!names.contains(inf.getName()))
+//					names.add(inf);
+//			}
+//		}
+//		
+//		JSONArray  list = new JSONArray();
+//		list = createPublishedNames(names);
+//		obj.put("children", list);
+//				
+//		return obj;
+//	}
 
 	@SuppressWarnings("unchecked")
 	private JSONArray createPublishedNames(ArrayList<GenelistTreeInfo> genelist){

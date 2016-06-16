@@ -2,8 +2,6 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -15,10 +13,6 @@ import org.gudmap.utils.SolrUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-//import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 
 @Named (value="solrTreeBean")
@@ -60,36 +54,17 @@ public class SolrTreeBean implements Serializable {
 	public void setSolrInput(String value){
 		this.solrInput = value;
 	}
-	
-	
-	public String goSearch() {
 		
-		getSolrInput();
-		
-//		getGeneCount();
-//		getInsituCount();
-////		getMicroarrayCount();
-//		getGenelistCount();
-//		getGenelistCount();
-//		getTissueCount();
-////		getTutorialCount();
-//		getMouseStrainsCount();
-//		getImagesCount();
-		
+	public String goSearch() {	
+		getSolrInput();		
 		return null;
 	}
 
-	public void goListen(ActionEvent event) {
-		
-		getSolrInput();
-		
+	public void goListen(ActionEvent event) {		
+		getSolrInput();		
 	}
 	
-    public String getPage(){
-        
-    	UIViewRoot viewRoot =  FacesContext.getCurrentInstance().getViewRoot();
-    	List<UIComponent> components = viewRoot.getChildren();
-    	
+    public String getPage(){        
 		String page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
 		return page;
     }
@@ -185,10 +160,6 @@ public class SolrTreeBean implements Serializable {
 		filters = solrFilter.getFilters();
 		return solrUtil.getSamplesFilteredCount(solrInput, filters);
 	}
-
-//	public int getMicroarrayCount(String filter){
-//		return solrUtil.getMicroarrayCount(solrInput, filter);
-//	}
 
 	public int getMicroarrayCount(HashMap<String,String> filters){
 		return solrUtil.getSamplesFilteredCount(solrInput, filters);
@@ -353,8 +324,6 @@ public class SolrTreeBean implements Serializable {
 	 * @return boolean flag
 	 */
 	private boolean containsGene(){
-		// looks for a gene in the input string
-		// to allow genestrip page to be shown to be selected
 		
 		if (solrInput.isEmpty() || solrInput == "")
 			return false;

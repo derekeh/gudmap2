@@ -698,8 +698,11 @@ function findExpressionNotes(){
 						<h:panelGroup>
 							<h:outputText  styleClass="db_inner_inner_title"  value="Name: " />
 							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.geneName} " />
-							<h:outputLink  value="http://www.informatics.jax.org/accession/#{ishSubmissionBean.ishSubmissionModel.antibodyModel.locusTag}">
+							<h:outputLink  value="http://www.informatics.jax.org/accession/#{ishSubmissionBean.ishSubmissionModel.antibodyModel.locusTag}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}">
 								<h:outputText value=" (#{ishSubmissionBean.ishSubmissionModel.antibodyModel.locusTag})" />
+							</h:outputLink>
+							<h:outputLink  value="http://www.ncbi.nlm.nih.gov/gene/#{ishSubmissionBean.ishSubmissionModel.antibodyModel.locusTag}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Homo sapiens'}">
+								<h:outputText value=" (NCBI ID:#{ishSubmissionBean.ishSubmissionModel.antibodyModel.locusTag})" />
 							</h:outputLink>
 						</h:panelGroup>
 					</h:panelGrid>
@@ -836,11 +839,12 @@ function findExpressionNotes(){
 						<h:panelGroup>
 							<h:outputText styleClass="db_inner_inner_title" value="Name: " />
 							<h:outputText  value="#{ishSubmissionBean.ishSubmissionModel.geneName} " />
-							<h:outputText  value="(" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" />
-							<h:outputLink  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" >
-							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneId}" />
+							<h:outputLink  value="#{ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Mus musculus'}" >
+								<h:outputText value="(#{ishSubmissionBean.ishSubmissionModel.probeModel.geneId})" />
 							</h:outputLink>
-							<h:outputText  value=")" rendered="#{not empty ishSubmissionBean.ishSubmissionModel.probeModel.geneIdUrl}" />
+							<h:outputLink  value="http://www.ncbi.nlm.nih.gov/gene/#{ishSubmissionBean.ishSubmissionModel.probeModel.geneId}" rendered="#{ishSubmissionBean.ishSubmissionModel.specimenModel.species == 'Homo sapiens'}" >
+								<h:outputText value="(NCBI ID: #{ishSubmissionBean.ishSubmissionModel.probeModel.geneId})" />
+							</h:outputLink>
 						</h:panelGroup>
 					</h:panelGrid>
 									

@@ -12,6 +12,18 @@
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
     		
+
+ 			<h:column >
+    			<f:facet name="header">
+					<h:selectBooleanCheckbox id="cb_toggle" value="#{genericTablePageBean.toggleCheck}" valueChangeListener="#{genericTablePageBean.toggleAll}">
+						<f:ajax event="click" execute="@this cb_toggle"  render="@form" />
+					</h:selectBooleanCheckbox>
+    				<ui:remove><!-- <h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" /> --></ui:remove>			
+    			</f:facet>
+    				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
+    		</h:column>
+
+
     		
     		<h:column rendered="#{paramBean.mic_gudmapaccessioncol == true}">
     			<f:facet name="header">

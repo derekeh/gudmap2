@@ -1,11 +1,8 @@
 package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -743,14 +739,6 @@ public class SolrFilter implements Serializable {
 
    
     public String getPage(String component){
-    
-    	UIViewRoot viewRoot =  FacesContext.getCurrentInstance().getViewRoot();
-    	List<UIComponent> components = viewRoot.getChildren();
-//    	if (components.contains(component))
-//    		return ":" + component;
-//    	else
-//    		return "";
-    	
 		page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
 		return page;
     }

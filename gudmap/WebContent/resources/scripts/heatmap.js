@@ -920,8 +920,6 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
     	                action: function(elm, d, i){
     	    				colSortOrder=!colSortOrder;  
     	    				sortbylabel("c",i,colSortOrder);
-    	    				d3.select("#order").property("selectedIndex", 4).node().focus();
-
     	                }
     	            },
     	            {
@@ -929,7 +927,6 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
     	                action: function(elm, d, i){
     	                	sample.setAttribute("value", d);
     	                	eventFire(control,'click');
-//    	    		        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
     	                }
     	            }
     	        ];    	

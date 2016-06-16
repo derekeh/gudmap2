@@ -269,7 +269,6 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 
 	private LinkedList<String> getLinks(String geneId){
 		
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> links = new LinkedList<String>();
 		
 		for(MasterTableInfo info : tableinfo){
@@ -288,7 +287,6 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 	
 	private LinkedList<LinkedList<String>> getDataValues(String geneId){
 		
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
 
@@ -300,12 +298,10 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
-    			int colCounter = 1;
     			items = new LinkedList<String>();
     			for(String[] item : dataList){
     				String rma = item[2];
     				items.add(rma);	
-					colCounter ++;
     			}
     			if (dlsize < maxColNumber){
     				int diff = maxColNumber - dlsize;
@@ -328,7 +324,6 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 	
 	private LinkedList<LinkedList<String>> getDataAdjValues(String geneId){
 
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
 
@@ -340,12 +335,10 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
-    			int colCounter = 1;
     			items = new LinkedList<String>();
     			for(String[] item : dataList){
     				String scaledRma = item[5];
     				items.add(scaledRma);	
-					colCounter ++;
     			}
     			if (dlsize < maxColNumber){
     				int diff = maxColNumber - dlsize;

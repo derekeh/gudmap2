@@ -9,24 +9,15 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-//import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-
-
-
-
-
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.gudmap.assemblers.EditPageAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.EditPageModel;
 
@@ -48,8 +39,8 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
     // Data.
 
     private String whereclause = " WHERE ";
-    private List<String> selectedItems;
-    private boolean areAllChecked;
+//    private List<String> selectedItems;
+//    private boolean areAllChecked;
     
     @Inject
    	private ParamBean paramBean;
@@ -61,7 +52,7 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
    	private SolrFilter solrFilter;
     
 	private String solrInput;
-	private String host;
+//	private String host;
 	private HashMap<String,String> filters;
 	private boolean showPageDetails = true;
     
@@ -274,7 +265,7 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 				if( id.contains(entry1.getKey())){	
 					Map<String,List<String>> hval = entry1.getValue();
 					for(Map.Entry<String,List<String>> entry2 : hval.entrySet() ){
-						String hkey2 = entry2.getKey();
+//						String hkey2 = entry2.getKey();
 						List<String> hval2 = entry2.getValue();
 						for(String v2: hval2){
 							String orig = v2.replace("<strong>","");

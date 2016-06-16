@@ -2,9 +2,7 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;

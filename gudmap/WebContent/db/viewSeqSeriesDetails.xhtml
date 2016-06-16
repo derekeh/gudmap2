@@ -36,16 +36,25 @@
 			<f:param name="batch" value="#{arraySeqSeriesBean.datalist.get(0).batchID}"/>
 			<h:outputText value="#{arraySeqSeriesBean.datalist.get(0).batchID}"  rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}"/>
 		</h:outputLink>
-<ui:remove>		
-		<h:outputText  value="Number of Samples:" />
-		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).numSamples} samples" />
-</ui:remove>		
 		
 		<h:outputText  value="Number of Samples:" />
+<ui:remove>			
 		<h:outputLink value="browseSeqHeatmap.jsf"  title="View Heatmap" rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}">
 			<f:param name="seriesID" value="#{arraySeqSeriesBean.datalist.get(0).getGeoSeriesID()}"/>
 			<h:outputText value="#{arraySeqSeriesBean.datalist.get(0).numSamples} samples"  rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}"/>
 		</h:outputLink>
+</ui:remove>		
+
+		<h:panelGrid columns="2">
+			<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).numSamples} samples" />
+
+
+			<h:link value="(View Series Heatmap)" outcome="browseSeqHeatmap" rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}">
+				<f:param name="seriesID" value="#{arraySeqSeriesBean.datalist.get(0).getGeoSeriesID()}"/>
+			</h:link>
+			
+		</h:panelGrid>	
+
 	
 		<h:outputText  value="Title:" />
 		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).title}" />
@@ -57,12 +66,14 @@
 		<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).overallDesign}" />
 	</h:panelGrid>
 
+
 	#{genericTablePageBean.init('NextGen','seqsample',20,10,'natural_sort(geo_sample_id)',true)}
 	#{genericTablePageBean.loadDataList()}
 	
-	
+
 	<!-- column selection -->
-	
+
+
 	<ui:include src="/snippets/g_seqSampleCols.xhtml"></ui:include>
 	<ui:include src="/snippets/g_seqSampleFilter.xhtml"></ui:include>
 	
@@ -70,8 +81,10 @@
 			<ui:include src="/snippets/g_ColumnFilterButtons_insitu.xhtml"></ui:include>
 			<h:form id="focusform">			
 				<h:panelGrid columns="3">
-					<h:outputText value="Sequence Sample Data&#160;&#160;" styleClass="db_bold"/>
+					<h:outputText value="Sequence Sample Data&#160;&#160;" styleClass="db_bold"/>					
 					<h:outputText value="&gt; #{paramBean.focusGroup}" rendered="#{paramBean.focusGroup != 'reset'}" />	
+
+
 					<h:panelGroup id="spinner" style="display:none">
 						  		<h:outputText value="&#160;&#160;&#160;&#160;Page Loading " />
 						  		<h:graphicImage  library="images/display" name="spinner_blue.gif"  />
