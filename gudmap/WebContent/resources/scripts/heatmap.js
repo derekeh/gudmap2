@@ -904,7 +904,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, seriesId, s
 	    	.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
 	    	.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
             .on("click", function(d,i) {
-            	alert(d);
+//            	alert(d);
             	gene.setAttribute("value", d);
             	rowSortOrder=!rowSortOrder; 
             	sortbylabel("r",i,rowSortOrder);
@@ -1029,7 +1029,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, seriesId, s
 
 		// if previously sorted by gene - then resort by gene
         if (geneidx != -1){	
-        	alert("sorting by gene");
+ //       	alert("sorting by gene");
 			rowSortOrder=!rowSortOrder; 
 			sortbylabel("r",geneidx,rowSortOrder);
 		}

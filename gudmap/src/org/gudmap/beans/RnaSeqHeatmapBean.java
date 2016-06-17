@@ -257,6 +257,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	 */
     public void setSelectedSample(String sample) {
     	selectedSample = sample;
+    	init(selectedSample);
     }
 
 	/**
@@ -401,7 +402,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		LinkedList<String> genes = new LinkedList<String>();
 		boolean geneFound = false;
 		
-		if (geneTypes == null || geneTypes.isEmpty() || geneTypes.size() == geneTypesCount){
+//		if (geneTypes == null || geneTypes.isEmpty() || geneTypes.size() == geneTypesCount){
 			
 			for (String[] line:subGeneList){
 				int len = line.length;
@@ -416,27 +417,27 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 				data.add(d);
 			}
 			
-		}
-		else {
-			
-			for (String[] line:subGeneList){
-				// using genebiotype filtering
-				if (geneBiotypeMatch(selectedGene)){
-					
-					int len = line.length;
-					ids.add(line[0]);
-					genes.add(line[1]);
-					if(selectedGene != null && selectedGene.contentEquals(line[1]))
-						geneFound = true;
-		
-					LinkedList<String> d = new LinkedList<String>();
-					for (int i = 2; i < len-1; i++)
-						d.add(line[i]);
-					data.add(d);
-				}
-			}
-			
-		}
+//		}
+//		else {
+//			
+//			for (String[] line:subGeneList){
+//				// using genebiotype filtering
+//				if (geneBiotypeMatch(selectedGene)){
+//					
+//					int len = line.length;
+//					ids.add(line[0]);
+//					genes.add(line[1]);
+//					if(selectedGene != null && selectedGene.contentEquals(line[1]))
+//						geneFound = true;
+//		
+//					LinkedList<String> d = new LinkedList<String>();
+//					for (int i = 2; i < len-1; i++)
+//						d.add(line[i]);
+//					data.add(d);
+//				}
+//			}
+//			
+//		}
 		
 		// if selected gene not in list of topGeneCount, find gene entries in file and add to list
 		// this will allow sort by gene to be reinstated
