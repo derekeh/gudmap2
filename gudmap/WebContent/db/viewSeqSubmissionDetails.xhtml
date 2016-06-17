@@ -429,6 +429,35 @@
 				</h:dataTable>
 			</h:panelGrid>
 		</h:panelGrid>
+
+	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.geoID == 'GSE59129'}">
+	    		<h:outputText value="Gudmap processing pipeline" />
+				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+
+					<h:outputText value="Fast QC:" />
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/FastQC_results/index.html">
+								<h:outputText value="index.html"/>
+							</h:outputLink>
+
+
+					<h:outputText value="RNASeq QC:"  />
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/index.html">
+								<h:outputText value="index.html"/>
+							</h:outputLink>
+
+					<h:outputText value="Alignment results:"  />
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/tophat_results">
+								<h:outputText value="(folder)"/>
+							</h:outputLink>
+
+					<h:outputText value="Cufflinks results:"/>
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/cufflink_results">
+								<h:outputText value="(folder)"/>
+							</h:outputLink>
+					
+				</h:panelGrid>				
+	    	</h:panelGrid>
+
 		
 		<h:panelGrid   columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.linkedPublications}">
 			<h:outputText value="Linked Publications" />

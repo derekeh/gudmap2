@@ -55,6 +55,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	private int selectedSampleCol = 2;
 	private String cellSize = "15";
 	private String selectedSample = "AdultProximal_Tubules-1";
+	private String selectedSeries;
 	private String selectedGene;
 	private ArrayList<String> geneTypes;
 	private int geneTypesCount;
@@ -278,6 +279,15 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     public void setSelectedGene(String gene) {
     	selectedGene = gene;
     }
+
+    public String getSelectedSeries() {
+    	return selectedSeries;
+    }
+    
+    public void setSelectedSeries(String series) {
+    	selectedSeries = series;
+    }
+    
     
 	public RnaSeqHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
 		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
@@ -301,8 +311,10 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	
     @Override
     public void loadDataList() {
-    	
-    	init(selectedSample);
+    	if(Globals.getParameterValue("seriesID")!=null){
+    		selectedSeries = Globals.getParameterValue("seriesID");
+    		init(selectedSample);
+    	}
     }
 	
 	public String getTitle() {

@@ -802,7 +802,7 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
     
 }
 
-function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gene, control) {
+function seq_heatmap_display(url, heatmapId, paletteName, cell_size, seriesId, sample, gene, control) {
     var cellSize = cell_size; //5; //10; //20;//14;
     var sortgeneidx = -1;//idx;
 //  var svg;
@@ -811,7 +811,6 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
     .style("position", "absolute")
     .style("visibility", "hidden");
     
-
     //==================================================
     d3.json(url, function(error, data) {
 
@@ -1018,7 +1017,8 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
 			})
 			.on('click', function(d,i,j) {
 				d3.select("#tabulate2").remove;
-				var item = [ids[j],genes[j],samples[i],d,"GSE664959"];
+//				var item = [ids[j],genes[j],samples[i],d,"GSE64959"];
+				var item = [ids[j],genes[j],samples[i],d,seriesId];
 				var ds1 = [];
 				ds1.push(item);				
 				tabulate(ds1);
