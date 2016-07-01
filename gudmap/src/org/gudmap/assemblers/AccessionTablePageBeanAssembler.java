@@ -1,9 +1,6 @@
 package org.gudmap.assemblers;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,10 +17,14 @@ import org.gudmap.queries.totals.QueryTotals;
 import org.gudmap.utils.Utils;
 import org.gudmap.models.InsituTableBeanModel;
 
+/**
+ * Assembler for accession input
+ * @author dhoughto
+ * @see AccessionTablePageBean
+ */
 public class AccessionTablePageBeanAssembler {
 	
 	
-	//private DataSource ds;
 	private Connection con;
 	private PreparedStatement ps;
 	private ResultSet result;
@@ -38,17 +39,33 @@ public class AccessionTablePageBeanAssembler {
 	private String input;
 	private String focusGroupSpWhereclause;
 	
+	/**
+	 * @param paramSQL The parameterized sql query passed from the view (browseAccessionTablePage)
+	 */
 	public  AccessionTablePageBeanAssembler(String paramSQL) {
-		/*try {
-			Context ctx = new InitialContext();
-			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/Gudmap_jdbcResource");
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}*/
+		
 		this.paramSQL=paramSQL;
 		
 	}
 	
+	
+	/**
+	 * Returns a list of submission models that are displayed in a table. A model entry represents a submission
+	 * @param firstRow the db row at which the paginator starts
+	 * @param rowCount the number of rows to retrieve
+	 * @param sortField the column on which the query is sorted 
+	 * @param sortAscending the direction of the sort
+	 * @param whereclause the where clause to be inserted into the paramaterized query
+	 * @param focusGroupWhereclause an extension to the whereclause where focus (tissue) groups are invoked
+	 * @param expressionJoin an extension to the parameterized query if the focusGroupWhereclause is not null
+	 * @param specimenWhereclause an extension to the parameterized query if the assay type is Sequence or Microarray
+	 * @param input the user input
+	 * @param focusGroupSpWhereclause an extension to the whereclause where focus (tissue) groups are invoked and the assay type is Sequence or Microarray
+	 * @return a list of submission models
+	 * 
+	 * @see org.gudmap.models.InsituTableBeanModel
+	 * @see org.gudmap.beans.GenericTablePageBean#getUserInput()
+	 */
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
 											String focusGroupWhereclause, String expressionJoin,String specimenWhereclause,String input,
 											String focusGroupSpWhereclause){
@@ -75,7 +92,6 @@ public class AccessionTablePageBeanAssembler {
 			
 			//group_concat returning no value will return a null row so don't get those!
 			while(result.next()){
-				//while(result.next() && result.getString(1)!=null){
 				if(result.getString(1)!=null)
 				{
 					ishmodel=new InsituTableBeanModel();
@@ -110,6 +126,10 @@ public class AccessionTablePageBeanAssembler {
 		return list;
 	}
 	
+	/**
+	 * Returns the totals of all assay types and constructs a string detailing sub counts for insitu, microarray and sequence data
+	 * @return the total count of submissions found
+	 */
 	public int count() {
 		queryTotals="Totals returned: Insitu (";
 		int count=0;
@@ -173,6 +193,10 @@ public class AccessionTablePageBeanAssembler {
 		return count;
 	}
 	
+	/**
+	 * retrieves the distinct totals for display in table column headers in resultant view of 
+	 * @return a hashmap with column identifiers and count key/value pairs
+	 */
 	public Map<String,String>  getTotals() {
 		Map<String,String> totals = new HashMap<String,String>();
 		
@@ -195,7 +219,6 @@ public class AccessionTablePageBeanAssembler {
 				else {
 					sql=String.format(QueryTotals.ReturnQuery(queries[i]),expressionJoin,totalwhere,focusGroupWhereclause);
 					sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
-					//ps = con.prepareStatement(sql);
 				}
 				ps = con.prepareStatement(sql);
 				ps.setString(1, assayType);
@@ -213,10 +236,17 @@ public class AccessionTablePageBeanAssembler {
 		return totals;
 	}
 	
+	/** Sets the assay type
+	 * @param assayType ISH | IHC | TG | NextGen | Microarray 
+	 */
 	public void setAssayType(String assayType){
 		this.assayType=assayType;
 	}
 	
+	/**
+	 * @return the string displaying the totals for each assay type
+	 * @see #getTotals()
+	 */
 	public String getQueryTotals() {
 		return queryTotals;
 	}

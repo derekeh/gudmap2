@@ -108,6 +108,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     public void setup(String assayType,String specimenAssay) {
     	//RESET PARAMETER STRING
     	paramBean.setParams("");
+    	//CONDITIONAL STATEMENT USED BY viewOverviewChart
     	if(Globals.getParameterValue("submitter")!=null)
     		paramBean.setParams(Globals.getParameterValue("submitter"));
 		
