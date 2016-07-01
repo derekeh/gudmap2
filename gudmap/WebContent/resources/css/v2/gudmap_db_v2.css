@@ -150,8 +150,13 @@
 	border-radius: 8px;	
 }
 
+#pageview {
+	width:99%;
+}
+
 .db_order-table{   
 	border-collapse:collapse;
+	width:99%;
 }
 
 .db_order-table img {

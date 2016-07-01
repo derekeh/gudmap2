@@ -15,4 +15,13 @@
 	        <var>msg</var>
 	    </resource-bundle>
 	</application>
+	<navigation-rule>
+	<from-view-id>*</from-view-id>
+	<navigation-case>
+		<from-action>#{loginBean.logout()}</from-action>
+		<from-outcome>success</from-outcome>
+		<to-view-id>/db/database_homepage.xhtml</to-view-id>
+	</navigation-case>
+	
+    </navigation-rule>	
 </faces-config>
