@@ -21,6 +21,15 @@ import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.MouseStrainsTableBeanModel;
 
+/**
+ * <h1>SolrMouseStrainsBean</h1>
+ * The SolrMouseStrainsBean class contains the methods to provide data and deal with events on the
+ * solrMouseStrains.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrMouseStrainsBean")
 @SessionScoped
 public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
@@ -162,6 +171,19 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
     
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of MouseStrainsTableBeanModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of MouseStrainsTableBeanModels
+	 * @see MouseStrainsTableBeanModel
+     */
 	public List<MouseStrainsTableBeanModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<MouseStrainsTableBeanModel> list = new ArrayList<MouseStrainsTableBeanModel>();
@@ -172,6 +194,13 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
+	/**
+	 * This method creates a list of MouseStrainsTableBeanModels from the documents in the SolrDocumentList sdl.
+	 * 
+	 * @param sdl A SolrDocumentList	  
+	 * @return A List of MouseStrainsTableBeanModels
+	 * @see MouseStrainsTableBeanModel
+	 */
 	private List<MouseStrainsTableBeanModel> formatTableData(SolrDocumentList sdl){
 		
 		List<MouseStrainsTableBeanModel> list = new ArrayList<MouseStrainsTableBeanModel>();

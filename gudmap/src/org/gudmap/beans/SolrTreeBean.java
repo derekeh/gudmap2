@@ -2,8 +2,6 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
@@ -15,10 +13,6 @@ import org.gudmap.utils.SolrUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-//import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 
 @Named (value="solrTreeBean")
@@ -60,36 +54,17 @@ public class SolrTreeBean implements Serializable {
 	public void setSolrInput(String value){
 		this.solrInput = value;
 	}
-	
-	
-	public String goSearch() {
 		
-		getSolrInput();
-		
-//		getGeneCount();
-//		getInsituCount();
-////		getMicroarrayCount();
-//		getGenelistCount();
-//		getGenelistCount();
-//		getTissueCount();
-////		getTutorialCount();
-//		getMouseStrainsCount();
-//		getImagesCount();
-		
+	public String goSearch() {	
+		getSolrInput();		
 		return null;
 	}
 
-	public void goListen(ActionEvent event) {
-		
-		getSolrInput();
-		
+	public void goListen(ActionEvent event) {		
+		getSolrInput();		
 	}
 	
-    public String getPage(){
-        
-    	UIViewRoot viewRoot =  FacesContext.getCurrentInstance().getViewRoot();
-    	List<UIComponent> components = viewRoot.getChildren();
-    	
+    public String getPage(){        
 		String page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
 		return page;
     }
@@ -186,10 +161,6 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getSamplesFilteredCount(solrInput, filters);
 	}
 
-//	public int getMicroarrayCount(String filter){
-//		return solrUtil.getMicroarrayCount(solrInput, filter);
-//	}
-
 	public int getMicroarrayCount(HashMap<String,String> filters){
 		return solrUtil.getSamplesFilteredCount(solrInput, filters);
 	}
@@ -221,15 +192,15 @@ public class SolrTreeBean implements Serializable {
 	
 	////////////////// TUTORIAL ////////////////////////////
 	
-	public int getTutorialCount(){
-		HashMap<String,String> filters = new HashMap<String,String>();
-		filters = solrFilter.getFilters();
-		return solrUtil.getTutorialCount(solrInput, filters);
-	}
+//	public int getTutorialCount(){
+//		HashMap<String,String> filters = new HashMap<String,String>();
+//		filters = solrFilter.getFilters();
+//		return solrUtil.getTutorialCount(solrInput, filters);
+//	}
 
-	public int getTutorialCount(HashMap<String,String> filters){
-		return solrUtil.getTutorialCount(solrInput, filters);
-	}
+//	public int getTutorialCount(HashMap<String,String> filters){
+//		return solrUtil.getTutorialCount(solrInput, filters);
+//	}
 	
 	////////////////// MOUSESTRAINS ////////////////////////////
 	
@@ -268,46 +239,46 @@ public class SolrTreeBean implements Serializable {
 	}
 	
 		
-	public Map<String,String> getAssayTypeList(){
-		
-		Map<String,String> map = new LinkedHashMap<String,String>();
-		
-		String label = "ISH (" + this.getInsituCount("ASSAY_TYPE:ISH") + ")";
-		map.put(label, "ASSAY_TYPE:ISH");
-		
-		label = "IHC (" + this.getInsituCount("ASSAY_TYPE:IHC") + ")";
-		map.put(label, "ASSAY_TYPE:IHC");
-		
-		label = "TG (" + this.getInsituCount("ASSAY_TYPE:TG") + ")";
-		map.put(label, "ASSAY_TYPE:TG");
-
-		
-		return map;
-	}
+//	public Map<String,String> getAssayTypeList(){
+//		
+//		Map<String,String> map = new LinkedHashMap<String,String>();
+//		
+//		String label = "ISH (" + this.getInsituCount("ASSAY_TYPE:ISH") + ")";
+//		map.put(label, "ASSAY_TYPE:ISH");
+//		
+//		label = "IHC (" + this.getInsituCount("ASSAY_TYPE:IHC") + ")";
+//		map.put(label, "ASSAY_TYPE:IHC");
+//		
+//		label = "TG (" + this.getInsituCount("ASSAY_TYPE:TG") + ")";
+//		map.put(label, "ASSAY_TYPE:TG");
+//
+//		
+//		return map;
+//	}
 
 	
-	public Map<String,String> getFocusGroupList(){
-		
-		Map<String,String> map = new LinkedHashMap<String,String>();
-		
-		String label = "Metanephros (" + this.getInsituCount("FOCUS_GROUPS:metanephros") + ")";
-		map.put(label, "FOCUS_GROUPS:metanephros");
-		
-		label = "Lower Urinary Tract (" + this.getInsituCount("FOCUS_GROUPS:lower urinary tract") + ")";
-		map.put(label, "FOCUS_GROUPS:lower urinary tract");
-		
-		label = "Male Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:male reproductive system") + ")";
-		map.put(label, "FOCUS_GROUPS:male reproductive system");
-		
-		label = "Female Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:female reproductive system") + ")";
-		map.put(label, "FOCUS_GROUPS:female reproductive system");
-		
-		label = "Early Genitourinary System (" + this.getInsituCount("FOCUS_GROUPS:early genitourinary system") + ")";
-		map.put(label, "FOCUS_GROUPS:early_genitourinary_system");
-
-		
-		return map;
-	}
+//	public Map<String,String> getFocusGroupList(){
+//		
+//		Map<String,String> map = new LinkedHashMap<String,String>();
+//		
+//		String label = "Metanephros (" + this.getInsituCount("FOCUS_GROUPS:metanephros") + ")";
+//		map.put(label, "FOCUS_GROUPS:metanephros");
+//		
+//		label = "Lower Urinary Tract (" + this.getInsituCount("FOCUS_GROUPS:lower urinary tract") + ")";
+//		map.put(label, "FOCUS_GROUPS:lower urinary tract");
+//		
+//		label = "Male Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:male reproductive system") + ")";
+//		map.put(label, "FOCUS_GROUPS:male reproductive system");
+//		
+//		label = "Female Reproductive System (" + this.getInsituCount("FOCUS_GROUPS:female reproductive system") + ")";
+//		map.put(label, "FOCUS_GROUPS:female reproductive system");
+//		
+//		label = "Early Genitourinary System (" + this.getInsituCount("FOCUS_GROUPS:early genitourinary system") + ")";
+//		map.put(label, "FOCUS_GROUPS:early_genitourinary_system");
+//
+//		
+//		return map;
+//	}
 
 //	public Map<String,String> getPlatformList(){
 //		
@@ -330,24 +301,29 @@ public class SolrTreeBean implements Serializable {
 //	}
 
 	
-	public Map<String,String> getTheilerStageList(){
-		
-		Map<String,String> map = new LinkedHashMap<String,String>();
-		
-		String label;
-
-		for (int i = 17;  i<29; i++){
-			label = "TS" + i+  " (" + this.getInsituCount("THEILER_STAGE:TS" + i) + ")";
-			map.put(label, "THEILER_STAGE:TS" + i);
-		}
-
-		
-		return map;
-	}
+//	public Map<String,String> getTheilerStageList(){
+//		
+//		Map<String,String> map = new LinkedHashMap<String,String>();
+//		
+//		String label;
+//
+//		for (int i = 17;  i<29; i++){
+//			label = "TS" + i+  " (" + this.getInsituCount("THEILER_STAGE:TS" + i) + ")";
+//			map.put(label, "THEILER_STAGE:TS" + i);
+//		}
+//
+//		
+//		return map;
+//	}
 	
+	/**
+	 * This method returns true or false depending on whether the solrInput string contains a
+	 * gene name. If a gene name is found the solrGeneStrip.xhtml page is displayed otherwise 
+	 * the solrInsitu.xhtml page is displayed.
+	 * 
+	 * @return boolean flag
+	 */
 	private boolean containsGene(){
-		// looks for a gene in the input string
-		// to allow genestrip page to be shown to be selected
 		
 		if (solrInput.isEmpty() || solrInput == "")
 			return false;

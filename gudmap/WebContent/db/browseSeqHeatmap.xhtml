@@ -13,6 +13,47 @@
 
 
 <h:body>
+ <style>
+input[type="checkbox"]{
+  width: 8px; /*Desired width*/
+  height: 8px; /*Desired height*/
+  font-size:8px;
+}
+/*
+#gd_edit_area {
+	 float:left;
+}
+*/
+.column1 {
+    width: 70%;
+    text-align: left;
+}
+
+.column2 {
+    width: 30%;
+    text-align: right;
+}
+</style>
+
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>	
+
+	
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+		
+
+		$( ".accordion" ).accordion({
+			collapsible:true,
+			heightStyle:"content",
+			active:false,
+		}); 
+   });
+//]]>
+</script>	
+	
 
 <ui:composition template="/WEB-INF/templates/g_template1.xhtml">
 	<ui:define name="title">
@@ -36,9 +77,9 @@
 		<h:outputScript library="scripts" name="d3-context-menu.js"></h:outputScript>
 		<h:outputStylesheet library="css" name="d3-context-menu.css" /> 
 		
-<h:panelGrid columns="5">
+<h:panelGrid columns="5" >
 	<h:panelGroup>
-	    <h:outputText  value="Rna Seq Expression Profile for:"></h:outputText>   
+	    <h:outputText  value="Rna Seq Expression Profile for:#{rnaSeqHeatmapBean.selectedSeries}&nbsp;&nbsp;"></h:outputText>  
 	</h:panelGroup>	 
 
 	<h:panelGroup>
@@ -77,9 +118,44 @@
 		Heatmap Scale:
 		<button id="cell-decrease" style="font-size:10px; width:10px; height:10px; padding:4px"/>
 	    <button id="cell-increase" style="font-size:10px; width:10px; height:10px; padding:4px"/>
-	</h:panelGroup>	    
+	</h:panelGroup>	  
+	  
+<ui:remove> 
+<h:form id="form8">
 
-	
+	<h:panelGroup>
+        <pr:selectCheckboxMenu id="menu8"  label="Gene Types" onHide="executeOnOnhide()">
+        	<f:selectItems value="#{rnaSeqHeatmapBean.geneTypeOptions}" />
+        </pr:selectCheckboxMenu>
+        
+      <pr:remoteCommand  name="executeOnOnhide" process="@this form8:menu8" action="#{rnaSeqHeatmapBean.updateGeneTypes()}"/>          
+    </h:panelGroup>
+</h:form> 
+
+ 
+<h:form> 
+	<h:panelGroup>
+		Gene Type:
+        <h:selectManyListbox  value="#{rnaSeqHeatmapBean.geneTypes}" size="5">
+        	<f:selectItems value="#{rnaSeqHeatmapBean.geneTypeOptions}" />
+        </h:selectManyListbox>
+        <h:commandButton value="Submit" action="#{rnaSeqHeatmapBean.updateGeneTypes()}" />
+	</h:panelGroup>
+</h:form> 	
+
+
+<h:form> 
+	<h:panelGroup>
+        <pr:selectCheckboxMenu label="Gene Types" value="#{rnaSeqHeatmapBean.geneTypes}">
+        	<f:selectItems value="#{rnaSeqHeatmapBean.geneTypeOptions}" />
+        </pr:selectCheckboxMenu>
+        <h:commandButton value="Submit" action="#{rnaSeqHeatmapBean.updateGeneTypes()}" />
+	</h:panelGroup>
+</h:form> 	
+</ui:remove>
+
+	<h:inputText id="selectedSeries" value="#{rnaSeqHeatmapBean.selectedSeries}" style="display:none; visibility: hidden;">
+	</h:inputText>			  	
 	<h:inputText id="selectedGene" value="#{rnaSeqHeatmapBean.selectedGene}" style="display:none; visibility: hidden;">
 	</h:inputText>			  
 	<h:inputText id="cellSize" value="#{rnaSeqHeatmapBean.cellSize}" style="display:none; visibility: hidden;">
@@ -90,6 +166,8 @@
 	</t:commandLink>
 	
 </h:panelGrid> 	
+
+
 	
 <table id="split">
 <thead></thead>
@@ -114,13 +192,13 @@
 		var viewHeight = $(document).height();			
 //		var cell_size = 15;
 		var cell_size_str = document.getElementById('rnaseqHeatmapForm:cellSize').value;
+		var series = document.getElementById('rnaseqHeatmapForm:selectedSeries').value;//"GSE64959"
 		var cell_size = parseInt(cell_size_str);
 		var sample = document.getElementById('rnaseqHeatmapForm:sampleId');
 		var gene = document.getElementById('rnaseqHeatmapForm:selectedGene');
 		var item = document.getElementById('analysisLink');
 		
-		
-		seq_heatmap_display(url, "#chart", "Default", cell_size, sample, gene, item);
+		seq_heatmap_display(url, "#chart", "Default", cell_size, series, sample, gene, item);
 /*
 		var sliderOpts = {
 				   value: 15,
@@ -129,7 +207,7 @@
 				   animate: true,
 				   change: function( event, ui ) {
 				   		update_heatmap("#chart", ui.value);
-				   		seq_heatmap_display(url, "#chart", "Default",ui.value, sample, gene, item);
+				   		seq_heatmap_display(url, "#chart", "Default",ui.value, series, sample, gene, item);
 				   }
 		};
 	   $( "#slider" ).slider(sliderOpts);
@@ -144,7 +222,7 @@
 		   cell_size = cell_size - 2;
 		   document.getElementById('rnaseqHeatmapForm:cellSize').value = '' + cell_size;
 		   update_heatmap("#chart");
-		   seq_heatmap_display(url, "#chart", "Default",cell_size, sample, gene, item);
+		   seq_heatmap_display(url, "#chart", "Default",cell_size, series, sample, gene, item);
 	   });
 
 	   $("#cell-increase").button({
@@ -157,7 +235,7 @@
 		   cell_size = cell_size + 2;
 		   document.getElementById('rnaseqHeatmapForm:cellSize').value = '' + cell_size;
 		   update_heatmap("#chart");
-		   seq_heatmap_display(url, "#chart", "Default",cell_size, sample, gene, item);
+		   seq_heatmap_display(url, "#chart", "Default",cell_size, series, sample, gene, item);
 	   });
   
  }); 

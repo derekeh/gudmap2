@@ -2,6 +2,14 @@ package org.gudmap.models;
 
 import java.util.List;
 
+/**
+ * <h1>WebBeanModel</h1>
+ * The WebBeanModel class contains the parameters displayed in the solrWebPages.xhtml
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2016 
+ */
 public class WebBeanModel {
 	
 	private String id,alias,title,content=null;

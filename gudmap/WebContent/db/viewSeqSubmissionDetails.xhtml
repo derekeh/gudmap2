@@ -116,8 +116,8 @@
 	    		<h:outputText value="Submitters"></h:outputText>
 	    		<h:panelGroup>
 	    			<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
-	    			    <h:outputText value="Principal Investigator(s) : "/>
-	    				<t:dataList id="piDataList" var="piInfo" value="#{arraySeqSubmissionBean.seqSubmissionModel.principalInvestigators}" >
+	    			    <h:outputText value="Principal Investigator(s) : " rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism == 'Mus musculus'}"/>
+	    				<t:dataList id="piDataList" var="piInfo" value="#{arraySeqSubmissionBean.seqSubmissionModel.principalInvestigators}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism == 'Mus musculus'}">
 							<h:commandLink id="lastbutton2" value="#{piInfo.name}, "  onclick="PF('lab_dialog').show();">
 	                            	<f:setPropertyActionListener id="piproperty" target="#{personBean.id}" value="#{piInfo.id}" />     	
 				                    <f:ajax execute="lastbutton2" render=":dialogform" />
@@ -126,15 +126,17 @@
 				        </t:dataList>
 				        
 				        <h:outputText value="Contributors:" />
-						<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.authors}" />						
+						<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.authors}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism == 'Mus musculus'}"/>						
+						<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.sourceLab}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism == 'Homo sapiens'}"/>
 						
 						<h:outputText value="Submitted By:" />
 						<h:panelGroup>
-	                            <h:commandLink id="lastbutton" value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.name}, "  onclick="PF('lab_dialog').show();">
+	                            <h:commandLink id="lastbutton" value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.name}, "  onclick="PF('lab_dialog').show();" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism == 'Mus musculus'}">
 	                            	<f:setPropertyActionListener id="submitterproperty" target="#{personBean.id}" value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.id}" />     	
 				                    <f:ajax execute="lastbutton" render=":dialogform" />
 				                </h:commandLink>
-				                <h:outputText title="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.fullAddress}"  value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.displayAddress}" />
+				                <h:outputText title="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.fullAddress}"  value="#{arraySeqSubmissionBean.seqSubmissionModel.submitter.displayAddress}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism == 'Mus musculus'}"/>
+								<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.sourceLab}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.organism == 'Homo sapiens'}"/>
 						</h:panelGroup>	
 	    			</h:panelGrid>
 	    		</h:panelGroup>
@@ -427,6 +429,35 @@
 				</h:dataTable>
 			</h:panelGrid>
 		</h:panelGrid>
+
+	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.geoID == 'GSE59129'}">
+	    		<h:outputText value="Gudmap processing pipeline" />
+				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+
+					<h:outputText value="Fast QC:" />
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/FastQC_results/index.html">
+								<h:outputText value="index.html"/>
+							</h:outputLink>
+
+
+					<h:outputText value="RNASeq QC:"  />
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/index.html">
+								<h:outputText value="index.html"/>
+							</h:outputLink>
+
+					<h:outputText value="Alignment results:"  />
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/tophat_results">
+								<h:outputText value="(folder)"/>
+							</h:outputLink>
+
+					<h:outputText value="Cufflinks results:"/>
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/cufflink_results">
+								<h:outputText value="(folder)"/>
+							</h:outputLink>
+					
+				</h:panelGrid>				
+	    	</h:panelGrid>
+
 		
 		<h:panelGrid   columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.linkedPublications}">
 			<h:outputText value="Linked Publications" />

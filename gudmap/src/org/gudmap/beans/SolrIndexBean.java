@@ -2,10 +2,7 @@ package org.gudmap.beans;
 
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
-
 
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.gudmap.assemblers.MicroarrayHeatmapBeanAssembler;
@@ -23,6 +20,15 @@ import java.util.LinkedList;
 
 
 
+/**
+ * <h1>SolrIndexBean</h1>
+ * The SolrIndexBean class contains the methods to provide data and deal with events on the
+ * solrIndexing.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrIndexBean")
 @RequestScoped
 public class SolrIndexBean implements Serializable {
@@ -36,6 +42,9 @@ public class SolrIndexBean implements Serializable {
 	private ArrayList<MasterTableInfo> tableinfo;		
     private int maxColNumber = 0;
 	
+	/**
+	 * Constructor for SolrIndexBean
+	 */
 	public SolrIndexBean(){
 		solrUtil = new SolrUtil();
 		assembler = new SolrIndexAssembler();
@@ -43,7 +52,11 @@ public class SolrIndexBean implements Serializable {
         tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
     }
 
-	// methods to update the solr indexes used for searching
+	/**
+	 * This method creates all the indexes required by the Solr Search Engine.
+	 * 
+	 * @return
+	 */
 	public String indexAll(){
 		
 		HttpSolrClient server = solrUtil.getGenesServer();
@@ -66,11 +79,22 @@ public class SolrIndexBean implements Serializable {
 		
 		server = solrUtil.getImageServer();
 		assembler.updateImageIndex(server);
+
+		server = solrUtil.getNextGenSamplesServer();
+		assembler.updateNextGenSamplesIndex(server);
+
+		server = solrUtil.getWebServer();
+		assembler.updateWebIndex(server);
 		
 		return null;
 		
 	}
 
+	/**
+	 * This method rebuilds the gudmap_genes index.
+	 * 
+	 * @return
+	 */
 	public String indexGenes(){
 		
 		HttpSolrClient server = solrUtil.getGenesServer();
@@ -78,6 +102,11 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 
+	/**
+	 * This method rebuilds the gudmap_insitu index.
+	 * 
+	 * @return
+	 */
 	public String indexInsitu(){
 		
 		HttpSolrClient server = solrUtil.getInsituServer();
@@ -85,6 +114,11 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 
+	/**
+	 * This method rebuilds the gudmap_samples index.
+	 * 
+	 * @return
+	 */
 	public String indexSamples(){
 		
 		HttpSolrClient server = solrUtil.getSamplesServer();
@@ -92,6 +126,11 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 
+	/**
+	 * This method rebuilds the gudmap_genelists index.
+	 * 
+	 * @return
+	 */
 	public String indexGenelists(){
 		
 		HttpSolrClient server = solrUtil.getGenelistsServer();
@@ -99,6 +138,11 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 
+	/**
+	 * This method rebuilds the gudmap_tissues index.
+	 * 
+	 * @return
+	 */
 	public String indexTissues(){
 		
 		HttpSolrClient server = solrUtil.getTissuesServer();
@@ -106,6 +150,11 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 
+	/**
+	 * This method rebuilds the gudmap_mousestrains index.
+	 * 
+	 * @return
+	 */
 	public String indexMouseStrains(){
 		
 		HttpSolrClient server = solrUtil.getMouseStrainServer();
@@ -113,6 +162,11 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 	
+	/**
+	 * This method rebuilds the gudmap_images index.
+	 * 
+	 * @return
+	 */
 	public String indexImages(){
 		
 		HttpSolrClient server = solrUtil.getImageServer();
@@ -120,20 +174,23 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 	
+	/**
+	 * This method rebuilds the gudmap_nextgen_samples index.
+	 * 
+	 * @return
+	 */
 	public String indexNextGenSamples(){
 		
 		HttpSolrClient server = solrUtil.getNextGenSamplesServer();
 		assembler.updateNextGenSamplesIndex(server);
 		return null;		
 	}
-		
-	public String indexTutorials(){
-		
-		HttpSolrClient server = solrUtil.getTutorialServer();
-		assembler.updateTutorialIndex(server);
-		return null;		
-	}
 
+	/**
+	 * This method rebuilds the gudmap_web index.
+	 * 
+	 * @return
+	 */
 	public String indexWeb(){
 		
 		HttpSolrClient server = solrUtil.getWebServer();
@@ -141,6 +198,10 @@ public class SolrIndexBean implements Serializable {
 		return null;		
 	}
 	
+	/**
+	 * This method creates a series of genestrip json files.
+	 * Each file contains the data to create the D3 image.
+	 */
 	public void createGenestripFiles(){
 		ArrayList<String> geneIds = new ArrayList<String>();
 		for (int i = 0; i < 25000; i++){
@@ -154,10 +215,15 @@ public class SolrIndexBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * This method generates a json file based on the geneId.
+	 * 
+	 * @param geneId
+	 */
 	private void createGenestripJSONFile(String geneId){
 		
 		try{
-			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 //			String path = ctx.getRealPath("/");			
 //			path += "/resources/genestrips/genestrip_" + geneId + ".json";
 			
@@ -181,6 +247,7 @@ public class SolrIndexBean implements Serializable {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createGenestripJSONObject(String geneId){
 		
 		JSONObject obj = new JSONObject();
@@ -197,7 +264,6 @@ public class SolrIndexBean implements Serializable {
 	
 	private LinkedList<String> getLabels(String geneId){
 		
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> labels = new LinkedList<String>();
 		int colsize = 0;
 		
@@ -253,12 +319,12 @@ public class SolrIndexBean implements Serializable {
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
-    			int colCounter = 1;
+//    			int colCounter = 1;
     			items = new LinkedList<String>();
     			for(String[] item : dataList){
     				String rma = item[2];
     				items.add(rma);	
-					colCounter ++;
+//					colCounter ++;
     			}
     			if (dlsize < maxColNumber){
     				int diff = maxColNumber - dlsize;
@@ -293,12 +359,12 @@ public class SolrIndexBean implements Serializable {
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
-    			int colCounter = 1;
+//    			int colCounter = 1;
     			items = new LinkedList<String>();
     			for(String[] item : dataList){
     				String scaledRma = item[5];
     				items.add(scaledRma);	
-					colCounter ++;
+//					colCounter ++;
     			}
     			if (dlsize < maxColNumber){
     				int diff = maxColNumber - dlsize;
@@ -319,167 +385,6 @@ public class SolrIndexBean implements Serializable {
 		return data;
 	} 
 
-	
-//	private void createHeatmapJSONFile(){
-//		
-//		try{
-//			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-////			String path = ctx.getRealPath("/");
-//			
-//			if (genelistId != null){
-//				// cache the analysis json files
-//				
-////				path += "/resources/scripts/" + genelistId + "heatmap.json";
-//				String path = "/export/data0/bernardh/MAWWW/Public/html/AppFiles/genestrips/genestrip_" + genelistId + ".json";
-//				
-//				File f = new File(path);
-//				if (!f.exists()){
-//				
-//					FileWriter writer = new FileWriter(f);
-//					
-//					JSONObject obj = createHeatmapJSONObject();
-//					
-//					writer.write(obj.toJSONString());
-//					writer.flush();
-//					writer.close();
-//				}				
-//				
-//			}
-//
-//		}
-//		catch(IOException e){
-//			e.printStackTrace();
-//		}
-//		
-//	}
-//	
-//	private JSONObject createHeatmapJSONObject(){
-//		
-//		JSONObject obj = new JSONObject();
-//		
-//		obj.put("samples", getSamples());
-//		obj.put("probes", getProbes());
-//		obj.put("genes", getGenes());
-//		obj.put("data", getDataValues());
-//		obj.put("adjdata", getDataAdjValues());
-//		obj.put("annotations", getProbeAnnotations());
-//		
-//				
-//		return obj;
-//	}
-//	
-//	private LinkedList<String> getSamples(){
-//		
-//		LinkedList<String> samples = new LinkedList<String>();
-//
-//		ArrayList<String> expressionTitles = assembler.getHeatmapExpressionTitlesFromMasterTableId(masterTableId);
-//		for(String expressionTitle : expressionTitles){
-//			samples.add(expressionTitle);
-//		}
-//			
-//		return samples;
-//	}
-//	
-//	private LinkedList<String> getProbes(){
-//		
-//		LinkedList<String> probes = new LinkedList<String>();
-//
-//		String platformId = assembler.getPlatformIdFromMasterTableId(masterTableId);
-//		
-//		if (genelistId != null){
-//			probeIds = assembler.getProbeSetIdsByGenelistIdAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, genelistId, platformId);
-//		}
-//		else{
-//			probeIds = assembler.getProbeSetIdsBySymbolAndPlatformId(firstRow, rowsPerPage, sortField, sortAscending, geneId, platformId);
-//		}
-//
-//		for(String probe : probeIds){
-//			probes.add(probe);
-//		}
-//			
-//		return probes;
-//	}
-//
-//	private LinkedList<String> getGenes(){
-//		
-//		LinkedList<String> genes = new LinkedList<String>();
-//
-//		ArrayList<String[]> annotations = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
-//		for (String[] annotation : annotations){
-//			
-//			 genes.add(annotation[1]);
-//		}
-//			
-//		return genes;
-//	}
-//
-//	private LinkedList<LinkedList<String>> getDataValues(){
-//		
-//		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
-//		LinkedList<String> items;
-//
-//		for (String probeId : probeIds){
-//			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
-//			items = new LinkedList<String>();
-//			for(String[] item : dataList){
-//				String rma = item[2];
-//				String scaledRma = item[5];
-//				
-//				items.add(rma);
-//			}
-//			data.add(items);
-//		}
-//				
-//		return data;
-//	}
-//	
-//	private LinkedList<LinkedList<String>> getDataAdjValues(){
-//		
-//		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
-//		LinkedList<String> items;
-//
-//		for (String probeId : probeIds){
-//			ArrayList<String[]> dataList = assembler.getHeatmapDataFromProbeIdAndMasterTableId(firstRow, rowsPerPage, sortField, sortAscending, probeId, masterTableId);
-//			items = new LinkedList<String>();
-//			for(String[] item : dataList){
-//				String rma = item[2];
-//				String scaledRma = item[5];
-//				
-//				items.add(scaledRma);
-//			}
-//			data.add(items);
-//		}
-//				
-//		return data;
-//	}
-//
-//	private LinkedList<LinkedList<String>> getProbeAnnotations(){
-//		
-//		LinkedList<LinkedList<String>> annotations = new LinkedList<LinkedList<String>>();
-//		LinkedList<String> items;
-//
-//		ArrayList<String[]> dataList = assembler.getAnnotationByProbeSetIds(firstRow, rowsPerPage, sortField, sortAscending, probeIds);
-//		for(String[] item : dataList){
-//			items = new LinkedList<String>();
-//
-//			items.add(item[0]);
-//			items.add(item[1]);
-//			items.add(item[2]);
-//			items.add(item[3]);
-//			items.add(item[4]);
-//			items.add(item[5]);
-//			items.add(item[6]);
-//			items.add("GUDMAP");
-//			items.add("UCSC");
-//			items.add("KEGG");
-//			items.add("ENS");
-//			
-//			annotations.add(items);
-//		}
-//				
-//		return annotations;
-//	}
-	
 
 	public ArrayList<String> getGeneList() {
 		

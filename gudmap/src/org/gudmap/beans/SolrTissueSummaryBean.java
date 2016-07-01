@@ -22,6 +22,15 @@ import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.TissueSummaryTableBeanModel;
 
 
+/**
+ * <h1>SolrTissueSummaryBean</h1>
+ * The SolrTissueSummaryBean class contains the methods to provide data and deal with events on the
+ * solrTissueSummary.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrTissueSummaryBean")
 @SessionScoped
 public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
@@ -112,8 +121,7 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
     }
 
     public String refresh(){
- //   	sortField = "RELEVANCE";
-    	loadDataList();
+     	loadDataList();
     	paramBean.resetValues();
     	return "solrTissueSummary";
     }
@@ -141,6 +149,19 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
 
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of TissueSummaryTableBeanModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of TissueSummaryTableBeanModels
+	 * @see TissueSummaryTableBeanModel
+     */
 	public List<TissueSummaryTableBeanModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<TissueSummaryTableBeanModel> list = new ArrayList<TissueSummaryTableBeanModel>();
@@ -151,6 +172,13 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
+	/**
+	 * This method creates a list of TissueSummaryTableBeanModels from the documents in the SolrDocumentList sdl.
+	 * 
+	 * @param sdl A SolrDocumentList	  
+	 * @return A List of TissueSummaryTableBeanModels
+	 * @see TissueSummaryTableBeanModel
+	 */
 	private List<TissueSummaryTableBeanModel> formatTableData(QueryResponse qr){
 		
 		List<TissueSummaryTableBeanModel> list = new ArrayList<TissueSummaryTableBeanModel>();

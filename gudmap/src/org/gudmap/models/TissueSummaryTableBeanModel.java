@@ -2,6 +2,14 @@ package org.gudmap.models;
 
 import java.util.List;
 
+/**
+ * <h1>TissueSummaryTableBeanModel</h1>
+ * The TissueSummaryTableBeanModel class contains the parameters displayed in the solrTissueSummary.xhtml
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2016 
+ */
 public class TissueSummaryTableBeanModel {
 
 	private String oid,name,stages,reason=null;

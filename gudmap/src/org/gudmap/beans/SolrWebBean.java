@@ -9,27 +9,27 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-//import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-
-
-
-
-
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
-import org.gudmap.assemblers.EditPageAssembler;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.EditPageModel;
 
+/**
+ * <h1>SolrWebBean</h1>
+ * The SolrWebBean class contains the methods to provide data and deal with events on the
+ * solrWebPages.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrWeb")
 @SessionScoped
 public class SolrWebBean extends PagerImpl implements Serializable  {
@@ -39,8 +39,8 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
     // Data.
 
     private String whereclause = " WHERE ";
-    private List<String> selectedItems;
-    private boolean areAllChecked;
+//    private List<String> selectedItems;
+//    private boolean areAllChecked;
     
     @Inject
    	private ParamBean paramBean;
@@ -52,7 +52,7 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
    	private SolrFilter solrFilter;
     
 	private String solrInput;
-	private String host;
+//	private String host;
 	private HashMap<String,String> filters;
 	private boolean showPageDetails = true;
     
@@ -181,6 +181,19 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
     
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of EditPageModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of EditPageModels
+     * @see EditPageModel
+     */
 	public List<EditPageModel> getData(String solrInput, HashMap<String, String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<EditPageModel> list = new ArrayList<EditPageModel>();
@@ -191,6 +204,13 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 		return list;
 	}
 
+	/**
+	 * This method creates a list of EditPageModels from the documents in the QueryResponse qr.
+	 * 
+	 * @param qr A solr QueryResponse	  
+	 * @return A List of EditPageModels
+     * @see EditPageModel
+	 */
 	private List<EditPageModel> formatTableData(QueryResponse qr){
 		
 		List<EditPageModel> list = new ArrayList<EditPageModel>();
@@ -245,7 +265,7 @@ public class SolrWebBean extends PagerImpl implements Serializable  {
 				if( id.contains(entry1.getKey())){	
 					Map<String,List<String>> hval = entry1.getValue();
 					for(Map.Entry<String,List<String>> entry2 : hval.entrySet() ){
-						String hkey2 = entry2.getKey();
+//						String hkey2 = entry2.getKey();
 						List<String> hval2 = entry2.getValue();
 						for(String v2: hval2){
 							String orig = v2.replace("<strong>","");

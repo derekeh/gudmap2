@@ -20,6 +20,15 @@ import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
 import org.gudmap.models.ArraySeqTableBeanModel;
 
+/**
+ * <h1>SolrSequencesBean</h1>
+ * The SolrSequencesBean class contains the methods to provide data and deal with events on the
+ * solrSequences.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrSequencesBean")
 @SessionScoped
 public class SolrSequencesBean extends PagerImpl implements Serializable  {
@@ -27,7 +36,6 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	 
     // Data.
-//	private SolrSequencesAssembler assembler;
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
     private boolean areAllChecked;
@@ -78,7 +86,6 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	}
 
 	public void setup() {
-//     	assembler=new SolrSequencesAssembler();
         selectedItems = new ArrayList<String>(); 
     }
     
@@ -116,20 +123,16 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     }
 
     public String refresh(){
- //   	sortField = "RELEVANCE";
-    	loadDataList();
+     	loadDataList();
     	return "solrSequences";
     }
 
     public void resetAll() {
 		paramBean.resetAll();
-//		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
     }
    
     public String checkboxSelections() { 
-    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
     	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
     		if (((ArraySeqTableBeanModel) dataList.get(i)).getSelected()) { 
@@ -177,6 +180,19 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
 
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of ArraySeqTableBeanModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of ArraySeqTableBeanModels
+	 * @see ArraySeqTableBeanModel
+     */
 	public List<ArraySeqTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
@@ -188,14 +204,20 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 			list = formatTableData(sdl);
 			
 		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return list;
 	}
 
-	private List<ArraySeqTableBeanModel> formatTableData(SolrDocumentList sdl){
+	/**
+	 * This method creates a list of ArraySeqTableBeanModels from the documents in the SolrDocumentList sdl.
+	 * 
+	 * @param sdl A SolrDocumentList	  
+	 * @return A List of ArraySeqTableBeanModels
+	 * @see ArraySeqTableBeanModel
+	 */
+	private List< ArraySeqTableBeanModel> formatTableData(SolrDocumentList sdl){
 		
 		List<ArraySeqTableBeanModel> list = new ArrayList<ArraySeqTableBeanModel>();
 		ArraySeqTableBeanModel model = null;
@@ -211,7 +233,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 				model.setGudmap_accession("GUDMAP:" + doc.getFieldValue("GUDMAP").toString());
 			}
 			if (doc.containsKey("SAMPLE_GEO_ID")){
-				String gid = doc.getFieldValue("SAMPLE_GEO_ID").toString();
+//				String gid = doc.getFieldValue("SAMPLE_GEO_ID").toString();
 				model.setGeoSampleID(doc.getFieldValue("SAMPLE_GEO_ID").toString());
 			}
 			if (doc.containsKey("STAGE")){

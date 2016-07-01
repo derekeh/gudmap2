@@ -36,11 +36,9 @@ public class SolrGeneStripAssembler {
 	private DataSource ds=null;	
 	
 	private GeneStripModel model;
-//	private SolrUtil solrUtil;
 	private ArrayList<String> geneIds;
 
 	public SolrGeneStripAssembler() {
-//		solrUtil = new SolrUtil();
 		
 		try {
 			Context ctx = new InitialContext();
@@ -82,13 +80,13 @@ public class SolrGeneStripAssembler {
 		for(int i=0; i<rowNum; i++) { 
 			SolrDocument doc = sdl.get(i);
 
-			String insituExpression = "";			
-			if (doc.getFieldValue("PRESENT").toString() != "")
-				insituExpression = "present";
-			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
-				insituExpression = "uncertain";
-			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
-				insituExpression = "not detected";
+//			String insituExpression = "";			
+//			if (doc.getFieldValue("PRESENT").toString() != "")
+//				insituExpression = "present";
+//			else if (doc.getFieldValue("UNCERTAIN").toString() != "")
+//				insituExpression = "uncertain";
+//			else if (doc.getFieldValue("NOT_DETECTED").toString() != "")
+//				insituExpression = "not detected";
 			
 			model = new GeneStripModel();
 			
@@ -346,16 +344,16 @@ public class SolrGeneStripAssembler {
 	public MasterTableInfo[] buildMicroarrayProfile(String geneSymbol) {
 		ArrayList<MasterTableInfo> masterTableInfoList=null;
 		String queryString=GeneStripQueries.MASTER_SECTION_LIST;
-		boolean found=false;
 		////////////
 		try
 		{
 			repeatCon = Globals.getDatasource().getConnection();
 			repeatPs = repeatCon.prepareStatement(queryString); 
 			repeatResult =  repeatPs.executeQuery();
+//			boolean found=false;
 			if (repeatResult.first()) {
 				masterTableInfoList=new ArrayList<MasterTableInfo>();
-				found=true;
+//				found=true;
 				repeatResult.beforeFirst();
 				 while (repeatResult.next()) {
 						MasterTableInfo masterTableInfo = new MasterTableInfo();

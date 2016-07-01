@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -99,12 +98,8 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		createJSONObject(genelist);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createJSONObject(ArrayList<GenelistRnaSeqTreeInfo> genelist){
-		
-		JSONObject obj = new JSONObject();
-		
-		
-//		obj.put("children", createIsPublished(genelist));
 		
 		JSONArray  outerlist = new JSONArray();
 
@@ -127,6 +122,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 	
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONArray createIsPublished(ArrayList<GenelistRnaSeqTreeInfo> genelist){
 
 		JSONArray  plist = new JSONArray();
@@ -179,6 +175,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 	
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createUnpublished(ArrayList<GenelistRnaSeqTreeInfo> glslist){
 
 		ArrayList<GenelistRnaSeqTreeInfo> genelist = new ArrayList<GenelistRnaSeqTreeInfo>();
@@ -221,6 +218,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 	
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createUnpublishedDatasets(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, int id){
 	    System.out.println("createUnpublishedDatasets dataset = "+ glsclass);
 		
@@ -260,6 +258,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		return obj;
 	}	
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createUnpublishedDatasets2(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, int id){
 	    System.out.println("createUnpublishedDatasets dataset = "+ glsclass);
 		
@@ -295,6 +294,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		return obj;
 	}	
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createSubclass(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, String subclass, int id){
 
 		JSONObject obj = new JSONObject();		
@@ -327,6 +327,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	private JSONObject createClusters(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, String subclass, String cluster, int id){
 		System.out.println("glsclass = "+ glsclass );
 		System.out.println("subclass = "+ subclass );
@@ -388,6 +389,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		return createLeaf(ids);//;obj;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createLeaf(ArrayList<GenelistRnaSeqTreeInfo> ids){
 		
 		

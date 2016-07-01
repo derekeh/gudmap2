@@ -1,11 +1,8 @@
 package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,15 +25,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * <h1>SolrFilter</h1>
+ * The SolrFilter class contains the methods to initialise and update the search filter used
+ * by the search facility
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2016 
+ */
 @Named(value="solrFilter")
 @SessionScoped
 public class SolrFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<String,String> filters;	
-//	private ArrayList<ArrayList<String>> filters2;
-//	private ArrayList<String> filterlist;	
-	
+		
 	private String geneValue;
 	private Date fromDateValue;
 	private Date toDateValue;
@@ -71,8 +74,7 @@ public class SolrFilter implements Serializable {
 	public SolrFilter() {
 		filters = new HashMap<String,String>();
 		showFilter = false;
-		
-//		filters2 = new ArrayList<ArrayList<String>>();
+
 	}
 	
 	public void setParamBean(ParamBean paramBean){
@@ -89,22 +91,6 @@ public class SolrFilter implements Serializable {
 	public void setFilters(HashMap<String,String> val){
 		filters = val;	
 	}	
-//	public ArrayList<ArrayList<String>> getFilters2(){
-//		return filters2;		
-//	}
-//	public void setFilters2(ArrayList<ArrayList<String>> val){
-//		filters2 = val;	
-//	}	
-	
-//	public ArrayList<String> getFilterlist(){
-//		
-//		return filterlist;		
-//	}
-//	
-//	public void setFilterlist(ArrayList<String>  val){
-//		filterlist = val;	
-//	}
-
 	
 	public boolean getShowFilter(){		
 		return showFilter;		
@@ -118,7 +104,6 @@ public class SolrFilter implements Serializable {
 		else
 			filterWidth = 300;
 	}
-
 	
 	public int getFilterWidth(){		
 		return filterWidth;		
@@ -153,20 +138,50 @@ public class SolrFilter implements Serializable {
 //	    refresh();
 //	}	
 	
+	/**
+	 * This method returns the start date from the Submission Date Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return The fromDateValue
+	 */
 	public Date getFromDateValue(){
 		return fromDateValue;
 	}	
+	/**
+	 * This method sets the current start date to be displayed in the Submission Date Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setFromDateValue(Date val){
 		fromDateValue = val;
 	}	
 
+	/**
+	 * This method returns the end date from the Submission Date Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return The toDateValue
+	 */
 	public Date getToDateValue(){
 		return toDateValue;
 	}	
+	/**
+	 * This method sets the current end date to be displayed in the Submission Date Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setToDateValue(Date val){
 		toDateValue = val;
 	}	
 	
+	/**
+	 * This method returns a map of sources to be displayed in the Sources Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of sources
+	 */
 	public Map<String,String> getSourceList(){
 		
 		Map<String,String> sourcemap = new LinkedHashMap<String,String>();
@@ -181,9 +196,21 @@ public class SolrFilter implements Serializable {
 		}
 		return sourcemap;
 	}
+	/**
+	 * This method returns the current list of selected sources from the Sources Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The sourceValues
+	 */
 	public ArrayList<String> getSourceValues(){
 		return sourceValues;
 	}	
+	/**
+	 * This method sets the current list of sources to be displayed in the Sources Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setSourceValues(ArrayList<String> val){
 		if (val.contains("clear"))
 			this.sourceValues.clear();
@@ -202,85 +229,109 @@ public class SolrFilter implements Serializable {
 		return "";
 	}
 
+	/**
+	 * This method returns a map of gene types to be displayed in the Genes Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of gene types
+	 */
 	public Map<String,String> getGeneList(){
-		
-		Map<String,String> genemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Anchor", "anchor");
 		map.put("Marker", "marker");
-			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        genemap.put(key, val);
-		}
-
-		return genemap;
-	}	
-		
+		return map;
+	}			
+	/**
+	 * This method returns the current list of selected genes types from the Genes Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The geneValues
+	 */
 	public ArrayList<String> getGeneValues(){
 		return geneValues;
 	}	
+	/**
+	 * This method sets the current list of selected gene types to be displayed in
+	 * the Genes Filter of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setGeneValues(ArrayList<String> val){
 		geneValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of species to be displayed in the Species Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of species
+	 */
 	public Map<String,String> getSpeciesList(){
-		
-		Map<String,String> speciesmap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Human", "Homo sapiens");
 		map.put("Mouse", "Mus musculus");
-			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        speciesmap.put(key, val);
-		}
-
-		return speciesmap;
+		return map;
 	}	
-		
+	/**
+	 * This method returns the current list of selected species from the Species Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The speciesValues
+	 */
 	public ArrayList<String> getSpeciesValues(){
 		return speciesValues;
 	}	
+	/**
+	 * This method sets the current list of species to be displayed in the Species Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setSpeciesValues(ArrayList<String> val){
 		speciesValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of sexes to be displayed in the Sex Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of sexes
+	 */
 	public Map<String,String> getSexList(){
-		
-		Map<String,String> sexmap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Female", "female");
 		map.put("Male", "male");
 		map.put("Unknown", "unknown");
-			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        sexmap.put(key, val);
-		}
-
-		return sexmap;
-	}	
-		
+		return map;
+	}			
+	/**
+	 * This method returns the current list of selected sexes from the Sex Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The sexValues
+	 */
 	public ArrayList<String> getSexValues(){
 		return sexValues;
 	}	
+	/**
+	 * This method sets the current list of sexes to be displayed in the Sex Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setSexValues(ArrayList<String> val){
 		sexValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of assay types to be displayed in the Assay Types Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of assay types
+	 */
 	public Map<String,String> getAssayTypeList(){
 		
 		Map<String,String> assaytypemap = new LinkedHashMap<String,String>();
@@ -296,13 +347,31 @@ public class SolrFilter implements Serializable {
 
 		return assaytypemap;
 	}	
+	/**
+	 * This method returns the current list of selected assay types from the Assay Types Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The assayTypeValues
+	 */
 	public ArrayList<String> getAssayTypeValues(){
 		return assayTypeValues;
 	}	
+	/**
+	 * This method sets the current list of assay types to be displayed in the Assay Types Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public  void setAssayTypeValues(ArrayList<String> val){
 		 assayTypeValues = val;
 	}	
 
+	/**
+	 * This method returns a map of specimen types to be displayed in the Specimen Types Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of specimen types
+	 */
 	public Map<String,String> getSpecimenTypeList(){
 		
 		Map<String,String> specimentypemap = new LinkedHashMap<String,String>();
@@ -320,13 +389,31 @@ public class SolrFilter implements Serializable {
 
 		return specimentypemap;
 	}	
+	/**
+	 * This method returns the current list of selected specimen types from the Specimen Types Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The specimenTypeValues
+	 */
 	public ArrayList<String> getSpecimenTypeValues(){
 		return specimenTypeValues;
 	}	
+	/**
+	 * This method sets the current list of specimen types to be displayed in the Specimen Types Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setSpecimenTypeValues(ArrayList<String> val){
 		specimenTypeValues = val;
 	}	
 
+	/**
+	 * This method returns a map of theiler stages to be displayed in the Theiler Stages Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of theiler stages
+	 */
 	public Map<String,String> getTheilerStageList(){
 		
 		Map<String,String> theilerstagemap = new LinkedHashMap<String,String>();
@@ -342,13 +429,31 @@ public class SolrFilter implements Serializable {
 
 		return theilerstagemap;
 	}	
+	/**
+	 * This method returns the current list of selected theiler stages from the Theiler Stage Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The theilerStageValues
+	 */
 	public ArrayList<String> getTheilerStageValues(){
 		return theilerStageValues;
 	}	
+	/**
+	 * This method sets the current list of theiler stages to be displayed in the Theiler Stage Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setTheilerStageValues(ArrayList<String> val){
 		theilerStageValues = val;
 	}	
 
+	/**
+	 * This method returns a map of carnegie stages to be displayed in the Human Stages Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of carnegie stages
+	 */
 	public Map<String,String> getCarnegieStageList(){
 		
 		Map<String,String> carnegiestagemap = new LinkedHashMap<String,String>();
@@ -376,39 +481,64 @@ public class SolrFilter implements Serializable {
 		}
 		return carnegiestagemap;
 	}	
+	/**
+	 * This method returns the current list of selected carnegie stages from the Carnegie Stage Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The carnegieStageValues
+	 */
 	public ArrayList<String> getCarnegieStageValues(){
 		return carnegieStageValues;
 	}	
+	/**
+	 * This method sets the current list of carnegie stages to be displayed in the Carnegie Stage Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setCarnegieStageValues(ArrayList<String> val){
 		carnegieStageValues = val;
 	}	
 
+	/**
+	 * This method returns a map of image types to be displayed in the Image Type Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of image types
+	 */
 	public Map<String,String> getImageList(){
-		
-		Map<String,String> imagemap = new LinkedHashMap<String,String>();
 
 		Map<String, String> map =  new LinkedHashMap<String, String>(); 
 		map.put("Image", "image");
 		map.put("Schematic", "schematic");
-			
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-	        String val = (String)pair.getValue();
-	        imagemap.put(key, val);
-		}
 
-		return imagemap;
-	}	
-		
+		return map;
+	}			
+	/**
+	 * This method returns the current list of selected image types from the Image Type Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The imageValues
+	 */
 	public ArrayList<String> getImageValues(){
 		return imageValues;
 	}	
+	/**
+	 * This method sets the current list of image types to be displayed in the Image Type Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
 	public void setImageValues(ArrayList<String> val){
 		imageValues = val;
 	}	
 	
+	/**
+	 * This method returns a map of expression types to be displayed in the Expression Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of expression types
+	 */
 	public Map<String,String> getExpressionList(){
 		
 		Map<String,String> expressionmap = new LinkedHashMap<String,String>();
@@ -416,8 +546,6 @@ public class SolrFilter implements Serializable {
 		expressionmap.put("Present", "detected");
 		expressionmap.put("Not detected", "undetected");
 		expressionmap.put("Uncertain", "uncertain");
-
-
 		return expressionmap;
 	}	
 
@@ -437,6 +565,9 @@ public class SolrFilter implements Serializable {
 	
 	/************************ refresh and set/rest filters *************************************/
 	
+	/**
+	 * This method updates the Map of filters used by the Advanced Search
+	 */
 	public void refresh(){
 		showFilter = !showFilter;
 		
@@ -584,8 +715,10 @@ public class SolrFilter implements Serializable {
 		
 	}
 	
+	/**
+	 * This method resets the Map of filters, and all individual filters used by the Advanced Search
+	 */
 	public void reset(){
-//		filters2 = new ArrayList<ArrayList<String>>();
 		filters = new HashMap<String,String>();
 		
 		geneValue = "";
@@ -606,64 +739,55 @@ public class SolrFilter implements Serializable {
 
    
     public String getPage(String component){
-    
-    	UIViewRoot viewRoot =  FacesContext.getCurrentInstance().getViewRoot();
-    	List<UIComponent> components = viewRoot.getChildren();
-//    	if (components.contains(component))
-//    		return ":" + component;
-//    	else
-//    		return "";
-    	
 		page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
 		return page;
     }
     
-    public void removeFilter(AjaxBehaviorEvent event) {
-    	UIComponent source = (UIComponent)event.getSource();
-    	String prefix = source.getId();    	
- //   	filters.remove(prefix);
-		
-    	switch(prefix){
-    	case "GENE":
-    		geneValue = "";
-    		break;    	
-    	case "DATE":
-    		fromDateValue = null;
-    		toDateValue = null;	
-    		break;
-    	case "SOURCE":
-    		sourceValues.clear();
-    		break;
-    	case "SPECIES":
-    		speciesValues.clear();
-    		break;
-    	case "SEX":
-    		sexValues.clear();
-    		break;
-    	case "ASSAY_TYPE":
-    		assayTypeValues.clear();
-    		break;
-    	case "SPECIMEN_ASSAY_TYPE":
-    		specimenTypeValues.clear();
-    		break;
-    	case "THEILER_STAGE":
-    		theilerStageValues.clear();
-    		break;
-    	case "CARNEGIE_STAGE":
-    		carnegieStageValues.clear();
-    		break;
-    	case "ANCHOR":
-    		geneValues.clear();
-    		break;
-    	case "MARKER":
-    		geneValues.clear();
-    		break;
-    	default:
-    		break;
-    	}
-    	
-    	filters.clear();
-    	refresh();
-	}	
+//    public void removeFilter(AjaxBehaviorEvent event) {
+//    	UIComponent source = (UIComponent)event.getSource();
+//    	String prefix = source.getId();    	
+// 		
+//    	switch(prefix){
+//    	case "GENE":
+//    		geneValue = "";
+//    		break;    	
+//    	case "DATE":
+//    		fromDateValue = null;
+//    		toDateValue = null;	
+//    		break;
+//    	case "SOURCE":
+//    		sourceValues.clear();
+//    		break;
+//    	case "SPECIES":
+//    		speciesValues.clear();
+//    		break;
+//    	case "SEX":
+//    		sexValues.clear();
+//    		break;
+//    	case "ASSAY_TYPE":
+//    		assayTypeValues.clear();
+//    		break;
+//    	case "SPECIMEN_ASSAY_TYPE":
+//    		specimenTypeValues.clear();
+//    		break;
+//    	case "THEILER_STAGE":
+//    		theilerStageValues.clear();
+//    		break;
+//    	case "CARNEGIE_STAGE":
+//    		carnegieStageValues.clear();
+//    		break;
+//    	case "ANCHOR":
+//    		geneValues.clear();
+//    		break;
+//    	case "MARKER":
+//    		geneValues.clear();
+//    		break;
+//    	default:
+//    		break;
+//    	}
+//    	
+//    	filters.clear();
+//    	refresh();
+//	}	
 
 }

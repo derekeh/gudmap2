@@ -55,5 +55,9 @@ public class ArraySeqSeriesBean {
 	public void setDatalist(ArrayList<ArraySeqTableBeanModel> datalist){
 		this.datalist = datalist;
 	}
+	
+	public String seqHeatmap(){
+		return "browseSeqHeatmap";
+	}
 
 }

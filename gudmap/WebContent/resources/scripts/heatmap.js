@@ -802,7 +802,7 @@ function genestrip_heatmap_display(geneid, heatmapid, cellSize, symbol) {
     
 }
 
-function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gene, control) {
+function seq_heatmap_display(url, heatmapId, paletteName, cell_size, seriesId, sample, gene, control) {
     var cellSize = cell_size; //5; //10; //20;//14;
     var sortgeneidx = -1;//idx;
 //  var svg;
@@ -811,7 +811,6 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
     .style("position", "absolute")
     .style("visibility", "hidden");
     
-
     //==================================================
     d3.json(url, function(error, data) {
 
@@ -905,7 +904,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
 	    	.on("mouseover", function(d) {d3.select(this).classed("text-hover",true);})
 	    	.on("mouseout" , function(d) {d3.select(this).classed("text-hover",false);})
             .on("click", function(d,i) {
-            	alert(d);
+//            	alert(d);
             	gene.setAttribute("value", d);
             	rowSortOrder=!rowSortOrder; 
             	sortbylabel("r",i,rowSortOrder);
@@ -920,8 +919,6 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
     	                action: function(elm, d, i){
     	    				colSortOrder=!colSortOrder;  
     	    				sortbylabel("c",i,colSortOrder);
-    	    				d3.select("#order").property("selectedIndex", 4).node().focus();
-
     	                }
     	            },
     	            {
@@ -929,7 +926,6 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
     	                action: function(elm, d, i){
     	                	sample.setAttribute("value", d);
     	                	eventFire(control,'click');
-//    	    		        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
     	                }
     	            }
     	        ];    	
@@ -1021,7 +1017,8 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
 			})
 			.on('click', function(d,i,j) {
 				d3.select("#tabulate2").remove;
-				var item = [ids[j],genes[j],samples[i],d,"GSE664959"];
+//				var item = [ids[j],genes[j],samples[i],d,"GSE64959"];
+				var item = [ids[j],genes[j],samples[i],d,seriesId];
 				var ds1 = [];
 				ds1.push(item);				
 				tabulate(ds1);
@@ -1032,7 +1029,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, sample, gen
 
 		// if previously sorted by gene - then resort by gene
         if (geneidx != -1){	
-        	alert("sorting by gene");
+ //       	alert("sorting by gene");
 			rowSortOrder=!rowSortOrder; 
 			sortbylabel("r",geneidx,rowSortOrder);
 		}

@@ -129,6 +129,9 @@ public class SubmissionModel {
     }
 
     public String getOid() {
+    	
+    	if (oid == null || oid.isEmpty())
+    		oid = accID.substring(7);
         return oid;
     }
     

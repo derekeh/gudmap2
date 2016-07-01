@@ -49,13 +49,12 @@ public class SolrUtil {
 	public HttpSolrClient tissues_server;
 	public HttpSolrClient mouse_strain_server;
 	public HttpSolrClient image_server;
-	public HttpSolrClient tutorial_server;
+//	public HttpSolrClient tutorial_server;
 	public HttpSolrClient web_server;
 	
 	public Set<String> insitu_schema;
 	public Set<String> genes_schema;
 	public Set<String> genelists_schema;
-
 	public Set<String> samples_schema;
 	public Set<String> ng_samples_schema;
 	public Set<String> tissues_schema;
@@ -67,6 +66,9 @@ public class SolrUtil {
 	public String genes;
 	public String searchString = null;
 	
+	/**
+	 * SolrUtil class constructor.
+	 */
 	public SolrUtil(){
 		
 //		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -92,7 +94,7 @@ public class SolrUtil {
 		tissues_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_tissues" );		
 		mouse_strain_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_mousestrains" );		
 		image_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_images" );		
-		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorial");
+//		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorial");
 		web_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_web");
 		
 		
@@ -158,12 +160,12 @@ public class SolrUtil {
 	public HttpSolrClient getNextGenSamplesServer(){
 		return ng_samples_server;
 	}
-	/**
-	 * @return Returns the HttpSolrClient instance connected to the gudmap_tutorial index
-	 */
-	public HttpSolrClient getTutorialServer(){
-		return tutorial_server;
-	}
+//	/**
+//	 * @return Returns the HttpSolrClient instance connected to the gudmap_tutorial index
+//	 */
+//	public HttpSolrClient getTutorialServer(){
+//		return tutorial_server;
+//	}
 	/**
 	 * @return Returns the HttpSolrClient instance connected to the gudmap_web index
 	 */
@@ -248,20 +250,23 @@ public class SolrUtil {
     //***************************** INSITU METHODS *****************************************************
 
 	/**
-	 * This method return the count of in-situs for a search query
-	 * @param queryString The main query string for retrieving relevant documents'
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+ 	 * @return The number of documents retrieved in the result set
 	 */
     public int getInsituCount(String queryString){
     	return getInsituCount(queryString, null);
     }
 
 	/**
-	 * This method return the count of in-situs for a search query with
-	 * modifying filter
-	 * @param queryString The main query string for retrieving relevant documents'
-	 * @param filter The filter used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
 	 */    
     public int getInsituCount(String queryString, String filter){
 
@@ -294,12 +299,14 @@ public class SolrUtil {
     }
 
 	/**
-	 * This method return the count of in-situs for a search query with
-	 * modifying filter and modifying filter list
-	 * @param queryString The main query string for retrieving relevant documents'
-	 * @param filter The filter used to modify the query
-	 * @param filters The list of filters used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_nextgen_samples solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filter A filter to be applied to the solr search
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
+     * @throws SolrServerException
 	 */    
     public int getInsituCount(String queryString, String filter, List<String> filters) throws SolrServerException{   	
 
@@ -352,11 +359,12 @@ public class SolrUtil {
     }
     
 	/**
-	 * This method return the count of in-situs for a search query with
-	 * modifying filter and modifying filter list
-	 * @param queryString The main query string for retrieving relevant documents'
-	 * @param filters The list of filters used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
 	 */    
     public int getInsituFilteredCount(String queryString, HashMap<String,String> filters)
     {    			
@@ -395,140 +403,142 @@ public class SolrUtil {
         return count;
     }
     
-    public int getAssayCount(String queryString){
-    	return getInsituCount(queryString, null);
-    }
+//    public int getAssayCount(String queryString){
+//    	return getInsituCount(queryString, null);
+//    }
     
-    public int getIshStagesCount(String queryString){
-    	return getInsituCount(queryString, null);
-    }
+//    public int getIshStagesCount(String queryString){
+//    	return getInsituCount(queryString, null);
+//    }
 
-    public int getIshAnatomyCount(String queryString){
-    	return getInsituCount(queryString, null);
-    }
+//    public int getIshAnatomyCount(String queryString){
+//    	return getInsituCount(queryString, null);
+//    }
 
-    public int getIshAssayCount(String queryString){
-    	String filter = "ASSAY_TYPE:ISH";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIshAssayCount(String queryString){
+//    	String filter = "ASSAY_TYPE:ISH";
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getIhcAssayCount(String queryString){
-    	String filter = "ASSAY_TYPE:IHC";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIhcAssayCount(String queryString){
+//    	String filter = "ASSAY_TYPE:IHC";
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getTgAssayCount(String queryString){
-    	String filter = "ASSAY_TYPE:TG";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getTgAssayCount(String queryString){
+//    	String filter = "ASSAY_TYPE:TG";
+//    	return getInsituCount(queryString, filter);
+//    }
     
-    public int getIshMetanephrosCount(String queryString){
-    	String filter = "FOCUS_GROUPS:metanephros";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIshMetanephrosCount(String queryString){
+//    	String filter = "FOCUS_GROUPS:metanephros";
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getIshMRSCount(String queryString){
-    	String filter = "FOCUS_GROUPS:male reproductive system";
-        String[]ffields = filter.split(":");
-    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIshMRSCount(String queryString){
+//    	String filter = "FOCUS_GROUPS:male reproductive system";
+//        String[]ffields = filter.split(":");
+//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getIshFRSCount(String queryString){
-    	String filter = "FOCUS_GROUPS:female reproductive system";
-        String[]ffields = filter.split(":");
-    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIshFRSCount(String queryString){
+//    	String filter = "FOCUS_GROUPS:female reproductive system";
+//        String[]ffields = filter.split(":");
+//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getIshERSCount(String queryString){
-        String filter = "FOCUS_GROUPS:early genitourinary system";
-        String[] ffields = filter.split(":");
-    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIshERSCount(String queryString){
+//        String filter = "FOCUS_GROUPS:early genitourinary system";
+//        String[] ffields = filter.split(":");
+//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getIshLUTCount(String queryString){
-        String filter = "FOCUS_GROUPS:lower urinary tract";
-        String[] ffields = filter.split(":");
-    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIshLUTCount(String queryString){
+//        String filter = "FOCUS_GROUPS:lower urinary tract";
+//        String[] ffields = filter.split(":");
+//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getIshMesonephrosCount(String queryString){
-    	String filter = "FOCUS_GROUPS:mesonephros";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getIshMesonephrosCount(String queryString){
+//    	String filter = "FOCUS_GROUPS:mesonephros";
+//    	return getInsituCount(queryString, filter);
+//    }
     
-    public int getInsituPresentCount(String queryString){    	
-    	String filter = "PRESENT:['' TO *]";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getInsituPresentCount(String queryString){    	
+//    	String filter = "PRESENT:['' TO *]";
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getInsituCountByUncertain(String queryString){
-    	String filter = "UNCERTAIN:['' TO *]";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getInsituCountByUncertain(String queryString){
+//    	String filter = "UNCERTAIN:['' TO *]";
+//    	return getInsituCount(queryString, filter);
+//    }
 
-    public int getInsituCountByNotDetected(String queryString){
-    	String filter = "NOT DETECTED:['' TO *]";
-    	return getInsituCount(queryString, filter);
-    }
+//    public int getInsituCountByNotDetected(String queryString){
+//    	String filter = "NOT DETECTED:['' TO *]";
+//    	return getInsituCount(queryString, filter);
+//    }
     
-	// method to retrieve the list of Insitu stages count for the results page
-    public List<Integer> getInsituStages(String queryString){
-
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-		else
-			queryString = setWidcard(queryString);
-
-		List<Integer> ishStages = new ArrayList<Integer>();
-		for (int i= 0; i < 12; i++){
-			ishStages.add(0);
-		}
-
-        try
-        {
-
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-	        parameters.setRows(0);	      
-	        parameters.setFacetMinCount(0);
-	        parameters.setFacetLimit(1000);
-	        	      	        
-            QueryResponse qr = insitu_server.query(parameters);
-            SolrDocumentList sdl = qr.getResults();
-           
-           for (int i = 17; i < 29; i ++){            
-        	   parameters.addFilterQuery("THEILER_STAGE_FILTER:"+i);
-	            qr = insitu_server.query(parameters);
-	            sdl = qr.getResults();
-	            ishStages.set(i-17, (int)sdl.getNumFound());
-	            parameters.removeFilterQuery("THEILER_STAGE_FILTER:"+i);
-            }
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}        
-        return ishStages;    
-    }
+//	// method to retrieve the list of Insitu stages count for the results page
+//    public List<Integer> getInsituStages(String queryString){
+//
+//		if (queryString == "" || queryString == null || queryString == "*")
+//			queryString = "*:*";
+//		else
+//			queryString = setWidcard(queryString);
+//
+//		List<Integer> ishStages = new ArrayList<Integer>();
+//		for (int i= 0; i < 12; i++){
+//			ishStages.add(0);
+//		}
+//
+//        try
+//        {
+//
+//            SolrQuery parameters = new SolrQuery();
+//	        parameters.set("q",queryString);
+//	        parameters.setFacet(true);
+//	        parameters.setRows(0);	      
+//	        parameters.setFacetMinCount(0);
+//	        parameters.setFacetLimit(1000);
+//	        	      	        
+//            QueryResponse qr = insitu_server.query(parameters);
+//            SolrDocumentList sdl = qr.getResults();
+//           
+//           for (int i = 17; i < 29; i ++){            
+//        	   parameters.addFilterQuery("THEILER_STAGE_FILTER:"+i);
+//	            qr = insitu_server.query(parameters);
+//	            sdl = qr.getResults();
+//	            ishStages.set(i-17, (int)sdl.getNumFound());
+//	            parameters.removeFilterQuery("THEILER_STAGE_FILTER:"+i);
+//            }
+//        }
+//        catch (SolrServerException e)
+//        {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//			e.printStackTrace();
+//		}        
+//        return ishStages;    
+//    }
     
 
     /**
-     * This method retuns a SolrDocumentList for a query on the Solr in-situ index
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a SolrDocumentList object containing the retrieved documents.
+     * 
 	 * @param queryString The main query string for retrieving relevant documents'
-     * @param filters The filters to be applied to the solr search
+     * @param filters A list of filters to be applied to the solr search
      * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
      * @param offset The offset from which the documents will be returned.
      * @param rows The number of documents to be retrieved in the result set.
-     * @return sdl The SolrDocumentList
-     * @throws SolrServerException
+     * @return A SolrDocumentList of retrieved documents
+     * @throws SolrServerException.
      */
     public SolrDocumentList getInsituData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
 
@@ -671,9 +681,11 @@ public class SolrUtil {
     //***************************** GENE METHODS *****************************************************
 
 	/**
-	 * This method return the count of genes for a search query
-	 * @param queryString This is the search query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_genes solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+ 	 * @return The number of documents retrieved in the result set
 	 */
    public int getGeneCount(String query){ 
     	return getGeneCount(query, null);
@@ -681,11 +693,12 @@ public class SolrUtil {
     
     
 	/**
-	 * This method return the count of genes for a search query with
-	 * modifying filter and modifying filter list
-	 * @param queryString This is the search query
-	 * @param filters The list of filters used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_genes solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
 	 */    
     public int getGeneCount(String queryString, HashMap<String,String> filters)
     {    			
@@ -726,11 +739,12 @@ public class SolrUtil {
     }
 
 	/**
-	 * This method return the count of genes for a search query with
-	 * modifying filter
-	 * @param queryString This is the search query
-	 * @param filter The filter used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_genes solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filter A filter to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
 	 */    
     public int getGeneFilteredCount(String queryString, String filter)
     {    			
@@ -765,11 +779,12 @@ public class SolrUtil {
     }
     
 	/**
-	 * This method return the count of genes for a search query with
-	 * modifying filter
-	 * @param queryString This is the search query
-	 * @param filter The filter used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_genes solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filter A filter to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
 	 */    
     public int getGeneCount2(String queryString, String filter)
     {    			
@@ -834,15 +849,16 @@ public class SolrUtil {
     
   
     /**
-     * This method retuns a SolrDocumentList for a query on the Solr genes index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_genes solr index.
+     * It returns a SolrDocumentList object containing the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return sdl The SolrDocumentList
-     * @throws SolrServerException
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return A SolrDocumentList of retrieved documents
      */
     public SolrDocumentList getGudmapGenes(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
 
@@ -905,9 +921,11 @@ public class SolrUtil {
 
 
     /**
-     * This method returns a string of genes for a query on the Solr genelists index
-     * @param queryString
-     * @return
+     * This method runs the queryString against the gudmap_genelists solr index.
+     * It returns a string containing the geness from the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @return A string of genes
      */
     public String getGenesFromGenelistId(String queryString){
 
@@ -991,9 +1009,11 @@ public class SolrUtil {
     //***************************** SEQUENCES METHODS *****************************************************
     
 	/**
-	 * This method return the count of next gen sequences for a search query
-	 * @param queryString This is the search query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_nextgen_samples solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+ 	 * @return The number of documents retrieved in the result set
 	 */
     public int getSequencesCount(String query){ 
     	return getSequencesCount(query, null);
@@ -1001,11 +1021,12 @@ public class SolrUtil {
     
     
 	/**
-	 * This method return the count of next gen sequences for a search query with
-	 * modifying filter and modifying filter list
-	 * @param queryString This is the search query
-	 * @param filters The list of filters used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_nextgen_samples solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
 	 */    
     public int getSequencesCount(String queryString, HashMap<String,String> filters)
     {    			
@@ -1047,14 +1068,16 @@ public class SolrUtil {
     }
 
     /**
-     * This method retuns a SolrDocumentList for a query on the Solr next gen sequences index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_nextgen_samples solr index.
+     * It returns a SolrDocumentList object containing the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return sdl The SolrDocumentList
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return A SolrDocumentList of retrieved documents
      * @throws SolrServerException
      */
     public SolrDocumentList getSequencesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
@@ -1129,9 +1152,11 @@ public class SolrUtil {
     //***************************** GENELISTS METHODS *****************************************************
 
 	/**
-	 * This method return the count of genelists for a search query
-	 * @param queryString This is the search query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_genelists solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+ 	 * @return The number of documents retrieved in the result set
 	 */
     public void queryGenelists(String queryString)
     {
@@ -1180,11 +1205,12 @@ public class SolrUtil {
     }
     
 	/**
-	 * This method return the count of genelists for a search query with
-	 * modifying filter and modifying filter list
-	 * @param queryString This is the search query
-	 * @param filters The list of filters used to modify the query
-	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_genelists solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
 	 */    
     public int getGenelistCount(String queryString, HashMap<String,String> filters){
 
@@ -1226,10 +1252,12 @@ public class SolrUtil {
     }
 
     /**
-     * This method retuns a SolrDocumentList for a query on the Solr genelists index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @return sdl The SolrDocumentList
+     * This method runs the queryString against the gudmap_genelists solr index.
+     * It returns a SolrDocumentList object containing the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @return A SolrDocumentList of retrieved documents
      */
      public SolrDocumentList getGenelistData(String queryString, HashMap<String,String> filters){
 
@@ -1293,11 +1321,12 @@ public class SolrUtil {
     //***************************** TISSUE METHODS *****************************************************
 
  	/**
- 	 * This method return the count of tissues for a search query with
- 	 * modifying filter and modifying filter list
- 	 * @param queryString This is the search query
- 	 * @param filters The list of filters used to modify the query
- 	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_tissues solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
  	 */    
     public int getTissueCount(String queryString, HashMap<String,String> filters){
 
@@ -1340,14 +1369,16 @@ public class SolrUtil {
  
 
     /**
-     * This method retuns a QueryResponse for a query on the tissues index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_tissues solr index.
+     * It returns a QueryResponse object.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return qr The QueryResponse
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return A Solr QueryResponse
      */
     public QueryResponse getTissueData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
@@ -1540,11 +1571,12 @@ public class SolrUtil {
     //***************************** SAMPLE METHODS *****************************************************
 
  	/**
- 	 * This method return the count of samples for a search query with
- 	 * modifying filter and modifying filter list
- 	 * @param queryString This is the search query
- 	 * @param filters The list of filters used to modify the query
- 	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_samples solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
  	 */    
     public int getSamplesFilteredCount(String queryString, HashMap<String,String> filters){
 
@@ -1599,14 +1631,16 @@ public class SolrUtil {
     }
 
     /**
-     * This method retuns a list of sample geo ids for a query on the samples index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_samples solr index.
+     * It returns a a list containing the GEO ID's from the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return ids The list of sample geo ids
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return A list of GEO ID's from the retrieved documents
      */
     public List<String> getSamplesData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
  
@@ -1664,14 +1698,16 @@ public class SolrUtil {
     }
    
     /**
-     * This method retuns a SolrDocumentList for a query on the samples index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_samples solr index.
+     * It returns a SolrDocumentList object containing the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return sdl The SolrDocumentList
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return A SolrDocumentList of retrieved documents
      */
     public SolrDocumentList getSamplesViewData(List<String> ids, String column, boolean ascending, int offset, int rows){
     	
@@ -1888,150 +1924,151 @@ public class SolrUtil {
 //        return sdl;
 //    }
 
-    //***************************** TUTORIAL METHODS *****************************************************
-
-
- 	/**
- 	 * This method return the count of tutorials for a search query
- 	 * @param queryString This is the search query
- 	 * @return int This returns the count of the query
- 	 */
-    public int getTutorialCount(String queryString){
-    	return getTutorialCount(queryString, null);
-    }
-    
- 	/**
- 	 * This method return the count of tutorials for a search query with
- 	 * modifying filter and modifying filter list
- 	 * @param queryString This is the search query
- 	 * @param filters The list of filters used to modify the query
- 	 * @return int This returns the count of the query
- 	 */    
-
-    public int getTutorialCount(String queryString, HashMap<String,String> filters){
-
-    	long count = 0;
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-		else
-			queryString = setWidcard(queryString);
-
-        try
-        {
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        parameters.setRows(0);
-
-//	        if (filters != null){
-//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
-//		        while (it.hasNext()) {
-//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//    //***************************** TUTORIAL METHODS *****************************************************
+//
+//
+// 	/**
+// 	 * This method return the count of tutorials for a search query
+// 	 * @param queryString This is the search query
+// 	 * @return int This returns the count of the query
+// 	 */
+//    public int getTutorialCount(String queryString){
+//    	return getTutorialCount(queryString, null);
+//    }
+//    
+// 	/**
+// 	 * This method return the count of tutorials for a search query with
+// 	 * modifying filter and modifying filter list
+// 	 * @param queryString This is the search query
+// 	 * @param filters The list of filters used to modify the query
+// 	 * @return int This returns the count of the query
+// 	 */    
+//
+//    public int getTutorialCount(String queryString, HashMap<String,String> filters){
+//
+//    	long count = 0;
+//		if (queryString == "" || queryString == null || queryString == "*")
+//			queryString = "*:*";
+//		else
+//			queryString = setWidcard(queryString);
+//
+//        try
+//        {
+//            SolrQuery parameters = new SolrQuery();
+//	        parameters.set("q",queryString);
+//	        parameters.setRows(0);
+//
+////	        if (filters != null){
+////		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+////		        while (it.hasNext()) {
+////		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+//////		            if (tutorial_schema.contains(pair.getKey()))
+////		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+////		        }
+////	        }
+//	        
+//            QueryResponse qr = tutorial_server.query(parameters);
+//            SolrDocumentList sdl = qr.getResults();
+//            count = sdl.getNumFound();
+//        }
+//        catch (SolrServerException e)
+//        {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//			e.printStackTrace();
+//		}        
+//
+//
+//        return (int)count;    
+//    }
+//
+//    /**
+//     * This method retuns a SolrDocumentList for a query on the tutorials index
+//	 * @param queryString The main query string for retrieving relevant documents'
+//     * @param filters The filters to be applied to the solr search
+//     * @param column The field on which the result should be sorted.
+//     * @param ascending The sort direction
+//     * @param offset The offset from which the documents will be returned.
+//     * @param rows The number of documents to be retrieved in the result set.
+//     * @return sdl The SolrDocumentList
+//     */
+//    public SolrDocumentList getTutorialData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
+//    	
+//		if (queryString == "" || queryString == null || queryString == "*")
+//			queryString = "*:*";
+//		else
+//			queryString = setWidcard(queryString);
+//
+//		
+//    	SolrDocumentList sdl = null;
+//    	
+//    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+//
+//        try
+//        {
+//
+//            SolrQuery parameters = new SolrQuery();
+//	        parameters.set("q",queryString);
+//	        
+//	        parameters.setIncludeScore(true);
+//	        
+//	        parameters.setStart(offset);
+//	        parameters.setRows(rows);
+//	        if (!column.equalsIgnoreCase("RELEVANCE"))
+//	        	parameters.setSort(column, order);
+//      
+//	        
+////	        if (filters != null){
+////		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+////		        while (it.hasNext()) {
+////		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 ////		            if (tutorial_schema.contains(pair.getKey()))
-//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
-//		        }
-//	        }
-	        
-            QueryResponse qr = tutorial_server.query(parameters);
-            SolrDocumentList sdl = qr.getResults();
-            count = sdl.getNumFound();
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}        
-
-
-        return (int)count;    
-    }
-
-    /**
-     * This method retuns a SolrDocumentList for a query on the tutorials index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
-     * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return sdl The SolrDocumentList
-     */
-    public SolrDocumentList getTutorialData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
-    	
-		if (queryString == "" || queryString == null || queryString == "*")
-			queryString = "*:*";
-		else
-			queryString = setWidcard(queryString);
-
-		
-    	SolrDocumentList sdl = null;
-    	
-    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
-
-        try
-        {
-
-            SolrQuery parameters = new SolrQuery();
-	        parameters.set("q",queryString);
-	        
-	        parameters.setIncludeScore(true);
-	        
-	        parameters.setStart(offset);
-	        parameters.setRows(rows);
-	        if (!column.equalsIgnoreCase("RELEVANCE"))
-	        	parameters.setSort(column, order);
-      
-	        
-//	        if (filters != null){
-//		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
-//		        while (it.hasNext()) {
-//		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-//		            if (tutorial_schema.contains(pair.getKey()))
-//		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
-//		        }
-//	        }
-        	
-	        QueryResponse qr = tutorial_server.query(parameters);
-            sdl = qr.getResults();
-
-        }
-        catch (SolrServerException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		}        
-
-        return sdl;
-    }
-   
-    
-    public int getTutorialOverviewCount(String queryString){
-        HashMap<String,String> filter = new HashMap<String,String>();
-        filter.put("title","Tutorial overview"); 	
-    	return getTutorialCount(queryString, filter);
-    }
-
-    public int getTutorialDevMRSCount(String queryString){
-        HashMap<String,String> filter = new HashMap<String,String>();
-        filter.put("title","Dev MRS Tutorial");
-    	return getTutorialCount(queryString, filter);
-    }
-
-    public int getTutorialDevMUSCount(String queryString){
-        HashMap<String,String> filter = new HashMap<String,String>();
-        filter.put("title","Dev MUS Tutorial");
-    	return getTutorialCount(queryString, filter);
-    }
+////		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+////		        }
+////	        }
+//        	
+//	        QueryResponse qr = tutorial_server.query(parameters);
+//            sdl = qr.getResults();
+//
+//        }
+//        catch (SolrServerException e)
+//        {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//			e.printStackTrace();
+//		}        
+//
+//        return sdl;
+//    }
+//   
+//    
+//    public int getTutorialOverviewCount(String queryString){
+//        HashMap<String,String> filter = new HashMap<String,String>();
+//        filter.put("title","Tutorial overview"); 	
+//    	return getTutorialCount(queryString, filter);
+//    }
+//
+//    public int getTutorialDevMRSCount(String queryString){
+//        HashMap<String,String> filter = new HashMap<String,String>();
+//        filter.put("title","Dev MRS Tutorial");
+//    	return getTutorialCount(queryString, filter);
+//    }
+//
+//    public int getTutorialDevMUSCount(String queryString){
+//        HashMap<String,String> filter = new HashMap<String,String>();
+//        filter.put("title","Dev MUS Tutorial");
+//    	return getTutorialCount(queryString, filter);
+//    }
     
     //***************************** MOUSE STRAINS METHODS *****************************************************
     
  	/**
- 	 * This method return the count of mouse strains for a search query with
- 	 * modifying filter and modifying filter list
- 	 * @param queryString This is the search query
- 	 * @param filters The list of filters used to modify the query
- 	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_images solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
  	 */    
     public int getMouseStrainsCount(String queryString, HashMap<String,String> filters){
 
@@ -2076,14 +2113,16 @@ public class SolrUtil {
 
 
     /**
-     * This method retuns a SolrDocumentList for a query on the mouse strains index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_mousestrains solr index.
+     * It returns a SolrDocumentList object containing the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return sdl The SolrDocumentList
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return A SolrDocumentList of retrieved documents
      */
     public SolrDocumentList getMouseStrainsData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
@@ -2149,13 +2188,13 @@ public class SolrUtil {
 
     //***************************** IMAGES METHODS *****************************************************
 
-
  	/**
- 	 * This method return the count of images for a search query with
- 	 * modifying filter and modifying filter list
- 	 * @param queryString This is the search query
- 	 * @param filters The list of filters used to modify the query
- 	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_images solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
  	 */    
     public int getImagesCount(String queryString, HashMap<String,String> filters){
 
@@ -2199,14 +2238,16 @@ public class SolrUtil {
 
 
     /**
-     * This method retuns a SolrDocumentList for a query on the images index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_images solr index.
+     * It returns a SolrDocumentList object containing the retrieved documents.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents'
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted.
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return sdl The SolrDocumentList
+     * @param offset The offset from which the documents will be returned.
+     * @param rows The number of documents to be retrieved in the result set.
+     * @return A SolrDocumentList of retrieved documents
      */
     public SolrDocumentList getImagesData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
@@ -2281,21 +2322,23 @@ public class SolrUtil {
 
 
  	/**
- 	 * This method return the count of web pages for a search query with
- 	 * modifying filter and modifying filter list
- 	 * @param queryString This is the search query
- 	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_web solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+ 	 * @return The number of documents retrieved in the result set
  	 */    
    public int getWebCount(String queryString){
-    	return getTutorialCount(queryString, null);
+    	return getWebCount(queryString, null);
     }
     
  	/**
- 	 * This method return the count of web pages for a search query with
- 	 * modifying filter and modifying filter list
- 	 * @param queryString This is the search query
- 	 * @param filters The list of filters used to modify the query
- 	 * @return int This returns the count of the query
+     * This method runs the queryString against the gudmap_web solr index.
+     * It returns the number of documents found.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+ 	 * @return The number of documents retrieved in the result set
  	 */    
     public int getWebCount(String queryString, HashMap<String,String> filters){
 
@@ -2327,14 +2370,16 @@ public class SolrUtil {
     }
 
     /**
-     * This method retuns a SolrDocumentList for a query on the web pages index
-     * @param queryString The solr search query string
-     * @param filters The filters to be applied to the solr search
-     * @param column The sort column
+     * This method runs the queryString against the gudmap_web solr index.
+     * It returns a QueryResponse object.
+     * 
+	 * @param queryString The main query string for retrieving relevant documents
+     * @param filters A list of filters to be applied to the solr search
+     * @param column The field on which the result should be sorted
      * @param ascending The sort direction
-     * @param offset The start row in the SolrDocumentList
-     * @param rows The number of rows to retun in the SolrDocumentList
-     * @return sdl The SolrDocumentList
+     * @param offset The offset from which the documents will be returned
+     * @param rows The number of documents to be retrieved in the result set
+     * @return A Solr QueryResponse
      */
     public QueryResponse getWebData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
     	
@@ -2393,17 +2438,22 @@ public class SolrUtil {
     	return genes;
     }
     
-    public int getIshExpressionCount(){
-    	return ishExpressionCount;
-    }
-    
-    public void setIshExpressionCount(PivotField p){
-    	ishExpressionCount += p.getPivot().size();
-    }
+//    public int getIshExpressionCount(){
+//    	return ishExpressionCount;
+//    }
+//    
+//    public void setIshExpressionCount(PivotField p){
+//    	ishExpressionCount += p.getPivot().size();
+//    }
 
-    public  Set<String> getGeneSchema() {
+    //***************************** SCHEMA METHODS *****************************************************
+     
+	/**
+	 * @return A set containing the valid field names of the gudmap_genes index schema
+	 */
+	public  Set<String> getGeneSchema() {
     	
-    	Set<String> schema = new HashSet<String>();
+		Set<String> schema = new HashSet<String>();
     
     	schema.add("GENE");
     	schema.add("GENE_NAME");
@@ -2432,363 +2482,286 @@ public class SolrUtil {
 		schema.add("SPECIES"); 
 		
 		return schema;
-     }
+	}
     
-   public  Set<String> getMouseStrainsSchema() {
+	/**
+	 * @return A set containing the valid field names of the gudmap_mousestrains index schema
+	 */
+	public Set<String> getMouseStrainsSchema() {
     	
-    	Set<String> schema = new HashSet<String>();
+		Set<String> schema = new HashSet<String>();
     
-		   schema.add("ID");
-		   schema.add("GENE");
-		   schema.add("REPORTER_ALLELE"); 
-		   schema.add("ALLELE_TYPE");
-		   schema.add("ALLELE_VER");
-		   schema.add("ALLELE_VER_URL");
-		   schema.add("ALLELE_CHAR");
-		   schema.add("ALLELE_CHAR_URL");   
-		   schema.add("STRAIN_AVA");
-		   schema.add("STRAIN_AVA_URL");   
-		   schema.add("ORGAN");   
-		   schema.add("CELL_TYPE");
+		schema.add("ID");
+		schema.add("GENE");
+		schema.add("REPORTER_ALLELE"); 
+		schema.add("ALLELE_TYPE");
+		schema.add("ALLELE_VER");
+		schema.add("ALLELE_VER_URL");
+		schema.add("ALLELE_CHAR");
+		schema.add("ALLELE_CHAR_URL");   
+		schema.add("STRAIN_AVA");
+		schema.add("STRAIN_AVA_URL");   
+		schema.add("ORGAN");   
+		schema.add("CELL_TYPE");
 	    
 	    return schema;
-     }
+	}
 
-   public  Set<String> getInsituSchema() {
+	/**
+	 * @return A set containing the valid field names of the gudmap_insitu index schema
+	 */
+	public Set<String> getInsituSchema() {
    	
-   	Set<String> schema = new HashSet<String>();
-   
+	   Set<String> schema = new HashSet<String>();
 
-		   schema.add("GUDMAP"); 
-		   schema.add("GUDMAP_ID"); 
-		   schema.add("GENE"); 
-		   schema.add("GENE_NAME");
-		   schema.add("MGI");
-		   schema.add("MGI_GENE_ID");
-		   schema.add("GENBANK_ID");
-		   schema.add("ENSEMBL_ID");
-		   schema.add("SYNONYMS");
-		   schema.add("PI_NAME");   
-		   schema.add("LAB");   
-		   schema.add("AUTHORS");
-		   schema.add("DATE");
-		   schema.add("STAGE");
-		   schema.add("PROBE_NAME");
-		   schema.add("CLONE_NAME");
-		   schema.add("PROBE_TISSUE");
-		   schema.add("PROBE_ID");
-		   schema.add("maprobe");
-		   schema.add("MAPROBE_ID");
-		   schema.add("PROBE_STRAIN");
-		   schema.add("PROBE_GENE_TYPE");
-		   schema.add("PROBE_TYPE");
-		   schema.add("PROBE_VISUAL_METHOD");
-		   schema.add("PROBE_NOTE");
-		   schema.add("CURATOR_NOTE");
-		   schema.add("RESULT_NOTE");
-		   schema.add("EXPERIMENT_NOTE");   
-		   schema.add("IMAGE_WITH_NOTE");
-		   schema.add("IMAGE_NOTE");
-		   schema.add("IMAGE");
-		   schema.add("IMAGE_PATH");
-		   schema.add("SPECIMEN_ASSAY_TYPE");
-		   schema.add("FIXATION_METHOD");
-		   schema.add("STRAIN");
-		   schema.add("SEX");
-		   schema.add("DEV_STAGE");
-		   schema.add("GENOTYPE");
-		   schema.add("ASSAY_TYPE");
-		   schema.add("PROJECT");
-		   schema.add("ALT_ID");
-		   schema.add("SOURCE");
-		   schema.add("ANCHOR_GENE");
-		   schema.add("MARKER_GENE");
-		   schema.add("FOCUS_GROUPS");
-		   schema.add("ALLELE_MGI_ID");
-		   schema.add("ALLELE_NAME");
-		   schema.add("ALLELE_TYPE");
-		   schema.add("PRESENT");
-		   schema.add("DIR_PRESENT");
-		   schema.add("INF_PRESENT");
-		   schema.add("NOT_DETECTED");
-		   schema.add("INF_NOT_DETECTED");
-		   schema.add("UNCERTAIN");
-		   schema.add("EMAPS");
-		   schema.add("EXP_NOTES");
-		   schema.add("EXPRESSION_NOTES");
-		   schema.add("ANNOTATION");
-		   schema.add("TISSUE_TYPE");
-		   schema.add("SPECIES"); 
-		   schema.add("GENE_TYPE"); 
+	   schema.add("GUDMAP"); 
+	   schema.add("GUDMAP_ID"); 
+	   schema.add("GENE"); 
+	   schema.add("GENE_NAME");
+	   schema.add("MGI");
+	   schema.add("MGI_GENE_ID");
+	   schema.add("GENBANK_ID");
+	   schema.add("ENSEMBL_ID");
+	   schema.add("SYNONYMS");
+	   schema.add("PI_NAME");   
+	   schema.add("LAB");   
+	   schema.add("AUTHORS");
+	   schema.add("DATE");
+	   schema.add("STAGE");
+	   schema.add("PROBE_NAME");
+	   schema.add("CLONE_NAME");
+	   schema.add("PROBE_TISSUE");
+	   schema.add("PROBE_ID");
+	   schema.add("maprobe");
+	   schema.add("MAPROBE_ID");
+	   schema.add("PROBE_STRAIN");
+	   schema.add("PROBE_GENE_TYPE");
+	   schema.add("PROBE_TYPE");
+	   schema.add("PROBE_VISUAL_METHOD");
+	   schema.add("PROBE_NOTE");
+	   schema.add("CURATOR_NOTE");
+	   schema.add("RESULT_NOTE");
+	   schema.add("EXPERIMENT_NOTE");   
+	   schema.add("IMAGE_WITH_NOTE");
+	   schema.add("IMAGE_NOTE");
+	   schema.add("IMAGE");
+	   schema.add("IMAGE_PATH");
+	   schema.add("SPECIMEN_ASSAY_TYPE");
+	   schema.add("FIXATION_METHOD");
+	   schema.add("STRAIN");
+	   schema.add("SEX");
+	   schema.add("DEV_STAGE");
+	   schema.add("GENOTYPE");
+	   schema.add("ASSAY_TYPE");
+	   schema.add("PROJECT");
+	   schema.add("ALT_ID");
+	   schema.add("SOURCE");
+	   schema.add("ANCHOR_GENE");
+	   schema.add("MARKER_GENE");
+	   schema.add("FOCUS_GROUPS");
+	   schema.add("ALLELE_MGI_ID");
+	   schema.add("ALLELE_NAME");
+	   schema.add("ALLELE_TYPE");
+	   schema.add("PRESENT");
+	   schema.add("DIR_PRESENT");
+	   schema.add("INF_PRESENT");
+	   schema.add("NOT_DETECTED");
+	   schema.add("INF_NOT_DETECTED");
+	   schema.add("UNCERTAIN");
+	   schema.add("EMAPS");
+	   schema.add("EXP_NOTES");
+	   schema.add("EXPRESSION_NOTES");
+	   schema.add("ANNOTATION");
+	   schema.add("TISSUE_TYPE");
+	   schema.add("SPECIES"); 
+	   schema.add("GENE_TYPE"); 
 		   
-	    return schema;
+	   return schema;
     }
 
-//   public  Set<String> getMicroarraySchema() {
-//   	
-//   	Set<String> schema = new HashSet<String>();
-//   
-//		   schema.add("GUDMAP"); 
-//		   schema.add("GUDMAP_ID"); 
-//		   schema.add("PLATFORM_GEO_ID");
-//		   schema.add("PLATFORM_TITLE");
-//		   schema.add("PLATFORM_NAME");
-//		   schema.add("SAMPLE_GEO_ID");
-//		   schema.add("SAMPLE_STRAIN");
-//		   schema.add("SAMPLE_SEX");
-//		   schema.add("DEVELOPMENT_STAGE");
-//		   schema.add("SAMPLE_THEILER_STAGE");
-//		   schema.add("SAMPLE_MOLECULE");
-//		   schema.add("SAMPLE_RNA_EXTRACT_PROTOCOL");
-//		   schema.add("SAMPLE_DISSECTION_METHOD");
-//		   schema.add("SAMPLE_EXPERIMENTAL_DESIGN");
-//		   schema.add("SAMPLE_ARRAY_HYB_PROTOCOL");
-//		   schema.add("SAMPLE_DATA_ANALYSIS_METHOD");
-//		   schema.add("SAMPLE_REFERENCE_USED");
-//		   schema.add("SAMPLE_TARGET_AMPLIFICATION_MANUFACTURER");
-//		   schema.add("SAMPLE_SCAN_PROTOCOL");
-//		   schema.add("SAMPLE_LABEL_PROTOCOL");
-//		   schema.add("SERIES_GEO_ID");
-//		   schema.add("SERIES_TITLE");
-//		   schema.add("COMPONENT");
-//		   schema.add("EMAP");
-//		   schema.add("PI_NAME");
-//		   schema.add("LAB");
-//		   schema.add("SOURCE");
-//		   schema.add("DATE");
-//		   schema.add("STAGE");
-//		   schema.add("SPECIMEN_ASSAY_TYPE");
-//		   schema.add("FIXATION_METHOD");
-//		   schema.add("STRAIN");
-//		   schema.add("SEX");
-//		   schema.add("DEV_STAGE");
-//		   schema.add("STAGE_FORMAT");
-//		   schema.add("GENOTYPE");
-//		   schema.add("FIRST_CHROMATID");
-//		   schema.add("SECOND_CHROMATID");
-//		   schema.add("ALLELE_MGI_ID");
-//		   schema.add("ALLELE_LAB_NAME");
-//		   schema.add("ALLELE_NAME");
-//		   schema.add("ALLELE_TYPE");
-//		   schema.add("GENE");
-//		   schema.add("MGI_IDS");
-//		   schema.add("MGI");
-//	    
-//	    return schema;
-//    }
-
-   public  Set<String> getSequenceSamplesSchema() {
+	/**
+	 * @return A set containing the valid field names of the gudmap_nextgen_samples index schema
+	 */
+	public Set<String> getSequenceSamplesSchema() {
    	
-   	Set<String> schema = new HashSet<String>();
-   
-    schema.add("GUDMAP");
-    schema.add("SAMPLE_GEO_ID");
-    schema.add("SERIES_GEO_ID");
-    schema.add("SOURCE");
-    schema.add("LIBRARY_STRATEGY");
-    schema.add("STAGE");
-    schema.add("PI_NAME");
-    schema.add("DEV_STAGE");
-    schema.add("DATE");
-    schema.add("SEX");
-    schema.add("SAMPLE_DESCRIPTION");
-    schema.add("SAMPLE_NAME");
-    schema.add("GENOTYPE");
-    schema.add("COMPONENT");
-    schema.add("SPECIES"); 
-
-    
-	    return schema;
-    }
-
-   public  Set<String> getSamplesSchema() {
-	   	
 	   	Set<String> schema = new HashSet<String>();
 	   
 	    schema.add("GUDMAP");
 	    schema.add("SAMPLE_GEO_ID");
-	    schema.add("STAGE");
-	    schema.add("DEV_STAGE");
+	    schema.add("SERIES_GEO_ID");
 	    schema.add("SOURCE");
+	    schema.add("LIBRARY_STRATEGY");
+	    schema.add("STAGE");
 	    schema.add("PI_NAME");
+	    schema.add("DEV_STAGE");
 	    schema.add("DATE");
 	    schema.add("SEX");
-	    schema.add("DESCRIPTION");
-	    schema.add("TITLE");
-	    schema.add("SERIES_GEO_ID");
+	    schema.add("SAMPLE_DESCRIPTION");
+	    schema.add("SAMPLE_NAME");
+	    schema.add("GENOTYPE");
 	    schema.add("COMPONENT");
-	    schema.add("QMC_ALE_GENE");
-	    schema.add("ASSAY_TYPE");
-	    schema.add("SPECIMEN_ASSAY_TYPE");
-	    schema.add("PER_OID");
-	    schema.add("PLATFORM_GEO_ID"); 
 	    schema.add("SPECIES"); 
-	    schema.add("GENOTYPE"); 
-	    
-		    return schema;
-   }
+    
+		return schema;
+    }
 
-   public  Set<String> getSequenceSeriesSchema() {
+	/**
+	 * @return A set containing the valid field names of the gudmap_samples index schema
+	 */
+	public Set<String> getSamplesSchema() {
+		   	
+		Set<String> schema = new HashSet<String>();
+		   
+		schema.add("GUDMAP");
+		schema.add("SAMPLE_GEO_ID");
+		schema.add("STAGE");
+		schema.add("DEV_STAGE");
+		schema.add("SOURCE");
+		schema.add("PI_NAME");
+		schema.add("DATE");
+		schema.add("SEX");
+		schema.add("DESCRIPTION");
+		schema.add("TITLE");
+		schema.add("SERIES_GEO_ID");
+		schema.add("COMPONENT");
+		schema.add("QMC_ALE_GENE");
+		schema.add("ASSAY_TYPE");
+		schema.add("SPECIMEN_ASSAY_TYPE");
+		schema.add("PER_OID");
+		schema.add("PLATFORM_GEO_ID"); 
+		schema.add("SPECIES"); 
+		schema.add("GENOTYPE"); 
+		
+		return schema;
+	}
+   
+	/**
+	 * @return A set containing the valid field names of the gudmap_tissues index schema
+	 */
+	public Set<String> getTissuesSchema() {
+		   	
+		Set<String> schema = new HashSet<String>();
+		   
+		schema.add("ID");
+		schema.add("NAME");
+		schema.add("SYNONYM");
+		schema.add("STAGES");
+		schema.add("FOCUS_GROUPS");
+		schema.add("GENELIST_IDS");
+		schema.add("GENELIST_NAMES");
+		schema.add("IMAGE_URL");
+		schema.add("IMAGE_NAME");
+		schema.add("SEC_NAMES");
+		schema.add("LINK_TYPES");
+		schema.add("GUDMAP");
+		schema.add("EMAP");
+		schema.add("EMAPIDS");
+		schema.add("COMPONENT");
+		schema.add("MGI");
+		schema.add("GENE_MGI_ID");
+		schema.add("GENE");
+		schema.add("PROBE_IDS");
+		schema.add("MA_PROBES_ID");
+		schema.add("maprobe");
+		schema.add("STAGE");  
+	    
+		return schema;
+	}   
+
+
+	/**
+	 * @return A set containing the valid field names of the gudmap_images index schema
+	 */
+	public Set<String> getGeneListsSchema() {
+		   	
+	   	Set<String> schema = new HashSet<String>();
+	   
+	    schema.add("ID");
+	    schema.add("NAME");
+	    schema.add("DESCRIPTION"); 
+	    schema.add("PLATFORM");
+	    schema.add("KEY_SAMPLE");
+	    schema.add("MA_DATASET");
+	    schema.add("MA_DATASET_ID");
+	    schema.add("TOT_ENTITIES");   
+	    schema.add("TOT_GENES");
+	    schema.add("AUTHOR");
+	    schema.add("DATE");   
+	    schema.add("STAGE");   
+	    schema.add("SEX");
+	    schema.add("GENELIST_TYPE");
+	    schema.add("ENTITIES");   
+	    schema.add("GENE");
+	    schema.add("GUDMAP_ID");
+	    schema.add("GUDMAP");
+	    schema.add("REF");   
+	    schema.add("EMAP_IDS");   
+	    schema.add("EMAP");   
+	    schema.add("EMAP_TERM");   
+		    
+		return schema;
+	}   
+	   
+	/**
+	 * @return A set containing the valid field names of the gudmap_genelists index schema
+	 */
+	public Set<String> getImagesSchema() {
 	   	
 	   	Set<String> schema = new HashSet<String>();
 	   
-	    schema.add("TITLE");
-	    schema.add("SERIES_GEO_ID");
+	    schema.add("IMAGE_ID");
+	    schema.add("IMAGE");
+	    schema.add("IMAGE_PATH");
+	    schema.add("THUMBNAIL_PATH");
+	    schema.add("IMAGE_CLICK_PATH");
+	    schema.add("CLICK_FILENAME");
+	    schema.add("IMAGE_NOTE");
+	    schema.add("IMAGE_TYPE");
+	    schema.add("GUDMAP");
+	    schema.add("GUDMAP_ID");
+	    schema.add("GENE");
+	    schema.add("GENE_NAME");
+	    schema.add("MGI");
+	    schema.add("MGI_GENE_ID");
+	    schema.add("GENBANK_ID");
+	    schema.add("ENSEMBL_ID");
+	    schema.add("SYNONYMS");
+	    schema.add("PI_NAME");
+	    schema.add("DATE");
+	    schema.add("STAGE");
+	    schema.add("PROBE_NAME");
+	    schema.add("CLONE_NAME");
+	    schema.add("PROBE_TISSUE");
+	    schema.add("PROBE_ID");
+	    schema.add("MAPROBE_ID");
+	    schema.add("maprobe");
+	    schema.add("PROBE_STRAIN");
+	    schema.add("PROBE_GENE_TYPE");
+	    schema.add("PROBE_TYPE");
+	    schema.add("PROBE_VISUAL_METHOD");
+	    schema.add("PROBE_NOTE");
+	    schema.add("CURATOR_NOTE");
+	    schema.add("RESULT_NOTE");
+	    schema.add("EXPERIMENT_NOTE"); 
+	    schema.add("SPECIMEN_ASSAY_TYPE");
+	    schema.add("FIXATION_METHOD");
+	    schema.add("STRAIN");
+	    schema.add("SEX");
+	    schema.add("DEV_STAGE");
+	    schema.add("GENOTYPE");
+	    schema.add("ASSAY_TYPE");
+	    schema.add("PROJECT");
+	    schema.add("ALT_ID");
 	    schema.add("SOURCE");
-	    schema.add("SAMPLE_NUMBER");
-	    schema.add("SOURCE");
-	    schema.add("LIBRARY_STRATEGY");
-	    schema.add("COMPONENT");
+	    schema.add("PRESENT");
+	    schema.add("INF_PRESENT");
+	    schema.add("EMAPS");
+	    schema.add("EXPRESSION_NOTES");
+	    schema.add("EXP_NOTES");
+		schema.add("SPECIES"); 
+		schema.add("GENE_TYPE"); 
 		    
-		    return schema;
-	    }
-
-//	   public  Set<String> getSeriesSchema() {
-//		   	
-//		   	Set<String> schema = new HashSet<String>();
-//		   
-//		    schema.add("SERIES_GEO_ID");
-//		    schema.add("TITLE");
-//		    schema.add("SAMPLE_NUMBER");
-//		    schema.add("SOURCE");
-//		    schema.add("PI_NAME");
-//		    schema.add("PLATFORM_GEO_ID");
-//		    schema.add("SERIES_OID");
-//		    schema.add("COMPONENT");
-////		    schema.add("GENE");
-////		    schema.add("EMAP");
-////		    schema.add("MGI");
-////		    schema.add("PRESENT");
-////		    schema.add("NOT_DETECTED");
-////		    schema.add("UNCERTAIN");
-////		    schema.add("FOCUS_GROUPS");
-////		    schema.add("SEX");
-////		    schema.add("LAB");
-////		    schema.add("maprobe");
-////		    schema.add("GUDMAP");
-////		    schema.add("THEILER_STAGE");
-////		    schema.add("LAB");
-//			    
-//			    return schema;
-//	   }  
-	   
-	   public  Set<String> getTissuesSchema() {
-		   	
-		   	Set<String> schema = new HashSet<String>();
-		   
-		    schema.add("ID");
-		    schema.add("NAME");
-		    schema.add("SYNONYM");
-		    schema.add("STAGES");
-		    schema.add("FOCUS_GROUPS");
-		    schema.add("GENELIST_IDS");
-		    schema.add("GENELIST_NAMES");
-		    schema.add("IMAGE_URL");
-		    schema.add("IMAGE_NAME");
-		    schema.add("SEC_NAMES");
-		    schema.add("LINK_TYPES");
-		    schema.add("GUDMAP");
-		    schema.add("EMAP");
-		    schema.add("EMAPIDS");
-		    schema.add("COMPONENT");
-		    schema.add("MGI");
-		    schema.add("GENE_MGI_ID");
-		    schema.add("GENE");
-		    schema.add("PROBE_IDS");
-		    schema.add("MA_PROBES_ID");
-		    schema.add("maprobe");
-		    schema.add("STAGE");  
-			    
-			    return schema;
-	   }   
-
-	   public  Set<String> getGeneListsSchema() {
-		   	
-		   	Set<String> schema = new HashSet<String>();
-		   
-		    schema.add("ID");
-		    schema.add("NAME");
-		    schema.add("DESCRIPTION"); 
-		    schema.add("PLATFORM");
-		    schema.add("KEY_SAMPLE");
-		    schema.add("MA_DATASET");
-		    schema.add("MA_DATASET_ID");
-		    schema.add("TOT_ENTITIES");   
-		    schema.add("TOT_GENES");
-		    schema.add("AUTHOR");
-		    schema.add("DATE");   
-		    schema.add("STAGE");   
-		    schema.add("SEX");
-		    schema.add("GENELIST_TYPE");
-		    schema.add("ENTITIES");   
-		    schema.add("GENE");
-		    schema.add("GUDMAP_ID");
-		    schema.add("GUDMAP");
-		    schema.add("REF");   
-		    schema.add("EMAP_IDS");   
-		    schema.add("EMAP");   
-		    schema.add("EMAP_TERM");   
-			    
-			    return schema;
-	   }   
-	   
-	   public  Set<String> getImagesSchema() {
-		   	
-		   	Set<String> schema = new HashSet<String>();
-		   
-		    schema.add("IMAGE_ID");
-		    schema.add("IMAGE");
-		    schema.add("IMAGE_PATH");
-		    schema.add("THUMBNAIL_PATH");
-		    schema.add("IMAGE_CLICK_PATH");
-		    schema.add("CLICK_FILENAME");
-		    schema.add("IMAGE_NOTE");
-		    schema.add("IMAGE_TYPE");
-		    schema.add("GUDMAP");
-		    schema.add("GUDMAP_ID");
-		    schema.add("GENE");
-		    schema.add("GENE_NAME");
-		    schema.add("MGI");
-		    schema.add("MGI_GENE_ID");
-		    schema.add("GENBANK_ID");
-		    schema.add("ENSEMBL_ID");
-		    schema.add("SYNONYMS");
-		    schema.add("PI_NAME");
-		    schema.add("DATE");
-		    schema.add("STAGE");
-		    schema.add("PROBE_NAME");
-		    schema.add("CLONE_NAME");
-		    schema.add("PROBE_TISSUE");
-		    schema.add("PROBE_ID");
-		    schema.add("MAPROBE_ID");
-		    schema.add("maprobe");
-		    schema.add("PROBE_STRAIN");
-		    schema.add("PROBE_GENE_TYPE");
-		    schema.add("PROBE_TYPE");
-		    schema.add("PROBE_VISUAL_METHOD");
-		    schema.add("PROBE_NOTE");
-		    schema.add("CURATOR_NOTE");
-		    schema.add("RESULT_NOTE");
-		    schema.add("EXPERIMENT_NOTE"); 
-		    schema.add("SPECIMEN_ASSAY_TYPE");
-		    schema.add("FIXATION_METHOD");
-		    schema.add("STRAIN");
-		    schema.add("SEX");
-		    schema.add("DEV_STAGE");
-		    schema.add("GENOTYPE");
-		    schema.add("ASSAY_TYPE");
-		    schema.add("PROJECT");
-		    schema.add("ALT_ID");
-		    schema.add("SOURCE");
-		    schema.add("PRESENT");
-		    schema.add("INF_PRESENT");
-		    schema.add("EMAPS");
-		    schema.add("EXPRESSION_NOTES");
-		    schema.add("EXP_NOTES");
-			schema.add("SPECIES"); 
-			schema.add("GENE_TYPE"); 
-			    
-			    return schema;
-	   }   
+		return schema;
+	}   
 	   
 }

@@ -42,15 +42,24 @@ import org.json.simple.JSONObject;
 
 
 
+/**
+ * <h1>SolrGeneStripBean</h1>
+ * The SolrGeneStripBean class contains the methods to provide data and deal with events on the
+ * solrGeneStrip.xhtml web page
+ * 
+ * @author Bernard Haggarty
+ * @version 1.0
+ * @since 13/03/2013 
+ */
 @Named (value="solrGeneStripBean")
 @SessionScoped
 public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Connection con;
-	private PreparedStatement ps;
-	private ResultSet result;
+//	private Connection con;
+//	private PreparedStatement ps;
+//	private ResultSet result;
 	 
     // Data.
 	private SolrGeneStripAssembler assembler;
@@ -156,16 +165,12 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
    }
 
     public String refresh(){
- //   	sortField = "RELEVANCE";
     	loadDataList();
-//    	paramBean.resetValues();
     	return "solrGeneStrip";
     }
 
     public void resetAll() {
 		paramBean.resetAll();
-//		solrFilterBean.resetAll();		//must return to homepage to reset focus group. Can't refresh div on other page
-		//paramBean.setFocusGroup("reset");
 		loadDataList();
 	}
     
@@ -222,6 +227,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private JSONObject createHeatmapJSONObject(String geneId){
 		
 		JSONObject obj = new JSONObject();
@@ -263,7 +269,6 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 
 	private LinkedList<String> getLinks(String geneId){
 		
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<String> links = new LinkedList<String>();
 		
 		for(MasterTableInfo info : tableinfo){
@@ -282,7 +287,6 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 	
 	private LinkedList<LinkedList<String>> getDataValues(String geneId){
 		
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
 
@@ -294,12 +298,10 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
-    			int colCounter = 1;
     			items = new LinkedList<String>();
     			for(String[] item : dataList){
     				String rma = item[2];
     				items.add(rma);	
-					colCounter ++;
     			}
     			if (dlsize < maxColNumber){
     				int diff = maxColNumber - dlsize;
@@ -322,7 +324,6 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 	
 	private LinkedList<LinkedList<String>> getDataAdjValues(String geneId){
 
-		//ArrayList<MasterTableInfo> tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
 		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
 		LinkedList<String> items;
 
@@ -334,12 +335,10 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     		for (String probeId : probeIds){
     			ArrayList<String[]> dataList = microarrayHeatmapBeanAssembler.getHeatmapDataFromProbeIdAndMasterTableId(1, 20, null, true, probeId, id);
     			int dlsize = dataList.size();
-    			int colCounter = 1;
     			items = new LinkedList<String>();
     			for(String[] item : dataList){
     				String scaledRma = item[5];
     				items.add(scaledRma);	
-					colCounter ++;
     			}
     			if (dlsize < maxColNumber){
     				int diff = maxColNumber - dlsize;
@@ -383,6 +382,19 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     	return showPageDetails;
     }
 
+    /**
+     * This method runs the queryString against the gudmap_insitu solr index.
+     * It returns a list of GeneStripModels containing the retrieved documents.
+     * 
+	 * @param solrInput The main query string for retrieving relevant documents'
+     * @param filterlist A list of filters to be applied to the solr search
+     * @param sortColumn The field on which the result should be sorted.
+     * @param ascending The sort direction
+     * @param offset The offset from which the documents will be returned.
+     * @param num The number of documents to be retrieved in the result set.
+     * @return A list of GeneStripModels
+	 * @see GeneStripModel
+     */
 	public List<GeneStripModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
@@ -403,6 +415,13 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		return geneIds;
 	}
 	
+	/**
+	 * This method creates a list of GeneStripModels from the documents in the SolrDocumentList sdl.
+	 * 
+	 * @param sdl A SolrDocumentList	  
+	 * @return A List of GeneStripModels
+	 * @see GeneStripModel
+	 */
 	public List<GeneStripModel> formatTableData(SolrDocumentList sdl){
 		
 		List<GeneStripModel> list = new ArrayList<GeneStripModel>();
@@ -411,13 +430,13 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		
 		for(SolrDocument doc : sdl) { 
 
-			String insituExpression = "";			
-			if (doc.containsKey("PRESENT") && doc.getFieldValue("PRESENT").toString() != "")
-				insituExpression = "present";
-			else if (doc.containsKey("UNCERTAIN") && doc.getFieldValue("UNCERTAIN").toString() != "")
-				insituExpression = "uncertain";
-			else if (doc.containsKey("NOT_DETECTED") && doc.getFieldValue("NOT_DETECTED").toString() != "")
-				insituExpression = "not detected";
+//			String insituExpression = "";			
+//			if (doc.containsKey("PRESENT") && doc.getFieldValue("PRESENT").toString() != "")
+//				insituExpression = "present";
+//			else if (doc.containsKey("UNCERTAIN") && doc.getFieldValue("UNCERTAIN").toString() != "")
+//				insituExpression = "uncertain";
+//			else if (doc.containsKey("NOT_DETECTED") && doc.getFieldValue("NOT_DETECTED").toString() != "")
+//				insituExpression = "not detected";
 			
 			model = new GeneStripModel();
 
