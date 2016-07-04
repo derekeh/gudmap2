@@ -60,7 +60,6 @@ input[type="checkbox"]{
 		RnaSeq Expression Profile 
 	</ui:define>
 	
-
 	
 	<ui:define name="content">
 	#{rnaSeqHeatmapBean.loadDataList()}
@@ -120,39 +119,9 @@ input[type="checkbox"]{
 	    <button id="cell-increase" style="font-size:10px; width:10px; height:10px; padding:4px"/>
 	</h:panelGroup>	  
 	  
-<ui:remove> 
-<h:form id="form8">
-
-	<h:panelGroup>
-        <pr:selectCheckboxMenu id="menu8"  label="Gene Types" onHide="executeOnOnhide()">
-        	<f:selectItems value="#{rnaSeqHeatmapBean.geneTypeOptions}" />
-        </pr:selectCheckboxMenu>
-        
-      <pr:remoteCommand  name="executeOnOnhide" process="@this form8:menu8" action="#{rnaSeqHeatmapBean.updateGeneTypes()}"/>          
-    </h:panelGroup>
-</h:form> 
-
+	<pr:commandButton id="showdialog" value="Gene Biotype Filter" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
+  
  
-<h:form> 
-	<h:panelGroup>
-		Gene Type:
-        <h:selectManyListbox  value="#{rnaSeqHeatmapBean.geneTypes}" size="5">
-        	<f:selectItems value="#{rnaSeqHeatmapBean.geneTypeOptions}" />
-        </h:selectManyListbox>
-        <h:commandButton value="Submit" action="#{rnaSeqHeatmapBean.updateGeneTypes()}" />
-	</h:panelGroup>
-</h:form> 	
-
-
-<h:form> 
-	<h:panelGroup>
-        <pr:selectCheckboxMenu label="Gene Types" value="#{rnaSeqHeatmapBean.geneTypes}">
-        	<f:selectItems value="#{rnaSeqHeatmapBean.geneTypeOptions}" />
-        </pr:selectCheckboxMenu>
-        <h:commandButton value="Submit" action="#{rnaSeqHeatmapBean.updateGeneTypes()}" />
-	</h:panelGroup>
-</h:form> 	
-</ui:remove>
 
 	<h:inputText id="selectedSeries" value="#{rnaSeqHeatmapBean.selectedSeries}" style="display:none; visibility: hidden;">
 	</h:inputText>			  	
@@ -245,6 +214,7 @@ input[type="checkbox"]{
 
 
 	</h:form>  
+<ui:include src="/snippets/g_geneBioTypeFilter.xhtml"></ui:include>	
 
 
 	</ui:define>
