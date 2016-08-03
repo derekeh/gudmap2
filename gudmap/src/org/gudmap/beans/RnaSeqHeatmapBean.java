@@ -23,10 +23,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -57,15 +60,13 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	private String selectedSample = "AdultProximal_Tubules-1";
 	private String selectedSeries;
 	private String selectedGene;
-	private ArrayList<String> geneTypes;
-	private int geneTypesCount;
-
+	private ArrayList<String> biotypes;
+	private ArrayList<String> biotypeList;
+	private int geneBioTypesCount = 0;	
 	
 	private String tableTitle;
 	
-
- 
-    private List<String> list; 
+//    private List<String> list; 
     
 	private Connection con;
 	private PreparedStatement ps;
@@ -79,103 +80,95 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	
        	super(1000,10,null,true); 
        	
+       	biotypeList = new ArrayList<String>();
+       	biotypeList.add("3prime_overlapping_ncRNA");        
+       	biotypeList.add("antisense");        
+ 		biotypeList.add("bidirectional_promoter_lncRNA");        
+ 		biotypeList.add("IG_pseudogene");        
+ 		biotypeList.add("IG_C_gene");        
+ 		biotypeList.add("IG_C_pseudogene");        
+ 		biotypeList.add("IG_D_gene");        
+ 		biotypeList.add("IG_D_pseudogene");        
+ 		biotypeList.add("IG_J_gene");        
+  		biotypeList.add("IG_LV_gene");        
+ 		biotypeList.add("IG_V_gene");        
+ 		biotypeList.add("IG_V_pseudogene");        
+		biotypeList.add("lincRNA");        
+ 		biotypeList.add("macro_lncRNA");
+ 		biotypeList.add("miRNA");
+ 		biotypeList.add("misc_RNA");
+ 		biotypeList.add("Mt_tRNA");
+		biotypeList.add("polymorphic_pseudogene");        
+		biotypeList.add("processed_transcript");        
+		biotypeList.add("protein_coding");
+		biotypeList.add("processed_pseudogene");        
+		biotypeList.add("pseudogene");        
+ 		biotypeList.add("ribozyme");        
+		biotypeList.add("rRNA");        
+		biotypeList.add("sRNA");        
+		biotypeList.add("scaRNA");        
+		biotypeList.add("snRNA");        
+		biotypeList.add("snoRNA");        
+		biotypeList.add("sense_intronic");        
+		biotypeList.add("sense_overlapping");        
+		biotypeList.add("TEC");        
+ 		biotypeList.add("TR_C_gene");        
+ 		biotypeList.add("TR_D_gene");        
+ 		biotypeList.add("TR_J_gene");        
+ 		biotypeList.add("TR_J_pseudogene");        
+ 		biotypeList.add("TR_V_gene");        
+ 		biotypeList.add("TR_V_pseudogene");        
+		biotypeList.add("transcribed_processed_pseudogene");        
+		biotypeList.add("transcribed_unprocessed_pseudogene");        
+		biotypeList.add("transcribed_unitary_pseudogene");        
+ 		biotypeList.add("unitary_pseudogene");        
+		biotypeList.add("unprocessed_pseudogene"); 
+
+		geneBioTypesCount = biotypeList.size();       	
+		biotypes = biotypeList;      	
        	
     }
 
-    public List<String> getList() {
-        return list;
-    }
-
-    public void setList(List<String> list) {
-        this.list = list;
-        System.out.println("Values set: " + list);
-    }
+//    public List<String> getList() {
+//        return list;
+//    }
+//
+//    public void setList(List<String> list) {
+//        this.list = list;
+//        System.out.println("Values set: " + list);
+//    }
    
 	/**
-	 * This method returns the current gene type from the GeneType control 
+	 * This method returns the current gene type from the GeneBioType control 
 	 * of the browseSeqHeatmap.xhtml page.
 	 * 
-	 * @return The Gene Types
+	 * @return The selected gene biotypes
 	 */
-    public ArrayList<String> getGeneTypes() {
-    	return geneTypes;
+    public ArrayList<String> getBiotypes() {
+    	return biotypes;
     }
     
 	/**
-	 * This method sets the selected gene types to be displayed in the Gene Type control 
+	 * This method sets the selected gene biotypes to be displayed in the GeneBioType control 
 	 * of the browseSeqHeatmap.xhtml page.
-	 * 
-	 * @param geneTypes
+	 * @param val 
+
 	 */
-    public void setGeneTypes(ArrayList<String> geneTypes) {
-    	this.geneTypes = geneTypes;
+    public void setBiotypes(ArrayList<String> val) {
+    	int c = val.size();
+    	this.biotypes = val;
     }
  
-    
 	/**
-	 * This method is called when the selection of gene types in the Gene Type control 
-	 * of the browseSeqHeatmap.xhtml page changes.
-	 * 
-	 */
-    public void updateGeneTypes() {
-    	getGeneTypes();
-    }
-    
-	/**
-	 * This method returns a map of gene types to be displayed in the Gene Type control 
+	 * This method returns a list of gene biotypes to be displayed in the GeneBioType control 
 	 * of the browseSeqHeatmap.xhtml page.
 	 * This filters the number of genes to be displayed in the heatmap.
 	 * 
-	 * @return A Map of counts
+	 * @return A list of gene biotypes
 	 */    
-    public Map<String,String> getGeneTypeOptions() {
-    	HashMap<String,String> options = new LinkedHashMap<String,String>();
-		options.put("3prime_overlapping_ncRNA" , "3prime_overlapping_ncRNA");        
-		options.put("antisense" , "antisense");        
- 		options.put("bidirectional_promoter_lncRNA" , "bidirectional_promoter_lncRNA");        
- 		options.put("IG_pseudogene" , "IG_pseudogene");        
- 		options.put("IG_C_gene" , "IG_C_gene");        
- 		options.put("IG_C_pseudogene" , "IG_C_pseudogene");        
- 		options.put("IG_D_gene" , "IG_D_gene");        
- 		options.put("IG_D_pseudogene" , "IG_D_pseudogene");        
- 		options.put("IG_J_gene" , "IG_J_gene");        
-  		options.put("IG_LV_gene" , "IG_LV_gene");        
- 		options.put("IG_V_gene" , "IG_V_gene");        
- 		options.put("IG_V_pseudogene" , "IG_V_pseudogene");        
-		options.put("lincRNA" , "lincRNA");        
- 		options.put("macro_lncRNA" , "macro_lncRNA");
- 		options.put("miRNA" , "miRNA");
- 		options.put("misc_RNA" , "misc_RNA");
- 		options.put("Mt_tRNA" , "Mt_tRNA");
-		options.put("polymorphic_pseudogene" , "polymorphic_pseudogene");        
-		options.put("processed_transcript" , "processed_transcript");        
-		options.put("protein_coding" , "protein_coding");
-		options.put("processed_pseudogene" , "processed_pseudogene");        
-		options.put("pseudogene" , "pseudogene");        
- 		options.put("ribozyme" , "ribozyme");        
-		options.put("rRNA" , "rRNA");        
-		options.put("sRNA" , "sRNA");        
-		options.put("scaRNA" , "scaRNA");        
-		options.put("snRNA" , "snRNA");        
-		options.put("snoRNA" , "snoRNA");        
-		options.put("sense_intronic" , "sense_intronic");        
-		options.put("sense_overlapping" , "sense_overlapping");        
-		options.put("TEC" , "TEC");        
- 		options.put("TR_C_gene" , "TR_C_gene");        
- 		options.put("TR_D_gene" , "TR_D_gene");        
- 		options.put("TR_J_gene" , "TR_J_gene");        
- 		options.put("TR_J_pseudogene" , "TR_J_pseudogene");        
- 		options.put("TR_V_gene" , "TR_V_gene");        
- 		options.put("TR_V_pseudogene" , "TR_V_pseudogene");        
-		options.put("transcribed_processed_pseudogene" , "transcribed_processed_pseudogene");        
-		options.put("transcribed_unprocessed_pseudogene" , "transcribed_unprocessed_pseudogene");        
-		options.put("transcribed_unitary_pseudogene" , "transcribed_unitary_pseudogene");        
- 		options.put("unitary_pseudogene" , "unitary_pseudogene");        
-		options.put("unprocessed_pseudogene" , "unprocessed_pseudogene"); 
-		
-		geneTypesCount = options.size();
-		return options;
-    }
+	public ArrayList<String> getBiotypeList(){
+		return biotypeList;
+	}	
     
 	/**
 	 * This method returns a map of counts to be displayed in the Table Size control 
@@ -192,7 +185,8 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	options.put("250",250);
     	options.put("500",500);
     	options.put("1000",1000);
-   	return options;
+    	
+    	return options;
     }
     
 	/**
@@ -314,7 +308,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     public void loadDataList() {
     	if(Globals.getParameterValue("seriesID")!=null){
     		selectedSeries = Globals.getParameterValue("seriesID");
-    		init(selectedSample);
+    		init(selectedSample);    		
     	}
     }
 	
@@ -323,7 +317,22 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		return tableTitle;
 	}
 	
-	
+    public void refresh(){
+     	getBiotypes();
+    	init(selectedSample);
+    }
+    
+    public void resetAll() {
+    	setBiotypes(biotypeList);
+    	init(selectedSample);
+//		loadDataList();
+	}
+
+    public void clear(){
+    	biotypes.clear();;
+    }
+    
+    
 	@SuppressWarnings("unchecked")
 	public void init(String sample){
 		
@@ -360,11 +369,17 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 			}
 			obj.put("maxvalues", maxvalues);
 			
+			
+//    		geneBioTypes.add("Mt_tRNA");
+//    		geneBioTypes.add("protein_coding");
+//	    	getGeneBioTypes();
+			
 			while ((line = br.readLine()) != null){
 				String[] data = line.split(",");
 				geneList.add(data);			
 			}
 			
+			// sort the genelist
 			Collections.sort(geneList, new Comparator<String[]> () {
 			    @Override
 			    public int compare(String[] a, String[] b) {
@@ -375,7 +390,24 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 			        return f2.compareTo(f1);
 			    }
 			});
-	
+
+			// filter genelist y selected biotypes
+			if (geneBioTypesCount != biotypes.size()){
+				int count = 0;
+				List<String> genesFromBiotypes = getGenesFromBioTypes(biotypes);
+				List<String[]> geneList0 = new ArrayList<String[]>();
+				for(String[] item:geneList){
+					if(genesFromBiotypes.contains(item[1])){
+						geneList0.add(item);
+						count++;
+					}
+					if(count ==  topGeneCount)
+						break;
+				}
+				geneList = geneList0;
+			}
+			
+			
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -393,6 +425,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 			}
 		}
 
+		
 
 
 		List<String[]> subGeneList = geneList.subList(0, topGeneCount);
@@ -416,28 +449,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 					d.add(line[i]);
 				data.add(d);
 			}
-			
-//		}
-//		else {
-//			
-//			for (String[] line:subGeneList){
-//				// using genebiotype filtering
-//				if (geneBiotypeMatch(selectedGene)){
-//					
-//					int len = line.length;
-//					ids.add(line[0]);
-//					genes.add(line[1]);
-//					if(selectedGene != null && selectedGene.contentEquals(line[1]))
-//						geneFound = true;
-//		
-//					LinkedList<String> d = new LinkedList<String>();
-//					for (int i = 2; i < len-1; i++)
-//						d.add(line[i]);
-//					data.add(d);
-//				}
-//			}
-//			
-//		}
+
 		
 		// if selected gene not in list of topGeneCount, find gene entries in file and add to list
 		// this will allow sort by gene to be reinstated
@@ -482,35 +494,36 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		}
 	}
 	
-	/**
-	 * This method checks if the gene has a matching bio type in the geneType list.
-	 * This is used to filter the sequence heatmap according to the gene type
-	 * 
-	 * @param gene
-	 * @param geneTypes	 
-	 * @return boolean True if matching bio type found
-	 */
-	private boolean geneBiotypeMatch(String gene){
+	public List<String> getGenesFromBioTypes(ArrayList<String> biotypes){
 		
-		boolean found = false;
-        String queryString = SequenceQueries.SEQUENCE_GENE_BIOTYPE;
+		
+		ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+		String path = ctx.getRealPath("/");
+		path += "/resources/genestrips/biotypes.txt";
+		
+		BufferedReader br = null;
+		List<String> geneList = new ArrayList<String>();
 
 		try {
-			con= Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(queryString); 
-			ps.setString(1, gene);
-			ps.setString(2, gene);
-			ps.setString(3, geneTypes.toString());
-			result =  ps.executeQuery();
-			if (result.isBeforeFirst()){
-				found = true;
+			br = new BufferedReader(new FileReader(path));
+			br.readLine();
+			
+			String line;
+			while ((line = br.readLine()) != null){
+				String[] data = line.split("\t");
+				if (biotypes.contains(data[2]))
+					geneList.add(data[1]);
 			}
-
-		} catch (SQLException e) {
+			br.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		
-		return found;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return geneList;
 	}
+	
+	
 }

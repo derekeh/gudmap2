@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<pr:dialog header="Filter Gene Biotypes" widgetVar="dialog2" width="800" style="position:absolute;left:-300px;"  >  
+		<h:form id="filterform">
+		
+			<h:outputText value="Gene Biotypes:"></h:outputText>
+
+		 	<pr:selectManyCheckbox layout="grid" columns="3" columnClasses="gd_leftAlign" value="#{rnaSeqHeatmapBean.biotypes}">
+		 		<f:selectItems value="#{rnaSeqHeatmapBean.biotypeList}" />
+		 		<pr:ajax update=":rnaseqHeatmapForm" listener="#{rnaSeqHeatmapBean.refresh}" />
+		 	</pr:selectManyCheckbox>
+
+		
+		   	<h:panelGrid columns="3" columnClasses="gd_leftAlign">
+
+		   		<pr:commandButton id="il_filter_reset" value="Reset" >
+			 		<pr:ajax update=":filterform" listener="#{rnaSeqHeatmapBean.resetAll}" />
+			 		<pr:ajax update=":rnaseqHeatmapForm" />
+		   		</pr:commandButton>
+		
+		    	<pr:commandButton id="il_filter_clear" value="Clear" actionListener="#{rnaSeqHeatmapBean.clear()}">
+		   			<f:ajax execute="@form" render=":filterform" ></f:ajax> 
+		   		</pr:commandButton>
+	   		
+		   	</h:panelGrid>	
+		   	
+	  </h:form>    	   	
+	</pr:dialog> 
+		
+</ui:composition>
