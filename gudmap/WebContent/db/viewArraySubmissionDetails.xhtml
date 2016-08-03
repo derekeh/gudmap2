@@ -62,22 +62,26 @@
 	    		<h:outputText value="Supplementary Data Files" />
 				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
 					<h:outputText value="CEL file:" />
-					<h:outputLink value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CEL/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}">
+					<h:outputLink value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CEL/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}"
+					p:download="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CEL/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}">
 						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}" />
 					</h:outputLink>
 					
 					<h:outputText value="CHP file:" />
-					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CHP/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}">
+					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CHP/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}"
+					p:download="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CHP/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}">
 						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}" />
 					</h:outputLink>
 					
 					<h:outputText value="RPT file:" />
-					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}RPT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}">
+					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}RPT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}"
+					p:download="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}RPT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}">
 						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}" />
 					</h:outputLink>
 					
 					<h:outputText value="TXT file:" />
-					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}TXT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}">
+					<h:outputLink  value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}TXT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}"
+					p:download="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}TXT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}">
 						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}" />
 					</h:outputLink>
 				</h:panelGrid>				

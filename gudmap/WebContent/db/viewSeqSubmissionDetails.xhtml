@@ -70,9 +70,14 @@
 					<h:outputText value="Raw file:" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.rawFile}"/>
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.rawFile}" var="rfile" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.rawFile}">
 						<h:column>
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}">
-								<h:outputText value="#{rfile.filename}"/>
-							</h:outputLink>
+							<h:commandLink styleClass="datatext" value="#{rfile.filename}" 
+								action="#{downloadBean.downloadFileFromUrl()}">
+								<f:param name="filetodownload" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}"/>
+								<f:param name="filename" value = "#{rfile.filename}"/>
+							</h:commandLink>
+							
+							
+							
 						</h:column>
 						<h:column>
 							<h:outputText value="#{rfile.filesize}" rendered="#{not empty rfile.filesize}"/>
@@ -81,7 +86,8 @@
 					<h:outputText value="Processed file:"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.processedFile}"/>
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.processedFile}" var="pfile"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.processedFile}">
 						<h:column>
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}">
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}"
+							p:download="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}">
 								<h:outputText value="#{pfile.filename}"/>
 							</h:outputLink>
 						</h:column>
@@ -173,8 +179,8 @@
 			    <t:dataTable id="alleleContentTable" value="#{arraySeqSubmissionBean.seqSubmissionModel.alleleModel}" var="allele"  style="margin-left:-5px;"  
 			                			 rendered="#{null != arraySeqSubmissionBean.seqSubmissionModel.alleleModel}">
 				    <t:column>
-				       <h:panelGrid columns="3" columnClasses="db_bold, db_30_width, db_inner_detail_right">
-							<h:outputText value="#{allele.title}" styleClass="db_inner_inner_title"/>
+				       <h:panelGrid columns="3" columnClasses="db_inner_inner_title, db_30_width, db_inner_detail_right">
+							<h:outputText value="#{allele.title}" styleClass="db_bold"/>
 							<h:panelGroup></h:panelGroup>
 							<h:panelGroup></h:panelGroup>
 		
