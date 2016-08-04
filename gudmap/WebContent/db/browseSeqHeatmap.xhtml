@@ -121,8 +121,10 @@ input[type="checkbox"]{
 	  
 	<pr:commandButton id="showdialog" value="Gene Biotype Filter" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
   
- 
-
+	<h:inputText id="seqDir" value="http://www.gudmap.org/Gudmap/ngsData" style="display:none; visibility: hidden;">
+	</h:inputText>			  	 
+	<h:inputText id="seqFile" value="#{rnaSeqHeatmapBean.seqFile}" style="display:none; visibility: hidden;">
+	</h:inputText>			  	
 	<h:inputText id="selectedSeries" value="#{rnaSeqHeatmapBean.selectedSeries}" style="display:none; visibility: hidden;">
 	</h:inputText>			  	
 	<h:inputText id="selectedGene" value="#{rnaSeqHeatmapBean.selectedGene}" style="display:none; visibility: hidden;">
@@ -155,7 +157,9 @@ input[type="checkbox"]{
 
    $(document).ready(function() {
 	   
-	    var url = "../resources/genestrips/rnaseq_top.json";
+//	    var url = "../resources/genestrips/rnaseq_top.json";
+//	    var url = "../resources/genestrips/Gudmap:GSE59129.json";
+	    var url = "../resources/genestrips/" + document.getElementById('rnaseqHeatmapForm:seqFile').value;
 
 		var viewWidth = $(document).width();					
 		var viewHeight = $(document).height();			

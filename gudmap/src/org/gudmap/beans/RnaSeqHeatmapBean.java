@@ -14,6 +14,7 @@ import org.gudmap.queries.array.SequenceQueries;
 import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -33,6 +34,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,6 +53,7 @@ import java.sql.SQLException;
 @SessionScoped
 //@RequestScoped
 public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
+	
 
 	private static final long serialVersionUID = 1L;	
  
@@ -60,13 +63,13 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	private String selectedSample = "AdultProximal_Tubules-1";
 	private String selectedSeries;
 	private String selectedGene;
+	private String seqFile;
+	private String seqDir;
 	private ArrayList<String> biotypes;
 	private ArrayList<String> biotypeList;
 	private int geneBioTypesCount = 0;	
 	
 	private String tableTitle;
-	
-//    private List<String> list; 
     
 	private Connection con;
 	private PreparedStatement ps;
@@ -128,15 +131,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		biotypes = biotypeList;      	
        	
     }
-
-//    public List<String> getList() {
-//        return list;
-//    }
-//
-//    public void setList(List<String> list) {
-//        this.list = list;
-//        System.out.println("Values set: " + list);
-//    }
    
 	/**
 	 * This method returns the current gene type from the GeneBioType control 
@@ -251,7 +245,8 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	 */
     public void setSelectedSample(String sample) {
     	selectedSample = sample;
-    	init(selectedSample);
+    	createSeqFile(selectedSeries);
+//    	init(selectedSample);
     }
 
 	/**
@@ -283,6 +278,21 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	selectedSeries = series;
     }
     
+    public String getSeqFile() {
+    	return seqFile;
+    }
+    
+    public void setSeqFile(String fileName) {
+    	seqFile = fileName;
+    }
+    
+    public String getSeqDir() {
+    	return seqDir;
+    }
+    
+    public void setSeqDir(String dir) {
+    	seqDir = dir;
+    }
     
 	public RnaSeqHeatmapBean(int rowsperpage, int pagenumbers, String defaultOrder, boolean sortDirection) {
 		super(rowsperpage,pagenumbers,defaultOrder,sortDirection);
@@ -308,7 +318,8 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     public void loadDataList() {
     	if(Globals.getParameterValue("seriesID")!=null){
     		selectedSeries = Globals.getParameterValue("seriesID");
-    		init(selectedSample);    		
+    		createSeqFile(selectedSeries);
+//    		init(selectedSample);    		
     	}
     }
 	
@@ -319,19 +330,20 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	
     public void refresh(){
      	getBiotypes();
-    	init(selectedSample);
+     	createSeqFile(selectedSeries);
+//    	init(selectedSample);
     }
     
     public void resetAll() {
     	setBiotypes(biotypeList);
-    	init(selectedSample);
+    	createSeqFile(selectedSeries);    	
+//    	init(selectedSample);
 //		loadDataList();
 	}
 
     public void clear(){
     	biotypes.clear();;
     }
-    
     
 	@SuppressWarnings("unchecked")
 	public void init(String sample){
@@ -369,11 +381,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 			}
 			obj.put("maxvalues", maxvalues);
 			
-			
-//    		geneBioTypes.add("Mt_tRNA");
-//    		geneBioTypes.add("protein_coding");
-//	    	getGeneBioTypes();
-			
 			while ((line = br.readLine()) != null){
 				String[] data = line.split(",");
 				geneList.add(data);			
@@ -391,7 +398,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 			    }
 			});
 
-			// filter genelist y selected biotypes
+			// filter genelist by selected biotypes
 			if (geneBioTypesCount != biotypes.size()){
 				int count = 0;
 				List<String> genesFromBiotypes = getGenesFromBioTypes(biotypes);
@@ -525,5 +532,185 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		return geneList;
 	}
 	
+    
+    @SuppressWarnings("unchecked")
+	public void createSeqFile(String selectedSeries){
+    	
+    	selectedSeries = "GSE59129";
+    	
+		JSONObject obj = new JSONObject();
+		BufferedReader br = null;
+		LinkedList<String> samples = new LinkedList<String>();
+		LinkedList<String> max = new LinkedList<String>();
+		Map<String,LinkedList<String>> geneList = new HashMap<String,LinkedList<String>>();
+		LinkedList<String> llist;
+		
+    	String dirPath0 = "http://www.gudmap.org/Gudmap/ngsData/" + selectedSeries + "_processed";
+    	String dirPath1 = seqDir + "_processed";
+    	File dir0 = new File(dirPath0);
+    	File[] dList0 = dir0.listFiles();
+    	
+    	String dirPath = "/export/data0/next_gen_archive/" + selectedSeries + "_processed";   	
+    	File dir = new File(dirPath);
+    	File[] dList = dir.listFiles();
+//		int index = 0;
+    	for(File d:dList){
+    		String path = d.getPath() + "/processed/cufflink_results/genes.fpkm_tracking";
+    		if (new File(path).isFile()){
+	    		String name = "GUDMAP:" + d.getName();
+	    		
+	    		if (!name.contains("DS_Store")){
+	    			String line;
+	    		
+		    		samples.add(name);
+	      		
+					try {
+						br = new BufferedReader(new FileReader(path));										
+						br.readLine();
+						float maxval = 0;
+						while ((line = br.readLine()) != null){
+							String[] data = line.split("\t");
+							String gene = data[4];
+							if (geneList.containsKey(gene)){
+								llist = geneList.get(gene);
+							} 
+							else {
+								llist = new LinkedList<String>();
+								llist.add(data[0]);
+								llist.add(data[4]);
+							}							
+							llist.add(data[9]);
+							geneList.put(gene, llist);
+							
+							// find the max vale for the sample
+							String sval = data[9];
+							float val = Float.parseFloat(sval);
+							if (val > maxval) maxval = val;
+																				
+						}						
+						max.add(Float.toString(maxval));
+						
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
+	   		
+	    	}
+    	}
+
+		//put the key values in a String[] for sorting
+		List<String[]> gList = new ArrayList<String[]>();
+		Set<String> keys = geneList.keySet();
+		for(String key:keys){
+			String[] arr = geneList.get(key).toArray(new String[geneList.get(key).size()]);
+			gList.add(arr);				
+		}		
+
+		// sort the gList
+		int index = samples.indexOf(selectedSample);
+		if (index != -1)
+			selectedSampleCol = index + 2;
+		
+		Collections.sort(gList, new Comparator<String[]> () {
+		    @Override
+		    public int compare(String[] a, String[] b) {
+		    	if(a[selectedSampleCol].isEmpty() || a[selectedSampleCol] == null) a[selectedSampleCol] = "0";
+		    	if(b[selectedSampleCol].isEmpty() || b[selectedSampleCol] == null) b[selectedSampleCol] = "0";
+		    	Float f1 = Float.parseFloat(a[selectedSampleCol]);
+		    	Float f2 = Float.parseFloat(b[selectedSampleCol]);
+		        return f2.compareTo(f1);
+		    }
+		});
+
+		
+		// filter genelist by selected biotypes
+		if (geneBioTypesCount != biotypes.size()){
+			int count = 0;
+			List<String> genesFromBiotypes = getGenesFromBioTypes(biotypes);
+			List<String[]> gList0 = new ArrayList<String[]>();
+			for(String[] item:gList){
+				if(genesFromBiotypes.contains(item[1])){
+					gList0.add(item);
+					count++;
+				}
+				if(count ==  topGeneCount)
+					break;
+			}
+			gList = gList0;
+		}
+		
+		List<String[]> subGeneList = gList.subList(0, topGeneCount);
+		LinkedList<LinkedList<String>> data = new LinkedList<LinkedList<String>>();
+		LinkedList<String> ids = new LinkedList<String>();
+		LinkedList<String> genes = new LinkedList<String>();
+		boolean geneFound = false;
+		
+//		if (geneTypes == null || geneTypes.isEmpty() || geneTypes.size() == geneTypesCount){
+			
+			for (String[] line:subGeneList){
+				int len = line.length;
+				ids.add(line[0]);
+				genes.add(line[1]);
+				if(selectedGene != null && selectedGene.contentEquals(line[1]))
+					geneFound = true;
 	
+				LinkedList<String> d = new LinkedList<String>();
+				for (int i = 2; i < len; i++)
+					d.add(line[i]);
+				data.add(d);
+			}
+
+			// if selected gene not in list of topGeneCount, find gene entries in file and add to list
+			// this will allow sort by gene to be reinstated
+			while (selectedGene != null && !geneFound){
+				for (int i = topGeneCount; i < geneList.size(); i++){
+					String[] line = gList.get(i);
+					if(selectedGene.contentEquals(line[1])){
+						LinkedList<String> d = new LinkedList<String>();
+						for (int j = 2; j < line.length-1; j++)
+							d.add(line[j]);
+
+						data.add(d);
+						geneFound = true;
+					}
+					if (geneFound) 
+						break;
+				}
+			}			
+			
+    	obj.put("maxvalues", max);
+		obj.put("samples", samples);
+		obj.put("ids", ids);
+		obj.put("genes", genes);
+		obj.put("data", data);
+
+		FileWriter writer;
+		try {
+			FacesContext fctx = FacesContext.getCurrentInstance();
+			HttpSession session = (HttpSession) fctx.getExternalContext().getSession(false);
+			String sessionId = session.getId();
+			
+			seqFile = selectedSeries + "_" + sessionId + ".json";
+			
+			ServletContext ctx = (ServletContext) fctx.getExternalContext().getContext();
+			String path = ctx.getRealPath("/");
+//			path += "/resources/genestrips/Gudmap:" + selectedSeries + "_" + sessionId + ".json";
+			path += "/resources/genestrips/" + seqFile;
+					
+			writer = new FileWriter(path);
+			writer.write(obj.toJSONString());
+			writer.flush();
+			writer.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
 }

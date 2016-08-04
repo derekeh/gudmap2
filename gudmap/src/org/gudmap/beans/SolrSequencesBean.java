@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -38,7 +40,9 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     // Data.
     private String whereclause = " WHERE ";
     private List<String> selectedItems;
+    private String selectedSamples;
     private boolean areAllChecked;
+    private boolean toggleCheck=false;
     
     @Inject
    	private ParamBean paramBean;
@@ -52,6 +56,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	private String solrInput;
 	private HashMap<String,String> filters;
 	private boolean showPageDetails = true;
+
 
 	
     
@@ -75,19 +80,35 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	}
 	
 	public void setSolrInput(String solrInput){
-		solrInput = solrTreeBean.getSolrInput();
-		refresh();
+//		solrInput = solrTreeBean.getSolrInput();
+//		refresh();
+
+		if (solrInput != solrTreeBean.getSolrInput()){
+			solrInput = solrTreeBean.getSolrInput();
+			refresh();
+		}
+	
 	}
 	
 	public String getSolrInput(){
-		solrInput = solrTreeBean.getSolrInput();
-		refresh();
+		if (solrInput != solrTreeBean.getSolrInput()){
+			solrInput = solrTreeBean.getSolrInput();
+			refresh();
+		}
 		return solrInput;
 	}
 
 	public void setup() {
         selectedItems = new ArrayList<String>(); 
     }
+	
+	public String getSelectedSamples(){
+		return selectedSamples;
+	}
+	
+	public void setSelectedSamples(String selectedSamples){
+		this.selectedSamples = selectedSamples;
+	}
     
     @PostConstruct
     public void setRemoteWhereclause(){
@@ -122,9 +143,12 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
         	showPageDetails = false;
     }
 
-    public String refresh(){
+//    public String refresh(){
+//     	loadDataList();
+//    	return "solrSequences";
+//    }
+    public void refresh(){
      	loadDataList();
-    	return "solrSequences";
     }
 
     public void resetAll() {
@@ -133,48 +157,94 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     }
    
     public String checkboxSelections() { 
+    	//List<InsituTableBeanModel> items = (List<InsituTableBeanModel>)dataList;
     	selectedItems.clear();
     	for (int i=0;i<dataList.size();i++) { 
     		if (((ArraySeqTableBeanModel) dataList.get(i)).getSelected()) { 
-    			selectedItems.add(((ArraySeqTableBeanModel) dataList.get(i)).getOid()); 
+    				selectedItems.add(((ArraySeqTableBeanModel) dataList.get(i)).getOid());
     		} 
     	} // do what you need to do with selected items } - See more at: http://www.stevideter.com/2008/10/09/finding-selected-checkbox-items-in-a-jsf-datatable/#sthash.FR6VuSyV.dpuf
-    	return "result";
+    	//return "browseCollectionEntriesTablePage";
+    	//return "result";
+    	return "";
+    	//return collectionSaveOption();
     }
-    
+ 
     public void checkAll() { 
     	areAllChecked=(areAllChecked)?false:true;
     	for (int i=0;i<dataList.size();i++) { 
     		((ArraySeqTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
     }
-    
-    public String getSelectedItemstoString(){
-    	String str="";
-    	for(String s : selectedItems){
-    		str+=s + ", ";
-    	}
-    	return str;
+
+    public void toggleAll(ValueChangeEvent e) { 
+    	boolean temp = (Boolean) e.getNewValue();
+    	areAllChecked=(areAllChecked)?false:true;
+    	for (int i=0;i<dataList.size();i++) { 
+    		((ArraySeqTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
+    	} 
     }
 
-    public String getTitle(){
-    	String str="Sequences Search Results ";
-    	filters = solrFilter.getFilters();
-    	if (filters == null){
-	    	if (solrInput != null && solrInput != "")
-	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > " + solrInput;
-	    	else
-	    		str += "(" + solrTreeBean.getMicroarrayCount() + ") > ALL";
-    	}
-    	else{
-        	if (solrInput != null && solrInput != "")
-        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > " + solrInput;
-        	else
-        		str += "(" + solrTreeBean.getMicroarrayCount(filters) + ") > ALL";
-    		
-    	}
-    	return str;
+//    public void selectCheck(ValueChangeEvent e) {
+//    	boolean temp = (Boolean) e.getNewValue();
+//    }
+    
+    
+    public void setToggleCheck(boolean toggleCheck){
+    	this.toggleCheck = toggleCheck;
     }
+    
+    public boolean getToggleCheck() {
+    	return toggleCheck;
+    }
+    
+    public List<String> getSelectedItems() {
+    	return selectedItems;
+    }
+    
+    public void addToCollection(ActionEvent e) {
+    	checkboxSelections();
+    }
+
+    public String removeFromCollection() {
+    	return "";
+    }
+
+    public String clearCollection() {
+    	for (int i=0;i<dataList.size();i++)
+    		((ArraySeqTableBeanModel)dataList.get(i)).setSelected(false);
+    	selectedItems.clear();
+    	return "";
+    }
+
+    public String viewCollection() {
+    	selectedSamples = "";
+    	if(selectedItems != null) {
+	    	for(String s : selectedItems){
+	    		selectedSamples += s + ", ";
+	    	}
+    	}
+    	return selectedSamples;
+    }
+   
+//    public String getTitle(){
+//    	String str="Sequences Search Results ";
+//    	filters = solrFilter.getFilters();
+//    	if (filters == null){
+//	    	if (solrInput != null && solrInput != "")
+//	    		str += "(" + solrTreeBean.getSequencesCount() + ") > " + solrInput;
+//	    	else
+//	    		str += "(" + solrTreeBean.getSequencesCount() + ") > ALL";
+//    	}
+//    	else{
+//        	if (solrInput != null && solrInput != "")
+//        		str += "(" + solrTreeBean.getSequencesCount(filters) + ") > " + solrInput;
+//        	else
+//        		str += "(" + solrTreeBean.getSequencesCount(filters) + ") > ALL";
+//    		
+//    	}
+//    	return str;
+//    }
     
     public boolean getShowPageDetails(){
     	return showPageDetails;
@@ -267,6 +337,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 				model.setGeoSeriesID(doc.getFieldValue("SERIES_GEO_ID").toString());
 			if (doc.containsKey("SPECIES"))
 				model.setSpecies(doc.getFieldValue("SPECIES").toString());
+
 			
 			list.add(model);	
 			

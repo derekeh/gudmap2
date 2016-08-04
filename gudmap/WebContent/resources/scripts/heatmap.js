@@ -834,7 +834,8 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, seriesId, s
         for (i=1; i<samples.length; i++)
         	hccol.push(1*i);
                      
-	   	var margin = { top: 160, right: 10, bottom: 50, left: 10 };
+//	   	var margin = { top: 160, right: 10, bottom: 50, left: 10 };
+	   	var margin = { top: 110, right: 10, bottom: 50, left: 10 };
 
 
 	   	var width = cellSize*col_number*2;
@@ -1004,7 +1005,7 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, seriesId, s
 		        d3.selectAll(".rowLabel").classed("text-highlight",function(r,ri){ return ri==j;});
 		        d3.selectAll(".colLabel").classed("text-highlight",function(c,ci){ return ci==i;});
 				tooltip.html('<div class="mytooltip">gene:' + genes[j] + '<br\/> sample:' + samples[i] + '<br\/> value:' + arr[j][i] + '</div>');
-		        tooltip.style("left", (d3.event.pageX-160) + "px");
+		        tooltip.style("left", (d3.event.pageX-100) + "px");
 		        tooltip.style("top", (d3.event.pageY-100) + "px");
 				tooltip.style("visibility", "visible");
 			})
