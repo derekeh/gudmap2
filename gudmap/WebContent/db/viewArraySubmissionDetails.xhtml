@@ -62,6 +62,45 @@
 	    		<h:outputText value="Supplementary Data Files" />
 				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
 					<h:outputText value="CEL file:" />
+					<h:commandLink styleClass="datatext" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}" 
+								action="#{downloadBean.downloadFileFromUrl()}">
+								<f:param name="filetodownload" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CEL/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}"/>
+								<f:param name="filename" value = "#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}"/>
+					</h:commandLink>
+					
+					
+					<h:outputText value="CHP file:" />
+					<h:commandLink styleClass="datatext" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}" 
+								action="#{downloadBean.downloadFileFromUrl()}">
+								<f:param name="filetodownload" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CHP/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}"/>
+								<f:param name="filename" value = "#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.chpFile}"/>
+					</h:commandLink>
+					
+					
+					<h:outputText value="RPT file:" />
+					<h:commandLink styleClass="datatext" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}" 
+								action="#{downloadBean.downloadFileFromUrl()}">
+								<f:param name="filetodownload" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}RPT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}"/>
+								<f:param name="filename" value = "#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.rptFile}"/>
+					</h:commandLink>
+					
+					
+					<h:outputText value="TXT file:" />
+					<h:commandLink styleClass="datatext" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}" 
+								action="#{downloadBean.downloadFileFromUrl()}">
+								<f:param name="filetodownload" value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}TXT/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}"/>
+								<f:param name="filename" value = "#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.txtFile}"/>
+					</h:commandLink>
+					
+					
+				</h:panelGrid>				
+	    	</h:panelGrid>
+	    	
+	    	<ui:remove>
+	    	 <!--  <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" >
+	    		<h:outputText value="Supplementary Data Files" />
+				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
+					<h:outputText value="CEL file:" />
 					<h:outputLink value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CEL/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}"
 					p:download="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.file_location}CEL/#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}">
 						<h:outputText value="#{arraySeqSubmissionBean.arraySubmissionModel.supplementaryFiles.celFile}" />
@@ -86,6 +125,8 @@
 					</h:outputLink>
 				</h:panelGrid>				
 	    	</h:panelGrid>
+	    	-->
+	    	</ui:remove>
 	    	
 	        <h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"
 	    	 	rendered="#{not empty arraySeqSubmissionBean.arraySubmissionModel.archiveId and arraySeqSubmissionBean.arraySubmissionModel.archiveId > 0}">

@@ -64,6 +64,17 @@ public class DownloadBean implements Serializable {
 		  String downloadFilename = Globals.getParameterValue("filetodownload");
 		  String filename = Globals.getParameterValue("filename");
 		  FacesContext fc = FacesContext.getCurrentInstance();
+		  
+		  /* JSF1 SYNTAX
+		   * HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
+		    response.reset(); 
+		    response.setContentType(contentType);
+		    response.setContentLength(contentLength);
+		    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");		
+		    OutputStream output = response.getOutputStream();
+		   * 
+		   */
+		  
 		  ExternalContext ec = fc.getExternalContext();
 
 		    ec.responseReset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
