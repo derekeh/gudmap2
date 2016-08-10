@@ -62,8 +62,9 @@
 				        </h:column>
 				</h:dataTable>				
 	    	</h:panelGrid>
-	    	
-	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" >
+	    
+	    <ui:remove>
+	    	<!-- <h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" >
 	    		<h:outputText value="Supplementary Data Files" />
 				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
 				
@@ -101,10 +102,10 @@
 					</h:dataTable>	
 					
 				</h:panelGrid>				
-	    	</h:panelGrid>
+	    	</h:panelGrid> -->
+	    </ui:remove>		
 	    	
-	    	<ui:remove>
-	    	<!-- 
+	    	
 	    	
 	    	<h:panelGrid columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" >
 	    		<h:outputText value="Supplementary Data Files" />
@@ -138,9 +139,9 @@
 				</h:panelGrid>				
 	    	</h:panelGrid>
 	    	
-	    	 -->
 	    	
-	    	</ui:remove>
+	    	
+	    	
 	    	
 	        <h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"
 	    	 	rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.archiveId and arraySeqSubmissionBean.seqSubmissionModel.archiveId > 0}">
