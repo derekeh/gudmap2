@@ -32,6 +32,7 @@ public class DownloadBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
 	    * Download file.
+	    * Use this if the file is on the current filesystem
 	    */
 	   public void downloadFile() throws IOException
 	   {
@@ -59,6 +60,10 @@ public class DownloadBean implements Serializable {
 	     FacesContext.getCurrentInstance().responseComplete();
 	   }
 	   
+	   /**
+	    * Download file.
+	    * Use this if the file is streamed from a URL or remote server
+	    */
 	   public void downloadFileFromUrl() throws IOException
 	   {
 		  String downloadFilename = Globals.getParameterValue("filetodownload");
@@ -106,7 +111,9 @@ public class DownloadBean implements Serializable {
 		    fc.responseComplete(); // Important! Otherwise JSF will attempt to render the response which obviously will fail since it's already written with a file and closed.
 		}
 	 
-	   
+	   /*
+	    * Alternative download using NIO. Needs some work!
+	    */
 	   public void downloadUrlFile() throws IOException
 	   {
 		  String downloadFilename = Globals.getParameterValue("filetodownload");
