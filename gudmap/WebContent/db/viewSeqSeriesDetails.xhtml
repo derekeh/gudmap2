@@ -26,11 +26,16 @@
 		<h:outputLink value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc=#{arraySeqSeriesBean.datalist.get(0).getGeoSeriesID()}" target="gmerg_external" >
 			<h:outputText value="#{arraySeqSeriesBean.datalist.get(0).getGeoSeriesID()}" />
 		</h:outputLink>
-
+		
+		<ui:remove>
+	    <!-- 
 		<h:outputText value="Archive ID:"      rendered="#{arraySeqSeriesBean.datalist.get(0).archiveID > 0}"/>
 		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{arraySeqSeriesBean.datalist.get(0).archiveID}"  rendered="#{arraySeqSeriesBean.datalist.get(0).archiveID > 0}">
 			<h:outputText value="#{arraySeqSeriesBean.datalist.get(0).archiveID}"    rendered="#{arraySeqSeriesBean.datalist.get(0).archiveID > 0}"/>
 		</h:outputLink>
+		-->
+		</ui:remove>
+		
 		<h:outputText value="Batch ID:"   rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}"/>
 		<h:outputLink value="browseSeqSampleTablePage.jsf"  rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}">
 			<f:param name="batch" value="#{arraySeqSeriesBean.datalist.get(0).batchID}"/>

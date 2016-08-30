@@ -142,7 +142,8 @@
 	    	
 	    	
 	    	
-	    	
+	    	<ui:remove>
+	    	<!-- 
 	        <h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"
 	    	 	rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.archiveId and arraySeqSubmissionBean.seqSubmissionModel.archiveId > 0}">
 			
@@ -151,6 +152,8 @@
 					<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.archiveId}"    rendered="#{arraySeqSubmissionBean.seqSubmissionModel.archiveId > 0}"/>
 				</h:outputLink>
 		   </h:panelGrid>
+		   -->
+		   </ui:remove>
 		   
 		   <h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0"
 		   	rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.batchId and arraySeqSubmissionBean.seqSubmissionModel.batchId > 0}">
