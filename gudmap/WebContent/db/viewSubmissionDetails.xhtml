@@ -468,16 +468,13 @@ function findExpressionNotes(){
 						</h:panelGroup>
 						
 						<ui:remove>
-						<!-- <h:outputText rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="Archive/Batch ID:" />
-						<h:outputLink rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId != '0'}" value="#{appRoot}/pages/viewPage.jsf?docID=13##{ishSubmissionBean.ishSubmissionModel.archiveId}" >
-							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.archiveId}" />
-						</h:outputLink> -->
-						</ui:remove>
-						
+	    				<!-- 
 						<h:outputText value="Archive ID:"     rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}"/>
 						<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=13##{ishSubmissionBean.ishSubmissionModel.archiveId}"  rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}">
 							<h:outputText value="#{ishSubmissionBean.ishSubmissionModel.archiveId}"    rendered="#{ishSubmissionBean.ishSubmissionModel.archiveId > 0}"/>
 						</h:outputLink>
+						-->
+						</ui:remove>
 						
 						<h:outputText value="Batch ID:" rendered="#{ishSubmissionBean.ishSubmissionModel.batchId > 0}"/>
 						<h:commandLink value="#{ishSubmissionBean.ishSubmissionModel.batchId}" 
