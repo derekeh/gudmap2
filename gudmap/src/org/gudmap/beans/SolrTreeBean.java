@@ -152,6 +152,9 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getSequencesCount(solrInput, filters);
 	}
 
+	public int getSequencesCount(HashMap<String,String> filters){
+		return solrUtil.getSequencesCount(solrInput, filters);
+	}
 	
 	////////////////// MICROARRAY ////////////////////////////
 	

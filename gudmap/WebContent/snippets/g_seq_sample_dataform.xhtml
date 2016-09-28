@@ -18,7 +18,9 @@
 					<h:selectBooleanCheckbox id="cb_toggle" value="#{genericTablePageBean.toggleCheck}" valueChangeListener="#{genericTablePageBean.toggleAll}">
 						<f:ajax event="click" execute="@this cb_toggle"  render="@form" />
 					</h:selectBooleanCheckbox>
-    				<ui:remove><!-- <h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" /> --></ui:remove>			
+    				<ui:remove>
+    				<h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" />
+    				</ui:remove>			
     			</f:facet>
     				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
     		</h:column>

@@ -47,6 +47,21 @@
     			rowClasses="db_order-table-odd-row,db_order-table-even-row"
     		>
  
+ 			<h:column >
+    			<f:facet name="header">
+					<h:selectBooleanCheckbox id="cb_toggle" value="#{solrSequencesBean.toggleCheck}" valueChangeListener="#{solrSequencesBean.toggleAll}">
+						<f:ajax event="click" execute="@this cb_toggle"  render="@form" />
+					</h:selectBooleanCheckbox>
+					<ui:remove>
+					<h:commandButton  id="tocart" value="+" action="#{solrSequencesBean.checkboxSelections()}" title="create a collection of samples"/>
+					<h:commandButton  id="toview" value="v" action="#{solrSequencesBean.viewCollection}" title="view heatmap of the collection of samples">
+						<f:attribute name="samples" value="#{solrSequencesBean.samples}" />
+					</h:commandButton>
+					</ui:remove>
+    			</f:facet>
+    			<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}" ></h:selectBooleanCheckbox>
+    		</h:column>
+
     	    		
     		<h:column rendered="#{paramBean.mic_gudmapaccessioncol == true}">
     			<f:facet name="header">
@@ -236,8 +251,18 @@
 		</h:form> 
 		<h:form id="form2" style="display:table-row;">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
-			<h:inputText id="gotopage" value="#{solrSequencesBean.gotopage}" />
+			<h:inputText id="gotopage" value="#{solrSequencesBean.gotopage}" />	
+		</h:form>	
+		
+		<ui:remove>
+		<h:form>	
+			<h:outputText value="Sample Collection to view as heatmap:"></h:outputText>
+			<h:commandButton value="Add" action="#{solrSequencesBean.checkboxSelections()}"/>			
+			<h:commandButton value="Remove" action="#{solrSequencesBean.removeFromCollection}"/>	
+			<h:commandButton value="Clear" action="#{solrSequencesBean.clearCollection}"/>			
+			<h:commandButton value="View" action="#{solrSequencesBean.viewCollection}"/>			
 		</h:form> 	
+		</ui:remove>
 		
 		</div>
 		
