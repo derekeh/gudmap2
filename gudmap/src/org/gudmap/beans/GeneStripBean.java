@@ -92,7 +92,8 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	}
   
     public void setup(String defaultOrderCol, boolean sortDirection) {
-    	
+    	//TODO why does setting the wildcard to "equals" do an R LIKE search? its the behaviour we want though
+    	wildcard="equals";
         // check input string to decide wildcard value
     	inputString=sessionBean.getGeneParam();
     	if(inputString.length()>1)
@@ -104,7 +105,8 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	       		String lastChar = inputString.trim().substring(stringLen-1, stringLen);
 	       		if (lastChar.equals("*")) {
 	       			inputString = inputString.substring(0, stringLen-1);
-	       			wildcard = "starts with";
+	       			//just strip out the *. wildcard will always = equals although dao code uses RLIKE, so get all instances of partial string
+	       			//wildcard = "starts with";
 	       		}
 	       			       	 
 	       		//dataList = geneStripBeanAssembler.getData(geneSymbol,inputString,wildcard,defaultOrderCol,sortDirection);
