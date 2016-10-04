@@ -238,6 +238,9 @@
 				        }
 		//]]>
 		</script>
+		
+		
+		#{paramBean.setAutoAction(false)}
 
    <h:form id="focusform" prependId="false">
    	<h:panelGrid columns="3" columnClasses="db_table_col_left,db_table_col_center,db_table_col_center" styleClass="db_panel_grid_width">
@@ -271,8 +274,11 @@
 	  
 	    <h:panelGroup class="db_cell_object_padding">
 	    	<pr:autoComplete  id="gene_input" value="#{sessionBean.geneParam}" completeMethod="#{autocompleteBean.completeGene}"
-	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;">
+	     				<pr:ajax event="itemSelect" listener="#{paramBean.handleSelect}"/>
+	     	</pr:autoComplete>
 	    </h:panelGroup> 
+	     
 	    <h:panelGroup class="db_cell_object_padding">
 	    	
 	    	<pr:commandButton id="showdialog2" value="Options" onclick="PF('dialog2').show();" type="button" style="font-size:14px !important;"></pr:commandButton>

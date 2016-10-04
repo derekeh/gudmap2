@@ -93,7 +93,10 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
   
     public void setup(String defaultOrderCol, boolean sortDirection) {
     	//TODO why does setting the wildcard to "equals" do an R LIKE search? its the behaviour we want though
-    	wildcard="equals";
+    	//wildcard="equals";
+    	wildcard="starts with";
+    	if(paramBean.getAutoAction())
+    		wildcard="equals";
         // check input string to decide wildcard value
     	inputString=sessionBean.getGeneParam();
     	if(inputString.length()>1)
@@ -120,6 +123,8 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
 	       	}*/
     	}
     	else geneIds=null;
+    	
+    	paramBean.setAutoAction(false);
     }
     
     public void setupGenePage(String geneId) {

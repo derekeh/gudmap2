@@ -1,7 +1,9 @@
 package org.gudmap.beans;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,6 +23,7 @@ import java.util.Set;
 import org.gudmap.assemblers.ParamBeanAssembler;
 import org.gudmap.queries.generic.GenericQueries;
 import org.gudmap.utils.Utils;
+import org.primefaces.event.SelectEvent;
 
 @Named(value="paramBean")
 @SessionScoped
@@ -185,6 +188,8 @@ public class ParamBean implements Serializable {
 	
 	//charts
 	private int assayTypeIndex=0;
+	
+	private boolean autoAction=false;
 	
 		
 	public ParamBean() {
@@ -2115,6 +2120,25 @@ public class ParamBean implements Serializable {
 		else
 			return params;
 	}
+	
+	/////////////autocomplete////////////////
+	
+	public void updateAutoAction(AjaxBehaviorEvent event) {
+		autoAction=true;
+	}
+	public void setAutoAction(boolean autoAction) {
+		this.autoAction=autoAction;
+	}
+	public boolean getAutoAction() {
+		return autoAction;
+	}
+	
+	public void handleSelect(SelectEvent event) {
+		//String item = event.getObject().toString();
+		//FacesMessage msg = new FacesMessage("Selected", "Item:" + item);
+		autoAction=true;
+	}
+	
 	
 	/**********TODO **********checkboxes keep this code ******************/
 	

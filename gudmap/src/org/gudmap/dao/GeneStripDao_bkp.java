@@ -29,7 +29,7 @@ import org.gudmap.queries.submission.IshSubmissionQueries;
 import org.gudmap.utils.Utils;
 import org.json.simple.JSONObject;
 
-public class GeneStripDao {
+public class GeneStripDao_bkp {
 	
 	//private DataSource ds;
 	private Connection con;
@@ -47,7 +47,7 @@ public class GeneStripDao {
 	private DataSource ds=null;
 	/////////////////////
 	
-	public GeneStripDao(){
+	public GeneStripDao_bkp(){
 		////////////////////////
 	        microarrayHeatmapBeanAssembler  = new MicroarrayHeatmapBeanAssembler();
 	        tableinfo = microarrayHeatmapBeanAssembler.getMasterTableList();
@@ -535,7 +535,7 @@ public class GeneStripDao {
 			//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
 			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
 			//create sql from components and user input
-			//DEREK THIS LAST PARAM WAS SET TO 0. SETTING IT TO 1 GIVES THE CORRECT BEHAVIOUR. WHY?
+			//DEREK THIS LAST PARAM WAS SET TO 0
 			synonymListQ = getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
 			//get components to build query to find synonymns from REF_PROBE using synonym as a param to narrow search
 			symbolsQParts = (String[]) (GeneStripQueries.getRefTableAndColTofindGeneSymbols()).get("RefProbe_synonym");
@@ -585,8 +585,7 @@ public class GeneStripDao {
 				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(synonymListQ);
 				for(int i=0;i<input.length;i++){
-					//HAD TO REMOVE THIS TO GET THE WILDCARD WORKING PROPERLY
-					/*if(wildcard.equalsIgnoreCase("contains")) {
+					if(wildcard.equalsIgnoreCase("contains")) {
 						ps.setString(i+1, "%"+input[i].trim()+"%");
 					}
 					else if(wildcard.equalsIgnoreCase("starts with")){
@@ -594,8 +593,7 @@ public class GeneStripDao {
 					}
 					else {
 						ps.setString(i+1, input[i].trim());
-					}*/
-					ps.setString(i+1, input[i].trim());
+					}
 				}
 				System.out.print(" prepared statement = " + ps);
 				result = ps.executeQuery();
@@ -649,8 +647,7 @@ public class GeneStripDao {
 				//for the first 4 in 'union' query, set the parameters
 				for(int i=0;i<5;i++){// xingjun - 09/10/2009 - change from 4 to 5
 					for(int j=0;j<input.length;j++){
-						//HAD TO REMOVE THIS TO GET THE WILDCARD WORKING PROPERLY
-						/*if(wildcard.equalsIgnoreCase("contains")) {
+						if(wildcard.equalsIgnoreCase("contains")) {
 							ps.setString((i*input.length)+j+1, "%"+input[j].trim()+"%");
 						}
 						else if(wildcard.equalsIgnoreCase("starts with")) {
@@ -658,8 +655,7 @@ public class GeneStripDao {
 						}
 						else {
 							ps.setString((i*input.length)+j+1, input[j].trim());
-						}*/
-						ps.setString((i*input.length)+j+1, input[j].trim());
+						}
 					}
 				}
 				//start the loop at 4 since we have already set params for the first four queries.
