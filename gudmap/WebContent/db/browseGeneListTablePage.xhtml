@@ -24,8 +24,9 @@
 	 
 	     <!-- all other content in here --> 
    
-	     <ui:include src="/snippets/g_insituCols.xhtml"></ui:include>	
-		<ui:include src="/snippets/g_genelistFilter.xhtml"></ui:include>
+	     <ui:include src="/snippets/g_insituCols.xhtml"></ui:include>
+	     <ui:include src="/snippets/g_genelistFilter.xhtml"></ui:include>
+		
 		 <!-- move loadDataList to here so that the parambean staging is preserved in the filter. loaddatalist resets the paramBean values via the whereclause -->
 		#{genericTablePageBean.loadDataList()}
 	
@@ -44,6 +45,7 @@
  		<ui:include src="/snippets/g_pagingForm.xhtml"></ui:include>
  		
  		#{paramBean.setFocusGroup('reset')}
+ 		#{paramBean.setAutoAction(false)}
 		
 	</ui:define>
 </ui:composition>

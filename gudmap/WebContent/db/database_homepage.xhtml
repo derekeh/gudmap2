@@ -274,7 +274,7 @@
 	  
 	    <h:panelGroup class="db_cell_object_padding">
 	    	<pr:autoComplete  id="gene_input" value="#{sessionBean.geneParam}" completeMethod="#{autocompleteBean.completeGene}"
-	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;">
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;" onclick="$('#spinner').hide();">
 	     				<pr:ajax event="itemSelect" listener="#{paramBean.handleSelect}"/>
 	     	</pr:autoComplete>
 	    </h:panelGroup> 
@@ -310,7 +310,7 @@
 	   
 	    <h:panelGroup class="db_cell_object_padding">
 	    	 <pr:autoComplete  id="anatomy_input" value="#{sessionBean.anatomyParam}" completeMethod="#{autocompleteBean.completeAnatomy}"
-	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;" onclick="$('#spinner').hide();"/>
 	    </h:panelGroup>
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
@@ -364,7 +364,7 @@
 	    
 	    <h:panelGroup class="db_cell_object_padding">
 	    	
-	    	<pr:inputText id="accession_input" value="#{sessionBean.accessionParam}"  onkeypress="handleInput(this,event)" style="position:relative;"></pr:inputText>
+	    	<pr:inputText id="accession_input" value="#{sessionBean.accessionParam}"  onkeypress="handleInput(this,event)" style="position:relative;" onclick="$('#spinner').hide();"></pr:inputText>
 	    </h:panelGroup> 
 	    <h:panelGroup></h:panelGroup>
 	    <h:panelGroup class="db_cell_object_padding">
@@ -393,7 +393,7 @@
 	   
 	    <h:panelGroup class="db_cell_object_padding">
 	    	<pr:autoComplete  id="genefunction_input" value="#{sessionBean.geneFunctionParam}" completeMethod="#{autocompleteBean.completeGeneFunction}"
-	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;"/>
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;" onclick="$('#spinner').hide();"/>
 	    </h:panelGroup> 
 	    <h:panelGroup class="db_cell_object_padding">
 	    	

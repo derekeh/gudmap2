@@ -39,10 +39,15 @@ public class GeneListTablePageBeanAssembler {
 	private String queryTotals;
 	private String input;
 	private String focusGroupSpWhereclause;
+	private String sql_rlike = " RLIKE ";
+	private String sql_in_1 = " IN (";
+	private String sql_in_2 = ") ";
+	private boolean autoAction=false;
 	
-	public  GeneListTablePageBeanAssembler(String paramSQL) {
+	public  GeneListTablePageBeanAssembler(String paramSQL,boolean autoAction) {
 		
 		this.paramSQL=paramSQL;	
+		this.autoAction=autoAction;
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
@@ -57,15 +62,20 @@ public class GeneListTablePageBeanAssembler {
 		this.input=input;
 		this.focusGroupSpWhereclause=focusGroupSpWhereclause;
 		String sortDirection = sortAscending ? "ASC" : "DESC";
-		
 		/*String sql = String.format(paramSQL, expressionJoin,
-									whereclause,input,focusGroupWhereclause,
-									arrayWhereclause,input,focusGroupSpWhereclause,
-									sortField, sortDirection);*/
-		
-		String sql = String.format(paramSQL, expressionJoin,
 				whereclause,input,focusGroupWhereclause,
+				sortField, sortDirection);*/
+		String sql;
+		if(autoAction) {
+			sql = String.format(paramSQL, expressionJoin,
+				whereclause,sql_in_1,input,sql_in_2,focusGroupWhereclause,
 				sortField, sortDirection);
+		}
+		else {
+			sql = String.format(paramSQL, expressionJoin,
+					whereclause,sql_rlike,input," ",focusGroupWhereclause,
+					sortField, sortDirection);
+		}
 		
 		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
 		try
@@ -118,7 +128,16 @@ public class GeneListTablePageBeanAssembler {
 		int count=0;
 		int insitucount=0; int microarraycount=0; int sequencecount=0;
 		String queryString=GeneListQueries.ISH_GENELIST_TOTAL;
-		String sql = String.format(queryString, expressionJoin,whereclause,input,focusGroupWhereclause);
+		//String sql = String.format(queryString, expressionJoin,whereclause,input,focusGroupWhereclause);
+		String sql;
+		if(autoAction) {
+			sql = String.format(queryString, expressionJoin,
+				whereclause,sql_in_1,input,sql_in_2,focusGroupWhereclause);
+		}
+		else {
+			sql = String.format(queryString, expressionJoin,
+					whereclause,sql_rlike,input," ",focusGroupWhereclause);
+		}
 		try
 		{
 				con = Globals.getDatasource().getConnection();
