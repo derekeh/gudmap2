@@ -73,7 +73,8 @@ public class GeneListTablePageBean extends PagerImpl implements Serializable  {
     public void setup() {
     	//TODO find the generic query to use (and/or specimen assay types) based on assay type
     	
-    	assembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM);
+    	
+    	assembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM,paramBean.getAutoAction());
     	
         selectedItems = new ArrayList<String>(); 
     }

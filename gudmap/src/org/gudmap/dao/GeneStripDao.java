@@ -125,7 +125,8 @@ public class GeneStripDao {
 		  try
 			{
 				con = Globals.getDatasource().getConnection();
-				ps = con.prepareStatement(String.format(GeneStripQueries.GENESTRIP_ROW_MINUS_PROFILES_2,geneIdsForSql,sortField,sortDirection)); 
+				//ps = con.prepareStatement(String.format(GeneStripQueries.GENESTRIP_ROW_MINUS_PROFILES_2,geneIdsForSql,sortField,sortDirection)); 
+				ps = con.prepareStatement(String.format(GeneStripQueries.GENESTRIP_ROW_MINUS_PROFILES_2,geneIdsForSql,geneIdsForSql,sortField,sortDirection));
 				ps.setInt(1, firstRow);
 				ps.setInt(2, rowsPerPage);
 				result =  ps.executeQuery();
@@ -176,7 +177,8 @@ public class GeneStripDao {
 			  geneIdsForSql+="'"+ids.get(i)+"',";
 		  }
 		  geneIdsForSql = geneIdsForSql.substring(0,geneIdsForSql.lastIndexOf(","));
-		  String queryString=String.format(GeneStripQueries.GENESTRIP_TOTALS, geneIdsForSql);
+		  /*String queryString=String.format(GeneStripQueries.GENESTRIP_TOTALS, geneIdsForSql);*/
+		  String queryString=String.format(GeneStripQueries.GENESTRIP_TOTALS, geneIdsForSql,geneIdsForSql);
 		    try
 			{
 					con = Globals.getDatasource().getConnection();
