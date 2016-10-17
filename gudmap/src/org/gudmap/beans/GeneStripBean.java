@@ -99,6 +99,12 @@ public class GeneStripBean  extends PagerImpl implements Serializable {
     		wildcard="equals";
         // check input string to decide wildcard value
     	inputString=sessionBean.getGeneParam();
+    	
+    	if(Globals.getParameterValue("gene")!=null) {
+    		inputString=Globals.getParameterValue("gene");
+    		sessionBean.setGeneParam(inputString);
+    		wildcard="equals";
+    	}
     	if(inputString.length()>1)
     	{	
        	

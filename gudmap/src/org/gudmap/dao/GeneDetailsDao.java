@@ -94,24 +94,28 @@ public class GeneDetailsDao {
 		    Globals.closeQuietly(con, ps, result);
 		}
         
-        queryString = GeneDetailsQueries.TOTAL_GENE_RELATED_ARRAYS;
-        try
-		{
-			con = ds.getConnection();
-			ps = con.prepareStatement(queryString); 
-			ps.setString(1, geneModel.getSymbol());
-			result =  ps.executeQuery();
-			if (result.first()) {
-				geneModel.setNumMicArrays(result.getString(1));
-			}
-			
-			
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		}
+        if(geneModel==null){
+        	return geneModel;
+        }
         
+        queryString = GeneDetailsQueries.TOTAL_GENE_RELATED_ARRAYS;
+        
+	        try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, geneModel.getSymbol());
+				result =  ps.executeQuery();
+				if (result.first()) {
+					geneModel.setNumMicArrays(result.getString(1));
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
         return geneModel;
       
     } // end findGeneInfoBySymbolId
