@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    GUDMAP Array Strip Test
+	</ui:define>
+<!-- 	comment out the following section if you don't want the solr flyin displayed -->
+	<ui:define name="solr">
+		<!-- <ui:include src="/snippets/g_solrFly.xhtml"/> -->
+	</ui:define>
+	
+	<ui:define name="content">
+	
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<h:outputScript library="scripts" name="heatmap.js"  target="head"></h:outputScript>
+		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
+		<h:outputStylesheet library="css" name="heatmap.css" /> 	
+	
+		<table>
+			<th>Rosa</th>
+			<th>Hoxb</th>
+			<tr>
+				<td><div id="genestrip_Gt(ROSA)26Sor"></div>		
+					<script type="text/javascript">				   
+					   genestrip_heatmap_display("MGI:104735", "#genestrip_Gt(ROSA)26Sor", 4, "Gt(ROSA)26Sor");
+					</script>
+				</td>
+				<td>
+					<div id="genestrip_Hoxb3os"></div>		
+				<script type="text/javascript">				   
+				   genestrip_heatmap_display("MGI:103211", "#genestrip_Hoxb3os", 4, "Hoxb3os");
+				</script>
+				</td>
+			</tr>
+			
+		</table>
+	</ui:define>
+</ui:composition>
+</html>
