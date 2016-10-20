@@ -94,24 +94,88 @@ public class GeneDetailsDao {
 		    Globals.closeQuietly(con, ps, result);
 		}
         
-        queryString = GeneDetailsQueries.TOTAL_GENE_RELATED_ARRAYS;
-        try
-		{
-			con = ds.getConnection();
-			ps = con.prepareStatement(queryString); 
-			ps.setString(1, geneModel.getSymbol());
-			result =  ps.executeQuery();
-			if (result.first()) {
-				geneModel.setNumMicArrays(result.getString(1));
-			}
-			
-			
-		}
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		}
+        ///////////DEREK////BEGIN//////171016//////////////
+        //nothing in REF_PROBE, TRY MGI_MARKER
+        if(geneModel==null){
+        	 queryString = GeneDetailsQueries.ALTERNATIVE_GENE_INFO;
+             try
+     		{
+     			con = ds.getConnection();
+     			ps = con.prepareStatement(queryString); 
+     			ps.setString(1, geneId);
+     			ps.setString(2, geneId);
+     			result =  ps.executeQuery();
+     			if (result.first()) {
+     				geneModel = new GeneModel();
+     				geneModel.setSymbol(result.getString(1));
+     				geneModel.setName(result.getString(2));
+     				geneModel.setMgiAccID(result.getString(3));
+     		    
+     	            // synonyms string is '|' delimited, need change it to ','
+     	            String synonymString = result.getString(4);
+     	            if (synonymString != null  && !synonymString.trim().equals("")) {
+     	            	String[] snm = synonymString.split("\\|");
+     	            	String synonyms = new String("");
+     	            	int len = snm.length;
+     	            	for (int i = 0; i < len; i++) {
+     					    //                	System.out.println(snm[i]);
+     					    if(i+1 == len) {
+     						synonyms += snm[i];
+     					    } else {
+     						synonyms += snm[i] + ", ";
+     					    }
+     					    //                System.out.println(synonyms);
+     	                }
+     	            	geneModel.setSynonyms(synonyms);
+     	            } else {
+     	            	geneModel.setSynonyms("");
+     	            }
+     	            geneModel.setMgiURL(result.getString(5));
+     	            geneModel.setEnsemblID(result.getString(6));
+     	            geneModel.setEnsemblURL(result.getString(7));
+     	            geneModel.setGoURL(result.getString(8));
+     	            geneModel.setOmimURL(result.getString(9));
+     	            geneModel.setEntrezURL(result.getString(10));
+     	            geneModel.setXsomeStart(result.getString(11));
+     	            geneModel.setXsomeEnd(result.getString(12));
+     	            geneModel.setXsomeName(result.getString(13));
+     	            geneModel.setGenomeBuild(result.getString(14));
+     	            geneModel.setGeneCardURL(result.getString(15));
+     	            geneModel.setHgncSearchSymbolURL(result.getString(16));
+     	            geneModel.setUcscURL(result.getString(17));
+     			}
+     			
+     			
+     		}
+     		catch(SQLException sqle){sqle.printStackTrace();}
+     		finally {
+     		    Globals.closeQuietly(con, ps, result);
+     		}
+        }
         
+        if(geneModel==null){
+        	return geneModel;
+        }
+        //////////////////DEREK END/////////////////
+        
+        queryString = GeneDetailsQueries.TOTAL_GENE_RELATED_ARRAYS;
+        
+	        try
+			{
+				con = ds.getConnection();
+				ps = con.prepareStatement(queryString); 
+				ps.setString(1, geneModel.getSymbol());
+				result =  ps.executeQuery();
+				if (result.first()) {
+					geneModel.setNumMicArrays(result.getString(1));
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(con, ps, result);
+			}
         return geneModel;
       
     } // end findGeneInfoBySymbolId

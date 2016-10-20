@@ -140,7 +140,7 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     			collectionEntriesAssembler=new CollectionEntriesAssembler(GenericQueries.BROWSE_LOCAL_STORAGE_PARAM);
     	}
     	else if(assayType.equals("genelist"))
-    		geneListAssembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM);
+    		geneListAssembler=new GeneListTablePageBeanAssembler(GeneListQueries.BROWSE_GENELIST_PARAM,paramBean.getAutoAction());
     	else if(assayType.equals("anatomy"))
     		anatomyAssembler=new AnatomyTablePageBeanAssembler();
     	else if(assayType.equals("accession"))

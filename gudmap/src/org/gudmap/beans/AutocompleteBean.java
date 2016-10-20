@@ -52,7 +52,8 @@ public class AutocompleteBean {
 	}
 	
 	public void populateGeneList() {
-		String queryString=AutocompleteQueries.GENE_SYMBOLS_AND_SYNONYMS2;
+		//String queryString=AutocompleteQueries.GENE_SYMBOLS_AND_SYNONYMS2;
+		String queryString=AutocompleteQueries.GENE_SYMBOLS_AND_SYNONYMS;
         try
 		{
 			con = Globals.getDatasource().getConnection();
