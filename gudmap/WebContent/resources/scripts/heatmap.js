@@ -34,16 +34,31 @@ function changePalette(paletteName, heatmapId) {
 	t.selectAll(".cell")
 	     .style("fill", function(d) {
 	    	 if (paletteName == "Default")
-	             return getHeatmapColor(d);
-//             	 return getHeatmapColor(d.adjvalue);
+//	             return getHeatmapColor2(d,maxvalues[i]);
+//          	 return getHeatmapColor(d.adjvalue);
+            	 return getHeatmapColor(d);
 	    	 else{
-	    		 var classesNumber = 10;
-	    		 var colors = colorbrewer[paletteName][classesNumber];
-	    		 var colorScale = d3.scale.quantize()
-	    		      .domain([-2.0, 2.0])
-	    		      .range(colors);
-	    		 return colorScale(d);	   		 
-//	    		 return colorScale(d.adjvalue);
+	   		 
+	    			var value = Math.round(d);
+	    			var maxvalue = Math.round(200000);
+	    			var num = Math.log(value+1)/Math.log(10);
+	    			var denom = Math.log(maxvalue+1)/Math.log(10);
+	    			var result = num/denom;
+	    			
+	    			var classesNumber = 9;
+		    		var colors = colorbrewer[paletteName][classesNumber];
+		    		var colorScale = d3.scale.quantize()
+		    		      .domain([0,1])
+		    		      .range(colors);
+		    		return colorScale(result);
+	    		 
+//	    		 var colorScale = d3.scale.quantize()
+//   		         .domain([0, 200000])
+//   		         .domain([0, 1])
+//  		         .range(colorbrewer.BuGn[9]);
+//     	    	 return colorScale(result);	   		 
+	    		 
+	    		 
 	    	 }
 	      });
 }
