@@ -30,7 +30,10 @@ public class GeneStripBeanAssembler {
 	}
 	
 	public int count() {
-		return geneStripDao.count(geneIds);
+		/*int x = geneIds.size();
+		int y = geneStripDao.count(geneIds);
+		return geneStripDao.count(geneIds);*/
+		return geneIds.size();
 	}
 	
 	public void setGeneIds(ArrayList<String>geneIds) {
