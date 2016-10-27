@@ -853,7 +853,11 @@ function seq_heatmap_display(url, heatmapId, paletteName, cell_size, seriesId, s
 	   	var margin = { top: 110, right: 10, bottom: 50, left: 10 };
 
 
-	   	var width = cellSize*col_number*2;
+	   	var width = cellSize*col_number;
+	   	if (col_number > 10)
+	   		width = width *2;
+	   	else
+	   		width = width * 10;
 	   	var height = cellSize*row_number;
        
 	   	
