@@ -65,6 +65,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	private String cellSize = "15";
 	private String selectedSample = "AdultProximal_Tubules-1";
 	private String selectedSeries;
+	private String oldSelectedSeries = "";
 	private String selectedGene;
 	private String seqFile;
 	private String seqDir;
@@ -322,6 +323,9 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	if(Globals.getParameterValue("seriesID")!=null){
     		selectedSeries = Globals.getParameterValue("seriesID");
     		createSeqFile(selectedSeries);
+    		if (selectedSeries != oldSelectedSeries)
+    			setBiotypes(biotypeList);
+        	oldSelectedSeries = selectedSeries;
 //   		createSeqFile2(selectedSeries);
 //    		init(selectedSample);    		
     	}
