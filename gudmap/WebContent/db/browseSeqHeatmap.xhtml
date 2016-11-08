@@ -66,7 +66,7 @@ input[type="checkbox"]{
 
 		
 	<h:form id="rnaseqHeatmapForm">	
-		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>		
+		<h:outputScript library="scripts" name="d3.js"></h:outputScript>
 		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
 		<h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
 		<h:outputScript library="scripts" name="heatmap.js"></h:outputScript>
@@ -88,7 +88,7 @@ input[type="checkbox"]{
 			<f:selectItems value="#{rnaSeqHeatmapBean.topGeneCountOptions}" />		
 		</h:selectOneMenu>
 	</h:panelGroup>		
-	
+<ui:remove> 	
 	<h:panelGroup>
 		Palette:
 		<select id="palette">
@@ -105,7 +105,7 @@ input[type="checkbox"]{
 		</select>
 	</h:panelGroup>	
 
-<ui:remove>  	
+	
 	<div style="width:200px;">
 		<label>Heatmap Scale</label>
 		<div id="slider" ></div>

@@ -1,5 +1,6 @@
 package org.gudmap.beans;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.faces.context.FacesContext;
@@ -60,4 +61,16 @@ public class ArraySeqSeriesBean {
 		return "browseSeqHeatmap";
 	}
 
+	public boolean isSeqProcessed(){
+
+		String id = getDatalist().get(0).getGeoSeriesID();
+    	String dirPath = "/export/data0/next_gen_archive/" + id ; 
+    	File dir = new File(dirPath);
+    	if (dir.exists()){
+    		return true;
+    	}
+
+		return false;
+	}
+	
 }

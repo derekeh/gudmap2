@@ -54,7 +54,7 @@
 			<h:outputText styleClass="datatext" value="#{arraySeqSeriesBean.datalist.get(0).numSamples} samples" />
 
 
-			<h:link value="(View Series Heatmap)" outcome="browseSeqHeatmap" rendered="#{arraySeqSeriesBean.datalist.get(0).batchID > 0}">
+			<h:link value="(View Series Heatmap)" outcome="browseSeqHeatmap" rendered="#{arraySeqSeriesBean.seqProcessed}">
 				<f:param name="seriesID" value="#{arraySeqSeriesBean.datalist.get(0).getGeoSeriesID()}"/>
 			</h:link>
 			
