@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
@@ -692,7 +694,8 @@ public class GeneStripDao {
 					    if(null != str){
 					    	geneSymbols.add(str);
 					    }
-					    geneIds.add(result.getString(2));
+					    if(!geneIds.contains(result.getString(2)))
+					    	geneIds.add(result.getString(2));
 					}
 				}
 	
@@ -701,6 +704,11 @@ public class GeneStripDao {
 			finally {
 			    Globals.closeQuietly(con, ps, result);
 			}
+			//remove duplicates OR check as they are going in as above with contains()
+			/*Set<String> hs = new HashSet<>();
+			hs.addAll(geneIds);
+			geneIds.clear();
+			geneIds.addAll(hs);*/
 			
 			//return geneSymbols;
 			return geneIds;
