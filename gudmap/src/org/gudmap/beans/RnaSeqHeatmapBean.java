@@ -135,7 +135,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		biotypes = biotypeList;      	
        	
     }
-   
+    
 	/**
 	 * This method returns the current gene type from the GeneBioType control 
 	 * of the browseSeqHeatmap.xhtml page.
@@ -326,8 +326,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     		if (selectedSeries != oldSelectedSeries)
     			setBiotypes(biotypeList);
         	oldSelectedSeries = selectedSeries;
-//   		createSeqFile2(selectedSeries);
-//    		init(selectedSample);    		
+//   		createSeqFile2(selectedSeries);   		
     	}
     }
 	
@@ -336,19 +335,34 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		return tableTitle;
 	}
 	
+	/**
+	 * This method updates the biotypes selection from the Gene Biotype Filter dialog box. 
+	 */
+    public void selectBiotype(){
+    	getBiotypes();
+    }   
+    
+	/**
+	 * This method gets the selected biotypes and updates the page with an updated heatmap. 
+	 */
     public void refresh(){
      	getBiotypes();
-     	createSeqFile(selectedSeries);
-//    	init(selectedSample);
+     	if (biotypes.size() > 0){
+     		createSeqFile(selectedSeries);
+     	}
     }
     
+	/**
+	 * This method selects all biotypes in the Gene Biotype Filter dialog box. 
+	 */
     public void resetAll() {
     	setBiotypes(biotypeList);
-    	createSeqFile(selectedSeries);  
-//    	init(selectedSample);
-//		loadDataList();
-	}
 
+	}
+    
+	/**
+	 * This method clears all selected biotypes from the Gene Biotype Filter dialog box. 
+	 */
     public void clear(){
     	ArrayList<String> bl = new ArrayList<String>();
     	setBiotypes(bl);
