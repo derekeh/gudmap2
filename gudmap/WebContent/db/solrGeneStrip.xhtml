@@ -124,7 +124,7 @@
     			<f:facet name="header">
     				Microarray Expression
 				</f:facet>
-				<div id="genestrip_#{u.geneSymbol}"></div>		
+				<div id="genestrip_#{things.rowIndex + 1}"></div>		
 				<script type="text/javascript">				   
 				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{things.rowIndex + 1}", 4, "#{u.geneSymbol}");
 				</script> 
