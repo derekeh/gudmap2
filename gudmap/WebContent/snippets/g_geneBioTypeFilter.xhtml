@@ -10,8 +10,8 @@
 			<h:outputText value="Gene Biotypes:"></h:outputText>
 
 		 	<pr:selectManyCheckbox layout="grid" columns="3" columnClasses="gd_leftAlign" value="#{rnaSeqHeatmapBean.biotypes}">
+				<pr:ajax listener="#{rnaSeqHeatmapBean.selectBiotype}"/>
 		 		<f:selectItems value="#{rnaSeqHeatmapBean.biotypeList}" />
-		 		<pr:ajax update=":rnaseqHeatmapForm" listener="#{rnaSeqHeatmapBean.refresh}" />
 		 	</pr:selectManyCheckbox>
 
 		
@@ -19,11 +19,15 @@
 
 		   		<pr:commandButton id="il_filter_reset" value="Reset" >
 			 		<pr:ajax update=":filterform" listener="#{rnaSeqHeatmapBean.resetAll}" />
-			 		<pr:ajax update=":rnaseqHeatmapForm" />
 		   		</pr:commandButton>
 		
-		    	<pr:commandButton id="il_filter_clear" value="Clear" actionListener="#{rnaSeqHeatmapBean.clear()}">
-		   			<f:ajax execute="@form" render=":filterform" ></f:ajax> 
+		    	<pr:commandButton id="il_filter_clear" value="Clear" actionListener="#{rnaSeqHeatmapBean.clear}">
+			 		<pr:ajax update=":filterform" listener="#{rnaSeqHeatmapBean.clear}" />
+		   		</pr:commandButton>
+
+		   		<pr:commandButton id="il_filter_apply" value="Apply" >
+			 		<pr:ajax update=":filterform" listener="#{rnaSeqHeatmapBean.refresh}" />
+			 		<pr:ajax update=":rnaseqHeatmapForm" />
 		   		</pr:commandButton>
 	   		
 		   	</h:panelGrid>	

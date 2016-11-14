@@ -51,7 +51,7 @@
 	    
 		<h:form  id="dataform">
 	    <h:inputHidden id="solrInput" value="#{solrGeneStripBean.solrInput}" />
-	    <h:dataTable rowIndexVar="row" value="#{solrGeneStripBean.dataList}" var="u"
+	    <h:dataTable rowIndexVar="row" value="#{solrGeneStripBean.dataList}" var="u" binding="#{things}"
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
@@ -124,9 +124,9 @@
     			<f:facet name="header">
     				Microarray Expression
 				</f:facet>
-				<div id="genestrip_#{u.geneSymbol}"></div>		
+				<div id="genestrip_#{things.rowIndex + 1}"></div>		
 				<script type="text/javascript">				   
-				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{u.geneSymbol}", 4, "#{u.geneSymbol}");
+				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{things.rowIndex + 1}", 4, "#{u.geneSymbol}");
 				</script> 
     		</h:column>
     		
