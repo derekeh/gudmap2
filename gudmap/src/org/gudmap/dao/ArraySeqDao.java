@@ -187,15 +187,18 @@ public class ArraySeqDao {
     			if (result.first()) {
     				result.beforeFirst();
     				String anatomySource = "";
+    				ArrayList<String> anatomySourceList = new ArrayList<String>();
     				while (result.next()) { // it's possible it's expressed in more than one component 
-    				    anatomySource += result.getString(1) + "; ";
+    				    anatomySource = result.getString(1);
+    				    if (!anatomySourceList.contains(anatomySource))
+    				    		anatomySourceList.add(anatomySource);
     				}
-    				anatomySource = anatomySource.substring(0, anatomySource.length()-2);
+    				anatomySource = "";
+    				for(String s: anatomySourceList)
+    					anatomySource += s + ";";
     				if (anatomySource.trim().length() != 0) { // xingjun - 18/11/2009
     				    sampleModel.setSource(anatomySource);
-    				}
-    				
-
+    				}    				
     			}						
     		}
     		catch(SQLException sqle){sqle.printStackTrace();}
