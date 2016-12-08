@@ -402,6 +402,39 @@ public static String STAGE_FORMAT_CONCAT = bundle.getString("project").equals("G
                                   "GROUP BY SUB_OID " +
                                   "ORDER BY CONCAT(STG_PREFIX, SUB_EMBRYO_STG), natural_sort(SUB_ACCESSION_ID)";
 
+    public static String GENE_RELATED_SUBMISSIONS_ISH2 = "SELECT DISTINCT SUB_ACCESSION_ID, 'viewSubmissionDetails.jsf', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
+            "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
+            "ELSE 'without annotation' " + 
+            "END, " +
+            "CASE WHEN (SPN_SEX = 'unknown') THEN 'unknown' " + 
+            "ELSE SPN_SEX " + 
+            "END, " +
+            "RPR_JAX_ACC, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '), " + 
+            "CASE WHEN (LOCATE(';',GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ')) > 0) THEN " + 
+            "CONCAT(SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '),'; ',1),'...') " +
+            "ELSE GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') " +
+            "END, " + 
+            "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
+      		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
+       		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
+       		"ELSE 'viewMaProbeDetails.jsf' END, " +
+      		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
+            "FROM ISH_SUBMISSION " + 
+            "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
+            "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
+            "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
+            "JOIN REF_STAGE ON STG_OID = SUB_STAGE_FK " +
+            "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
+            "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
+            "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+            "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
+            "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +
+            "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
+            "WHERE RPR_JAX_ACC = ? " + 
+            "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
+            "AND SUB_ASSAY_TYPE = ? " +
+            "GROUP BY SUB_OID " +
+            "ORDER BY CONCAT(STG_PREFIX, SUB_EMBRYO_STG), natural_sort(SUB_ACCESSION_ID)";
     
 
 
