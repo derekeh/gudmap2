@@ -45,7 +45,7 @@ jQuery(document).ready(function(){
 	
 	var showAnnotationInfoTooltip = function(event) {
 		jQuery('div.db_tooltip').remove();
-		jQuery('<div class="db_tooltip">Clicking on these buttons allows you to alter the display format of the annotations. Subsequent visits to this page will use your last selected format options.</div>')
+		jQuery('<div class="db_tooltip">Clicking on this link allows you to alter the display format of the annotations. Subsequent visits to this page will use your last selected format options.</div>')
 		   .appendTo('body');
 		changeTooltipPosition(event);
 	};
@@ -585,9 +585,9 @@ function findExpressionNotes(){
 						<f:setPropertyActionListener id="annoDisplayproperty" target="#{sessionBean.displayAsTree}" value="#{!sessionBean.displayAsTree}" />
 						<f:param name="accId" value="#{ishSubmissionBean.ishSubmissionModel.accID}"/>
 					</h:commandLink>
-					<h:link style="cursor:help;">
+					<h:link style="cursor:help;" >
 			    		<span id="il_tree_span">
-			    			<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" id="il_annotation_info"></h:graphicImage>
+			    			<h:graphicImage library="images/dbhome" name="n_information.png" alt="" width="22" height="24" id="il_annotation_info" onclick="return false;"></h:graphicImage>
 			    		</span>
 		    		</h:link>
 					
