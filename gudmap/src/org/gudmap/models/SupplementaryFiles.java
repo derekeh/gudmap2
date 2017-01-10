@@ -16,6 +16,7 @@ public class SupplementaryFiles {
 	private String tissue;
 	private List<SupplementaryFiles> rawFiles;
 	private List<SupplementaryFiles> processedFiles;
+	private List<SupplementaryFiles> rnaSeqQCFiles;
 	
 	public void setFilename(String filename) {
         this.filename = filename;
@@ -114,6 +115,12 @@ public class SupplementaryFiles {
         return processedFiles;
     }
 
-    
+    public void setQCFile(List<SupplementaryFiles> file) {
+        rnaSeqQCFiles = file;
+    }
+
+    public List<SupplementaryFiles> getQCFile() {
+         return rnaSeqQCFiles;
+    }    
 
 }

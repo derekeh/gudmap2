@@ -135,17 +135,17 @@
 								<h:outputText value="#{pfile.filesize}" rendered="#{not empty pfile.filesize}"/>
 							</h:column>
 					</h:dataTable>	
-<ui:remove>
+
 					<h:outputText value="RNA Seq QC file:"  />
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.qcFile}" var="qfile">
 						<h:column>
 							<h:outputLink styleClass="datatext" target="_blank" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}"
-							p:download="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}">
+								p:download="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}">
 								<h:outputText value="#{qfile.filename}"/>
 							</h:outputLink>
 						</h:column>
 					</h:dataTable>	
-</ui:remove>					
+					
 				</h:panelGrid>				
 	    	</h:panelGrid>
 	    	
