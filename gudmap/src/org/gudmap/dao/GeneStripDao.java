@@ -132,6 +132,7 @@ public class GeneStripDao {
 				ps.setInt(1, firstRow);
 				ps.setInt(2, rowsPerPage);
 				result =  ps.executeQuery();
+				int counter=0;
 				
 				if (result.first()) {
 					result.beforeFirst();
@@ -139,6 +140,8 @@ public class GeneStripDao {
 					
 					while (result.next()) {
 						geneStripModel = new GeneStripModel();
+						counter++;
+						geneStripModel.setRowCount(counter);
 						gene = result.getString("gene");
 						geneId = result.getString("mgi");
 						geneStripModel.setGeneSymbol(gene);

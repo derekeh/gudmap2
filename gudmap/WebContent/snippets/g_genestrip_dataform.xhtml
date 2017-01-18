@@ -11,8 +11,9 @@
 			max-width:2000px;
 		}
 	</style>
+	
 	<h:form id="dataform"> 
-	    <h:dataTable rowIndexVar="row" value="#{geneStripBean.dataList}" var="u" binding="#{things}"
+	    <h:dataTable rowIndexVar="row" value="#{geneStripBean.dataList}" var="u" 
 	    		styleClass="db_order-table"
     			headerClass="db_order-table-header"
     			rowClasses="db_order-table-odd-row,db_order-table-even-row">
@@ -80,9 +81,9 @@
     			<f:facet name="header">
     				Microarray Profile
 				</f:facet>
-				<div id="genestrip_#{things.rowIndex + 1}"></div>		
+				<div id="genestrip_#{u.rowCount}"></div>		
 				<script type="text/javascript">				   
-				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{things.rowIndex + 1}", 4, "#{u.geneSymbol}");
+				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{u.rowCount}", 4, "#{u.geneSymbol}");
 				</script> 
     		</h:column>
     		

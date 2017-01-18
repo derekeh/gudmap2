@@ -16,6 +16,7 @@ public class GeneStripModel {
 	private boolean selected=false;
 	private String gene_id;
 	private String species;
+	private int rowCount=0;
 	
 	public GeneStripModel() {
 	}
@@ -114,6 +115,14 @@ public class GeneStripModel {
 	
 	public String getSpecies() {
 		return species;
+	}
+	
+	public int getRowCount() {
+		return rowCount;
+	}
+	
+	public void setRowCount(int rowCount) {
+		this.rowCount=rowCount;
 	}
 	
 }
