@@ -31,7 +31,15 @@
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
 				<f:ajax execute="@form" render=":dataform :solr_menuform :gd_searchform" ></f:ajax>
 			</h:commandButton>
-		</h:panelGrid>	
+	
+		
+ 		<h:commandButton id="filter_clear" value="Clear Filter">
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
+		 		<pr:ajax update=":filterform"/>
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform"/>
+ 		</h:commandButton>
+		</h:panelGrid>		
 	
 		<h:panelGrid columns="1" style="text-align:center">
 			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/solrGeneStrip.jsf" >

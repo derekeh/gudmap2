@@ -109,7 +109,7 @@
 					
 					<h:outputText value="Probe Type:" />
 					<h:outputText value="#{maProbeBean.probeModel.type}" />
-					
+<ui:remove>					
 					<h:outputText value="Type:" />
 					<h:outputText value="#{maProbeBean.probeModel.geneType}" />
 					
@@ -124,7 +124,7 @@
 					
 					<h:outputText styleClass="plaintext,text-top" value="Probe Notes:" rendered="#{not empty maProbeBean.probeModel.notes}" />
 					<h:outputText  value="#{maProbeBean.probeModel.notes}" rendered="#{not empty maProbeBean.probeModel.notes}" />
-
+</ui:remove>
 					<h:outputText value="Curator Notes:" rendered="#{null != maProbeBean.probeModel.maprobeNotes}" />
 					<h:dataTable value="#{maProbeBean.probeModel.maprobeNotes}" var="maprobeNote" rendered="#{null != maProbeBean.probeModel.maprobeNotes}">
 						<h:column>

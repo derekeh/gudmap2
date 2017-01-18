@@ -11,6 +11,7 @@ public class SeqSubmissionModel extends ArraySeqSubmissionModel {
 	 private DataProcessing[] dataProcessing;
 	 private List<SupplementaryFiles>  rawFile;
 	 private List<SupplementaryFiles> processedFile;
+	 private List<SupplementaryFiles> qcFile;
 	 private SeqSampleModel seqSampleModel;
 	 private SeqSeriesModel seqSeriesModel;
 	 private SeqProtocol seqProtocol;
@@ -34,6 +35,14 @@ public class SeqSubmissionModel extends ArraySeqSubmissionModel {
 	        return rawFile;
 	    }
 
+	    public void setQcFile(List<SupplementaryFiles> qcFile) {
+		     this.qcFile = qcFile;
+		}
+
+	    public List<SupplementaryFiles> getQcFile() {
+	        return qcFile;
+	    }
+	    
 	    public void setProcessedFile(List<SupplementaryFiles> processedFile) {
 	       this.processedFile = processedFile;
 	    }

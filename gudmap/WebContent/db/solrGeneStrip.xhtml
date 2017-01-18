@@ -84,7 +84,7 @@
      			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml" rendered="#{not empty u.imageUrl}">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
-				<h:outputText value="#{u.geneSymbol}" rendered="#{empty u.imageUrl}"/>
+ 				<h:outputText value="#{u.geneSymbol}" rendered="#{empty u.imageUrl}"/>
     		</h:column>
  
     		<h:column rendered="#{paramBean.synonymcol == true}">
@@ -115,7 +115,7 @@
     		
     		<h:column rendered="#{paramBean.ishexpressioncol == true}">
     			<f:facet name="header">
-    				Insitu Expression
+    				In situ Expression
 				</f:facet>
 				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
     		</h:column>

@@ -73,8 +73,11 @@ public class ArraySeqDao {
 			    supplementaryFiles = new SupplementaryFiles();
 			    List<SupplementaryFiles> rFiles=new ArrayList<SupplementaryFiles>();
 			    List<SupplementaryFiles> pFiles=new ArrayList<SupplementaryFiles>();
+			    List<SupplementaryFiles> qFiles=new ArrayList<SupplementaryFiles>();			    
 			    SupplementaryFiles ngdsupfiles=null;
 			    StringBuffer filesize=new StringBuffer();
+			    String qcpath = "";
+			    
 			    do
 			    {
 			    	filesize.setLength(0);
@@ -96,10 +99,17 @@ public class ArraySeqDao {
 		    	    	ngdsupfiles.setFilesize(filesize.toString());
 		    	    	ngdsupfiles.setFiletype(result.getString(3).trim());
 			    		pFiles.add(ngdsupfiles);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW; 4.NGF_FILESIZE
+			    		
+			    		qcpath = result.getString(1);
 			    	}
 				    
 			    }
 			    while(result.next());
+
+			    ngdsupfiles=new SupplementaryFiles();
+			    ngdsupfiles.setFilename("index.html");
+			    qFiles.add(ngdsupfiles);
+			    
 			    
 			    if (0 == pFiles.size())
 			    	supplementaryFiles.setProcessedFile(null);
@@ -110,6 +120,11 @@ public class ArraySeqDao {
 			    	supplementaryFiles.setRawFile(null);
 			    else 
 			    	supplementaryFiles.setRawFile(rFiles);
+
+			    if (0 == qFiles.size())
+			    	supplementaryFiles.setQCFile(null);
+			    else 
+			    	supplementaryFiles.setQCFile(qFiles);
 			    
 			    return supplementaryFiles;
 			}						

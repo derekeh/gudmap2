@@ -42,31 +42,36 @@ input[type="checkbox"]{
 </script>	
 			
 	<div style="border: 1px solid grey;font-size:10px; float:left; overflow: auto;" class="slide-menu">		
+
+	<h3 class="gd_h3" style="margin:8px 0 0 8px;">Filter</h3>	
+	<ui:remove>
 	<h:panelGrid columns="2" columnClasses="column1,column2">
 		<h3 class="gd_h3" style="margin:8px 0 0 8px;">Filter</h3>
- 		<h:commandButton id="il_filter_submit" value="Clear" >
+ 		<h:commandButton id="filter_clear" value="Clear" >
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
 		 		<pr:ajax update=":filterform"/>
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform"/>
  		</h:commandButton>
 	</h:panelGrid>
-	
+	</ui:remove>
 
 	<div class="accordion">
 		<h2 style="background:#{not empty solrFilter.geneValues || not empty solrFilter.geneValue  ? 'pink' : '' }">Genes</h2>
 		<div>
 		 	<h:outputText value="Gene: "></h:outputText>
-		 	<h:inputText value="#{solrFilter.geneValue}" >
+		 	<h:inputText id="gene_filter" value="#{solrFilter.geneValue}">
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:inputText>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.geneValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.geneList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform" />	
+		 		<pr:ajax update=":filterform" />
 			 </h:selectManyCheckbox>
 		</div>
  	</div>
@@ -80,12 +85,14 @@ input[type="checkbox"]{
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform"  />
 		 		<pr:ajax update=":pagingform"  />
+		 		<pr:ajax update=":filterform" />
 			</pr:autoComplete>			
 		 	<h:selectOneRadio size="5" value="#{solrFilter.expressionValue}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.expressionList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectOneRadio>
 		</div>  		
 	</div>
@@ -98,6 +105,7 @@ input[type="checkbox"]{
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
 	</div>
@@ -110,6 +118,7 @@ input[type="checkbox"]{
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform"  />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
 	</div>
@@ -122,6 +131,7 @@ input[type="checkbox"]{
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
    	</div>
@@ -134,6 +144,7 @@ input[type="checkbox"]{
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
    	</div>
@@ -145,6 +156,7 @@ input[type="checkbox"]{
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.specimenTypeValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.specimenTypeList}" />
 		 		<pr:ajax update=":solr_menuform :dataform :pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>
    	</div>
@@ -155,9 +167,10 @@ input[type="checkbox"]{
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.assayTypeValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.assayTypeList}" />
-			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-			 		<pr:ajax update=":dataform" />
-			 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
 		</div>
 	</div>
@@ -171,6 +184,7 @@ input[type="checkbox"]{
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":dataform" />
 			 		<pr:ajax update=":pagingform" />
+		 			<pr:ajax update=":filterform" />
 			 	</h:selectManyListbox>
 		 	</h:panelGrid>
 		</div>
@@ -185,12 +199,14 @@ input[type="checkbox"]{
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":dataform" />
 			 		<pr:ajax update=":pagingform" />
+		 			<pr:ajax update=":filterform" />
 	 			</pr:calendar>
 	 			<h:outputText value="To:"></h:outputText>
 	 			<pr:calendar widgetVar="toDate" maxdate="#{paramBean.maxDate}" pattern="dd-MMM-yyyy" navigator="true" value="#{solrFilter.toDateValue}">
 			 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 			 		<pr:ajax update=":dataform" />
 			 		<pr:ajax update=":pagingform" />
+		 			<pr:ajax update=":filterform" />
 	 			</pr:calendar>
 			</h:panelGrid>
 		</div>
@@ -205,6 +221,7 @@ input[type="checkbox"]{
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
 		</div>
 	</div>

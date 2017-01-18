@@ -38,7 +38,8 @@ public class MaProbeAssembler {
 			    
 			    if (probeModel.getGeneSymbol() != null){
 			    	//TODO
-					ArrayList<String[]> relatedSubmissionISH = ishSubmissionDao.findRelatedSubmissionBySymbol(probeModel.getGeneSymbol(),probeModel.getAssayType());	
+//					ArrayList<String[]> relatedSubmissionISH = ishSubmissionDao.findRelatedSubmissionBySymbol(probeModel.getGeneSymbol(),probeModel.getAssayType());	
+					ArrayList<String[]> relatedSubmissionISH = ishSubmissionDao.findRelatedSubmissionByProbeId(probeId,probeModel.getAssayType());	
 					if (null != relatedSubmissionISH) {
 					    probeModel.setIshSubmissions(relatedSubmissionISH);
 					}

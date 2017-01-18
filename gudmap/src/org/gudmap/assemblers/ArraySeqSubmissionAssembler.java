@@ -83,6 +83,7 @@ public class ArraySeqSubmissionAssembler {
 			SupplementaryFiles supplementaryFiles=arraySeqDao.findSeqSupplementaryFiles(oid_int);
 			seqSubmissionModel.setRawFile(supplementaryFiles.getRawFile());
 			seqSubmissionModel.setProcessedFile(supplementaryFiles.getProcessedFile());
+			seqSubmissionModel.setQcFile(supplementaryFiles.getQCFile());
 			seqSubmissionModel.setSeqProtocol(arraySeqDao.getSequenceProtocol(oid_int));
 			
 			seqSubmissionModel.setSeqSampleModel(arraySeqDao.getSeqSampleData(oid_int));

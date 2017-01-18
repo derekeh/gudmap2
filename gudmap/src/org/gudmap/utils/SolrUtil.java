@@ -1670,6 +1670,7 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (samples_schema.contains(pair.getKey()))
 		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
 		        }
 	        }

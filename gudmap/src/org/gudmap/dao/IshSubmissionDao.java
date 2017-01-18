@@ -1077,6 +1077,38 @@ public class IshSubmissionDao {
                 	    
        
       }
+    public ArrayList<String[]> findRelatedSubmissionByProbeId(String probeId, String assayType) {
+  		if (probeId == null || probeId.equals("")) {
+  		    return null;
+  		}
+  		ArrayList<String[]> relatedSubmissionISH=null;
+  		String queryString = IshSubmissionQueries.GENE_RELATED_SUBMISSIONS_ISH2;
+  		
+//		if(assayType.equals("TG"))
+//			queryString = queryString.replace("RPR_LOCUS_TAG", "ALE_MUTATED_GENE_ID");
+
+  			
+  		try
+		{
+			con = ds.getConnection();
+			ps = con.prepareStatement(queryString); 
+			ps.setString(1, probeId);
+			ps.setString(2, assayType);
+			result =  ps.executeQuery();
+			if (result.first()) {
+				result.beforeFirst();
+				relatedSubmissionISH = Utils.formatResultSetToArrayList(result);
+            }
+						
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return relatedSubmissionISH; 
+                	    
+       
+      }
     
     public String findStageByOid(String oid) {
         String stage = null;
