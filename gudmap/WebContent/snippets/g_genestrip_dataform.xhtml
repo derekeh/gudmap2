@@ -81,9 +81,9 @@
     			<f:facet name="header">
     				Microarray Profile
 				</f:facet>
-				<div id="genestrip_#{u.rowCount}"></div>		
+				<div id="genestrip_#{u.geneSymbol}"></div>		
 				<script type="text/javascript">				   
-				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{u.rowCount}", 4, "#{u.geneSymbol}");
+				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{u.geneSymbol}", 4, "#{u.geneSymbol}");
 				</script> 
     		</h:column>
     		
