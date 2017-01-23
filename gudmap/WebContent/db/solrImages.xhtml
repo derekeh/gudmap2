@@ -29,6 +29,15 @@
 		
 	
 	<ui:define name="content">
+	<h:form>
+	 		<h:commandButton id="filter_clear" value="Clear Filter">
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
+		 		<pr:ajax update=":filterform"/>
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform"/>
+ 		</h:commandButton>
+	</h:form>
+	
 	<h:form  id="filterform">
 		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
 	</h:form>	

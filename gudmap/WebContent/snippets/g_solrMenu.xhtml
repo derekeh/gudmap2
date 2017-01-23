@@ -32,13 +32,14 @@
 				<f:ajax execute="@form" render=":dataform :solr_menuform :gd_searchform" ></f:ajax>
 			</h:commandButton>
 	
-		
+<ui:remove>		
  		<h:commandButton id="filter_clear" value="Clear Filter">
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
 		 		<pr:ajax update=":filterform"/>
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform"/>
  		</h:commandButton>
+</ui:remove> 		
 		</h:panelGrid>		
 	
 		<h:panelGrid columns="1" style="text-align:center">
