@@ -240,6 +240,14 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 				}
 				if (doc.containsKey("DEV_STAGE"))
 					model.setAge(doc.getFieldValue("DEV_STAGE").toString());
+				if (doc.containsKey("DEV_STAGE")){
+					String age = doc.getFieldValue("DEV_STAGE").toString();
+					if (age.contains("P")){
+						age = age.replace("P", "P ");
+					}
+					model.setAge(age);
+				}
+				
 				if (doc.containsKey("SOURCE"))
 					model.setSource(doc.getFieldValue("SOURCE").toString());
 				if (doc.containsKey("DATE"))
