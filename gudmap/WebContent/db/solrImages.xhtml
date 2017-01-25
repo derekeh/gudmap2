@@ -76,16 +76,15 @@
 				</h:commandLink>
 				<br/>				
 				<h:outputText value="Gene: "/>	
-	
+<ui:remove>
      			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.jsf" >
      				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
-				
-				<ui:remove>								
+</ui:remove>				
      			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails">
 					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
 				</h:commandLink>
-				</ui:remove>
+
 								
 				<br/>
 				<h:outputText value="Go to "/>
