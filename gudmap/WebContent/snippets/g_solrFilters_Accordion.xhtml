@@ -134,6 +134,19 @@ input[type="checkbox"]{
 		 	</h:selectManyCheckbox>
       	</div>
    	</div>
+
+	<div class="accordion">
+		<h2 style="background:#{not empty solrFilter.ageValues  ? 'pink' : '' }">Ages</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.ageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.ageList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
    	
 	<div class="accordion">
 		<h2 style="background:#{not empty solrFilter.sexValues  ? 'pink' : '' }">Sex</h2>
