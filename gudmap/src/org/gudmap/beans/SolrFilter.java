@@ -52,6 +52,7 @@ public class SolrFilter implements Serializable {
 	private ArrayList<String> specimenTypeValues;
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
+	private ArrayList<String> ageValues;
 	private ArrayList<String> imageValues;
 	private String expressionValue = "";
 	private String anatomy;
@@ -449,6 +450,66 @@ public class SolrFilter implements Serializable {
 	}	
 
 	/**
+	 * This method returns a map of ages to be displayed in the Ages Filter 
+	 * of the Advanced Search Pages
+	 * 
+	 * @return A Map of ages
+	 */
+	public Map<String,String> getAgeList(){
+		
+		Map<String,String> agemap = new LinkedHashMap<String,String>();
+
+
+		try
+		{
+			String queryString=SolrQueries.THEILER_AGES;
+			con = Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next()){
+				String key = result.getString(1);
+				String val = result.getString(1);
+				agemap.put(key, val);
+			}
+
+			queryString=SolrQueries.CARNEGIE_AGES;
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			while(result.next()){
+				String key = result.getString(1);
+				String val = result.getString(1);
+				agemap.put(key, val);
+			}
+
+		}
+		
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+		return agemap;
+	}	
+	
+	/**
+	 * This method returns the current list of selected ages from the Age Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @return The ageValues
+	 */
+	public ArrayList<String> getAgeValues(){
+		return ageValues;
+	}	
+	/**
+	 * This method sets the current list of ages to be displayed in the Age Filter 
+	 * of the Advanced Search Pages.
+	 * 
+	 * @param val
+	 */
+	public void setAgeValues(ArrayList<String> val){
+		ageValues = val;
+	}	
+	
+	/**
 	 * This method returns a map of carnegie stages to be displayed in the Human Stages Filter 
 	 * of the Advanced Search Pages
 	 * 
@@ -655,6 +716,18 @@ public class SolrFilter implements Serializable {
 				filters.put("SPECIMEN_ASSAY_TYPE",filter);
 			}
 		}
+
+		if (ageValues != null && !ageValues.isEmpty()) {
+			if (ageValues.size() == 1){
+				filters.put("DEV_STAGE",ageValues.get(0));
+			}
+			else {
+				String filter = "(";
+				for (String item : ageValues) filter += item + " OR ";
+				filter = filter.substring(0, filter.length()-3) + ")";
+				filters.put("DEV_STAGE",filter);
+			}
+		}
 		
 		if (theilerStageValues != null && !theilerStageValues.isEmpty()) {
 			if (theilerStageValues.size() == 1){
@@ -731,6 +804,7 @@ public class SolrFilter implements Serializable {
 		specimenTypeValues = new ArrayList<String>();
 		theilerStageValues = new ArrayList<String>();
 		carnegieStageValues = new ArrayList<String>();
+		ageValues = new ArrayList<String>();
 		fromDateValue = null;
 		toDateValue = null;		
 		

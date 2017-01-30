@@ -30,12 +30,15 @@
 	
 	<ui:define name="content">
 	<h:form>
-	 		<h:commandButton id="filter_clear" value="Clear Filter">
+
+		<h3 class="gd_h3" style="margin:8px 8px 0 8px; display: inline-block;">Filter</h3>
+ 		<h:commandButton id="filter_clear" value="Clear" >
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
 		 		<pr:ajax update=":filterform"/>
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform"/>
  		</h:commandButton>
+
 	</h:form>
 	
 	<h:form  id="filterform">
@@ -72,10 +75,17 @@
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
 				<br/>				
-				<h:outputText value="Gene: "/>				
+				<h:outputText value="Gene: "/>	
+<ui:remove>
      			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.jsf" >
      				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
+</ui:remove>				
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails">
+					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
+				</h:commandLink>
+
+								
 				<br/>
 				<h:outputText value="Go to "/>
 	    		<a href="#{u.clickFilePath}">Image Viewer</a>

@@ -43,7 +43,6 @@ input[type="checkbox"]{
 			
 	<div style="border: 1px solid grey;font-size:10px; float:left; overflow: auto;" class="slide-menu">		
 
-	<h3 class="gd_h3" style="margin:8px 0 0 8px;">Filter</h3>	
 	<ui:remove>
 	<h:panelGrid columns="2" columnClasses="column1,column2">
 		<h3 class="gd_h3" style="margin:8px 0 0 8px;">Filter</h3>
@@ -128,6 +127,19 @@ input[type="checkbox"]{
 		<div>
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.carnegieStageValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.carnegieStageList}" />
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
+		 		<pr:ajax update=":filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+
+	<div class="accordion">
+		<h2 style="background:#{not empty solrFilter.ageValues  ? 'pink' : '' }">Ages</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{solrFilter.ageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{solrFilter.ageList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
 		 		<pr:ajax update=":dataform" />
 		 		<pr:ajax update=":pagingform" />
