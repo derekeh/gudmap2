@@ -22,6 +22,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.request.LukeRequest;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.PivotField;
@@ -405,129 +407,80 @@ public class SolrUtil {
         
         return count;
     }
+
+    public Map<String,String> getInsituDataCount(String queryString, HashMap<String,String> filters)
+    {  
+    	Map<String,String> totalslist = new HashMap<String,String>();
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		int count = 0;
+		try{
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (!filters.isEmpty()){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(12000);
+	        
+	        parameters.addFacetField("GENE");
+	        parameters.addFacetField("ASSAY_TYPE");	        
+	        parameters.addFacetField("SPECIMEN_ASSAY_TYPE");	
+	        parameters.addFacetField("SPECIES");
+	        parameters.addFacetField("DEV_STAGE");	        
+	        parameters.addFacetField("STAGE");
+	        parameters.addFacetField("SEX");
+	        parameters.addFacetField("GENOTYPE");	        
+	        parameters.addFacetField("TISSUE_TYPE");	        
+	        parameters.addFacetField("PROBE_NAME");	        
+	        parameters.addFacetField("SOURCE");	        
+	        parameters.addFacetField("GUDMAP_ID");	        
+	        
+	        
+	        QueryResponse qr = insitu_server.query(parameters);       
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					String name = c.getName();
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
     
-//    public int getAssayCount(String queryString){
-//    	return getInsituCount(queryString, null);
-//    }
-    
-//    public int getIshStagesCount(String queryString){
-//    	return getInsituCount(queryString, null);
-//    }
-
-//    public int getIshAnatomyCount(String queryString){
-//    	return getInsituCount(queryString, null);
-//    }
-
-//    public int getIshAssayCount(String queryString){
-//    	String filter = "ASSAY_TYPE:ISH";
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getIhcAssayCount(String queryString){
-//    	String filter = "ASSAY_TYPE:IHC";
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getTgAssayCount(String queryString){
-//    	String filter = "ASSAY_TYPE:TG";
-//    	return getInsituCount(queryString, filter);
-//    }
-    
-//    public int getIshMetanephrosCount(String queryString){
-//    	String filter = "FOCUS_GROUPS:metanephros";
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getIshMRSCount(String queryString){
-//    	String filter = "FOCUS_GROUPS:male reproductive system";
-//        String[]ffields = filter.split(":");
-//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getIshFRSCount(String queryString){
-//    	String filter = "FOCUS_GROUPS:female reproductive system";
-//        String[]ffields = filter.split(":");
-//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getIshERSCount(String queryString){
-//        String filter = "FOCUS_GROUPS:early genitourinary system";
-//        String[] ffields = filter.split(":");
-//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getIshLUTCount(String queryString){
-//        String filter = "FOCUS_GROUPS:lower urinary tract";
-//        String[] ffields = filter.split(":");
-//    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getIshMesonephrosCount(String queryString){
-//    	String filter = "FOCUS_GROUPS:mesonephros";
-//    	return getInsituCount(queryString, filter);
-//    }
-    
-//    public int getInsituPresentCount(String queryString){    	
-//    	String filter = "PRESENT:['' TO *]";
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getInsituCountByUncertain(String queryString){
-//    	String filter = "UNCERTAIN:['' TO *]";
-//    	return getInsituCount(queryString, filter);
-//    }
-
-//    public int getInsituCountByNotDetected(String queryString){
-//    	String filter = "NOT DETECTED:['' TO *]";
-//    	return getInsituCount(queryString, filter);
-//    }
-    
-//	// method to retrieve the list of Insitu stages count for the results page
-//    public List<Integer> getInsituStages(String queryString){
-//
-//		if (queryString == "" || queryString == null || queryString == "*")
-//			queryString = "*:*";
-//		else
-//			queryString = setWidcard(queryString);
-//
-//		List<Integer> ishStages = new ArrayList<Integer>();
-//		for (int i= 0; i < 12; i++){
-//			ishStages.add(0);
-//		}
-//
-//        try
-//        {
-//
-//            SolrQuery parameters = new SolrQuery();
-//	        parameters.set("q",queryString);
-//	        parameters.setFacet(true);
-//	        parameters.setRows(0);	      
-//	        parameters.setFacetMinCount(0);
-//	        parameters.setFacetLimit(1000);
-//	        	      	        
-//            QueryResponse qr = insitu_server.query(parameters);
-//            SolrDocumentList sdl = qr.getResults();
-//           
-//           for (int i = 17; i < 29; i ++){            
-//        	   parameters.addFilterQuery("THEILER_STAGE_FILTER:"+i);
-//	            qr = insitu_server.query(parameters);
-//	            sdl = qr.getResults();
-//	            ishStages.set(i-17, (int)sdl.getNumFound());
-//	            parameters.removeFilterQuery("THEILER_STAGE_FILTER:"+i);
-//            }
-//        }
-//        catch (SolrServerException e)
-//        {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//			e.printStackTrace();
-//		}        
-//        return ishStages;    
-//    }
     
 
     /**
@@ -563,16 +516,12 @@ public class SolrUtil {
 			   		    		
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
-	        parameters.setFacet(true);
-//	        parameters.setFacetLimit(12000);
-	        parameters.setFacetMinCount(0);
 	        parameters.setIncludeScore(true);
 	        parameters.setStart(offset);
 	        parameters.setRows(rows); //(1000);
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
 	        
-	        parameters.addFacetField("GUDMAP");
 	        parameters.addField("GUDMAP");
 	        parameters.addField("GUDMAP_ID");
 	        parameters.addField("GENE");
@@ -605,6 +554,8 @@ public class SolrUtil {
 
             QueryResponse qr = insitu_server.query(parameters);
             sdl = qr.getResults();
+            
+   
             
             
         }
@@ -856,6 +807,71 @@ public class SolrUtil {
         return count;
     }       
     
+    public Map<String,String> getGeneDataCount(String queryString, HashMap<String,String> filters)
+    {  
+    	Map<String,String> totalslist = new HashMap<String,String>();    	
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		int count = 0;
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (genes_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(25000);
+	        
+	        parameters.addFacetField("GENE");
+	        parameters.addFacetField("MGI_GENE_ID");	        
+	        parameters.addFacetField("ISH_RANGE");
+	        parameters.addFacetField("SPECIES");	        
+      
+	        
+	        QueryResponse qr = genes_server.query(parameters);       
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					String name = c.getName();
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
   
     /**
      * This method runs the queryString against the gudmap_genes solr index.
@@ -1394,7 +1410,71 @@ public class SolrUtil {
         return (int)count;    
     }
  
+    public Map<String,String> getTissueDataCount(String queryString, HashMap<String,String> filters)
+    {  
+    	Map<String,String> totalslist = new HashMap<String,String>();    	
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		int count = 0;
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (tissues_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
 
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(100);
+	        
+	        parameters.addFacetField("NAME");
+	        parameters.addFacetField("STAGES");	        
+      
+	        
+	        QueryResponse qr = tissues_server.query(parameters);       
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					String name = c.getName();
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
+
+    
     /**
      * This method runs the queryString against the gudmap_tissues solr index.
      * It returns a QueryResponse object.
@@ -1663,6 +1743,81 @@ public class SolrUtil {
         return count;    
     }
 
+    public Map<String,String> getSamplesDataCount(String queryString, HashMap<String,String> filters)
+    {  
+    	Map<String,String> totalslist = new HashMap<String,String>();    	
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		int count = 0;
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (samples_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(1000);
+	        
+	        parameters.addFacetField("GUDMAP_ID");
+	        parameters.addFacetField("DESCRIPTION");	        
+	        parameters.addFacetField("TITLE");	        
+	        parameters.addFacetField("COMPONENT");	        
+	        parameters.addFacetField("DEV_STAGE");	        
+	        parameters.addFacetField("STAGE");	        
+	        parameters.addFacetField("SEX");	        
+	        parameters.addFacetField("GENOTYPE");	        
+	        parameters.addFacetField("SAMPLE_GEO_ID");	        
+	        parameters.addFacetField("SERIES_GEO_ID");	        
+	        parameters.addFacetField("PLATFORM_GEO_ID");	        
+	        parameters.addFacetField("SOURCE");	        
+      
+	        
+	        QueryResponse qr = samples_server.query(parameters);       
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					String name = c.getName();
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
+    
+    
     /**
      * This method runs the queryString against the gudmap_samples solr index.
      * It returns a a list containing the GEO ID's from the retrieved documents.

@@ -49,6 +49,7 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
+	private HashMap<String,String> totals;
 	private boolean showPageDetails = true;
 
 	
@@ -200,6 +201,10 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 		List<String> ids = solrTreeBean.getSolrUtil().getSamplesData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getSamplesViewData(ids,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
+		
+		
+		totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getSamplesDataCount(solrInput, filterlist);
+		
 
 		return list;
 	}
@@ -269,5 +274,9 @@ public class SolrMicroarrayBean extends PagerImpl implements Serializable  {
 		
 		return list;
 	}	
-    
+
+	public HashMap<String,String> getTotals(){		
+		return totals;
+	}
+     
 }

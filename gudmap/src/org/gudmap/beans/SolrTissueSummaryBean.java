@@ -52,6 +52,7 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
+	private HashMap<String,String> totals;
 	private boolean showPageDetails = true;
    
 	    
@@ -168,6 +169,10 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
 
     	QueryResponse qr  = solrTreeBean.getSolrUtil().getTissueData(solrInput, filterlist, sortColumn,ascending,offset,num);
 		list = formatTableData(qr);
+		
+		
+		totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getTissueDataCount(solrInput, filterlist);
+		
 
 		return list;
 	}
@@ -235,5 +240,8 @@ public class SolrTissueSummaryBean extends PagerImpl implements Serializable  {
 		
 		return list;
 	}	
-   
+
+	public HashMap<String,String> getTotals(){		
+		return totals;
+	}	
 }

@@ -68,7 +68,7 @@
     				<h:commandLink value="OID" actionListener="#{solrMicroarrayBean.sort}">
                          <f:attribute name="sortField" value="GUDMAP" />
                     </h:commandLink>
-    			</f:facet>
+     			</f:facet>
     				#{u.oid}
     		</h:column>
     		
@@ -77,6 +77,8 @@
      				<h:commandLink value="Assay Detail" actionListener="#{solrMicroarrayBean.sort}">
     					<f:attribute name="sortField" value="GUDMAP_ID" />
                     </h:commandLink>
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('GUDMAP_ID')})
     			</f:facet>
     			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewArraySubmissionDetails.xhtml">
 						<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
@@ -87,6 +89,8 @@
     		<h:column rendered="#{paramBean.mic_sampledescriptioncol == true}">
     			<f:facet name="header">
     				Sample Description
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('DESCRIPTION')})
 				</f:facet>
     				#{u.sampleDescription}
     		</h:column>
@@ -94,6 +98,8 @@
     		<h:column rendered="#{paramBean.mic_samplenamecol == true}">
     			<f:facet name="header">
     				Sample Name
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('TITLE')})
 				</f:facet>
     				#{u.title}
     		</h:column>
@@ -101,6 +107,8 @@
     		<h:column rendered="#{paramBean.mic_componentscol == true}">
     			<f:facet name="header">
     				Component
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('COMPONENT')})
 				</f:facet>
     				#{u.sampleComponents}
     		</h:column>
@@ -108,6 +116,8 @@
     		<h:column rendered="#{paramBean.mic_agecol == true}">
     			<f:facet name="header">
     				Age
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('DEV_STAGE')})
 				</f:facet>
     				#{u.age}
     		</h:column>
@@ -118,6 +128,8 @@
                          <f:attribute name="sortField" value="STAGE" />
                          <f:ajax execute="@this stagelink" render="@form"></f:ajax>
                     </h:commandLink>  				
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('STAGE')})
 				</f:facet>
     			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
 				 	<h:outputText value="#{u.stage}" />
@@ -128,6 +140,8 @@
     		<h:column rendered="#{paramBean.mic_sexcol == true}">
     			<f:facet name="header">
     				Sex
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('SEX')})
 				</f:facet>
     				#{u.sex}
     		</h:column>
@@ -135,6 +149,8 @@
     		<h:column rendered="#{paramBean.mic_genotypecol == true}">
     			<f:facet name="header">
     				Genotype
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('GENOTYPE')})
 				</f:facet>
     				#{u.genotype}
     		</h:column>
@@ -145,6 +161,8 @@
                          <f:attribute name="sortField" value="NATURAL_SORT(geo_sample_id)" />
                          <f:ajax execute="@this geosamplelink" render="@form"></f:ajax>
                     </h:commandLink>
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('SAMPLE_GEO_ID')})
 				</f:facet>
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSampleID}">
 					<h:outputText value="#{u.geoSampleID}"/>
@@ -157,6 +175,8 @@
                          <f:attribute name="sortField" value="NATURAL_SORT(geo_series_id)" />
                          <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
                     </h:commandLink>
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('SERIES_GEO_ID')})
 				</f:facet>
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
 					<h:outputText value="#{u.geoSeriesID}"/>
@@ -166,6 +186,8 @@
     		<h:column rendered="#{paramBean.mic_platformIDcol == true}">
     			<f:facet name="header">
     				Platform
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('PLATFORM_GEO_ID')})
 				</f:facet>
     				#{u.platformID}
     		</h:column> 
@@ -176,6 +198,8 @@
                          <f:attribute name="sortField" value="source" />
                           <f:ajax execute="@this sourcelink" render="@form"></f:ajax>
                     </h:commandLink>
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('SOURCE')})
 				</f:facet>
     				#{u.source}
     		</h:column>

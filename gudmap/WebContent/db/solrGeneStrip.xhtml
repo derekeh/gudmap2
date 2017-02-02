@@ -92,6 +92,8 @@
     				<h:commandLink value="Gene" actionListener="#{solrGeneStripBean.sort}">
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrGeneStripBean.totals.get('GENE')})
      			</f:facet>
      			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml" rendered="#{not empty u.imageUrl}">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
@@ -111,6 +113,8 @@
     				<h:commandLink value="Species" actionListener="#{solrGeneStripBean.sort}">
     					<f:attribute name="sortField" value="SPECIES" />
                     </h:commandLink>
+                    <br />
+                    (#{solrGeneStripBean.totals.get('SPECIES')})
 				</f:facet>
     				#{u.species}
     		</h:column> 
@@ -161,6 +165,8 @@
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
     				Stages
+                    <br />
+                    (#{solrGeneStripBean.totals.get('ISH_RANGE')})
 				</f:facet>
 				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}&amp;geneId=#{u.gene_id}&amp;species=#{u.species}">
     				#{u.stageRange}

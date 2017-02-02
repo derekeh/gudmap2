@@ -70,6 +70,8 @@
     				<h:commandLink value="Tissue Summary" actionListener="#{solrTissueSummaryBean.sort}">
     					<f:attribute name="sortField" value="NAME" />
                     </h:commandLink>
+                    <br />
+                    (#{solrTissueSummaryBean.totals.get('NAME')})
     			</f:facet>
 				<h:outputLink value="http://glenelgin.hgu.mrc.ac.uk/Organ_Summaries/component_summary.php?componentID=#{u.oid}">
 					<h:outputText value="#{u.name}"/>
@@ -88,6 +90,8 @@
      				<h:commandLink value="Stages" actionListener="#{solrTissueSummaryBean.sort}">
     					<f:attribute name="sortField" value="STAGES" />
                     </h:commandLink>
+                    <br />
+                    (#{solrTissueSummaryBean.totals.get('STAGES')})
 				</f:facet>
     				#{u.stages}
     		</h:column>
