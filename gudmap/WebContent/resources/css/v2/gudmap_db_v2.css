@@ -469,6 +469,12 @@
 	display:none;
 }
 
+.db_urlbutton {
+	color:darkred;
+	font-size:8px;
+	height:24px;
+}
+
 /* paging buttons override */
 
 #pagingform .ui-datalist-content.ui-widget-content {
