@@ -206,7 +206,16 @@ public class SolrDao {
 				doc.addField("FIXATION_METHOD", result.getString(34)); 
 				doc.addField("STRAIN", result.getString(35)); 
 				doc.addField("SEX", result.getString(36)); 
-				doc.addField("DEV_STAGE", result.getString(37)); 
+				
+				String age = result.getString(37);
+				age = age.replace(" ", "");
+				if (age.contains("P")){
+					int len = age.length();
+					age = age.substring(0, len-1);
+					age = "P" + age;
+				}
+				doc.addField("DEV_STAGE", age); 
+			
 				doc.addField("GENOTYPE", result.getString(38)); 
 				doc.addField("ASSAY_TYPE", result.getString(39)); 
 				doc.addField("PROJECT", result.getString(40)); 
@@ -340,8 +349,10 @@ public class SolrDao {
 				doc.addField("GUDMAP_ID", result.getString(1)); 
 				doc.addField("GUDMAP", result.getString(2)); 
 				doc.addField("SAMPLE_GEO_ID", result.getString(3)); 
-				doc.addField("STAGE", result.getString(4)); 
-				doc.addField("DEV_STAGE", result.getString(5)); 
+				doc.addField("STAGE", result.getString(4));
+				String devstage = result.getString(5);
+				devstage = devstage.replace(" ", "");
+				doc.addField("DEV_STAGE", devstage); 
 				doc.addField("SOURCE", result.getString(6)); 
 				doc.addField("PI_NAME", result.getString(7)); 
 				doc.addField("DATE", result.getString(8)); 
@@ -562,8 +573,10 @@ public class SolrDao {
 				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(35)); 
 				doc.addField("FIXATION_METHOD", result.getString(36)); 				
 				doc.addField("STRAIN", result.getString(37)); 
-				doc.addField("SEX", result.getString(38)); 				
-				doc.addField("DEV_STAGE", result.getString(39)); 
+				doc.addField("SEX", result.getString(38)); 
+				String devstage = result.getString(39);
+				devstage = devstage.replace(" ", "");
+				doc.addField("DEV_STAGE", devstage); 
 				doc.addField("GENOTYPE", result.getString(40)); 				
 				doc.addField("ASSAY_TYPE", result.getString(41)); 
 				doc.addField("PROJECT", result.getString(42)); 				
@@ -667,7 +680,9 @@ public class SolrDao {
 				doc.addField("LIBRARY_STRATEGY", result.getString(5)); 
 				doc.addField("STAGE", result.getString(6)); 
 				doc.addField("PI_NAME", result.getString(7)); 
-				doc.addField("DEV_STAGE", result.getString(8)); 
+				String devstage = result.getString(8);
+				devstage = devstage.replace(" ", "");
+				doc.addField("DEV_STAGE", devstage); 
 				doc.addField("DATE", result.getString(9)); 
 				doc.addField("SEX", result.getString(10)); 
 				doc.addField("SAMPLE_DESCRIPTION", result.getString(11)); 

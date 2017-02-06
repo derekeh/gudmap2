@@ -379,12 +379,15 @@ public class SolrUtil {
 	        parameters.set("q",queryString);
 	        parameters.setRows(0);	
 	        
-	        if (filters != null){
+	        if (!filters.isEmpty()){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (insitu_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (insitu_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	      	
@@ -587,12 +590,15 @@ public class SolrUtil {
 	        parameters.addField("MGI_GENE_ID");
 	        parameters.addField("SPECIES");
 	        
-	        if (filters != null){
+	        if (!filters.isEmpty()){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (insitu_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (insitu_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -718,8 +724,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (genes_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (genes_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	
@@ -893,8 +902,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (genes_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (genes_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -1047,8 +1059,11 @@ public class SolrUtil {
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 		            String key = pair.getKey();
-		            if (ng_samples_schema.contains(key))
-		            	parameters.addFilterQuery(key + ":" + pair.getValue());
+		            if (ng_samples_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	
@@ -1129,8 +1144,11 @@ public class SolrUtil {
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
 		            String key = pair.getKey();
-		            if (ng_samples_schema.contains(key))
-		            	parameters.addFilterQuery(key + ":" + pair.getValue());
+		            if (ng_samples_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 
@@ -1232,8 +1250,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (genelists_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (genelists_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -1299,8 +1320,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (genelists_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (genelists_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        parameters.setRows(Integer.MAX_VALUE); 
@@ -1348,8 +1372,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (tissues_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (tissues_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -1417,8 +1444,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (tissues_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (tissues_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -1604,8 +1634,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (samples_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (samples_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	       	        
@@ -1670,8 +1703,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (samples_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (samples_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -2091,8 +2127,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (mouse_strain_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (mouse_strain_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -2168,8 +2207,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (mouse_strain_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (mouse_strain_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
         	
@@ -2217,8 +2259,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (image_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (image_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        
@@ -2291,8 +2336,11 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            if (image_schema.contains(pair.getKey()))
-		            	parameters.addFilterQuery(pair.getKey() + ":" + pair.getValue());
+		            if (image_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
 		        }
 	        }
 	        

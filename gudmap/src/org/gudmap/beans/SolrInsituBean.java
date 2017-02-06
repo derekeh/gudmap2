@@ -258,15 +258,8 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 				model.setStage(stage);
 				model.setStage_order(stage.replace("TS", ""));
 			}
-			if (doc.containsKey("DEV_STAGE")){
-				String age = doc.getFieldValue("DEV_STAGE").toString();
-				if (age.contains("P")){
-					int len = age.length();
-					age = age.substring(0, len-1);
-					age = "P " + age;
-				}
-				model.setAge(age);
-			}
+			if (doc.containsKey("DEV_STAGE"))
+				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 			if (doc.containsKey("SEX"))
 				model.setSex(doc.getFieldValue("SEX").toString());
 			if (doc.containsKey("GENOTYPE"))

@@ -458,35 +458,17 @@ public class SolrFilter implements Serializable {
 	public Map<String,String> getAgeList(){
 		
 		Map<String,String> agemap = new LinkedHashMap<String,String>();
-
-
-		try
-		{
-			String queryString=SolrQueries.THEILER_AGES;
-			con = Globals.getDatasource().getConnection();
-			ps = con.prepareStatement(queryString); 
-			result =  ps.executeQuery();
-			while(result.next()){
-				String key = result.getString(1);
-				String val = result.getString(1);
-				agemap.put(key, val);
-			}
-
-			queryString=SolrQueries.CARNEGIE_AGES;
-			ps = con.prepareStatement(queryString); 
-			result =  ps.executeQuery();
-			while(result.next()){
-				String key = result.getString(1);
-				String val = result.getString(1);
-				agemap.put(key, val);
-			}
-
-		}
-		
-		catch(SQLException sqle){sqle.printStackTrace();}
-		finally {
-		    Globals.closeQuietly(con, ps, result);
-		}
+		agemap.put("10.5 dpc", "10.5dpc");
+		agemap.put("11.5 dpc", "11.5dp");
+		agemap.put("12.5 dpc", "12.5dpc");
+		agemap.put("13.5 dpc", "13.5dpc");
+		agemap.put("14.5 dpc", "14.5dpc");
+		agemap.put("15.5 dpc", "15.5dpc");
+		agemap.put("16.5 dpc", "16.5dpc");
+		agemap.put("17.5 dpc", "17.5dpc");
+		agemap.put("18.5 dpc", "18.5dpc");
+		agemap.put("Newborn (range P0-P3)", "[P0 TO P3]");
+		agemap.put("Range P4-Adult", "[P4 TO P200] OR Adult");
 		return agemap;
 	}	
 	

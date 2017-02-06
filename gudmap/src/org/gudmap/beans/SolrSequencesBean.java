@@ -143,13 +143,13 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
         	showPageDetails = false;
     }
 
-//    public String refresh(){
-//     	loadDataList();
-//    	return "solrSequences";
-//    }
-    public void refresh(){
+    public String refresh(){
      	loadDataList();
+    	return "solrSequences";
     }
+//    public void refresh(){
+//     	loadDataList();
+//    }
 
     public void resetAll() {
 		paramBean.resetAll();
