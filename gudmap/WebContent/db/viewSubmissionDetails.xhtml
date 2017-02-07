@@ -553,7 +553,7 @@ function findExpressionNotes(){
 
 				<h:outputText value="Nerve Density: "  styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=100">
-					<h:graphicImage library="images/pattern_images" name="density_info.png" styleClass="db_expression_icon" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}"/>
+					<h:graphicImage library="images/pattern_images" name="density_info2.png" styleClass="db_circular_image" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}"/>
 				</h:outputLink>
 				<h:outputText value="&lt;br/&gt;&lt;br/&gt;Relative to Total:" escape="false" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:panelGrid columns="2" columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">

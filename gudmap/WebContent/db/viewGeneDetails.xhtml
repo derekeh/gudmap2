@@ -26,11 +26,26 @@
 	
 	#{sessionBean.init()}
 	#{sessionBean.setGeneParam(geneDetailsBean.geneModel.symbol)}
+	#{sessionBean.setGeneIdParam(geneDetailsBean.geneId)}
 	
 	
 	<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
 	<!-- can use relative links on html tags -->
-	    <h:outputText value="Gene Details" styleClass="db_bold" />	
+	    #{paramBean.setUrloptionvalues('Hide URL')}
+		#{paramBean.setUrlShowHide('Show URL')}
+	   <h:panelGrid columns="2">
+		   <h:outputText value="Gene Details &#160;&#160;&#160;" styleClass="db_bold"></h:outputText> 
+		   
+		   <h:form id="geneurlform">
+		   	<h:panelGrid columns="2">
+			   	<h:commandButton id="btn_ajax" value="#{paramBean.getUrlShowHide()}" action="#{paramBean.setUrloptionvalues('change')}"  styleClass="db_urlbutton">
+                            <f:ajax execute="geneurlform" render="geneurlform" />
+              </h:commandButton>
+				<h:outputText value="http://beta.gudmap.org/gudmap/db/viewGeneDetails.jsf?geneId=#{sessionBean.geneIdParam}" rendered="#{paramBean.urloptionvalues eq 'Show URL'}"></h:outputText> 
+			</h:panelGrid>
+			</h:form>
+			  
+	   </h:panelGrid>
 	    <!-- all other content in here -->  
 	    <h:outputText value="There is no available data on the selected gene." styleClass="plaintext" rendered="#{geneDetailsBean.geneModel == null}" />
 		<h:panelGrid  columns="2" columnClasses="db_outer_detail_left,db_outer_detail_right" styleClass="db_panel_grid_width" border="0" cellspacing="0" cellpadding="0" rendered="#{geneDetailsBean.geneModel != null}">

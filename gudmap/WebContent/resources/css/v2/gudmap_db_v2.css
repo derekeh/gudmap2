@@ -386,6 +386,10 @@
  	min-height:20px;
  }
  
+ .db_circular_image {
+ 	border-radius: 50%;
+ }
+ 
  .db_thumb_height {
  	max-height:50px;
  }
