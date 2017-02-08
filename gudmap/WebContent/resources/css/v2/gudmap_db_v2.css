@@ -476,7 +476,9 @@
 .db_urlbutton {
 	color:darkred;
 	font-size:8px;
-	height:24px;
+	height:21px;
+	font-family:arial;
+	border-radius:12px;
 }
 
 /* paging buttons override */
