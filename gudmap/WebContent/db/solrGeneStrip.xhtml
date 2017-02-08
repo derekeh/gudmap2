@@ -104,6 +104,8 @@
     		<h:column rendered="#{paramBean.synonymcol == true}">
     			<f:facet name="header">
     				Synonyms
+                    <br />
+                    (#{solrGeneStripBean.totals.get('SYNONYMS')})
 				</f:facet>
 				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
     		</h:column>

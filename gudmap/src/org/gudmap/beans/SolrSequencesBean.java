@@ -55,6 +55,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
+	private HashMap<String,String> totals;
 	private boolean showPageDetails = true;
 
 
@@ -273,6 +274,8 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 			sdl = solrTreeBean.getSolrUtil().getSequencesData(solrInput,filterlist,sortColumn,ascending,offset,num);
 			list = formatTableData(sdl);
 			
+			totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getSequencesDataCount(solrInput, filterlist);			
+			
 		} catch (SolrServerException e) {
 			e.printStackTrace();
 		}
@@ -347,5 +350,8 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 		
 		return list;
 	}	
-    
+
+	public HashMap<String,String> getTotals(){		
+		return totals;
+	}	
 }

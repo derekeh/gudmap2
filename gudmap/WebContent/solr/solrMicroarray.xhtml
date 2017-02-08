@@ -207,6 +207,8 @@
     		<h:column rendered="#{paramBean.mic_submissiondatecol == true}">
     			<f:facet name="header">
     				Submission Date
+                   <br />
+                    (#{solrMicroarrayBean.totals.get('DATE')})
 				</f:facet>
     				#{u.submission_date}
     		</h:column> 

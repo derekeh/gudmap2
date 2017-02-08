@@ -417,7 +417,6 @@ public class SolrUtil {
 		else
 			queryString = setWidcard(queryString);
    	
-		int count = 0;
 		try{
             SolrQuery parameters = new SolrQuery();
 	        parameters.set("q",queryString);
@@ -440,6 +439,7 @@ public class SolrUtil {
 	        parameters.setFacetLimit(12000);
 	        
 	        parameters.addFacetField("GENE");
+	        parameters.addFacetField("GUDMAP_ID");	
 	        parameters.addFacetField("ASSAY_TYPE");	        
 	        parameters.addFacetField("SPECIMEN_ASSAY_TYPE");	
 	        parameters.addFacetField("SPECIES");
@@ -449,8 +449,8 @@ public class SolrUtil {
 	        parameters.addFacetField("GENOTYPE");	        
 	        parameters.addFacetField("TISSUE_TYPE");	        
 	        parameters.addFacetField("PROBE_NAME");	        
-	        parameters.addFacetField("SOURCE");	        
-	        parameters.addFacetField("GUDMAP_ID");	        
+	        parameters.addFacetField("SOURCE");	               
+	        parameters.addFacetField("DATE");	        
 	        
 	        
 	        QueryResponse qr = insitu_server.query(parameters);       
@@ -461,7 +461,6 @@ public class SolrUtil {
         			int size = 0;
        			    for (Count c : ff.getValues()) {
         				if (c.getCount() > 0) {
-        					String name = c.getName();
         					if (c.getCount() > 0){
         						size += 1;
         					}
@@ -816,7 +815,6 @@ public class SolrUtil {
 		else
 			queryString = setWidcard(queryString);
    	
-		int count = 0;
 		try{
 	    	
             SolrQuery parameters = new SolrQuery();
@@ -843,6 +841,7 @@ public class SolrUtil {
 	        parameters.addFacetField("MGI_GENE_ID");	        
 	        parameters.addFacetField("ISH_RANGE");
 	        parameters.addFacetField("SPECIES");	        
+	        parameters.addFacetField("SYNONYMS");	        
       
 	        
 	        QueryResponse qr = genes_server.query(parameters);       
@@ -853,7 +852,6 @@ public class SolrUtil {
         			int size = 0;
        			    for (Count c : ff.getValues()) {
         				if (c.getCount() > 0) {
-        					String name = c.getName();
         					if (c.getCount() > 0){
         						size += 1;
         					}
@@ -1074,7 +1072,6 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            String key = pair.getKey();
 		            if (ng_samples_schema.contains(pair.getKey())){
 		            	String f = pair.getKey() + ":" + pair.getValue();
 		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
@@ -1082,7 +1079,7 @@ public class SolrUtil {
 		            }
 		        }
 	        }
-	
+	        
 	        QueryResponse qr = ng_samples_server.query(parameters);                      
 	        
 	        SolrDocumentList sdl = qr.getResults();
@@ -1098,6 +1095,79 @@ public class SolrUtil {
         return count;
     }
 
+    public Map<String,String> getSequencesDataCount(String queryString, HashMap<String,String> filters)
+    { 
+    	Map<String,String> totalslist = new HashMap<String,String>();    	
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (ng_samples_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	        
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(500);
+	        
+	        parameters.addFacetField("GUDMAP");
+	        parameters.addFacetField("SAMPLE_DESCRIPTION");	        
+	        parameters.addFacetField("SAMPLE_NAME");
+	        parameters.addFacetField("COMPONENT");	        
+	        parameters.addFacetField("DEV_STAGE");	        
+	        parameters.addFacetField("STAGE");	        
+	        parameters.addFacetField("SEX");	        
+	        parameters.addFacetField("GENOTYPE");	        
+	        parameters.addFacetField("SAMPLE_GEO_ID");	        
+	        parameters.addFacetField("SERIES_GEO_ID");	        
+	        parameters.addFacetField("LIBRARY_STRATEGY");	        
+	        parameters.addFacetField("SOURCE");	        
+	        parameters.addFacetField("DATE");	
+	        
+	        QueryResponse qr = ng_samples_server.query(parameters);                      
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
+    
+    
     /**
      * This method runs the queryString against the gudmap_nextgen_samples solr index.
      * It returns a SolrDocumentList object containing the retrieved documents.
@@ -1159,7 +1229,6 @@ public class SolrUtil {
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
 		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-		            String key = pair.getKey();
 		            if (ng_samples_schema.contains(pair.getKey())){
 		            	String f = pair.getKey() + ":" + pair.getValue();
 		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
@@ -1419,7 +1488,6 @@ public class SolrUtil {
 		else
 			queryString = setWidcard(queryString);
    	
-		int count = 0;
 		try{
 	    	
             SolrQuery parameters = new SolrQuery();
@@ -1454,7 +1522,6 @@ public class SolrUtil {
         			int size = 0;
        			    for (Count c : ff.getValues()) {
         				if (c.getCount() > 0) {
-        					String name = c.getName();
         					if (c.getCount() > 0){
         						size += 1;
         					}
@@ -1752,7 +1819,6 @@ public class SolrUtil {
 		else
 			queryString = setWidcard(queryString);
    	
-		int count = 0;
 		try{
 	    	
             SolrQuery parameters = new SolrQuery();
@@ -1787,6 +1853,7 @@ public class SolrUtil {
 	        parameters.addFacetField("SERIES_GEO_ID");	        
 	        parameters.addFacetField("PLATFORM_GEO_ID");	        
 	        parameters.addFacetField("SOURCE");	        
+	        parameters.addFacetField("DATE");	        
       
 	        
 	        QueryResponse qr = samples_server.query(parameters);       
@@ -1797,7 +1864,6 @@ public class SolrUtil {
         			int size = 0;
        			    for (Count c : ff.getValues()) {
         				if (c.getCount() > 0) {
-        					String name = c.getName();
         					if (c.getCount() > 0){
         						size += 1;
         					}
@@ -2306,6 +2372,72 @@ public class SolrUtil {
         return (int)count;    
     }
 
+    public Map<String,String> getMouseStrainsDataCount(String queryString, HashMap<String,String> filters)
+    { 
+    	Map<String,String> totalslist = new HashMap<String,String>();    	
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (mouse_strain_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	        
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(100);
+	        
+	        parameters.addFacetField("GENE");
+	        parameters.addFacetField("REPORTER_ALLELE");	        
+	        parameters.addFacetField("ALLELE_TYPE");
+	        parameters.addFacetField("ALLELE_VER");	        
+	        parameters.addFacetField("ALLELE_CHAR");	        
+	        parameters.addFacetField("STRAIN_AVA");	        
+	        parameters.addFacetField("ORGAN");	        
+	        parameters.addFacetField("CELL_TYPE");	        
+	        
+	        QueryResponse qr = mouse_strain_server.query(parameters);                      
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
 
     /**
      * This method runs the queryString against the gudmap_mousestrains solr index.
@@ -2593,8 +2725,6 @@ public class SolrUtil {
 			queryString = setWidcard(queryString);
 
 		
-    	SolrDocumentList sdl = null;
-    	
     	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
     	QueryResponse qr = null;
         try

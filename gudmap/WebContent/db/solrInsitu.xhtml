@@ -252,6 +252,8 @@
       				<h:commandLink value="Submission Date" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="DATE" />
                     </h:commandLink>
+                    <br />
+                    "(#{solrInsituBean.totals.get('DATE')})"
 				</f:facet>
     				#{u.submission_date}
     		</h:column>

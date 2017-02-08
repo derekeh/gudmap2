@@ -53,6 +53,7 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
+	private HashMap<String,String> totals;
 	private boolean showPageDetails = true;
     
     // Constructors -------------------------------------------------------------------------------
@@ -190,6 +191,8 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 
 		SolrDocumentList sdl = solrTreeBean.getSolrUtil().getMouseStrainsData(solrInput,filterlist,sortColumn,ascending,offset,num);
 		list = formatTableData(sdl);
+		
+		totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getMouseStrainsDataCount(solrInput, filterlist);
 
 		return list;
 	}
@@ -242,5 +245,9 @@ public class SolrMouseStrainsBean extends PagerImpl implements Serializable  {
 		
 		return list;
 	}	
-   
+
+	public HashMap<String,String> getTotals(){		
+		return totals;
+	}
+	
 }
