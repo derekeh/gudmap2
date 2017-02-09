@@ -35,7 +35,7 @@
 				</h:outputLink>
 				
 				<h:outputText value="External/Internal Links: " />
-	    	    <h:outputLink styleClass="datatext" value="#{AppRoot}/pages/viewPage.jsf?docID=36">
+	    	    <h:outputLink styleClass="datatext" value="#{appRoot}/pages/viewPage.jsf?docID=36">
 	    			<h:outputText value="View sequencing data on UCSC Genome Browser or IGV" />
 	    	    </h:outputLink>
 				
@@ -243,7 +243,7 @@
 		
 							<h:outputText value="Gene" />
 							<h:panelGroup></h:panelGroup>
-							<h:outputLink value="viewGeneStrip.jsf">
+							<h:outputLink value="viewGeneDetails.jsf">
 								<h:outputText value="#{allele.geneSymbol}" />
 								<f:param name="gene" value="#{allele.geneSymbol}" />
 								<f:param name="geneId" value="#{allele.geneId}" />

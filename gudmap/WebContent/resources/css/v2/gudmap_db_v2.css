@@ -386,6 +386,10 @@
  	min-height:20px;
  }
  
+ .db_circular_image {
+ 	border-radius: 50%;
+ }
+ 
  .db_thumb_height {
  	max-height:50px;
  }
@@ -467,6 +471,14 @@
 
 .db_hide {
 	display:none;
+}
+
+.db_urlbutton {
+	color:darkred;
+	font-size:8px;
+	height:21px;
+	font-family:arial;
+	border-radius:12px;
 }
 
 /* paging buttons override */

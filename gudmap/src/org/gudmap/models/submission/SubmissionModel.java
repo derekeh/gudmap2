@@ -82,12 +82,12 @@ public class SubmissionModel {
 		}
 	
 		if (1 == iSize)
-		    alleleModel[0].setTitle("Non-wild type AlleleModel:");
+		    alleleModel[0].setTitle("Non-wild type Allele:");
 		else {
 		    int i = 0;
 		    iSize++;
 		    for (i = 1; i < iSize; i++) {
-			alleleModel[i-1].setTitle("Non-wild type AlleleModel "+i+":");
+			alleleModel[i-1].setTitle("Non-wild type Allele "+i+":");
 		    }
 		}
     }

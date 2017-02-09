@@ -33,6 +33,7 @@ public class ParamBeanAssembler {
 	private Map<String,String>sexlist;
 	private Map<String,String>specimentypelist;
 	private Map<String,String>geneoptionlist;
+	private Map<String,String>urloptionlist;
 	private Map<String,String>annotationtypelist;
 	private Map<String,String>imagedirlist;
 	private Map<String,String>webfiledirlist;
@@ -221,6 +222,14 @@ public class ParamBeanAssembler {
 		geneoptionlist.put("GUDMAP Entries", "GUDMAP Entries");
 		
 		return geneoptionlist;
+	}
+	
+	public Map<String,String> getUrloptionlist() {
+		urloptionlist = new LinkedHashMap<String,String>();
+		urloptionlist.put("Show URL", "Show URL");
+		//urloptionlist.put("Hide URL", "Hide URL");
+		
+		return urloptionlist;
 	}
 	
 	public Map<String,String> getAnnotationtypelist() {

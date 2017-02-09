@@ -159,6 +159,10 @@ public class ParamBean implements Serializable {
 	/*gene search options*/
 	private String geneoptionvalues="Expression Summaries";
 	
+	/*url display options*/
+	private String urloptionvalues="Hide URL";
+	private String urlShowHide="Show URL";
+	
 	//image upload directories
 	private String imageDir="general";
 	
@@ -632,6 +636,11 @@ public class ParamBean implements Serializable {
 	public Map<String,String> getGeneoptionlist(){
 		return assembler.getGeneoptionlist();
 	}
+	
+	/**URL display options***/
+	public Map<String,String> getUrloptionlist(){
+		return assembler.getUrloptionlist();
+	}
 
 /*******************************
  * getters and setters for filter outcomes 
@@ -995,6 +1004,35 @@ public class ParamBean implements Serializable {
 	
 	public String getGeneoptionvalues() {
 		return geneoptionvalues;
+	}
+	
+	/*****URL display options**********/
+	public void setUrloptionvalues(String urloptionvalues){
+		if(urloptionvalues.equals("change")) {
+			if(this.urlShowHide.equals("Show URL")) {
+					this.urloptionvalues="Show URL";
+					this.urlShowHide="Hide URL";
+			}
+			else {
+				this.urloptionvalues="Hide URL";
+				this.urlShowHide="Show URL";
+			}
+		}
+		else
+			this.urloptionvalues=urloptionvalues;
+		
+	}
+	
+	public String getUrloptionvalues() {
+		return urloptionvalues;
+	}
+	
+	public void setUrlShowHide(String urlShowHide) {
+		this.urlShowHide =  urlShowHide;
+	}
+	
+	public String getUrlShowHide() {
+		return urlShowHide;
 	}
 	
 	/********************collection save options************/
