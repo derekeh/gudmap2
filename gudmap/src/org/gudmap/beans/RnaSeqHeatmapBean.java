@@ -10,7 +10,6 @@ import javax.inject.Named;
 
 import org.gudmap.globals.Globals;
 import org.gudmap.impl.PagerImpl;
-import org.gudmap.queries.array.SequenceQueries;
 import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,29 +19,20 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * <h1>RnaSeqHeatmapBean</h1>
@@ -74,11 +64,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 	private int geneBioTypesCount = 0;	
 	
 	private String tableTitle;
-    
-	private Connection con;
-	private PreparedStatement ps;
-	private ResultSet result;
-   
     
     @Inject
    	protected SessionBean sessionBean;    
@@ -153,7 +138,6 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 
 	 */
     public void setBiotypes(ArrayList<String> val) {
-    	int c = val.size();
     	this.biotypes = val;
     }
  

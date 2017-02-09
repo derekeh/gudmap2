@@ -787,12 +787,6 @@ public class SolrUtil {
 
 	            offset += fetchSize;
 	        }	        
-//	        SolrDocumentList sdl = qr.getResults();
-//    	    for(SolrDocument doc : sdl){
-//	    		String id = doc.getFieldValue("GENE").toString();
-//	    		if(!genelist.contains(id) && (id.length() != 0))
-//	    			genelist.add(id);
-//    		}
 	        
 	        count = genelist.size();
         }
@@ -846,11 +840,6 @@ public class SolrUtil {
 	        
 	        QueryResponse qr = genes_server.query(parameters);     
 	        
-	        SolrDocumentList sdl = qr.getResults();
-	        int ccount = (int)sdl.getNumFound();
-	        
-	        
-	        
         	if (qr.getFacetFields() != null) {
         		for (FacetField ff : qr.getFacetFields()) {
         			String field = ff.getName();
@@ -895,7 +884,6 @@ public class SolrUtil {
 		else
 			queryString = setWidcard(queryString);
 
-		List<String> genes = new ArrayList<String>();
     	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
     	SolrDocumentList sdl = null;
     	
@@ -932,12 +920,6 @@ public class SolrUtil {
             QueryResponse qr = genes_server.query(parameters);
                        
             sdl = qr.getResults();
-//    		int rowNum = sdl.size();
-//    		for(int i=0; i<rowNum; i++) { 
-//    			SolrDocument doc = sdl.get(i);
-//    			String id = doc.getFieldValue("GENE").toString();
-//    			genes.add(id);
-//    		}
         }
         catch (SolrServerException e)
         {
@@ -946,7 +928,7 @@ public class SolrUtil {
 			e.printStackTrace();
 		}  
 
-    	return sdl; //genes;
+    	return sdl; 
     }
 
 
@@ -986,8 +968,6 @@ public class SolrUtil {
     		}
     		genes = genes.replaceAll(";", ",");
     		genes = genes.substring(0, genes.lastIndexOf(","));
-//    		List<String> l = Arrays.asList(genes.split("\\s*,\\s*"));
-//    		int c = l.size();
     		
         }
         catch (SolrServerException e)
@@ -1213,23 +1193,6 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
 	        
-//	        parameters.addFacetField("GUDMAP");
-//	        parameters.addField("DEV_STAGE");
-//	        parameters.addField("COMPONENT");
-//	        parameters.addField("DATE");
-//	        parameters.addField("GENOTYPE");
-//	        parameters.addField("GUDMAP");
-//	        parameters.addField("LIBRARY_STRATEGY");
-//	        parameters.addField("PI_NAME");
-//	        parameters.addField("SAMPLE_DESCRIPTION");
-//	        parameters.addField("SAMPLE_GEO_ID");
-//	        parameters.addField("SAMPLE_NAME");
-//	        parameters.addField("SERIES_GEO_ID");
-//	        parameters.addField("SOURCE");
-//	        parameters.addField("STAGE");
-//	        parameters.addField("SEX");
-
-
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
 		        while (it.hasNext()) {
@@ -1241,7 +1204,6 @@ public class SolrUtil {
 		            }
 		        }
 	        }
-
 
             QueryResponse qr = ng_samples_server.query(parameters);
             sdl = qr.getResults();
@@ -1386,25 +1348,6 @@ public class SolrUtil {
 	        
 	        
 	      	parameters.addField("ID");
-//        	parameters.addField("NAME");
-//        	parameters.addField("DESCRIPTION");
-//	      	parameters.addField("PLATFORM");
-//        	parameters.addField("SAMPLE");
-//        	parameters.addField("EMAP");
-//	      	parameters.addField("MA_DATASET");
-//        	parameters.addField("MA_DATASET_ID");
-//        	parameters.addField("TOT_ENTITIES");
-//	      	parameters.addField("TOT_GENES");
-//        	parameters.addField("AUTHOR");
-//        	parameters.addField("DATE");
-//	      	parameters.addField("STAGE");
-//        	parameters.addField("SEX");
-//        	parameters.addField("GENELIST_TYPE");
-//        	parameters.addField("ENTITIES");
-//        	parameters.addField("GENE");
-//	      	parameters.addField("GUDMAP_IDS");
-//        	parameters.addField("REF");
-//        	parameters.addField("EMAP_TERM");
 
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
@@ -1991,27 +1934,6 @@ public class SolrUtil {
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
       
-//	      	parameters.addField("GUDMAP_ID");
-//	      	parameters.addField("GUDMAP");
-//        	parameters.addField("SAMPLE_GEO_ID");
-//        	parameters.addField("STAGE");
-//        	parameters.addField("DEV_STAGE");
-//        	parameters.addField("SOURCE");
-////        	parameters.addField("PI_NAME");
-//        	parameters.addField("DATE");
-//        	parameters.addField("SEX");
-//        	parameters.addField("DESCRIPTION");
-//        	parameters.addField("TITLE");
-//        	parameters.addField("SERIES_GEO_ID");
-//        	parameters.addField("COMPONENT");
-//        	parameters.addField("QMC_ALE_GENE");
-//        	parameters.addField("ASSAY_TYPE");
-//        	parameters.addField("SPECIMEN_ASSAY_TYPE");
-//        	parameters.addField("PER_OID");
-//        	parameters.addField("PLATFORM_GEO_ID");
-//        	parameters.addField("SPECIES");
-//        	parameters.addField("GENOTYPE");
-        	
             QueryResponse qr = samples_server.query(parameters);
         	sdl = qr.getResults();
         }
@@ -2610,19 +2532,7 @@ public class SolrUtil {
 	        parameters.setRows(rows);
 	        if (!column.equalsIgnoreCase("RELEVANCE"))
 	        	parameters.setSort(column, order);
-      
-//        	parameters.addField("GENE");
- //       	parameters.addField("GUDMAP_ID");
-//        	parameters.addField("SPECIMEN_ASSAY_TYPE");
-//        	parameters.addField("SOURCE");
-//        	parameters.addField("SEX");
- //       	parameters.addField("STAGE");
-//        	parameters.addField("IMAGE_NOTE");
-//        	parameters.addField("IMAGE_PATH");
-//        	parameters.addField("THUMBNAIL_PATH");
-//           	parameters.addField("IMAGE_CLICK_PATH");
-//           	parameters.addField("IMAGE_TYPE");
-//           	parameters.addField("SPECIES");
+
            	
 	        if (filters != null){
 		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
@@ -2639,16 +2549,6 @@ public class SolrUtil {
 	        QueryResponse qr = image_server.query(parameters);
             sdl = qr.getResults();
             
-//            SolrDocumentList docs = new SolrDocumentList();
-//            ArrayList<String> genes = new ArrayList<String>();
-//            for(SolrDocument doc:sdl){
-//            	if (!genes.contains(doc.getFieldValue("GUDMAP_ID").toString())){
-//            		genes.add(doc.getFieldValue("GUDMAP_ID").toString());
-//            		docs.add(doc);
-//            		
-//            	}
-//            }
-//            sdl = docs;
         }
         catch (SolrServerException e)
         {
@@ -2777,13 +2677,6 @@ public class SolrUtil {
     	return genes;
     }
     
-//    public int getIshExpressionCount(){
-//    	return ishExpressionCount;
-//    }
-//    
-//    public void setIshExpressionCount(PivotField p){
-//    	ishExpressionCount += p.getPivot().size();
-//    }
 
     //***************************** SCHEMA METHODS *****************************************************
      

@@ -154,8 +154,8 @@ input[type="checkbox"]{
 		 	<h:selectManyCheckbox size="5" value="#{solrFilter.sexValues}" layout="pageDirection">
 		 		<f:selectItems value="#{solrFilter.sexList}" />
 		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":dataform" listener="#{solrFilter.refresh}" />
-		 		<pr:ajax update=":pagingform" listener="#{solrFilter.refresh}" />
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform" />
 		 		<pr:ajax update=":filterform" />
 		 	</h:selectManyCheckbox>
       	</div>

@@ -187,9 +187,9 @@
     			<f:facet name="header">
      				<h:commandLink value="Sex" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="SEX" />
+                    </h:commandLink>
                     <br />
                     (#{solrInsituBean.totals.get('SEX')})
-                    </h:commandLink>
 				</f:facet>
     				#{u.sex}
     		</h:column>
