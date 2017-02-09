@@ -153,7 +153,7 @@
     					<f:attribute name="sortField" value="SPECIES" />
                     </h:commandLink>
                     <br />
-                    (#{solrInsituBean.totals.get('SPECIES')})
+                    (#{solrInsituBean.totals.get('SPECIES_F')})
 				</f:facet>
     				#{u.species}
     		</h:column> 
@@ -200,7 +200,7 @@
     					<f:attribute name="sortField" value="GENOTYPE" />
                     </h:commandLink>
                     <br />
-                    (#{solrInsituBean.totals.get('GENOTYPE')})
+                    (#{solrInsituBean.totals.get('GENOTYPE_F')})
 				</f:facet>
     				#{u.genotype}
     		</h:column>
@@ -211,7 +211,7 @@
     					<f:attribute name="sortField" value="TISSUE_TYPE" />
                     </h:commandLink>
                     <br />
-                    (#{solrInsituBean.totals.get('TISSUE_TYPE')})
+                    (#{solrInsituBean.totals.get('TISSUE_TYPE_F')})
 				</f:facet>
     				#{u.tissue}
     		</h:column>
@@ -242,7 +242,7 @@
     					<f:attribute name="sortField" value="SOURCE" />
                     </h:commandLink>
                     <br />
-                    "(#{solrInsituBean.totals.get('SOURCE')})"
+                    (#{solrInsituBean.totals.get('SOURCE')})
 				</f:facet>
     				#{u.source}
     		</h:column>
@@ -253,7 +253,7 @@
     					<f:attribute name="sortField" value="DATE" />
                     </h:commandLink>
                     <br />
-                    "(#{solrInsituBean.totals.get('DATE')})"
+                    (#{solrInsituBean.totals.get('DATE')})
 				</f:facet>
     				#{u.submission_date}
     		</h:column>

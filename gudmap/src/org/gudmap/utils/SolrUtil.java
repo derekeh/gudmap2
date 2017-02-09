@@ -442,12 +442,12 @@ public class SolrUtil {
 	        parameters.addFacetField("GUDMAP_ID");	
 	        parameters.addFacetField("ASSAY_TYPE");	        
 	        parameters.addFacetField("SPECIMEN_ASSAY_TYPE");	
-	        parameters.addFacetField("SPECIES");
+	        parameters.addFacetField("SPECIES_F");
 	        parameters.addFacetField("DEV_STAGE");	        
 	        parameters.addFacetField("STAGE");
 	        parameters.addFacetField("SEX");
-	        parameters.addFacetField("GENOTYPE");	        
-	        parameters.addFacetField("TISSUE_TYPE");	        
+	        parameters.addFacetField("GENOTYPE_F");	        
+	        parameters.addFacetField("TISSUE_TYPE_F");	        
 	        parameters.addFacetField("PROBE_NAME");	        
 	        parameters.addFacetField("SOURCE");	               
 	        parameters.addFacetField("DATE");	        
@@ -835,16 +835,21 @@ public class SolrUtil {
 
 	        parameters.setFacet(true);
 	        parameters.setFacetMinCount(0);
-	        parameters.setFacetLimit(25000);
+	        parameters.setFacetLimit(30000);
 	        
-	        parameters.addFacetField("GENE");
+	        parameters.addFacetField("GENE_F");
 	        parameters.addFacetField("MGI_GENE_ID");	        
-	        parameters.addFacetField("ISH_RANGE");
-	        parameters.addFacetField("SPECIES");	        
+	        parameters.addFacetField("ISH_RANGE_F");
+	        parameters.addFacetField("SPECIES_F");	        
 	        parameters.addFacetField("SYNONYMS");	        
       
 	        
-	        QueryResponse qr = genes_server.query(parameters);       
+	        QueryResponse qr = genes_server.query(parameters);     
+	        
+	        SolrDocumentList sdl = qr.getResults();
+	        int ccount = (int)sdl.getNumFound();
+	        
+	        
 	        
         	if (qr.getFacetFields() != null) {
         		for (FacetField ff : qr.getFacetFields()) {
@@ -1127,16 +1132,16 @@ public class SolrUtil {
 	        parameters.setFacetLimit(500);
 	        
 	        parameters.addFacetField("GUDMAP");
-	        parameters.addFacetField("SAMPLE_DESCRIPTION");	        
+	        parameters.addFacetField("SAMPLE_DESCRIPTION_F");	        
 	        parameters.addFacetField("SAMPLE_NAME");
-	        parameters.addFacetField("COMPONENT");	        
+	        parameters.addFacetField("COMPONENT_F");	        
 	        parameters.addFacetField("DEV_STAGE");	        
 	        parameters.addFacetField("STAGE");	        
 	        parameters.addFacetField("SEX");	        
-	        parameters.addFacetField("GENOTYPE");	        
+	        parameters.addFacetField("GENOTYPE_F");	        
 	        parameters.addFacetField("SAMPLE_GEO_ID");	        
 	        parameters.addFacetField("SERIES_GEO_ID");	        
-	        parameters.addFacetField("LIBRARY_STRATEGY");	        
+	        parameters.addFacetField("LIBRARY_STRATEGY_F");	        
 	        parameters.addFacetField("SOURCE");	        
 	        parameters.addFacetField("DATE");	
 	        
@@ -1510,7 +1515,7 @@ public class SolrUtil {
 	        parameters.setFacetMinCount(0);
 	        parameters.setFacetLimit(100);
 	        
-	        parameters.addFacetField("NAME");
+	        parameters.addFacetField("NAME_F");
 	        parameters.addFacetField("STAGES");	        
       
 	        
@@ -1842,13 +1847,13 @@ public class SolrUtil {
 	        parameters.setFacetLimit(1000);
 	        
 	        parameters.addFacetField("GUDMAP_ID");
-	        parameters.addFacetField("DESCRIPTION");	        
+	        parameters.addFacetField("DESCRIPTION_F");	        
 	        parameters.addFacetField("TITLE");	        
-	        parameters.addFacetField("COMPONENT");	        
+	        parameters.addFacetField("COMPONENT_F");	        
 	        parameters.addFacetField("DEV_STAGE");	        
 	        parameters.addFacetField("STAGE");	        
 	        parameters.addFacetField("SEX");	        
-	        parameters.addFacetField("GENOTYPE");	        
+	        parameters.addFacetField("GENOTYPE_F");	        
 	        parameters.addFacetField("SAMPLE_GEO_ID");	        
 	        parameters.addFacetField("SERIES_GEO_ID");	        
 	        parameters.addFacetField("PLATFORM_GEO_ID");	        
@@ -2404,13 +2409,13 @@ public class SolrUtil {
 	        parameters.setFacetLimit(100);
 	        
 	        parameters.addFacetField("GENE");
-	        parameters.addFacetField("REPORTER_ALLELE");	        
-	        parameters.addFacetField("ALLELE_TYPE");
-	        parameters.addFacetField("ALLELE_VER");	        
-	        parameters.addFacetField("ALLELE_CHAR");	        
-	        parameters.addFacetField("STRAIN_AVA");	        
-	        parameters.addFacetField("ORGAN");	        
-	        parameters.addFacetField("CELL_TYPE");	        
+	        parameters.addFacetField("REPORTER_ALLELE_F");	        
+	        parameters.addFacetField("ALLELE_TYPE_F");
+	        parameters.addFacetField("ALLELE_VER_F");	        
+	        parameters.addFacetField("ALLELE_CHAR_F");	        
+	        parameters.addFacetField("STRAIN_AVA_F");	        
+	        parameters.addFacetField("ORGAN_F");	        
+	        parameters.addFacetField("CELL_TYPE_F");	        
 	        
 	        QueryResponse qr = mouse_strain_server.query(parameters);                      
 	        

@@ -94,8 +94,9 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	public String getSolrInput(){
 		if (solrInput != solrTreeBean.getSolrInput()){
 			solrInput = solrTreeBean.getSolrInput();
-			refresh();
 		}
+		refresh();
+		
 		return solrInput;
 	}
 

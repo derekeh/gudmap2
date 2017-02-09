@@ -94,7 +94,7 @@
     			<f:facet name="header">
     				Sample Description
                     <br />
-                    (#{solrSequencesBean.totals.get('SAMPLE_DESCRIPTION')})
+                    (#{solrSequencesBean.totals.get('SAMPLE_DESCRIPTION_F')})
 				</f:facet>
     				#{u.sampleDescription}
     		</h:column>
@@ -112,7 +112,7 @@
     			<f:facet name="header">
     				Component
                     <br />
-                    (#{solrSequencesBean.totals.get('COMPONENT')})
+                    (#{solrSequencesBean.totals.get('COMPONENT_F')})
 				</f:facet>
     				#{u.sampleComponents}
     		</h:column> 
@@ -160,7 +160,7 @@
     			<f:facet name="header">
     				Genotype
                      <br />
-                    (#{solrSequencesBean.totals.get('GENOTYPE')})
+                    (#{solrSequencesBean.totals.get('GENOTYPE_F')})
 				</f:facet>
     				#{u.genotype}
     		</h:column>
@@ -199,7 +199,7 @@
                          <f:attribute name="sortField" value="LIBRARY_STRATEGY" />
                          <f:ajax execute="@this librarystrategylink" render="@form"></f:ajax>
                      <br />
-                    (#{solrSequencesBean.totals.get('LIBRARY_STRATEGY')})
+                    (#{solrSequencesBean.totals.get('LIBRARY_STRATEGY_F')})
                     </h:commandLink>
 				</f:facet>
 				#{u.libraryStrategy}
