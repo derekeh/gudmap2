@@ -95,10 +95,9 @@
                     <br />
                     (#{solrGeneStripBean.totals.get('GENE_F')})
      			</f:facet>
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml" rendered="#{not empty u.imageUrl}">
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
- 				<h:outputText value="#{u.geneSymbol}" rendered="#{empty u.imageUrl}"/>
     		</h:column>
  
     		<h:column rendered="#{paramBean.synonymcol == true}">
