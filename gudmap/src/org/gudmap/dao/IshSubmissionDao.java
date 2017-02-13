@@ -79,6 +79,7 @@ public class IshSubmissionDao {
 	            submissionModel.setEuregeneId(result.getString(27));
 	            submissionModel.setOid(result.getString(28));
 	            submissionModel.setStageAnatomy(result.getString(29));
+	            submissionModel.setSpecies(result.getString(30));
 		    
 	        }
 		}

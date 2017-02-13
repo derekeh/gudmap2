@@ -290,7 +290,8 @@
 				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.devAge}" />
 				
 				<h:outputText value="Stage:" />
-				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.stage}" />
+				<h:outputText value="TS#{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species eq 'Mus musculus'}"/>
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species ne 'Mus musculus'}"/>
 	
 				<h:outputText value="Staging Notes:" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}"/>
 				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}"/>

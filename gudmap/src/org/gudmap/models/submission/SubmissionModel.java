@@ -11,6 +11,7 @@ public class SubmissionModel {
     protected String stage;
     protected String stageOrder;
     protected String stageAnatomy;
+    protected String species;
     protected String authors;
     protected ArrayList<ImageInfoModel> originalImages;
     protected int publicFlag;
@@ -498,6 +499,14 @@ public class SubmissionModel {
 
     public String getStageAnatomy() {
         return stageAnatomy;
+    }
+    
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public String getSpecies() {
+        return species;
     }
 
     public void setSourceLab(String sourceLab) {

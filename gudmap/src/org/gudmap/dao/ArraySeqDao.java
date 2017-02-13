@@ -260,6 +260,23 @@ public class ArraySeqDao {
 		    Globals.closeQuietly(con, ps, result);
 		}
     	
+    	if (seqSampleModel != null) { 
+    		try
+    		{
+    			con = Globals.getDatasource().getConnection();
+    			ps = con.prepareStatement(SequenceQueries.SEQUENCE_SAMPLE_ANATOMY); 
+    			ps.setInt(1, oid);
+    			result =  ps.executeQuery();
+    			if (result.first()) {
+    				seqSampleModel.setSource(result.getString(1));	
+    			}						
+    		}
+    		catch(SQLException sqle){sqle.printStackTrace();}
+    		finally {
+    		    Globals.closeQuietly(con, ps, result);
+    		}
+	    }
+    	
     	
     	return seqSampleModel;
     }
