@@ -72,6 +72,8 @@
     				<h:commandLink value="Gene" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrMouseStrainsBean.totals.get('GENE')})
     			</f:facet>
     			#{u.gene}
      		</h:column>
@@ -81,6 +83,8 @@
     				<h:commandLink value="Reporter Allele" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="REPORTER_ALLELE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrMouseStrainsBean.totals.get('REPORTER_ALLELE_F')})
     			</f:facet>
     				#{u.reporterAllele}
     		</h:column>
@@ -90,6 +94,8 @@
     				<h:commandLink value="Allele Type" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="ALLELE_TYPE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrMouseStrainsBean.totals.get('ALLELE_TYPE_F')})
     			</f:facet>
     				#{u.alleleType}
     		</h:column>
@@ -99,6 +105,8 @@
     				<h:commandLink value="Allele Verification" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="ALLELE_VER" />
                     </h:commandLink>
+                    <br />
+                    (#{solrMouseStrainsBean.totals.get('ALLELE_VER_F')})
     			</f:facet>
 				<h:outputLink value="#{u.alleleVerificationUrl}">
 					<h:outputText value="#{u.alleleVerification}"/>
@@ -110,6 +118,8 @@
      				<h:commandLink value="Allele Characterisation" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="ALLELE_CHAR" />
                     </h:commandLink>
+                    <br />
+                    (#{solrMouseStrainsBean.totals.get('ALLELE_CHAR_F')})
 				</f:facet>
 				<h:outputLink value="#{u.alleleCharacterisationUrl}">
 					<h:outputText value="#{u.alleleCharacterisation}"/>
@@ -121,6 +131,8 @@
     				<h:commandLink value="Strain Availability" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="STRAIN_AVA" />
                     </h:commandLink>
+                    <br />
+                    (#{solrMouseStrainsBean.totals.get('STRAIN_AVA_F')})
     			</f:facet>
 				<h:outputLink value="#{u.strainAvailabilityUrl}">
 					<h:outputText value="#{u.strainAvailability}"/>
@@ -132,6 +144,8 @@
     				<h:commandLink value="Organ" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="ORGAN" />
                     </h:commandLink>
+                     <br />
+                    (#{solrMouseStrainsBean.totals.get('ORGAN_F')})
     			</f:facet>
     				#{u.organ}
     		</h:column>
@@ -141,6 +155,8 @@
     				<h:commandLink value="Cell Type" actionListener="#{solrMouseStrainsBean.sort}">
     					<f:attribute name="sortField" value="CELL_TYPE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrMouseStrainsBean.totals.get('CELL_TYPE_F')})
     			</f:facet>
     				#{u.cellType}
     		</h:column>

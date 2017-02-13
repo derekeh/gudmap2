@@ -90,6 +90,8 @@
     				<h:commandLink value="Gene" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('GENE')})
     			</f:facet>
      			<h:commandLink value="#{u.gene}"  action="/db/viewGeneDetails.xhtml">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
@@ -108,6 +110,8 @@
      				<h:commandLink value="Assay Detail" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="GUDMAP_ID" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('GUDMAP_ID')})
 				</f:facet>
 				<h:panelGrid columns="3" columnClasses="db_align_left,db_align_right,db_align_right">
     			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSubmissionDetails.xhtml">
@@ -126,6 +130,8 @@
      				<h:commandLink value="Assay Type" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="ASSAY_TYPE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('ASSAY_TYPE')})
 				</f:facet>
     				#{u.assay_type}
     		</h:column>
@@ -135,6 +141,8 @@
     				<h:commandLink value="Specimen Type" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="SPECIMEN_ASSAY_TYPE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('SPECIMEN_ASSAY_TYPE')})
 				</f:facet>
     				#{u.specimen}
     		</h:column> 
@@ -144,6 +152,8 @@
     				<h:commandLink value="Species Type" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="SPECIES" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('SPECIES_F')})
 				</f:facet>
     				#{u.species}
     		</h:column> 
@@ -153,6 +163,8 @@
      				<h:commandLink value="Age" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="DEV_STAGE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('DEV_STAGE')})
 				</f:facet>
     				#{u.age}
     		</h:column>
@@ -162,6 +174,8 @@
      				<h:commandLink value="Stage" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="STAGE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('STAGE')})
 				</f:facet>
     			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
 				 	<h:outputText value="#{u.stage}" />
@@ -174,6 +188,8 @@
      				<h:commandLink value="Sex" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="SEX" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('SEX')})
 				</f:facet>
     				#{u.sex}
     		</h:column>
@@ -183,6 +199,8 @@
      				<h:commandLink value="Genotype" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="GENOTYPE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('GENOTYPE_F')})
 				</f:facet>
     				#{u.genotype}
     		</h:column>
@@ -192,6 +210,8 @@
     				<h:commandLink value="Tissue" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="TISSUE_TYPE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('TISSUE_TYPE_F')})
 				</f:facet>
     				#{u.tissue}
     		</h:column>
@@ -210,6 +230,8 @@
      				<h:commandLink value="Probe Name" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="PROBE_NAME" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('PROBE_NAME')})
 				</f:facet>
     				#{u.probe_name}
     		</h:column>
@@ -219,6 +241,8 @@
      				<h:commandLink value="Source" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="SOURCE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('SOURCE')})
 				</f:facet>
     				#{u.source}
     		</h:column>
@@ -228,6 +252,8 @@
       				<h:commandLink value="Submission Date" actionListener="#{solrInsituBean.sort}">
     					<f:attribute name="sortField" value="DATE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrInsituBean.totals.get('DATE')})
 				</f:facet>
     				#{u.submission_date}
     		</h:column>

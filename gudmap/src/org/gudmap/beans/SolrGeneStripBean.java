@@ -79,7 +79,7 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
-    
+	private HashMap<String,String> totals;    
     
     private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
 	private ArrayList<MasterTableInfo> tableinfo;		
@@ -406,6 +406,9 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		
 		
 		list = this.formatTableData(sdl);
+		
+		totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getGeneDataCount(solrInput, filterlist);
+
 
 		return list;
 	}
@@ -558,5 +561,9 @@ public class SolrGeneStripBean extends PagerImpl implements Serializable  {
 		  
 		  return RET;
 	  }
-    
+
+		public HashMap<String,String> getTotals(){		
+			return totals;
+		}
+	  
 }

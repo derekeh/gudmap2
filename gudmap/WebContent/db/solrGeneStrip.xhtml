@@ -92,11 +92,12 @@
     				<h:commandLink value="Gene" actionListener="#{solrGeneStripBean.sort}">
     					<f:attribute name="sortField" value="GENE" />
                     </h:commandLink>
+                    <br />
+                    (#{solrGeneStripBean.totals.get('GENE_F')})
      			</f:facet>
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml" rendered="#{not empty u.imageUrl}">
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml">
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
 				</h:commandLink>
- 				<h:outputText value="#{u.geneSymbol}" rendered="#{empty u.imageUrl}"/>
     		</h:column>
  
     		<h:column rendered="#{paramBean.synonymcol == true}">
@@ -111,6 +112,8 @@
     				<h:commandLink value="Species" actionListener="#{solrGeneStripBean.sort}">
     					<f:attribute name="sortField" value="SPECIES" />
                     </h:commandLink>
+                    <br />
+                    (#{solrGeneStripBean.totals.get('SPECIES_F')})
 				</f:facet>
     				#{u.species}
     		</h:column> 
@@ -119,10 +122,11 @@
     			<f:facet name="header">
     				Images
 				</f:facet>				
-    			<h:commandLink  action="viewImageMatrix.jsf">
+    			<h:commandLink  action="viewImageMatrix.jsf" rendered="#{u.imageUrl != ''}">
     					<img src="#{u.imageUrl}"  height="40"/>
 					<f:param name="geneId" value="#{u.gene_id}"></f:param>
                  </h:commandLink>
+                 <h:outputText value="" rendered="#{u.imageUrl == ''}"></h:outputText>
     		</h:column>
     		
     		<h:column rendered="#{paramBean.ishexpressioncol == true}">
@@ -161,6 +165,8 @@
     		<h:column rendered="#{paramBean.embryostagecol == true}">
     			<f:facet name="header">
     				Stages
+                    <br />
+                    (#{solrGeneStripBean.totals.get('ISH_RANGE_F')})
 				</f:facet>
 				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}&amp;geneId=#{u.gene_id}&amp;species=#{u.species}">
     				#{u.stageRange}

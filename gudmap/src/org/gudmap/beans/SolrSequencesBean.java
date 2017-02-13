@@ -55,6 +55,7 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
+	private HashMap<String,String> totals;
 	private boolean showPageDetails = true;
 
 
@@ -93,8 +94,9 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 	public String getSolrInput(){
 		if (solrInput != solrTreeBean.getSolrInput()){
 			solrInput = solrTreeBean.getSolrInput();
-			refresh();
 		}
+		refresh();
+		
 		return solrInput;
 	}
 
@@ -147,9 +149,6 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
      	loadDataList();
     	return "solrSequences";
     }
-//    public void refresh(){
-//     	loadDataList();
-//    }
 
     public void resetAll() {
 		paramBean.resetAll();
@@ -178,18 +177,12 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     }
 
     public void toggleAll(ValueChangeEvent e) { 
-    	boolean temp = (Boolean) e.getNewValue();
     	areAllChecked=(areAllChecked)?false:true;
     	for (int i=0;i<dataList.size();i++) { 
     		((ArraySeqTableBeanModel)dataList.get(i)).setSelected(areAllChecked);
     	} 
     }
 
-//    public void selectCheck(ValueChangeEvent e) {
-//    	boolean temp = (Boolean) e.getNewValue();
-//    }
-    
-    
     public void setToggleCheck(boolean toggleCheck){
     	this.toggleCheck = toggleCheck;
     }
@@ -226,25 +219,6 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
     	}
     	return selectedSamples;
     }
-   
-//    public String getTitle(){
-//    	String str="Sequences Search Results ";
-//    	filters = solrFilter.getFilters();
-//    	if (filters == null){
-//	    	if (solrInput != null && solrInput != "")
-//	    		str += "(" + solrTreeBean.getSequencesCount() + ") > " + solrInput;
-//	    	else
-//	    		str += "(" + solrTreeBean.getSequencesCount() + ") > ALL";
-//    	}
-//    	else{
-//        	if (solrInput != null && solrInput != "")
-//        		str += "(" + solrTreeBean.getSequencesCount(filters) + ") > " + solrInput;
-//        	else
-//        		str += "(" + solrTreeBean.getSequencesCount(filters) + ") > ALL";
-//    		
-//    	}
-//    	return str;
-//    }
     
     public boolean getShowPageDetails(){
     	return showPageDetails;
@@ -272,6 +246,8 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 			
 			sdl = solrTreeBean.getSolrUtil().getSequencesData(solrInput,filterlist,sortColumn,ascending,offset,num);
 			list = formatTableData(sdl);
+			
+			totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getSequencesDataCount(solrInput, filterlist);			
 			
 		} catch (SolrServerException e) {
 			e.printStackTrace();
@@ -347,5 +323,8 @@ public class SolrSequencesBean extends PagerImpl implements Serializable  {
 		
 		return list;
 	}	
-    
+
+	public HashMap<String,String> getTotals(){		
+		return totals;
+	}	
 }

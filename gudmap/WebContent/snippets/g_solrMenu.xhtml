@@ -29,7 +29,7 @@
 			<h:inputText id="solr_input" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event)"></h:inputText>
 			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/header/mag_glass.png" style="width:26px; height:26px" action="#{solrTreeBean.goSearch}" >
 				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
-				<f:ajax execute="@form" render=":dataform :solr_menuform :gd_searchform" ></f:ajax>
+				<f:ajax execute="@form" render=":dataform :solr_menuform :gd_searchform :pagingform" ></f:ajax>
 			</h:commandButton>
 	
 <ui:remove>		

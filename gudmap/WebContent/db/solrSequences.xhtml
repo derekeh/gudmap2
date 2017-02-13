@@ -81,6 +81,8 @@
                          <f:attribute name="sortField" value="GUDMAP" />
                          <f:ajax execute="@this gudmapaccessionlink" render="@form"></f:ajax>
                     </h:commandLink>
+                    <br />
+                    (#{solrSequencesBean.totals.get('GUDMAP')})
     			</f:facet>    				
     			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSeqSubmissionDetails.xhtml">
 						<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
@@ -91,6 +93,8 @@
     		<h:column rendered="#{paramBean.mic_sampledescriptioncol == true}">
     			<f:facet name="header">
     				Sample Description
+                    <br />
+                    (#{solrSequencesBean.totals.get('SAMPLE_DESCRIPTION_F')})
 				</f:facet>
     				#{u.sampleDescription}
     		</h:column>
@@ -98,6 +102,8 @@
     		<h:column rendered="#{paramBean.mic_samplenamecol == true}">
     			<f:facet name="header">
     				Sample Name
+                    <br />
+                    (#{solrSequencesBean.totals.get('SAMPLE_NAME')})
 				</f:facet>
     				#{u.title}
     		</h:column>
@@ -105,6 +111,8 @@
     		<h:column rendered="#{paramBean.mic_componentscol == true}">
     			<f:facet name="header">
     				Component
+                    <br />
+                    (#{solrSequencesBean.totals.get('COMPONENT_F')})
 				</f:facet>
     				#{u.sampleComponents}
     		</h:column> 
@@ -115,6 +123,8 @@
                          <f:attribute name="sortField" value="DEV_STAGE" />
                          <f:ajax execute="@this agelink" render="@form"></f:ajax>
                     </h:commandLink>
+                    <br />
+                    (#{solrSequencesBean.totals.get('DEV_STAGE')})
 				</f:facet>
     				#{u.age}
     		</h:column>
@@ -125,7 +135,8 @@
                          <f:attribute name="sortField" value="STAGE" />
                          <f:ajax execute="@this stagelink" render="@form"></f:ajax>
                     </h:commandLink>
-    				
+                     <br />
+                    (#{solrSequencesBean.totals.get('STAGE')})  				
 				</f:facet>
     			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
 				 	<h:outputText value="#{u.stage}" />
@@ -139,6 +150,8 @@
                          <f:attribute name="sortField" value="SEX" />
                          <f:ajax execute="@this sexlink" render="@form"></f:ajax>
                     </h:commandLink>
+                     <br />
+                    (#{solrSequencesBean.totals.get('SEX')})
 				</f:facet>
     				#{u.sex}
     		</h:column>
@@ -146,6 +159,8 @@
     		<h:column rendered="#{paramBean.mic_genotypecol == true}">
     			<f:facet name="header">
     				Genotype
+                     <br />
+                    (#{solrSequencesBean.totals.get('GENOTYPE_F')})
 				</f:facet>
     				#{u.genotype}
     		</h:column>
@@ -156,6 +171,8 @@
                          <f:attribute name="sortField" value="SAMPLE_GEO_ID" />
                          <f:ajax execute="@this geosamplelink" render="@form"></f:ajax>
                     </h:commandLink>
+                     <br />
+                    (#{solrSequencesBean.totals.get('SAMPLE_GEO_ID')})
 				</f:facet>
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSampleID}">
 					<h:outputText value="#{u.geoSampleID}"/>
@@ -168,6 +185,8 @@
                          <f:attribute name="sortField" value="SERIES_GEO_ID" />
                          <f:ajax execute="@this geoserieslink" render="@form"></f:ajax>
                     </h:commandLink>
+                     <br />
+                    (#{solrSequencesBean.totals.get('SERIES_GEO_ID')})
 				</f:facet>
 				<h:outputLink value="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=#{u.geoSeriesID}">
 					<h:outputText value="#{u.geoSeriesID}"/>
@@ -179,6 +198,8 @@
     				<h:commandLink id="librarystrategylink" value="Library Strategy" actionListener="#{solrSequencesBean.sort}">
                          <f:attribute name="sortField" value="LIBRARY_STRATEGY" />
                          <f:ajax execute="@this librarystrategylink" render="@form"></f:ajax>
+                     <br />
+                    (#{solrSequencesBean.totals.get('LIBRARY_STRATEGY_F')})
                     </h:commandLink>
 				</f:facet>
 				#{u.libraryStrategy}
@@ -189,6 +210,8 @@
                          <f:attribute name="sortField" value="SOURCE" />
                           <f:ajax execute="@this sourcelink" render="@form"></f:ajax>
                     </h:commandLink>
+                     <br />
+                    (#{solrSequencesBean.totals.get('SOURCE')})
 				</f:facet>
     				#{u.source}
     		</h:column>
@@ -198,6 +221,8 @@
     		<h:column rendered="#{paramBean.mic_submissiondatecol == true}">
     			<f:facet name="header">
     				Submission Date
+                     <br />
+                    (#{solrSequencesBean.totals.get('DATE')})
 				</f:facet>
     				#{u.submission_date}
     		</h:column>

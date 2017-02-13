@@ -52,6 +52,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     
 	private String solrInput;
 	private HashMap<String,String> filters;
+	private HashMap<String,String> totals;
 	private boolean showPageDetails = true;
    
 	
@@ -206,6 +207,9 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 			}
 			list = formatTableData(sdl);
 			
+
+			totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getInsituDataCount(solrInput, filterlist);
+			
     	} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -309,5 +313,8 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		}
 		return result;
 	}
-    
+
+	public HashMap<String,String> getTotals(){		
+		return totals;
+	}
 }

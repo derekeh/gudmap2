@@ -458,15 +458,15 @@ public class SolrFilter implements Serializable {
 	public Map<String,String> getAgeList(){
 		
 		Map<String,String> agemap = new LinkedHashMap<String,String>();
-		agemap.put("10.5 dpc", "10.5dpc");
-		agemap.put("11.5 dpc", "11.5dp");
-		agemap.put("12.5 dpc", "12.5dpc");
-		agemap.put("13.5 dpc", "13.5dpc");
-		agemap.put("14.5 dpc", "14.5dpc");
-		agemap.put("15.5 dpc", "15.5dpc");
-		agemap.put("16.5 dpc", "16.5dpc");
-		agemap.put("17.5 dpc", "17.5dpc");
-		agemap.put("18.5 dpc", "18.5dpc");
+		agemap.put("10-11 dpc", "[10.0dpc TO 10.9dpc]");
+		agemap.put("11-12 dpc", "[11.0dpc TO 11.9dpc]");
+		agemap.put("12-13 dpc", "[12.0dpc TO 12.9dpc]");
+		agemap.put("13-14 dpc", "[13.0dpc TO 13.9dpc]");
+		agemap.put("14-15 dpc", "[14.0dpc TO 14.9dpc]");
+		agemap.put("15-16 dpc", "[15.0dpc TO 15.9dpc]");
+		agemap.put("16-17 dpc", "[16.0dpc TO 16.9dpc]");
+		agemap.put("17-18 dpc", "[17.0dpc TO 17.9dpc]");
+		agemap.put("18-19 dpc", "[18.0dpc TO 18.9dpc]");
 		agemap.put("Newborn (range P0-P3)", "[P0 TO P3]");
 		agemap.put("Range P4-Adult", "[P4 TO P200] OR Adult");
 		return agemap;
