@@ -410,8 +410,9 @@ function findExpressionNotes(){
 							<h:outputText value="#{image.note}"/>
 				        </h:column>
 				</h:dataTable>
+				<ui:remove>
 				
-				<h:panelGroup></h:panelGroup>
+				<!-- <h:panelGroup></h:panelGroup>
 				<h:panelGroup rendered="#{null != ishSubmissionBean.ishSubmissionModel.imageDetailModel}">
 						<h:outputText  value="View 3D opt image:&#160;&#160;&#160; "></h:outputText>
 						<h:outputLink value="#{ishSubmissionBean.ishSubmissionModel.imageDetailModel.clickFilePath}">
@@ -422,7 +423,9 @@ function findExpressionNotes(){
 				<h:panelGroup></h:panelGroup>
 				<h:outputLink value="#{ishSubmissionBean.ishSubmissionModel.imageDetailModel.filePath}" rendered="#{null != ishSubmissionBean.ishSubmissionModel.imageDetailModel}">
 						<h:outputText value="Download 3D images in woolz format "></h:outputText>
-				</h:outputLink>
+				</h:outputLink> -->
+				
+				</ui:remove>
 				
 	    	</h:panelGrid>
 	    	
@@ -551,11 +554,12 @@ function findExpressionNotes(){
 					<h:outputText value="Single cell"  />			
 				</h:panelGrid>
 
-				<h:outputText value="Nerve Density: "  styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
+				<h:outputText value="Nerve Density "  styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:outputLink value="#{appRoot}/pages/viewPage.jsf?docID=100">
 					<h:graphicImage library="images/pattern_images" name="density_info2.png" styleClass="db_circular_image" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}"/>
 				</h:outputLink>
-				<h:outputText value="&lt;br/&gt;&lt;br/&gt;Relative to Total:" escape="false" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
+				<br />
+				<h:outputText value="Relative to Total:" escape="false" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:panelGrid columns="2" columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
 					
 					<h:graphicImage library="images/tree" name="max_high.png" styleClass="db_expression_icon" />
@@ -568,7 +572,6 @@ function findExpressionNotes(){
 					<h:outputText value="Low"  />
 						
 				</h:panelGrid>
-				<br />
 				<h:outputText value="Relative to P0/Adult:" styleClass="plaintextbold" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}" />
 				<h:panelGrid columns="2"  columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
 
@@ -584,9 +587,13 @@ function findExpressionNotes(){
 					<h:graphicImage library="images/tree" name="dec_small.png" styleClass="db_expression_icon" />
 					<h:outputText value="Decrease, small"  />
 					
+				</h:panelGrid>
+				<h:panelGrid columns="2">&nbsp;</h:panelGrid>
+				<h:panelGrid columns="2"  columnClasses="db_expression_detail_left,db_expression_detail_right" border="0" cellspacing="0" cellpadding="0" rendered="#{ishSubmissionBean.expressionMapped and sessionBean.displayAsTree}">
 					<h:graphicImage library="images/tree" name="note.gif" styleClass="db_expression_icon" />
 					<h:outputText value="Contains note"  />
 				</h:panelGrid>
+				
 			</h:panelGroup>
 			
 			
