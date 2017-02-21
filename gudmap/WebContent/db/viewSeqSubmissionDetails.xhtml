@@ -30,9 +30,10 @@
 	    		<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.accID}" />
 	    		
 	    		<h:outputText value="Stage " />
-	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.seqSubmissionModel.stage}definition.html">
-					<h:outputText value="Theiler Stage #{arraySeqSubmissionBean.seqSubmissionModel.stage}" />
+	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.seqSubmissionModel.stage}definition.html" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species == 'Mus musculus'}">
+					<h:outputText value="Theiler Stage #{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species == 'Mus musculus'}" />
 				</h:outputLink>
+				<h:outputText value="Carnegie Stage: #{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species == 'Homo sapiens'}"/>
 				
 				<h:outputText value="External/Internal Links: " />
 	    	    <h:outputLink styleClass="datatext" value="#{appRoot}/pages/viewPage.jsf?docID=36">

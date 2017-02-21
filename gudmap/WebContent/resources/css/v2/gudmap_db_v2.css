@@ -308,9 +308,9 @@
  
  .db_inner_inner_title {
  	/* color:darkred;
- 	padding-left: 5px */
- 	color:#476885;
- 	padding-left: 15px;
+ 	padding-left: 5px 
+ 	padding-left: 15px;*/
+ 	color:#476885; 	
  	font-weight: bold;
  }
  
