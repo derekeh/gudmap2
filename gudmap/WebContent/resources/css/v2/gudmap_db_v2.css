@@ -307,8 +307,11 @@
 }
  
  .db_inner_inner_title {
- 	color:darkred;
- 	padding-left: 5px
+ 	/* color:darkred;
+ 	padding-left: 5px */
+ 	color:#476885;
+ 	padding-left: 15px;
+ 	font-weight: bold;
  }
  
  .db_expression_detail_left {
