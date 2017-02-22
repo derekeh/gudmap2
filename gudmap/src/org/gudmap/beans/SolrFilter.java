@@ -755,7 +755,7 @@ public class SolrFilter implements Serializable {
 				if (expressionValue.contains("uncertain"))
 					filters.put("UNCERTAIN", anatomy);
 		}
-		
+	
 		if (imageValues != null && !imageValues.isEmpty()) {
 			if (imageValues.size() == 1){
 				filters.put("IMAGE_TYPE",imageValues.get(0));
@@ -777,6 +777,7 @@ public class SolrFilter implements Serializable {
 		filters = new HashMap<String,String>();
 		
 		geneValue = "";
+		anatomy = "";
 		geneValues = new ArrayList<String>();			
 		sourceValues = new ArrayList<String>();			
 		assayTypeValues = new ArrayList<String>();
