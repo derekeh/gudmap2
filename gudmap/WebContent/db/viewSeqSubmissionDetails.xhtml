@@ -30,9 +30,10 @@
 	    		<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.accID}" />
 	    		
 	    		<h:outputText value="Stage " />
-	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.seqSubmissionModel.stage}definition.html">
-					<h:outputText value="Theiler Stage #{arraySeqSubmissionBean.seqSubmissionModel.stage}" />
+	    		<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{arraySeqSubmissionBean.seqSubmissionModel.stage}definition.html" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species == 'Mus musculus'}">
+					<h:outputText value="Theiler Stage #{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species == 'Mus musculus'}" />
 				</h:outputLink>
+				<h:outputText value="Carnegie Stage: #{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species == 'Homo sapiens'}"/>
 				
 				<h:outputText value="External/Internal Links: " />
 	    	    <h:outputLink styleClass="datatext" value="#{appRoot}/pages/viewPage.jsf?docID=36">
@@ -290,7 +291,8 @@
 				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.devAge}" />
 				
 				<h:outputText value="Stage:" />
-				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.stage}" />
+				<h:outputText value="TS#{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species eq 'Mus musculus'}"/>
+				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species ne 'Mus musculus'}"/>
 	
 				<h:outputText value="Staging Notes:" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}"/>
 				<h:outputText value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.seqSampleModel.developmentalLandmarks}"/>

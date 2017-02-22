@@ -78,6 +78,7 @@ public class ArraySeqSubmissionAssembler {
 			seqSubmissionModel.setPublicFlag(submissionModel.getPublicFlag());
 			seqSubmissionModel.setDeletedFlag(submissionModel.getDeletedFlag());
 			seqSubmissionModel.setSource(submissionModel.getSource());
+			seqSubmissionModel.setSpecies(submissionModel.getSpecies());
 		
 			//supplementary files
 			SupplementaryFiles supplementaryFiles=arraySeqDao.findSeqSupplementaryFiles(oid_int);
