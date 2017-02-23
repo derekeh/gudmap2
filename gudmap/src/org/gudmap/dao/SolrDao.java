@@ -575,7 +575,8 @@ public class SolrDao {
 				doc.addField("STRAIN", result.getString(37)); 
 				doc.addField("SEX", result.getString(38)); 
 				String devstage = result.getString(39);
-				devstage = devstage.replace(" ", "");
+				if (devstage != null)
+					devstage = devstage.replace(" ", "");
 				doc.addField("DEV_STAGE", devstage); 
 				doc.addField("GENOTYPE", result.getString(40)); 				
 				doc.addField("ASSAY_TYPE", result.getString(41)); 
