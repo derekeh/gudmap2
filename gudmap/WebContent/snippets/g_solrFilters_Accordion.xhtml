@@ -76,7 +76,7 @@ input[type="checkbox"]{
  	</div>
 
 	<div class="accordion">
-		<h2 style="background:#{empty solrFilter.expressionValue ||  empty solrFilter.anatomy ? '' : 'pink'  }">Expression</h2>
+		<h2 style="background:#{empty solrFilter.anatomy ? '' : 'pink'  }">Expression</h2>
 		<div>
 			<pr:outputLabel value="Anatomy:" for="anatomy_input" />
 	    	<pr:autoComplete  id="anatomy_input" value="#{solrFilter.anatomy}" completeMethod="#{autocompleteBean.completeAnatomy}"
