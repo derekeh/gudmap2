@@ -239,6 +239,9 @@ function enhanceTree(event, data) {
 		                  else if (pattern_from_db[p][1] == "single cell")  {
 		                    selected_class = "pattern-icon6";
 		                  }
+		                  else if (pattern_from_db[p][1] == "homogeneous")  {
+			                    selected_class = "pattern-icon7";
+			                  }
 		                
 						  jQuery("li[name='"+node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + selected_class + '">&nbsp;</ins></a>');		            	
 		            }// end if node_name	        	
