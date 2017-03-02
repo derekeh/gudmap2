@@ -138,10 +138,20 @@
 					</h:dataTable>	
 
 					<h:outputText value="RNA Seq QC file:"  />
+<ui:remove>
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.qcFile}" var="qfile">
 						<h:column>
 							<h:outputLink styleClass="datatext" target="_blank" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}"
 								p:download="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}">
+								<h:outputText value="#{qfile.filename}"/>
+							</h:outputLink>
+						</h:column>
+					</h:dataTable>	
+</ui:remove>
+					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.qcFile}" var="qfile">
+						<h:column>
+							<h:outputLink styleClass="datatext" target="_blank" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}"
+								p:download="/export/data0/next_gen_archive/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}">
 								<h:outputText value="#{qfile.filename}"/>
 							</h:outputLink>
 						</h:column>
