@@ -57,7 +57,8 @@ public class AnatomyDao {
 				result.beforeFirst();
 				RET = new String("");
 				while (result.next()) {
-					RET += result.getString(1) + "," + result.getString(2) + "," + result.getString(3) + "| ";
+					//remove spaces which cause annotation tree not to load
+					RET += result.getString(1) + "," + result.getString(2).trim() + "," + result.getString(3).trim() + "| ";
 				}
 				treeExpressions = RET;
 			}
@@ -127,7 +128,9 @@ public class AnatomyDao {
 					result.beforeFirst();
 					RET = new String("");
 					while (result.next()) {
-						RET += result.getString(1) + "," + result.getString(2) + "| ";
+						//RET += result.getString(1) + "," + result.getString(2) + "| ";
+						//Line breaks in notes were causing the annotation tree not to load
+						RET += result.getString(1) + "," + result.getString(2).replaceAll("\\r|\\n|\\r\\n", "") + "| ";
 					}
 					treeExpressionNotes = RET;
 				}
