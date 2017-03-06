@@ -20,7 +20,24 @@
 	
 	<ui:define name="content">
 	<!-- can use relative links on html tags -->
-	    <h1>Sequence Details</h1>	
+	    	
+	    
+	    #{paramBean.setUrloptionvalues('Hide URL')}
+		#{paramBean.setUrlShowHide('Show URL')}
+	   <h:panelGrid columns="2">
+		   <h:outputText value="Sequence Details for: #{arraySeqSubmissionBean.seqSubmissionModel.accID}&#160;&#160;&#160;" styleClass="db_bold"></h:outputText> 
+		   
+		   <h:form id="urlform">
+		   	<h:panelGrid columns="2">
+			   	<h:commandButton id="btn_ajax" value="#{paramBean.getUrlShowHide()}" action="#{paramBean.setUrloptionvalues('change')}"  styleClass="db_urlbutton">
+                            <f:ajax execute="@form" render="@form" />
+              </h:commandButton>
+				<h:outputText value="http://beta.gudmap.org/gudmap/db/viewSeqSubmissionDetails.jsf?accId=#{arraySeqSubmissionBean.seqSubmissionModel.accID}&amp;isArray=false" rendered="#{paramBean.urloptionvalues eq 'Show URL'}"></h:outputText> 
+			</h:panelGrid>
+			</h:form>
+			  
+	   </h:panelGrid>
+	    
 	    <!-- all other content in here -->  
 	    <ui:include src="/snippets/g_personDetails.xhtml"></ui:include>
 	    
