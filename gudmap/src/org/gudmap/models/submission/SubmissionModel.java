@@ -11,6 +11,8 @@ public class SubmissionModel {
     protected String stage;
     protected String stageOrder;
     protected String stageAnatomy;
+    protected String stageDisplay;
+    protected String stagePrefix;
     protected String species;
     protected String authors;
     protected ArrayList<ImageInfoModel> originalImages;
@@ -166,6 +168,22 @@ public class SubmissionModel {
 
     public String getStage() {
         return stage;
+    }
+    
+    public void setStageDisplay(String stageDisplay) {
+        this.stageDisplay = stageDisplay;
+    }
+
+    public String getStageDisplay() {
+        return stageDisplay;
+    }
+    
+    public void setStagePrefix(String stagePrefix) {
+        this.stagePrefix = stagePrefix;
+    }
+
+    public String getStagePrefix() {
+        return stagePrefix;
     }
     
     public void setStageOrder(String stageOrder) {
