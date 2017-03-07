@@ -80,6 +80,8 @@ public class IshSubmissionDao {
 	            submissionModel.setOid(result.getString(28));
 	            submissionModel.setStageAnatomy(result.getString(29));
 	            submissionModel.setSpecies(result.getString(30));
+	            submissionModel.setStageDisplay(result.getString(31));
+	            submissionModel.setStagePrefix(result.getString(32));
 		    
 	        }
 		}
