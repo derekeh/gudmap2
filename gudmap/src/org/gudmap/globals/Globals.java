@@ -102,7 +102,7 @@ public class Globals {
     public static final String imagePath="/opt/MAWWW/Public/html/Appfiles/images/";
     public static final String webfilePath="/opt/MAWWW/Public/html/Appfiles/docs/";
     public static final String heatmapPath="/opt/MAWWW/Public/html/Appfiles/heatmaps/";
-    public static final String seqDataPath="Gudmap/ngsData/";
+    public static final String seqDataPath="ngsData/";
 
     
 	

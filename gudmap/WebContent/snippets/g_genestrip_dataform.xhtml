@@ -92,12 +92,12 @@
     				Sequence
 				</f:facet>
 				<h:outputLink title="Click to see RNA-SEQ data on UCSC genome browser for #{u.geneSymbol}" 
-					value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&amp;hubUrl=http://www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&amp;position=#{u.geneSymbol}">
+					value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&amp;hubUrl=http://beta.gudmap.org/ngsData/gudmap_ucsc_hub/hub.txt&amp;position=#{u.geneSymbol}">
 					<h:outputText value="View on UCSC"></h:outputText>
 				</h:outputLink>
 				<br />
 				<h:outputLink title="Open IGV in Java Web Start to see GUDMAP sequencing data for #{u.geneSymbol}"
-					value="http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://www.gudmap.org/Gudmap/ngsData/gudmap_igv_seq_genes.xml&amp;locus=#{u.geneSymbol}">
+					value="http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://beta.gudmap.org/ngsData/gudmap_igv_seq_genes.xml&amp;locus=#{u.geneSymbol}">
 					<h:outputText value="View on IGV"></h:outputText>
 				</h:outputLink>
 				

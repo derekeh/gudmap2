@@ -74,7 +74,7 @@
 						<h:column>
 							<h:commandLink styleClass="datatext" value="#{rfile.filename}" 
 								action="#{downloadBean.downloadFileFromUrl()}">
-								<f:param name="filetodownload" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}"/>
+								<f:param name="filetodownload" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}"/>
 								<f:param name="filename" value = "#{rfile.filename}"/>
 							</h:commandLink>
 							
@@ -91,7 +91,7 @@
 						
 						<h:commandLink styleClass="datatext" value="#{pfile.filename}" 
 								action="#{downloadBean.downloadFileFromUrl()}">
-								<f:param name="filetodownload" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}"/>
+								<f:param name="filetodownload" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}"/>
 								<f:param name="filename" value = "#{pfile.filename}"/>
 							</h:commandLink>
 						
@@ -115,8 +115,8 @@
 					<h:outputText value="Raw file:" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.rawFile}"/>
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.rawFile}" var="rfile" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.rawFile}">
 						<h:column>
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}"
-							p:download="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}">
+							<h:outputLink styleClass="datatext" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}"
+							p:download="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/raw/#{rfile.filename}">
 								<h:outputText value="#{rfile.filename}"/>
 							</h:outputLink>
 						</h:column>
@@ -127,8 +127,8 @@
 					<h:outputText value="Processed file:"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.processedFile}"/>
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.processedFile}" var="pfile"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.processedFile}">
 						<h:column>
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}"
-							p:download="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}">
+							<h:outputLink styleClass="datatext" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}"
+							p:download="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/#{pfile.filename}">
 								<h:outputText value="#{pfile.filename}"/>
 							</h:outputLink>
 						</h:column>
@@ -138,20 +138,12 @@
 					</h:dataTable>	
 
 					<h:outputText value="RNA Seq QC file:"  />
-<ui:remove>
+
+
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.qcFile}" var="qfile">
 						<h:column>
-							<h:outputLink styleClass="datatext" target="_blank" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}"
-								p:download="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}">
-								<h:outputText value="#{qfile.filename}"/>
-							</h:outputLink>
-						</h:column>
-					</h:dataTable>	
-</ui:remove>
-					<h:dataTable  columnClasses="text-normal,text-top"  value="#{arraySeqSubmissionBean.seqSubmissionModel.qcFile}" var="qfile">
-						<h:column>
-							<h:outputLink styleClass="datatext" target="_blank" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}"
-								p:download="/export/data0/next_gen_archive/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}">
+							<h:outputLink styleClass="datatext" target="_blank" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}"
+								p:download="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/#{qfile.filename}">
 								<h:outputText value="#{qfile.filename}"/>
 							</h:outputLink>
 						</h:column>
@@ -511,23 +503,23 @@
 				<h:panelGrid columns="2"  columnClasses="db_inner_detail_left,db_inner_detail_right" border="0" cellspacing="0" cellpadding="0">
 
 					<h:outputText value="Fast QC:" />
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/FastQC_results/index.html">
+							<h:outputLink styleClass="datatext" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/FastQC_results/index.html">
 								<h:outputText value="index.html"/>
 							</h:outputLink>
 
 
 					<h:outputText value="RNASeq QC:"  />
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/index.html">
+							<h:outputLink styleClass="datatext" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/RNASeqQC_results/index.html">
 								<h:outputText value="index.html"/>
 							</h:outputLink>
 
 					<h:outputText value="Alignment results:"  />
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/tophat_results">
+							<h:outputLink styleClass="datatext" value="http://beta.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/tophat_results">
 								<h:outputText value="(folder)"/>
 							</h:outputLink>
 
 					<h:outputText value="Cufflinks results:"/>
-							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/cufflink_results">
+							<h:outputLink styleClass="datatext" value="http://beat.gudmap.org/ngsData/#{arraySeqSubmissionBean.seqSubmissionModel.oid}/processed/cufflink_results">
 								<h:outputText value="(folder)"/>
 							</h:outputLink>
 					
