@@ -744,13 +744,14 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		LinkedList<Float> llist;
 		LinkedList<String> desc = new LinkedList<String>();
 		
-    	String dirPath0 = "http://www.gudmap.org/Gudmap/ngsData/" + selectedSeries + "_processed";
+    	String dirPath0 = "http://beta.gudmap.org/ngsData/" + selectedSeries + "_processed";
     	String dirPath1 = seqDir + "_processed";
     	File dir0 = new File(dirPath0);
     	File[] dList0 = dir0.listFiles();
     	
 //    	String dirPath = "/export/data0/next_gen_archive/" + selectedSeries + "_processed"; 
-    	String dirPath = "/export/data0/next_gen_archive/" + selectedSeries; 
+//    	String dirPath = "/export/data0/next_gen_archive/" + selectedSeries; 
+    	String dirPath = "http://beta.gudmap.org/ngsData/" + selectedSeries; 
     	File dir = new File(dirPath);
     	if (!dir.exists() || !dir.isDirectory()){
     		return;
