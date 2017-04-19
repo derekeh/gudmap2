@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import org.gudmap.globals.Globals;
 import org.gudmap.impl.PagerImpl;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
@@ -743,15 +744,15 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 		Map<String,LinkedList<Float>> geneList = new HashMap<String,LinkedList<Float>>();
 		LinkedList<Float> llist;
 		LinkedList<String> desc = new LinkedList<String>();
+		LinkedList<String> vars = new LinkedList<String>();
 		
-    	String dirPath0 = "http://beta.gudmap.org/ngsData/" + selectedSeries + "_processed";
-    	String dirPath1 = seqDir + "_processed";
-    	File dir0 = new File(dirPath0);
-    	File[] dList0 = dir0.listFiles();
+//    	String dirPath0 = "http://beta.gudmap.org/ngsData/" + selectedSeries + "_processed";
+//    	String dirPath1 = seqDir + "_processed";
+//    	File dir0 = new File(dirPath0);
+//    	File[] dList0 = dir0.listFiles();
     	
 //    	String dirPath = "/export/data0/next_gen_archive/" + selectedSeries + "_processed"; 
-//    	String dirPath = "/export/data0/next_gen_archive/" + selectedSeries; 
-    	String dirPath = "http://beta.gudmap.org/ngsData/" + selectedSeries; 
+    	String dirPath = "/export/data0/next_gen_archive/" + selectedSeries; 
     	File dir = new File(dirPath);
     	if (!dir.exists() || !dir.isDirectory()){
     		return;
@@ -785,6 +786,7 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
 							llist.add(Float.parseFloat(data[9]));
 							geneList.put(gene, llist);
 							
+							
 																				
 						}						
 						
@@ -804,24 +806,31 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	Set<String> genes = geneList.keySet();
     	for(String gene:genes){
     		data.add(geneList.get(gene));
+    		vars.add(gene);
+
     	}
 
 
     	desc.add(selectedSeries);
     	
-		y.put("vars", geneList.keySet());			
-    	y.put("desc", desc);
+		y.put("vars", vars);						
+//		y.put("vars2", geneList.keySet());						
+		y.put("desc", desc);
     	
     	
 		y.put("smps", samples);
 		y.put("data", data);
 		
 		
-    	obj.put("x", x);
+//    	obj.put("x", x);
 		obj.put("y", y);
-		obj.put("z", z);
-		obj.put("m", m);
-		
+//		obj.put("z", z);
+//		obj.put("m", m);
+    	
+//		obj.put("vars", "bernie");						
+//		obj.put("desc", desc);    	    	
+//		obj.put("smps", samples);
+//		obj.put("data", data.getFirst());
 
 		FileWriter writer;
 		try {
@@ -848,5 +857,79 @@ public class RnaSeqHeatmapBean extends PagerImpl  implements Serializable{
     	
     }
     
+	public void createSeqFile21(String selectedSeries){
+    	
+//    	selectedSeries = "GSE59129";
+
+    	
+		JSONObject obj = new JSONObject();
+		
+		JSONObject x = new JSONObject();
+		JSONObject y = new JSONObject();
+		JSONObject z = new JSONObject();
+		JSONObject m = new JSONObject();
+		
+		LinkedList<String> vars = new LinkedList<String>();
+		LinkedList<String> samples = new LinkedList<String>();
+		LinkedList<String> desc = new LinkedList<String>();
+		LinkedList<Double> llist = new LinkedList<Double>();
+		LinkedList<LinkedList<Double>> data = new LinkedList<LinkedList<Double>>();
+
+		vars.add("Variable1");
+		samples.add("S1");
+		samples.add("S2");
+		samples.add("S3");
+		samples.add("S4");
+		llist.add(10.0);
+		llist.add(20.0);
+		llist.add(30.0);		
+		llist.add(40.0);
+		data.add(llist);
+		
+    	desc.add(selectedSeries);
+    	
+//		y.put("vars", geneList.keySet());						
+		y.put("vars", vars);
+		y.put("desc", desc);
+    	
+    	
+		y.put("smps", samples);
+		y.put("data", data);
+		
+		
+//    	obj.put("x", x);
+		obj.put("y", y);
+//		obj.put("z", z);
+//		obj.put("m", m);
+    	
+//		obj.put("vars", "bernie");						
+//		obj.put("desc", desc);    	    	
+//		obj.put("smps", samples);
+//		obj.put("data", data.getFirst());
+
+		FileWriter writer;
+		try {
+			FacesContext fctx = FacesContext.getCurrentInstance();
+			HttpSession session = (HttpSession) fctx.getExternalContext().getSession(false);
+			String sessionId = session.getId();
+			
+			seqFile = selectedSeries + "_" + sessionId + "_2.json";
+			
+			ServletContext ctx = (ServletContext) fctx.getExternalContext().getContext();
+			String path = ctx.getRealPath("/");
+//			path += "/resources/genestrips/Gudmap:" + selectedSeries + "_" + sessionId + ".json";
+			path += "/resources/genestrips/canvas.json";
+					
+			writer = new FileWriter(path);
+			writer.write(obj.toJSONString());
+			writer.flush();
+			writer.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
     
 }

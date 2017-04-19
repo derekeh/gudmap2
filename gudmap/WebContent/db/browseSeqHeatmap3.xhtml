@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+
+<!-- Styles for the HEATMAP -->
+
+
+<h:body>
+ <style>
+input[type="checkbox"]{
+  width: 8px; /*Desired width*/
+  height: 8px; /*Desired height*/
+  font-size:8px;
+}
+/*
+#gd_edit_area {
+	 float:left;
+}
+*/
+.column1 {
+    width: 70%;
+    text-align: left;
+}
+
+.column2 {
+    width: 30%;
+    text-align: right;
+}
+</style>
+
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>	
+
+	
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+		
+
+		$( ".accordion" ).accordion({
+			collapsible:true,
+			heightStyle:"content",
+			active:false,
+		}); 
+   });
+//]]>
+</script>	
+	
+
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+		RnaSeq Expression Profile 
+	</ui:define>
+	
+	
+	<ui:define name="content">
+	#{rnaSeqHeatmapBean.loadDataList()}
+
+		
+	<h:form id="rnaseqHeatmapForm">	
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v0.3.js"></script>
+		<h:outputScript library="scripts" name="jquery-latest.pack.js"></h:outputScript>
+		<h:outputScript library="scripts" name="heatmap.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="heatmap.css" /> 
+		<h:outputStylesheet library="css" name="tabbedPane.css" /> 
+		<h:outputScript library="scripts" name="jquery-ui.js"></h:outputScript>
+		<h:outputScript library="scripts" name="d3-context-menu.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="d3-context-menu.css" /> 
+		
+<h:panelGrid columns="5" >
+	<h:panelGroup>
+	    <h:outputText  value="Rna Seq Expression Profile for:#{rnaSeqHeatmapBean.selectedSeries}&nbsp;&nbsp;"></h:outputText>  
+	</h:panelGroup>	 
+
+	<h:panelGroup>
+		Table Size:
+		<h:selectOneMenu id="menu1" value="#{rnaSeqHeatmapBean.topGeneCount}" 
+	   		onchange="submit()" immediate="true" valueChangeListener="#{rnaSeqHeatmapBean.topGeneCountChanged}" >
+			<f:selectItems value="#{rnaSeqHeatmapBean.topGeneCountOptions}" />		
+		</h:selectOneMenu>
+	</h:panelGroup>		
+<ui:remove> 	
+	<h:panelGroup>
+		Palette:
+		<select id="palette">
+		  <option value="Default" selected="selected">Default</option>
+		  <option value="RdYlGn">RdYlGn</option>
+		  <option value="Spectral">Spectral</option>
+		  <option value="RdYlBu">RdYlBu</option>
+		  <option value="RdGy">RdGy</option>
+		  <option value="RdBu">RdBu</option>
+		  <option value="PiYG">PiYG</option>
+		  <option value="PRGn">PRGn</option>
+		  <option value="BrBG">BrBG</option>
+		  <option value="PuOr">PuOr</option>
+		</select>
+	</h:panelGroup>	
+
+	
+	<div style="width:200px;">
+		<label>Heatmap Scale</label>
+		<div id="slider" ></div>
+	</div>
+</ui:remove>
+
+
+	<h:panelGroup>
+		Heatmap Scale:
+		<button id="cell-decrease" style="font-size:10px; width:10px; height:10px; padding:4px"/>
+	    <button id="cell-increase" style="font-size:10px; width:10px; height:10px; padding:4px"/>
+	</h:panelGroup>	  
+	  
+	<pr:commandButton id="showdialog" value="Gene Biotype Filter" onclick="PF('dialog2').show();" type="button"></pr:commandButton>
+  
+	<h:inputText id="seqDir" value="http://beta.gudmap.org/ngsData" style="display:none; visibility: hidden;">
+	</h:inputText>			  	 
+	<h:inputText id="seqFile" value="#{rnaSeqHeatmapBean.seqFile}" style="display:none; visibility: hidden;">
+	</h:inputText>			  	
+	<h:inputText id="selectedSeries" value="#{rnaSeqHeatmapBean.selectedSeries}" style="display:none; visibility: hidden;">
+	</h:inputText>			  	
+	<h:inputText id="selectedGene" value="#{rnaSeqHeatmapBean.selectedGene}" style="display:none; visibility: hidden;">
+	</h:inputText>			  
+	<h:inputText id="cellSize" value="#{rnaSeqHeatmapBean.cellSize}" style="display:none; visibility: hidden;">
+	</h:inputText>		
+	<h:inputText id="sampleId" value="#{rnaSeqHeatmapBean.selectedSample}" style="display:none; visibility: hidden;">
+	</h:inputText>		
+	<t:commandLink id="analysisLink" forceId="true"  style="display:none; visibility: hidden;" actionListener="#{rnaSeqHeatmapBean.processAction}" >
+	</t:commandLink>
+	
+</h:panelGrid> 	
+
+
+	
+<table id="split">
+<thead></thead>
+<tbody></tbody>
+</table>
+		<h:panelGroup>
+			<div id="annotations" style='width:1100px; height:100px;'></div>	
+			<div id="chart" style='overflow:auto;' ></div>
+		</h:panelGroup>
+		
+	
+	
+
+<script type="text/javascript">
+//<![CDATA[
+
+   $(document).ready(function() {
+	   
+//	    var url = "../resources/genestrips/rnaseq_top.json";
+//	    var url = "../resources/genestrips/Gudmap:GSE59129.json";
+	    var url = "../resources/genestrips/" + document.getElementById('rnaseqHeatmapForm:seqFile').value;
+
+		var viewWidth = $(document).width();					
+		var viewHeight = $(document).height();			
+//		var cell_size = 15;
+		var cell_size_str = document.getElementById('rnaseqHeatmapForm:cellSize').value;
+		var series = document.getElementById('rnaseqHeatmapForm:selectedSeries').value;//"GSE64959"
+		var cell_size = parseInt(cell_size_str);
+		var sample = document.getElementById('rnaseqHeatmapForm:sampleId');
+		var gene = document.getElementById('rnaseqHeatmapForm:selectedGene');
+		var item = document.getElementById('analysisLink');
+		
+		seq_heatmap_display(url, "#chart", "Default", cell_size, series, sample, gene, item);
+/*
+		var sliderOpts = {
+				   value: 15,
+				   min: 5,
+				   max: 25,
+				   animate: true,
+				   change: function( event, ui ) {
+				   		update_heatmap("#chart", ui.value);
+				   		seq_heatmap_display(url, "#chart", "Default",ui.value, series, sample, gene, item);
+				   }
+		};
+	   $( "#slider" ).slider(sliderOpts);
+*/	   
+	   $("#cell-decrease").button({
+		   text: false,
+           icons: {
+               primary: "ui-icon-circle-minus"
+            }		   
+	   })
+	   .click(function(){
+		   cell_size = cell_size - 2;
+		   document.getElementById('rnaseqHeatmapForm:cellSize').value = '' + cell_size;
+		   update_heatmap("#chart");
+		   seq_heatmap_display(url, "#chart", "Default",cell_size, series, sample, gene, item);
+	   });
+
+	   $("#cell-increase").button({
+		   text: false,
+           icons: {
+               primary: "ui-icon-circle-plus"
+            }		   
+	   })
+	   .click(function(){
+		   cell_size = cell_size + 2;
+		   document.getElementById('rnaseqHeatmapForm:cellSize').value = '' + cell_size;
+		   update_heatmap("#chart");
+		   seq_heatmap_display(url, "#chart", "Default",cell_size, series, sample, gene, item);
+	   });
+  
+ }); 
+
+//]]>
+ </script>		
+
+
+	</h:form>  
+<ui:include src="/snippets/g_geneBioTypeFilter.xhtml"></ui:include>	
+
+
+	</ui:define>
+</ui:composition>
+</h:body>
+</html>
