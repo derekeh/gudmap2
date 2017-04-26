@@ -53,9 +53,18 @@
 				<h:outputText value="Carnegie Stage: #{arraySeqSubmissionBean.seqSubmissionModel.stage}" rendered="#{arraySeqSubmissionBean.seqSubmissionModel.species == 'Homo sapiens'}"/>
 				
 				<h:outputText value="External/Internal Links: " />
+				<h:panelGroup>
 	    	    <h:outputLink styleClass="datatext" value="#{appRoot}/pages/viewPage.jsf?docID=36">
 	    			<h:outputText value="View sequencing data on UCSC Genome Browser or IGV" />
 	    	    </h:outputLink>
+	    	    <br/>
+	    	    <h:outputLink styleClass="datatext" value="browseSeqHeatmap.xhtml">
+	    			<h:outputText value="View Series Heatmap" />
+	    			<f:param name="seriesID" value="#{arraySeqSubmissionBean.seqSubmissionModel.seqSeriesModel.geoID}" />
+	    	    </h:outputLink>
+	    	    
+				</h:panelGroup>
+				
 				
 				<h:outputText value="Result Notes" rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.resultNotes}"/>
 	    		<h:dataTable columnClasses="db_inner_detail_right" value="#{arraySeqSubmissionBean.seqSubmissionModel.resultNotes}" var="note"  rendered="#{not empty arraySeqSubmissionBean.seqSubmissionModel.resultNotes}">
