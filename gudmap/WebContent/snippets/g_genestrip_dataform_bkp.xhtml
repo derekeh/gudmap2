@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+	<style>
+		.gd_container {
+			max-width:2000px;
+		}
+	</style>
+	
+	<h:form id="dataform"> 
+	    <h:dataTable rowIndexVar="row" value="#{geneStripBean.dataList}" var="u" 
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    		
+ 			<h:column >
+    			<f:facet name="header">
+    				<h:selectBooleanCheckbox id="cb_toggle" value="#{geneStripBean.toggleCheck}" valueChangeListener="#{geneStripBean.toggleAll}">
+						<f:ajax event="click" execute="@this cb_toggle"  render="@form" />
+					</h:selectBooleanCheckbox>
+    			</f:facet>
+    				<h:selectBooleanCheckbox id="cb_#{u.geneSymbol}" value="#{u.selected}"></h:selectBooleanCheckbox>
+    		</h:column>
+ 			
+    		
+    		<h:column rendered="#{paramBean.genecol == true}">
+    			<f:facet name="header">
+    				<h:commandLink id="genelink" value="Gene" actionListener="#{geneStripBean.sort}">
+    					<f:attribute name="sortField" value="gene" />
+    					<f:ajax execute="@this genelink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink> 
+    			</f:facet>
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{not empty u.imageUrl}">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+				</h:commandLink>
+				<h:outputText value="#{u.geneSymbol}" rendered="#{empty u.imageUrl}"/>
+    		</h:column>
+ 
+    		<h:column rendered="#{paramBean.synonymcol == true}">
+    			<f:facet name="header">
+    				Synonyms
+				</f:facet>
+				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.speciescol == true}">
+    			<f:facet name="header">
+    				<h:commandLink id="specieslink" value="Species" actionListener="#{geneStripBean.sort}">
+    					<f:attribute name="sortField" value="species" />
+    					<f:ajax execute="@this specieslink" render="@form" onevent="monitor"></f:ajax>
+                    </h:commandLink>    				
+				</f:facet>
+    				#{u.species}
+    				
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.ishexpressioncol == true}">
+    			<f:facet name="header">
+    				In situ Expression
+    				
+				</f:facet>
+				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.imagescol == true}">
+    			<f:facet name="header">
+    				Images
+				</f:facet>			
+    			<h:outputLink  value="viewImageMatrix.jsf?geneId=#{u.gene_id}">
+    					<img src="#{u.imageUrl}" />
+                 </h:outputLink>
+    		</h:column>
+    		
+    	
+    		<h:column rendered="#{paramBean.arrayexpressioncol == true}">
+    			<f:facet name="header">
+    				Microarray Profile
+				</f:facet>
+				<div id="genestrip_#{u.geneSymbol}"></div>		
+				<script type="text/javascript">				   
+				   genestrip_heatmap_display("#{u.gene_id}", "#genestrip_#{u.geneSymbol}", 4, "#{u.geneSymbol}");
+				</script> 
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.rnaseqcol == true}">
+    			<f:facet name="header">
+    				Sequence
+				</f:facet>
+				<h:outputLink title="Click to see RNA-SEQ data on UCSC genome browser for #{u.geneSymbol}" 
+					value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&amp;hubUrl=http://beta.gudmap.org/ngsData/gudmap_ucsc_hub/hub.txt&amp;position=#{u.geneSymbol}">
+					<h:outputText value="View on UCSC"></h:outputText>
+				</h:outputLink>
+				<br />
+				<h:outputLink title="Open IGV in Java Web Start to see GUDMAP sequencing data for #{u.geneSymbol}"
+					value="http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://beta.gudmap.org/ngsData/gudmap_igv_seq_genes.xml&amp;locus=#{u.geneSymbol}">
+					<h:outputText value="View on IGV"></h:outputText>
+				</h:outputLink>
+				
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.embryostagecol == true}">
+    			<f:facet name="header">
+    				Stages
+				</f:facet>
+				<h:outputLink value="browseStageSubmissions.jsf?gene=#{u.geneSymbol}&amp;geneId=#{u.gene_id}&amp;species=#{u.species}">
+    				#{u.stageRange}
+    			</h:outputLink>
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.omimcol == true}">
+    			<f:facet name="header">
+    				Disease
+				</f:facet>				
+				<h:outputLink value="viewDiseaseResult.jsf?type=gene&amp;diseaseGene=#{u.geneSymbol}&amp;isDirect=false" rendered="#{u.omimCount>0}">
+    				OMIM
+    			</h:outputLink>
+    			<h:outputText value="0" rendered="#{u.omimCount==0}" />
+    		</h:column>
+
+    	 </h:dataTable>
+
+         </h:form> 
+</ui:composition>
