@@ -523,7 +523,7 @@ public class SolrDao {
 		docs = new ArrayList<SolrInputDocument>();
 		
         String queryString = SolrQueries.GET_IMAGE_INDEX_DATA;
-        
+        int count = 0;
         try
 		{
 			//con = ds.getConnection();
@@ -597,12 +597,130 @@ public class SolrDao {
 				doc.addField("GROUP_ID", result.getString(56)); 
 				
 				docs.add(doc);
+				count++;
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+       
+       queryString = SolrQueries.GET_EUREXPRESS_IMAGE_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			count += 1;
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+//				doc.addField("id", count); 
+				doc.addField("IMAGE_ID", String.valueOf(count)); 
+				doc.addField("GUDMAP_ID", result.getString(1)); 
+				doc.addField("GROUP_ID", result.getString(2)); 
+				doc.addField("IMAGE", result.getString(4));
+				doc.addField("EMAPS", result.getString(5)); 
+				doc.addField("GENE", result.getString(7)); 
+				doc.addField("STAGE", result.getString(8)); 
+				doc.addField("DEV_STAGE", result.getString(9) + "dpc"); 				
+				doc.addField("MGI_GENE_ID", result.getString(10)); 
+
+				doc.addField("SPECIES", "Mus musculus"); 
+				doc.addField("ASSAY_TYPE", "ISH"); 
+				doc.addField("SEX", "unknown"); 
+				doc.addField("IMAGE_TYPE", "image");
+				
+				
+				String path = result.getString(1);
+				if (path != null){
+					path = path.replace("euxassay_","");
+					int index = Integer.parseInt(path);
+					if (index < 100)
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(0);
+					else{
+						index = index/100;
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(index);
+					}
+					path += "/" + result.getString(1) + "/";
+					
+					doc.addField("IMAGE_PATH", path + result.getString(4)); 
+					doc.addField("THUMBNAIL_PATH", path + result.getString(4)); 
+				}
+				doc.addField("SOURCE", "eurexpress"); 				
+				
+				docs.add(doc);
+				count++;
+
 			}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
+ 
+/*
+       queryString = SolrQueries.GET_EUREXPRESS_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			count += 1;
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+//				doc.addField("id", count); 
+				doc.addField("IMAGE_ID", String.valueOf(count)); 
+				doc.addField("GUDMAP_ID", result.getString(1)); 
+				doc.addField("GENE", result.getString(2)); 
+				doc.addField("MGI_GENE_ID", result.getString(3)); 
+				doc.addField("DEV_STAGE", result.getString(5) + "dpc"); 
+				doc.addField("STAGE", result.getString(6)); 
+//				doc.addField("SYNONYM", result.getString(7)); 
+//				doc.addField("COMPONENT", result.getString(8)); 
+
+				doc.addField("SPECIES", "Mus musculus"); 
+				doc.addField("ASSAY_TYPE", "ISH"); 
+				doc.addField("SEX", "unknown"); 
+				doc.addField("IMAGE_TYPE", "image");
+				
+				doc.addField("IMAGE", result.getString(1) + "_01.jpg");
+				
+				String path = result.getString(1);
+				if (path != null){
+					path = path.replace("euxassay_","");
+					int index = Integer.parseInt(path);
+					if (index < 100)
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(0);
+					else{
+						index = index/100;
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(index);
+					}
+					path += "/" + result.getString(1) + "/";
+					
+					doc.addField("IMAGE_PATH", path + result.getString(1) + "_01.jpg"); 
+					doc.addField("THUMBNAIL_PATH", path + result.getString(1) + "_01.jpg"); 
+				}
+				doc.addField("SOURCE", "eurexpress"); 				
+				
+				docs.add(doc);
+				count++;
+
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+       
+        
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        */       
+        
+        
         return docs;
     }
 
@@ -766,5 +884,73 @@ public class SolrDao {
 		}
         return docs;
     }
+
+	public ArrayList<SolrInputDocument> getSolrEurExpressIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_EUREXPRESS_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			int count = 1;
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				doc.addField("id", count); 
+				doc.addField("ID", result.getString(9)); 
+				doc.addField("EUREXP_ID", result.getString(1)); 
+				doc.addField("GENE", result.getString(2)); 
+				doc.addField("MGI_GENE_ID", result.getString(3)); 
+				doc.addField("ENTREZ_ID", result.getString(4)); 
+				doc.addField("DEV_STAGE", result.getString(5) + "dpc"); 
+				doc.addField("STAGE", result.getString(6)); 
+				doc.addField("SYNONYM", result.getString(7)); 
+				doc.addField("COMPONENT", result.getString(8)); 
+
+				doc.addField("SPECIES", "Mus musculus"); 
+				doc.addField("ASSAY_TYPE", "ISH"); 
+				doc.addField("SEX", "unknown"); 
+				doc.addField("IMAGE_TYPE", "image");
+				
+				doc.addField("IMAGE", result.getString(1) + "_01.jpg");
+				
+				String path = result.getString(1);
+				if (path != null){
+					path = path.replace("euxassay_","");
+					int index = Integer.parseInt(path);
+					if (index < 100)
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(0);
+					else{
+						index = index/100;
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(index);
+					}
+					path += "/" + result.getString(1) + "/";
+					
+					doc.addField("IMAGE_PATH", path + result.getString(1) + "_01.jpg"); 
+					doc.addField("THUMBNAIL_PATH", path + result.getString(1) + "_01.jpg"); 
+				}
+				
+				
+				
+				
+				
+				docs.add(doc);
+				count++;
+
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return docs;
+    }
+	
 	
 }

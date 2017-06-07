@@ -133,6 +133,14 @@
 	         <h:outputText style="color:black" value="(#{solrTreeBean.webCount})" rendered="#{solrTreeBean.page == '/solr/solrWebPages.xhtml'}"/>
 		</h:panelGrid>
 
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrEurExpress.jsf" >
+				<h:outputText style="color:grey" value="EurExpress" rendered="#{solrTreeBean.page != '/solr/solrEurExpress.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="EurExpress" rendered="#{solrTreeBean.page == '/solr/solrEurExpress.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.eurExpCount})" rendered="#{solrTreeBean.page != '/solr/solrEurExpress.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.eurExpCount})" rendered="#{solrTreeBean.page == '/solr/solrEurExpress.xhtml'}"/>
+		</h:panelGrid>
 
 <ui:remove>
 <h:panelGroup id="includeContainer">

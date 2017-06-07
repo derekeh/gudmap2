@@ -71,9 +71,13 @@
 			<div class="highslide-caption">
 			<h:panelGroup rendered="#{u.imageType != 'schematic'}">
 				<h:outputText value="Assay: "/>
-    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf">
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf" rendered="#{u.source != 'eurexpress'}">
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.accessionId}">
+					<h:outputText value="#{u.accessionId}"/>
+				</h:outputLink>
 				<br/>				
 				<h:outputText value="Gene: "/>	
 <ui:remove>
@@ -81,20 +85,31 @@
      				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
 </ui:remove>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails">
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{u.source != 'eurexpress'}">
 					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
 				</h:commandLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.geneSymbol}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<h:outputText value="#{u.geneSymbol}"/>
+				</h:outputLink>
 
 								
 				<br/>
 				<h:outputText value="Go to "/>
-	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+ 				<h:outputLink rendered="#{u.source != 'eurexpress'}"
+					value="#{u.clickFilePath}">
+					<h:outputText value="Image Viewer"/>
+				</h:outputLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.accessionId}">
+					<h:outputText value="Image Viewer"/>
+				</h:outputLink>
 	    	</h:panelGroup>
 			<h:panelGroup rendered="#{u.imageType == 'schematic'}">			
  				<h:outputLink value="http://glenelgin.hgu.mrc.ac.uk/Schematics/index.php?grpID=#{u.group}">
 					<h:outputText value="#{u.imageTitle}"/>
 				</h:outputLink>
-			</h:panelGroup>
+ 			</h:panelGroup>
  			</div>
 	    </ui:repeat>
 		</div>
@@ -109,9 +124,14 @@
 			<div class="highslide-caption" >
 			<h:panelGroup rendered="#{u.imageType != 'schematic'}">
 				<h:outputText value="Assay: "/>
-    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf">
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf" rendered="#{u.source != 'eurexpress'}">
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.accessionId}">
+					<h:outputText value="#{u.accessionId}"/>
+				</h:outputLink>
+
 				<br/>
 				<h:outputText value="Gene: "/>	
 <ui:remove>							
@@ -119,13 +139,24 @@
      				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
 </ui:remove>
-     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails">
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{u.source != 'eurexpress'}">
 					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
 				</h:commandLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.geneSymbol}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<h:outputText value="#{u.geneSymbol}"/>
+				</h:outputLink>
 				
 				<br/>
 				<h:outputText value="Go to "/>
-	    		<a href="#{u.clickFilePath}">Image Viewer</a>
+ 				<h:outputLink rendered="#{u.source != 'eurexpress'}"
+					value="#{u.clickFilePath}">
+					<h:outputText value="Image Viewer"/>
+				</h:outputLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.accessionId}">
+					<h:outputText value="Image Viewer"/>
+				</h:outputLink>
 	    	</h:panelGroup>
 			<h:panelGroup rendered="#{u.imageType == 'schematic'}">
  				<h:outputLink value="http://glenelgin.hgu.mrc.ac.uk/Schematics/index.php?grpID=#{u.group}">

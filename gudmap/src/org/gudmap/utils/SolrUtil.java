@@ -53,6 +53,7 @@ public class SolrUtil {
 	public HttpSolrClient image_server;
 //	public HttpSolrClient tutorial_server;
 	public HttpSolrClient web_server;
+	public HttpSolrClient eurexp_server;
 	
 	public Set<String> insitu_schema;
 	public Set<String> genes_schema;
@@ -62,6 +63,7 @@ public class SolrUtil {
 	public Set<String> tissues_schema;
 	public Set<String> mouse_strain_schema;
 	public Set<String> image_schema;
+	public Set<String> eurexp_schema;
 		
 	public int ishExpressionCount = 0;	
 	public String genelistids;
@@ -98,6 +100,7 @@ public class SolrUtil {
 		image_server = new HttpSolrClient( "http://localhost:8983/solr/gudmap_images" );		
 //		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorial");
 		web_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_web");
+		eurexp_server = new HttpSolrClient("http://localhost:8983/solr/eurexp_data");
 		
 		
     	insitu_schema = getInsituSchema();
@@ -108,7 +111,7 @@ public class SolrUtil {
 		tissues_schema = getTissuesSchema();
 		mouse_strain_schema = getMouseStrainsSchema();
 		image_schema = getImagesSchema();
-			
+		eurexp_schema = getEurExpressSchema();			
 
 		
 	}
@@ -174,6 +177,11 @@ public class SolrUtil {
 	public HttpSolrClient getWebServer(){
 		return web_server;
 	}
+
+	public HttpSolrClient getEurExpressServer(){
+		return eurexp_server;
+	}
+	
 	
 	public String getExpressionFilter(String filter) {
 		
@@ -453,7 +461,7 @@ public class SolrUtil {
 	        parameters.addFacetField("DATE");	        
 	        
 	        
-	        QueryResponse qr = insitu_server.query(parameters);       
+	        QueryResponse qr = insitu_server.query(parameters);   
 	        
         	if (qr.getFacetFields() != null) {
         		for (FacetField ff : qr.getFacetFields()) {
@@ -2995,5 +3003,284 @@ public class SolrUtil {
 		    
 		return schema;
 	}   
+
+	public Set<String> getEurExpressSchema() {
+	   	
+	   	Set<String> schema = new HashSet<String>();
 	   
+	    schema.add("EUREXP_ID");
+	    schema.add("GENE");
+	    schema.add("SYNONYM");
+	    schema.add("STAGE");
+	    schema.add("COMPONENT");
+	    schema.add("GENE_MGI_ID");
+	    schema.add("ENTREZ_ID");
+	    schema.add("DEV_STAGE");
+        schema.add("ASSAY_TYPE");
+        schema.add("SPECIES");
+        schema.add("IMAGE_TYPE");
+        schema.add("IMAGE");
+        schema.add("IMAGE_PATH");
+        schema.add("THUMNAIL_PATH");
+        schema.add("SEX");
+    
+		return schema;
+    }
+
+    public int getEurExpCount(String queryString, String filter){
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+    	
+        int eurexpCount = 0;
+      	eurexp_server.setParser(new XMLResponseParser());
+        
+        try{
+	        SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.set("wt", "xml");
+	      	if (filter != null)
+	      		parameters.addFilterQuery(filter);
+
+	      	
+	        QueryResponse qr = eurexp_server.query(parameters);
+	        SolrDocumentList sdl = qr.getResults();
+	        eurexpCount = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e){
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+        return  eurexpCount;
+    }
+
+    public int getEurExpCount(String queryString, String filter, List<String> filters) throws SolrServerException{   	
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+    	int count = 0;
+
+        try
+        {
+   		
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+
+        	if (filter == null || filter.contentEquals("undefined")){
+        	}
+        	else
+        	{
+	            String[] fields = filter.split(":");
+	            if (fields.length > 1){
+	            	filter = fields[0] + ":" + '"' + fields[1] + '"';
+	            	parameters.addFilterQuery(filter);
+	            }
+	        }
+	        if (filters != null){    
+	            for (String fs : filters){
+	            	if (fs.contains("STAGE"))
+	            		fs = fs.replace(":", ":TS");
+	            		            	
+	            		            	
+	            	parameters.addFilterQuery(fs);
+	            }
+	        }
+	        
+            QueryResponse qr = eurexp_server.query(parameters);
+            SolrDocumentList sdl = qr.getResults();
+  
+            count = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e){
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+
+       return count;    
+    }	
+	
+    public int getEurExpFilteredCount(String queryString, HashMap<String,String> filters)
+    {    			
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		int count = 0;
+		try{
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (!filters.isEmpty()){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (eurexp_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	      	
+	        QueryResponse qr = eurexp_server.query(parameters);                      
+	        
+	        SolrDocumentList sdl = qr.getResults();
+	        count = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return count;
+    }
+
+    public Map<String,String> getEurExpDataCount(String queryString, HashMap<String,String> filters)
+    {  
+    	Map<String,String> totalslist = new HashMap<String,String>();
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		try{
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (!filters.isEmpty()){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (eurexp_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(12000);
+	        
+	        parameters.addFacetField("EUREXP_ID");
+	        parameters.addFacetField("GENE");
+	        parameters.addFacetField("MGI_GENE_ID");
+	        parameters.addFacetField("ENTREZ_ID");
+	        parameters.addFacetField("DEV_STAGE");
+	        parameters.addFacetField("STAGE");
+	        parameters.addFacetField("SYNONYM");
+	        parameters.addFacetField("COMPONENT");
+	        
+	        
+	        QueryResponse qr = eurexp_server.query(parameters);   
+	        
+	        List<FacetField> ffields = qr.getFacetFields();
+	        
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
+    
+    public SolrDocumentList getEurExpData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+		
+
+    	if (column.contentEquals("ID"))
+    		column = "EUREXP_ID";
+    	
+        SolrDocumentList sdl = new SolrDocumentList();
+        
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+        try
+        {
+
+			   		    		
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setIncludeScore(true);
+	        parameters.setStart(offset);
+	        parameters.setRows(rows); //(1000);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+	        
+	        parameters.addField("EUREXP_ID");
+	        parameters.addField("GENE");
+	        parameters.addField("MGI_GENE_ID");
+	        parameters.addField("ENTREZ_ID");
+	        parameters.addField("DEV_STAGE");
+	        parameters.addField("STAGE");
+	        parameters.addField("SYNONYM");
+	        parameters.addField("COMPONENT");
+	        parameters.addField("ASSAY_TYPE");
+	        parameters.addField("SPECIES");
+	        parameters.addField("IMAGE");
+	        parameters.addField("IMAGE_PATH");
+	        parameters.addField("THUMBNAIL_PATH");
+	        parameters.addField("SEX");
+	        
+	        if (!filters.isEmpty()){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (eurexp_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }       
+
+            QueryResponse qr = eurexp_server.query(parameters);
+            sdl = qr.getResults();
+            
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+
+        return sdl;
+    }
+    
 }

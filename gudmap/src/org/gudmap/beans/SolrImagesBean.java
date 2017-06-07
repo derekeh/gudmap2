@@ -247,6 +247,8 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 				if (doc.containsKey("MGI_GENE_ID"))
 					model.setMgiGeneId(doc.getFieldValue("MGI_GENE_ID").toString());
 				
+				if (doc.containsKey("SOURCE"))
+					model.setSource(doc.getFieldValue("SOURCE").toString());
 				
 				model.setGroup(accessionId.replace("GUDMAP:", ""));
 				model.setSibling(accessionId.replace(":", "_"));

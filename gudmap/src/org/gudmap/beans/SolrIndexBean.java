@@ -197,7 +197,20 @@ public class SolrIndexBean implements Serializable {
 		assembler.updateWebIndex(server);
 		return null;		
 	}
-	
+
+
+	/**
+	 * This method rebuilds the eurexpress index.
+	 * 
+	 * @return
+	 */
+	public String indexEurExpress(){
+		
+		HttpSolrClient server = solrUtil.getEurExpressServer();
+		assembler.updateEurExpressIndex(server);
+		return null;		
+	}
+
 	/**
 	 * This method creates a series of genestrip json files.
 	 * Each file contains the data to create the D3 image.
@@ -214,6 +227,9 @@ public class SolrIndexBean implements Serializable {
 			}
 		}
 	}
+
+	
+	
 	
 	/**
 	 * This method generates a json file based on the geneId.

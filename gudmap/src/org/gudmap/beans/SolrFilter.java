@@ -187,6 +187,7 @@ public class SolrFilter implements Serializable {
 		
 		Map<String,String> sourcemap = new LinkedHashMap<String,String>();
 		sourcemap.put("---clear---", "clear");
+		sourcemap.put("EurExpress", "eurexpress");
 
 		Map<String, String> map =  paramBean.getSourcelist(); 
 	    Iterator<Entry<String, String>> it = map.entrySet().iterator();

@@ -121,6 +121,27 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getGeneCount(solrInput, filters);
 	}
 	
+	////////////////// EUREXPRESS ////////////////////////////
+	
+	public int getEurExpCount(){
+
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getEurExpFilteredCount(solrInput,filters);
+	}
+	
+	public int getEurExpCount(String filter){
+		
+		if (filter != "" || filter != null)	{	
+	        String[]ffields = filter.split(":");
+	    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+		}
+		return solrUtil.getEurExpCount(solrInput, filter);
+	}
+	
+	public int getEurExpCount(HashMap<String,String> filters){
+		return solrUtil.getEurExpFilteredCount(solrInput, filters);
+	}
 	
 	////////////////// INSITU ////////////////////////////
 	
