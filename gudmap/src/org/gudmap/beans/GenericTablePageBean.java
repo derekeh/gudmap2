@@ -184,6 +184,10 @@ public class GenericTablePageBean extends PagerImpl implements Serializable  {
     		else if(specimenAssay.equals("boolean")) {
     			booleanResultAssembler = new BooleanResultAssembler() ;
     		}
+    		else if(specimenAssay.equals("OPT")) {
+    			String assayType2="IHC";
+    			assembler = new InsituTablePageBeanAssembler(GenericQueries.BROWSE_OPT_PARAM,assayType,assayType2);
+    		}
     		
     		//insitu data
     		else {
