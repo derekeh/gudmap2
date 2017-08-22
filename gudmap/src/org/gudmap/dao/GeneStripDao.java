@@ -42,6 +42,10 @@ public class GeneStripDao {
 	private PreparedStatement repeatPs=null;
 	private ResultSet repeatResult=null;
 	
+	private Connection speciesCon=null;
+	private PreparedStatement speciesPs=null;
+	private ResultSet speciesResult=null;
+	
 	///////////////////////
 	private MicroarrayHeatmapBeanAssembler microarrayHeatmapBeanAssembler;
 	private ArrayList<MasterTableInfo> tableinfo;
@@ -149,7 +153,9 @@ public class GeneStripDao {
 						geneStripModel.setMgiId(geneId);
 						arrayRange = (result.getString("arrayRange"));
 						ishRange = (result.getString("ishRange"));
-						species = (result.getString("species"));
+						/////
+						//species = (result.getString("species"));
+						species = findSpeciesForGeneId(geneId);
 						createJSONFile(geneId);
 						geneStripModel.setExpressionProfile(buildExpressionProfile(gene,geneId));
 						//geneStripModel.setMicroarrayProfile(buildMicroarrayProfile(geneId));
@@ -172,6 +178,36 @@ public class GeneStripDao {
 			}
 		  
 		  return geneStripModelList;
+	  }
+	  
+	  private String findSpeciesForGeneId(String geneId){
+		  String RET="";
+		  try
+			{
+				speciesCon = Globals.getDatasource().getConnection();
+				speciesPs = speciesCon.prepareStatement(GeneStripQueries.FIND_SPECIES_FOR_GENE_ID); 
+				speciesPs.setString(1, geneId);
+				speciesResult =  speciesPs.executeQuery();
+				
+//				if (speciesResult.first()) {
+//					speciesResult.beforeFirst();
+//					while (speciesResult.next()) {
+//						RET = (speciesResult.getString("species"));
+//					}
+//				}
+				if (speciesResult.first()) {
+					RET = (speciesResult.getString("species"));			
+				}
+				
+				
+			}
+			catch(SQLException sqle){sqle.printStackTrace();}
+			finally {
+			    Globals.closeQuietly(speciesCon, speciesPs, speciesResult);
+			}
+		  
+		  
+		  return RET;
 	  }
 	  
 	  public int count(ArrayList<String> ids) {

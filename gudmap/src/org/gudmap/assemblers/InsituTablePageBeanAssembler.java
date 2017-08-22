@@ -30,6 +30,7 @@ public class InsituTablePageBeanAssembler {
 	private InsituTableBeanModel ishmodel;
 	private String paramSQL;
 	private String assayType;
+	private String assayType2;
 	private String whereclause;
 	private String focusGroupWhereclause;
 	private String expressionJoin;
@@ -38,9 +39,16 @@ public class InsituTablePageBeanAssembler {
 	private String submitter;
 	private int agefrom=-1;
 	private int ageto=-1;
+	private boolean optResult=false;
+	
+	public  InsituTablePageBeanAssembler(String paramSQL,String assayType, String assayType2) {
+		this.assayType2=assayType2;
+		optResult=true;
+		setup(paramSQL,assayType);
+	}
 	
 	public  InsituTablePageBeanAssembler(String paramSQL,String assayType) {
-		if(Globals.getParameterValue("batch")!=null)
+		/*if(Globals.getParameterValue("batch")!=null)
 			batch=Integer.parseInt(Globals.getParameterValue("batch"));
 		
 		if(Globals.getParameterValue("submitter")!=null)
@@ -53,8 +61,25 @@ public class InsituTablePageBeanAssembler {
 			ageto=Integer.parseInt(Globals.getParameterValue("ageto"));
 		
 		this.paramSQL=paramSQL;
-		this.assayType=assayType;
+		this.assayType=assayType;*/
+		setup(paramSQL,assayType);
+	}
+	
+	public void setup(String paramSQL,String assayType) {
+		if(Globals.getParameterValue("batch")!=null)
+			batch=Integer.parseInt(Globals.getParameterValue("batch"));
 		
+		if(Globals.getParameterValue("submitter")!=null)
+			submitter=Globals.getParameterValue("submitter");
+		
+		if(Globals.getParameterValue("agefrom")!=null)
+			agefrom=Integer.parseInt(Globals.getParameterValue("agefrom"));
+		
+		if(Globals.getParameterValue("ageto")!=null)
+			ageto=Integer.parseInt(Globals.getParameterValue("ageto"));
+		
+		this.assayType=assayType;
+		this.paramSQL=paramSQL;
 	}
 	
 	public List<InsituTableBeanModel> getData(int firstRow, int rowCount, String sortField, boolean sortAscending, String whereclause, 
@@ -89,6 +114,13 @@ public class InsituTablePageBeanAssembler {
 			if(assayType.equals("INSITU")){
 				ps.setInt(1, firstRow);
 				ps.setInt(2, rowCount);
+			}
+			//OPT - can be ISH or IHC
+			else if(optResult) {
+				ps.setString(1, assayType);
+				ps.setString(2, assayType2);
+				ps.setInt(3, firstRow);
+				ps.setInt(4, rowCount);
 			}
 			else
 			{
@@ -140,6 +172,9 @@ public class InsituTablePageBeanAssembler {
 		if(assayType.equals("INSITU")){
 			queryString = queryString.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC','TG')");
 		}
+		if(optResult){
+			queryString = queryString.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC')");
+		}
 		String sql = String.format(queryString,expressionJoin,totalwhere,focusGroupWhereclause);
 		sql=sql.replace(" WHERE ", " WHERE "+specimenWhereclause);
 		//PARAMS
@@ -154,7 +189,7 @@ public class InsituTablePageBeanAssembler {
 		{
 				con = Globals.getDatasource().getConnection();
 				ps = con.prepareStatement(sql);
-				if(!assayType.equals("INSITU"))
+				if(!assayType.equals("INSITU") && !optResult)
 					ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
@@ -206,9 +241,12 @@ public class InsituTablePageBeanAssembler {
 				if(assayType.equals("INSITU")){
 					sql = sql.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC','TG')");
 				}
+				if(optResult){
+					sql = sql.replace("SUB_ASSAY_TYPE = ?", "SUB_ASSAY_TYPE IN ('ISH','IHC')");
+				}
 				
 				ps = con.prepareStatement(sql);
-				if(!assayType.equals("INSITU"))
+				if(!assayType.equals("INSITU") && !optResult)
 					ps.setString(1, assayType);
 				result =  ps.executeQuery();
 				
