@@ -407,5 +407,27 @@ public class SolrIndexBean implements Serializable {
 		return assembler.getGeneList();
 		
 	}
+
+
+	public String indexBiomedAtlasImages(){
+		
+		HttpSolrClient server = solrUtil.getBiomedAtlasImageServer();
+		assembler.updateBiomedAtlasImageIndex(server);
+		return null;		
+	}
+	
+	public String indexBiomedAtlasInsitu(){
+		
+		HttpSolrClient server = solrUtil.getBiomedAtlasInsituServer();
+		assembler.updateBiomedAtlasInsituIndex(server);
+		return null;		
+	}
+
+	public String indexBiomedAtlasGenes(){
+		
+		HttpSolrClient server = solrUtil.getBiomedAtlasGenesServer();
+		assembler.updateBiomedAtlasGenesIndex(server);
+		return null;		
+	}
 	
 }

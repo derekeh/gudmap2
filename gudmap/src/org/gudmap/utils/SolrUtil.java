@@ -54,6 +54,9 @@ public class SolrUtil {
 //	public HttpSolrClient tutorial_server;
 	public HttpSolrClient web_server;
 	public HttpSolrClient eurexp_server;
+	public HttpSolrClient biomedatlas_image_server;
+	public HttpSolrClient biomedatlas_insitu_server;
+	public HttpSolrClient biomedatlas_genes_server;
 	
 	public Set<String> insitu_schema;
 	public Set<String> genes_schema;
@@ -64,7 +67,12 @@ public class SolrUtil {
 	public Set<String> mouse_strain_schema;
 	public Set<String> image_schema;
 	public Set<String> eurexp_schema;
-		
+	public Set<String> biomedatlas_image_schema;
+	public Set<String> biomedatlas_insitu_schema;
+	public Set<String> biomedatlas_genes_schema;
+
+	
+	
 	public int ishExpressionCount = 0;	
 	public String genelistids;
 	public String genes;
@@ -101,6 +109,9 @@ public class SolrUtil {
 //		tutorial_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_tutorial");
 		web_server = new HttpSolrClient("http://localhost:8983/solr/gudmap_web");
 		eurexp_server = new HttpSolrClient("http://localhost:8983/solr/eurexp_data");
+		biomedatlas_image_server = new HttpSolrClient("http://localhost:8983/solr/biomed_atlas_images");
+		biomedatlas_insitu_server = new HttpSolrClient("http://localhost:8983/solr/biomed_atlas_insitu");
+		biomedatlas_genes_server = new HttpSolrClient("http://localhost:8983/solr/biomed_atlas_genes");
 		
 		
     	insitu_schema = getInsituSchema();
@@ -180,6 +191,16 @@ public class SolrUtil {
 
 	public HttpSolrClient getEurExpressServer(){
 		return eurexp_server;
+	}
+
+	public HttpSolrClient getBiomedAtlasImageServer(){
+		return biomedatlas_image_server;
+	}
+	public HttpSolrClient getBiomedAtlasInsituServer(){
+		return biomedatlas_insitu_server;
+	}
+	public HttpSolrClient getBiomedAtlasGenesServer(){
+		return biomedatlas_genes_server;
 	}
 	
 	
@@ -2815,7 +2836,8 @@ public class SolrUtil {
 	   schema.add("TISSUE_TYPE");
 	   schema.add("SPECIES"); 
 	   schema.add("GENE_TYPE"); 
-		   
+	   
+	   schema.add("ENTREZ_ID");		   
 	   return schema;
     }
 
@@ -2938,7 +2960,8 @@ public class SolrUtil {
 	    schema.add("EMAP_IDS");   
 	    schema.add("EMAP");   
 	    schema.add("EMAP_TERM");   
-		    
+        schema.add("IMAGE_PATH");
+        
 		return schema;
 	}   
 	   
@@ -3281,6 +3304,605 @@ public class SolrUtil {
 		}  
 
         return sdl;
+    }
+
+    //***************************** BIOMED ATLAS IMAGES METHODS *****************************************************
+
+    public int getBiomedAtlasImagesCount(String queryString, HashMap<String,String> filters){
+
+    	long count = 0;
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+        try
+        {
+
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);
+
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (image_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	        
+            QueryResponse qr = biomedatlas_image_server.query(parameters);
+            SolrDocumentList sdl = qr.getResults();
+            count = sdl.getNumFound();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}        
+
+
+        return (int)count;    
+    }
+
+
+    public SolrDocumentList getBiomedAtlasImagesData(String queryString, HashMap<String, String> filters, String column, boolean ascending, int offset, int rows){
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+		SolrDocumentList sdl = null;
+
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+
+        try
+        {
+
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        
+	        parameters.setIncludeScore(true);
+	        
+	        parameters.setStart(offset);
+	        parameters.setRows(rows);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+
+           	
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (image_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	        
+	        QueryResponse qr = biomedatlas_image_server.query(parameters);
+            sdl = qr.getResults();
+            
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}        
+
+        return sdl;
+    }  
+    
+    //***************************** BIOMED ATLAS INSITU METHODS *****************************************************
+
+    public int getBiomedAtlasInsituCount(String queryString){
+    	return getInsituCount(queryString, null);
+    }
+
+    public int getBiomedAtlasInsituCount(String queryString, String filter){
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+    	
+        int insituCount = 0;
+        biomedatlas_insitu_server.setParser(new XMLResponseParser());
+        
+        try{
+	        SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.set("wt", "xml");
+	      	if (filter != null)
+	      		parameters.addFilterQuery(filter);
+
+	      	
+	        QueryResponse qr = insitu_server.query(parameters);
+	        SolrDocumentList sdl = qr.getResults();
+	        insituCount = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e){
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+        return  insituCount;
+    }
+//
+//    public int getBiomedAtlasInsituCount(String queryString, String filter, List<String> filters) throws SolrServerException{   	
+//
+//		if (queryString == "" || queryString == null || queryString == "*")
+//			queryString = "*:*";
+//		else
+//			queryString = setWidcard(queryString);
+//
+//    	int count = 0;
+//
+//        try
+//        {
+//   		
+//            SolrQuery parameters = new SolrQuery();
+//	        parameters.set("q",queryString);
+//
+//        	if (filter == null || filter.contentEquals("undefined")){
+//        	}
+//        	else
+//        	{
+//	            String[] fields = filter.split(":");
+//	            if (fields.length > 1){
+//	            	filter = fields[0] + ":" + '"' + fields[1] + '"';
+//	            	parameters.addFilterQuery(filter);
+//	            }
+//	        }
+//	        if (filters != null){    
+//	            for (String fs : filters){
+//	            	if (fs.contains("STAGE"))
+//	            		fs = fs.replace(":", ":TS");
+//	            		            	
+//	            	if (fs.contains("EXP_STRENGTH"))
+//	            		fs = getExpressionFilter(fs);	            		            	
+//	            	parameters.addFilterQuery(fs);
+//	            }
+//	        }
+//	        
+//            QueryResponse qr = insitu_server.query(parameters);
+//            SolrDocumentList sdl = qr.getResults();
+//  
+//            count = (int)sdl.getNumFound();
+//        }
+//        catch (SolrServerException e){
+//            e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} 
+//
+//       return count;    
+//    }
+    
+    public int getBiomedAtlasInsituFilteredCount(String queryString, HashMap<String,String> filters)
+    {    			
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		int count = 0;
+		try{
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (!filters.isEmpty()){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	      	
+	        QueryResponse qr = biomedatlas_insitu_server.query(parameters);                      
+	        
+	        SolrDocumentList sdl = qr.getResults();
+	        count = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return count;
+    }
+
+    public Map<String,String> getBiomedAtlasInsituDataCount(String queryString, HashMap<String,String> filters)
+    {  
+    	Map<String,String> totalslist = new HashMap<String,String>();
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		try{
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (!filters.isEmpty()){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(40000);
+	        
+	        parameters.addFacetField("GENE");
+	        parameters.addFacetField("GUDMAP_ID");	
+	        parameters.addFacetField("ASSAY_TYPE");	        
+	        parameters.addFacetField("SPECIMEN_ASSAY_TYPE");	
+	        parameters.addFacetField("SPECIES_F");
+	        parameters.addFacetField("DEV_STAGE");	        
+	        parameters.addFacetField("STAGE");
+	        parameters.addFacetField("SEX");
+	        parameters.addFacetField("GENOTYPE_F");	        
+	        parameters.addFacetField("TISSUE_TYPE_F");	        
+	        parameters.addFacetField("PROBE_NAME");	        
+	        parameters.addFacetField("SOURCE");	               
+	        parameters.addFacetField("DATE");	        
+	        
+	        
+	        QueryResponse qr = biomedatlas_insitu_server.query(parameters);   
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
+    }
+    
+    
+
+    public SolrDocumentList getBiomedAtlasInsituData(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows) throws SolrServerException{
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+		
+
+    	if (column.contentEquals("GUDMAP_ID"))
+    		column = "GUDMAP";
+    	
+        SolrDocumentList sdl = new SolrDocumentList();
+        
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+        try
+        {
+
+			   		    		
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setIncludeScore(true);
+	        parameters.setStart(offset);
+	        parameters.setRows(rows); //(1000);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+	        
+	        parameters.addField("GUDMAP");
+	        parameters.addField("GUDMAP_ID");
+	        parameters.addField("GENE");
+	        parameters.addField("STAGE");
+	        parameters.addField("DEV_STAGE");
+	        parameters.addField("SOURCE");
+	        parameters.addField("DATE");
+	        parameters.addField("ASSAY_TYPE");
+	        parameters.addField("SPECIMEN_ASSAY_TYPE");
+	        parameters.addField("SEX");
+	        parameters.addField("PROBE_NAME");
+	        parameters.addField("GENOTYPE");
+	        parameters.addField("PROBE_TYPE");
+	        parameters.addField("IMAGE");
+	        parameters.addField("MGI_GENE_ID");
+	        parameters.addField("SPECIES");
+	        
+	        if (!filters.isEmpty()){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (insitu_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	        
+
+            QueryResponse qr = biomedatlas_insitu_server.query(parameters);
+            sdl = qr.getResults();
+            
+   
+            
+            
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+
+        return sdl;
+    }
+
+    // method to calculate the total in each field from an insitu query used to display column totals
+    public List<Integer> getBiomedAtlasInsituDataTotals(String queryString, String filter, List<String> filters) throws SolrServerException{
+		
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+		List<Integer> fieldCounts = new ArrayList<Integer>();	
+
+        try
+        {
+			   		    		
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0); 
+	        parameters.set("group", true);
+	        parameters.set("group.ngroups", true);
+	        
+	        String[] groupFields = {"GENE","GUDMAP","SOURCE","DATE","ASSAY_TYPE","PROBE_NAME","THEILER","DEV_STAGE","SEX","GENOTYPE","TISSUE_TYPE","PRESENT","SPECIMEN_ASSAY_TYPE","IMAGE_PATH"};
+
+        	if (filter == null || filter.contentEquals("undefined")){
+        	}
+        	else{
+	            String[] fields = filter.split(":");
+	            if (fields.length > 1){
+	            	filter = fields[0] + ":" + '"' + fields[1] + '"';
+	            	parameters.addFilterQuery(filter);
+	            }
+        	}
+            
+            for (String fs : filters){
+            	if (fs.contains("STAGE"))
+            		fs = fs.replace(":", ":TS");
+            	
+            	if (fs.contains("EXP_STRENGTH"))
+            		fs = getExpressionFilter(fs);
+            	
+            	parameters.addFilterQuery(fs);
+            }
+	        
+        	for (String str : groupFields){
+        		if (str != "PROBE_TYPE"){
+        			parameters.set("group.field", str);
+	        		QueryResponse qr = biomedatlas_insitu_server.query(parameters);
+	        		List<GroupCommand> gc = qr.getGroupResponse().getValues();
+	        		GroupCommand groups = gc.get(0);
+	        		int groupCount = groups.getNGroups();
+	        		fieldCounts.add(groupCount);
+        		}
+        		else
+        			fieldCounts.add(1);
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+       
+        return fieldCounts;
+    }
+
+    //***************************** BIOMED ATLAS GENE METHODS *****************************************************
+
+   public int getBiomedAtlasGeneCount(String query){ 
+    	return getGeneCount(query, null);
+    }
+    
+    public int getBiomedAtlasGeneCount(String queryString, HashMap<String,String> filters)
+    {    			
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		int count = 0;
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (genes_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	
+	        QueryResponse qr = biomedatlas_genes_server.query(parameters);                      
+	        
+	        SolrDocumentList sdl = qr.getResults();
+	        count = (int)sdl.getNumFound();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return count;
+    }
+
+    public SolrDocumentList getBiomedAtlasGudmapGenes(String queryString, HashMap<String,String> filters, String column, boolean ascending, int offset, int rows){
+
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+
+    	ORDER order = (ascending == true ? ORDER.asc: ORDER.desc);
+    	SolrDocumentList sdl = null;
+    	
+        try
+        {
+
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setFacet(true);        	      	        
+	        parameters.addFacetField("GENE");        	        
+//	        parameters.addFacetField("MGI_GENE_ID");        	        
+	        parameters.addFacetField("SYNONYMS");        	        
+	        parameters.setFacetMinCount(0);
+	        parameters.setIncludeScore(true);
+//	        parameters.setFacetLimit(100000);
+	        parameters.setStart(offset);
+	        parameters.setRows(rows); //(25000);
+	        if (!column.equalsIgnoreCase("RELEVANCE"))
+	        	parameters.setSort(column, order);
+
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (genes_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+	        
+            QueryResponse qr = biomedatlas_genes_server.query(parameters);
+                       
+            sdl = qr.getResults();
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}  
+
+    	return sdl; 
+    }
+
+    public Map<String,String> getBiomedAtlasGeneDataCount(String queryString, HashMap<String,String> filters)
+    {  
+    	Map<String,String> totalslist = new HashMap<String,String>();    	
+    	
+		if (queryString == "" || queryString == null || queryString == "*")
+			queryString = "*:*";
+		else
+			queryString = setWidcard(queryString);
+   	
+		try{
+	    	
+            SolrQuery parameters = new SolrQuery();
+	        parameters.set("q",queryString);
+	        parameters.setRows(0);	
+	        
+	        if (filters != null){
+		        Iterator<Entry<String, String>> it = filters.entrySet().iterator();
+		        while (it.hasNext()) {
+		            Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
+		            if (genes_schema.contains(pair.getKey())){
+		            	String f = pair.getKey() + ":" + pair.getValue();
+		            	f = f.replace("OR ", "OR "+pair.getKey() + ":");
+		            	parameters.addFilterQuery(f);
+		            }
+		        }
+	        }
+
+	        parameters.setFacet(true);
+	        parameters.setFacetMinCount(0);
+	        parameters.setFacetLimit(30000);
+	        
+	        parameters.addFacetField("GENE_F");
+	        parameters.addFacetField("SPECIES_F");	        
+	        parameters.addFacetField("SYNONYMS");	        
+	        parameters.addFacetField("SOURCE");	      
+	        parameters.addFacetField("IMAGE_PATH");	
+	        
+	        QueryResponse qr = biomedatlas_genes_server.query(parameters);     
+	        
+        	if (qr.getFacetFields() != null) {
+        		for (FacetField ff : qr.getFacetFields()) {
+        			String field = ff.getName();
+        			int size = 0;
+       			    for (Count c : ff.getValues()) {
+        				if (c.getCount() > 0) {
+        					if (c.getCount() > 0){
+        						size += 1;
+        					}
+         				}
+        			}
+       			 totalslist.put(field, Integer.toString(size));
+        		}
+        	}
+        }
+        catch (SolrServerException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return totalslist;
     }
     
 }

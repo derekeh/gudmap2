@@ -30,9 +30,9 @@ import org.gudmap.models.SolrInsituTableBeanModel;
  * @version 1.0
  * @since 13/03/2013 
  */
-@Named (value="solrInsituBean")
+@Named (value="biomedAtlasInsituBean")
 @SessionScoped
-public class SolrInsituBean extends PagerImpl implements Serializable  {
+public class BiomedAtlasInsituBean extends PagerImpl implements Serializable  {
 	
 	 private static final long serialVersionUID = 1L;
 	 
@@ -48,7 +48,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
    	private SolrTreeBean solrTreeBean;
 
     @Inject
-   	private SolrFilter solrFilter;
+   	private BiomedAtlasFilter solrFilter;
     
 	private String solrInput;
 	private HashMap<String,String> filters;
@@ -59,7 +59,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     
     // Constructors -------------------------------------------------------------------------------
 
-    public SolrInsituBean() {
+    public BiomedAtlasInsituBean() {
     	super(10,10,"RELEVANCE",true);
     	setup();
     }
@@ -72,7 +72,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 		this.solrTreeBean=solrTreeBean;
 	}
 	
-	public void setSolrFilter(SolrFilter solrFilter){
+	public void setSolrFilter(BiomedAtlasFilter solrFilter){
 		this.solrFilter = solrFilter;
 	}
 	
@@ -101,7 +101,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-        totalRows = solrTreeBean.getSolrUtil().getInsituFilteredCount(solrInput,filters);
+        totalRows = solrTreeBean.getSolrUtil().getBiomedAtlasInsituFilteredCount(solrInput,filters);
       	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
 
       	// Set currentPage, totalPages and pages.
@@ -126,7 +126,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 
     public String refresh(){
      	loadDataList();
-    	return "solrInsitu";
+    	return "biomedatlasinsitu";
     }
 
     public void resetAll() {
@@ -201,14 +201,14 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 					
     	try {
     		
-			SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getInsituData(solrInput, filterlist, sortColumn,ascending,offset,num);
+			SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getBiomedAtlasInsituData(solrInput, filterlist, sortColumn,ascending,offset,num);
 			if (sdl==null){
 				return null;
 			}
 			list = formatTableData(sdl);
 			
 
-			totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getInsituDataCount(solrInput, filterlist);
+			totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getBiomedAtlasInsituDataCount(solrInput, filterlist);
 			
     	} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
@@ -276,12 +276,17 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 				model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
 			if (doc.containsKey("SYNONYMS"))
 				model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
-			if (doc.containsKey("TISSUE_TYPE")){
-				String tissue = doc.getFieldValue("TISSUE_TYPE").toString();
-				model.setTissue(TissueFilter(tissue));
+//			if (doc.containsKey("TISSUE_TYPE")){
+//				String tissue = doc.getFieldValue("TISSUE_TYPE").toString();
+//				model.setTissue(TissueFilter(tissue));
+			if (doc.containsKey("TISSUE")){
+				model.setTissue(doc.getFieldValue("TISSUE").toString());
 			}			
 			if (doc.containsKey("SPECIES"))
 				model.setSpecies(doc.getFieldValue("SPECIES").toString());
+
+			if (doc.containsKey("IMAGE_CLICK_PATH"))
+				model.setClickFilePath(doc.getFieldValue("IMAGE_CLICK_PATH").toString());
 			
 			model.setExpression(insituExpression);
 

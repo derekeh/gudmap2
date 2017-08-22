@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pr="http://primefaces.org/ui" >	
+	
+<ui:composition template="/WEB-INF/templates/g_template_search.xhtml">
+	<ui:define name="title">
+	    Biomed Atlas ISH Data
+	</ui:define>
+	
+
+
+
+	
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_biomedAtlasMenu.xhtml"/>				
+	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
+		
+	
+
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h:form>
+
+		<h3 class="gd_h3" style="margin:8px 8px 0 8px; display: inline-block;">Filter</h3>
+ 		<h:commandButton id="filter_clear" value="Clear" >
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.reset}" />
+		 		<pr:ajax update=":biomed_filterform"/>
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform"/>
+ 		</h:commandButton>
+
+	</h:form>
+	<h:form  id="biomed_filterform">
+		<ui:include src="/snippets/g_biomedAtlasFilters.xhtml"/>	
+	</h:form>
+	
+		
+	<div id="db_form_margin" style="width: 140px; float: left;"></div>
+	<div id="db_form_wrapper" style="margin-left: 150px;">
+
+	
+		<h:form  id="biomed_dataform">
+
+
+	    <h:inputHidden id="solrInput" value="#{biomedAtlasInsituBean.solrInput}" />
+
+	     <h:dataTable value="#{biomedAtlasInsituBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+ 
+
+    		<h:column rendered="#{paramBean.oidcol == true}">
+    			<f:facet name="header">
+    				<h:commandLink value="OID" actionListener="#{biomedAtlasInsituBean.sort}">
+                         <f:attribute name="sortField" value="GUDMAP" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.oid}
+    		</h:column>
+
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Gene" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="GENE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('GENE')})
+    			</f:facet>
+     			<h:commandLink value="#{u.gene}"  action="/db/viewGeneDetails.xhtml" target="_blank" rendered="#{u.source == 'gudmap'}">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+				</h:commandLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.gene_id}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<h:outputText value="#{u.gene}"/>
+				</h:outputLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="http://www.emouseatlas.org/emagewebapp/pages/emage_general_query_result.jsf?genes=#{u.gene}">
+					<h:outputText value="#{u.gene}"/>
+				</h:outputLink>	
+	   		</h:column>
+    		
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Assay Detail" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="GUDMAP_ID" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('GUDMAP_ID')})
+				</f:facet>
+				<h:panelGrid columns="3" columnClasses="db_align_left,db_align_right,db_align_right">
+    			<h:commandLink value="#{u.gudmap_accession}"  action="/db/viewSubmissionDetails.xhtml" target="_blank" rendered="#{u.source == 'gudmap'}">
+					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+				</h:commandLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.gudmap_accession}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<h:outputText value="#{u.gudmap_accession}"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
+					<h:outputText value="#{u.gudmap_accession}"/>
+				</h:outputLink>
+				<h:panelGroup>&#160;&#160;</h:panelGroup>
+    			<h:commandLink action="/db/viewSubmissionDetails.xhtml" target="_blank" rendered="#{u.source == 'gudmap'}">
+    				<img src="#{u.image}"/>
+					<f:param name="accId" value="#{u.gudmap_accession}"></f:param>
+				</h:commandLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.gudmap_accession}">
+					<img src="#{u.image}"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
+					<img src="#{u.image}"/>
+				</h:outputLink>
+				</h:panelGrid>
+    		</h:column>
+
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Assay Type" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="ASSAY_TYPE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('ASSAY_TYPE')})
+				</f:facet>
+    				#{u.assay_type}
+    		</h:column>
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Specimen Type" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="SPECIMEN_ASSAY_TYPE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('SPECIMEN_ASSAY_TYPE')})
+				</f:facet>
+    				#{u.specimen}
+    		</h:column> 
+
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Species Type" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="SPECIES" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('SPECIES_F')})
+				</f:facet>
+    				#{u.species}
+    		</h:column> 
+    		
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Age" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="DEV_STAGE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('DEV_STAGE')})
+				</f:facet>
+    				#{u.age}
+    		</h:column>
+    		
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Stage" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="STAGE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('STAGE')})
+				</f:facet>
+    			<h:outputLink value="#{applicationBean.theilerUrl1}#{u.stage_order}#{applicationBean.theilerUrl2}" target="_blank" rendered="#{u.species=='Mus musculus'}">
+				 	<h:outputText value="#{u.stage}" />
+				</h:outputLink>
+				<h:outputText value="#{u.stage}" rendered="#{u.species != 'Mus musculus'}"/>
+    		</h:column>
+    		
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Sex" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="SEX" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('SEX')})
+				</f:facet>
+    				#{u.sex}
+    		</h:column>
+    		
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Tissue" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="TISSUE_TYPE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('TISSUE_TYPE_F')})
+				</f:facet>
+    				#{u.tissue}
+    		</h:column>
+    		
+   		
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Source" actionListener="#{biomedAtlasInsituBean.sort}">
+    					<f:attribute name="sortField" value="SOURCE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasInsituBean.totals.get('SOURCE')})
+				</f:facet>
+				<h:outputLink target="_blank" rendered="#{u.source == 'gudmap'}"
+					value="http://www.beta.gudmap.org">
+					<h:outputText value="Edinburgh Gudmap (pre August 2017)"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org">
+					<h:outputText value="Eurexpress"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="https://www.emouseatlas.org">
+					<h:outputText value="Emage"/>
+				</h:outputLink>
+    		</h:column>
+    		
+
+ 		</h:dataTable> 
+			<ui:include src="/snippets/g_insituCols.xhtml"></ui:include> 		
+ 		
+
+      	</h:form> 
+      	
+	<h:form id="biomed_pagingform">	
+
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{biomedAtlasInsituBean.pageFirst}"
+                    disabled="#{biomedAtlasInsituBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{biomedAtlasInsituBean.pagePrevious}"
+                    disabled="#{biomedAtlasInsituBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{biomedAtlasInsituBean.pageNext}"
+                    disabled="#{biomedAtlasInsituBean.firstRow + biomedAtlasInsituBean.rowsPerPage >= biomedAtlasInsituBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{biomedAtlasInsituBean.pageLast}"
+                    disabled="#{biomedAtlasInsituBean.firstRow + biomedAtlasInsituBean.rowsPerPage >= biomedAtlasInsituBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:outputText value="Page #{biomedAtlasInsituBean.currentPage} / #{biomedAtlasInsituBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{biomedAtlasInsituBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{biomedAtlasInsituBean.page}"
+                        rendered="#{page != biomedAtlasInsituBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == biomedAtlasInsituBean.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{biomedAtlasInsituBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{biomedAtlasInsituBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :biomed_dataform" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+      	</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{biomedAtlasInsituBean.gotopage}" />
+		</h:form> 
+
+	</div>
+
+
+	</ui:define>	
+</ui:composition>
+</html>

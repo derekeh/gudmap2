@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:pr="http://primefaces.org/ui" >
+
+<ui:composition template="/WEB-INF/templates/g_template_search.xhtml">
+	<ui:define name="title">
+	    Biomed Atlas Genes
+	</ui:define>
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_biomedAtlasMenu.xhtml"/>				
+	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
+	
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h:form>
+
+		<h3 class="gd_h3" style="margin:8px 8px 0 8px; display: inline-block;">Filter</h3>
+ 		<h:commandButton id="filter_clear" value="Clear" >
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.reset}" />
+		 		<pr:ajax update=":biomed_filterform"/>
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform"/>
+ 		</h:commandButton>
+
+	</h:form>
+	
+	<h:form  id="biomed_filterform">
+		<ui:include src="/snippets/g_biomedAtlasFilters.xhtml"/>	
+	</h:form>	
+	
+	
+	
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://d3js.org/colorbrewer.v1.min.js"></script>
+		<h:outputScript library="scripts" name="heatmap.js" ></h:outputScript>
+		<h:outputStylesheet library="css" name="heatmap.css" /> 	
+	
+	<!-- can use relative links on html tags -->
+		<h:outputScript library="scripts" name="navfunctions.js" target="head"></h:outputScript> 
+	    <!-- all other content in here -->  
+
+	     <!-- all other content in here --> 
+
+	<div id="db_form_margin" style="width: 140px; float: left;"></div>
+	<div id="db_form_wrapper" style="margin-left: 150px;">
+
+	    
+		<h:form  id="biomed_dataform">
+	    <h:inputHidden id="solrInput" value="#{biomedAtlasGeneStripBean.solrInput}" />
+	    <h:dataTable rowIndexVar="row" value="#{biomedAtlasGeneStripBean.dataList}" var="u" binding="#{things}"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Gene" actionListener="#{biomedAtlasGeneStripBean.sort}">
+    					<f:attribute name="sortField" value="GENE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasGeneStripBean.totals.get('GENE_F')})
+     			</f:facet>     			
+     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneDetails.xhtml" target="_blank" rendered="#{u.source == 'gudmap'}">
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+				</h:commandLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.gene_id}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<h:outputText value="#{u.geneSymbol}"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="http://www.emouseatlas.org/emagewebapp/pages/emage_general_query_result.jsf?genes=#{u.geneSymbol}">
+					<h:outputText value="#{u.geneSymbol}"/>
+				</h:outputLink>	
+    		</h:column>
+ 
+    		<h:column >
+    			<f:facet name="header">
+    				Synonyms
+				</f:facet>
+				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
+   
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Species" actionListener="#{biomedAtlasGeneStripBean.sort}">
+    					<f:attribute name="sortField" value="SPECIES" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasGeneStripBean.totals.get('SPECIES_F')})
+				</f:facet>
+    				#{u.species}
+    		</h:column> 
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				Images
+                    <br />
+                    (#{biomedAtlasGeneStripBean.totals.get('IMAGE_PATH')})
+				</f:facet>				
+                  <h:outputText value="" rendered="#{u.imageUrl == ''}"></h:outputText>
+       			<h:commandLink  action="viewImageMatrix.jsf" rendered="#{u.imageUrl != '' &amp;&amp; u.source == 'gudmap'}">
+    					<img src="#{u.imageUrl}"  height="40"/>
+					<f:param name="geneId" value="#{u.gene_id}"></f:param>
+                 </h:commandLink>
+ 				<h:outputLink target="_blank" rendered="#{u.imageUrl != '' &amp;&amp; u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.gene_id}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<img src="#{u.imageUrl}"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.imageUrl != '' &amp;&amp;  u.source == 'emage'}"
+					value="#{u.clickFilePath}">
+					<img src="#{u.imageUrl}"/>
+				</h:outputLink>
+    		</h:column>
+<ui:remove>
+    		<h:column >
+    			<f:facet name="header">
+    				In situ Expression
+				</f:facet>
+				<h:outputText value="#{u.expressionProfile}" escape="false"></h:outputText>
+    		</h:column>
+</ui:remove>    		
+
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Source" actionListener="#{biomedAtlasGeneStripBean.sort}">
+    					<f:attribute name="sortField" value="SOURCE" />
+                    </h:commandLink>
+                    <br />
+                    (#{biomedAtlasGeneStripBean.totals.get('SOURCE')})
+				</f:facet>
+				<h:outputLink target="_blank" rendered="#{u.source == 'gudmap'}"
+					value="http://www.beta.gudmap.org">
+					<h:outputText value="Edinburgh Gudmap (pre August 2017)"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
+					value="http://www.eurexpress.org">
+					<h:outputText value="Eurexpress"/>
+				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="https://www.emouseatlas.org">
+					<h:outputText value="Emage"/>
+				</h:outputLink>
+    		</h:column>
+
+
+    	 </h:dataTable>
+
+
+         </h:form> 
+         
+	<h:form id="biomed_pagingform"  style="display:table-row;">  
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{biomedAtlasGeneStripBean.pageFirst}"
+                    disabled="#{biomedAtlasGeneStripBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{biomedAtlasGeneStripBean.pagePrevious}"
+                    disabled="#{biomedAtlasGeneStripBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{biomedAtlasGeneStripBean.pageNext}"
+                    disabled="#{biomedAtlasGeneStripBean.firstRow + biomedAtlasGeneStripBean.rowsPerPage >= biomedAtlasGeneStripBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{biomedAtlasGeneStripBean.pageLast}"
+                    disabled="#{biomedAtlasGeneStripBean.firstRow + biomedAtlasGeneStripBean.rowsPerPage >= biomedAtlasGeneStripBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :biomed_dataform" />
+                </h:commandButton>
+                <h:outputText value="Page #{biomedAtlasGeneStripBean.currentPage} / #{biomedAtlasGeneStripBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{biomedAtlasGeneStripBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{biomedAtlasGeneStripBean.page}"
+                        rendered="#{page != biomedAtlasGeneStripBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == biomedAtlasGeneStripBean.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{biomedAtlasGeneStripBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{biomedAtlasGeneStripBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :biomed_dataform" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+      	</h:form> 
+		<h:form id="form2" style="display:table-row;">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{biomedAtlasGeneStripBean.gotopage}" />
+		</h:form> 
+		</div>
+	</ui:define>
+</ui:composition>
+</html>
