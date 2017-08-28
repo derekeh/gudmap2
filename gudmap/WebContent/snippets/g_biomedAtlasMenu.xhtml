@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	 xmlns:pr="http://primefaces.org/ui" >
+
+
+		<!-- use this script to simulate RETURN on input field -->
+		<script type="text/javascript">
+		//<![CDATA[
+		
+						function handleInput (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='biomed_menuform:solr_input')
+				                	document.getElementById('biomed_menuform:solr_search_btn').click();
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		//]]>
+		</script>
+
+	<div id="gd_solrmenu">
+	<h:form id="biomed_menuform" >
+	<h:panelGrid columns="14">
+
+		<h:panelGrid columns="3" columnClasses="gd_celltextleft,gd_celltextright" styleClass="gd_solr_form">
+			<h:inputText id="solr_input" value="#{solrTreeBean.solrInput}" onkeypress="handleInput(this,event)"></h:inputText>
+			<h:commandButton id="solr_search_btn" value="Search1" image="/resources/images/header/mag_glass.png" style="width:26px; height:26px" action="#{solrTreeBean.goSearch}" >
+				<f:param name="solrInput" value="#{solrTreeBean.solrInput}"/>
+				<f:ajax execute="@form" render=":biomed_dataform :biomed_menuform :gd_searchform :biomed_pagingform" ></f:ajax>
+			</h:commandButton>		
+		</h:panelGrid>		
+	
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/biomedatlasgenestrip.jsf" >
+				<h:outputText style="color:grey; " value="Genes" rendered="#{solrTreeBean.page != '/db/biomedatlasgenestrip.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Genes" rendered="#{solrTreeBean.page == '/db/biomedatlasgenestrip.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.biomedAtlasGeneCount})" rendered="#{solrTreeBean.page != '/db/biomedatlasgenestrip.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.biomedAtlasGeneCount})" rendered="#{solrTreeBean.page == '/db/biomedatlasgenestrip.xhtml'}"/>
+		</h:panelGrid>
+
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/biomedatlasimages.jsf" >
+				<h:outputText style="color:grey" value="Images" rendered="#{solrTreeBean.page != '/db/biomedatlasimages.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Images" rendered="#{solrTreeBean.page == '/db/biomedatlasimages.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.biomedAtlasImagesCount})" rendered="#{solrTreeBean.page != '/db/biomedatlasimages.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.biomedAtlasImagesCount})" rendered="#{solrTreeBean.page == '/db/biomedatlasimages.xhtml'}"/>
+		</h:panelGrid>
+		
+		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/db/biomedatlasinsitu.jsf" >
+				<h:outputText style="color:grey" value="In Situ" rendered="#{solrTreeBean.page != '/db/biomedatlasinsitu.xhtml'}" />
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="In Situ" rendered="#{solrTreeBean.page == '/db/biomedatlasinsitu.xhtml'}" />
+	         </h:outputLink> 	          
+	         <h:outputText value="(#{solrTreeBean.biomedAtlasInsituCount})" rendered="#{solrTreeBean.page != '/db/biomedatlasinsitu.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.biomedAtlasInsituCount})" rendered="#{solrTreeBean.page == '/db/biomedatlasinsitu.xhtml'}"/>
+		</h:panelGrid>		
+<ui:remove>
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/biomedatlaswebpages.jsf" >
+				<h:outputText style="color:grey" value="Web Pages" rendered="#{solrTreeBean.page != '/solr/biomedatlaswebpages.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="Web Pages" rendered="#{solrTreeBean.page == '/solr/biomedatlaswebpages.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.webCount})" rendered="#{solrTreeBean.page != '/solr/biomedatlaswebpages.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.webCount})" rendered="#{solrTreeBean.page == '/solr/biomedatlaswebpages.xhtml'}"/>
+		</h:panelGrid>
+
+ 		<h:panelGrid columns="1" style="text-align:center">
+			 <h:outputLink style="text-decoration:none; padding:0px 10px 0px 10px; text-align:center" styleClass="plaintext" value="#{appRoot}/solr/solrEurExpress.jsf" >
+				<h:outputText style="color:grey" value="EurExpress" rendered="#{solrTreeBean.page != '/solr/solrEurExpress.xhtml'}"/>
+				<h:outputText style="color:black; border-top: 2px solid red; padding:5px" value="EurExpress" rendered="#{solrTreeBean.page == '/solr/solrEurExpress.xhtml'}"/>
+	         </h:outputLink>  
+	         <h:outputText value="(#{solrTreeBean.eurExpCount})" rendered="#{solrTreeBean.page != '/solr/solrEurExpress.xhtml'}"/>
+	         <h:outputText style="color:black" value="(#{solrTreeBean.eurExpCount})" rendered="#{solrTreeBean.page == '/solr/solrEurExpress.xhtml'}"/>
+		</h:panelGrid>
+</ui:remove>
+
+	  
+	  </h:panelGrid>
+	  
+ 
+    
+	  </h:form>
+	  </div><!-- end gd_solrmenu -->
+
+</ui:composition>

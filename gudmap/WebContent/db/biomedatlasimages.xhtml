@@ -10,15 +10,15 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pr="http://primefaces.org/ui" >	
 	
-<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+<ui:composition template="/WEB-INF/templates/g_template_search.xhtml">
 	<ui:define name="title">
-	    Solr Images
+	    Biomed Atlas Images
 	</ui:define>
 	
 	
-<!-- 	comment out the following section if you don't want the solr menu displayed -->
+<!-- 	comment out the following section if you don't want the menu displayed -->
 	<ui:define name="solr">	
-		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
+		<ui:include src="/snippets/g_biomedAtlasMenu.xhtml"/>				
 	</ui:define>
 
 
@@ -33,16 +33,16 @@
 
 		<h3 class="gd_h3" style="margin:8px 8px 0 8px; display: inline-block;">Filter</h3>
  		<h:commandButton id="filter_clear" value="Clear" >
-		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
-		 		<pr:ajax update=":filterform"/>
-		 		<pr:ajax update=":dataform" />
-		 		<pr:ajax update=":pagingform"/>
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.reset}" />
+		 		<pr:ajax update=":biomed_filterform"/>
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform"/>
  		</h:commandButton>
 
 	</h:form>
 	
-	<h:form  id="filterform">
-		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
+	<h:form  id="biomed_filterform">
+		<ui:include src="/snippets/g_biomedAtlasFilters.xhtml"/>	
 	</h:form>	
 
 	<h:outputScript library="scripts/highslide" name="highslide-full.js"></h:outputScript> 
@@ -52,17 +52,17 @@
 	<div id="db_form_margin" style="width: 140px; float: left;"></div>
 	<div id="db_form_wrapper" style="margin-left: 150px;">
 
-	<h:form  id="dataform">
+	<h:form  id="biomed_dataform">
  
 
 
 
-		<h:inputHidden id="solrInput" value="#{solrImagesBean.solrInput}" />
+		<h:inputHidden id="solrInput" value="#{biomedAtlasImagesBean.solrInput}" />
 		<h:panelGroup>		    
 
 		<div class="highslide-gallery">
 		<!-- 	displays unique assay images in the main window -->
-	    <ui:repeat value="#{solrImagesBean.dataList}" var="u">
+	    <ui:repeat value="#{biomedAtlasImagesBean.dataList}" var="u">
 	    	<a id="#{u.sibling}" class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {slideshowGroup : #{u.group}})" >
 	    		<img width="75px" height="75px" src="#{u.thumbnailPath}" title="#{u.groupTitle} - Click to view images"/>
 	    	</a>	
@@ -71,37 +71,44 @@
 			<div class="highslide-caption">
 			<h:panelGroup rendered="#{u.imageType != 'schematic'}">
 				<h:outputText value="Assay: "/>
-    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf" rendered="#{u.source != 'eurexpress'}">
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf" rendered="#{u.source == 'gudmap'}">
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
  				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
 					value="http://www.eurexpress.org/ee/databases/showAssayImgs.jsp?image=#{u.image}">
-					<h:outputText value="#{u.accessionId}"/>
+					<h:outputText value="#{u.accessionId} ( #{u.assayType})"/>
 				</h:outputLink>
-				<br/>				
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
+					<h:outputText value="#{u.accessionId} ( #{u.assayType})"/>
+				</h:outputLink>
+				<br/>	
+							
 				<h:outputText value="Gene: "/>	
-<ui:remove>
-     			<h:commandLink value="#{u.geneSymbol}"  action="/db/viewGeneStrip.jsf" >
-     				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
-				</h:commandLink>
-</ui:remove>				
-     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{u.source != 'eurexpress'}">
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{u.source == 'gudmap'}">
 					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
 				</h:commandLink>
 				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
 					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.geneSymbol}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
 					<h:outputText value="#{u.geneSymbol}"/>
 				</h:outputLink>
-
-								
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
+					<h:outputText value="#{u.geneSymbol}"/>
+				</h:outputLink>	
 				<br/>
+				
 				<h:outputText value="Go to "/>
- 				<h:outputLink rendered="#{u.source != 'eurexpress'}"
+ 				<h:outputLink rendered="#{u.source == 'gudmap'}"
 					value="#{u.clickFilePath}">
 					<h:outputText value="Image Viewer"/>
 				</h:outputLink>
  				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
 					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.accessionId}">
+					<h:outputText value="Image Viewer"/>
+				</h:outputLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
 					<h:outputText value="Image Viewer"/>
 				</h:outputLink>
 	    	</h:panelGroup>
@@ -116,7 +123,7 @@
 
 		<div class="hidden-container">
 		<!-- 	displays images for selected assay in the poup window -->
-	    <ui:repeat value="#{solrImagesBean.sublist}" var="u">   
+	    <ui:repeat value="#{biomedAtlasImagesBean.sublist}" var="u" >   
 	    	<a class="highslide" href="#{u.filePath}" onclick="return hs.expand(this, {thumbnailId: '#{u.sibling}', slideshowGroup : #{u.group}})" >
 	    	</a>   	
 			<div class="highslide-heading">#{u.imageTitle}
@@ -124,12 +131,16 @@
 			<div class="highslide-caption" >
 			<h:panelGroup rendered="#{u.imageType != 'schematic'}">
 				<h:outputText value="Assay: "/>
-    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf" rendered="#{u.source != 'eurexpress'}">
+    			<h:commandLink value="#{u.accessionId} ( #{u.assayType})"  action="/db/viewSubmissionDetails.jsf" rendered="#{u.source == 'gudmap'}">
 					<f:param name="accId" value="#{u.accessionId}"></f:param>
 				</h:commandLink>
  				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
 					value="http://www.eurexpress.org/ee/databases/showAssayImgs.jsp?image=#{u.image}">
-					<h:outputText value="#{u.accessionId}"/>
+					<h:outputText value="#{u.accessionId} ( #{u.assayType})"/>
+				</h:outputLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
+					<h:outputText value="#{u.accessionId} ( #{u.assayType})"/>
 				</h:outputLink>
 
 				<br/>
@@ -139,22 +150,30 @@
      				<f:setPropertyActionListener target="#{sessionBean.geneParam}" value="#{u.geneSymbol}" />     	     			
 				</h:commandLink>
 </ui:remove>
-     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{u.source != 'eurexpress'}">
+     			<h:commandLink value="#{u.geneSymbol}"  action="viewGeneDetails" rendered="#{u.source == 'gudmap'}">
 					<f:param name="geneId" value="#{u.mgiGeneId}"></f:param>
 				</h:commandLink>
 				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
 					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.geneSymbol}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
 					<h:outputText value="#{u.geneSymbol}"/>
 				</h:outputLink>
+				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
+					<h:outputText value="#{u.geneSymbol}"/>
+				</h:outputLink>
 				
 				<br/>
 				<h:outputText value="Go to "/>
- 				<h:outputLink rendered="#{u.source != 'eurexpress'}"
+ 				<h:outputLink rendered="#{u.source == 'gudmap'}"
 					value="#{u.clickFilePath}">
 					<h:outputText value="Image Viewer"/>
 				</h:outputLink>
  				<h:outputLink target="_blank" rendered="#{u.source == 'eurexpress'}"
 					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.accessionId}">
+					<h:outputText value="Image Viewer"/>
+				</h:outputLink>
+ 				<h:outputLink target="_blank" rendered="#{u.source == 'emage'}"
+					value="#{u.clickFilePath}">
 					<h:outputText value="Image Viewer"/>
 				</h:outputLink>
 	    	</h:panelGroup>
@@ -175,45 +194,45 @@
 	    </h:panelGroup>		    
     </h:form>
     
-  	<h:form id="pagingform">
+  	<h:form id="biomed_pagingform">
  		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
  			<h:panelGroup>
  			  <h:panelGrid columns="5">
-                <h:commandButton id="firstbutton" value="first" action="#{solrImagesBean.pageFirst}"
-                    disabled="#{solrImagesBean.firstRow == 0}" >
-                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
+                <h:commandButton id="firstbutton" value="first" action="#{biomedAtlasImagesBean.pageFirst}"
+                    disabled="#{biomedAtlasImagesBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :biomed_dataform" />
                 </h:commandButton>
-                <h:commandButton id="prevbutton" value="prev" action="#{solrImagesBean.pagePrevious}"
-                    disabled="#{solrImagesBean.firstRow == 0}" >
-                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
+                <h:commandButton id="prevbutton" value="prev" action="#{biomedAtlasImagesBean.pagePrevious}"
+                    disabled="#{biomedAtlasImagesBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :biomed_dataform" />
                 </h:commandButton>
-                <h:commandButton id="nextbutton" value="next" action="#{solrImagesBean.pageNext}"
-                    disabled="#{solrImagesBean.firstRow + solrImagesBean.rowsPerPage >= solrImagesBean.totalRows}" >
-                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
+                <h:commandButton id="nextbutton" value="next" action="#{biomedAtlasImagesBean.pageNext}"
+                    disabled="#{biomedAtlasImagesBean.firstRow + biomedAtlasImagesBean.rowsPerPage >= biomedAtlasImagesBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :biomed_dataform" />
                 </h:commandButton>
-                <h:commandButton id="lastbutton" value="last" action="#{solrImagesBean.pageLast}"
-                    disabled="#{solrImagesBean.firstRow + solrImagesBean.rowsPerPage >= solrImagesBean.totalRows}" >
-                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
+                <h:commandButton id="lastbutton" value="last" action="#{biomedAtlasImagesBean.pageLast}"
+                    disabled="#{biomedAtlasImagesBean.firstRow + biomedAtlasImagesBean.rowsPerPage >= biomedAtlasImagesBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :biomed_dataform" />
                 </h:commandButton>
-                <h:outputText value="Page #{solrImagesBean.currentPage} / #{solrImagesBean.totalPages}" />
+                <h:outputText value="Page #{biomedAtlasImagesBean.currentPage} / #{biomedAtlasImagesBean.totalPages}" />
                </h:panelGrid>
 			</h:panelGroup>
 			
 			
 			<h:panelGroup>
-                <t:dataList value="#{solrImagesBean.pages}" var="page">
-                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrImagesBean.page}"
-                        rendered="#{page != solrImagesBean.currentPage}" />
+                <t:dataList value="#{biomedAtlasImagesBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{biomedAtlasImagesBean.page}"
+                        rendered="#{page != biomedAtlasImagesBean.currentPage}" />
                     <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-                        rendered="#{page == solrImagesBean.currentPage}" />
+                        rendered="#{page == biomedAtlasImagesBean.currentPage}" />
                 </t:dataList>
            </h:panelGroup>
            <h:panelGroup>
 				<h:panelGrid columns="4">
 	                <h:outputLabel for="rowsPerPage" value="Images per page:&#160;&#160;" />
-	                <h:inputText id="rowsPerPage" value="#{solrImagesBean.rowsPerPage}" size="3" maxlength="3" />
-	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrImagesBean.pageFirst}" >
-	                	<f:ajax execute="@form" render="@form :dataform" />
+	                <h:inputText id="rowsPerPage" value="#{biomedAtlasImagesBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{biomedAtlasImagesBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :biomed_dataform" />
 	                </h:commandButton>               
 	                <h:message for="rowsPerPage" errorStyle="color: red;" />
 	             </h:panelGrid>
@@ -222,7 +241,7 @@
       	</h:form> 
 		<h:form id="form2">
 			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
-			<h:inputText id="gotopage" value="#{solrImagesBean.gotopage}" />
+			<h:inputText id="gotopage" value="#{biomedAtlasImagesBean.gotopage}" />
 		</h:form> 
 </div>
 

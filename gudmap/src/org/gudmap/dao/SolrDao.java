@@ -523,7 +523,7 @@ public class SolrDao {
 		docs = new ArrayList<SolrInputDocument>();
 		
         String queryString = SolrQueries.GET_IMAGE_INDEX_DATA;
-        
+        int count = 0;
         try
 		{
 			//con = ds.getConnection();
@@ -597,12 +597,14 @@ public class SolrDao {
 				doc.addField("GROUP_ID", result.getString(56)); 
 				
 				docs.add(doc);
+				count++;
 			}
 		}
 		catch(SQLException sqle){sqle.printStackTrace();}
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
+        
         return docs;
     }
 
@@ -764,6 +766,650 @@ public class SolrDao {
 		finally {
 		    Globals.closeQuietly(con, ps, result);
 		}
+        return docs;
+    }
+
+	public ArrayList<SolrInputDocument> getSolrEurExpressIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_EUREXPRESS_INDEX_DATA;
+        
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			int count = 1;
+			// add field maps the query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				doc.addField("id", count); 
+				doc.addField("ID", result.getString(9)); 
+				doc.addField("EUREXP_ID", result.getString(1)); 
+				doc.addField("GENE", result.getString(2)); 
+				doc.addField("MGI_GENE_ID", result.getString(3)); 
+				doc.addField("ENTREZ_ID", result.getString(4)); 
+				doc.addField("DEV_STAGE", result.getString(5) + "dpc"); 
+				doc.addField("STAGE", result.getString(6)); 
+				doc.addField("SYNONYM", result.getString(7)); 
+				doc.addField("COMPONENT", result.getString(8)); 
+
+				doc.addField("SPECIES", "Mus musculus"); 
+				doc.addField("ASSAY_TYPE", "ISH"); 
+				doc.addField("SEX", "unknown"); 
+				doc.addField("IMAGE_TYPE", "image");
+				
+				doc.addField("IMAGE", result.getString(1) + "_01.jpg");
+				
+				String path = result.getString(1);
+				if (path != null){
+					path = path.replace("euxassay_","");
+					int index = Integer.parseInt(path);
+					if (index < 100)
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(0);
+					else{
+						index = index/100;
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(index);
+					}
+					path += "/" + result.getString(1) + "/";
+					
+					doc.addField("IMAGE_PATH", path + result.getString(1) + "_01.jpg"); 
+					doc.addField("THUMBNAIL_PATH", path + result.getString(1) + "_01.jpg"); 
+				}
+				
+				
+				
+				
+				
+				docs.add(doc);
+				count++;
+
+			}
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return docs;
+    }
+	
+	public ArrayList<SolrInputDocument> getBiomedAtlasImageIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_IMAGE_INDEX_DATA;
+        String eeQueryString = SolrQueries.GET_EUREXPRESS_IMAGE_INDEX_DATA;
+        String emageQueryString = SolrQueries.GET_EMAGE_INDEX_DATA;
+        
+        int count = 0;
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the GUDMAP query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String tmp = result.getString(1);
+				count = Integer.parseInt(tmp);
+//				doc.addField("id", result.getString(1)); 
+				doc.addField("IMAGE_ID", result.getString(1)); 
+				doc.addField("IMAGE", result.getString(2)); 
+				doc.addField("IMAGE_PATH", result.getString(3)); 
+				doc.addField("THUMBNAIL_PATH", result.getString(4)); 
+				doc.addField("IMAGE_CLICK_PATH", result.getString(5)); 
+				doc.addField("CLICK_FILENAME", result.getString(6)); 
+				doc.addField("IMAGE_NOTE", result.getString(7)); 
+				doc.addField("IMAGE_TYPE", result.getString(8)); 
+				doc.addField("GUDMAP", result.getString(9)); 
+				doc.addField("GUDMAP_ID", result.getString(10));
+				doc.addField("GENE", result.getString(11)); 				
+				doc.addField("GENE_NAME", result.getString(12)); 
+				doc.addField("MGI", result.getString(13)); 				
+				doc.addField("MGI_GENE_ID", result.getString(14)); 
+				doc.addField("GENBANK_ID", result.getString(15)); 				
+				doc.addField("ENSEMBL_ID", result.getString(16)); 
+				doc.addField("SYNONYMS", result.getString(17)); 				
+				doc.addField("PI_NAME", result.getString(18)); 
+				doc.addField("DATE", result.getString(19)); 				
+				doc.addField("STAGE", result.getString(20)); 
+				doc.addField("PROBE_NAME", result.getString(21)); 
+				doc.addField("CLONE_NAME", result.getString(22)); 				
+				doc.addField("PROBE_TISSUE", result.getString(23)); 
+				doc.addField("PROBE_ID", result.getString(24)); 				
+				doc.addField("MAPROBE_ID", result.getString(25)); 
+				doc.addField("maprobe", result.getString(26)); 				
+				doc.addField("PROBE_STRAIN", result.getString(27)); 
+				doc.addField("PROBE_GENE_TYPE", result.getString(28)); 				
+				doc.addField("PROBE_TYPE", result.getString(29)); 
+				doc.addField("PROBE_VISUAL_METHOD", result.getString(30)); 				
+				doc.addField("PROBE_NOTE", result.getString(31)); 
+				doc.addField("CURATOR_NOTE", result.getString(32)); 				
+				doc.addField("RESULT_NOTE", result.getString(33)); 
+				doc.addField("EXPERIMENT_NOTE", result.getString(34)); 				
+				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(35)); 
+				doc.addField("FIXATION_METHOD", result.getString(36)); 				
+				doc.addField("STRAIN", result.getString(37)); 
+				doc.addField("SEX", result.getString(38)); 
+				String devstage = result.getString(39);
+				if (devstage != null)
+					devstage = devstage.replace(" ", "");
+				doc.addField("DEV_STAGE", devstage); 
+				doc.addField("GENOTYPE", result.getString(40)); 				
+				doc.addField("ASSAY_TYPE", result.getString(41)); 
+				doc.addField("PROJECT", result.getString(42)); 				
+				doc.addField("ALT_ID", result.getString(43)); 
+				doc.addField("SOURCE", "gudmap"); 				
+				doc.addField("PRESENT", result.getString(45)); 
+				doc.addField("INF_PRESENT", result.getString(46)); 				
+				doc.addField("EMAPS", result.getString(47)); 
+				doc.addField("EXPRESSION_NOTES", result.getString(48)); 
+				doc.addField("EXP_NOTES", result.getString(49)); 
+				doc.addField("SPECIES", result.getString(50)); 
+				doc.addField("GENE_TYPE", result.getString(51)); 
+				doc.addField("UIG_TITLE", result.getString(52)); 
+				doc.addField("UIG_DESCE", result.getString(53)); 
+				doc.addField("UGP_TITLE", result.getString(54)); 
+				doc.addField("UGP_DESCRIPTION", result.getString(55)); 
+				doc.addField("GROUP_ID", result.getString(56)); 
+				
+				docs.add(doc);
+			}
+			
+			ps = con.prepareStatement(eeQueryString); 
+			result =  ps.executeQuery();
+			
+			count += 1;
+			// add field maps the EurExpress query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+//				doc.addField("id", count); 
+				doc.addField("IMAGE_ID", String.valueOf(count)); 
+				doc.addField("GUDMAP_ID", result.getString(1)); 
+				String ss = result.getString(1);
+				doc.addField("GROUP_ID", ss.replaceAll("euxassay_","")); 
+				doc.addField("IMAGE", result.getString(4));
+				doc.addField("EMAPS", result.getString(5)); 
+				doc.addField("GENE", result.getString(7)); 
+				doc.addField("STAGE", result.getString(8)); 
+				doc.addField("DEV_STAGE", result.getString(9) + "dpc"); 				
+				doc.addField("MGI_GENE_ID", result.getString(10)); 
+
+				doc.addField("SPECIES", "Mus musculus"); 
+				doc.addField("ASSAY_TYPE", "ISH"); 
+				doc.addField("SEX", "unknown"); 
+				doc.addField("SPECIMEN_ASSAY_TYPE", "section"); 
+				doc.addField("IMAGE_TYPE", "image");
+
+				
+				
+				String path = result.getString(1);
+				if (path != null){
+					path = path.replace("euxassay_","");
+					int index = Integer.parseInt(path);
+					if (index < 100)
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(0);
+					else{
+						index = index/100;
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(index);
+					}
+					path += "/" + result.getString(1) + "/";
+					
+					doc.addField("IMAGE_PATH", path + result.getString(4)); 
+					doc.addField("THUMBNAIL_PATH", path + result.getString(4)); 
+				}
+				doc.addField("SOURCE", "eurexpress"); 				
+				
+				docs.add(doc);
+				count++;
+
+			}
+			
+			ps = con.prepareStatement(emageQueryString); 
+			result =  ps.executeQuery();	
+			
+			// add field maps the EMAGE query result to the solr index schema
+//			while (result.next()) {
+//				doc = new SolrInputDocument();
+//
+//				doc.addField("IMAGE_ID", count); 				
+//				doc.addField("GUDMAP_ID", "EMAGE:" + result.getString(16)); 
+//
+//				doc.addField("GENE", result.getString(4)); 
+//				doc.addField("MGI_GENE_ID", result.getString(5)); 
+//				doc.addField("DEV_STAGE", result.getString(7)); 
+//				doc.addField("STAGE", result.getString(6)); 
+//				doc.addField("GENOTYPE", result.getString(13)); 				
+//				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(9)); 
+//
+//				doc.addField("SPECIES", "Mus musculus"); 
+//				doc.addField("ASSAY_TYPE", result.getString(8)); 
+////				doc.addField("SEX", "unknown"); 
+//
+//				doc.addField("IMAGE_TYPE", "image");
+//				doc.addField("IMAGE", result.getString(2));				
+//				doc.addField("THUMBNAIL_PATH", result.getString(3)); 
+//
+//
+//				doc.addField("SOURCE", "emage"); 				
+//
+//				
+//				docs.add(doc);
+//				count++;
+//
+//			} 
+
+			// add field maps the EMAGE query result to the solr index schema
+			while (result.next()) {
+				
+				String path = "http://www.emouseatlas.org/gxdb/dbImage/";				
+				String[] images = result.getString(2).split(";");
+				for(String image : images){
+
+					
+				doc = new SolrInputDocument();
+
+				doc.addField("IMAGE_ID", count); 
+				
+				doc.addField("IMAGE", image);
+				doc.addField("IMAGE_PATH", path + image); 
+				doc.addField("IMAGE_CLICK_PATH", result.getString(15)); 
+				
+				doc.addField("THUMBNAIL_PATH", result.getString(3)); 
+				
+				
+				doc.addField("GUDMAP_ID", "EMAGE:" + result.getString(16)); 
+
+				doc.addField("GENE", result.getString(4)); 
+				doc.addField("MGI_GENE_ID", result.getString(5)); 
+				doc.addField("DEV_STAGE", result.getString(7)); 
+				doc.addField("STAGE", result.getString(6)); 
+				doc.addField("GENOTYPE", result.getString(13)); 				
+				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(9)); 
+
+				doc.addField("SPECIES", "Mus musculus"); 
+				doc.addField("ASSAY_TYPE", result.getString(8)); 
+//				doc.addField("SEX", "unknown"); 
+				doc.addField("IMAGE_TYPE", "image");
+				doc.addField("SOURCE", "emage"); 				
+
+				doc.addField("GROUP_ID", "EMAGE_" + result.getString(16)); 
+				
+				docs.add(doc);
+				count++;
+				}
+
+			} 
+			
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+     
+        
+        
+        return docs;
+    }
+
+	public ArrayList<SolrInputDocument> getBiomedAtlasInsituIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+        String queryString = SolrQueries.GET_INSITU_INDEX_DATA;
+        String eeQueryString = SolrQueries.GET_EUREXPRESS_INDEX_DATA;
+        String emageQueryString = SolrQueries.GET_EMAGE_INDEX_DATA;
+       
+        try
+		{
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the GUDMAP query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				doc.addField("id", result.getString(2)); 
+				doc.addField("GUDMAP", result.getString(1)); 
+				doc.addField("GUDMAP_ID", result.getString(2)); 
+				doc.addField("GENE", result.getString(3)); 
+				doc.addField("GENE_NAME", result.getString(4)); 
+				doc.addField("MGI", result.getString(5)); 
+				doc.addField("MGI_GENE_ID", result.getString(6)); 
+				doc.addField("GENBANK_ID", result.getString(7)); 
+				doc.addField("ENSEMBL_ID", result.getString(8)); 
+				doc.addField("SYNONYMS", result.getString(9)); 
+				doc.addField("PI_NAME", result.getString(10)); 
+				doc.addField("LAB", result.getString(11)); 
+				doc.addField("AUTHORS", result.getString(12)); 
+				doc.addField("DATE", result.getString(13)); 
+				doc.addField("STAGE", result.getString(14)); 
+				doc.addField("PROBE_NAME", result.getString(15)); 
+				doc.addField("CLONE_NAME", result.getString(16)); 
+				doc.addField("PROBE_TISSUE", result.getString(17)); 
+				doc.addField("PROBE_ID", result.getString(18)); 
+				doc.addField("maprobe", result.getString(19)); 
+				doc.addField("MAPROBE_ID", result.getString(20)); 
+				doc.addField("PROBE_STRAIN", result.getString(21)); 
+				doc.addField("PROBE_GENE_TYPE", result.getString(22)); 
+				doc.addField("PROBE_TYPE", result.getString(23)); 
+				doc.addField("PROBE_VISUAL_METHOD", result.getString(24)); 
+				doc.addField("PROBE_NOTE", result.getString(25)); 
+				doc.addField("CURATOR_NOTE", result.getString(26)); 
+				doc.addField("RESULT_NOTE", result.getString(27)); 
+				doc.addField("EXPERIMENT_NOTE", result.getString(28)); 
+				doc.addField("IMAGE_WITH_NOTE", result.getString(29)); 
+				doc.addField("IMAGE_NOTE", result.getString(30)); 
+				doc.addField("IMAGE", result.getString(31)); 
+				doc.addField("IMAGE_PATH", result.getString(32)); 
+				doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(33)); 
+				doc.addField("FIXATION_METHOD", result.getString(34)); 
+				doc.addField("STRAIN", result.getString(35)); 
+				doc.addField("SEX", result.getString(36)); 
+				
+				String age = result.getString(37);
+				age = age.replace(" ", "");
+				if (age.contains("P")){
+					int len = age.length();
+					age = age.substring(0, len-1);
+					age = "P" + age;
+				}
+				doc.addField("DEV_STAGE", age); 
+			
+				doc.addField("GENOTYPE", result.getString(38)); 
+				doc.addField("ASSAY_TYPE", result.getString(39)); 
+				doc.addField("PROJECT", result.getString(40)); 
+				doc.addField("ALT_ID", result.getString(41)); 
+				doc.addField("SOURCE", "gudmap"); 
+				doc.addField("ANCHOR_GENE", result.getString(43)); 
+				doc.addField("MARKER_GENE", result.getString(44)); 
+				doc.addField("FOCUS_GROUPS", result.getString(45)); 
+				doc.addField("ALLELE_MGI_ID", result.getString(46)); 
+				doc.addField("ALLELE_NAME", result.getString(47)); 	
+				doc.addField("ALLELE_TYPE", result.getString(48)); 					
+				doc.addField("TISSUE", result.getString(49)); 					
+				doc.addField("TISSUE_EMAPS", result.getString(50)); 					
+//				doc.addField("TISSUE_EMAPS_ID", result.getString(51)); 					
+				doc.addField("SPECIES", result.getString(52)); 
+				doc.addField("GENE_TYPE", result.getString(53)); 
+				
+				doc.addField("PRESENT", result.getString(54)); 
+				doc.addField("DIR_PRESENT", result.getString(55)); 
+				doc.addField("INF_PRESENT", result.getString(56)); 
+				doc.addField("NOT_DETECTED", result.getString(57)); 
+				doc.addField("INF_NOT_DETECTED", result.getString(58)); 
+				doc.addField("UNCERTAIN", result.getString(59)); 
+				doc.addField("EMAPS", result.getString(60)); 
+				doc.addField("EXP_NOTES", result.getString(61)); 	
+				doc.addField("EXPRESSION_NOTES", result.getString(62)); 	
+				doc.addField("ANNOTATION", result.getString(63)); 				
+				doc.addField("TISSUE_TYPE", result.getString(64)); 
+ 				
+				docs.add(doc);
+			}
+
+			ps = con.prepareStatement(eeQueryString); 
+			result =  ps.executeQuery();			
+
+			// add field maps the EurExpress query result to the solr index schema			
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String id = result.getString(1);
+				if (id != null){
+					doc.addField("id", result.getString(1)); 
+					doc.addField("GUDMAP", result.getString(1)); 
+					doc.addField("GUDMAP_ID", result.getString(1)); 
+					doc.addField("GENE", result.getString(2)); 
+					doc.addField("MGI_GENE_ID", result.getString(3)); 
+					doc.addField("ENTREZ_ID", result.getString(4)); 
+					doc.addField("DEV_STAGE", result.getString(5) + "dpc"); 
+					doc.addField("STAGE", result.getString(6)); 
+					doc.addField("SYNONYMS", result.getString(7)); 
+					doc.addField("TISSUE", result.getString(8)); 
+	
+					doc.addField("SPECIES", "Mus musculus"); 
+					doc.addField("ASSAY_TYPE", "ISH"); 
+					doc.addField("SEX", "unknown"); 
+					doc.addField("SPECIMEN_ASSAY_TYPE", "section"); 
+	
+					doc.addField("IMAGE", result.getString(1) + "_01.jpg");
+					
+					String path = result.getString(1);
+					if (path != null){
+						path = path.replace("euxassay_","");
+						int index = Integer.parseInt(path);
+						if (index < 100)
+							path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(0);
+						else{
+							index = index/100;
+							path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(index);
+						}
+						path += "/" + result.getString(1) + "/";
+						
+						doc.addField("IMAGE_PATH", path + result.getString(1) + "_01.jpg"); 
+					}
+					doc.addField("SOURCE", "eurexpress"); 				
+	
+					
+					docs.add(doc);
+				}
+
+			} 
+			
+			ps = con.prepareStatement(emageQueryString); 
+			result =  ps.executeQuery();	
+			
+			// add field maps the EMAGE query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String id = result.getString(16);
+				if (id != null){
+					doc.addField("id", "EMAGE:" + result.getString(16)); 
+					doc.addField("GUDMAP", "EMAGE:" + result.getString(16)); 
+					doc.addField("GUDMAP_ID", "EMAGE:" + result.getString(16)); 
+					doc.addField("GENE", result.getString(4)); 
+					doc.addField("MGI_GENE_ID", result.getString(5)); 
+					doc.addField("DEV_STAGE", result.getString(7)); 
+					doc.addField("STAGE", result.getString(6)); 
+					doc.addField("TISSUE", result.getString(11)); 
+	
+					doc.addField("SPECIES", "Mus musculus"); 
+					doc.addField("ASSAY_TYPE", result.getString(8)); 
+//					doc.addField("SEX", "unknown"); 
+					doc.addField("GENOTYPE", result.getString(13)); 				
+					doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(9)); 
+	
+					doc.addField("IMAGE", result.getString(2));				
+					doc.addField("IMAGE_PATH", result.getString(3)); 
+					doc.addField("IMAGE_CLICK_PATH", result.getString(15)); 
+	
+	
+					doc.addField("SOURCE", "emage"); 				
+	
+					
+					docs.add(doc);
+				}
+
+			} 
+			
+
+		}
+		catch(SQLException sqle){sqle.printStackTrace();}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        return docs;
+    }
+
+	public ArrayList<SolrInputDocument> getBiomedAtlasGenesIndexData() {
+		
+		docs = new ArrayList<SolrInputDocument>();
+		
+		
+        String queryString = SolrQueries.GET_GENE_INDEX_DATA;
+        String eeQueryString = SolrQueries.GET_EUREXPRESS_INDEX_DATA;
+        String emageQueryString = SolrQueries.GET_EMAGE_INDEX_DATA;
+
+//        queryString += " LIMIT 40000,1000 "; 
+        try
+		{
+			//con = ds.getConnection();
+			con=Globals.getDatasource().getConnection();
+			ps = con.prepareStatement(queryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the GUDMAP query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String id = result.getString(1);
+				if (id != null && id != ""){
+					doc.addField("id", id); 
+					doc.addField("GENE", result.getString(1)); // added boost
+					doc.addField("GENE_NAME", result.getString(2)); 
+					String MGI_GENE_ID = result.getString(3);
+					doc.addField("MGI_GENE_ID", MGI_GENE_ID); 
+					doc.addField("MGI", result.getString(4)); 
+					doc.addField("ENSEMBL_ID", result.getString(5)); 
+					String synonyms = result.getString(6);
+					doc.addField("SYNONYMS", synonyms); // added boost
+//					doc.addField("GENE_ID", result.getString(7)); 
+					doc.addField("OMIM", result.getString(7));	
+					doc.addField("ARRAY_RANGE", result.getString(8));	
+					doc.addField("ISH_RANGE", result.getString(9));	
+					
+					
+					doc.addField("PROBESETS", result.getString(10)); 
+					doc.addField("ENTREZ_ID", result.getString(11)); 
+					doc.addField("GENBANK_ID", result.getString(12)); 
+					doc.addField("INSITU_ASSAY", result.getString(13)); 
+					doc.addField("MA_ASSAY", result.getString(14)); 
+					doc.addField("GUDMAP", result.getString(15)); 
+					doc.addField("GUDMAP_IDS", result.getString(16)); 
+					doc.addField("PRESENT", result.getString(17)); 
+					doc.addField("DIR_PRESENT", result.getString(18)); 
+					doc.addField("NOT_DETECTED", result.getString(19)); 
+					doc.addField("UNCERTAIN", result.getString(20)); 
+					doc.addField("EMAPS", result.getString(21)); 
+					doc.addField("SOURCE", "gudmap"); 
+					doc.addField("PI_NAME", result.getString(23)); 
+					doc.addField("LAB", result.getString(24));
+					int anchor = result.getInt(25);
+					if (anchor == 1)
+						doc.addField("ANCHOR", "anchor"); 
+					else
+						doc.addField("ANCHOR", ""); 
+					int marker = result.getInt(26);
+					if (marker == 1)
+						doc.addField("MARKER", "marker"); 
+					else
+						doc.addField("MARKER", ""); 
+					doc.addField("GENE_TYPE", result.getString(27));
+					doc.addField("SPECIES", result.getString(28));	
+					
+					// to filter out rubbish
+					if (MGI_GENE_ID != null && MGI_GENE_ID != "")
+						docs.add(doc);
+				}
+			}
+			
+			ps = con.prepareStatement(eeQueryString); 
+			result =  ps.executeQuery();
+			
+			// add field maps the EurExpress query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String id = result.getString(1);
+				if (id != null){
+				doc.addField("id", result.getString(1)); 
+				doc.addField("GUDMAP", result.getString(1)); 
+//				doc.addField("GUDMAP_ID", result.getString(1)); 
+				doc.addField("GENE", result.getString(2)); 
+				doc.addField("MGI_GENE_ID", result.getString(3)); 
+				doc.addField("ENTREZ_ID", result.getString(4)); 
+//				doc.addField("DEV_STAGE", result.getString(5) + "dpc"); 
+//				doc.addField("STAGE", result.getString(6)); 
+				doc.addField("SYNONYMS", result.getString(7)); 
+//				doc.addField("TISSUE", result.getString(8)); 
+
+				doc.addField("SPECIES", "Mus musculus"); 
+//				doc.addField("ASSAY_TYPE", "ISH"); 
+//				doc.addField("SEX", "unknown"); 
+
+//				doc.addField("IMAGE", result.getString(1) + "_01.jpg");
+				
+				String path = result.getString(1);
+				if (path != null){
+					path = path.replace("euxassay_","");
+					int index = Integer.parseInt(path);
+					if (index < 100)
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(0);
+					else{
+						index = index/100;
+						path = "http://www.eurexpress.org/euximages/images/" + String.valueOf(index);
+					}
+					path += "/" + result.getString(1) + "/";
+					
+					doc.addField("IMAGE_PATH", path + result.getString(1) + "_01.jpg"); 
+				}
+				doc.addField("SOURCE", "eurexpress"); 				
+
+				
+				docs.add(doc);
+				}
+
+			} 
+			
+			
+			ps = con.prepareStatement(emageQueryString); 
+			result =  ps.executeQuery();	
+			
+			// add field maps the EMAGE query result to the solr index schema
+			while (result.next()) {
+				doc = new SolrInputDocument();
+				String id = result.getString(16);
+				if (id != null){
+					doc.addField("id", "EMAGE:" + result.getString(16)); 
+					doc.addField("GUDMAP", "EMAGE:" + result.getString(16)); 
+//					doc.addField("GUDMAP_ID", "EMAGE:" + result.getString(16)); 
+					doc.addField("GENE", result.getString(4)); 
+					doc.addField("MGI_GENE_ID", result.getString(5)); 
+//					doc.addField("DEV_STAGE", result.getString(7)); 
+//					doc.addField("STAGE", result.getString(6)); 
+//					doc.addField("TISSUE", result.getString(11)); 
+	
+					doc.addField("SPECIES", "Mus musculus"); 
+//					doc.addField("ASSAY_TYPE", result.getString(8)); 
+//					doc.addField("SEX", "unknown"); 
+//					doc.addField("GENOTYPE", result.getString(13)); 				
+//					doc.addField("SPECIMEN_ASSAY_TYPE", result.getString(9)); 
+	
+//					doc.addField("IMAGE", result.getString(2));				
+					doc.addField("IMAGE_PATH", result.getString(3)); 
+					doc.addField("IMAGE_CLICK_PATH", result.getString(15)); 
+	
+	
+					doc.addField("SOURCE", "emage"); 				
+	
+					
+					docs.add(doc);
+				}
+
+			} 
+			
+			
+		}
+		catch(SQLException sqle){
+			sqle.printStackTrace();
+			}
+		finally {
+		    Globals.closeQuietly(con, ps, result);
+		}
+        
         return docs;
     }
 	

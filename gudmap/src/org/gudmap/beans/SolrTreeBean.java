@@ -30,6 +30,10 @@ public class SolrTreeBean implements Serializable {
 	
     @Inject
    	private SolrFilter solrFilter;
+    
+    @Inject
+   	private BiomedAtlasFilter biomedAtlasFilter;
+    
 	
 	public SolrTreeBean(){
 		solrUtil = new SolrUtil();
@@ -39,6 +43,10 @@ public class SolrTreeBean implements Serializable {
 		this.solrFilter = filter;
 	}
 
+	public void setBiomedAtlasFilter(BiomedAtlasFilter filter){
+		this.biomedAtlasFilter = filter;
+	}
+	
 	public void setSolrIndex(SolrIndexBean index){
 		this.solrIndexBean = index;
 	}
@@ -121,6 +129,27 @@ public class SolrTreeBean implements Serializable {
 		return solrUtil.getGeneCount(solrInput, filters);
 	}
 	
+	////////////////// EUREXPRESS ////////////////////////////
+	
+	public int getEurExpCount(){
+
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = solrFilter.getFilters();
+		return solrUtil.getEurExpFilteredCount(solrInput,filters);
+	}
+	
+	public int getEurExpCount(String filter){
+		
+		if (filter != "" || filter != null)	{	
+	        String[]ffields = filter.split(":");
+	    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+		}
+		return solrUtil.getEurExpCount(solrInput, filter);
+	}
+	
+	public int getEurExpCount(HashMap<String,String> filters){
+		return solrUtil.getEurExpFilteredCount(solrInput, filters);
+	}
 	
 	////////////////// INSITU ////////////////////////////
 	
@@ -345,5 +374,52 @@ public class SolrTreeBean implements Serializable {
 		return false;
 		
 	}
+
+	////////////////// BIOMED ATLAS IMAGES ////////////////////////////
+	
+	public int getBiomedAtlasImagesCount(){
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = biomedAtlasFilter.getFilters();
+		return solrUtil.getBiomedAtlasImagesCount(solrInput, filters);
+	}
+
+	public int getBiomedAtlasImagesCount(HashMap<String,String> filters){
+		return solrUtil.getBiomedAtlasImagesCount(solrInput, filters);
+	}
+
+	////////////////// BIOMED ATLAS INSITU ////////////////////////////
+	
+	public int getBiomedAtlasInsituCount(){
+
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = biomedAtlasFilter.getFilters();
+		return solrUtil.getBiomedAtlasInsituFilteredCount(solrInput,filters);
+	}
+	
+	public int getBiomedAtlasInsituCount(String filter){
+		
+		if (filter != "" || filter != null)	{	
+	        String[]ffields = filter.split(":");
+	    	filter = ffields[0] + ":" + '"' + ffields[1] + '"';
+		}
+		return solrUtil.getBiomedAtlasInsituCount(solrInput, filter);
+	}
+	
+	public int getBiomedAtlasInsituCount(HashMap<String,String> filters){
+		return solrUtil.getBiomedAtlasInsituFilteredCount(solrInput, filters);
+	}
+
+	////////////////// BIOMED ATLAS GENES ////////////////////////////
+	
+	public int getBiomedAtlasGeneCount(){
+		HashMap<String,String> filters = new HashMap<String,String>();
+		filters = biomedAtlasFilter.getFilters();
+		return solrUtil.getBiomedAtlasGeneCount(solrInput, filters);
+	}
+	
+	public int getBiomedAtlasGeneCount(HashMap<String,String> filters){
+		return solrUtil.getBiomedAtlasGeneCount(solrInput, filters);
+	}
+	
 	
 }

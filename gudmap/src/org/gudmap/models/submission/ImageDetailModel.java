@@ -14,7 +14,8 @@ public class ImageDetailModel extends ImageInfoModel{
 	  protected String group;	
 	  protected String groupTitle;
 	  protected String imageTitle;
-	  
+	  protected String source;	  
+	  protected String image;	  
 	  
 	  
 	  public String getGeneSymbol() {
@@ -107,6 +108,20 @@ public class ImageDetailModel extends ImageInfoModel{
    }
    public String getImageTitle(){
 	   return imageTitle;
+   }
+
+   public void setSource(String source){
+	   this.source = source;
+   }
+   public String getSource(){
+	   return source;
+   }
+
+   public void setImage(String image){
+	   this.image = image;
+   }
+   public String getImage(){
+	   return image;
    }
    
 }

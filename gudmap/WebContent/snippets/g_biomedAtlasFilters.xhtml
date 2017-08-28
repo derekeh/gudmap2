@@ -1,0 +1,239 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pr="http://primefaces.org/ui" >
+	
+ <style>
+input[type="checkbox"]{
+  width: 8px; /*Desired width*/
+  height: 8px; /*Desired height*/
+  font-size:8px;
+}
+/*
+#gd_edit_area {
+	 float:left;
+}
+*/
+.column1 {
+    width: 70%;
+    text-align: left;
+}
+
+.column2 {
+    width: 30%;
+    text-align: right;
+}
+</style>
+
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>	
+
+	
+<script type="text/javascript">
+//<![CDATA[
+           
+	$( document ).click(function() {
+//		$( "#toggle" ).toggle( "slide" );
+	});
+		
+//]]>
+</script>	
+			
+	<div style="border: 1px solid grey;font-size:10px; float:left; overflow: auto;" class="slide-menu">		
+
+	<ui:remove>
+	<h:panelGrid columns="2" columnClasses="column1,column2">
+		<h3 class="gd_h3" style="margin:8px 0 0 8px;">Filter</h3>
+ 		<h:commandButton id="filter_clear" value="Clear" >
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.reset}" />
+		 		<pr:ajax update=":biomed_filterform"/>
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform"/>
+ 		</h:commandButton>
+	</h:panelGrid>
+	</ui:remove>
+
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.geneValues || not empty biomedAtlasFilter.geneValue  ? 'pink' : '' }">Genes</h2>
+		<div>
+		 	<h:outputText value="Gene: "></h:outputText>
+		 	<h:inputText id="gene_filter" value="#{biomedAtlasFilter.geneValue}">
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:inputText>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.geneValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.geneList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />	
+		 		<pr:ajax update=":biomed_filterform" />
+			 </h:selectManyCheckbox>
+		</div>
+ 	</div>
+
+	<div class="accordion">
+		<h2 style="background:#{empty biomedAtlasFilter.anatomy ? '' : 'pink'  }">Expression</h2>
+		<div>
+			<pr:outputLabel value="Anatomy:" for="anatomy_input" />
+	    	<pr:autoComplete  id="anatomy_input" value="#{biomedAtlasFilter.anatomy}" completeMethod="#{autocompleteBean.completeAnatomy}"
+	     				minQueryLength="2" maxResults="10" forceSelection="false" queryDelay="100" onkeypress="handleInput(this,event);" style="position:relative;">
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform"  />
+		 		<pr:ajax update=":biomed_pagingform"  />
+		 		<pr:ajax update=":biomed_filterform" />
+			</pr:autoComplete>			
+		 	<h:selectOneRadio size="5" value="#{biomedAtlasFilter.expressionValue}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.expressionList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectOneRadio>
+		</div>  		
+	</div>
+ 
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.speciesValues  ? 'pink' : '' }">Species</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.speciesValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.speciesList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+	</div>
+             
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.theilerStageValues  ? 'pink' : '' }">Theiler Stages</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.theilerStageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.theilerStageList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform"  />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+	</div>
+      
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.carnegieStageValues  ? 'pink' : '' }">Human Stages</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.carnegieStageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.carnegieStageList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+<ui:remove>
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.ageValues  ? 'pink' : '' }">Ages</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.ageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.ageList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+</ui:remove>   	
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.sexValues  ? 'pink' : '' }">Sex</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.sexValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.sexList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+
+   
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.specimenTypeValues  ? 'pink' : '' }">Specimen Types</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.specimenTypeValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.specimenTypeList}" />
+		 		<pr:ajax update=":biomed_menuform :biomed_dataform :biomed_pagingform" listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+      	</div>
+   	</div>
+
+             
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.assayTypeValues  ? 'pink' : '' }">Assay Types</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.assayTypeValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.assayTypeList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+		</div>
+	</div>
+            
+	<div class="accordion">
+		<h2 style="background:#{not empty biomedAtlasFilter.resourceValues  ? 'pink' : '' }">Resource</h2>
+		<div>
+
+			 	<h:selectManyCheckbox id="lb_source" size="5" value="#{biomedAtlasFilter.resourceValues}" layout="pageDirection">
+			 		<f:selectItems value="#{biomedAtlasFilter.resourceList}" />
+			 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+			 		<pr:ajax update=":biomed_dataform" />
+			 		<pr:ajax update=":biomed_pagingform" />
+		 			<pr:ajax update=":biomed_filterform" />
+			 	</h:selectManyCheckbox>
+
+		</div>
+	</div>
+
+	<div class="accordion">		
+		<h2 id="fred" style="background:#{not empty biomedAtlasFilter.imageValues  ? 'pink' : '' }">Image Type</h2>
+		<div>
+		 	<h:selectManyCheckbox size="5" value="#{biomedAtlasFilter.imageValues}" layout="pageDirection">
+		 		<f:selectItems value="#{biomedAtlasFilter.imageList}" />
+		 		<pr:ajax update=":biomed_menuform " listener="#{biomedAtlasFilter.refresh}" />
+		 		<pr:ajax update=":biomed_dataform" />
+		 		<pr:ajax update=":biomed_pagingform" />
+		 		<pr:ajax update=":biomed_filterform" />
+		 	</h:selectManyCheckbox>
+		</div>
+	</div>
+             
+
+      
+
+
+<script type="text/javascript">
+//<![CDATA[
+   $(document).ready(function() {
+		
+
+		$( ".accordion" ).accordion({
+			collapsible:true,
+			heightStyle:"content",
+			active:false,
+		}); 
+   });
+//]]>
+</script>	
+
+
+
+</div>		
+</ui:composition>

@@ -15,24 +15,22 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.gudmap.impl.PagerImpl;
-import org.gudmap.models.InsituTableBeanModel;
+import org.gudmap.models.EurExpTableBeanModel;
 import org.gudmap.models.SolrInsituTableBeanModel;
 
 
 
 
 /**
- * <h1>SolrInsituBean</h1>
- * The SolrInsituBean class contains the methods to provide data and deal with events on the
- * solrInsitu.xhtml web page
+ * solrEurExp.xhtml web page
  * 
  * @author Bernard Haggarty
  * @version 1.0
  * @since 13/03/2013 
  */
-@Named (value="solrInsituBean")
+@Named (value="solrEurExpBean")
 @SessionScoped
-public class SolrInsituBean extends PagerImpl implements Serializable  {
+public class SolrEurExpBean extends PagerImpl implements Serializable  {
 	
 	 private static final long serialVersionUID = 1L;
 	 
@@ -59,7 +57,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     
     // Constructors -------------------------------------------------------------------------------
 
-    public SolrInsituBean() {
+    public SolrEurExpBean() {
     	super(10,10,"RELEVANCE",true);
     	setup();
     }
@@ -101,7 +99,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-        totalRows = solrTreeBean.getSolrUtil().getInsituFilteredCount(solrInput,filters);
+        totalRows = solrTreeBean.getSolrUtil().getEurExpFilteredCount(solrInput,filters);
       	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
 
       	// Set currentPage, totalPages and pages.
@@ -126,7 +124,7 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 
     public String refresh(){
      	loadDataList();
-    	return "solrInsitu";
+    	return "solrEurExpress";
     }
 
     public void resetAll() {
@@ -160,19 +158,19 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
     }
     
     public String getTitle(){
-    	String str="Insitu Search Results ";
+    	String str="EurExpress Search Results ";
     	filters = solrFilter.getFilters();
     	if (filters == null){
 	    	if (solrInput != null && solrInput != "")
-	    		str += "(" + solrTreeBean.getInsituCount() + ") > " + solrInput;
+	    		str += "(" + solrTreeBean.getEurExpCount() + ") > " + solrInput;
 	    	else
-	    		str += "(" + solrTreeBean.getInsituCount() + ") > ALL";
+	    		str += "(" + solrTreeBean.getEurExpCount() + ") > ALL";
     	}
     	else{
         	if (solrInput != null && solrInput != "")
-        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > " + solrInput;
+        		str += "(" + solrTreeBean.getEurExpCount(filters) + ") > " + solrInput;
         	else
-        		str += "(" + solrTreeBean.getInsituCount(filters) + ") > ALL";
+        		str += "(" + solrTreeBean.getEurExpCount(filters) + ") > ALL";
     		
     	}
     	return str;
@@ -195,20 +193,20 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
      * @return A list of InsituTableBeanModels
 	 * @see InsituTableBeanModel
      */
-	public List<InsituTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
+	public List<EurExpTableBeanModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
-		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
+		List<EurExpTableBeanModel> list = new ArrayList<EurExpTableBeanModel>();
 					
     	try {
     		
-			SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getInsituData(solrInput, filterlist, sortColumn,ascending,offset,num);
+			SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getEurExpData(solrInput, filterlist, sortColumn,ascending,offset,num);
 			if (sdl==null){
 				return null;
 			}
 			list = formatTableData(sdl);
 			
 
-			totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getInsituDataCount(solrInput, filterlist);
+			totals = (HashMap<String, String>) solrTreeBean.getSolrUtil().getEurExpDataCount(solrInput, filterlist);
 			
     	} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
@@ -225,65 +223,51 @@ public class SolrInsituBean extends PagerImpl implements Serializable  {
 	 * @return A List of InsituTableBeanModels
 	 * @see InsituTableBeanModel
 	 */
-	private List<InsituTableBeanModel> formatTableData(SolrDocumentList sdl){
+	private List<EurExpTableBeanModel> formatTableData(SolrDocumentList sdl){
 		
-		List<InsituTableBeanModel> list = new ArrayList<InsituTableBeanModel>();
-		InsituTableBeanModel model = null;
+		List<EurExpTableBeanModel> list = new ArrayList<EurExpTableBeanModel>();
+		EurExpTableBeanModel model = null;
 		int rowNum = sdl.size();
 		
 		for(int i=0; i<rowNum; i++) { 
 			SolrDocument doc = sdl.get(i);
 
-			String insituExpression = "";			
-			if (doc.containsKey("PRESENT")  && doc.getFieldValue("PRESENT").toString() != "")
-				insituExpression = "present";
-			else if (doc.containsKey("UNCERTAIN")  && doc.getFieldValue("UNCERTAIN").toString() != "")
-				insituExpression = "uncertain";
-			else if (doc.containsKey("NOT_DETECTED")  && doc.getFieldValue("NOT_DETECTED").toString() != "")
-				insituExpression = "not detected";
 			
-			model = new InsituTableBeanModel();
-			if (doc.containsKey("GUDMAP"))
-				model.setOid(doc.getFieldValue("GUDMAP").toString());
+			model = new EurExpTableBeanModel();
+			if (doc.containsKey("ID"))
+				model.setEeid(doc.getFieldValue("ID").toString());
+			if (doc.containsKey("EUREXP_ID"))
+				model.setOid(doc.getFieldValue("EUREXP_ID").toString());
 			if (doc.containsKey("GENE"))
 				model.setGene(doc.getFieldValue("GENE").toString());
-			if (doc.containsKey("GUDMAP_ID"))
-				model.setGudmap_accession(doc.getFieldValue("GUDMAP_ID").toString());
-			if (doc.containsKey("SOURCE"))
-				model.setSource(doc.getFieldValue("SOURCE").toString());
-			if (doc.containsKey("DATE"))
-				model.setSubmission_date(doc.getFieldValue("DATE").toString());
-			if (doc.containsKey("ASSAY_TYPE"))
-				model.setAssay_type(doc.getFieldValue("ASSAY_TYPE").toString());
-			if (doc.containsKey("PROBE_NAME"))
-				model.setProbe_name(doc.getFieldValue("PROBE_NAME").toString());
+			if (doc.containsKey("MGI_GENE_ID"))
+				model.setMgi_id(doc.getFieldValue("MGI_GENE_ID").toString());
+			if (doc.containsKey("ENTREZ_ID"))
+				model.setEntrez_id(doc.getFieldValue("ENTREZ_ID").toString());
+			if (doc.containsKey("DEV_STAGE"))
+				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
 			if (doc.containsKey("STAGE")){
 				String stage = doc.getFieldValue("STAGE").toString();
 				model.setStage(stage);
 				model.setStage_order(stage.replace("TS", ""));
 			}
-			if (doc.containsKey("DEV_STAGE"))
-				model.setAge(doc.getFieldValue("DEV_STAGE").toString());
+			if (doc.containsKey("COMPONENT"))
+				model.setTissue(doc.getFieldValue("COMPONENT").toString());
+			if (doc.containsKey("SYNONYM"))
+				model.setSynonyms(doc.getFieldValue("SYNONYM").toString());
+
+			if (doc.containsKey("IMAGE_TYPE"))
+				model.setImageType(doc.getFieldValue("IMAGE_TYPE").toString());
+			
+			if (doc.containsKey("IMAGE"))
+				model.setImage(doc.getFieldValue("IMAGE").toString());
+			if (doc.containsKey("IMAGE_PATH"))
+				model.setImage_path(doc.getFieldValue("IMAGE_PATH").toString());
+			if (doc.containsKey("THUMBNAIL_PATH"))
+				model.setThumbnail_path(doc.getFieldValue("THUMBNAIL_PATH").toString());
 			if (doc.containsKey("SEX"))
 				model.setSex(doc.getFieldValue("SEX").toString());
-			if (doc.containsKey("GENOTYPE"))
-				model.setGenotype(doc.getFieldValue("GENOTYPE").toString());
-			if (doc.containsKey("SPECIMEN_ASSAY_TYPE"))
-				model.setSpecimen(doc.getFieldValue("SPECIMEN_ASSAY_TYPE").toString());
-			if (doc.containsKey("IMAGE_PATH"))
-				model.setImage(doc.getFieldValue("IMAGE_PATH").toString());
-			if (doc.containsKey("MGI_GENE_ID"))
-				model.setGene_id(doc.getFieldValue("MGI_GENE_ID").toString());
-			if (doc.containsKey("SYNONYMS"))
-				model.setSynonyms(doc.getFieldValue("SYNONYMS").toString());
-			if (doc.containsKey("TISSUE_TYPE")){
-				String tissue = doc.getFieldValue("TISSUE_TYPE").toString();
-				model.setTissue(TissueFilter(tissue));
-			}			
-			if (doc.containsKey("SPECIES"))
-				model.setSpecies(doc.getFieldValue("SPECIES").toString());
 			
-			model.setExpression(insituExpression);
 
 			list.add(model);			
 		}

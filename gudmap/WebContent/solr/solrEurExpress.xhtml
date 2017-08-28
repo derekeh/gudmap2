@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pr="http://primefaces.org/ui" >	
+	
+<ui:composition template="/WEB-INF/templates/g_template1.xhtml">
+	<ui:define name="title">
+	    Solr EurExpress Data
+	</ui:define>
+	
+
+
+
+	
+	
+<!-- 	comment out the following section if you don't want the solr menu displayed -->
+	<ui:define name="solr">	
+		<ui:include src="/snippets/g_solrMenu.xhtml"/>				
+	</ui:define>
+
+
+<!-- 	comment out the following section if you don't want the filter menu displayed -->	
+	<ui:define name="filters">	
+
+	</ui:define>		
+	    <link type="text/css" rel="stylesheet" href="#{appRoot}/resources/css/gudmap_filter.css" />
+		
+	
+
+	<ui:define name="content">
+	<!-- can use relative links on html tags -->
+	<h:form>
+
+		<h3 class="gd_h3" style="margin:8px 8px 0 8px; display: inline-block;">Filter</h3>
+ 		<h:commandButton id="filter_clear" value="Clear" >
+		 		<pr:ajax update=":solr_menuform " listener="#{solrFilter.reset}" />
+		 		<pr:ajax update=":filterform"/>
+		 		<pr:ajax update=":dataform" />
+		 		<pr:ajax update=":pagingform"/>
+ 		</h:commandButton>
+
+	</h:form>
+	<h:form  id="filterform">
+		<ui:include src="/snippets/g_solrFilters_Accordion.xhtml"/>	
+	</h:form>
+	
+		
+	<div id="db_form_margin" style="width: 140px; float: left;"></div>
+	<div id="db_form_wrapper" style="margin-left: 150px;">
+
+	
+		<h:form  id="dataform">
+
+
+	    <h:inputHidden id="solrInput" value="#{solrEurExpBean.solrInput}" />
+
+	     <h:dataTable value="#{solrEurExpBean.dataList}" var="u"
+	    		styleClass="db_order-table"
+    			headerClass="db_order-table-header"
+    			rowClasses="db_order-table-odd-row,db_order-table-even-row">
+ 
+ 			<h:column >
+    			<f:facet name="header">
+					<h:selectBooleanCheckbox id="cb_toggle" value="#{genericTablePageBean.toggleCheck}" valueChangeListener="#{genericTablePageBean.toggleAll}">
+						<f:ajax event="click" execute="@this cb_toggle"  render="@form" />
+					</h:selectBooleanCheckbox>
+    				<ui:remove><!-- <h:commandButton  id="tocart" value="+" action="#{genericTablePageBean.checkboxSelections()}" /> --></ui:remove>			
+    			</f:facet>
+    				<h:selectBooleanCheckbox id="cb_#{u.oid}" value="#{u.selected}"></h:selectBooleanCheckbox>
+    		</h:column>
+<ui:remove>	
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="OID" actionListener="#{solrEurExpBean.sort}">
+                         <f:attribute name="sortField" value="GUDMAP" />
+                    </h:commandLink>
+    			</f:facet>
+    				#{u.oid}
+    		</h:column>
+</ui:remove> 	
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Gene" actionListener="#{solrEurExpBean.sort}">
+    					<f:attribute name="sortField" value="GENE" />
+                    </h:commandLink>
+                    <br />
+                    (#{solrEurExpBean.totals.get('GENE')})
+    			</f:facet>
+<ui:remove>	    			
+     			<h:commandLink value="#{u.gene}"  action="/db/viewGeneDetails.xhtml">
+					<f:param name="geneId" value="#{u.mgi_id}"></f:param>
+				</h:commandLink>
+</ui:remove>	
+				<h:outputLink target="_blank"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.gene}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<h:outputText value="#{u.gene}"/>
+				</h:outputLink>
+			
+    		</h:column>
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				Synonyms
+				</f:facet>
+				<h:outputText value="#{u.synonyms}" style="font-style:italic; font-size:80%;"></h:outputText>
+    		</h:column>
+
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Assay Detail" actionListener="#{solrEurExpBean.sort}">
+    					<f:attribute name="sortField" value="EUREXP_ID" />
+                    </h:commandLink>
+                    <br />
+                    (#{solrEurExpBean.totals.get('EUREXP_ID')})
+				</f:facet>
+<ui:remove>					
+				<h:outputLink target="_blank"
+					value="http://www.eurexpress.org/ee/databases/tdbsearch?mode=search&amp;page=&amp;searchField=All&amp;groupSelection=Group_All&amp;searchValue=#{u.eeid}&amp;standardAtlas=on&amp;getStandardAtlas=yes&amp;multistageAtlas=on&amp;getMultistageAtlas=yes&amp;findEverything=no&amp;anatomySetNames=0&amp;expressionStrengthOperator=g&amp;expressionStrengthValue=&amp;coverageOperator=g&amp;coverageValue=">
+					<h:outputText value="#{u.oid}"/>
+				</h:outputLink>
+	
+
+				<h:outputLink target="_blank"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.oid}">
+					<h:outputText value="#{u.oid}"/>
+				</h:outputLink>
+</ui:remove>				
+				<h:panelGrid columns="3" columnClasses="db_align_left,db_align_right,db_align_right">
+ 				<h:outputLink target="_blank"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.oid}">
+					<h:outputText value="#{u.oid}"/>
+				</h:outputLink>
+				<h:panelGroup>&#160;</h:panelGroup>
+ 				<h:outputLink target="_blank"
+					value="http://www.eurexpress.org/ee/databases/assay.jsp?assayID=#{u.oid}">
+					<img src="#{u.thumbnail_path}"/>
+				</h:outputLink>
+				</h:panelGrid>
+
+    		</h:column>
+
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="MGI Gene ID" actionListener="#{solrEurExpBean.sort}">
+    					<f:attribute name="sortField" value="MGI_GENE_ID" />
+                    </h:commandLink>
+                    <br />
+                    (#{solrEurExpBean.totals.get('MGI_GENE_ID')})
+				</f:facet>
+				<h:outputLink value="http://www.informatics.jax.org/accession/#{u.mgi_id}" target="_blank">
+					<h:outputText value="#{u.mgi_id}"/>
+				</h:outputLink>
+    		</h:column>
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Entrez Id" actionListener="#{solrEurExpBean.sort}">
+    					<f:attribute name="sortField" value="ENTREZ_ID" />
+                    </h:commandLink>
+                    <br />
+                    (#{solrEurExpBean.totals.get('ENTREZ_ID')})
+				</f:facet>
+				<h:outputLink value="http://www.ncbi.nlm.nih.gov/nuccore/#{u.entrez_id}" target="_blank">
+					<h:outputText value="#{u.entrez_id}"/>
+				</h:outputLink>
+    		</h:column> 
+
+    		<h:column >
+    			<f:facet name="header">
+     				<h:commandLink value="Age" actionListener="#{solrEurExpBean.sort}">
+    					<f:attribute name="sortField" value="DEV_STAGE" />
+                    </h:commandLink>
+                    <br />
+                    (#{solrEurExpBean.totals.get('DEV_STAGE')})
+				</f:facet>
+    				#{u.age}
+    		</h:column>
+    		
+    		<h:column rendered="#{paramBean.embryostagecol == true}">
+    			<f:facet name="header">
+     				<h:commandLink value="Stage" actionListener="#{solrEurExpBean.sort}">
+    					<f:attribute name="sortField" value="STAGE" />
+                    </h:commandLink>
+                    <br />
+                    (#{solrEurExpBean.totals.get('STAGE')})
+				</f:facet>
+				<h:outputText value="#{u.stage}"/>
+    		</h:column>
+    		
+    		
+    		<h:column >
+    			<f:facet name="header">
+    				<h:commandLink value="Tissue" actionListener="#{solrEurExpBean.sort}">
+    					<f:attribute name="sortField" value="COMPONENT" />
+                    </h:commandLink>
+                    <br />
+                    (#{solrEurExpBean.totals.get('COMPONENT')})
+				</f:facet>
+    				#{u.tissue}
+    		</h:column>
+    		
+    		
+ 			<h:column >
+    			<f:facet name="header">
+					<pr:commandLink id="showdialog1"  onclick="PF('dialog1').show();"  title="select columns to view">
+						<h:graphicImage library="images/resources" name="bars.png"  width="25" height="25" />
+					</pr:commandLink>
+    			</f:facet>
+    		</h:column>
+
+ 		</h:dataTable> 
+			<ui:include src="/snippets/g_insituCols.xhtml"></ui:include> 		
+ 		
+
+      	</h:form> 
+      	
+	<h:form id="pagingform">	
+
+ 		<h:panelGrid columns="3" columnClasses="gd_leftAlign db_navborder,gd_celltextcenter db_navborder,gd_rightAlign db_navborder" p:border="0">
+ 			<h:panelGroup>
+ 			  <h:panelGrid columns="5">
+                <h:commandButton id="firstbutton" value="first" action="#{solrEurExpBean.pageFirst}"
+                    disabled="#{solrEurExpBean.firstRow == 0}" >
+                    <f:ajax execute="@this firstbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="prevbutton" value="prev" action="#{solrEurExpBean.pagePrevious}"
+                    disabled="#{solrEurExpBean.firstRow == 0}" >
+                    <f:ajax execute="@this prevbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="nextbutton" value="next" action="#{solrEurExpBean.pageNext}"
+                    disabled="#{solrEurExpBean.firstRow + solrEurExpBean.rowsPerPage >= solrEurExpBean.totalRows}" >
+                    <f:ajax execute="@this nextbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:commandButton id="lastbutton" value="last" action="#{solrEurExpBean.pageLast}"
+                    disabled="#{solrEurExpBean.firstRow + solrEurExpBean.rowsPerPage >= solrEurExpBean.totalRows}" >
+                    <f:ajax execute="@this lastbutton" render="@form :dataform" />
+                </h:commandButton>
+                <h:outputText value="Page #{solrEurExpBean.currentPage} / #{solrEurExpBean.totalPages}" />
+               </h:panelGrid>
+			</h:panelGroup>
+			
+			
+			<h:panelGroup>
+                <t:dataList value="#{solrInsituBean.pages}" var="page">
+                    <h:commandLink class="db_pagenum" value="#{page}" actionListener="#{solrEurExpBean.page}"
+                        rendered="#{page != solrEurExpBean.currentPage}" />
+                    <h:outputText class="db_pagenum" value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                        rendered="#{page == solrEurExpBean.currentPage}" />
+                </t:dataList>
+           </h:panelGroup>
+           <h:panelGroup>
+				<h:panelGrid columns="4">
+	                <h:outputLabel for="rowsPerPage" value="Rows per page:&#160;&#160;" />
+	                <h:inputText id="rowsPerPage" value="#{solrEurExpBean.rowsPerPage}" size="3" maxlength="3" />
+	                <h:commandButton id="setrowsbutton" value="Set" action="#{solrEurExpBean.pageFirst}" >
+	                	<f:ajax execute="@form" render="@form :dataform" />
+	                </h:commandButton>               
+	                <h:message for="rowsPerPage" errorStyle="color: red;" />
+	             </h:panelGrid>
+           </h:panelGroup>
+         </h:panelGrid>    
+      	</h:form> 
+		<h:form id="form2">
+			<h:outputText value="Go to page: &#160;&#160;"></h:outputText>
+			<h:inputText id="gotopage" value="#{solrEurExpBean.gotopage}" />
+		</h:form> 
+
+	</div>
+
+
+	</ui:define>	
+</ui:composition>
+</html>

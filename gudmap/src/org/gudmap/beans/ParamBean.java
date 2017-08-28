@@ -81,6 +81,7 @@ public class ParamBean implements Serializable {
 	private Map<String,Boolean> micplatformresultmap;
 	private Map<String,Boolean> seqseriesresultmap;
 	private Map<String,Boolean> collectionresultmap;
+
 	
 	/*filter*/
 	private String genevalues;
@@ -207,7 +208,7 @@ public class ParamBean implements Serializable {
 		seqseriescols= new String[]{"title","numsamples","components"};		
 		micplatformcols= new String[]{"geoplatformid","platformname","platformtechnology","platformmanufacturer","numseries"};		
 		collectioncols= new String[]{"name","description","owner","count","focusgroup","status","modified","download","share"};
-		
+
 		resultmap=new HashMap<String,Boolean>();
 		tgresultmap=new HashMap<String,Boolean>();
 		genestripresultmap=new HashMap<String,Boolean>();
@@ -575,6 +576,8 @@ public class ParamBean implements Serializable {
 	public Map<String,Object> getGenestripcolmap() {
 		return genestripcolmap;
 	}
+
+	
 	
 	/*************************FILTER*******************************/
 	

@@ -312,6 +312,23 @@ public class SolrIndexAssembler {
         docs.clear();
 	}
 	
+	public void updateEurExpressIndex(HttpSolrClient server){
+
+		ArrayList<SolrInputDocument> docs  = solrDao.getSolrEurExpressIndexData();
+		
+		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
+			server.add(docs);			
+			server.commit();
+		} catch (SolrServerException | IOException e) {
+			e.printStackTrace();
+		}
+        docs.clear();
+	}
+
 //	public void updateDemoIndex(){
 //
 //		HttpSolrClient server = new HttpSolrClient("http://localhost:8983/solr/core_demo");
@@ -337,5 +354,55 @@ public class SolrIndexAssembler {
 		return solrDao.getGeneList();		
 	}
 
+	public void updateBiomedAtlasImageIndex(HttpSolrClient server){
+
+		ArrayList<SolrInputDocument> docs  = solrDao.getBiomedAtlasImageIndexData();
+		
+		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
+			server.add(docs);			
+			server.commit();
+		} catch (SolrServerException | IOException e) {
+			e.printStackTrace();
+		}
+        docs.clear();
+	}
+
+	public void updateBiomedAtlasInsituIndex(HttpSolrClient server){
+
+		ArrayList<SolrInputDocument> docs  = solrDao.getBiomedAtlasInsituIndexData();
+		
+		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
+			server.add(docs);			
+			server.commit();
+		} catch (SolrServerException | IOException e) {
+			e.printStackTrace();
+		}
+        docs.clear();
+	}
+
+	public void updateBiomedAtlasGenesIndex(HttpSolrClient server){
+
+		ArrayList<SolrInputDocument> docs  = solrDao.getBiomedAtlasGenesIndexData();
+		
+		try {
+			// clear index
+			server.deleteByQuery("*:*");
+			server.commit();			
+			
+			server.add(docs);			
+			server.commit();
+		} catch (SolrServerException | IOException e) {
+			e.printStackTrace();
+		}
+        docs.clear();
+	}
 	
 }

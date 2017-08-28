@@ -29,9 +29,9 @@ import org.gudmap.models.submission.ImageDetailModel;
  * @version 1.0
  * @since 13/03/2013 
  */
-@Named (value="solrImagesBean")
+@Named (value="biomedAtlasImagesBean")
 @SessionScoped
-public class SolrImagesBean extends PagerImpl implements Serializable  {
+public class BiomedAtlasImagesBean extends PagerImpl implements Serializable  {
 	
 	 private static final long serialVersionUID = 1L;
 	 
@@ -47,7 +47,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
    	private SolrTreeBean solrTreeBean;
 
     @Inject
-   	private SolrFilter solrFilter;
+   	private BiomedAtlasFilter solrFilter;
     
 	private String solrInput;
 	private HashMap<String,String> filters;
@@ -56,7 +56,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 	
     // Constructors -------------------------------------------------------------------------------
 
-    public SolrImagesBean() {
+    public BiomedAtlasImagesBean() {
     	super(1000,10,"RELEVANCE",true);
     	setup();
     }
@@ -69,7 +69,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 		this.solrTreeBean=solrTreeBean;
 	}
 	
-	public void setSolrFilter(SolrFilter solrFilter){
+	public void setSolrFilter(BiomedAtlasFilter solrFilter){
 		this.solrFilter = solrFilter;
 	}
 	
@@ -98,7 +98,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
     @Override
     public void loadDataList() {
     	filters = solrFilter.getFilters();
-        totalRows = solrTreeBean.getSolrUtil().getImagesCount(solrInput,filters); 	
+        totalRows = solrTreeBean.getSolrUtil().getBiomedAtlasImagesCount(solrInput,filters); 	
      	dataList = getData(solrInput, filters, sortField, sortAscending, firstRow, rowsPerPage);
 
         // Set currentPage, totalPages and pages.
@@ -123,7 +123,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 
     public String refresh(){
      	loadDataList();
-    	return "solrImages";
+    	return "biomedatlasimages";
     }
 
     public void resetAll() {
@@ -188,7 +188,7 @@ public class SolrImagesBean extends PagerImpl implements Serializable  {
 	public List<ImageDetailModel> getData(String solrInput, HashMap<String,String> filterlist, String sortColumn, boolean ascending, int offset, int num){
 
 		List<ImageDetailModel> list = new ArrayList<ImageDetailModel>();    		
-		SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getImagesData(solrInput, filterlist, sortColumn,ascending,offset,num);
+		SolrDocumentList sdl  = solrTreeBean.getSolrUtil().getBiomedAtlasImagesData(solrInput, filterlist, sortColumn,ascending,offset,num);
 		if (sdl==null){
 			return null;
 		}

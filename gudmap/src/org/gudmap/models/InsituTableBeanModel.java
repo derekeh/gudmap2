@@ -3,7 +3,7 @@ package org.gudmap.models;
 
 
 public class InsituTableBeanModel extends GenericTableBeanModel {
-private String gene,probe_name,tissue,expression,specimen=null;
+private String gene,probe_name,tissue,expression,specimen,clickFilePath=null;
 
 	
 	public void setGene(String gene){
@@ -37,5 +37,11 @@ private String gene,probe_name,tissue,expression,specimen=null;
 		return specimen;
 	}
 	
+	public void setClickFilePath(String clickFilePath) {
+	    this.clickFilePath = clickFilePath;
+	}
+	public String getClickFilePath() {
+	    return clickFilePath;
+	}
 
 }

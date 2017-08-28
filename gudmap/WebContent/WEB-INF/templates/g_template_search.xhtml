@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:pr="http://primefaces.org/ui" >
+  
+ <h:head>
+ 
+    <meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><ui:insert name="title">Default title</ui:insert></title>
+    <!-- Bootstrap -->
+	<h:outputStylesheet library="css/v2" name="bootstrap.css"></h:outputStylesheet>
+	
+	<h:outputStylesheet library="css/v2" name="gudmap100_v2.css"></h:outputStylesheet>
+    <h:outputStylesheet library="css/v2" name="gudmap_db_v2.css"></h:outputStylesheet>
+    
+    <h:outputStylesheet library="css/v2" name="plato.css"></h:outputStylesheet>
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
+    
+    <h:outputStylesheet library="css/v2" name="overrides_v2.css"></h:outputStylesheet>
+    
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+	<h:outputScript library="scripts/v2" name="jquery-1.11.2.min.js"></h:outputScript>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed --> 
+	<h:outputScript library="scripts/v2" name="bootstrap.js"></h:outputScript>
+	
+	<h:outputScript library="scripts" name="gudmap100.js"></h:outputScript>
+	
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+  <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
+  <script>var __adobewebfontsappname__="dreamweaver"</script>
+  <script src="http://use.edgefonts.net/droid-sans:n4:default;molengo:n4:default.js" type="text/javascript"></script>
+ 
+  <!-- above is new -->
+ 
+  <ui:param name="appRoot" value="#{request.contextPath}" />
+  <ui:param name="webRoot" value="http://beta.gudmap.org" />
+  
+</h:head>
+
+<h:body>
+<!-- <script>
+    jQuery(document).ready(function() {
+        searchInit();
+    });
+</script> -->
+<div class="container-fluid">
+<!-- <ui:debug hotkey="x" rendered="#{initParam['javax.faces.FACELETS_DEVELOPMENT']}"/> -->
+
+<header>
+	<ui:insert name="header">
+		<!--  include your header file or uncomment the include below and create header.xhtml in this directory -->
+	    <!--<ui:include src="g_header_v2.xhtml"/>-->
+	</ui:insert>
+	
+</header>
+
+<section>
+	<h:messages></h:messages>
+	<div class="gd_content">
+	
+		<ui:insert name="solr">
+				<!-- snippets/g_solrFly if required to show -->
+		</ui:insert>
+		<section>
+			<div id="gd_container">
+				<div id="gd_filter_area">
+					<ui:insert name="filters">					
+					</ui:insert>
+		  	 	</div><!-- END gd_filter_area -->
+				<div id="gd_edit_area">
+					<ui:insert name="content">
+						<h1>Introduction</h1>
+					</ui:insert>
+		  	 	</div><!-- END gd_edit_area -->
+	  	 	</div>
+		</section>
+	</div><!--  END gd_content -->
+</section>
+
+<div class="clear_all"></div>
+
+<footer>
+	<ui:insert name="footer">
+    	<!--  include your header file or uncomment the include below and create footer.xhtml in this directory -->
+		<!--<ui:include src="g_footer_v2.xhtml"/> -->
+  </ui:insert>
+</footer>
+
+</div> <!-- END .container-fluid -->
+  	
+	
+</h:body>
+
+</html>

@@ -17,6 +17,8 @@ public class GeneStripModel {
 	private String gene_id;
 	private String species;
 	private int rowCount=0;
+	private String source;
+	private String clickFilePath;
 	
 	public GeneStripModel() {
 	}
@@ -123,6 +125,21 @@ public class GeneStripModel {
 	
 	public void setRowCount(int rowCount) {
 		this.rowCount=rowCount;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
+	public String getSource() {
+		return source;
+	}
+
+	public void setClickFilePath(String clickFilePath) {
+	    this.clickFilePath = clickFilePath;
+	}
+	public String getClickFilePath() {
+	    return clickFilePath;
 	}
 	
 }

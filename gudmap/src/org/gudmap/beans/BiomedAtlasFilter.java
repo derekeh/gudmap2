@@ -34,25 +34,22 @@ import java.sql.ResultSet;
  * @version 1.0
  * @since 13/03/2016 
  */
-@Named(value="solrFilter")
+@Named(value="biomedAtlasFilter")
 @SessionScoped
-public class SolrFilter implements Serializable {
+public class BiomedAtlasFilter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<String,String> filters;	
 		
 	private String geneValue;
-	private Date fromDateValue;
-	private Date toDateValue;
 	private ArrayList<String> geneValues;
 	private ArrayList<String> speciesValues;
 	private ArrayList<String> sexValues;	
 	private ArrayList<String> assayTypeValues;	
-	private ArrayList<String> sourceValues;	
+	private ArrayList<String> resourceValues;	
 	private ArrayList<String> specimenTypeValues;
 	private ArrayList<String> theilerStageValues;
 	private ArrayList<String> carnegieStageValues;
-	private ArrayList<String> ageValues;
 	private ArrayList<String> imageValues;
 	private String expressionValue = "";
 	private String anatomy;
@@ -72,7 +69,7 @@ public class SolrFilter implements Serializable {
 
 
 	
-	public SolrFilter() {
+	public BiomedAtlasFilter() {
 		filters = new HashMap<String,String>();
 		showFilter = false;
 
@@ -131,51 +128,6 @@ public class SolrFilter implements Serializable {
 	public void setGeneValue(String val){
 		geneValue = val;
 	}	
-//	public void geneChangeListener(ValueChangeEvent event) {
-//	    geneValue = (String)event.getNewValue(); // Look, (new) value is already set.
-//	    refresh();
-//	}	
-//	public void geneListener(AjaxBehaviorEvent event) {
-//	    refresh();
-//	}	
-	
-	/**
-	 * This method returns the start date from the Submission Date Filter 
-	 * of the Advanced Search Pages
-	 * 
-	 * @return The fromDateValue
-	 */
-	public Date getFromDateValue(){
-		return fromDateValue;
-	}	
-	/**
-	 * This method sets the current start date to be displayed in the Submission Date Filter 
-	 * of the Advanced Search Pages.
-	 * 
-	 * @param val
-	 */
-	public void setFromDateValue(Date val){
-		fromDateValue = val;
-	}	
-
-	/**
-	 * This method returns the end date from the Submission Date Filter 
-	 * of the Advanced Search Pages
-	 * 
-	 * @return The toDateValue
-	 */
-	public Date getToDateValue(){
-		return toDateValue;
-	}	
-	/**
-	 * This method sets the current end date to be displayed in the Submission Date Filter 
-	 * of the Advanced Search Pages.
-	 * 
-	 * @param val
-	 */
-	public void setToDateValue(Date val){
-		toDateValue = val;
-	}	
 	
 	/**
 	 * This method returns a map of sources to be displayed in the Sources Filter 
@@ -183,19 +135,15 @@ public class SolrFilter implements Serializable {
 	 * 
 	 * @return A Map of sources
 	 */
-	public Map<String,String> getSourceList(){
+	public Map<String,String> getResourceList(){
 		
 		Map<String,String> sourcemap = new LinkedHashMap<String,String>();
-		sourcemap.put("---clear---", "clear");
+//		sourcemap.put("---clear---", "clear");
 		sourcemap.put("EurExpress", "eurexpress");
-
-		Map<String, String> map =  paramBean.getSourcelist(); 
-	    Iterator<Entry<String, String>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry<String,String> pair = (Map.Entry<String,String>)it.next();
-	        String key = (String)pair.getKey();
-			sourcemap.put(key, key);
-		}
+		sourcemap.put("Edinburgh Gudmap", "gudmap");
+		sourcemap.put("Mouse Atlas", "emage");
+		sourcemap.put("Chick Atlas", "chickatlas");
+		
 		return sourcemap;
 	}
 	/**
@@ -204,8 +152,9 @@ public class SolrFilter implements Serializable {
 	 * 
 	 * @return The sourceValues
 	 */
-	public ArrayList<String> getSourceValues(){
-		return sourceValues;
+	public ArrayList<String> getResourceValues(){
+
+		return resourceValues;
 	}	
 	/**
 	 * This method sets the current list of sources to be displayed in the Sources Filter 
@@ -213,15 +162,15 @@ public class SolrFilter implements Serializable {
 	 * 
 	 * @param val
 	 */
-	public void setSourceValues(ArrayList<String> val){
-		if (val.contains("clear"))
-			this.sourceValues.clear();
-		else
-			this.sourceValues = val;
+	public void setResourceValues(ArrayList<String> val){
+//		if (val.contains("clear"))
+//			this.resourceValues.clear();
+//		else
+			this.resourceValues = val;
 
 	}
 
-	public void sourceChanged(AjaxBehavior event){
+	public void resourceChanged(AjaxBehavior event){
 //		String sel = (String)event.getNewValue();
 		refresh();
 	}
@@ -450,47 +399,6 @@ public class SolrFilter implements Serializable {
 		theilerStageValues = val;
 	}	
 
-	/**
-	 * This method returns a map of ages to be displayed in the Ages Filter 
-	 * of the Advanced Search Pages
-	 * 
-	 * @return A Map of ages
-	 */
-	public Map<String,String> getAgeList(){
-		
-		Map<String,String> agemap = new LinkedHashMap<String,String>();
-		agemap.put("10-11 dpc", "[10.0dpc TO 10.9dpc]");
-		agemap.put("11-12 dpc", "[11.0dpc TO 11.9dpc]");
-		agemap.put("12-13 dpc", "[12.0dpc TO 12.9dpc]");
-		agemap.put("13-14 dpc", "[13.0dpc TO 13.9dpc]");
-		agemap.put("14-15 dpc", "[14.0dpc TO 14.9dpc]");
-		agemap.put("15-16 dpc", "[15.0dpc TO 15.9dpc]");
-		agemap.put("16-17 dpc", "[16.0dpc TO 16.9dpc]");
-		agemap.put("17-18 dpc", "[17.0dpc TO 17.9dpc]");
-		agemap.put("18-19 dpc", "[18.0dpc TO 18.9dpc]");
-		agemap.put("Newborn (range P0-P3)", "[P0 TO P3]");
-		agemap.put("Range P4-Adult", "[P4 TO P200] OR Adult");
-		return agemap;
-	}	
-	
-	/**
-	 * This method returns the current list of selected ages from the Age Filter 
-	 * of the Advanced Search Pages.
-	 * 
-	 * @return The ageValues
-	 */
-	public ArrayList<String> getAgeValues(){
-		return ageValues;
-	}	
-	/**
-	 * This method sets the current list of ages to be displayed in the Age Filter 
-	 * of the Advanced Search Pages.
-	 * 
-	 * @param val
-	 */
-	public void setAgeValues(ArrayList<String> val){
-		ageValues = val;
-	}	
 	
 	/**
 	 * This method returns a map of carnegie stages to be displayed in the Human Stages Filter 
@@ -624,28 +532,14 @@ public class SolrFilter implements Serializable {
 			filters.put("GENE",filter);			
 		}
 
-		if (toDateValue != null) {
-			if (fromDateValue != null) {
-				String filter = "[" + df.format(fromDateValue) +  " TO " +  df.format(toDateValue) + "]";
-				filters.put("DATE",filter);				
-			}
-			else {
-				String filter = "[ * TO " + df.format(toDateValue) + "]";
-				filters.put("DATE",filter);				
-			}				
-		}
-		else if (fromDateValue != null) {
-			String filter = "[" + df.format(fromDateValue) + " TO * ]";
-			filters.put("DATE",filter);				
-		}
 
-		if (sourceValues != null && !sourceValues.isEmpty()) {
-			if (sourceValues.size() == 1){
-				filters.put("SOURCE",sourceValues.get(0));
+		if (resourceValues != null && !resourceValues.isEmpty()) {
+			if (resourceValues.size() == 1){
+				filters.put("SOURCE",resourceValues.get(0));
 			}
 			else {
 				String filter = "(";
-				for (String item : sourceValues) 
+				for (String item : resourceValues) 
 					filter += item + " OR ";
 				filter = filter.substring(0, filter.length()-3) + ")";
 				filters.put("SOURCE",filter);
@@ -699,19 +593,7 @@ public class SolrFilter implements Serializable {
 				filters.put("SPECIMEN_ASSAY_TYPE",filter);
 			}
 		}
-
-		if (ageValues != null && !ageValues.isEmpty()) {
-			if (ageValues.size() == 1){
-				filters.put("DEV_STAGE",ageValues.get(0));
-			}
-			else {
-				String filter = "(";
-				for (String item : ageValues) filter += item + " OR ";
-				filter = filter.substring(0, filter.length()-3) + ")";
-				filters.put("DEV_STAGE",filter);
-			}
-		}
-		
+	
 		if (theilerStageValues != null && !theilerStageValues.isEmpty()) {
 			if (theilerStageValues.size() == 1){
 				filters.put("STAGE",theilerStageValues.get(0));
@@ -780,7 +662,7 @@ public class SolrFilter implements Serializable {
 		geneValue = "";
 		anatomy = "";
 		geneValues = new ArrayList<String>();			
-		sourceValues = new ArrayList<String>();			
+		resourceValues = new ArrayList<String>();			
 		assayTypeValues = new ArrayList<String>();
 		speciesValues = new ArrayList<String>();
 		sexValues = new ArrayList<String>();
@@ -788,9 +670,6 @@ public class SolrFilter implements Serializable {
 		specimenTypeValues = new ArrayList<String>();
 		theilerStageValues = new ArrayList<String>();
 		carnegieStageValues = new ArrayList<String>();
-		ageValues = new ArrayList<String>();
-		fromDateValue = null;
-		toDateValue = null;		
 		
     	refresh();
 	}
@@ -800,52 +679,6 @@ public class SolrFilter implements Serializable {
 		page = FacesContext.getCurrentInstance().getViewRoot().getViewId();  
 		return page;
     }
-    
-//    public void removeFilter(AjaxBehaviorEvent event) {
-//    	UIComponent source = (UIComponent)event.getSource();
-//    	String prefix = source.getId();    	
-// 		
-//    	switch(prefix){
-//    	case "GENE":
-//    		geneValue = "";
-//    		break;    	
-//    	case "DATE":
-//    		fromDateValue = null;
-//    		toDateValue = null;	
-//    		break;
-//    	case "SOURCE":
-//    		sourceValues.clear();
-//    		break;
-//    	case "SPECIES":
-//    		speciesValues.clear();
-//    		break;
-//    	case "SEX":
-//    		sexValues.clear();
-//    		break;
-//    	case "ASSAY_TYPE":
-//    		assayTypeValues.clear();
-//    		break;
-//    	case "SPECIMEN_ASSAY_TYPE":
-//    		specimenTypeValues.clear();
-//    		break;
-//    	case "THEILER_STAGE":
-//    		theilerStageValues.clear();
-//    		break;
-//    	case "CARNEGIE_STAGE":
-//    		carnegieStageValues.clear();
-//    		break;
-//    	case "ANCHOR":
-//    		geneValues.clear();
-//    		break;
-//    	case "MARKER":
-//    		geneValues.clear();
-//    		break;
-//    	default:
-//    		break;
-//    	}
-//    	
-//    	filters.clear();
-//    	refresh();
-//	}	
+
 
 }
